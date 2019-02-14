@@ -1,6 +1,10 @@
 version: '3.3'
 
 services:
+  db:
+    image: postgres
+    volumes:
+      - metadata:/var/lib/postgresql/data
   web:
     build:
       context: .
@@ -9,6 +13,8 @@ services:
       - ".:/src"
     expose:
       - "80"
+    depends_on:
+     - db
   nginx:
     image: nginx:latest
     ports:
@@ -19,3 +25,7 @@ services:
       - ./static:/static
     depends_on:
       - web
+
+volumes:
+  metadata:
+    external: true
