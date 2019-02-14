@@ -73,12 +73,12 @@ WSGI_APPLICATION = 'ddw_analyst_ui.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
@@ -120,6 +120,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 try:
-    from local_settings import *
+    from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:
     pass
