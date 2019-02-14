@@ -1,10 +1,12 @@
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ddw_metadata',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': os.environ.get('DOCKER_HOST_IP'),
         'PORT': '5432',
     }
 }
