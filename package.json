@@ -4,8 +4,8 @@
   "description": "The new and improved DDW Analyst UI interface",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development ./frontend/src/index.js --output ./frontend/static/frontend/main.js",
-    "build": "webpack --mode production ./frontend/src/index.js --output ./frontend/static/frontend/main.js",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

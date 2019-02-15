@@ -106,3 +106,5 @@ venv.bak/
 
 # Javascript
 node_modules/
+frontend/static/frontend/js
+frontend/static/frontend/css
