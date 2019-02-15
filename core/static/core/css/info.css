@@ -1,0 +1,27 @@
+.info{
+    height:15px;
+    width:15px;
+    margin-top:0.83em;
+    margin-bottom:0.83em;
+    background-size:15px;
+    font-size:1.5em;
+    cursor:pointer;
+    float:left;
+    background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iMTMwcHgiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDEyOCAxMzA7IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAxMjggMTMwIiB3aWR0aD0iMTI4cHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+CjwhW0NEQVRBWwoJLnN0MHtmaWxsOiNFRjNFNDI7fQoJLnN0MXtmaWxsOiNGRkZGRkY7fQoJLnN0MntmaWxsOm5vbmU7fQoJLnN0M3tmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiNGRkZGRkY7fQpdXT4KPC9zdHlsZT48ZGVmcy8+PHBhdGggZD0iTTkuNSw2NS40YzAtMjkuNiwyNC4xLTUzLjYsNTMuNi01My42YzI5LjYsMCw1My42LDI0LDUzLjYsNTMuNmMwLDI5LjYtMjMuOSw1My42LTUzLjYsNTMuNkMzMy42LDExOSw5LjUsOTUsOS41LDY1LjQgIEw5LjUsNjUuNEw5LjUsNjUuNHogTTQ3LjMsNTYuMXY3LjhINTR2MjkuNmgtNi43djcuOGgzMS41di03LjhoLTYuNlY2My45aDYuNnYtNy44SDQ3LjNMNDcuMyw1Ni4xTDQ3LjMsNTYuMXogTTUxLjksNDAuOSAgYzAsNi4yLDUuMSwxMS4zLDExLjMsMTEuM2M2LjIsMCwxMS4zLTUsMTEuMy0xMS4zYzAtNi4yLTUuMS0xMS4zLTExLjMtMTEuM0M1Ni45LDI5LjYsNTEuOSwzNC43LDUxLjksNDAuOUw1MS45LDQwLjlMNTEuOSw0MC45eiIvPjxyZWN0IGNsYXNzPSJzdDIiIGhlaWdodD0iMTMwIiBpZD0iX3gzQ19TbGljZV94M0VfXzEwMF8iIHdpZHRoPSIxMjgiLz48L3N2Zz4=)
+    }
+
+.popupWrap{
+    float:left;
+    width:100px;
+}
+
+.popup{
+    margin-top:0.83em;
+    margin-bottom:0.83em;
+    border: solid 1px black;
+    position:absolute;
+    padding:10px;
+    border-radius:5px;
+    display:none;
+    background-color:white;
+}

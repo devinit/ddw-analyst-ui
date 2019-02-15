@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+    {% block title %} DDW Analyst User Interface {% endblock %}
+    {% block head %}
+    {% endblock %}
+    {% block content %}
+    <div id="content" style="width:100%">
+    <p>
+      Welcome to the DDW Analyst User Interface.
+      {% if active_campaigns %}
+      To begin, please select an active campaign below.
+      <h3>Your queries</h3>
+      <ul>
+      {% for active_campaign in active_campaigns %}
+        <li><a href="{{ active_campaign.get_absolute_url }}">{{ active_campaign }}</a></li>
+      {% endfor %}
+      </ul>
+      {% else %}
+      Before you can begin, you must be invited to a campaign. Please ask an administrator for an invite.
+      {% endif %}
+    </p>
+    </div>
+    {% endblock %}
