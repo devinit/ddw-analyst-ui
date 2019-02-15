@@ -1,7 +1,7 @@
-# ddw-analyst-ui
+# DDW Analyst UI
 The new and improved DDW Analyst UI interface
 
-# Setup
+## Setup
 <!-- 1. Make your database `sudo su postgres -c 'psql -U postgres -d postgres -c '"'"'CREATE DATABASE ddw_metadata'"'"`
 2. Make sure your psql database can accept connections outside of localhost e.g. /etc/postgresql/9.4/main/postgresql.conf: `listen_addresses = '*'`
 3. Make sure your psql database accepts the Docker container e.g. /etc/postgresql/9.4/main/pg_hba.conf: `host ddw_metadata postgres 172.29.0.0/16 trust` -->

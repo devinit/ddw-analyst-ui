@@ -1,23 +1,28 @@
-const path = require("path");
-
-const moduleName = 'frontend';
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: `./${moduleName}/src/index.js`,
+  entry: { frontend: `./frontend/src/index.ts` },
   output: {
-    path: path.resolve(__dirname, `${moduleName}/static/${moduleName}/js/`),
-    filename: 'main.js',
+    path: path.resolve(__dirname, 'frontend/static/frontend/'),
+    filename: 'js/bundle.js',
 
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
+        test: /\.(ts|tsx)$/,
+        use: 'ts-loader'
+      },
+      {
+          test: /\.(c|sc)ss$/,
+          use: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader' ]
       }
     ]
-  }
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/bundle.css'
+    }),
+]
 };
