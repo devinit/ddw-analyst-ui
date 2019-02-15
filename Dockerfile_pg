@@ -2,9 +2,7 @@
 FROM postgres
 MAINTAINER akmiller01 <Alex Miller, alex.miller@devinit.org>
 
-RUN mkdir /src
-ADD ./database_setup /src
+RUN mkdir /home/postgres
+ADD ./database_setup /home/postgres
 
-WORKDIR /src
-
-CMD bash /src/loader.sh
+WORKDIR /home/postgres
