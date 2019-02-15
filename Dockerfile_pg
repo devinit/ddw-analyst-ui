@@ -1,0 +1,10 @@
+# start with a base image
+FROM postgres
+MAINTAINER akmiller01 <Alex Miller, alex.miller@devinit.org>
+
+RUN mkdir /src
+ADD ./database_setup /src
+
+WORKDIR /src
+
+CMD bash /src/loader.sh

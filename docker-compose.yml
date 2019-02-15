@@ -2,7 +2,9 @@ version: '3.3'
 
 services:
   db:
-    image: postgres
+    build:
+      context: .
+      dockerfile: Dockerfile_pg
     volumes:
       - metadata:/var/lib/postgresql/data
   web:
