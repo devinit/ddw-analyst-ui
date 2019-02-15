@@ -1,0 +1,50 @@
+﻿INSERT INTO repo.dac2a_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1975,1975,0.03,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1976,1976,0.04,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1977,1977,0.07,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1978,1978,0.06,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1979,1979,0.07,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1980,1980,0.05,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1981,1981,0.03,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1982,1982,0.05,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1983,1983,0.02,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1984,1984,0.02,NULL)
+;
+INSERT INTO repo.dac2a_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1985,1985,0.02,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1986,1986,0.02,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1987,1987,0.01,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1988,1988,0.01,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1989,1989,0.04,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1990,1990,0.01,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1991,1991,0.02,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1992,1992,0.01,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1993,1993,0.02,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1994,1994,0.02,NULL)
+;
+INSERT INTO repo.dac2a_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1995,1995,0.15,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',1996,1996,0.18,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','A','Current Prices (USD millions)',2014,2014,0,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1975,1975,0.12,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1976,1976,0.16,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1977,1977,0.25,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1978,1978,0.17,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1979,1979,0.18,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1980,1980,0.12,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1981,1981,0.08,NULL)
+;
+INSERT INTO repo.dac2a_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1982,1982,0.14,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1983,1983,0.06,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1984,1984,0.06,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1985,1985,0.06,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1986,1986,0.04,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1987,1987,0.02,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1988,1988,0.02,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1989,1989,0.07,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1990,1990,0.01,NULL)
+,(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1991,1991,0.03,NULL)
+;
+INSERT INTO repo.dac2a_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',1,'Austria',1,'1 : Part I - Developing Countries',106,'Imputed Multilateral ODA','D','Constant Prices (2016 USD millions)',1992,1992,0.01,NULL)

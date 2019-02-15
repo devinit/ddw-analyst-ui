@@ -1,0 +1,50 @@
+﻿INSERT INTO repo.dac5_current (donor_code,donor_name,sector_code,sector_name,aid_type_code,aid_type_name,amount_type_code,amount_type_name,"time","year",value,flags) VALUES 
+(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',1971,1971,2.94,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',1974,1974,1.98,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',1977,1977,15.85,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',1980,1980,20.33,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',1987,1987,49.69,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',1990,1990,144.92,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',1993,1993,167.31,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',1996,1996,171.6,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',2003,2003,155.16,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',2006,2006,212.05,NULL)
+;
+INSERT INTO repo.dac5_current (donor_code,donor_name,sector_code,sector_name,aid_type_code,aid_type_name,amount_type_code,amount_type_name,"time","year",value,flags) VALUES 
+(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',2009,2009,246.15,NULL)
+,(1,'Austria',100,'I. Social Infrastructure & Services',528,'Total ODA','A','Current Prices (USD millions)',2016,2016,279.46,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',1977,1977,15.23,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',1980,1980,20.23,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',1983,1983,24.52,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',1986,1986,33.09,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',1993,1993,98.75,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',1996,1996,101.5,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',1999,1999,126.36,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',2006,2006,105.01,NULL)
+;
+INSERT INTO repo.dac5_current (donor_code,donor_name,sector_code,sector_name,aid_type_code,aid_type_name,amount_type_code,amount_type_name,"time","year",value,flags) VALUES 
+(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',2009,2009,128.11,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',2012,2012,182.85,NULL)
+,(1,'Austria',110,'I.1. Education',528,'Total ODA','A','Current Prices (USD millions)',2015,2015,136.91,NULL)
+,(1,'Austria',111,'I.1.a. Education, Level Unspecified',528,'Total ODA','A','Current Prices (USD millions)',1995,1995,10.45,NULL)
+,(1,'Austria',111,'I.1.a. Education, Level Unspecified',528,'Total ODA','A','Current Prices (USD millions)',1998,1998,2.68,NULL)
+,(1,'Austria',111,'I.1.a. Education, Level Unspecified',528,'Total ODA','A','Current Prices (USD millions)',2005,2005,2.44,NULL)
+,(1,'Austria',111,'I.1.a. Education, Level Unspecified',528,'Total ODA','A','Current Prices (USD millions)',2008,2008,2.65,NULL)
+,(1,'Austria',111,'I.1.a. Education, Level Unspecified',528,'Total ODA','A','Current Prices (USD millions)',2011,2011,10.3,NULL)
+,(1,'Austria',111,'I.1.a. Education, Level Unspecified',528,'Total ODA','A','Current Prices (USD millions)',2014,2014,9.65,NULL)
+,(1,'Austria',112,'I.1.b. Basic Education',528,'Total ODA','A','Current Prices (USD millions)',1997,1997,2.64,NULL)
+;
+INSERT INTO repo.dac5_current (donor_code,donor_name,sector_code,sector_name,aid_type_code,aid_type_name,amount_type_code,amount_type_name,"time","year",value,flags) VALUES 
+(1,'Austria',112,'I.1.b. Basic Education',528,'Total ODA','A','Current Prices (USD millions)',2004,2004,3.01,NULL)
+,(1,'Austria',112,'I.1.b. Basic Education',528,'Total ODA','A','Current Prices (USD millions)',2007,2007,5.25,NULL)
+,(1,'Austria',112,'I.1.b. Basic Education',528,'Total ODA','A','Current Prices (USD millions)',2010,2010,2.92,NULL)
+,(1,'Austria',112,'I.1.b. Basic Education',528,'Total ODA','A','Current Prices (USD millions)',2013,2013,0.12,NULL)
+,(1,'Austria',113,'I.1.c. Secondary Education',528,'Total ODA','A','Current Prices (USD millions)',1996,1996,10.42,NULL)
+,(1,'Austria',113,'I.1.c. Secondary Education',528,'Total ODA','A','Current Prices (USD millions)',2003,2003,4.73,NULL)
+,(1,'Austria',113,'I.1.c. Secondary Education',528,'Total ODA','A','Current Prices (USD millions)',2006,2006,4.95,NULL)
+,(1,'Austria',113,'I.1.c. Secondary Education',528,'Total ODA','A','Current Prices (USD millions)',2009,2009,18.9,NULL)
+,(1,'Austria',113,'I.1.c. Secondary Education',528,'Total ODA','A','Current Prices (USD millions)',2012,2012,53.22,NULL)
+,(1,'Austria',114,'I.1.d. Post-Secondary Education',528,'Total ODA','A','Current Prices (USD millions)',1995,1995,76.11,NULL)
+;
+INSERT INTO repo.dac5_current (donor_code,donor_name,sector_code,sector_name,aid_type_code,aid_type_name,amount_type_code,amount_type_name,"time","year",value,flags) VALUES 
+(1,'Austria',114,'I.1.d. Post-Secondary Education',528,'Total ODA','A','Current Prices (USD millions)',2002,2002,53.59,NULL)

@@ -1,0 +1,50 @@
+﻿INSERT INTO repo.dac2b_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1963,1963,1.7,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1964,1964,2.3,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1965,1965,6.4,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1966,1966,3.5,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1969,1969,1.66,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1970,1970,0.37,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1971,1971,4.92,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1972,1972,3.28,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1973,1973,9.82,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1974,1974,9.1,NULL)
+;
+INSERT INTO repo.dac2b_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1975,1975,2.79,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1976,1976,3,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1977,1977,3.3,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1978,1978,5.86,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1979,1979,9.47,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1980,1980,11.94,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1981,1981,9.64,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1982,1982,14.36,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1983,1983,14.37,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1984,1984,12.51,NULL)
+;
+INSERT INTO repo.dac2b_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1985,1985,14.06,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1986,1986,7.21,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1987,1987,17.76,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1988,1988,16,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1989,1989,8,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1990,1990,14,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1991,1991,10,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','A','Current Prices (USD millions)',1992,1992,19.43,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1963,1963,11.99,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1964,1964,15.89,NULL)
+;
+INSERT INTO repo.dac2b_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1965,1965,43.17,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1966,1966,23.05,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1969,1969,10.23,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1970,1970,2.16,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1971,1971,27.01,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1972,1972,16.24,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1973,1973,42.76,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1974,1974,35.77,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1975,1975,9.65,NULL)
+,(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1976,1976,10.01,NULL)
+;
+INSERT INTO repo.dac2b_current (recipient_code,recipient_name,donor_code,donor_name,part_code,part_name,aid_type_code,aid_type_name,data_type,amount_type,"time","year",value,flags) VALUES 
+(30,'Cyprus',901,'International Bank for Reconstruction and Development [IBRD]',1,'1 : Part I - Developing Countries',204,'Other Long-term - Amounts Extended','D','Constant Prices (2016 USD millions)',1977,1977,10.16,NULL)
