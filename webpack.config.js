@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: { frontend: `./frontend/src/index.ts` },
   output: {
     path: path.resolve(__dirname, 'frontend/static/frontend/'),
@@ -20,6 +21,7 @@ module.exports = {
       }
     ]
   },
+  devtool: 'eval-source-map',
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/bundle.css'
