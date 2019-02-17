@@ -55,6 +55,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
     "react-router-dom": "^4.3.1"
   }
 }
