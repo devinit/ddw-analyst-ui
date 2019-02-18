@@ -108,3 +108,4 @@ venv.bak/
 node_modules/
 frontend/static/frontend/js
 frontend/static/frontend/css
+tsc/
