@@ -26,9 +26,12 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      static: [
-        `./frontend/static/frontend/*`,
-      ]
+      static: {
+        src: [
+          './frontend/static/frontend/css/*',
+          './frontend/static/frontend/js/*'
+        ]
+      }
     },
 
     checkDependencies: {

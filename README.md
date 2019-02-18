@@ -9,5 +9,6 @@ The new and improved DDW Analyst UI interface
 2. Build your app `docker-compose up --build`
 3. Migrate the database. `docker-compose run web python manage.py migrate`
 4. Create a superuser. `docker-compose run web python manage.py createsuperuser`
-5. Collect static files. `docker-compose run web python manage.py collectstatic --no-input`
-6. Run the app. `docker-compose up`
+5. Install frontend dependencies `npm install`
+6. Bundle frontend code and collect static files `npm run build`
+7. Run the app. `docker-compose up`
