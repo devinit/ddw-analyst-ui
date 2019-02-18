@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "grunt",
     "build": "grunt release",
-    "test": "jest",
+    "test": "jest -u",
     "docker:build": "docker-compose up --build",
-    "docker:collectstatic": "docker-compose run web python manage.py collectstatic --no-input"
+    "docker:collectstatic": "docker-compose run web python manage.py collectstatic --no-input",
+    "emit": "tsc",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'src/**/*.tsx'",
+    "coverage": "NODE_ENV=test jest -u && codecov"
   },
   "repository": {
     "type": "git",
