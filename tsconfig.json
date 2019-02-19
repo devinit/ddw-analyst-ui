@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "rootDir": "./frontend/src",
+        "outDir": "./tsc",
         "noEmitOnError": true,
         "sourceMap": true,
         "target": "es5",
