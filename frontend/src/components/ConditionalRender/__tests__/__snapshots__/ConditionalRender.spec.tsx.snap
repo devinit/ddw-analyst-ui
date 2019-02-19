@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders null when the condition evaluates to false 1`] = `null`;
+
+exports[`renders the children when the condition evaluates to true 1`] = `"My Child"`;
