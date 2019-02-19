@@ -31,6 +31,7 @@
     "@types/classnames": "^2.2.7",
     "@types/jest": "^24.0.6",
     "@types/react": "^16.8.3",
+    "@types/react-bootstrap": "^0.32.17",
     "@types/react-dom": "^16.8.1",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-test-renderer": "^16.8.1",
@@ -66,6 +67,9 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "classnames": "^2.2.6",
+    "glamor": "^2.20.40",
+    "glamorous": "^5.0.0",
+    "react-bootstrap": "^1.0.0-beta.5",
     "react-router-dom": "^4.3.1"
   }
 }
