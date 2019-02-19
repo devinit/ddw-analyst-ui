@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders only the wrapper when no social options are specified 1`] = `
+<div
+  className="social-line"
+/>
+`;
+
+exports[`renders the facebook button when facebook is set to true 1`] = `
+<div
+  className="social-line"
+>
+  <button
+    className="btn-white btn btn-link"
+    disabled={false}
+    type="button"
+  >
+    <i
+      className="fa fa-facebook"
+    />
+  </button>
+</div>
+`;
+
+exports[`renders the google button when google is set to true 1`] = `
+<div
+  className="social-line"
+>
+  <button
+    className="btn-white btn btn-link"
+    disabled={false}
+    type="button"
+  >
+    <i
+      className="fa fa-google"
+    />
+  </button>
+</div>
+`;
+
+exports[`renders the twitter button when twitter is set to true 1`] = `
+<div
+  className="social-line"
+>
+  <button
+    className="btn-white btn btn-link"
+    disabled={false}
+    type="button"
+  >
+    <i
+      className="fa fa-twitter"
+    />
+  </button>
+</div>
+`;
