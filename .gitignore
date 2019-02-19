@@ -103,3 +103,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Javascript
+node_modules/
+frontend/static/frontend/js
+frontend/static/frontend/css
