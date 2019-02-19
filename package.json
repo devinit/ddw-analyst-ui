@@ -10,7 +10,7 @@
     "docker:build": "docker-compose up --build",
     "docker:collectstatic": "docker-compose run web python manage.py collectstatic --no-input",
     "emit": "tsc",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'src/**/*.tsx'",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'src/**/*.tsx' && tsc --noEmit",
     "coverage": "NODE_ENV=test jest -u && codecov"
   },
   "repository": {
@@ -19,7 +19,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run emit",
+      "pre-commit": "npm run lint",
       "pre-push": "npm test"
     }
   },
