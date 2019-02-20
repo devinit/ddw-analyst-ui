@@ -1,18 +1,20 @@
-import * as React from 'react';
-import classNames from 'classnames';
 import { css } from 'glamor';
-import { Button, Card, Col, Form, InputGroup, Row } from 'react-bootstrap';
+import * as React from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
-import { SocialLine } from '../../components/SocialLine';
-import { FormControl } from 'react-bootstrap';
 
-export class Login extends React.Component<{}, { showCard: boolean }> {
+interface LoginState {
+  showForm: boolean;
+}
+
+export class Login extends React.Component<{}, LoginState> {
   private headerStyles = css({
     backgroundSize: 'cover',
     backgroundPosition: 'top center'
   });
   state = {
-    showCard: false
+    showForm: false
   };
 
   render() {
@@ -22,36 +24,7 @@ export class Login extends React.Component<{}, { showCard: boolean }> {
           <div className="container">
             <Row>
               <Col lg={ 4 } md={ 6 } sm={ 8 } className="ml-auto mr-auto">
-                <Form className="form">
-                  <Card className={ classNames('card-login', { 'card-hidden': !this.state.showCard }) }>
-                    <Card.Header className="card-header-rose text-center">
-                      <Card.Title>Login</Card.Title>
-                      <SocialLine google/>
-                    </Card.Header>
-                    <Card.Body>
-                      <p className="card-description text-center">Or Go With</p>
-                      <span className="bmd-form-group">
-                        <InputGroup>
-                          <InputGroup.Prepend>
-                            <InputGroup.Text><i className="material-icons">email</i></InputGroup.Text>
-                          </InputGroup.Prepend>
-                          <FormControl type="email" placeholder="Email..."/>
-                        </InputGroup>
-                      </span>
-                      <span className="bmd-form-group">
-                        <InputGroup>
-                          <InputGroup.Prepend>
-                            <InputGroup.Text><i className="material-icons">lock_outline</i></InputGroup.Text>
-                          </InputGroup.Prepend>
-                          <FormControl type="password" placeholder="Password..."/>
-                        </InputGroup>
-                      </span>
-                    </Card.Body>
-                    <Card.Footer className="justify-content-center">
-                      <Button variant="link" size="lg" className="btn-rose">Login</Button>
-                    </Card.Footer>
-                  </Card>
-                </Form>
+                <LoginForm showForm={ this.state.showForm }/>
               </Col>
             </Row>
           </div>
@@ -62,8 +35,11 @@ export class Login extends React.Component<{}, { showCard: boolean }> {
 
   componentDidMount() {
     setTimeout(() => {
-      this.setState({ showCard: true });
+      this.setState({ showForm: true });
     }, 700);
   }
 
+  onLogin = (_event: React.FormEvent) => {
+    //
+  }
 }

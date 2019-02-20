@@ -36,11 +36,13 @@
     "@babel/preset-react": "^7.0.0",
     "@types/classnames": "^2.2.7",
     "@types/jest": "^24.0.6",
+    "@types/js-base64": "^2.3.1",
     "@types/react": "^16.8.3",
     "@types/react-bootstrap": "^0.32.17",
     "@types/react-dom": "^16.8.1",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-test-renderer": "^16.8.1",
+    "@types/yup": "^0.26.9",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^2.1.0",
@@ -74,9 +76,12 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "classnames": "^2.2.6",
+    "formik": "^1.5.1",
     "glamor": "^2.20.40",
     "glamorous": "^5.0.0",
+    "js-base64": "^2.5.1",
     "react-bootstrap": "^1.0.0-beta.5",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "yup": "^0.26.10"
   }
 }
