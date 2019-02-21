@@ -1,0 +1,8 @@
+# start with a base image
+FROM postgres
+MAINTAINER akmiller01 <Alex Miller, alex.miller@devinit.org>
+
+RUN mkdir /home/postgres
+ADD ./database_setup /home/postgres
+
+WORKDIR /home/postgres
