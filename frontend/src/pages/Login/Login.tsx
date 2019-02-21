@@ -1,20 +1,29 @@
+import { FormikActions } from 'formik/dist/types';
 import { css } from 'glamor';
+import { Base64 } from 'js-base64';
+import * as localForage from 'localforage';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { LoginForm } from '../../components/LoginForm';
+import { RouteComponentProps } from 'react-router-dom';
+import { Credentials, LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
+import { api, localForageKeys, verifyAuthentication } from '../../utils';
 
 interface LoginState {
   showForm: boolean;
+  loading: boolean;
+  alert?: string;
 }
 
-export class Login extends React.Component<{}, LoginState> {
+export class Login extends React.Component<RouteComponentProps<{}>, LoginState> {
   private headerStyles = css({
     backgroundSize: 'cover',
     backgroundPosition: 'top center'
   });
-  state = {
-    showForm: false
+  private loadingStyles = css({ textAlign: 'center' });
+  state: LoginState = {
+    showForm: false,
+    loading: true
   };
 
   render() {
@@ -24,7 +33,7 @@ export class Login extends React.Component<{}, LoginState> {
           <div className="container">
             <Row>
               <Col lg={ 4 } md={ 6 } sm={ 8 } className="ml-auto mr-auto">
-                <LoginForm showForm={ this.state.showForm }/>
+                { this.renderContent() }
               </Col>
             </Row>
           </div>
@@ -34,12 +43,42 @@ export class Login extends React.Component<{}, LoginState> {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ showForm: true });
-    }, 700);
+    verifyAuthentication()
+      .then(() => this.props.history.push('/'))
+      .catch(() => {
+        setTimeout(() => {
+          this.setState({ showForm: true, loading: false });
+        }, 700);
+      });
   }
 
-  onLogin = (_event: React.FormEvent) => {
-    //
+  private renderContent() {
+    if (this.state.loading) {
+      return <div { ...this.loadingStyles }>Loading...</div>;
+    }
+
+    return <LoginForm showForm={ this.state.showForm } onSuccess={ this.onLogin } alert={ this.state.alert }/>;
+  }
+
+  private onLogin = (values: Credentials, _formikActions: FormikActions<Credentials>) => {
+    window.fetch(api.routes.LOGIN, {
+      method: 'POST',
+      credentials: 'omit',
+      redirect: 'follow',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${Base64.encode(`${values.username}:${values.password}`)}`
+      }
+    })
+    .then(response => response.json())
+    .then((response: { token?: string, detail?: string }) => {
+      if (response.token) {
+        localForage.setItem(localForageKeys.API_KEY, response.token);
+        this.props.history.push('/');
+      } else if (response.detail) {
+        this.setState({ alert: response.detail });
+      }
+    })
+    .catch(console.log); // tslint:disable-line
   }
 }

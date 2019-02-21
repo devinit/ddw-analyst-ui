@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Formik, FormikActions, FormikProps } from 'formik';
 import { css } from 'glamor';
 import * as React from 'react';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
+import { Alert, Button, Card, Form, InputGroup } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { SocialLine } from '../SocialLine';
 
@@ -11,22 +11,25 @@ interface LoginFormState {
   alerts: Partial<Credentials>;
 }
 
-interface Credentials {
+export interface Credentials {
   username: string;
   password: string;
 }
 
 interface LoginFormProps {
   showForm?: boolean;
+  alert?: string;
+  onSuccess: (values: Credentials, formikActions: FormikActions<Credentials>) => void;
 }
 
 export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
-  static defaultProps: LoginFormProps = { showForm: true };
+  static defaultProps: Partial<LoginFormProps> = { showForm: true };
   state: LoginFormState = {
     credentials: { username: '', password: '' },
     alerts: {}
   };
   private feedbackStyles = css({ marginLeft: '55px' });
+  private alertStyles = css({ marginLeft: '15px' });
   private schema = Yup.object().shape({
     username: Yup.string().required('Username is required!'),
     password: Yup.string().required('Password is required!')
@@ -35,7 +38,7 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
   render() {
     const initialValues: Credentials = { username: '', password: '' };
     return (
-      <Formik validationSchema={ this.schema } initialValues={ initialValues } onSubmit={ this.onLogin }>
+      <Formik validationSchema={ this.schema } initialValues={ initialValues } onSubmit={ this.props.onSuccess }>
         {
           ({ errors, handleChange, handleSubmit }: FormikProps<Credentials>) => (
             <Form className="form" noValidate onSubmit={ handleSubmit }>
@@ -46,6 +49,9 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                 </Card.Header>
                 <Card.Body>
                   <p className="card-description text-center">Or Go With</p>
+                  <Alert variant="danger" hidden={ !this.props.alert } { ...this.alertStyles }>
+                    { this.props.alert }
+                  </Alert>
                   <span className="bmd-form-group">
                     <InputGroup>
                       <InputGroup.Prepend>
@@ -91,24 +97,5 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
         }
       </Formik>
     );
-  }
-
-  onChange = ({ currentTarget }: React.FormEvent<any>) => {
-    const credentials: Credentials = { ...this.state.credentials, [currentTarget.name]: currentTarget.value };
-    this.setState({ ...this.state, credentials });
-  }
-
-  onLogin = (_values: Credentials, _formikActions: FormikActions<Credentials>) => {
-    this.validate(this.state.credentials);
-  }
-
-  validate({ username, password }: Credentials) {
-    if (!username) {
-      this.setState({ alerts: { username: 'Username is required!' } });
-    } else if (!password) {
-      this.setState({ alerts: { password: 'Password is required!' } });
-    } else {
-      return true;
-    }
   }
 }
