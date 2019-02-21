@@ -356,7 +356,8 @@ create table query_meta.operation_tags(
     id serial primary key not null,
     operation_id integer not null references query_meta.theme(id) on update cascade on delete restrict,
     tags text not null,
-    created_on timestamp not null default now()
+    created_on timestamp not null default now(),
+	updated_on timestamp
 );
 
 drop index query_meta.tags_search_index;
@@ -380,6 +381,7 @@ create table query_meta.operation_steps(
     description text,
     query text,
     created_on timestamp not null default now(),
+	updated_on timestamp,
     UNIQUE(operation_id,step_id)
 
 );
@@ -404,11 +406,21 @@ create table query_meta.reviews(
     reviewer integer not null references user_mgnt.auth_user(id),
     rating smallint not null default 0 check (((rating < 6) AND (rating > 0))),
     comment text,
-    create_on timestamp default now()
-
+    created_on timestamp not null default now(),
+	updated_on timestamp
 );
 
 comment on table query_meta.reviews is 'Contains the reviews on operations that has been added by other users';
 
+CREATE OR REPLACE FUNCTION updated_on_column_updater()   
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_on = now();
+    RETURN NEW;   
+END;
+$$ language 'plpgsql';
 
 
+CREATE TRIGGER update_reviews_modtime BEFORE UPDATE ON query_meta.reviews FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+CREATE TRIGGER update_reviews_modtime BEFORE UPDATE ON query_meta.operation_steps FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+CREATE TRIGGER update_reviews_modtime BEFORE UPDATE ON query_meta.operation_tags FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();

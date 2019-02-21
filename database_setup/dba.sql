@@ -1,4 +1,17 @@
 
+-- Drop any connections that exist
+
+SELECT 
+    pg_terminate_backend(pid) 
+FROM 
+    pg_stat_activity 
+WHERE 
+    -- don't kill my own connection!
+    pid <> pg_backend_pid()
+    -- don't kill the connections to other databases
+    AND datname = 'analyst_ui'
+    ;
+
 drop database analyst_ui;
 create database analyst_ui;
 
@@ -18,8 +31,6 @@ SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-
-
 
 create schema query_meta;
 create schema table_meta;

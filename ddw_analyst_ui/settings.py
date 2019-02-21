@@ -81,7 +81,23 @@ DATABASES = {
         'USER': 'postgres',
         'HOST': 'db',
         'PORT': 5432,
-    }
+        'OPTIONS': {
+            'options': '-c search_path=user_mgnt,query_meta,repo,table_meta'
+        },
+    },
+
+    # This connection is used only for migrating django.contrib.auth schemas, if there is any other 
+    # downloaded app that requires its own tables like rest_framework auth, consider adding it to this or separate schema
+    'auth_migration_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': '',
+        'NAME': 'analyst_ui',
+        'SCHEMA_NAME': 'user_mgnt',
+        'USER': 'postgres',
+        'OPTIONS': {
+            'options': '-c search_path=user_mgnt'
+        },
+    },
 }
 
 

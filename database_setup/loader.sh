@@ -1,9 +1,10 @@
 
 #/bin/bash
 
+
+#Only run this script after you have initialzed migration for other apps django apps
+
 psql -d postgres <<HERE
-\i dba.sql
-\i user_schema_django.sql
 \i database_schema.sql
 \i table1_subset.sql
 \i table2a_subset.sql
