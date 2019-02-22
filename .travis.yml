@@ -8,7 +8,7 @@ node_js:
 before_install:
 - npm i -g npm
 - docker volume create --name=metadata
-- docker-compose build
+- docker-compose up -d --build
 install:
 - npm install --ignore-scripts
 - npm install -g codecov
