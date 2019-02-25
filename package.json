@@ -14,7 +14,9 @@
     "docker.collectstatic": "docker-compose run web python manage.py collectstatic --no-input",
     "emit": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'src/**/*.tsx' && tsc --noEmit",
-    "coverage": "NODE_ENV=test jest -u && codecov && docker-compose run web python manage.py test"
+    "coverage": "NODE_ENV=test jest -u && codecov && docker-compose run web python manage.py test",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "repository": {
     "type": "git",
@@ -50,6 +52,7 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^2.1.0",
+    "cypress": "^3.1.5",
     "grunt": "^1.0.3",
     "grunt-check-dependencies": "^1.0.0",
     "grunt-contrib-clean": "^2.0.0",
