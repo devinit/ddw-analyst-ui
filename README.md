@@ -39,13 +39,20 @@ The new and improved DDW Analyst UI interface
 
 To create a test development DB,
 
-2. Run script `./dev-db-setup.sh`
-3. A database **analyst_ui** will be created in your local postgre instance.
-4. Access sample database through default postgre user using
+1. Run script `./dev-db-setup.sh`
+2. A database **analyst_ui** will be created in your local postgre instance.
+3. Access sample database through default postgre user using
 
     `psql -d postgres`
 
     `\c analyst_ui`
 
-5. For additional users, edit script **analyst_ui_users.sql** adding the username that you need
-6. Run script to grant permissions to all the schemas and tables of analyst_ui
+4. For additional users, edit script **analyst_ui_users.sql** adding the username that you need
+5. Run script to grant permissions to all the schemas and tables of analyst_ui
+
+### End-To-End Testing
+
+This is set up to run with [Cypress](https://www.cypress.io/), and only locally at the moment.
+
+1. Setup test users as specified in the `frontend/cypress/fixtures/users.json` file, with the password as the email
+2. Run `npm run cy:run` for headless tests and `npm run cy:open` for interactive tests in a browser.

@@ -36,7 +36,7 @@ describe('The Login Page', () => {
 
         if (admin) {
           cy.get('input[name=username]').type(admin.username);
-          cy.get('input[name=password]').type('password');
+          cy.get('input[name=password]').type(admin.email);
           cy.get('button[type=submit]').click();
           cy.url().should('not.include', '/login');
         }
