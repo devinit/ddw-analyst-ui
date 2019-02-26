@@ -50,7 +50,7 @@ module.exports = function(grunt) {
         command: 'npm run collectstatic'
       },
       dockercollectstatic: {
-        command: 'npm run docker.collectstatic'
+        command: 'npm run docker:collectstatic'
       }
     },
   });
