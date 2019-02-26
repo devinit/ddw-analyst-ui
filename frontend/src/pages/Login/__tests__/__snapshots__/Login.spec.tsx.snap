@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the loading indicator while loading 1`] = `
+<div
+  className="wrapper wrapper-full-page"
+>
+  <div
+    className="page-header login-page header-filter"
+    data-css-cyv5ek=""
+    filter-color="red"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="ml-auto mr-auto col-lg-4 col-md-6 col-sm-8"
+        >
+          <div
+            data-css-1yv2jt6=""
+          >
+            Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders the login form when loading is false 1`] = `
+<div
+  className="wrapper wrapper-full-page"
+>
+  <div
+    className="page-header login-page header-filter"
+    data-css-cyv5ek=""
+    filter-color="red"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="ml-auto mr-auto col-lg-4 col-md-6 col-sm-8"
+        >
+          <div
+            data-css-1yv2jt6=""
+          >
+            Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

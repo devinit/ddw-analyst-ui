@@ -6,13 +6,27 @@
   "scripts": {
     "dev": "grunt",
     "build": "grunt release",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest -u --coverage && python manage.py test",
+    "test:docker": "jest -u && docker-compose run web python manage.py test",
+    "collectstatic": "python manage.py collectstatic --no-input",
+    "docker:dev": "grunt 'docker dev'",
     "docker:build": "docker-compose up --build",
-    "docker:collectstatic": "docker-compose run web python manage.py collectstatic --no-input"
+    "docker:collectstatic": "docker-compose run web python manage.py collectstatic --no-input",
+    "emit": "tsc",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'src/**/*.tsx' && tsc --noEmit",
+    "coverage": "NODE_ENV=test jest -u --coverage && codecov && docker-compose run web python manage.py test",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/devinit/ddw-analyst-ui.git"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm test"
+    }
   },
   "keywords": [],
   "author": "",
@@ -25,25 +39,38 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
+    "@types/classnames": "^2.2.7",
+    "@types/jest": "^24.0.6",
+    "@types/js-base64": "^2.3.1",
+    "@types/localforage": "0.0.34",
     "@types/react": "^16.8.3",
+    "@types/react-bootstrap": "^0.32.17",
     "@types/react-dom": "^16.8.1",
     "@types/react-router-dom": "^4.3.1",
+    "@types/react-test-renderer": "^16.8.1",
+    "@types/yup": "^0.26.9",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^2.1.0",
+    "cypress": "^3.1.5",
     "grunt": "^1.0.3",
     "grunt-check-dependencies": "^1.0.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-exec": "^3.0.0",
     "grunt-webpack": "^3.1.3",
+    "husky": "^1.3.1",
+    "jest": "^24.0.0",
+    "jest-dom": "^3.1.2",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "postcss-loader": "^3.0.0",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
+    "react-test-renderer": "^16.8.2",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
+    "ts-jest": "^23.10.5",
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.1",
     "tslint-eslint-rules": "^5.4.0",
@@ -56,6 +83,16 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.9.2",
-    "react-router-dom": "^4.3.1"
+    "axios": "^0.18.0",
+    "classnames": "^2.2.6",
+    "formik": "^1.5.1",
+    "glamor": "^2.20.40",
+    "glamorous": "^5.0.0",
+    "js-base64": "^2.5.1",
+    "localforage": "^1.7.3",
+    "react-bootstrap": "^1.0.0-beta.5",
+    "react-router-dom": "^4.3.1",
+    "react-testing-library": "^6.0.0",
+    "yup": "^0.26.10"
   }
 }

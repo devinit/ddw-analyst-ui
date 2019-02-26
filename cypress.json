@@ -1,0 +1,9 @@
+{
+  "baseUrl": "http://127.0.0.1:8000",
+  "fixturesFolder": "frontend/cypress/fixtures",
+  "integrationFolder": "frontend/cypress/integration",
+  "pluginsFile": "frontend/cypress/plugins/index.js",
+  "screenshotsFolder": "frontend/cypress/screenshots",
+  "videosFolder": "frontend/cypress/videos",
+  "supportFile": "frontend/cypress/support/index.js"
+}

@@ -38,7 +38,29 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'frontend',
+    'core',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'social_django',
+    'rest_social_auth',
+    'knox',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+
+SOCIAL_AUTH_RAISE_EXCEPTIONS = True
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '32052845450-1mv756tj0in5kd44kjhfhc8d8938p620.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'O7EoDtuKmWaratccVUHm_0W4'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_FIELDS = ['email', 'username']  # optional
+
+AUTHENTICATION_BACKENDS = (
+    # 'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    # 'rest_framework_social_oauth2.backends.DjangoOAuth2',
+    'django.contrib.auth.backends.ModelBackend',)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'HOST': 'db',
+        'HOST': '127.0.0.1',
         'PORT': 5432,
     }
 }

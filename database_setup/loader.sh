@@ -1,7 +1,7 @@
 
 #/bin/bash
 
-psql -d postgres <<HERE
+psql -d postgres --username=postgres <<HERE
 \i dba.sql
 \i user_schema_django.sql
 \i database_schema.sql
@@ -10,4 +10,3 @@ psql -d postgres <<HERE
 \i table2b_subset.sql
 \i table5_subset.sql
 HERE
-
