@@ -45,10 +45,10 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
               <Card className={ classNames('card-login', { 'card-hidden': !this.props.showForm }) }>
                 <Card.Header className="card-header-rose text-center">
                   <Card.Title>Login</Card.Title>
-                  <SocialLine google/>
+                  <SocialLine/>
                 </Card.Header>
                 <Card.Body>
-                  <p className="card-description text-center">Or Go With</p>
+                  <p className="card-description text-center d-none">Or Go With</p>
                   <Alert variant="danger" hidden={ !this.props.alert } { ...this.alertStyles }>
                     { this.props.alert }
                   </Alert>
