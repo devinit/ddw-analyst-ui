@@ -110,5 +110,6 @@ frontend/static/frontend/js
 frontend/static/frontend/css
 tsc/
 frontend/cypress/videos
+coverage/
 
 .vscode
