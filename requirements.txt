@@ -5,3 +5,4 @@ psycopg2-binary==2.7.7
 pytz==2018.9
 djangorestframework>=3.9.1
 django-rest-knox>=3.6.0
+rest-social-oauth>=2.0.2
