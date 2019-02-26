@@ -41,7 +41,7 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
       <Formik validationSchema={ this.schema } initialValues={ initialValues } onSubmit={ this.props.onSuccess }>
         {
           ({ errors, handleChange, handleSubmit }: FormikProps<Credentials>) => (
-            <Form className="form" noValidate onSubmit={ handleSubmit }>
+            <Form className="form" noValidate onSubmit={ handleSubmit } data-testid="login-form">
               <Card className={ classNames('card-login', { 'card-hidden': !this.props.showForm }) }>
                 <Card.Header className="card-header-rose text-center">
                   <Card.Title>Login</Card.Title>
