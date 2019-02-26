@@ -1,6 +1,5 @@
 import { FormikActions } from 'formik/dist/types';
 import { css } from 'glamor';
-import { Base64 } from 'js-base64';
 import * as localForage from 'localforage';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
@@ -8,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Credentials, LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
 import { api, localForageKeys, verifyAuthentication } from '../../utils';
+import axios, { AxiosResponse } from 'axios';
 
 interface LoginState {
   showForm: boolean;
@@ -60,23 +60,21 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     return <LoginForm showForm={ this.state.showForm } onSuccess={ this.onLogin } alert={ this.state.alert }/>;
   }
 
-  private onLogin = (values: Credentials, _formikActions: FormikActions<Credentials>) => {
-    window.fetch(api.routes.LOGIN, {
-      method: 'POST',
-      credentials: 'omit',
-      redirect: 'follow',
+  private onLogin = ({ username, password }: Credentials, _formikActions: FormikActions<Credentials>) => {
+    axios.request({
+      url: api.routes.LOGIN,
+      method: 'post',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${Base64.encode(`${values.username}:${values.password}`)}`
-      }
+        'Content-Type': 'application/json'
+      },
+      auth: { username, password }
     })
-    .then(response => response.json())
-    .then((response: { token?: string, detail?: string }) => {
-      if (response.token) {
-        localForage.setItem(localForageKeys.API_KEY, response.token);
+    .then((response: AxiosResponse<{ token?: string, detail?: string }>) => {
+      if (response.data.token) {
+        localForage.setItem(localForageKeys.API_KEY, response.data.token);
         this.props.history.push('/');
-      } else if (response.detail) {
-        this.setState({ alert: response.detail });
+      } else if (response.data.detail) {
+        this.setState({ alert: response.data.detail });
       }
     })
     .catch(console.log); // tslint:disable-line
