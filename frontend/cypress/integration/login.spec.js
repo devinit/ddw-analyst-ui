@@ -1,3 +1,4 @@
+/// <reference types="Cypress"/>
 
 describe('The Login Page', () => {
   it('should be redirected to when a user is not logged in', () => {
@@ -30,10 +31,16 @@ describe('The Login Page', () => {
     it('successfully performs a login action', () => {
       cy.visit('/');
       cy.wait(200);
-      cy.get('input[name=username]').type('admin');
-      cy.get('input[name=password]').type('3dw1NKsl?.');
-      cy.get('button[type=submit]').click();
-      cy.url().should('not.include', '/login');
+      cy.fixture('users').then(users => {
+        const admin = users.find(user => user.role === 'admin');
+
+        if (admin) {
+          cy.get('input[name=username]').type(admin.username);
+          cy.get('input[name=password]').type('password');
+          cy.get('button[type=submit]').click();
+          cy.url().should('not.include', '/login');
+        }
+      });
     });
   });
 });
