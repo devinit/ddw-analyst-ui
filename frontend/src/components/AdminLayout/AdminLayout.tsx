@@ -1,38 +1,39 @@
 import * as React from 'react';
-import { verifyAuthentication } from '../../utils';
-import { RouteComponentProps } from 'react-router-dom';
+import { Sidebar } from './Sidebar';
 
-interface AdminLayoutProps extends RouteComponentProps<{}> {
+interface AdminLayoutProps {
   loading: boolean;
 }
 
-interface AdminLayoutState {
-  loading: boolean;
-}
-
-export class AdminLayout extends React.Component<AdminLayoutProps, AdminLayoutState> {
+export class AdminLayout extends React.Component<AdminLayoutProps> {
   static defaultProps: Partial<AdminLayoutProps> = {
     loading: true
   };
-  state: AdminLayoutState = {
-    loading: this.props.loading
-  };
 
   render() {
-    if (this.state.loading) {
+    if (this.props.loading) {
       return <div>Loading ...</div>;
     }
 
     return (
-      <div>
-        Main Layout
+      <div className="wrapper">
+        { this.renderContent(Sidebar) }
+        <div className="main-panel">
+          <div className="content">
+            <div className="container-fluid">
+              Main Layout
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
-  componentDidMount() {
-    verifyAuthentication()
-      .then(() => this.setState({ loading: false }))
-      .catch(() => this.props.history.push('/login'));
+  private renderContent(type: typeof Sidebar) {
+    return React.Children.map(this.props.children, child => {
+      if (React.isValidElement(child) && child.type === type) {
+        return child;
+      }
+    });
   }
 }
