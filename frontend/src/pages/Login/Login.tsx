@@ -1,5 +1,6 @@
 import { FormikActions } from 'formik/dist/types';
 import { css } from 'glamor';
+import { Base64 } from 'js-base64';
 import * as localForage from 'localforage';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
@@ -7,7 +8,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Credentials, LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
 import { api, localForageKeys, verifyAuthentication } from '../../utils';
-import axios, { AxiosResponse } from 'axios';
 
 interface LoginState {
   showForm: boolean;
@@ -61,20 +61,22 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
   }
 
   private onLogin = ({ username, password }: Credentials, _formikActions: FormikActions<Credentials>) => {
-    axios.request({
-      url: api.routes.LOGIN,
-      method: 'post',
+    window.fetch(api.routes.LOGIN, {
+      method: 'POST',
+      credentials: 'omit',
+      redirect: 'follow',
       headers: {
-        'Content-Type': 'application/json'
-      },
-      auth: { username, password }
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${Base64.encode(`${username}:${password}`)}`
+      }
     })
-    .then((response: AxiosResponse<{ token?: string, detail?: string }>) => {
-      if (response.data.token) {
-        localForage.setItem(localForageKeys.API_KEY, response.data.token);
+    .then(response => response.json())
+    .then((response: { token?: string, detail?: string }) => {
+      if (response.token) {
+        localForage.setItem(localForageKeys.API_KEY, response.token);
         this.props.history.push('/');
-      } else if (response.data.detail) {
-        this.setState({ alert: response.data.detail });
+      } else if (response.detail) {
+        this.setState({ alert: response.detail });
       }
     })
     .catch(console.log); // tslint:disable-line
