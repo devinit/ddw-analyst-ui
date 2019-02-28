@@ -31,31 +31,114 @@ exports[`renders the loading indicator while loading 1`] = `
 `;
 
 exports[`renders the login form when loading is false 1`] = `
-<div
-  className="wrapper wrapper-full-page"
+<form
+  class="form"
+  data-testid="login-form"
+  novalidate=""
 >
   <div
-    className="page-header login-page header-filter"
-    data-css-cyv5ek=""
-    filter-color="red"
+    class="card-login card"
   >
     <div
-      className="container"
+      class="card-header-rose text-center card-header"
     >
       <div
-        className="row"
+        class="card-title h5"
+      >
+        Login
+      </div>
+      <div
+        class="social-line"
+      />
+    </div>
+    <div
+      class="card-body"
+    >
+      <p
+        class="card-description text-center d-none"
+      >
+        Or Go With
+      </p>
+      <div
+        class="fade alert alert-danger show"
+        data-css-1ji61oe=""
+        hidden=""
+        role="alert"
+      />
+      <span
+        class="bmd-form-group"
       >
         <div
-          className="ml-auto mr-auto col-lg-4 col-md-6 col-sm-8"
+          class="input-group"
         >
           <div
-            data-css-1yv2jt6=""
+            class="input-group-prepend"
           >
-            Loading...
+            <span
+              class="input-group-text"
+            >
+              <i
+                class="material-icons"
+              >
+                email
+              </i>
+            </span>
           </div>
+          <input
+            class="form-control"
+            name="username"
+            placeholder="Email..."
+            required=""
+            type="email"
+          />
+          <div
+            class="invalid-feedback"
+            data-css-1ml2z9r=""
+          />
         </div>
-      </div>
+      </span>
+      <span
+        class="bmd-form-group"
+      >
+        <div
+          class="input-group"
+        >
+          <div
+            class="input-group-prepend"
+          >
+            <span
+              class="input-group-text"
+            >
+              <i
+                class="material-icons"
+              >
+                lock_outline
+              </i>
+            </span>
+          </div>
+          <input
+            class="form-control"
+            name="password"
+            placeholder="Password..."
+            type="password"
+          />
+          <div
+            class="invalid-feedback"
+            data-css-1ml2z9r=""
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      class="justify-content-center card-footer"
+    >
+      <button
+        class="btn-rose btn btn-link btn-lg"
+        type="submit"
+      >
+        Login
+      </button>
     </div>
   </div>
-</div>
+</form>
 `;
