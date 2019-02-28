@@ -9,7 +9,6 @@ import { Login } from '../Login';
 import 'jest-dom/extend-expect';
 
 afterEach(cleanup);
-jest.mock('axios');
 
 test('renders the loading indicator while loading', () => {
   const RouterContainer = withRouter(Login);
