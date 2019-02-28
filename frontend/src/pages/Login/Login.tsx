@@ -1,13 +1,12 @@
 import { FormikActions } from 'formik/dist/types';
 import { css } from 'glamor';
 import { Base64 } from 'js-base64';
-import * as localForage from 'localforage';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { Credentials, LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
-import { api, localForageKeys, verifyAuthentication } from '../../utils';
+import { api, getAPIToken, setAPIToken } from '../../utils';
 
 interface LoginState {
   showForm: boolean;
@@ -43,7 +42,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
   }
 
   componentDidMount() {
-    verifyAuthentication()
+    getAPIToken()
       .then(() => this.props.history.push('/'))
       .catch(() => {
         setTimeout(() => {
@@ -73,7 +72,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     .then(response => response.json())
     .then((response: { token?: string, detail?: string }) => {
       if (response.token) {
-        localForage.setItem(localForageKeys.API_KEY, response.token);
+        setAPIToken(response.token);
         this.props.history.push('/');
       } else if (response.detail) {
         this.setState({ alert: response.detail });
