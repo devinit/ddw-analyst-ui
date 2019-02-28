@@ -4,7 +4,7 @@
 
 #Only run this script after you have initialzed migration for other apps django apps
 
-psql -d postgres <<HERE
+psql -d analyst_ui <<HERE
 \i database_schema.sql
 \i table1_subset.sql
 \i table2a_subset.sql

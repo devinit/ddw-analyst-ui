@@ -1,28 +1,107 @@
 
+CREATE OR REPLACE FUNCTION updated_on_column_updater()   
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_on = now();
+    RETURN NEW;   
+END;
+$$ language 'plpgsql';
+
 drop table if exists table_meta.source;
+
 create table table_meta.source
 (
     id serial not null primary key,
+	indicator varchar not null,
+	indicator_acronym varchar,
     source varchar not null,
     source_acronym varchar,
     source_url text,
-    updates_available json not null default '{}',
+	download_path text,
+    last_updated_on timestamp not null,
     storage_type varchar not null check (storage_type in ('schema','table')),
-    table_name_mapping json not null default '{}',
-    created_on timestamp not null default now()
+    active_mirror_name varchar not null,
+	description text,
+    created_on timestamp not null default now(),
+	updated_on timestamp
 
 );
 
+CREATE TRIGGER source_modtime BEFORE UPDATE ON table_meta.source FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+
 COMMENT on table table_meta.source is 'Holds meta data information on the different datasources that make up the mirror tables of the warehouse';
+
 COMMENT ON column table_meta.source.id is 'Auto incremented primary key for table_meta.source';
+COMMENT on column table_meta.source.indicator is 'The name of the indicator  as known within DI';
+COMMENT on column table_meta.source.indicator_acronym is 'The acronym for indicator as know within DI';
 COMMENT on column table_meta.source.source is 'The name of the source for the data source bieng documented. E.g DAC CRS table';
 COMMENt on column table_meta.source.source_acronym is 'The acronym for the name given in source if any';
 comment on column table_meta.source.source_url is 'If this data source has been downloaded from a URL, this is the link to the dataset at the source';
-comment on column table_meta.source.updates_available is 'A json map of date of update and table hosting the update';
+COMMENT on column table_meta.source.last_updated_on is 'The last time this dataset was updated as per official source';
 comment on column table_meta.source.storage_type is 'Indication of whether its been stored in a table under a generic schema or in a schema of its own';
-comment on column table_meta.source.table_name_mapping is 'A map between name tranformation between di and the original source';
+comment on column table_meta.source.active_mirror_name is 'Action location where this data is stored in where house';
 comment on column table_meta.source.created_on is 'Auto generated date on which this entry was made';
+comment on column table_meta.source.updated_on is 'Auto generated date on which this table was last updated';
 
+
+insert into table_meta.source 
+(indicator,indicator_acronym,source,source_acronym,source_url,download_path,storage_type,active_mirror_name,description,last_updated_on)
+values
+('Common Reporting Standard','crs','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','crs_current','Data about flows of resources',now()),
+('Official Development Assistance 1','dac1','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac1_current','Data about flows of resources',now()),
+('Official Development Assistance2','dac2','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac2_current','Data about flows of resources',now()),
+('Official Development Assistance 2b','dac2b','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac2b_current','Data about flows of resources',now()),
+('Official Development Assistance 5','dac5','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac5_current','Data about flows of resources',now()),
+('World Bank Indicators','WDI','World Bank Group','WBG','http://wdi.worldbank.org','http://wdi.worldbank.org/tables','schema','wdi','Data about flows of resources',now());
+
+
+drop table if exists table_meta.update_history;
+
+create table table_meta.update_history
+(
+	id serial primary key not null,
+	source_id integer not null references table_meta.source (id) on update cascade on delete restrict,
+	history_table varchar not null,
+	is_major_release boolean not null default True,
+	released_on timestamp not null,
+	release_description text not null, 
+	invalidated_on timestamp not null,
+	invalidation_description text not null,
+	created_on timestamp not null default now(),
+	updated_on timestamp
+
+);
+
+CREATE TRIGGER update_history_modtime BEFORE UPDATE ON table_meta.update_history FOR EACH ROW EXECUTE PROCEDURE updated_on_column_updater();
+
+
+
+insert into table_meta.update_history (source_id,history_table,released_on,release_description,invalidated_on,invalidation_description)
+values
+(1,'crs_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(1,'crs_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017')
+(2,'dac1_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(2,'dac1_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017')
+(3,'dac2_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(3,'dac2_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017')
+(3,'dac2b_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(3,'dac2b_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017')
+(4,'dac2b_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(4,'dac2b_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017');
+
+create table table_meta.source_column_map
+(
+	id serial not null primary key,
+	source_id integer references table_meta.source(id) on update cascade on delete restrict,
+	name varchar not null,
+	source_name varchar not null,
+	created_on timestamp not null default now(),
+	updated_on timestamp,
+	constraint source_id_name_unique UNIQUE(source_id,name)
+);
+
+
+alter table table_meta.source add column download_path text;
 
 drop table if exists repo.crs_current;
 create table repo.crs_current(
@@ -282,12 +361,16 @@ create table query_meta.sector
     id serial primary key not null,
     name varchar(20) not null,
     description text,
-    createdOn timestamp not null default now()
+    createdOn timestamp not null default now(),
+	updated_on timestamp
 );
+
+CREATE TRIGGER sector_modtime BEFORE UPDATE ON query_meta.sector FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
 
 comment on table query_meta.sector is 'A list of sectors that DI analysts work around';
 comment on column query_meta.sector.id is 'Auto generated pk for sector table';
 comment on column query_meta.sector.name is 'Name of the sector that is being';
+comment on column query_meta.sector.updated_on is 'Auto generated date on which this table was last updated';
 
 --- Test data
 insert into query_meta.sector(name,description) VALUES
@@ -302,14 +385,18 @@ create table query_meta.theme(
     id serial primary key not null, 
     sector_id integer not null references query_meta.sector(id) on update cascade on delete restrict,
     name varchar(50) not null,
-    created_on timestamp not null default now()
+    created_on timestamp not null default now(),
+	updated_on timestamp
 );
+
+CREATE TRIGGER theme_modtime BEFORE UPDATE ON query_meta.theme FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
 
 comment on table query_meta.theme is 'All queries that are saved by the analyst must have a theme';
 comment on column query_meta.theme.id is 'Auto generated identifier for the column';
 comment on column query_meta.theme.sector_id is 'A reference to the sector that the theme targets';
 comment on column query_meta.theme.name is 'The name of the theme';
 comment on column query_meta.theme.created_on is 'The day on which the theme was created';
+comment on column query_meta.theme.updated_on is 'Auto generated date on which this table was last updated';
 
 
 -- Test data
@@ -334,6 +421,9 @@ create table query_meta.operation(
     updated_on timestamp
 
 );
+
+CREATE TRIGGER operation_modtime BEFORE UPDATE ON query_meta.operation FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+
 
 comment on table query_meta.operation is 'The operation that has been performed by the user';
 comment on column query_meta.operation.id is 'Auto generated id of for the operation';
@@ -363,6 +453,8 @@ create table query_meta.operation_tags(
 drop index query_meta.tags_search_index;
 create index query_tags_search_index on query_meta.operation_tags(lower(tags));
 
+CREATE TRIGGER update_op_tags_modtime BEFORE UPDATE ON query_meta.operation_tags FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+
 comment on table query_meta.operation_tags is 'Holds list of tags searchable to link to list of operations performed by other users';
 
 
@@ -385,6 +477,8 @@ create table query_meta.operation_steps(
     UNIQUE(operation_id,step_id)
 
 );
+
+CREATE TRIGGER update_op_steps_modtime BEFORE UPDATE ON query_meta.operation_steps FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
 
 comment on table query_meta.operation_steps is 'The steps that have been taken to come up with a final operation';
 comment on column query_meta.operation_steps.id is 'Auto generated ID for this table';
@@ -410,17 +504,6 @@ create table query_meta.reviews(
 	updated_on timestamp
 );
 
-comment on table query_meta.reviews is 'Contains the reviews on operations that has been added by other users';
-
-CREATE OR REPLACE FUNCTION updated_on_column_updater()   
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_on = now();
-    RETURN NEW;   
-END;
-$$ language 'plpgsql';
-
-
 CREATE TRIGGER update_reviews_modtime BEFORE UPDATE ON query_meta.reviews FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
-CREATE TRIGGER update_reviews_modtime BEFORE UPDATE ON query_meta.operation_steps FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
-CREATE TRIGGER update_reviews_modtime BEFORE UPDATE ON query_meta.operation_tags FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+
+comment on table query_meta.reviews is 'Contains the reviews on operations that has been added by other users';
