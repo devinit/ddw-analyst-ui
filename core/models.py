@@ -7,12 +7,26 @@ from django.contrib.auth.models import User
 from core.models_template import *
 
 
+class Sector(models.Model):
+    name = models.CharField(max_length=20)
+    description = models.TextField(blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+
+class Theme(models.Model):
+    sector = models.ForeignKey(Sector, models.SET_NULL)
+    name = models.CharField(max_length=50)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+
 class Operation(models.Model):
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User, models.SET_NULL)
     operation_query = models.TextField()
-    theme = models.ForeignKey('Theme', models.SET_NULL)
+    theme = models.ForeignKey(Theme, models.SET_NULL)
     sample_output_path = models.TextField(blank=True, null=True)
     is_draft = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -37,7 +51,7 @@ class Tag(models.Model):
 
 
 class OperationTags(models.Model):
-    operation = models.ForeignKey('Theme', models.SET_NULL)
+    operation = models.ForeignKey(Theme, models.SET_NULL)
     tags = models.ManyToManyField(Tag, blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -48,13 +62,6 @@ class Reviews(models.Model):
     reviewer = models.ForeignKey(User, models.SET_NULL)
     rating = models.SmallIntegerField()
     comment = models.TextField(blank=True, null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
-
-
-class Sector(models.Model):
-    name = models.CharField(max_length=20)
-    description = models.TextField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
 
@@ -83,13 +90,6 @@ class SourceColumnMap(models.Model):
 
     class Meta:
         unique_together = (('source', 'name'),)
-
-
-class Theme(models.Model):
-    sector = models.ForeignKey(Sector, models.SET_NULL)
-    name = models.CharField(max_length=50)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
 
 
 class UpdateHistory(models.Model):
