@@ -82,7 +82,7 @@ DATABASES = {
         'HOST': 'db',
         'PORT': 5432,
         'OPTIONS': {
-            'options': '-c search_path=user_mgnt,query_meta,repo,table_meta'
+            'options': '-c search_path=query_meta,repo,table_meta'
         },
     },
 
@@ -96,6 +96,16 @@ DATABASES = {
         'USER': 'postgres',
         'OPTIONS': {
             'options': '-c search_path=user_mgnt'
+        },
+    },
+
+    'inspect_db_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': '',
+        'NAME': 'analyst_ui',
+        'USER': 'postgres',
+        'OPTIONS': {
+            'options': '-c search_path=query_meta,repo,table_meta'
         },
     },
 }

@@ -191,11 +191,10 @@ class Dac5Current(models.Model):
 
 
 
-
 class Operation(models.Model):
     name = models.TextField()
     description = models.TextField()
-    user = models.ForeignKey(User, models.DO_NOTHING)
+    user = models.ForeignKey('AuthUser', models.DO_NOTHING)
     operation_query = models.TextField()
     theme = models.ForeignKey('Theme', models.DO_NOTHING)
     sample_output_path = models.TextField(blank=True, null=True)
@@ -209,12 +208,13 @@ class Operation(models.Model):
 
 
 class OperationSteps(models.Model):
-    operation = models.ForeignKey(Operation, on_delete=models.PROTECT)
+    operation = models.ForeignKey(Operation, models.DO_NOTHING)
     step_id = models.SmallIntegerField()
     name = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
     query = models.TextField(blank=True, null=True)
     created_on = models.DateTimeField()
+    updated_on = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -223,21 +223,34 @@ class OperationSteps(models.Model):
 
 
 class OperationTags(models.Model):
-    operation = models.ForeignKey('Theme', on_delete=models.PROTECT)
+    operation = models.ForeignKey('Theme', models.DO_NOTHING)
     tags = models.TextField()
     created_on = models.DateTimeField()
+    updated_on = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'operation_tags'
 
 
+class Reviews(models.Model):
+    operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
+    reviewer = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='reviewer')
+    rating = models.SmallIntegerField()
+    comment = models.TextField(blank=True, null=True)
+    created_on = models.DateTimeField()
+    updated_on = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'reviews'
 
 
 class Sector(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
     createdon = models.DateTimeField()
+    updated_on = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -245,36 +258,59 @@ class Sector(models.Model):
 
 
 class Source(models.Model):
+    indicator = models.TextField()
+    indicator_acronym = models.CharField(max_length=10, blank=True, null=True)
     source = models.TextField()
-    source_acronym = models.TextField( blank=True, null=True)
+    source_acronym = models.CharField(max_length=10, blank=True, null=True)
     source_url = models.TextField(blank=True, null=True)
-    updates_available = models.TextField()  # This field type is a guess. This is  a json data type
+    download_path = models.TextField(blank=True, null=True)
+    last_updated_on = models.DateTimeField()
     storage_type = models.TextField()
-    table_name_mapping = models.TextField()  # This field type is a guess. This is a json datatype
+    active_mirror_name = models.TextField()
+    description = models.TextField(blank=True, null=True)
     created_on = models.DateTimeField()
+    updated_on = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'source'
 
 
+class SourceColumnMap(models.Model):
+    source = models.ForeignKey(Source, models.DO_NOTHING, blank=True, null=True)
+    name = models.TextField()
+    source_name = models.TextField()
+    created_on = models.DateTimeField()
+    updated_on = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'source_column_map'
+        unique_together = (('source', 'name'),)
+
+
 class Theme(models.Model):
-    sector = models.ForeignKey(Sector, on_delete=models.PROTECT)
+    sector = models.ForeignKey(Sector, models.DO_NOTHING)
     name = models.CharField(max_length=50)
     created_on = models.DateTimeField()
+    updated_on = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'theme'
 
 
-class Reviews(models.Model):
-    operation = models.ForeignKey(Operation, models.PROTECT, blank=True, null=True)
-    reviewer = models.ForeignKey(User, on_delete=models.PROTECT, db_column='reviewer')
-    rating = models.SmallIntegerField()
-    comment = models.TextField(blank=True, null=True)
-    create_on = models.DateTimeField(blank=True, null=True)
+class UpdateHistory(models.Model):
+    source = models.ForeignKey(Source, models.DO_NOTHING)
+    history_table = models.TextField()
+    is_major_release = models.BooleanField()
+    released_on = models.DateTimeField()
+    release_description = models.TextField()
+    invalidated_on = models.DateTimeField()
+    invalidation_description = models.TextField()
+    created_on = models.DateTimeField()
+    updated_on = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'reviews'
+        db_table = 'update_history'
