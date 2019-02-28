@@ -1,5 +1,5 @@
 #/bin/bash
 
-psql -d postgres <<HERE
+psql -d postgres --username=postgres <<HERE
 \i dba.sql
 HERE

@@ -189,12 +189,10 @@ class Dac5Current(models.Model):
         db_table = 'dac5_current'
 
 
-
-
 class Operation(models.Model):
     name = models.TextField()
     description = models.TextField()
-    user = models.ForeignKey('AuthUser', models.DO_NOTHING)
+    user = models.ForeignKey(User, models.DO_NOTHING)
     operation_query = models.TextField()
     theme = models.ForeignKey('Theme', models.DO_NOTHING)
     sample_output_path = models.TextField(blank=True, null=True)
@@ -235,7 +233,7 @@ class OperationTags(models.Model):
 
 class Reviews(models.Model):
     operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
-    reviewer = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='reviewer')
+    reviewer = models.ForeignKey(User, models.DO_NOTHING, db_column='reviewer')
     rating = models.SmallIntegerField()
     comment = models.TextField(blank=True, null=True)
     created_on = models.DateTimeField()
