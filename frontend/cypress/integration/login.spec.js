@@ -28,7 +28,7 @@ describe('The Login Page', () => {
       cy.get('.alert').contains('Invalid username/password');
     });
 
-    it('successfully performs a login action', () => {
+    it('successfully performs a login action and logs out', () => {
       cy.visit('/');
       cy.wait(200);
       cy.fixture('users').then(users => {
@@ -39,6 +39,10 @@ describe('The Login Page', () => {
           cy.get('input[name=password]').type(admin.email);
           cy.get('button[type=submit]').click();
           cy.url().should('not.include', '/login');
+
+          cy.get('[data-cy=user-options]').click();
+          cy.get('[data-cy=logout]').click();
+          cy.url().should('include', '/login');
         }
       });
     });
