@@ -66,14 +66,14 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
             <NavbarCollapse className="justify-content-end">
               <Nav>
                 <Dropdown as={ Nav.Item } aria-labelledby="navbarDropdownProfile">
-                  <Dropdown.Toggle as={ Nav.Link } id="nav-dropdown">
+                  <Dropdown.Toggle as={ Nav.Link } id="nav-dropdown" data-cy="user-options">
                     <i className="material-icons">person</i>
                     <p className="d-lg-none d-md-block">
                       Account
                     </p>
                   </Dropdown.Toggle>
                   <DropdownMenu alignRight>
-                    <Dropdown.Item onClick={ this.onLogOut }>Log out</Dropdown.Item>
+                    <Dropdown.Item onClick={ this.onLogOut } data-cy="logout">Log out</Dropdown.Item>
                   </DropdownMenu>
                 </Dropdown>
               </Nav>
