@@ -7,11 +7,9 @@ services:
       dockerfile: Dockerfile_pg
     volumes:
       - metadata:/var/lib/postgresql/data
-    ports:
-      - "7432:5432"
     environment:
-      - POSTGRES_USER=test
-      - POSTGRES_PASSWORD=test
+      - POSTGRES_USER=analyst_ui_user
+      - POSTGRES_PASSWORD=analyst_ui_pass
   web:
     build:
       context: .

@@ -1,3 +1,4 @@
 cd database_setup
-sh init.sh
-sh loader.sh
+psql -d postgres --username=postgres <<HERE
+\i dba.sql
+HERE
