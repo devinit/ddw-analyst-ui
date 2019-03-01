@@ -236,7 +236,7 @@ exports[`renders an alert 1`] = `
 </form>
 `;
 
-exports[`renders the correctly with the default props 1`] = `
+exports[`renders correctly with the default props 1`] = `
 <form
   className="form"
   data-testid="login-form"

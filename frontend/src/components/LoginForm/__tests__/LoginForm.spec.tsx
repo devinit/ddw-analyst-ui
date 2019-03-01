@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as TestRenderer from 'react-test-renderer';
 import { LoginForm } from '../LoginForm';
 
-test('renders the correctly with the default props', () => {
+test('renders correctly with the default props', () => {
   const renderer = TestRenderer
     .create(<LoginForm/>)
     .toJSON();
