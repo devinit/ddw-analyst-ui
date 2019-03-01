@@ -18,6 +18,22 @@ The new and improved DDW Analyst UI interface
 6. Bundle frontend code and collect static files `npm run build` or `npm run docker.dev` for local development
 7. Run the app. `docker-compose up`
 
+### Development Database
+
+To create a test development DB, for local development (e.g. virtualenv steps below)
+
+0. Ensure the line that normally appears as `local   all             postgres                                peer` in `pg_hba.conf` instead reads `local   all             postgres                                trust`
+1. Run script `./dev-db-setup.sh`
+2. A database **analyst_ui** will be created in your local postgres instance.
+3. Access sample database through default postgres user using
+
+    `psql -d postgres`
+
+    `\c analyst_ui`
+
+4. For additional users, edit script **analyst_ui_users.sql** adding the username that you need
+5. Run script to grant permissions to all the schemas and tables of analyst_ui
+
 ### virtualenv - development
 
 **Prerequisites**
@@ -35,21 +51,6 @@ The new and improved DDW Analyst UI interface
 6. Install frontend dependencies `npm install`
 7. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
 8. Run the app. `python manage.py runserver`
-
-### Development Database
-
-To create a test development DB,
-
-1. Run script `./dev-db-setup.sh`
-2. A database **analyst_ui** will be created in your local postgre instance.
-3. Access sample database through default postgre user using
-
-    `psql -d postgres`
-
-    `\c analyst_ui`
-
-4. For additional users, edit script **analyst_ui_users.sql** adding the username that you need
-5. Run script to grant permissions to all the schemas and tables of analyst_ui
 
 ### End-To-End Testing
 
