@@ -5,11 +5,15 @@ import { SidebarLink } from '../SidebarLink';
 import { SidebarLogo } from '../SidebarLogo';
 
 interface SidebarProps {
-  dataColour: 'rose' | 'purple' | 'azure' | 'danger' | 'green' | 'orange';
-  backgroundColour: 'black' | 'white' | 'red';
+  dataColour?: 'rose' | 'purple' | 'azure' | 'danger' | 'green' | 'orange';
+  backgroundColour?: 'black' | 'white' | 'red';
 }
 
 export class Sidebar extends React.Component<SidebarProps> {
+  static defaultProps: Partial<SidebarProps> = {
+    dataColour: 'rose',
+    backgroundColour: 'black'
+  };
   static Logo = SidebarLogo;
   static Content = SidebarContent;
   static Item = SidebarItem;
