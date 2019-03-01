@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render a root sidebar link 1`] = `
+<li
+  className="nav-item"
+>
+  <a
+    className="nav-link"
+    data-toggle="collapse"
+    href=""
+    onClick={[Function]}
+  >
+    <p>
+       
+    </p>
+  </a>
+</li>
+`;
+
+exports[`renders correctly with the default props 1`] = `
+<li
+  className="nav-item"
+/>
+`;
+
+exports[`renders non-root sidebar links 1`] = `
+<li
+  className="nav-item"
+>
+  <a
+    className="nav-link"
+    data-toggle="collapse"
+    href=""
+    onClick={[Function]}
+  >
+    <p>
+       
+      <b
+        className="caret"
+      />
+    </p>
+  </a>
+  <div
+    className="collapse"
+  >
+    <ul
+      className="nav"
+    />
+  </div>
+</li>
+`;
+
+exports[`renders only one root sidebar link 1`] = `
+<li
+  className="nav-item"
+>
+  <a
+    className="nav-link"
+    data-toggle="collapse"
+    href=""
+    onClick={[Function]}
+  >
+    <p>
+       
+      <b
+        className="caret"
+      />
+    </p>
+  </a>
+  <div
+    className="collapse"
+  >
+    <ul
+      className="nav"
+    />
+  </div>
+</li>
+`;
+
+exports[`renders other sidebar items 1`] = `
+<li
+  className="nav-item"
+>
+  <a
+    className="nav-link"
+    data-toggle="collapse"
+    href=""
+    onClick={[Function]}
+  >
+    <p>
+       
+      <b
+        className="caret"
+      />
+    </p>
+  </a>
+  <div
+    className="collapse"
+  >
+    <ul
+      className="nav"
+    >
+      <li
+        className="nav-item"
+      />
+    </ul>
+  </div>
+</li>
+`;
+
+exports[`renders with the class active when configured as active 1`] = `
+<li
+  className="nav-item active"
+/>
+`;
