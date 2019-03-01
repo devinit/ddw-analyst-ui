@@ -8,6 +8,7 @@ export interface SidebarLinkProps extends RouteComponentProps<{}> {
   textMini?: string;
   textNormal?: string;
   caret?: boolean;
+  single?: boolean;
 }
 
 class SidebarLink extends React.Component<SidebarLinkProps> {
@@ -19,7 +20,7 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
     return (
       <a
         className="nav-link"
-        data-toggle={ this.props.root ? 'collapse' : '' }
+        data-toggle={ this.props.root && !this.props.single ? 'collapse' : '' }
         href={ this.props.to }
         onClick={ this.onClick }
       >
@@ -30,7 +31,7 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
   }
 
   private renderContent() {
-    if (this.props.root) {
+    if (this.props.root || this.props.single) {
       return (
         <p> { this.props.textNormal || this.props.textMini }
           { this.props.caret ? <b className="caret"/> : null }
