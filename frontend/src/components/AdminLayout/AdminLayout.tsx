@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Navbar } from 'react-bootstrap';
 import { AdminLayoutContent } from './AdminLayoutContent';
-import { Sidebar } from './Sidebar';
+import { Sidebar } from '../Sidebar';
 
 interface AdminLayoutProps {
   loading: boolean;
