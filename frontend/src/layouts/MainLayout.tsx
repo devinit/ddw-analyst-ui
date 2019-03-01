@@ -3,8 +3,8 @@ import * as React from 'react';
 import { Dropdown, Nav, Navbar } from 'react-bootstrap';
 import { Route, RouteComponentProps } from 'react-router-dom';
 import { AdminLayout } from '../components/AdminLayout';
-import { NavbarMinimise } from '../components/AdminLayout/NavbarMinimise';
-import { Sidebar } from '../components/AdminLayout/Sidebar';
+import { NavbarMinimise } from '../components/NavbarMinimise';
+import { Sidebar } from '../components/Sidebar';
 import { Home } from '../pages/Home';
 import { api, clearStorage, getAPIToken } from '../utils';
 
