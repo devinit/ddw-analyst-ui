@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does not render invalid children 1`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="rose"
+/>
+`;
+
+exports[`renders a SidebarContent when one is added as a child 1`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="rose"
+>
+  <div
+    className="sidebar-wrapper"
+  >
+    <ul
+      className="nav"
+    />
+  </div>
+</div>
+`;
+
+exports[`renders a SidebarLogo when one is added as a child 1`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="rose"
+>
+  <div
+    className="logo"
+  />
+</div>
+`;
+
+exports[`renders correctly with the default props 1`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="rose"
+/>
+`;
+
+exports[`renders with the specified backgroundColour 1`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="rose"
+/>
+`;
+
+exports[`renders with the specified backgroundColour 2`] = `
+<div
+  className="sidebar"
+  data-background-color="red"
+  data-color="rose"
+/>
+`;
+
+exports[`renders with the specified backgroundColour 3`] = `
+<div
+  className="sidebar"
+  data-background-color="white"
+  data-color="rose"
+/>
+`;
+
+exports[`renders with the specified dataColour 1`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="azure"
+/>
+`;
+
+exports[`renders with the specified dataColour 2`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="danger"
+/>
+`;
+
+exports[`renders with the specified dataColour 3`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="green"
+/>
+`;
+
+exports[`renders with the specified dataColour 4`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="orange"
+/>
+`;
+
+exports[`renders with the specified dataColour 5`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="purple"
+/>
+`;
+
+exports[`renders with the specified dataColour 6`] = `
+<div
+  className="sidebar"
+  data-background-color="black"
+  data-color="rose"
+/>
+`;
