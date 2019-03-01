@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders Logo components 1`] = `
+<div
+  className="logo"
+>
+  <a
+    className="simple-text logo-normal"
+    href="/link"
+    onClick={[Function]}
+  />
+</div>
+`;
+
+exports[`renders correctly with the default props 1`] = `
+<div
+  className="logo"
+/>
+`;
+
+exports[`renders only Logo components 1`] = `
+<div
+  className="logo"
+/>
+`;
