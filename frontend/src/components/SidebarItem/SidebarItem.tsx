@@ -28,7 +28,7 @@ export class SidebarItem extends React.Component<SidebarItemProps> {
       })[0];
 
       if (rootLink) {
-        return rootLink;
+        return React.cloneElement(rootLink, { caret: true });
       }
 
       console.error('A root link is required in a sidebar item with more than one child'); // tslint:disable-line
@@ -36,7 +36,7 @@ export class SidebarItem extends React.Component<SidebarItemProps> {
 
     return React.Children.map(this.props.children, child => {
       if (React.isValidElement<SidebarLinkProps>(child) && child.type === SidebarLink && child.props.root) {
-        return React.cloneElement(child, { single: true });
+        return React.cloneElement(child, { caret: false });
       }
     });
   }

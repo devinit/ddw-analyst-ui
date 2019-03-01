@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 export interface SidebarLinkProps extends RouteComponentProps<{}> {
   icon?: string;
@@ -7,37 +7,33 @@ export interface SidebarLinkProps extends RouteComponentProps<{}> {
   root?: boolean;
   textMini?: string;
   textNormal?: string;
-  single?: boolean;
+  caret?: boolean;
 }
 
 class SidebarLink extends React.Component<SidebarLinkProps> {
   static defaultProps: Partial<SidebarLinkProps> = {
-    single: false
+    caret: false
   };
 
   render() {
-    if (this.props.root && typeof this.props.to === 'string') {
-      return (
-        <a className="nav-link" data-toggle="collapse" href={ this.props.to } onClick={ this.onClick }>
-          { this.props.icon ? <i className="material-icons">{ this.props.icon }</i> : null }
-          { this.renderContent() }
-        </a>
-      );
-    }
-
     return (
-      <Link className="nav-link" to={ this.props.to || '' }>
+      <a
+        className="nav-link"
+        data-toggle={ this.props.root ? 'collapse' : '' }
+        href={ this.props.to }
+        onClick={ this.onClick }
+      >
         { this.props.icon ? <i className="material-icons">{ this.props.icon }</i> : null }
         { this.renderContent() }
-      </Link>
+      </a>
     );
   }
 
   private renderContent() {
-    if (this.props.root || this.props.single) {
+    if (this.props.root) {
       return (
         <p> { this.props.textNormal || this.props.textMini }
-          { !this.props.single ? <b className="caret"/> : null }
+          { this.props.caret ? <b className="caret"/> : null }
         </p>
       );
     }
@@ -50,7 +46,8 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
     );
   }
 
-  private onClick = () => {
+  private onClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault();
     if (this.props.to.indexOf('#') === -1) {
       this.props.history.push(this.props.to);
     }
