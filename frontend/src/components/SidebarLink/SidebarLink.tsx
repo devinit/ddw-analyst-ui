@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { LocationDescriptor } from 'history';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
-export interface SidebarLinkProps {
+export interface SidebarLinkProps extends RouteComponentProps<{}> {
   icon?: string;
-  to: LocationDescriptor;
+  to: string;
   root?: boolean;
   textMini?: string;
   textNormal?: string;
   single?: boolean;
 }
 
-export class SidebarLink extends React.Component<SidebarLinkProps> {
+class SidebarLink extends React.Component<SidebarLinkProps> {
   static defaultProps: Partial<SidebarLinkProps> = {
     single: false
   };
@@ -19,7 +18,7 @@ export class SidebarLink extends React.Component<SidebarLinkProps> {
   render() {
     if (this.props.root && typeof this.props.to === 'string') {
       return (
-        <a className="nav-link" data-toggle="collapse" href={ `#${this.props.to}` }>
+        <a className="nav-link" data-toggle="collapse" href={ this.props.to } onClick={ this.onClick }>
           { this.props.icon ? <i className="material-icons">{ this.props.icon }</i> : null }
           { this.renderContent() }
         </a>
@@ -50,4 +49,14 @@ export class SidebarLink extends React.Component<SidebarLinkProps> {
       </React.Fragment>
     );
   }
+
+  private onClick = () => {
+    if (this.props.to.indexOf('#') === -1) {
+      this.props.history.push(this.props.to);
+    }
+  }
 }
+
+const RouteContainer = withRouter(SidebarLink);
+
+export { RouteContainer as SidebarLink };

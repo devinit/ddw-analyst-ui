@@ -3,7 +3,7 @@ import { SidebarLink, SidebarLinkProps } from '../SidebarLink';
 import classNames = require('classnames');
 
 export interface SidebarItemProps {
-  to: string;
+  collapseId?: string;
   active?: boolean;
 }
 
@@ -28,7 +28,7 @@ export class SidebarItem extends React.Component<SidebarItemProps> {
       })[0];
 
       if (rootLink) {
-        return React.cloneElement(rootLink, { to: this.props.to });
+        return rootLink;
       }
 
       console.error('A root link is required in a sidebar item with more than one child'); // tslint:disable-line
@@ -44,7 +44,7 @@ export class SidebarItem extends React.Component<SidebarItemProps> {
   private renderLinks(): React.ReactNode {
     if (React.Children.count(this.props.children) > 1) {
       return (
-        <div className="collapse" id={ this.props.to }>
+        <div className="collapse" id={ this.props.collapseId }>
           <ul className="nav">
             {
               React.Children.map(this.props.children, child => {
