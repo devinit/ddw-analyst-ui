@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`does not render with the data-toggle when configured as single 1`] = `
+<a
+  className="nav-link"
+  data-toggle=""
+  href="link"
+  onClick={[Function]}
+>
+  <p>
+     
+  </p>
+</a>
+`;
+
 exports[`renders non-root links with both labels 1`] = `
 <a
   className="nav-link"
@@ -47,6 +60,19 @@ exports[`renders root links with a label when specified 1`] = `
   <p>
      
     Label
+  </p>
+</a>
+`;
+
+exports[`renders single links correctly 1`] = `
+<a
+  className="nav-link"
+  data-toggle=""
+  href="link"
+  onClick={[Function]}
+>
+  <p>
+     
   </p>
 </a>
 `;

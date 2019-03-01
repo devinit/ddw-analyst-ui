@@ -31,6 +31,30 @@ test('renders root links correctly', () => {
   expect(renderer).toMatchSnapshot();
 });
 
+test('renders single links correctly', () => {
+  const renderer = TestRenderer
+    .create(
+      <Router history={ createBrowserHistory() }>
+        <SidebarLink to="link" single/>
+      </Router>
+    )
+    .toJSON();
+
+  expect(renderer).toMatchSnapshot();
+});
+
+test('does not render with the data-toggle when configured as single', () => {
+  const renderer = TestRenderer
+    .create(
+      <Router history={ createBrowserHistory() }>
+        <SidebarLink to="link" root single/>
+      </Router>
+    )
+    .toJSON();
+
+  expect(renderer).toMatchSnapshot();
+});
+
 test('renders with a caret when specified', () => {
   const renderer = TestRenderer
     .create(
