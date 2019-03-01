@@ -19,14 +19,23 @@ class Sector(BaseEntity):
     name = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Theme(BaseEntity):
     sector = models.ForeignKey(Sector, models.PROTECT)
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Tag(BaseEntity):
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class Operation(BaseEntity):
@@ -39,6 +48,9 @@ class Operation(BaseEntity):
     tags = models.ManyToManyField(Tag)
     is_draft = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.name
+
 
 class OperationStep(BaseEntity):
     operation = models.ForeignKey(Operation, models.PROTECT)
@@ -46,6 +58,9 @@ class OperationStep(BaseEntity):
     name = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
     query = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         unique_together = (('operation', 'step_id'),)
@@ -56,6 +71,9 @@ class Review(BaseEntity):
     reviewer = models.ForeignKey(User, models.PROTECT)
     rating = models.SmallIntegerField()
     comment = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "Review of {} by {}".format(self.operation, self.reviewer)
 
 
 class Source(BaseEntity):
@@ -70,12 +88,18 @@ class Source(BaseEntity):
     active_mirror_name = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return "{} from {}".format(self.indicator_acronym, self.source_acronym)
+
 
 class SourceColumnMap(BaseEntity):
     source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
     source_name = models.TextField()
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         unique_together = (('source', 'name'),)
@@ -89,6 +113,9 @@ class UpdateHistory(BaseEntity):
     release_description = models.TextField(blank=True, null=True)
     invalidated_on = models.DateTimeField()
     invalidation_description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "Update of {} on {}".format(self.source, self.released_on)
 
     class Meta:
         verbose_name_plural = "Update histories"
