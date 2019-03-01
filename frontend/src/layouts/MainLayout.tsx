@@ -43,7 +43,7 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
 
             <Sidebar.Content>
               <Sidebar.Item active>
-                <Sidebar.Link to="test" root icon="home" textNormal="Home"/>
+                <Sidebar.Link to="/" root icon="home" textNormal="Home"/>
               </Sidebar.Item>
             </Sidebar.Content>
           </Sidebar>
