@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 # TODO: Discuss with team if there is a better way to managing migration and inspectdb at the same time
-from core.models_template import *
+# from core.models_template import *
 
 
 class BaseEntity(models.Model):
