@@ -35,7 +35,7 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
     return (
       <BrowserRouter>
         <AdminLayout loading={ this.state.loading }>
-          <Sidebar dataColour="danger" backgroundColour="red">
+          <Sidebar dataColour="purple" backgroundColour="red">
             <Sidebar.Logo>
               <Sidebar.Logo.Item url="/" variation="mini">AI</Sidebar.Logo.Item>
               <Sidebar.Logo.Item url="/">Analyst UI</Sidebar.Logo.Item>
@@ -43,7 +43,7 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
 
             <Sidebar.Content>
               <Sidebar.Item active>
-                <Sidebar.Link to="/" root icon="home" textNormal="Home"/>
+                <Sidebar.Link to="/" single icon="home" textNormal="Home"/>
               </Sidebar.Item>
             </Sidebar.Content>
           </Sidebar>
