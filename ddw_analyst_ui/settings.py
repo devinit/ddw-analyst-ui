@@ -100,9 +100,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'analyst_ui',
-        'USER': 'postgres',
+        'USER': 'test',
+        'PASSWORD' : 'test',
         'HOST': '127.0.0.1',
-        'PORT': 5432,
+        'PORT': 7432,
     }
 }
 

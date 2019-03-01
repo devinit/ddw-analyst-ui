@@ -6,67 +6,61 @@ from django.contrib.auth.models import User
 # TODO: Discuss with team if there is a better way to managing migration and inspectdb at the same time
 from core.models_template import *
 
-
-class Sector(models.Model):
-    name = models.CharField(max_length=20)
-    description = models.TextField(blank=True, null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
-
-
-class Theme(models.Model):
-    sector = models.ForeignKey(Sector, models.SET_NULL)
-    name = models.CharField(max_length=50)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
-
-
-class Operation(models.Model):
-    name = models.TextField()
-    description = models.TextField(blank=True, null=True)
-    user = models.ForeignKey(User, models.SET_NULL)
-    operation_query = models.TextField()
-    theme = models.ForeignKey(Theme, models.SET_NULL)
-    sample_output_path = models.TextField(blank=True, null=True)
-    is_draft = models.BooleanField(default=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
-
-
-class OperationSteps(models.Model):
-    operation = models.ForeignKey(Operation, models.DO_NOTHING)
-    step_id = models.SmallIntegerField()
-    name = models.CharField(max_length=20)
-    description = models.TextField(blank=True, null=True)
-    query = models.TextField(blank=True, null=True)
+class BaseEntity(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     class Meta:
+        abstract = True
+
+class Sector(BaseEntity):
+    name = models.CharField(max_length=20)
+    description = models.TextField(blank=True, null=True)
+    
+
+class Theme(BaseEntity):
+    sector = models.ForeignKey(Sector,models.PROTECT)
+    name = models.CharField(max_length=50)
+    
+
+class Operation(BaseEntity):
+    name = models.TextField()
+    description = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(User, models.PROTECT)
+    operation_query = models.TextField()
+    theme = models.ForeignKey(Theme, models.PROTECT)
+    sample_output_path = models.TextField(blank=True, null=True)
+    is_draft = models.BooleanField(default=True)
+    
+
+class OperationSteps(BaseEntity):
+    operation = models.ForeignKey(Operation, models.PROTECT)
+    step_id = models.SmallIntegerField()
+    name = models.CharField(max_length=20)
+    description = models.TextField(blank=True, null=True)
+    query = models.TextField(blank=True, null=True)
+   
+    class Meta:
         unique_together = (('operation', 'step_id'),)
 
 
-class Tag(models.Model):
+class Tag(BaseEntity):
     name = models.CharField(max_length=255)
 
 
-class OperationTags(models.Model):
-    operation = models.ForeignKey(Theme, models.SET_NULL)
-    tags = models.ManyToManyField(Tag, blank=True, null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+class OperationTags(BaseEntity):
+    operation = models.ForeignKey(Theme, models.PROTECT)
+    tags = models.ManyToManyField(Tag)
+   
 
-
-class Reviews(models.Model):
-    operation = models.ForeignKey(Operation, models.SET_NULL, blank=True, null=True)
-    reviewer = models.ForeignKey(User, models.SET_NULL)
+class Reviews(BaseEntity):
+    operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
+    reviewer = models.ForeignKey(User, models.PROTECT)
     rating = models.SmallIntegerField()
     comment = models.TextField(blank=True, null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
+    
 
-
-class Source(models.Model):
+class Source(BaseEntity):
     indicator = models.TextField()
     indicator_acronym = models.CharField(max_length=10, blank=True, null=True)
     source = models.TextField()
@@ -77,28 +71,23 @@ class Source(models.Model):
     storage_type = models.TextField(blank=True, null=True)
     active_mirror_name = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
+    
 
-
-class SourceColumnMap(models.Model):
-    source = models.ForeignKey(Source, models.SET_NULL, blank=True, null=True)
+class SourceColumnMap(BaseEntity):
+    source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
     name = models.TextField()
     source_name = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
-
+    
     class Meta:
         unique_together = (('source', 'name'),)
 
 
-class UpdateHistory(models.Model):
-    source = models.ForeignKey(Source, models.SET_NULL)
+class UpdateHistory(BaseEntity):
+    source = models.ForeignKey(Source, models.PROTECT)
     history_table = models.TextField()
     is_major_release = models.BooleanField(default=False)
     released_on = models.DateTimeField()
     release_description = models.TextField(blank=True, null=True)
     invalidated_on = models.DateTimeField()
     invalidation_description = models.TextField(blank=True, null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
+   
