@@ -40,7 +40,7 @@ class Operation(BaseEntity):
     is_draft = models.BooleanField(default=True)
 
 
-class OperationSteps(BaseEntity):
+class OperationStep(BaseEntity):
     operation = models.ForeignKey(Operation, models.PROTECT)
     step_id = models.SmallIntegerField()
     name = models.CharField(max_length=20)
@@ -51,7 +51,7 @@ class OperationSteps(BaseEntity):
         unique_together = (('operation', 'step_id'),)
 
 
-class Reviews(BaseEntity):
+class Review(BaseEntity):
     operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
     reviewer = models.ForeignKey(User, models.PROTECT)
     rating = models.SmallIntegerField()
@@ -89,3 +89,6 @@ class UpdateHistory(BaseEntity):
     release_description = models.TextField(blank=True, null=True)
     invalidated_on = models.DateTimeField()
     invalidation_description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Update histories"

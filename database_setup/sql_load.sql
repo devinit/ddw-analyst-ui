@@ -218,7 +218,7 @@ VALUES
 (1,3);
 
 
-insert into core_operationsteps(operation_id,step_id,name,description,query,updated_on,created_on)
+insert into core_operationstep(operation_id,step_id,name,description,query,updated_on,created_on)
 VALUES
 (1,1,'query','Get oda data from crs table','select * from crs.current',now(),now()),
 (1,2,'filter','Filter oda by row on oda_donor and ftr','Select * from crs.current where donor_code = 2000 and ftr =''Badman''',now(),now());
