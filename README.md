@@ -9,6 +9,7 @@ The new and improved DDW Analyst UI interface
 
 ### Docker
 
+0. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata`
 1. Create a persistent dev volume `docker volume create --name=metadata`
 2. Build your app `docker-compose up --build`
 3. Migrate the database. `docker-compose run web python manage.py migrate`

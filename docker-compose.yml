@@ -7,9 +7,6 @@ services:
       dockerfile: Dockerfile_pg
     volumes:
       - metadata:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=analyst_ui_user
-      - POSTGRES_PASSWORD=analyst_ui_pass
   web:
     build:
       context: .
