@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import * as React from 'react';
 import { Dropdown, Nav, Navbar } from 'react-bootstrap';
-import { Route, RouteComponentProps } from 'react-router-dom';
+import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
@@ -33,54 +33,60 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
     const DropdownMenu: any = Dropdown.Menu; // FIXME: once react-bootstrap types are fixed
 
     return (
-      <AdminLayout loading={ this.state.loading }>
-        <Sidebar dataColour="danger" backgroundColour="red">
-          <Sidebar.Logo>
-            <Sidebar.Logo.Item url="/" variation="mini">AI</Sidebar.Logo.Item>
-            <Sidebar.Logo.Item url="/">Analyst UI</Sidebar.Logo.Item>
-          </Sidebar.Logo>
+      <BrowserRouter>
+        <AdminLayout loading={ this.state.loading }>
+          <Sidebar dataColour="danger" backgroundColour="red">
+            <Sidebar.Logo>
+              <Sidebar.Logo.Item url="/" variation="mini">AI</Sidebar.Logo.Item>
+              <Sidebar.Logo.Item url="/">Analyst UI</Sidebar.Logo.Item>
+            </Sidebar.Logo>
 
-          <Sidebar.Content>
-            <Sidebar.Item to="home" active>
-              <Sidebar.Link root icon="home" textNormal="Home"/>
-            </Sidebar.Item>
-          </Sidebar.Content>
-        </Sidebar>
+            <Sidebar.Content>
+              <Sidebar.Item active>
+                <Sidebar.Link to="test" root icon="home" textNormal="Home"/>
+              </Sidebar.Item>
+            </Sidebar.Content>
+          </Sidebar>
 
-        <Navbar expand="lg" variant="dark" className="navbar-transparent navbar-absolute fixed-top">
-          <div className="navbar-wrapper">
-            <NavbarMinimise/>
-            <Navbar.Brand>Dashboard</Navbar.Brand>
-          </div>
+          <Navbar expand="lg" variant="dark" className="navbar-transparent navbar-absolute fixed-top">
+            <div className="navbar-wrapper">
+              <NavbarMinimise/>
+              <Navbar.Brand href="/">
+                <Route key="home" path="/" exact component={ () => <span>Home</span> }/>
+              </Navbar.Brand>
+            </div>
 
-          <Navbar.Toggle aria-controls="navigation-index" aria-expanded="false">
-            <span className="sr-only">Toggle navigation</span>
-            <span className="navbar-toggler-icon icon-bar"/>
-            <span className="navbar-toggler-icon icon-bar"/>
-            <span className="navbar-toggler-icon icon-bar"/>
-          </Navbar.Toggle>
+            <Navbar.Toggle aria-controls="navigation-index" aria-expanded="false">
+              <span className="sr-only">Toggle navigation</span>
+              <span className="navbar-toggler-icon icon-bar"/>
+              <span className="navbar-toggler-icon icon-bar"/>
+              <span className="navbar-toggler-icon icon-bar"/>
+            </Navbar.Toggle>
 
-          <NavbarCollapse className="justify-content-end">
-            <Nav>
-              <Dropdown as={ Nav.Item } aria-labelledby="navbarDropdownProfile">
-                <Dropdown.Toggle as={ Nav.Link } id="nav-dropdown">
-                  <i className="material-icons">person</i>
-                  <p className="d-lg-none d-md-block">
-                    Account
-                  </p>
-                </Dropdown.Toggle>
-                <DropdownMenu alignRight>
-                  <Dropdown.Item onClick={ this.onLogOut }>Log out</Dropdown.Item>
-                </DropdownMenu>
-              </Dropdown>
-            </Nav>
-          </NavbarCollapse>
-        </Navbar>
+            <NavbarCollapse className="justify-content-end">
+              <Nav>
+                <Dropdown as={ Nav.Item } aria-labelledby="navbarDropdownProfile">
+                  <Dropdown.Toggle as={ Nav.Link } id="nav-dropdown">
+                    <i className="material-icons">person</i>
+                    <p className="d-lg-none d-md-block">
+                      Account
+                    </p>
+                  </Dropdown.Toggle>
+                  <DropdownMenu alignRight>
+                    <Dropdown.Item onClick={ this.onLogOut }>Log out</Dropdown.Item>
+                  </DropdownMenu>
+                </Dropdown>
+              </Nav>
+            </NavbarCollapse>
+          </Navbar>
 
-        <AdminLayout.Content>
-          <Route key="home" path="/" exact component={ Home }/>
-        </AdminLayout.Content>
-      </AdminLayout>
+          <AdminLayout.Content>
+            <Switch>
+              <Route key="home" path="/" exact component={ Home }/>
+            </Switch>
+          </AdminLayout.Content>
+        </AdminLayout>
+      </BrowserRouter>
     );
   }
 
