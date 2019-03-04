@@ -157,7 +157,8 @@
         "no-submodule-imports": false,
         "no-implicit-dependencies": false,
         "jsx-wrap-multiline": false,
-        "strict-boolean-expressions": true
+        "strict-boolean-expressions": true,
+        "jsx-no-lambda": false
     },
     "jsRules": {
         "trailing-comma": [

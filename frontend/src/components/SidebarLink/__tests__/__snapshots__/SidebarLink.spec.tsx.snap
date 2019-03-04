@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does not render with the data-toggle when configured as single 1`] = `
+<a
+  className="nav-link"
+  data-toggle=""
+  href="link"
+  onClick={[Function]}
+>
+  <p>
+     
+  </p>
+</a>
+`;
+
+exports[`renders non-root links with both labels 1`] = `
+<a
+  className="nav-link"
+  data-toggle=""
+  href="link"
+  onClick={[Function]}
+>
+  <span
+    className="sidebar-mini"
+  >
+     
+    L
+     
+  </span>
+  <span
+    className="sidebar-normal"
+  >
+     
+    Label
+     
+  </span>
+</a>
+`;
+
+exports[`renders root links correctly 1`] = `
+<a
+  className="nav-link"
+  data-toggle="collapse"
+  href="link"
+  onClick={[Function]}
+>
+  <p>
+     
+  </p>
+</a>
+`;
+
+exports[`renders root links with a label when specified 1`] = `
+<a
+  className="nav-link"
+  data-toggle="collapse"
+  href="link"
+  onClick={[Function]}
+>
+  <p>
+     
+    Label
+  </p>
+</a>
+`;
+
+exports[`renders single links correctly 1`] = `
+<a
+  className="nav-link"
+  data-toggle=""
+  href="link"
+  onClick={[Function]}
+>
+  <p>
+     
+  </p>
+</a>
+`;
+
+exports[`renders the correct link with the default props 1`] = `
+<a
+  className="nav-link"
+  data-toggle=""
+  href="link"
+  onClick={[Function]}
+>
+  <span
+    className="sidebar-mini"
+  >
+     
+     
+  </span>
+  <span
+    className="sidebar-normal"
+  >
+     
+     
+  </span>
+</a>
+`;
+
+exports[`renders with a caret when specified 1`] = `
+<a
+  className="nav-link"
+  data-toggle=""
+  href="link"
+  onClick={[Function]}
+>
+  <span
+    className="sidebar-mini"
+  >
+     
+     
+  </span>
+  <span
+    className="sidebar-normal"
+  >
+     
+     
+  </span>
+</a>
+`;
+
+exports[`renders with an icon when specified 1`] = `
+<a
+  className="nav-link"
+  data-toggle=""
+  href="link"
+  onClick={[Function]}
+>
+  <i
+    className="material-icons"
+  >
+    home
+  </i>
+  <span
+    className="sidebar-mini"
+  >
+     
+     
+  </span>
+  <span
+    className="sidebar-normal"
+  >
+     
+     
+  </span>
+</a>
+`;
