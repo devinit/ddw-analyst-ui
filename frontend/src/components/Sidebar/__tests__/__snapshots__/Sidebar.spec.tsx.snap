@@ -5,7 +5,11 @@ exports[`does not render invalid children 1`] = `
   className="sidebar"
   data-background-color="black"
   data-color="rose"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders a SidebarContent when one is added as a child 1`] = `
@@ -33,6 +37,9 @@ exports[`renders a SidebarLogo when one is added as a child 1`] = `
   <div
     className="logo"
   />
+  <div
+    className="sidebar-wrapper"
+  />
 </div>
 `;
 
@@ -41,7 +48,11 @@ exports[`renders correctly with the default props 1`] = `
   className="sidebar"
   data-background-color="black"
   data-color="rose"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified backgroundColour 1`] = `
@@ -49,7 +60,11 @@ exports[`renders with the specified backgroundColour 1`] = `
   className="sidebar"
   data-background-color="black"
   data-color="rose"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified backgroundColour 2`] = `
@@ -57,7 +72,11 @@ exports[`renders with the specified backgroundColour 2`] = `
   className="sidebar"
   data-background-color="red"
   data-color="rose"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified backgroundColour 3`] = `
@@ -65,7 +84,11 @@ exports[`renders with the specified backgroundColour 3`] = `
   className="sidebar"
   data-background-color="white"
   data-color="rose"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified dataColour 1`] = `
@@ -73,7 +96,11 @@ exports[`renders with the specified dataColour 1`] = `
   className="sidebar"
   data-background-color="black"
   data-color="azure"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified dataColour 2`] = `
@@ -81,7 +108,11 @@ exports[`renders with the specified dataColour 2`] = `
   className="sidebar"
   data-background-color="black"
   data-color="danger"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified dataColour 3`] = `
@@ -89,7 +120,11 @@ exports[`renders with the specified dataColour 3`] = `
   className="sidebar"
   data-background-color="black"
   data-color="green"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified dataColour 4`] = `
@@ -97,7 +132,11 @@ exports[`renders with the specified dataColour 4`] = `
   className="sidebar"
   data-background-color="black"
   data-color="orange"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified dataColour 5`] = `
@@ -105,7 +144,11 @@ exports[`renders with the specified dataColour 5`] = `
   className="sidebar"
   data-background-color="black"
   data-color="purple"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;
 
 exports[`renders with the specified dataColour 6`] = `
@@ -113,5 +156,9 @@ exports[`renders with the specified dataColour 6`] = `
   className="sidebar"
   data-background-color="black"
   data-color="rose"
-/>
+>
+  <div
+    className="sidebar-wrapper"
+  />
+</div>
 `;

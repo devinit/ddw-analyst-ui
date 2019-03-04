@@ -1,35 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders SidebarItem components 1`] = `
-<div
-  className="sidebar-wrapper"
+<ul
+  className="nav"
 >
-  <ul
-    className="nav"
-  >
-    <li
-      className="nav-item"
-    />
-  </ul>
-</div>
+  <li
+    className="nav-item"
+  />
+</ul>
 `;
 
 exports[`renders correctly with the default props 1`] = `
-<div
-  className="sidebar-wrapper"
->
-  <ul
-    className="nav"
-  />
-</div>
+<ul
+  className="nav"
+/>
 `;
 
 exports[`renders only SidebarItem components 1`] = `
-<div
-  className="sidebar-wrapper"
->
-  <ul
-    className="nav"
-  />
-</div>
+<ul
+  className="nav"
+/>
 `;

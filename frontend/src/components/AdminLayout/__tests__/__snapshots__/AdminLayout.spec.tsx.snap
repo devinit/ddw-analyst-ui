@@ -65,7 +65,11 @@ exports[`renders a Sidebar when one is added as a child 1`] = `
     className="sidebar"
     data-background-color="red"
     data-color="azure"
-  />
+  >
+    <div
+      className="sidebar-wrapper"
+    />
+  </div>
   <div
     className="main-panel"
   >
