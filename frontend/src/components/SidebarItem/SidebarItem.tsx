@@ -1,6 +1,6 @@
+import classNames from 'classnames';
 import * as React from 'react';
 import { SidebarLink, SidebarLinkProps } from '../SidebarLink';
-import classNames = require('classnames');
 
 export interface SidebarItemProps {
   collapseId?: string;
