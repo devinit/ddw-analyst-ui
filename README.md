@@ -13,7 +13,7 @@ The new and improved DDW Analyst UI interface
 5. Load test data `docker-compose run web python manage.py loaddata test_data`
 6. Create a superuser. `docker-compose run web python manage.py createsuperuser`
 7. Install frontend dependencies `npm install`
-8. Bundle frontend code and collect static files `npm run build` or `npm run docker.dev` for local development
+8. Bundle frontend code and collect static files `npm run build` or `npm run docker:dev` for local development
 9. Run the app. `docker-compose up`
 
 ### Development Database

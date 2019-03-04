@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 
 
 class BaseEntity(models.Model):
+    """An abstract model which allows all other models to inherit its characteristics.
+    Gives every other model a field for the date it was created and the date it was updated."""
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
 
@@ -16,6 +18,7 @@ class BaseEntity(models.Model):
 
 
 class Sector(BaseEntity):
+    """Metadata sector model."""
     name = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
 
@@ -24,6 +27,7 @@ class Sector(BaseEntity):
 
 
 class Theme(BaseEntity):
+    """Metadata theme model. Belongs to sectors."""
     sector = models.ForeignKey(Sector, models.PROTECT)
     name = models.CharField(max_length=50)
 
@@ -32,6 +36,7 @@ class Theme(BaseEntity):
 
 
 class Tag(BaseEntity):
+    """A tag model for queries."""
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -39,6 +44,7 @@ class Tag(BaseEntity):
 
 
 class Operation(BaseEntity):
+    """This is the base model on which a query is built. It stores all of the meta-data for a query."""
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User, models.PROTECT, blank=True, null=True)
@@ -53,6 +59,7 @@ class Operation(BaseEntity):
 
 
 class OperationStep(BaseEntity):
+    """These are the individual steps in a query."""
     operation = models.ForeignKey(Operation, models.PROTECT)
     step_id = models.SmallIntegerField()
     name = models.CharField(max_length=20)
@@ -67,6 +74,7 @@ class OperationStep(BaseEntity):
 
 
 class Review(BaseEntity):
+    """A model to allow users to review other queries?"""
     operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
     reviewer = models.ForeignKey(User, models.PROTECT)
     rating = models.SmallIntegerField()
@@ -77,6 +85,7 @@ class Review(BaseEntity):
 
 
 class Source(BaseEntity):
+    """Metadata data source."""
     indicator = models.TextField()
     indicator_acronym = models.CharField(max_length=10, blank=True, null=True)
     source = models.TextField()
@@ -93,6 +102,7 @@ class Source(BaseEntity):
 
 
 class SourceColumnMap(BaseEntity):
+    """Column mapping for datasets."""
     source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
@@ -106,6 +116,7 @@ class SourceColumnMap(BaseEntity):
 
 
 class UpdateHistory(BaseEntity):
+    """Update history model for datasets."""
     source = models.ForeignKey(Source, models.PROTECT)
     history_table = models.TextField()
     is_major_release = models.BooleanField(default=False)
