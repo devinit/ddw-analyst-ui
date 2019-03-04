@@ -6,7 +6,8 @@ exports[`renders correctly 1`] = `
 >
   <button
     className="btn btn-just-icon btn-white btn-fab btn-round"
-    id="minimizeSidebar"
+    data-testid="navbar-minimise-button"
+    onClick={[Function]}
   >
     <i
       className="material-icons text_align-center visible-on-sidebar-regular"
