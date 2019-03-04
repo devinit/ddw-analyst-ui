@@ -29,7 +29,9 @@ export class Sidebar extends React.Component<SidebarProps> {
         data-background-color={ this.props.backgroundColour }
       >
         { this.renderContent(SidebarLogo) }
-        { this.renderContent(SidebarContent) }
+        <div className="sidebar-wrapper">
+          { this.renderContent(SidebarContent) }
+        </div>
       </div>
     );
   }
