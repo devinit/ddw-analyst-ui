@@ -1,11 +1,11 @@
 /**
  * @jest-environment jsdom
  */
+import { createBrowserHistory } from 'history';
 import * as React from 'react';
+import { Router } from 'react-router';
 import * as TestRenderer from 'react-test-renderer';
 import { SidebarLink } from '../SidebarLink';
-import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
 
 test('renders the correct link with the default props', () => {
   const renderer = TestRenderer
@@ -101,4 +101,57 @@ test('renders with an icon when specified', () => {
     .toJSON();
 
   expect(renderer).toMatchSnapshot();
+});
+
+test('calls the onClick function only when one is specified', () => {
+  const onClickProp = jest.fn();
+  const history = createBrowserHistory();
+  history.push = jest.fn();
+  const renderer = TestRenderer
+    .create(
+      <Router history={ history }>
+        <SidebarLink to="link" icon="home" onClick={ onClickProp }/>
+      </Router>
+    )
+    .toJSON();
+
+  if (renderer) {
+    renderer.props.onClick(new CustomEvent('click'));
+    expect(onClickProp).toBeCalledTimes(1);
+    expect(history.push).not.toBeCalled();
+  }
+});
+
+test('navigates to the onClick function when one is specified', () => {
+  const history = createBrowserHistory();
+  history.push = jest.fn();
+  const renderer = TestRenderer
+    .create(
+      <Router history={ history }>
+        <SidebarLink to="link" icon="home"/>
+      </Router>
+    )
+    .toJSON();
+
+  if (renderer) {
+    renderer.props.onClick(new CustomEvent('click'));
+    expect(history.push).toBeCalledWith('link');
+  }
+});
+
+test('does not navigate when a # link is passed', () => {
+  const history = createBrowserHistory();
+  history.push = jest.fn();
+  const renderer = TestRenderer
+    .create(
+      <Router history={ history }>
+        <SidebarLink to="#link" icon="home"/>
+      </Router>
+    )
+    .toJSON();
+
+  if (renderer) {
+    renderer.props.onClick(new CustomEvent('click'));
+    expect(history.push).not.toBeCalled();
+  }
 });

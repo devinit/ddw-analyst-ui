@@ -52,8 +52,7 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
     event.preventDefault();
     if (this.props.onClick) {
       this.props.onClick();
-    }
-    if (this.props.to.indexOf('#') === -1) {
+    } else if (this.props.to.indexOf('#') === -1) {
       this.props.history.push(this.props.to);
     }
   }
