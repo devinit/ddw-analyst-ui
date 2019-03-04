@@ -15,5 +15,3 @@ export const getAPIToken = () => new Promise<string>((resolve, reject) => {
 export const setAPIToken = (token: string) => {
   localForage.setItem(localForageKeys.API_KEY, token);
 };
-
-export const clearStorage = () => localForage.clear();
