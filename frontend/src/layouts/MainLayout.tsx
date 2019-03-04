@@ -41,6 +41,15 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
               <Sidebar.Logo.Item url="/">Analyst UI</Sidebar.Logo.Item>
             </Sidebar.Logo>
 
+            <Sidebar.Content mobile>
+              <Sidebar.Item collapseId="account">
+                <Sidebar.Link to="#account" root icon="person" textNormal="Account"/>
+                <Sidebar.Item>
+                  <Sidebar.Link to="#" textMini="LO" textNormal="Log out" onClick={ this.onLogOut }/>
+                </Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Content>
+
             <Sidebar.Content>
               <Sidebar.Item active>
                 <Sidebar.Link to="/" single icon="home" textNormal="Home"/>
