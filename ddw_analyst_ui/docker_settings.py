@@ -6,8 +6,9 @@ from ddw_analyst_ui.settings import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
+        'NAME': 'analyst_ui',
+        'USER': 'analyst_ui_user',
+        'PASSWORD': 'analyst_ui_pass',
         'HOST': 'db',
         'PORT': 5432,
     }

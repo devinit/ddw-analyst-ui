@@ -6,7 +6,6 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from django.contrib.auth.models import User
 
 
 class CrsCurrent(models.Model):
@@ -15,9 +14,9 @@ class CrsCurrent(models.Model):
     donor_code = models.SmallIntegerField()
     donor_name = models.TextField()
     agency_code = models.SmallIntegerField()
-    agency_name = models.TextField( blank=True, null=True)
-    crs_id = models.TextField( blank=True, null=True)
-    project_number = models.TextField( blank=True, null=True)
+    agency_name = models.TextField(blank=True, null=True)
+    crs_id = models.TextField(blank=True, null=True)
+    project_number = models.TextField(blank=True, null=True)
     initial_report = models.SmallIntegerField(blank=True, null=True)
     recipient_code = models.SmallIntegerField()
     recipient_name = models.TextField()
@@ -26,11 +25,11 @@ class CrsCurrent(models.Model):
     income_group_code = models.SmallIntegerField()
     income_group_name = models.TextField()
     flow_code = models.SmallIntegerField()
-    flow_name = models.TextField( blank=True, null=True)
+    flow_name = models.TextField(blank=True, null=True)
     bilateral_multilateral = models.SmallIntegerField()
     category = models.SmallIntegerField()
     finance_type = models.SmallIntegerField()
-    aid_type = models.TextField( blank=True, null=True)
+    aid_type = models.TextField(blank=True, null=True)
     usd_commitment = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     usd_disbursement = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     usd_received = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
@@ -52,19 +51,19 @@ class CrsCurrent(models.Model):
     currency_code = models.SmallIntegerField()
     commitment_national = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     disbursement_national = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    grant_equivalent = models.TextField( blank=True, null=True)
+    grant_equivalent = models.TextField(blank=True, null=True)
     usd_grant_equivalent = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     short_description = models.TextField()
     project_title = models.TextField(blank=True, null=True)
     purpose_code = models.IntegerField()
-    purpose_name = models.TextField( blank=True, null=True)
+    purpose_name = models.TextField(blank=True, null=True)
     sector_code = models.IntegerField()
-    sector_name = models.TextField( blank=True, null=True)
+    sector_name = models.TextField(blank=True, null=True)
     channel_code = models.IntegerField(blank=True, null=True)
-    channel_name = models.TextField( blank=True, null=True)
-    channel_reported_name = models.TextField( blank=True, null=True)
+    channel_name = models.TextField(blank=True, null=True)
+    channel_reported_name = models.TextField(blank=True, null=True)
     channel_parent_category = models.IntegerField(blank=True, null=True)
-    geography = models.TextField( blank=True, null=True)
+    geography = models.TextField(blank=True, null=True)
     expected_start_date = models.DateTimeField(blank=True, null=True)
     completion_date = models.DateTimeField(blank=True, null=True)
     long_description = models.TextField(blank=True, null=True)
@@ -83,8 +82,8 @@ class CrsCurrent(models.Model):
     commitment_date = models.DateTimeField(blank=True, null=True)
     type_repayment = models.SmallIntegerField(blank=True, null=True)
     number_repayment = models.SmallIntegerField(blank=True, null=True)
-    interest_1 = models.TextField( blank=True, null=True)
-    interest_2 = models.TextField( blank=True, null=True)
+    interest_1 = models.TextField(blank=True, null=True)
+    interest_2 = models.TextField(blank=True, null=True)
     repay_date_1 = models.DateTimeField(blank=True, null=True)
     repay_date_2 = models.DateTimeField(blank=True, null=True)
     grant_element = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
@@ -187,128 +186,3 @@ class Dac5Current(models.Model):
     class Meta:
         managed = False
         db_table = 'dac5_current'
-
-
-class Operation(models.Model):
-    name = models.TextField()
-    description = models.TextField()
-    user = models.ForeignKey(User, models.DO_NOTHING)
-    operation_query = models.TextField()
-    theme = models.ForeignKey('Theme', models.DO_NOTHING)
-    sample_output_path = models.TextField(blank=True, null=True)
-    is_draft = models.BooleanField()
-    created_on = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'operation'
-
-
-class OperationSteps(models.Model):
-    operation = models.ForeignKey(Operation, models.DO_NOTHING)
-    step_id = models.SmallIntegerField()
-    name = models.CharField(max_length=20)
-    description = models.TextField(blank=True, null=True)
-    query = models.TextField(blank=True, null=True)
-    created_on = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'operation_steps'
-        unique_together = (('operation', 'step_id'),)
-
-
-class OperationTags(models.Model):
-    operation = models.ForeignKey('Theme', models.DO_NOTHING)
-    tags = models.TextField()
-    created_on = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'operation_tags'
-
-
-class Reviews(models.Model):
-    operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
-    reviewer = models.ForeignKey(User, models.DO_NOTHING, db_column='reviewer')
-    rating = models.SmallIntegerField()
-    comment = models.TextField(blank=True, null=True)
-    created_on = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'reviews'
-
-
-class Sector(models.Model):
-    name = models.CharField(max_length=20)
-    description = models.TextField(blank=True, null=True)
-    createdon = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'sector'
-
-
-class Source(models.Model):
-    indicator = models.TextField()
-    indicator_acronym = models.CharField(max_length=10, blank=True, null=True)
-    source = models.TextField()
-    source_acronym = models.CharField(max_length=10, blank=True, null=True)
-    source_url = models.TextField(blank=True, null=True)
-    download_path = models.TextField(blank=True, null=True)
-    last_updated_on = models.DateTimeField()
-    storage_type = models.TextField()
-    active_mirror_name = models.TextField()
-    description = models.TextField(blank=True, null=True)
-    created_on = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'source'
-
-
-class SourceColumnMap(models.Model):
-    source = models.ForeignKey(Source, models.DO_NOTHING, blank=True, null=True)
-    name = models.TextField()
-    source_name = models.TextField()
-    created_on = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'source_column_map'
-        unique_together = (('source', 'name'),)
-
-
-class Theme(models.Model):
-    sector = models.ForeignKey(Sector, models.DO_NOTHING)
-    name = models.CharField(max_length=50)
-    created_on = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'theme'
-
-
-class UpdateHistory(models.Model):
-    source = models.ForeignKey(Source, models.DO_NOTHING)
-    history_table = models.TextField()
-    is_major_release = models.BooleanField()
-    released_on = models.DateTimeField()
-    release_description = models.TextField()
-    invalidated_on = models.DateTimeField()
-    invalidation_description = models.TextField()
-    created_on = models.DateTimeField()
-    updated_on = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'update_history'

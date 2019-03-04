@@ -2,7 +2,9 @@
 FROM postgres
 LABEL maintainer="akmiller01 <Alex Miller, alex.miller@devinit.org>"
 
-RUN mkdir /home/postgres
-ADD ./database_setup /home/postgres
+# New users
+ENV POSTGRES_USER=analyst_ui_user
+ENV POSTGRES_PASSWORD=analyst_ui_pass
 
-WORKDIR /home/postgres
+# Add initialization script to initdb
+ADD ./database_setup/dba.sql /docker-entrypoint-initdb.d/
