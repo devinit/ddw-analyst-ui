@@ -42,6 +42,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
   }
 
   componentDidMount() {
+    this.removeNavOpenClass();
     getAPIToken()
       .then(() => this.props.history.push('/'))
       .catch(() => {
@@ -79,5 +80,10 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
       }
     })
     .catch(console.log); // tslint:disable-line
+  }
+
+  private removeNavOpenClass() {
+    Array.from(document.getElementsByClassName('nav-open'))
+      .forEach(element => element.classList.remove('nav-open'));
   }
 }
