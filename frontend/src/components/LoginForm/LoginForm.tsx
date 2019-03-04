@@ -40,7 +40,7 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
     return (
       <Formik validationSchema={ this.schema } initialValues={ initialValues } onSubmit={ this.props.onSuccess }>
         {
-          ({ errors, handleChange, handleSubmit }: FormikProps<Credentials>) => (
+          ({ errors, handleChange, handleSubmit, touched }: FormikProps<Credentials>) => (
             <Form className="form" noValidate onSubmit={ handleSubmit } data-testid="login-form">
               <Card className={ classNames('card-login', { 'card-hidden': !this.props.showForm }) }>
                 <Card.Header className="card-header-rose text-center">
@@ -66,7 +66,7 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                         isInvalid={ !!errors.username }
                       />
                       <Form.Control.Feedback type="invalid" { ...this.feedbackStyles }>
-                        { errors.username }
+                        { touched.username && errors.username ? errors.username : null }
                       </Form.Control.Feedback>
                     </InputGroup>
                   </span>
@@ -83,7 +83,7 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                         isInvalid={ !!errors.password }
                       />
                       <Form.Control.Feedback type="invalid" { ...this.feedbackStyles }>
-                        { errors.password }
+                        { touched.password && errors.password ? errors.password : null }
                       </Form.Control.Feedback>
                     </InputGroup>
                   </span>
