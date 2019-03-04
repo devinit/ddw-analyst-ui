@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Sector, Theme, Tag, Operation, OperationStep, Review, Source, SourceColumnMap, UpdateHistory
+from core.models import Sector, Theme, Tag, Operation, OperationStep, Review, Source, SourceColumnMap, UpdateHistory, AuditLogEntry
 
 # Register your models here.
 
@@ -12,3 +12,4 @@ admin.site.register(Review)
 admin.site.register(Source)
 admin.site.register(SourceColumnMap)
 admin.site.register(UpdateHistory)
+admin.site.register(AuditLogEntry)
