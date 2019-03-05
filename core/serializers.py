@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
+    tag_set = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'tags')
+        fields = ('id', 'username', 'tag_set')
 
 
 class TagSerializer(serializers.ModelSerializer):
