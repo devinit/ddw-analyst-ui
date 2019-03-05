@@ -9,7 +9,7 @@ from core.permissions import IsOwnerOrReadOnly
 
 class UserList(generics.ListAPIView):
     authentication_classes = [BasicAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -17,7 +17,7 @@ class UserList(generics.ListAPIView):
 
 class UserDetail(generics.RetrieveAPIView):
     authentication_classes = [BasicAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -25,7 +25,7 @@ class UserDetail(generics.RetrieveAPIView):
 
 class TagList(generics.ListCreateAPIView):
     authentication_classes = [BasicAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -36,7 +36,7 @@ class TagList(generics.ListCreateAPIView):
 
 class TagDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [BasicAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
