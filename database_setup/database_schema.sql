@@ -1,280 +1,268 @@
 
+CREATE OR REPLACE FUNCTION updated_on_column_updater()   
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_on = now();
+    RETURN NEW;   
+END;
+$$ language 'plpgsql';
+
 drop table if exists table_meta.source;
+
 create table table_meta.source
 (
     id serial not null primary key,
+	indicator varchar not null,
+	indicator_acronym varchar,
     source varchar not null,
     source_acronym varchar,
     source_url text,
-    updates_available json not null default '{}',
+	download_path text,
+    last_updated_on timestamp not null,
     storage_type varchar not null check (storage_type in ('schema','table')),
-    table_name_mapping json not null default '{}',
-    created_on timestamp not null default now()
+    active_mirror_name varchar not null,
+	description text,
+    created_on timestamp not null default now(),
+	updated_on timestamp
 
 );
 
+CREATE TRIGGER source_modtime BEFORE UPDATE ON table_meta.source FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+
 COMMENT on table table_meta.source is 'Holds meta data information on the different datasources that make up the mirror tables of the warehouse';
+
 COMMENT ON column table_meta.source.id is 'Auto incremented primary key for table_meta.source';
+COMMENT on column table_meta.source.indicator is 'The name of the indicator  as known within DI';
+COMMENT on column table_meta.source.indicator_acronym is 'The acronym for indicator as know within DI';
 COMMENT on column table_meta.source.source is 'The name of the source for the data source bieng documented. E.g DAC CRS table';
 COMMENt on column table_meta.source.source_acronym is 'The acronym for the name given in source if any';
 comment on column table_meta.source.source_url is 'If this data source has been downloaded from a URL, this is the link to the dataset at the source';
-comment on column table_meta.source.updates_available is 'A json map of date of update and table hosting the update';
+COMMENT on column table_meta.source.last_updated_on is 'The last time this dataset was updated as per official source';
 comment on column table_meta.source.storage_type is 'Indication of whether its been stored in a table under a generic schema or in a schema of its own';
-comment on column table_meta.source.table_name_mapping is 'A map between name tranformation between di and the original source';
+comment on column table_meta.source.active_mirror_name is 'Action location where this data is stored in where house';
 comment on column table_meta.source.created_on is 'Auto generated date on which this entry was made';
+comment on column table_meta.source.updated_on is 'Auto generated date on which this table was last updated';
 
 
-drop table if exists repo.crs_current;
-create table repo.crs_current(
-    id serial NOT NULL,
-	row_no int4 NOT NULL,
-	"year" int2 NOT NULL,
-	donor_code int2 NOT NULL,
-	donor_name varchar NOT NULL,
-	agency_code int2 NOT NULL,
-	agency_name varchar NULL,
-	crs_id varchar NULL,
-	project_number varchar NULL,
-	initial_report int2 NULL,
-	recipient_code int2 NOT NULL,
-	recipient_name varchar NOT NULL,
-	region_code int2 NOT NULL,
-	region_name varchar NOT NULL,
-	income_group_code int2 NOT NULL,
-	income_group_name varchar NOT NULL,
-	flow_code int2 NOT NULL,
-	flow_name varchar NULL,
-	bilateral_multilateral int2 NOT NULL,
-	category int2 NOT NULL,
-	finance_type int2 NOT NULL,
-	aid_type varchar NULL,
-	usd_commitment numeric NULL,
-	usd_disbursement numeric NULL,
-	usd_received numeric NULL,
-	usd_commitment_deflated numeric NULL,
-	usd_disbursement_deflated numeric NULL,
-	usd_received_deflated numeric NULL,
-	usd_adjustment numeric NULL,
-	usd_adjustment_deflated numeric NULL,
-	usd_amount_untied numeric NULL,
-	usd_amount_partial_tied numeric NULL,
-	usd_amount_tied numeric NULL,
-	usd_amount_untied_deflated numeric NULL,
-	usd_amount_partial_tied_deflated numeric NULL,
-	usd_amount_tied_deflated numeric NULL,
-	usd_irtc numeric NULL,
-	usd_expert_commitment numeric NULL,
-	usd_expert_extended numeric NULL,
-	usd_export_credit numeric NULL,
-	currency_code int2 NOT NULL,
-	commitment_national numeric NULL,
-	disbursement_national numeric NULL,
-	grant_equivalent varchar NULL,
-	usd_grant_equivalent numeric NULL,
-	short_description text NOT NULL,
-	project_title text NULL,
-	purpose_code int4 NOT NULL,
-	purpose_name varchar NULL,
-	sector_code int4 NOT NULL,
-	sector_name varchar NULL,
-	channel_code int4 NULL,
-	channel_name varchar NULL,
-	channel_reported_name varchar NULL,
-	channel_parent_category int4 NULL,
-	geography varchar NULL,
-	expected_start_date timestamp NULL,
-	completion_date timestamp NULL,
-	long_description text NULL,
-	gender int2 NULL,
-	environment int2 NULL,
-	trade int2 NULL,
-	pdgg int2 NULL,
-	ftc int2 NULL,
-	pba int2 NULL,
-	investment_project int2 NULL,
-	associated_finance int2 NULL,
-	biodiversity int2 NULL,
-	climate_mitigation int2 NULL,
-	climate_adaptation int2 NULL,
-	desertification int2 NULL,
-	commitment_date timestamp NULL,
-	type_repayment int2 NULL,
-	number_repayment int2 NULL,
-	interest_1 varchar NULL,
-	interest_2 varchar NULL,
-	repay_date_1 timestamp NULL,
-	repay_date_2 timestamp NULL,
-	grant_element numeric NULL,
-	usd_interest numeric NULL,
-	usd_outstanding numeric NULL,
-	usd_arrears_principal numeric NULL,
-	usd_arrears_interest numeric NULL,
-	usd_future_debt_service_principal numeric NULL,
-	usd_future_debt_service_interest numeric NULL,
-	rmnch int2 NULL,
-	budget_identifier numeric NULL,
-	capital_expenditure numeric NULL,
-	CONSTRAINT crs_current_pkey PRIMARY KEY (id),
-	CONSTRAINT valid_associated_finance CHECK (((associated_finance >= 0) AND (associated_finance <= 1))),
-	CONSTRAINT valid_bilateral_multilateral CHECK ((bilateral_multilateral = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8]))),
-	CONSTRAINT valid_biodiversity CHECK (((biodiversity >= 0) AND (biodiversity <= 2))),
-	CONSTRAINT valid_category CHECK ((category = ANY (ARRAY[10, 21, 22, 30, 35, 36, 37, 40, 50]))),
-	CONSTRAINT valid_channel_code CHECK (((channel_code >= 10000) AND (channel_code <= 90000))),
-	CONSTRAINT valid_climate_adaptation CHECK (((climate_adaptation >= 0) AND (climate_adaptation <= 2))),
-	CONSTRAINT valid_climate_mitigation CHECK (((climate_mitigation >= 0) AND (climate_mitigation <= 2))),
-	CONSTRAINT valid_desertification CHECK (((desertification >= 0) AND (desertification <= 3))),
-	CONSTRAINT valid_donor_code CHECK (((donor_code >= 1) AND (donor_code <= 1601))),
-	CONSTRAINT valid_environment CHECK (((environment >= 0) AND (environment <= 2))),
-	CONSTRAINT valid_finance_type CHECK (((finance_type >= 1) AND (finance_type <= 1100))),
-	CONSTRAINT valid_flow_code CHECK ((flow_code = ANY (ARRAY[11, 12, 13, 14, 19, 30]))),
-	CONSTRAINT valid_ftc CHECK (((ftc >= 0) AND (ftc <= 1))),
-	CONSTRAINT valid_gender CHECK (((gender >= 0) AND (gender <= 2))),
-	CONSTRAINT valid_income_group_name CHECK (((income_group_name)::text = ANY ((ARRAY['LDCs'::character varying, 'Other LICs'::character varying, 'LMICs'::character varying, 'UMICs'::character varying, 'Part I unallocated by income'::character varying, 'MADCTs'::character varying])::text[]))),
-	CONSTRAINT valid_initial_report CHECK ((initial_report = ANY (ARRAY[1, 2, 3, 5, 8]))),
-	CONSTRAINT valid_investment_project CHECK (((investment_project >= 0) AND (investment_project <= 1))),
-	CONSTRAINT valid_pba CHECK (((pba >= 0) AND (pba <= 1))),
-	CONSTRAINT valid_pdgg CHECK (((pdgg >= 0) AND (pdgg <= 2))),
-	CONSTRAINT valid_purpose_code CHECK (((purpose_code >= 100) AND (purpose_code <= 100000))),
-	CONSTRAINT valid_recipient_code CHECK ((((recipient_code >= 30) AND (recipient_code <= 998)) OR (recipient_code = 9998))),
-	CONSTRAINT valid_rmnch CHECK (((rmnch >= 0) AND (rmnch <= 4))),
-	CONSTRAINT valid_sector_code CHECK (((sector_code >= 100) AND (sector_code <= 998))),
-	CONSTRAINT valid_trade CHECK (((trade >= 0) AND (trade <= 2))),
-	CONSTRAINT valid_year CHECK (((year >= 1973) AND (year <= 2018)))
-)
-WITH (
-	OIDS=FALSE
-) ;
+insert into table_meta.source 
+(indicator,indicator_acronym,source,source_acronym,source_url,download_path,storage_type,active_mirror_name,description,last_updated_on)
+values
+('Common Reporting Standard','crs','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','crs_current','Data about flows of resources',now()),
+('Official Development Assistance 1','dac1','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac1_current','Data about flows of resources',now()),
+('Official Development Assistance2','dac2','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac2_current','Data about flows of resources',now()),
+('Official Development Assistance 2b','dac2b','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac2b_current','Data about flows of resources',now()),
+('Official Development Assistance 5','dac5','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac5_current','Data about flows of resources',now()),
+('World Bank Indicators','WDI','World Bank Group','WBG','http://wdi.worldbank.org','http://wdi.worldbank.org/tables','schema','wdi','Data about flows of resources',now());
 
-comment on table repo.crs_current is 'Content of most DAC CRS mirror';
 
-drop table if exists repo.dac5_current;
+drop table if exists table_meta.update_history;
 
-create table repo.dac5_current(
+create table table_meta.update_history
+(
+	id serial primary key not null,
+	source_id integer not null references table_meta.source (id) on update cascade on delete restrict,
+	history_table varchar not null,
+	is_major_release boolean not null default True,
+	released_on timestamp not null,
+	release_description text not null, 
+	invalidated_on timestamp not null,
+	invalidation_description text not null,
+	created_on timestamp not null default now(),
+	updated_on timestamp
 
-	row_id serial NOT NULL,
-	donor_code int2 NOT NULL,
-	donor_name varchar NOT NULL,
-	sector_code int2 NOT NULL,
-	sector_name varchar NOT NULL,
-	aid_type_code int4 NOT NULL,
-	aid_type_name varchar NOT NULL,
-	amount_type_code bpchar(1) NOT NULL,
-	amount_type_name varchar NOT NULL,
-	"time" int2 NOT NULL,
-	"year" int2 NOT NULL,
-	value numeric NULL,
-	flags text NULL,
-	CONSTRAINT table_current_pkey PRIMARY KEY (row_id),
-	CONSTRAINT valid_aid_type_code CHECK ((aid_type_code = ANY (ARRAY[528, 529, 530]))),
-	CONSTRAINT valid_amount_type_code CHECK ((amount_type_code = ANY (ARRAY['A'::bpchar, 'D'::bpchar]))),
-	CONSTRAINT valid_donor_code CHECK (((donor_code >= 1) AND (donor_code <= 20011))),
-	CONSTRAINT valid_sector_code CHECK (((sector_code >= 100) AND (sector_code <= 1000))),
-	CONSTRAINT valid_time CHECK ((("time" >= 1960) AND ("time" <= 2015))),
-	CONSTRAINT valid_year CHECK (((year >= 1960) AND (year <= 2015)))
-)
-WITH (
-	OIDS=FALSE
-) ;
-
-comment on table repo.dac5_current is 'Content of most recent DAC 5 mirror data';
-
-drop table if exists repo.dac2b_current;
-
-create table repo.dac2b_current(
-    row_id serial NOT NULL,
-	recipient_code int2 NOT NULL,
-	recipient_name varchar NOT NULL,
-	donor_code int2 NOT NULL,
-	donor_name varchar NOT NULL,
-	part_code int4 NOT NULL,
-	part_name varchar NOT NULL,
-	aid_type_code int2 NOT NULL,
-	aid_type_name varchar NOT NULL,
-	data_type bpchar(1) NOT NULL,
-	amount_type varchar NOT NULL,
-	"time" int2 NOT NULL,
-	"year" int2 NOT NULL,
-	value numeric NULL,
-	flags text NULL,
-	CONSTRAINT table_2b_current_pkey PRIMARY KEY (row_id),
-	CONSTRAINT valid_aid_type_code CHECK (((aid_type_code >= 201) AND (aid_type_code <= 972))),
-	CONSTRAINT valid_data_type CHECK ((data_type = ANY (ARRAY['A'::bpchar, 'D'::bpchar]))),
-	CONSTRAINT valid_donor_code CHECK (((donor_code >= 1) AND (donor_code <= 20018))),
-	CONSTRAINT valid_part_code CHECK ((part_code = ANY (ARRAY[1, 2]))),
-	CONSTRAINT valid_part_name CHECK (((part_name)::text = ANY (ARRAY[('1 : Part I - Developing Countries'::character varying)::text, ('2 : Part II - Countries in Transition'::character varying)::text]))),
-	CONSTRAINT valid_recipient_code CHECK (((recipient_code >= 30) AND (recipient_code <= 10203))),
-	CONSTRAINT valid_time CHECK ((("time" >= 1960) AND ("time" <= 2014))),
-	CONSTRAINT valid_year CHECK (((year >= 1960) AND (year <= 2014)))
-)
-WITH (
-	OIDS=FALSE
-) ;
-
-comment on table repo.dac2b_current is 'Content of most recent DAC 2B mirror';
-
-drop table if exists repo.dac2a_current;
-
-create table repo.dac2a_current(
-	row_id serial NOT NULL,
-	recipient_code int2 NOT NULL,
-	recipient_name varchar NOT NULL,
-	donor_code int2 NOT NULL,
-	donor_name varchar NOT NULL,
-	part_code int4 NOT NULL,
-	part_name varchar NOT NULL,
-	aid_type_code int2 NOT NULL,
-	aid_type_name varchar NOT NULL,
-	data_type bpchar(1) NOT NULL,
-	amount_type varchar NOT NULL,
-	"time" int2 NOT NULL,
-	"year" int2 NOT NULL,
-	value numeric NULL,
-	flags text NULL,
-	CONSTRAINT table_2a_current_pkey PRIMARY KEY (row_id),
-	CONSTRAINT valid_aid_type_code CHECK (((aid_type_code >= 106) AND (aid_type_code <= 255))),
-	CONSTRAINT valid_data_type CHECK ((data_type = ANY (ARRAY['A'::bpchar, 'D'::bpchar]))),
-	CONSTRAINT valid_donor_code CHECK (((donor_code >= 1) AND (donor_code <= 21600))),
-	CONSTRAINT valid_part_code CHECK ((part_code = ANY (ARRAY[1, 2]))),
-	CONSTRAINT valid_part_name CHECK (((part_name)::text = ANY (ARRAY[('1 : Part I - Developing Countries'::character varying)::text, ('2 : Part II - Countries in Transition'::character varying)::text]))),
-	CONSTRAINT valid_recipient_code CHECK (((recipient_code >= 30) AND (recipient_code <= 10203))),
-	CONSTRAINT valid_time CHECK ((("time" >= 1960) AND ("time" <= 2014))),
-	CONSTRAINT valid_year CHECK (((year >= 1960) AND (year <= 2014)))
-)
-WITH (
-	OIDS=FALSE
-) ;
-
-comment on table repo.dac2a_current is 'Content of most recent DAC 2A mirror';
-
-drop table if exists repo.dac1_current;
-create table repo.dac1_current(
-    row_id serial NOT NULL,
-	donor_code int2 NOT NULL,
-	donor_name varchar NOT NULL,
-	part_code int2 NOT NULL,
-	part_name varchar NOT NULL,
-	aid_type_code int4 NOT NULL,
-	aid_type_name varchar NOT NULL,
-	flows int2 NOT NULL,
-	fund_flows varchar NOT NULL,
-	amount_type_code bpchar(1) NOT NULL,
-	amount_type_name varchar NOT NULL,
-	"time" int2 NOT NULL,
-	"year" int2 NOT NULL,
-	value numeric NULL,
-	flags text NULL,
-	CONSTRAINT table_1_data_current_pkey PRIMARY KEY (row_id),
-	CONSTRAINT valid_aid_type_code CHECK (((aid_type_code >= 1) AND (aid_type_code <= 99999))),
-	CONSTRAINT valid_amount_type_code CHECK ((amount_type_code = ANY (ARRAY['A'::bpchar, 'D'::bpchar, 'N'::bpchar]))),
-	CONSTRAINT valid_donor_code CHECK (((donor_code >= 1) AND (donor_code <= 20011))),
-	CONSTRAINT valid_flows CHECK ((flows = ANY (ARRAY[1120, 1121, 1122, 1130, 1140, 1150, 1151, 1152]))),
-	CONSTRAINT valid_part_code CHECK ((part_code = 1)),
-	CONSTRAINT valid_part_name CHECK (((part_name)::text = '1 : Part I - Developing Countries'::text)),
-	CONSTRAINT valid_time CHECK ((("time" >= 1960) AND ("time" <= 2018))),
-	CONSTRAINT valid_year CHECK (((year >= 1960) AND (year <= 2018)))
 );
 
-comment on table repo.dac1_current is 'Content of most recent DAC 1 mirror';
+CREATE TRIGGER update_history_modtime BEFORE UPDATE ON table_meta.update_history FOR EACH ROW EXECUTE PROCEDURE updated_on_column_updater();
+
+
+
+insert into table_meta.update_history (source_id,history_table,released_on,release_description,invalidated_on,invalidation_description)
+values
+(1,'crs_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(1,'crs_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017')
+(2,'dac1_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(2,'dac1_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017')
+(3,'dac2_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(3,'dac2_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017')
+(3,'dac2b_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(3,'dac2b_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017')
+(4,'dac2b_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018')
+(4,'dac2b_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017');
+
+create table table_meta.source_column_map
+(
+	id serial not null primary key,
+	source_id integer references table_meta.source(id) on update cascade on delete restrict,
+	name varchar not null,
+	source_name varchar not null,
+	created_on timestamp not null default now(),
+	updated_on timestamp,
+	constraint source_id_name_unique UNIQUE(source_id,name)
+);
+
+
+insert into table_meta.source_column_map (source_id,name,source_name,description)
+VALUES
+(1,'year','Year','Reporting year'),
+(1,'donor_code','DonorCode','Reporting country/organisation'),
+(1,'donor_name','DonorName','Reporting country/organisation'),
+(1,'agency_code','AgencyCode','Extending agency'),
+(1,'agency_name','AgencyName','Extending agency'),
+(1,'crs_id','CRSid','CRS Identification number'),
+(1,'project_number','ProjectNumber','Donor project number'),
+(1,'initial_report','InitialReport','Nature of submission'),
+(1,'recipient_code','RecipientCode','Recipient'),
+(1,'recipient_name','RecipientName','Recipient'),
+(1,'region_code','RegionCode','Recipient'),
+(1,'region_name','RegionName','Recipient'),
+(1,'income_group_code','IncomegroupCode','Recipient'),
+(1,'income_group_name','IncomegroupName','Recipient'),
+(1,'flow_code','FlowCode','? (Type of flow)'),
+(1,'flow_name','FlowName','? (Type of flow)'),
+(1,'bilateral_multilateral','bi_multi','Bi/Multi'),
+(1,'category','Category','Type of flow'),
+(1,'finance_type','Finance_t','Type of finance'),
+(1,'aid_type','Aid_t','Type of aid'),
+(1,'usd_commitment','usd_commitment',''),
+(1,'usd_disbursement','usd_disbursement','Commitments'),
+(1,'usd_received','usd_received','Amounts extended'),
+(1,'usd_commitment_deflated','usd_commitment_defl','Amounts received'),
+(1,'usd_disbursement_deflated','usd_disbursement_defl','Commitments'),
+(1,'usd_received_deflated','usd_received_defl','Amounts extended'),
+(1,'usd_adjustment','usd_adjustment','Amounts received'),
+(1,'usd_adjustment_deflated','usd_adjustment_defl',''),
+(1,'usd_amount_untied','usd_amountuntied','Amount untied'),
+(1,'usd_amount_partial_tied','usd_amountpartialtied','Amount partially untied'),
+(1,'usd_amount_tied','usd_amounttied','Amount tied'),
+(1,'usd_amount_untied_deflated','usd_amountuntied_defl','Amount untied'),
+(1,'usd_amount_partial_tied_deflated','usd_amountpartialtied_defl','Amount partially untied'),
+(1,'usd_amount_tied_deflated','usd_amounttied_defl','Amount tied'),
+(1,'usd_irtc','usd_IRTC','Amount of IRTC'),
+(1,'usd_expert_commitment','usd_expert_commitment','If project-type, amount of experts_commitments'),
+(1,'usd_expert_extended','usd_expert_extended','If project-type, amount of experts_extended'),
+(1,'usd_export_credit','usd_export_credit','Amount of export credit in AF package'),
+(1,'currency_code','CurrencyCode','Currency'),
+(1,'commitment_national','commitment_national','Commitments'),
+(1,'disbursement_national','disbursement_national','Amounts extended'),
+(1,'grant_equivalent','GrantEquiv',''),
+(1,'usd_grant_equivalent','usd_GrantEquiv',''),
+(1,'short_description','ShortDescription','Short description/Project title'),
+(1,'project_title','ProjectTitle','Short description/Project title'),
+(1,'purpose_code','PurposeCode','Sector/Purpose code'),
+(1,'purpose_name','PurposeName','Sector/Purpose code'),
+(1,'sector_code','SectorCode','Sector/Purpose code'),
+(1,'sector_name','SectorName','Sector/Purpose code'),
+(1,'channel_code','ChannelCode','Channel code'),
+(1,'channel_name','ChannelName','Channel of delivery'),
+(1,'channel_reported_name','ChannelReportedName','Channel of delivery'),
+(1,'parent_channel_code','ParentChannelCode',''),
+(1,'geography','Geography','Geographical target area'),
+(1,'expected_start_date','ExpectedStartDate','Expected starting date'),
+(1,'completion_date','CompletionDate','Expected completion date'),
+(1,'long_description','LongDescription','Description'),
+(1,'gender','Gender','Gender equality'),
+(1,'environment','Environment','Aid to environment'),
+(1,'trade','Trade','Trade development'),
+(1,'pdgg','Pdgg','PD/GG'),
+(1,'ftc','FTC','FTC'),
+(1,'pba','PBA','Programme-based approach'),
+(1,'investment_project','InvestmentProject','Investment'),
+(1,'associated_finance','AssocFinance','Associated financing'),
+(1,'biodiversity','biodiversity','Biodiversity'),
+(1,'climate_mitigation','climateMitigation','Climate change – mitigation'),
+(1,'climate_adaptation','climateAdaptation','Climate change – adaptation'),
+(1,'desertification','desertification','Desertification'),
+(1,'commitment_date','commitmentdate',''),
+(1,'type_repayment','typerepayment','Type of repayment'),
+(1,'number_repayment','numberrepayment','Number of repayments per annum'),
+(1,'interest_1','interest1','Interest rate'),
+(1,'interest_2','interest2','Second interest rate'),
+(1,'repay_date_1','repaydate1','First repayment date'),
+(1,'repay_date_2','repaydate2','Final repayment date'),
+(1,'grant_element','grantelement',''),
+(1,'usd_interest','usd_interest','Interest received'),
+(1,'usd_outstanding','usd_outstanding','Principal disbursed and still outstanding'),
+(1,'usd_arrears_principal','usd_arrears_principal','Arrears of principal (included in field 5)'),
+(1,'usd_arrears_interest','usd_arrears_interest','Arrears of interest'),
+(1,'usd_future_debt_service_principal','usd_future_DS_principal',''),
+(1,'usd_future_debt_service_interest','usd_future_DS_interest',''),
+(1,'rmnch','RMNCH',''),
+(1,'budget_identifier','BudgetIdent',''),
+(1,'capital_expenditure','CapitalExpend','');
+
+
+
+insert into table_meta.source_column_map (source_id,name,source_name)
+VALUES
+(2,'donor_code','DONOR'),
+(2,'donor_name','Donor'),
+(2,'part_code','PART'),
+(2,'part_name','Part'),
+(2,'aid_type_code','AIDTYPE'),
+(2,'aid_type_name','Aid type'),
+(2,'flows','FLOWS'),
+(2,'fund_flows','Fund flows'),
+(2,'amount_type_code','AMOUNTTYPE'),
+(2,'amount_type_name','Amount type'),
+(2,'time','TIME'),
+(2,'year','Year'),
+(2,'value','Value'),
+(2,'flags','Flags');
+
+
+
+insert into table_meta.source_column_map (source_id,name,source_name)
+VALUES
+(3,'recipient_code','RECIPIENT'),
+(3,'recipient_name','Recipient'),
+(3,'donor_code','DONOR'),
+(3,'donor_name','Donor'),
+(3,'part_code','PART'),
+(3,'part_name','Part'),
+(3,'aid_type_code','AIDTYPE'),
+(3,'aid_type_name','Aid type'),
+(3,'data_type','DATATYPE'),
+(3,'amount_type','Amount type'),
+(3,'time','TIME'),
+(3,'year','Year'),
+(3,'value','Value'),
+(3,'flags','Flags');
+
+
+
+insert into table_meta.source_column_map (source_id,name,source_name)
+VALUES
+(4,'recipient_code','RECIPIENT'),
+(4,'recipient_name','Recipient'),
+(4,'donor_code','DONOR'),
+(4,'donor_name','Donor'),
+(4,'part_code','PART'),
+(4,'part_name','Part'),
+(4,'aid_type_code','AIDTYPE'),
+(4,'aid_type_name','Aid type'),
+(4,'data_type','DATATYPE'),
+(4,'amount_type','Amount type'),
+(4,'time','TIME'),
+(4,'year','Year'),
+(4,'value','Value'),
+(4,'flags','Flags');
+
+
+insert into table_meta.source_column_map (source_id,name,source_name)
+VALUES
+(5,'donor_code','DONOR'),
+(5,'donor_name','Donor'),
+(5,'sector_code','SECTOR'),
+(5,'sector_name','Sector'),
+(5,'aid_type_code','AIDTYPE'),
+(5,'aid_type_name','Aid type'),
+(5,'amount_type_code','AMOUNTTYPE'),
+(5,'amount_type_name','Amount type'),
+(5,'time','TIME'),
+(5,'year','Year'),
+(5,'value','Value'),
+(5,'flags','Flags');
+
 
 drop table if exists query_meta.sector cascade;
 create table query_meta.sector
@@ -282,12 +270,16 @@ create table query_meta.sector
     id serial primary key not null,
     name varchar(20) not null,
     description text,
-    createdOn timestamp not null default now()
+    createdOn timestamp not null default now(),
+	updated_on timestamp
 );
+
+CREATE TRIGGER sector_modtime BEFORE UPDATE ON query_meta.sector FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
 
 comment on table query_meta.sector is 'A list of sectors that DI analysts work around';
 comment on column query_meta.sector.id is 'Auto generated pk for sector table';
 comment on column query_meta.sector.name is 'Name of the sector that is being';
+comment on column query_meta.sector.updated_on is 'Auto generated date on which this table was last updated';
 
 --- Test data
 insert into query_meta.sector(name,description) VALUES
@@ -302,14 +294,18 @@ create table query_meta.theme(
     id serial primary key not null, 
     sector_id integer not null references query_meta.sector(id) on update cascade on delete restrict,
     name varchar(50) not null,
-    created_on timestamp not null default now()
+    created_on timestamp not null default now(),
+	updated_on timestamp
 );
+
+CREATE TRIGGER theme_modtime BEFORE UPDATE ON query_meta.theme FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
 
 comment on table query_meta.theme is 'All queries that are saved by the analyst must have a theme';
 comment on column query_meta.theme.id is 'Auto generated identifier for the column';
 comment on column query_meta.theme.sector_id is 'A reference to the sector that the theme targets';
 comment on column query_meta.theme.name is 'The name of the theme';
 comment on column query_meta.theme.created_on is 'The day on which the theme was created';
+comment on column query_meta.theme.updated_on is 'Auto generated date on which this table was last updated';
 
 
 -- Test data
@@ -335,6 +331,9 @@ create table query_meta.operation(
 
 );
 
+CREATE TRIGGER operation_modtime BEFORE UPDATE ON query_meta.operation FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+
+
 comment on table query_meta.operation is 'The operation that has been performed by the user';
 comment on column query_meta.operation.id is 'Auto generated id of for the operation';
 comment on column query_meta.operation.name is 'Name of the operation as given by the user';
@@ -356,11 +355,14 @@ create table query_meta.operation_tags(
     id serial primary key not null,
     operation_id integer not null references query_meta.theme(id) on update cascade on delete restrict,
     tags text not null,
-    created_on timestamp not null default now()
+    created_on timestamp not null default now(),
+	updated_on timestamp
 );
 
 drop index query_meta.tags_search_index;
 create index query_tags_search_index on query_meta.operation_tags(lower(tags));
+
+CREATE TRIGGER update_op_tags_modtime BEFORE UPDATE ON query_meta.operation_tags FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
 
 comment on table query_meta.operation_tags is 'Holds list of tags searchable to link to list of operations performed by other users';
 
@@ -380,9 +382,12 @@ create table query_meta.operation_steps(
     description text,
     query text,
     created_on timestamp not null default now(),
+	updated_on timestamp,
     UNIQUE(operation_id,step_id)
 
 );
+
+CREATE TRIGGER update_op_steps_modtime BEFORE UPDATE ON query_meta.operation_steps FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
 
 comment on table query_meta.operation_steps is 'The steps that have been taken to come up with a final operation';
 comment on column query_meta.operation_steps.id is 'Auto generated ID for this table';
@@ -404,11 +409,10 @@ create table query_meta.reviews(
     reviewer integer not null references user_mgnt.auth_user(id),
     rating smallint not null default 0 check (((rating < 6) AND (rating > 0))),
     comment text,
-    create_on timestamp default now()
-
+    created_on timestamp not null default now(),
+	updated_on timestamp
 );
 
+CREATE TRIGGER update_reviews_modtime BEFORE UPDATE ON query_meta.reviews FOR EACH ROW EXECUTE PROCEDURE  updated_on_column_updater();
+
 comment on table query_meta.reviews is 'Contains the reviews on operations that has been added by other users';
-
-
-

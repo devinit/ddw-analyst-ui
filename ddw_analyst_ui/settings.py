@@ -99,10 +99,8 @@ WSGI_APPLICATION = 'ddw_analyst_ui.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'analyst_ui',
         'USER': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': 5432,
     }
 }
 
