@@ -1,7 +1,7 @@
 from knox.views import LoginView as KnoxLoginView
 from rest_framework.authentication import BasicAuthentication
-from core.models import Tag
-from core.serializers import TagSerializer, UserSerializer
+from core.models import Tag, Source
+from core.serializers import TagSerializer, UserSerializer, SourceSerializer
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
 from core.permissions import IsOwnerOrReadOnly
@@ -40,6 +40,25 @@ class TagDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
+
+class SourceList(generics.ListCreateAPIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    queryset = Source.objects.all()
+    serializer_class = SourceSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class SourceDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    queryset = Source.objects.all()
+    serializer_class = SourceSerializer
 
 
 class LoginView(KnoxLoginView):

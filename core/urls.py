@@ -13,4 +13,6 @@ urlpatterns = [
     path('users/<int:pk>/', core_views.UserDetail.as_view()),
     path('tags/', core_views.TagList.as_view()),
     path('tags/<int:pk>/', core_views.TagDetail.as_view()),
+    path('sources/', core_views.SourceList.as_view()),
+    path('sourcess/<int:pk>/', core_views.SourceDetail.as_view()),
 ]
