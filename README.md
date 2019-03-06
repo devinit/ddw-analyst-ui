@@ -58,3 +58,16 @@ This is set up to run with [Cypress](https://www.cypress.io/), and only locally 
 
 1. Setup test users as specified in the `frontend/cypress/fixtures/users.json` file, with the password as the email
 2. Run `npm run cy:run` for headless tests and `npm run cy:open` for interactive tests in a browser.
+
+### Postman Setup for API Testing
+
+If you're using Postman for testing the REST api, you can use the following setup:
+
+1. Make sure you have an environment set for your collection.
+2. `POST` to `http://localhost:8000/api/auth/login/` with `Basic Auth` and the Username and Password.
+3. Paste this code in `Tests` which will save the token to the environment.
+```
+var jsonData = JSON.parse(responseBody);
+postman.setEnvironmentVariable("token", jsonData.token);
+```
+4. In the Headers of your subsequent posts, send the Header `Authorization: Token {{token}}`
