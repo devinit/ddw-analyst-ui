@@ -144,6 +144,7 @@ class AuditLogEntry(models.Model):
     )
 
     timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     action = models.PositiveSmallIntegerField(choices=action_choices, blank=True, null=True)
     object_id = models.BigIntegerField(blank=True, null=True)
     object_str = models.CharField(max_length=255)
