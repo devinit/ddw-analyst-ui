@@ -30,13 +30,13 @@ class ReviewSerializer(serializers.ModelSerializer):
 class OperationSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     theme = serializers.ReadOnlyField(source='theme.name')
-    tag_set = TagSerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
     operationstep_set = OperationStepSerializer(many=True)
     review_set = ReviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = Operation
-        fields = ('pk', 'description', 'operation_query', 'theme', 'sample_output_path', 'tag_set', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'description', 'operation_query', 'theme', 'sample_output_path', 'tags', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
 
 
 class ThemeSerializer(serializers.ModelSerializer):
@@ -92,6 +92,7 @@ class UpdateHistorySerializer(serializers.ModelSerializer):
 class SourceSerializer(serializers.ModelSerializer):
     sourcecolumnmap_set = SourceColumnMapSerializer(many=True, read_only=True)
     updatehistory_set = UpdateHistorySerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
 
     class Meta:
         model = Source
@@ -111,5 +112,6 @@ class SourceSerializer(serializers.ModelSerializer):
             'created_on',
             'updated_on',
             'sourcecolumnmap_set',
-            'updatehistory_set'
+            'updatehistory_set',
+            'tags'
         )

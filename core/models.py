@@ -95,6 +95,7 @@ class Source(BaseEntity):
     storage_type = models.TextField(blank=True, null=True)
     active_mirror_name = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+    tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return "{} from {}".format(self.indicator_acronym, self.source_acronym)
