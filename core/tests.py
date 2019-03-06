@@ -3,14 +3,14 @@ from django.contrib.auth.models import User
 from core.models import Tag, AuditLogEntry
 from rest_framework.test import APIClient
 
-TEST_ADMIN_USER = "test_user"
-TEST_ADMIN_PASS = "test_password"
+TEST_USER = "test_user"
+TEST_PASS = "test_password"
 
 
 class TestAuditLog(TestCase):
     """Test case class for testing functionality of audit log"""
     def setUp(self):
-        self.user = User.objects.create_superuser(TEST_ADMIN_USER, 'test@test.test', TEST_ADMIN_PASS)
+        self.user = User.objects.create_user(TEST_USER, 'test@test.test', TEST_PASS)
 
     def test_increment_audit_log(self):
         initial_audit_count = AuditLogEntry.objects.count()
@@ -22,7 +22,7 @@ class TestAuditLog(TestCase):
 class TestRestFramework(TestCase):
     """Test case class for testing functionality of REST framework"""
     def setUp(self):
-        self.user = User.objects.create_superuser(TEST_ADMIN_USER, 'test@test.test', TEST_ADMIN_PASS)
+        self.user = User.objects.create_superuser(TEST_USER, 'test@test.test', TEST_PASS)
         self.user_tag = Tag.objects.create(name="user_tag", user=self.user)
         self.not_user_tag = Tag.objects.create(name="not_user_tag")
 
