@@ -15,6 +15,7 @@ interface MainLayoutProps extends RouteComponentProps<{}> {
 
 interface MainLayoutState {
   loading: boolean;
+  activeRoute: string;
 }
 
 export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
@@ -22,7 +23,8 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
     loading: true
   };
   state: MainLayoutState = {
-    loading: this.props.loading
+    loading: this.props.loading,
+    activeRoute: this.props.location.pathname
   };
 
   render() {
@@ -52,11 +54,17 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
             </Sidebar.Content>
 
             <Sidebar.Content>
-              <Sidebar.Item active>
-                <Sidebar.Link to="/" single icon="home" textNormal="Home"/>
+              <Sidebar.Item active={ this.state.activeRoute === '/' }>
+                <Sidebar.Link to="/" single icon="home" textNormal="Home" onClick={ this.setActiveRoute }/>
               </Sidebar.Item>
-              <Sidebar.Item>
-                <Sidebar.Link to="/sources" single icon="storage" textNormal="Data Sources"/>
+              <Sidebar.Item active={ this.state.activeRoute === '/sources/' }>
+                <Sidebar.Link
+                  to="/sources/"
+                  single
+                  icon="storage"
+                  textNormal="Data Sources"
+                  onClick={ this.setActiveRoute }
+                />
               </Sidebar.Item>
             </Sidebar.Content>
           </Sidebar>
@@ -66,6 +74,7 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
               <NavbarMinimise/>
               <Navbar.Brand href="/">
                 <Route key="home" path="/" exact component={ () => <span>Home</span> }/>
+                <Route key="home" path="/sources" exact component={ () => <span>Data Sources</span> }/>
               </Navbar.Brand>
             </div>
 
@@ -138,5 +147,9 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
   private clearStorageAndGoToLogin = () => {
     clearStorage();
     this.props.history.push('/login');
+  }
+
+  private setActiveRoute = (activeRoute: string) => {
+    this.setState({ activeRoute });
   }
 }

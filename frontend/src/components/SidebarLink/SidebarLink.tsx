@@ -9,7 +9,7 @@ export interface SidebarLinkProps extends RouteComponentProps<{}> {
   textNormal?: string;
   caret?: boolean;
   single?: boolean;
-  onClick?: () => void;
+  onClick?: (to: string) => void;
 }
 
 class SidebarLink extends React.Component<SidebarLinkProps> {
@@ -51,8 +51,9 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
   private onClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
     if (this.props.onClick) {
-      this.props.onClick();
-    } else if (this.props.to.indexOf('#') === -1) {
+      this.props.onClick(this.props.to);
+    }
+    if (this.props.to.indexOf('#') === -1) {
       this.props.history.push(this.props.to);
     }
   }
