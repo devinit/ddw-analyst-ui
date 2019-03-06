@@ -59,10 +59,12 @@ class SectorSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     tag_set = TagSerializer(many=True, read_only=True)
+    operation_set = OperationSerializer(many=True, read_only=True)
+    review_set = ReviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'tag_set')
+        fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set')
 
 
 class SourceColumnMapSerializer(serializers.ModelSerializer):
