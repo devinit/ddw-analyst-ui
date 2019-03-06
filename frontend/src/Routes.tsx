@@ -7,7 +7,7 @@ export const Routes = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/login" component={ Login } />
-      <Route exact path="/" component={ MainLayout } />
+      <Route path="/" component={ MainLayout } />
     </Switch>
   </BrowserRouter>
 );

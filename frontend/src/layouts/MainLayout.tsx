@@ -5,6 +5,7 @@ import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-
 import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
+import { DataSources } from '../pages/DataSources';
 import { Home } from '../pages/Home';
 import { api, clearStorage, getAPIToken } from '../utils';
 
@@ -54,6 +55,9 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
               <Sidebar.Item active>
                 <Sidebar.Link to="/" single icon="home" textNormal="Home"/>
               </Sidebar.Item>
+              <Sidebar.Item>
+                <Sidebar.Link to="/sources" single icon="storage" textNormal="Data Sources"/>
+              </Sidebar.Item>
             </Sidebar.Content>
           </Sidebar>
 
@@ -92,6 +96,7 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
           <AdminLayout.Content>
             <Switch>
               <Route key="home" path="/" exact component={ Home }/>
+              <Route key="home" path="/sources" exact component={ DataSources }/>
             </Switch>
           </AdminLayout.Content>
         </AdminLayout>
