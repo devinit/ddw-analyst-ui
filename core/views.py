@@ -1,4 +1,5 @@
 from knox.views import LoginView as KnoxLoginView
+from knox.auth import TokenAuthentication
 from rest_framework.authentication import BasicAuthentication
 from core.models import Tag, Source
 from core.serializers import TagSerializer, UserSerializer, SourceSerializer
@@ -8,7 +9,7 @@ from core.permissions import IsOwnerOrReadOnly
 
 
 class UserList(generics.ListAPIView):
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = User.objects.all()
@@ -16,7 +17,7 @@ class UserList(generics.ListAPIView):
 
 
 class UserDetail(generics.RetrieveAPIView):
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = User.objects.all()
@@ -24,7 +25,7 @@ class UserDetail(generics.RetrieveAPIView):
 
 
 class TagList(generics.ListCreateAPIView):
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Tag.objects.all()
@@ -35,7 +36,7 @@ class TagList(generics.ListCreateAPIView):
 
 
 class TagDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Tag.objects.all()
@@ -43,7 +44,7 @@ class TagDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class SourceList(generics.ListCreateAPIView):
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Source.objects.all()
@@ -54,7 +55,7 @@ class SourceList(generics.ListCreateAPIView):
 
 
 class SourceDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Source.objects.all()
