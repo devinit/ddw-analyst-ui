@@ -12,6 +12,7 @@ class BaseEntity(models.Model):
     Gives every other model a field for the date it was created and the date it was updated."""
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         abstract = True
@@ -47,7 +48,6 @@ class Operation(BaseEntity):
     """This is the base model on which a query is built. It stores all of the meta-data for a query."""
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
-    user = models.ForeignKey(User, models.PROTECT, blank=True, null=True)
     operation_query = models.TextField()
     theme = models.ForeignKey(Theme, models.PROTECT)
     sample_output_path = models.TextField(blank=True, null=True)
@@ -76,12 +76,11 @@ class OperationStep(BaseEntity):
 class Review(BaseEntity):
     """A model to allow users to review other queries?"""
     operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
-    reviewer = models.ForeignKey(User, models.PROTECT)
     rating = models.SmallIntegerField()
     comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return "Review of {} by {}".format(self.operation, self.reviewer)
+        return "Review of {} by {}".format(self.operation, self.user)
 
 
 class Source(BaseEntity):
@@ -130,3 +129,38 @@ class UpdateHistory(BaseEntity):
 
     class Meta:
         verbose_name_plural = "Update histories"
+
+
+class AuditLogEntry(models.Model):
+    """Consolidated audit log model. Should keep track of every change on every internal model."""
+    CREATE = 0
+    UPDATE = 1
+    DELETE = 2
+
+    action_choices = (
+        (CREATE, "create"),
+        (UPDATE, "update"),
+        (DELETE, "delete"),
+    )
+
+    timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    action = models.PositiveSmallIntegerField(choices=action_choices, blank=True, null=True)
+    object_id = models.BigIntegerField(blank=True, null=True)
+    object_str = models.CharField(max_length=255)
+    object_ctype = models.CharField(max_length=255)
+
+    def __str__(self):
+        if self.action == AuditLogEntry.CREATE:
+            fstring = "Created {}: {}"
+        elif self.action == AuditLogEntry.UPDATE:
+            fstring = "Updated {}: {}"
+        elif self.action == AuditLogEntry.DELETE:
+            fstring = "Deleted {}: {}"
+        else:
+            fstring = "Logged {}: {}"
+
+        return fstring.format(self.object_ctype, self.object_str)
+
+    class Meta:
+        verbose_name_plural = "Audit log entries"
