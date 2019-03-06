@@ -31,7 +31,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
 5. For additional users, edit script **analyst_ui_users.sql** adding the username that you need
 6. Run script to grant permissions to all the schemas and tables of analyst_ui
-7. You can load test data from a fixture like so `python manage.py loaddata test_data` `python manage.py loaddata --database=datasets test_datasets`
+7. Follow the steps under the virtualenv section below to intergrate with your local environment.
 
 ### virtualenv - development
 
@@ -46,7 +46,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 2. Activate & enter virtualenv environment `source env/bin/activate`
 3. Install python dependencies `pip install -r requirements.txt`
 4. Migrate the database. `python manage.py migrate`
-5. Load test data from a fixture like so `python manage.py loaddata test_data`
+5. Load test data from a fixture like so `python manage.py loaddata test_data` `python manage.py loaddata --database=datasets test_datasets`
 6. Create a superuser. `python manage.py createsuperuser`
 7. Install frontend dependencies `npm install`
 8. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
