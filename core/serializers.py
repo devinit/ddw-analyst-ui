@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Tag, Source, SourceColumnMap, UpdateHistory
+from core.models import Tag, Source, SourceColumnMap, UpdateHistory, Sector, Theme, OperationStep, Operation, Review
 from django.contrib.auth.models import User
 
 
@@ -9,6 +9,52 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('pk', 'name', 'user', 'created_on', 'updated_on')
+
+
+class OperationStepSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = OperationStep
+        fields = ('pk', 'step_id', 'name', 'description', 'query', 'user', 'created_on', 'updated_on')
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = Review
+        fields = ('pk', 'rating', 'comment', 'user', 'created_on', 'updated_on')
+
+
+class OperationSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    theme = serializers.ReadOnlyField(source='theme.name')
+    tag_set = TagSerializer(many=True, read_only=True)
+    operationstep_set = OperationStepSerializer(many=True)
+    review_set = ReviewSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Operation
+        fields = ('pk', 'description', 'operation_query', 'theme', 'sample_output_path', 'tag_set', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
+
+
+class ThemeSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    operation_set = OperationSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Theme
+        fields = ('pk', 'sector', 'name', 'user', 'created_on', 'updated_on')
+
+
+class SectorSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    theme_set = ThemeSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Sector
+        fields = ('pk', 'name', 'description', 'theme_set', 'user', 'created_on', 'updated_on')
 
 
 class UserSerializer(serializers.ModelSerializer):
