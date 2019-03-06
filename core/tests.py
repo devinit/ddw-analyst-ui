@@ -22,7 +22,7 @@ class TestAuditLog(TestCase):
 class TestRestFramework(TestCase):
     """Test case class for testing functionality of REST framework"""
     def setUp(self):
-        self.user = User.objects.create_superuser(TEST_USER, 'test@test.test', TEST_PASS)
+        self.user = User.objects.create_user(TEST_USER, 'test@test.test', TEST_PASS)
         self.user_tag = Tag.objects.create(name="user_tag", user=self.user)
         self.not_user_tag = Tag.objects.create(name="not_user_tag")
 
