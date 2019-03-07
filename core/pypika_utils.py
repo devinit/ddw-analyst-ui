@@ -37,6 +37,7 @@ class QueryBuilder:
         for k, v in filters.items():
             self.current_query = self.current_query.where(getattr(self.current_dataset, k) == v)
 
+        self.current_dataset = self.current_query
         return self
 
     def transform(self):
