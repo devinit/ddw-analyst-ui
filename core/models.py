@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from core.pypika_utils import QueryBuilder
 
 # Create your models here.
 
@@ -57,6 +58,34 @@ class Operation(BaseEntity):
     def __str__(self):
         return self.name
 
+    def build_query(self):
+        return QueryBuilder(self).get_sql()
+
+    def fetch_data(self):
+        pass  # Psycopg2 stuff here
+
+
+class Source(BaseEntity):
+    """Metadata data source."""
+    indicator = models.TextField()
+    indicator_acronym = models.CharField(max_length=10, blank=True, null=True)
+    source = models.TextField()
+    source_acronym = models.CharField(max_length=10, blank=True, null=True)
+    source_url = models.TextField(blank=True, null=True)
+    download_path = models.TextField(blank=True, null=True)
+    last_updated_on = models.DateTimeField(auto_now=True)
+    schema = models.TextField(blank=True, null=True)
+    storage_type = models.TextField(blank=True, null=True)
+    active_mirror_name = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    tags = models.ManyToManyField(Tag)
+
+    def __str__(self):
+        return "{} from {}".format(self.indicator_acronym, self.source_acronym)
+
+    def sql_table(self):
+        return "{}.{}".format(self.schema, self.active_mirror_name)
+
 
 class OperationStep(BaseEntity):
     """These are the individual steps in a query."""
@@ -64,7 +93,9 @@ class OperationStep(BaseEntity):
     step_id = models.SmallIntegerField()
     name = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
-    query = models.TextField(blank=True, null=True)
+    query_func = models.TextField(blank=True, null=True)
+    query_kwargs = models.TextField(blank=True, null=True)
+    source = models.ForeignKey(Source, models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -81,24 +112,6 @@ class Review(BaseEntity):
 
     def __str__(self):
         return "Review of {} by {}".format(self.operation, self.user)
-
-
-class Source(BaseEntity):
-    """Metadata data source."""
-    indicator = models.TextField()
-    indicator_acronym = models.CharField(max_length=10, blank=True, null=True)
-    source = models.TextField()
-    source_acronym = models.CharField(max_length=10, blank=True, null=True)
-    source_url = models.TextField(blank=True, null=True)
-    download_path = models.TextField(blank=True, null=True)
-    last_updated_on = models.DateTimeField(auto_now=True)
-    storage_type = models.TextField(blank=True, null=True)
-    active_mirror_name = models.TextField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    tags = models.ManyToManyField(Tag)
-
-    def __str__(self):
-        return "{} from {}".format(self.indicator_acronym, self.source_acronym)
 
 
 class SourceColumnMap(BaseEntity):

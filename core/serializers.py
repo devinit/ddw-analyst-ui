@@ -11,12 +11,71 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('pk', 'name', 'user', 'created_on', 'updated_on')
 
 
+class SourceColumnMapSerializer(serializers.ModelSerializer):
+    source = serializers.ReadOnlyField(source='source.indicator')
+
+    class Meta:
+        model = SourceColumnMap
+        fields = ('pk', 'source', 'name', 'description', 'source_name')
+
+
+class UpdateHistorySerializer(serializers.ModelSerializer):
+    source = serializers.ReadOnlyField(source='source.indicator')
+
+    class Meta:
+        model = UpdateHistory
+        fields = (
+            'source',
+            'history_table',
+            'is_major_release',
+            'released_on',
+            'release_description',
+            'invalidated_on',
+            'invalidation_description'
+        )
+
+
+class SourceSerializer(serializers.ModelSerializer):
+    sourcecolumnmap_set = SourceColumnMapSerializer(many=True, read_only=True)
+    updatehistory_set = UpdateHistorySerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
+    columns = sourcecolumnmap_set
+    update_history = updatehistory_set
+
+    class Meta:
+        model = Source
+        fields = (
+            'pk',
+            'indicator',
+            'indicator_acronym',
+            'source',
+            'source_acronym',
+            'source_url',
+            'download_path',
+            'last_updated_on',
+            'storage_type',
+            'active_mirror_name',
+            'description',
+            'user',
+            'created_on',
+            'updated_on',
+            'sourcecolumnmap_set',
+            'updatehistory_set',
+            'tags',
+            'schema'
+            # alias fields
+            'columns',
+            'update_history'
+        )
+
+
 class OperationStepSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
+    source = SourceSerializer()
 
     class Meta:
         model = OperationStep
-        fields = ('pk', 'step_id', 'name', 'description', 'query', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'step_id', 'name', 'description', 'query_func', 'query_kwargs', 'source', 'user', 'created_on', 'updated_on')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -72,59 +131,3 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set', 'is_superuser', 'user_permissions')
-
-
-class SourceColumnMapSerializer(serializers.ModelSerializer):
-    source = serializers.ReadOnlyField(source='source.indicator')
-
-    class Meta:
-        model = SourceColumnMap
-        fields = ('pk', 'source', 'name', 'description', 'source_name')
-
-
-class UpdateHistorySerializer(serializers.ModelSerializer):
-    source = serializers.ReadOnlyField(source='source.indicator')
-
-    class Meta:
-        model = UpdateHistory
-        fields = (
-            'source',
-            'history_table',
-            'is_major_release',
-            'released_on',
-            'release_description',
-            'invalidated_on',
-            'invalidation_description'
-        )
-
-
-class SourceSerializer(serializers.ModelSerializer):
-    sourcecolumnmap_set = SourceColumnMapSerializer(many=True, read_only=True)
-    updatehistory_set = UpdateHistorySerializer(many=True, read_only=True)
-    tags = TagSerializer(many=True, read_only=True)
-    columns = sourcecolumnmap_set
-    update_history = updatehistory_set
-
-    class Meta:
-        model = Source
-        fields = (
-            'pk',
-            'indicator',
-            'indicator_acronym',
-            'source',
-            'source_acronym',
-            'source_url',
-            'download_path',
-            'last_updated_on',
-            'storage_type',
-            'active_mirror_name',
-            'description',
-            'created_on',
-            'updated_on',
-            'sourcecolumnmap_set',
-            'updatehistory_set',
-            'tags',
-            # alias fields
-            'columns',
-            'update_history'
-        )
