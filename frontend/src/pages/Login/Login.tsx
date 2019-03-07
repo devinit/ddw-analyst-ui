@@ -1,12 +1,18 @@
+import { RouteComponentProps } from 'react-router-dom';
 import { FormikActions } from 'formik/dist/types';
-import { css } from 'glamor';
 import { Base64 } from 'js-base64';
+import * as localForage from 'localforage';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { RouteComponentProps } from 'react-router-dom';
+import { MapDispatchToProps, connect } from 'react-redux';
+import { css } from 'glamor';
+import { bindActionCreators } from 'redux';
 import { Credentials, LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
-import { api, getAPIToken, setAPIToken } from '../../utils';
+import { api, localForageKeys } from '../../utils';
+import * as UserActions from '../../actions/user';
+import * as TokenActions from '../../actions/token';
+import { User } from '../../reducers/user';
 
 interface LoginState {
   showForm: boolean;
@@ -14,7 +20,10 @@ interface LoginState {
   alert?: string;
 }
 
-export class Login extends React.Component<RouteComponentProps<{}>, LoginState> {
+interface ActionProps { actions: typeof UserActions & typeof TokenActions; }
+type LoginProps = RouteComponentProps<{}> & ActionProps;
+
+class Login extends React.Component<LoginProps, LoginState> {
   private headerStyles = css({
     backgroundSize: 'cover',
     backgroundPosition: 'top center'
@@ -43,12 +52,16 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
 
   componentDidMount() {
     this.removeNavOpenClass();
-    getAPIToken()
-      .then(() => this.props.history.push('/'))
+    localForage.getItem<string>(localForageKeys.API_KEY)
+      .then((token) => {
+        if (token) {
+          this.props.history.push('/');
+        } else {
+          this.onNotAuthenticated();
+        }
+      })
       .catch(() => {
-        setTimeout(() => {
-          this.setState({ showForm: true, loading: false });
-        }, 700);
+        this.onNotAuthenticated();
       });
   }
 
@@ -58,6 +71,12 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     return <LoginForm showForm={ this.state.showForm } onSuccess={ this.onLogin } alert={ this.state.alert }/>;
+  }
+
+  private onNotAuthenticated = () => {
+    setTimeout(() => {
+      this.setState({ showForm: true, loading: false });
+    }, 700);
   }
 
   private onLogin = ({ username, password }: Credentials, _formikActions: FormikActions<Credentials>) => {
@@ -71,15 +90,22 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
       }
     })
     .then(response => response.json())
-    .then((response: { token?: string, detail?: string }) => {
-      if (response.token) {
-        setAPIToken(response.token);
+    .then(({ detail, token, user }: { token?: string, detail?: string, user?: User }) => {
+      if (token && user) {
+        this.storeTokenPlusUser(token, user);
         this.props.history.push('/');
-      } else if (response.detail) {
-        this.setState({ alert: response.detail });
+      } else if (detail) {
+        this.setState({ alert: detail });
       }
     })
     .catch(console.log); // tslint:disable-line
+  }
+
+  private storeTokenPlusUser(token: string, { id, username }: User) {
+    localForage.setItem(localForageKeys.API_KEY, token);
+    localForage.setItem(localForageKeys.USER, { id, username });
+    this.props.actions.setToken(token);
+    this.props.actions.setUser({ id, username });
   }
 
   private removeNavOpenClass() {
@@ -87,3 +113,10 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
       .forEach(element => element.classList.remove('nav-open'));
   }
 }
+
+const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
+  actions: bindActionCreators({ ...UserActions, ...TokenActions }, dispatch)
+});
+const ReduxConnector = connect(null, mapDispatchToProps)(Login);
+
+export { ReduxConnector as Login };

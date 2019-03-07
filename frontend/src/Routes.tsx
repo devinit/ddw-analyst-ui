@@ -1,13 +1,17 @@
 import * as React from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Login } from './pages/Login';
 import { MainLayout } from './layouts/MainLayout';
+import { Login } from './pages/Login';
+import { store } from './store';
 
 export const Routes = () => (
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/login" component={ Login } />
-      <Route path="/" component={ MainLayout } />
-    </Switch>
-  </BrowserRouter>
+  <Provider store={ store }>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/login" component={ Login } />
+        <Route path="/" component={ MainLayout } />
+      </Switch>
+    </BrowserRouter>
+  </Provider>
 );
