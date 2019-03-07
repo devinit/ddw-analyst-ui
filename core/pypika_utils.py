@@ -1,17 +1,17 @@
 from pypika import functions as pypika_fn
-from pypika import Table, Tables, PostgreSQLQuery as Query
+from pypika import Table, PostgreSQLQuery as Query
 import json
 
 
 class QueryBuilder:
     def __init__(self, operation):
-        query_steps = operation.operationsteps_set
-        initial_dataset = query_steps.first().source.sql_table
+        query_steps = operation.operationstep_set
+        initial_dataset = query_steps.first().source.sql_table()
         self.current_dataset = Table(initial_dataset)
         self.current_query = Query.from_(self.current_dataset)
-        for query_step in query_steps:
+        for query_step in query_steps.all():
             query_func = getattr(self, query_step.query_func)
-            query_kwargs_json = json.load(query_step.query_kwargs)
+            query_kwargs_json = json.loads(query_step.query_kwargs)
             self = query_func(**query_kwargs_json)
 
     def aggregate(self, group_by, agg_func_name, operational_column):
@@ -31,12 +31,11 @@ class QueryBuilder:
         return self
 
     def filter(self, filters):
-        #a =json.loads(filters)
-        self.current_query  = Query.from_(self.current_dataset).select(self.current_dataset.star)\
-        .where(self.current_dataset.name == name)
+        self.current_query = Query.from_(self.current_dataset)
+        self.select([self.current_dataset.star])
 
-        for k,v in filters.items():
-            self.current_query = self.current_query.where(getattr(self.current_dataset,k) == v)
+        for k, v in filters.items():
+            self.current_query = self.current_query.where(getattr(self.current_dataset, k) == v)
 
         return self
 
@@ -44,11 +43,11 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
         return self
 
-    def join(self,table_name,join_on):
+    def join(self, table_name, join_on):
         table1 = self.current_dataset
         table2 = Table(table_name)
         q = self.current_query.join(table2).on_field(*join_on).select(
-            table1.star,table2.star
+            table1.star, table2.star
         )
 
         self.current_query = q
