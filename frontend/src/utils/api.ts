@@ -1,6 +1,7 @@
 export const api = {
   routes: {
     LOGIN: '/api/auth/login/',
-    LOGOUT: '/api/auth/logout/'
+    LOGOUT: '/api/auth/logout/',
+    USERS: '/api/users/'
   }
 };

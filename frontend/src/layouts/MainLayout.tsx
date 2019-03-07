@@ -1,24 +1,34 @@
+import { AdminLayout } from '../components/AdminLayout';
 import axios, { AxiosResponse } from 'axios';
 import * as React from 'react';
 import { Dropdown, Nav, Navbar } from 'react-bootstrap';
+import { MapDispatchToProps, connect } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { AdminLayout } from '../components/AdminLayout';
+import { bindActionCreators } from 'redux';
+import * as TokenActions from '../actions/token';
+import * as UserActions from '../actions/user';
+import * as localForage from 'localforage';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { DataSources } from '../pages/DataSources';
 import { Home } from '../pages/Home';
-import { api, clearStorage, getAPIToken } from '../utils';
+import { TokenState } from '../reducers/token';
+import { User, UserState } from '../reducers/user';
+import { ReduxStore } from '../store';
+import { api, localForageKeys } from '../utils';
 
-interface MainLayoutProps extends RouteComponentProps<{}> {
+interface ActionProps { actions: typeof UserActions & typeof TokenActions; }
+interface ComponentProps {
   loading: boolean;
 }
+type MainLayoutProps = ComponentProps & RouteComponentProps<{}> & ActionProps;
 
 interface MainLayoutState {
   loading: boolean;
   activeRoute: string;
 }
 
-export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
+class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   static defaultProps: Partial<MainLayoutProps> = {
     loading: true
   };
@@ -73,8 +83,8 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
             <div className="navbar-wrapper">
               <NavbarMinimise/>
               <Navbar.Brand href="/">
-                <Route key="home" path="/" exact component={ () => <span>Home</span> }/>
-                <Route key="home" path="/sources" exact component={ () => <span>Data Sources</span> }/>
+                <Route path="/" exact component={ () => <span>Home</span> }/>
+                <Route path="/sources" exact component={ () => <span>Data Sources</span> }/>
               </Navbar.Brand>
             </div>
 
@@ -104,8 +114,8 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
 
           <AdminLayout.Content>
             <Switch>
-              <Route key="home" path="/" exact component={ Home }/>
-              <Route key="home" path="/sources" exact component={ DataSources }/>
+              <Route path="/" exact component={ Home }/>
+              <Route path="/sources" exact component={ DataSources }/>
             </Switch>
           </AdminLayout.Content>
         </AdminLayout>
@@ -114,13 +124,24 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
   }
 
   componentDidMount() {
-    getAPIToken()
-      .then(() => this.setState({ loading: false }))
-      .catch(() => this.props.history.push('/login'));
+    Promise.all([
+      localForage.getItem<string>(localForageKeys.API_KEY),
+      localForage.getItem<User>(localForageKeys.USER)
+    ])
+      .then(([ token, user ]) => {
+        if (token && user) {
+          this.validateToken(token, user);
+        } else {
+          this.clearStorageAndGoToLogin();
+        }
+      })
+      .catch(() => {
+        this.clearStorageAndGoToLogin();
+      });
   }
 
   private onLogOut = () => {
-    getAPIToken()
+    localForage.getItem<string>(localForageKeys.API_KEY)
       .then(token => {
         if (token) {
           axios.request({
@@ -144,8 +165,29 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
       .catch(this.clearStorageAndGoToLogin);
   }
 
+  private validateToken(token: string, user: User) {
+    axios.request({
+      url: `${api.routes.USERS}${user.id}`,
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `token ${token}`
+      }
+    })
+    .then(({ status, data }: AxiosResponse<User>) => {
+      if (status === 200 && data) {
+        this.props.actions.setToken(token);
+        this.props.actions.setUser({ id: data.id, username: data.username });
+        this.setState({ loading: false });
+      } else {
+        this.clearStorageAndGoToLogin();
+      }
+    })
+    .catch(this.clearStorageAndGoToLogin); //tslint:disable-line
+  }
+
   private clearStorageAndGoToLogin = () => {
-    clearStorage();
+    localForage.clear();
     this.props.history.push('/login');
   }
 
@@ -153,3 +195,14 @@ export class MainLayout extends React.Component<MainLayoutProps, MainLayoutState
     this.setState({ activeRoute });
   }
 }
+
+const mapStateToProps = (reduxStore: ReduxStore): { user?: UserState, token?: TokenState } => ({
+  user: reduxStore.get('user') as UserState,
+  token: reduxStore.get('token') as TokenState
+});
+const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dispatch): ActionProps => ({
+  actions: bindActionCreators({ ...UserActions, ...TokenActions }, dispatch)
+});
+const ReduxConnector = connect(mapStateToProps, mapDispatchToProps)(MainLayout);
+
+export { ReduxConnector as MainLayout };
