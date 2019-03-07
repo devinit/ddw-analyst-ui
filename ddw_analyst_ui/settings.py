@@ -54,6 +54,10 @@ REST_FRAMEWORK = {
     ],
 }
 
+REST_KNOX = {
+    'USER_SERIALIZER': 'core.serializers.UserSerializer',
+}
+
 SOCIAL_AUTH_RAISE_EXCEPTIONS = True
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '32052845450-1mv756tj0in5kd44kjhfhc8d8938p620.apps.googleusercontent.com'
