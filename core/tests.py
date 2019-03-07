@@ -7,6 +7,15 @@ TEST_USER = "test_user"
 TEST_PASS = "test_password"
 
 
+class TestFixtureLoad(TestCase):
+    fixtures = ['test_data']
+
+    def test_tag_exists_after_load(self):
+        t = Tag.objects.get(pk=1)
+        self.assertEquals(t.name, 'oda')
+
+
+
 class TestAuditLog(TestCase):
     """Test case class for testing functionality of audit log"""
     def setUp(self):
