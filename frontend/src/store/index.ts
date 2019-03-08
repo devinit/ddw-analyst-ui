@@ -2,15 +2,18 @@ import { applyMiddleware, createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
+import { SourcesState, sourcesReducer } from '../reducers/sources';
 import { TokenState, tokenReducer } from '../reducers/token';
 import { UserState, userReducer } from '../reducers/user';
+import rootSaga from '../sagas';
 
 const loggerMiddleware = createLogger();
 const sagaMiddleware = createSagaMiddleware();
 
 const structuredReducers = {
   user: userReducer,
-  token: tokenReducer
+  token: tokenReducer,
+  sources: sourcesReducer
 };
 const reducers = combineReducers(structuredReducers);
 
@@ -19,9 +22,12 @@ export const store = createStore(
   applyMiddleware(sagaMiddleware, loggerMiddleware)
 );
 
+sagaMiddleware.run(rootSaga);
+
 export interface StoreState {
   user: UserState;
   token: TokenState;
+  sources: SourcesState;
 }
 
 export type ReduxStore = Map<keyof StoreState, StoreState[keyof StoreState]>;

@@ -110,7 +110,6 @@ class SourceSerializer(serializers.ModelSerializer):
             'storage_type',
             'active_mirror_name',
             'description',
-            'user',
             'created_on',
             'updated_on',
             'sourcecolumnmap_set',

@@ -2,6 +2,7 @@ export const api = {
   routes: {
     LOGIN: '/api/auth/login/',
     LOGOUT: '/api/auth/logout/',
-    USERS: '/api/users/'
+    USERS: '/api/users/',
+    SOURCES: '/api/sources/'
   }
 };
