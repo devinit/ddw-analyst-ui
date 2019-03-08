@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'frontend',
     'core',
+    'data',
     'rest_framework',
     'rest_framework.authtoken',
     'social_django',
@@ -104,9 +105,18 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'analyst_ui',
         'USER': 'postgres',
+    },
+    'datasets': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'OPTIONS': {
+            'options': '-c search_path=repo'  # Add future non-public schemas here
+        },
+        'NAME': 'analyst_ui',
+        'USER': 'postgres',
     }
 }
 
+DATABASE_ROUTERS = ['data.db_router.DataRouter', 'core.db_router.CoreRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

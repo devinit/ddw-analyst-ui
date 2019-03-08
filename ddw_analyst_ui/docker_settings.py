@@ -11,5 +11,16 @@ DATABASES = {
         'PASSWORD': 'analyst_ui_pass',
         'HOST': 'db',
         'PORT': 5432,
+    },
+    'datasets': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'analyst_ui',
+        'USER': 'analyst_ui_user',
+        'PASSWORD': 'analyst_ui_pass',
+        'HOST': 'db',
+        'PORT': 5432,
+        'OPTIONS': {
+            'options': '-c search_path=repo'  # Add future non-public schemas here
+        }
     }
 }
