@@ -30,9 +30,9 @@ class DataRouter:
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
         """
-        Make sure the auth app only appears in the 'datasets'
+        Make sure the data app only appears in the 'datasets'
         database.
         """
-        if app_label == 'core':
+        if app_label == 'data':
             return db == 'datasets'
         return None
