@@ -37,8 +37,9 @@ export interface UpdateHistory {
 }
 interface State {
   loading: boolean;
-  sources: List<Source>;
+  sources: List<SourceMap>;
 }
+export type SourceMap = Map<keyof Source, Source[keyof Source]>;
 export type SourcesState = Map<keyof State, State[keyof State]>;
 
 const prefix = 'sources';
