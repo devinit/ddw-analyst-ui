@@ -48,7 +48,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
     return (
       <BrowserRouter>
         <AdminLayout loading={ this.state.loading }>
-          <Sidebar dataColour="purple" backgroundColour="red">
+          <Sidebar dataColour="danger" backgroundColour="red">
             <Sidebar.Logo>
               <Sidebar.Logo.Item url="/" variation="mini">AI</Sidebar.Logo.Item>
               <Sidebar.Logo.Item url="/">Analyst UI</Sidebar.Logo.Item>
