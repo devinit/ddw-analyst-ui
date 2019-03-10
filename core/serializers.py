@@ -102,6 +102,8 @@ class SourceSerializer(serializers.ModelSerializer):
     sourcecolumnmap_set = SourceColumnMapSerializer(many=True, read_only=True)
     updatehistory_set = UpdateHistorySerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
+    columns = sourcecolumnmap_set
+    update_history = updatehistory_set
 
     class Meta:
         model = Source
@@ -121,5 +123,8 @@ class SourceSerializer(serializers.ModelSerializer):
             'updated_on',
             'sourcecolumnmap_set',
             'updatehistory_set',
-            'tags'
+            'tags',
+            # alias fields
+            'columns',
+            'update_history'
         )
