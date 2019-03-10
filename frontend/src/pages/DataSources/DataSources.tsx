@@ -116,13 +116,13 @@ class DataSources extends React.Component<DataSourcesProps> {
           </div>
           <hr/>
           <div className="font-weight-light">
-            <a href={ source.get('source_url') as string }>
+            <a href={ source.get('source_url') as string } target="_blank">
               <i className="material-icons mr-2">business</i>
               <span className="align-middle">{ source.get('source_url') }</span>
             </a>
           </div>
           <div className="font-weight-light">
-            <a href={ source.get('download_path') as string }>
+            <a href={ source.get('download_path') as string } target="_blank">
               <i className="material-icons mr-2">cloud_download</i>
               <span className="align-middle">{ source.get('download_path') }</span>
             </a>
