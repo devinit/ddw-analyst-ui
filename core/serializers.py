@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core.models import Tag, Source, SourceColumnMap, UpdateHistory, Sector, Theme, OperationStep, Operation, Review
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -57,14 +57,21 @@ class SectorSerializer(serializers.ModelSerializer):
         fields = ('pk', 'name', 'description', 'theme_set', 'user', 'created_on', 'updated_on')
 
 
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = ('name', 'codename')
+
+
 class UserSerializer(serializers.ModelSerializer):
     tag_set = TagSerializer(many=True, read_only=True)
     operation_set = OperationSerializer(many=True, read_only=True)
     review_set = ReviewSerializer(many=True, read_only=True)
+    user_permissions = PermissionSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set')
+        fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set', 'is_superuser', 'user_permissions')
 
 
 class SourceColumnMapSerializer(serializers.ModelSerializer):
