@@ -89,7 +89,12 @@ class DataSources extends React.Component<DataSourcesProps> {
           onClick={ () => this.onRowClick(index) }
         >
           <td>{ index + 1 }</td>
-          <td>{ source.get('indicator') }</td>
+          <td>
+            { source.get('indicator') }
+            <span className="text-uppercase">
+              { ` (${source.get('indicator_acronym')})` }
+            </span>
+          </td>
           <td>{ new Date(source.get('last_updated_on') as string).toDateString() }</td>
         </tr>
       ));
