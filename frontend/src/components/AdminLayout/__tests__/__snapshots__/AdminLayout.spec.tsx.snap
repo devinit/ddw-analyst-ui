@@ -8,7 +8,7 @@ exports[`does not render invalid children 1`] = `
     className="main-panel"
   >
     <div
-      className="content"
+      className="content pt-0"
     >
       <div
         className="container-fluid"
@@ -26,7 +26,7 @@ exports[`renders AdminLayoutContent when one is added as a child 1`] = `
     className="main-panel"
   >
     <div
-      className="content"
+      className="content pt-0"
     >
       <div
         className="container-fluid"
@@ -47,7 +47,7 @@ exports[`renders a Navbar when one is added as a child 1`] = `
       className="navbar navbar-expand navbar-light"
     />
     <div
-      className="content"
+      className="content pt-0"
     >
       <div
         className="container-fluid"
@@ -74,7 +74,7 @@ exports[`renders a Sidebar when one is added as a child 1`] = `
     className="main-panel"
   >
     <div
-      className="content"
+      className="content pt-0"
     >
       <div
         className="container-fluid"
@@ -98,7 +98,7 @@ exports[`renders the layout when not loading 1`] = `
     className="main-panel"
   >
     <div
-      className="content"
+      className="content pt-0"
     >
       <div
         className="container-fluid"
