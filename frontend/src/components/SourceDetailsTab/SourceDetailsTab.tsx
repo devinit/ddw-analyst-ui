@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Nav, Tab, Card } from 'react-bootstrap';
-import { SourceMap } from '../../reducers/sources';
+import { Card, Nav, Tab } from 'react-bootstrap';
+import { ColumnList, SourceMap } from '../../reducers/sources';
+import { SourceColumns } from '../SourceColumns';
 import { SourceMetadata } from '../SourceMetadata';
 
 interface SourceDetailsProps {
@@ -27,7 +28,7 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
                 <SourceMetadata source={ this.props.source }/>
               </Tab.Pane>
               <Tab.Pane eventKey="columns">
-                Columns
+                <SourceColumns columns={ this.props.source.get('columns') as ColumnList }/>
               </Tab.Pane>
             </Tab.Content>
 

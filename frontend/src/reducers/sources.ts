@@ -17,10 +17,10 @@ export interface Source {
   description: string | null;
   created_on: string;
   updated_on: string | null;
-  sourcecolumnmap_set: Columns;
-  updatehistory_set: UpdateHistory;
+  columns: List<ColumnMap>;
+  update_history: List<UpdateHistory>;
 }
-export interface Columns {
+export interface Column {
   pk: number;
   name: string | null;
   description: string | null;
@@ -41,6 +41,8 @@ interface State {
   activeSourceIndex: number;
 }
 export type SourceMap = Map<keyof Source, Source[keyof Source]>;
+export type ColumnList = List<ColumnMap>;
+export type ColumnMap = Map<keyof Column, Column[keyof Column]>;
 export type SourcesState = Map<keyof State, State[keyof State]>;
 
 const prefix = 'sources';
