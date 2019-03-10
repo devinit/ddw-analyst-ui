@@ -19,11 +19,11 @@ interface LoginState {
   loading: boolean;
   alert?: string;
 }
-
-interface ActionProps { actions: typeof UserActions & typeof TokenActions; }
+export type LoginActions = typeof UserActions & typeof TokenActions;
+interface ActionProps { actions: LoginActions; }
 type LoginProps = RouteComponentProps<{}> & ActionProps;
 
-class Login extends React.Component<LoginProps, LoginState> {
+export class Login extends React.Component<LoginProps, LoginState> {
   private headerStyles = css({
     backgroundSize: 'cover',
     backgroundPosition: 'top center'
@@ -117,6 +117,4 @@ class Login extends React.Component<LoginProps, LoginState> {
 const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
   actions: bindActionCreators({ ...UserActions, ...TokenActions }, dispatch)
 });
-const ReduxConnector = connect(null, mapDispatchToProps)(Login);
-
-export { ReduxConnector as Login };
+export default connect(null, mapDispatchToProps)(Login);
