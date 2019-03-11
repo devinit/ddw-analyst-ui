@@ -113,6 +113,9 @@ DATABASES = {
         },
         'NAME': 'analyst_ui',
         'USER': 'postgres',
+        'TEST': {
+            'MIRROR': 'default'
+        }
     }
 }
 

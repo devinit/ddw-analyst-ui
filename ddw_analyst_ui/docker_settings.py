@@ -21,6 +21,9 @@ DATABASES = {
         'PORT': 5432,
         'OPTIONS': {
             'options': '-c search_path=repo'  # Add future non-public schemas here
+        },
+        'TEST': {
+            'MIRROR': 'default'
         }
     }
 }

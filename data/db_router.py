@@ -23,9 +23,8 @@ class DataRouter:
         """
         Allow relations if a model in the data app is involved.
         """
-        if obj1._meta.app_label == 'data' or \
-           obj2._meta.app_label == 'data':
-           return True
+        if obj1._meta.app_label == 'data' or obj2._meta.app_label == 'data':
+            return True
         return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
