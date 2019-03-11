@@ -1,18 +1,29 @@
 from pypika import functions as pypika_fn
 from pypika import Table, PostgreSQLQuery as Query
+import core.const as const
+import re
 import json
 
 
 class QueryBuilder:
+    
     def __init__(self, operation):
         query_steps = operation.operationstep_set
         initial_dataset = query_steps.first().source.sql_table()
+        
+        self.limit_regex = re.compile('LIMIT \d+',re.IGNORECASE)
         self.current_dataset = Table(initial_dataset)
         self.current_query = Query.from_(self.current_dataset)
+
         for query_step in query_steps.all():
             query_func = getattr(self, query_step.query_func)
-            query_kwargs_json = json.loads(query_step.query_kwargs)
-            self = query_func(**query_kwargs_json)
+            kwargs = query_step.query_kwargs
+            if isinstance(kwargs, type(None)):
+                self = query_func()
+            else:
+                query_kwargs_json = json.loads(kwargs)
+                self = query_func(**query_kwargs_json)
+          
 
     def aggregate(self, group_by, agg_func_name, operational_column):
         self.current_query = Query.from_(self.current_dataset)
@@ -60,6 +71,20 @@ class QueryBuilder:
         else:
             self.current_query = self.current_query.select(self.current_dataset.star)
         return self
+    
+    def limit(self,count):
+        if count < 1:
+            count = const.default_limit_count
+        else:
+            pass
+        
+        self.current_query = self.current_query.limit(count)
 
     def get_sql(self):
-        return self.current_query.get_sql()
+        final_query = self.current_query.get_sql()
+        if self.limit_regex.match(final_query):
+            return final_query
+        else:
+            self.current_query = self.current_query.limit(const.default_limit_count)
+            return self.current_query.get_sql()
+
