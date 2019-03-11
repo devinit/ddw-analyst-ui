@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from core.pypika_utils import QueryBuilder
+from data.db_manager import fetch_data
 
 # Create your models here.
 
@@ -61,8 +62,8 @@ class Operation(BaseEntity):
     def build_query(self):
         return QueryBuilder(self).get_sql()
 
-    def fetch_data(self):
-        pass  # Psycopg2 stuff here
+    def query_table(self):
+        return fetch_data(self.build_query())
 
 
 class Source(BaseEntity):
