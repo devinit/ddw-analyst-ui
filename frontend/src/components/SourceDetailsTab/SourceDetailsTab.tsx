@@ -1,9 +1,9 @@
+import { Map } from 'immutable';
 import * as React from 'react';
 import { Card, Nav, Tab } from 'react-bootstrap';
 import { ColumnList, SourceMap, UpdateHistoryList } from '../../reducers/sources';
-import { SourceColumns } from '../SourceColumns';
+import { InfoList, InfoListItems } from '../InfoList';
 import { SourceMetadata } from '../SourceMetadata';
-import { SourceUpdateHistory } from '../SourceUpdateHistory/SourceUpdateHistory';
 
 interface SourceDetailsProps {
   source: SourceMap;
@@ -32,10 +32,18 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
                 <SourceMetadata source={ this.props.source }/>
               </Tab.Pane>
               <Tab.Pane eventKey="columns">
-                <SourceColumns columns={ this.props.source.get('columns') as ColumnList }/>
+                <InfoList
+                  list={ this.getColumns() }
+                  limit={ 10 }
+                  offset={ 0 }
+                />
               </Tab.Pane>
               <Tab.Pane eventKey="history">
-                <SourceUpdateHistory history={ this.props.source.get('update_history') as UpdateHistoryList }/>
+                <InfoList
+                  list={ this.getUpdateHistory() }
+                  limit={ 10 }
+                  offset={ 0 }
+                />
               </Tab.Pane>
             </Tab.Content>
 
@@ -43,5 +51,19 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
         </Card>
       </Tab.Container>
     );
+  }
+
+  private getColumns(): InfoListItems {
+    return (this.props.source.get('columns') as ColumnList).map(column =>
+      Map()
+        .set('caption', column.get('source_name') as string)
+        .set('info', column.get('description') as string)) as InfoListItems;
+  }
+
+  private getUpdateHistory(): InfoListItems {
+    return (this.props.source.get('update_history') as UpdateHistoryList).map(history =>
+      Map()
+        .set('caption', new Date(history.get('released_on') as string).toString())
+        .set('info', history.get('release_description') as string)) as InfoListItems;
   }
 }

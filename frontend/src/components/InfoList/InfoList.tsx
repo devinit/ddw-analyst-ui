@@ -1,36 +1,44 @@
 import * as React from 'react';
 import { Col, OverlayTrigger, Pagination, Popover, Row, Table } from 'react-bootstrap';
-import { ColumnList, ColumnMap } from '../../reducers/sources';
+import { List, Map } from 'immutable';
 
-interface SourceColumnsProps {
-  columns: ColumnList;
+export interface InfoItem {
+  caption: string;
+  info: string;
 }
-interface SourceColumnsState {
+type InfoMap = Map<keyof InfoItem, InfoItem[keyof InfoItem]>;
+export type InfoListItems = List<InfoMap>;
+interface InfoListProps {
+  list: InfoListItems;
+  limit: number;
   offset: number;
-  columns: ColumnList;
+}
+interface InfoListState {
+  offset: number;
+  list: InfoListItems;
   count: number;
   pages: number;
   limit: number;
 }
 
-export class SourceColumns extends React.Component<SourceColumnsProps, SourceColumnsState> {
+export class InfoList extends React.Component<InfoListProps, InfoListState> {
   private limit = 10;
-  private count = this.props.columns.count();
+  private count = this.props.list.count();
   private pages = Math.ceil(this.count / this.limit);
-  state: SourceColumnsState = {
+  state: InfoListState = {
     offset: 0,
     limit: this.limit,
-    columns: this.props.columns.slice(0, this.limit),
-    count: this.props.columns.count(),
-    pages: Math.ceil(this.props.columns.count() / this.limit)
+    list: this.props.list.slice(0, this.limit),
+    count: this.props.list.count(),
+    pages: Math.ceil(this.props.list.count() / this.limit)
   };
 
-  static getDerivedStateFromProps(props: SourceColumnsProps, state: SourceColumnsState) {
-    const count = props.columns.count();
+  static getDerivedStateFromProps(props: InfoListProps, state: InfoListState): Partial<InfoListState> | null { //tslint:disable-line
+    const count = props.list.count();
     if (count !== state.count) {
       return {
         offset: 0,
-        columns: props.columns.slice(0, state.limit),
+        list: props.list.slice(0, state.limit),
         count,
         pages: Math.ceil(count / state.limit)
       };
@@ -45,24 +53,24 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
         <Table size="sm">
           <tbody>
             {
-              this.state.columns.map((column, index) =>
+              this.state.list.map((item, index) =>
                 <tr key={ index }>
-                  <td colSpan={ column.get('description') as string ? 1 : 2 }>
-                    { column.get('source_name') as string }
+                  <td colSpan={ item.get('info') ? 1 : 2 }>
+                    { item.get('caption') }
                   </td>
-                  { this.renderInfo(column) }
+                  { this.renderRow(item) }
                 </tr>
               )
             }
           </tbody>
         </Table>
-        { this.renderPagination(this.props.columns) }
+        { this.renderPagination(this.props.list) }
       </div>
     );
   }
 
-  private renderPagination(columns: ColumnList) {
-    if (columns.count() > this.limit) {
+  private renderPagination(list: InfoListItems) {
+    if (list.count() > this.limit) {
       const { offset, count } = this.state;
       const max = offset + this.limit;
 
@@ -92,15 +100,15 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
     }
   }
 
-  private renderInfo(column: ColumnMap) {
-    const description = column.get('description') as string;
-    if (description) {
+  private renderRow(item: InfoMap) {
+    const info = item.get('info');
+    if (info) {
       return (
         <td className="text-right">
           <OverlayTrigger
             trigger="hover"
             placement="bottom"
-            overlay={ this.renderPopOver(description) }
+            overlay={ this.renderPopOver(info) }
           >
             <i className="material-icons">info</i>
           </OverlayTrigger>
@@ -116,7 +124,7 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
   private goToFirst = () => {
     this.setState({
       offset: 0,
-      columns: this.props.columns.slice(0, this.limit)
+      list: this.props.list.slice(0, this.limit)
     });
   }
 
@@ -124,7 +132,7 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
     const offset = (this.pages - 1) * this.limit;
     this.setState({
       offset,
-      columns: this.props.columns.slice(offset, offset + this.limit)
+      list: this.props.list.slice(offset, offset + this.limit)
     });
   }
 
@@ -133,7 +141,7 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
     if (offset < this.count) {
       this.setState({
         offset,
-        columns: this.props.columns.slice(offset, offset + this.limit)
+        list: this.props.list.slice(offset, offset + this.limit)
       });
     }
   }
@@ -143,7 +151,7 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
       const offset = this.state.offset - this.limit;
       this.setState({
         offset,
-        columns: this.props.columns.slice(offset, offset + this.limit)
+        list: this.props.list.slice(offset, offset + this.limit)
       });
     }
   }
