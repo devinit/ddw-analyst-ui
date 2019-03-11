@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { OverlayTrigger, Pagination, Popover, Table } from 'react-bootstrap';
+import { Col, OverlayTrigger, Pagination, Popover, Row, Table } from 'react-bootstrap';
 import { ColumnList, ColumnMap } from '../../reducers/sources';
 
 interface SourceColumnsProps {
@@ -8,6 +8,9 @@ interface SourceColumnsProps {
 interface SourceColumnsState {
   offset: number;
   columns: ColumnList;
+  count: number;
+  pages: number;
+  limit: number;
 }
 
 export class SourceColumns extends React.Component<SourceColumnsProps, SourceColumnsState> {
@@ -16,23 +19,42 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
   private pages = Math.ceil(this.count / this.limit);
   state: SourceColumnsState = {
     offset: 0,
-    columns: this.props.columns.slice(0, this.limit)
+    limit: this.limit,
+    columns: this.props.columns.slice(0, this.limit),
+    count: this.props.columns.count(),
+    pages: Math.ceil(this.props.columns.count() / this.limit)
   };
+
+  static getDerivedStateFromProps(props: SourceColumnsProps, state: SourceColumnsState) {
+    const count = props.columns.count();
+    if (count !== state.count) {
+      return {
+        offset: 0,
+        columns: props.columns.slice(0, state.limit),
+        count,
+        pages: Math.ceil(count / state.limit)
+      };
+    }
+
+    return null;
+  }
 
   render() {
     return (
       <div>
         <Table size="sm">
-          {
-            this.state.columns.map((column, index) =>
-              <tr key={ index }>
-                <td colSpan={ column.get('description') as string ? 1 : 2 }>
-                  { column.get('source_name') as string }
-                </td>
-                { this.renderInfo(column) }
-              </tr>
-            )
-          }
+          <tbody>
+            {
+              this.state.columns.map((column, index) =>
+                <tr key={ index }>
+                  <td colSpan={ column.get('description') as string ? 1 : 2 }>
+                    { column.get('source_name') as string }
+                  </td>
+                  { this.renderInfo(column) }
+                </tr>
+              )
+            }
+          </tbody>
         </Table>
         { this.renderPagination(this.props.columns) }
       </div>
@@ -41,21 +63,31 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
 
   private renderPagination(columns: ColumnList) {
     if (columns.count() > this.limit) {
+      const { offset, count } = this.state;
+      const max = offset + this.limit;
+
       return (
-        <Pagination className="float-right">
-          <Pagination.First onClick={ this.goToFirst }>
-            <i className="material-icons">first_page</i>
-          </Pagination.First>
-          <Pagination.Prev onClick={ this.goToPrev }>
-            <i className="material-icons">chevron_left</i>
-          </Pagination.Prev>
-          <Pagination.Next onClick={ this.goToNext }>
-            <i className="material-icons">chevron_right</i>
-          </Pagination.Next>
-          <Pagination.Last onClick={ this.goToLast }>
-            <i className="material-icons">last_page</i>
-          </Pagination.Last>
-        </Pagination>
+        <Row>
+          <Col lg={ 6 }>
+            Showing { offset + 1 } to { max > count ? count : max } of { count }
+          </Col>
+          <Col lg={ 6 }>
+            <Pagination className="float-right">
+              <Pagination.First onClick={ this.goToFirst }>
+                <i className="material-icons">first_page</i>
+              </Pagination.First>
+              <Pagination.Prev onClick={ this.goToPrev }>
+                <i className="material-icons">chevron_left</i>
+              </Pagination.Prev>
+              <Pagination.Next onClick={ this.goToNext }>
+                <i className="material-icons">chevron_right</i>
+              </Pagination.Next>
+              <Pagination.Last onClick={ this.goToLast }>
+                <i className="material-icons">last_page</i>
+              </Pagination.Last>
+            </Pagination>
+          </Col>
+        </Row>
       );
     }
   }
@@ -64,7 +96,7 @@ export class SourceColumns extends React.Component<SourceColumnsProps, SourceCol
     const description = column.get('description') as string;
     if (description) {
       return (
-        <td className="float-right">
+        <td className="text-right">
           <OverlayTrigger
             trigger="hover"
             placement="bottom"

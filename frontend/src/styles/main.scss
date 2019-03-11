@@ -11,3 +11,11 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: inherit;
   box-shadow: 0 0 0px 1000px #fff inset !important;
 }
+
+/*==== MATERIAL DESIGN ====*/
+.table-sm td,
+.table-sm th,
+.table.table-sm>tbody>tr>td,
+.table.table-sm>thead>tr>th {
+  padding: .3rem;
+}
