@@ -1,13 +1,14 @@
-import { AdminLayout } from '../components/AdminLayout';
 import axios, { AxiosResponse } from 'axios';
+import * as localForage from 'localforage';
 import * as React from 'react';
 import { Dropdown, Nav, Navbar } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
+import { Segment } from 'semantic-ui-react';
 import * as TokenActions from '../actions/token';
 import * as UserActions from '../actions/user';
-import * as localForage from 'localforage';
+import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { DataSources } from '../pages/DataSources';
@@ -39,7 +40,9 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
   render() {
     if (this.state.loading) {
-      return <div>Loading ...</div>;
+      return (
+        <Segment loading className="layout-loading"/>
+      );
     }
 
     const NavbarCollapse: any = Navbar.Collapse; // FIXME: once react-bootstrap types are fixed: pull request #3502
