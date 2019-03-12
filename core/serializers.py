@@ -14,10 +14,11 @@ class TagSerializer(serializers.ModelSerializer):
 
 class OperationStepSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
+    source_name = serializers.ReadOnlyField(source='source.name')
 
     class Meta:
         model = OperationStep
-        fields = ('pk', 'step_id', 'name', 'description', 'query', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'step_id', 'name', 'description', 'query_func', 'query_kwargs', 'user', 'source', 'source_name', 'created_on', 'updated_on')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -30,22 +31,22 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class OperationSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-    theme = serializers.ReadOnlyField(source='theme.name')
+    theme_name = serializers.ReadOnlyField(source='theme.name')
     tags = TagSerializer(many=True, read_only=True)
     operationstep_set = OperationStepSerializer(many=True)
     review_set = ReviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = Operation
-        fields = ('pk', 'description', 'operation_query', 'theme', 'sample_output_path', 'tags', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'description', 'operation_query', 'theme', 'theme_name', 'sample_output_path', 'tags', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
 
     def create(self, validated_data):
-        read_only_fields = ('user', 'theme', 'tags', 'operationstep_set', 'review_set')
+        read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set')
         read_only_dict = dict()
         for field in read_only_fields:
-            read_only_dict[field] = validated_data.pop(field)
+            if field in validated_data:
+                read_only_dict[field] = validated_data.pop(field)
         operation = Operation.objects.create(**validated_data)
-        operation.theme = Theme.objects.get(name=read_only_dict['theme'])
         for step in read_only_dict['operationstep_set']:
             OperationStep.objects.create(operation=operation, **step)
         return operation
@@ -70,14 +71,13 @@ class OperationSerializer(serializers.ModelSerializer):
         return instance
 
 
-
 class ThemeSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     operation_set = OperationSerializer(many=True, read_only=True)
 
     class Meta:
         model = Theme
-        fields = ('pk', 'sector', 'name', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'sector', 'name', 'user', 'operation_set', 'created_on', 'updated_on')
 
 
 class SectorSerializer(serializers.ModelSerializer):
