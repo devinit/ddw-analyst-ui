@@ -38,7 +38,7 @@ class OperationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Operation
-        fields = ('pk', 'description', 'operation_query', 'theme', 'theme_name', 'sample_output_path', 'tags', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'name', 'description', 'operation_query', 'theme', 'theme_name', 'sample_output_path', 'tags', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
 
     def create(self, validated_data):
         read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set')
@@ -62,11 +62,16 @@ class OperationSerializer(serializers.ModelSerializer):
                 setattr(instance, attr, value)
         instance.save()
 
-        # Easier to delete all the current steps and create new ones
-        current_steps = instance.operationstep_set.all()
-        current_steps.delete()
-        for step in updated_steps:
-            OperationStep.objects.create(operation=instance, **step)
+        for updated_step in updated_steps:
+            updated_step_instance, _ = OperationStep.objects.get_or_create(operation=instance, step_id=updated_step.get("step_id"))
+            step_info = model_meta.get_field_info(updated_step_instance)
+            for attr, value in updated_step.items():
+                if attr in step_info.relations and step_info.relations[attr].to_many:
+                    field = getattr(updated_step_instance, attr)
+                    field.set(value)
+                else:
+                    setattr(updated_step_instance, attr, value)
+            updated_step_instance.save()
 
         return instance
 
