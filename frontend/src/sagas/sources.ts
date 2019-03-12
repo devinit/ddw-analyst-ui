@@ -1,9 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
+import { fromJS } from 'immutable';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
 import { FETCH_SOURCES, FETCH_SOURCES_FAILED, FETCH_SOURCES_SUCCESSFUL, Source } from '../reducers/sources';
 import { api, localForageKeys } from '../utils';
 import * as localForage from 'localforage';
+import { SET_ACTIVE_SOURCE } from '../pages/DataSources/reducers';
 
 function* fetchSources() {
   try {
@@ -20,6 +22,9 @@ function* fetchSources() {
 
     if (status === 200 && data) {
       yield put({ type: FETCH_SOURCES_SUCCESSFUL, sources: data });
+      if (data.length) {
+        yield put({ type: SET_ACTIVE_SOURCE, activeSource: fromJS(data[0]) });
+      }
     } else {
       yield put({ type: FETCH_SOURCES_FAILED }); // TODO: add a reason for failure
     }

@@ -38,7 +38,6 @@ export interface UpdateHistory {
 interface State {
   loading: boolean;
   sources: List<SourceMap>;
-  activeSourceIndex: number;
 }
 export type SourceMap = Map<keyof Source, Source[keyof Source]>;
 export type ColumnList = List<ColumnMap>;
@@ -51,28 +50,21 @@ const prefix = 'sources';
 export const FETCH_SOURCES = `${prefix}.FETCH`;
 export const FETCH_SOURCES_SUCCESSFUL = `${prefix}.FETCH_SUCCESSFUL`;
 export const FETCH_SOURCES_FAILED = `${prefix}.FETCH_FAILED`;
-export const SET_ACTIVE_SOURCE_INDEX = `${prefix}.SET_ACTIVE_SOURCE_INDEX`;
 
 const defaultState: SourcesState = fromJS({ loading: false, sources: [], activeSourceId: 1 });
 
 export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (state = defaultState, action) => {
-    if (action.type === FETCH_SOURCES) {
-      return state.set('loading', true);
-    }
-    if (action.type === FETCH_SOURCES_SUCCESSFUL && action.sources) {
-      const sources = fromJS(action.sources);
-      const activeSourceIndex = action.sources.length ? 0 : -1;
+  if (action.type === FETCH_SOURCES) {
+    return state.set('loading', true);
+  }
+  if (action.type === FETCH_SOURCES_SUCCESSFUL && action.sources) {
+    return state.withMutations(map =>
+      map.set('loading', false).set('sources', fromJS(action.sources))
+    );
+  }
+  if (action.type === FETCH_SOURCES_FAILED) {
+    return state.set('loading', false);
+  }
 
-      return state.withMutations(map =>
-        map.set('loading', false).set('sources', sources).set('activeSourceIndex', activeSourceIndex)
-      );
-    }
-    if (action.type === FETCH_SOURCES_FAILED) {
-      return state.set('loading', false);
-    }
-    if (action.type === SET_ACTIVE_SOURCE_INDEX && typeof action.activeSourceIndex === 'number') {
-      return state.set('activeSourceIndex', action.activeSourceIndex);
-    }
-
-    return state;
+  return state;
 };
