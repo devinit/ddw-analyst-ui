@@ -7,22 +7,28 @@ import json
 
 class QueryBuilder:
     
-    def __init__(self, operation):
-        query_steps = operation.operationstep_set
-        initial_dataset = query_steps.first().source.sql_table()
+    def __init__(self,initial_dataset=None, operation=None):
         
         self.limit_regex = re.compile('LIMIT \d+',re.IGNORECASE)
-        self.current_dataset = Table(initial_dataset)
-        self.current_query = Query.from_(self.current_dataset)
 
-        for query_step in query_steps.all():
-            query_func = getattr(self, query_step.query_func)
-            kwargs = query_step.query_kwargs
-            if isinstance(kwargs, type(None)):
-                self = query_func()
-            else:
-                query_kwargs_json = json.loads(kwargs)
-                self = query_func(**query_kwargs_json)
+        if operation:
+            query_steps = operation.operationstep_set
+            initial_dataset = query_steps.first().source.sql_table()
+            
+            self.current_dataset = Table(initial_dataset)
+            self.current_query = Query.from_(self.current_dataset)
+
+            for query_step in query_steps.all():
+                query_func = getattr(self, query_step.query_func)
+                kwargs = query_step.query_kwargs
+                if isinstance(kwargs, type(None)):
+                    self = query_func()
+                else:
+                    query_kwargs_json = json.loads(kwargs)
+                    self = query_func(**query_kwargs_json)
+        else:
+            self.current_dataset =Table(initial_dataset)
+            self.current_query = Query.from_(self.current_dataset)
           
 
     def aggregate(self, group_by, agg_func_name, operational_column):
