@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface SourcesTableRowProps {
+export interface SourcesTableRowProps {
   classNames?: string;
   onClick: () => void;
   count: number;
@@ -11,7 +11,7 @@ interface SourcesTableRowProps {
 
 export const SourcesTableRow: React.SFC<SourcesTableRowProps> = props => {
   return (
-    <tr className={ props.classNames } onClick={ props.onClick }>
+    <tr className={ props.classNames } onClick={ props.onClick } data-testid="sources-table-row">
       <td>{ props.count }</td>
       <td>
         { props.indicator }

@@ -82,6 +82,7 @@ exports[`renders correctly when the sources are updated 1`] = `
           <tbody>
             <tr
               class="table-danger"
+              data-testid="sources-table-row"
             >
               <td>
                 1
@@ -100,6 +101,7 @@ exports[`renders correctly when the sources are updated 1`] = `
             </tr>
             <tr
               class=""
+              data-testid="sources-table-row"
             >
               <td>
                 2
@@ -118,6 +120,7 @@ exports[`renders correctly when the sources are updated 1`] = `
             </tr>
             <tr
               class=""
+              data-testid="sources-table-row"
             >
               <td>
                 3
@@ -181,6 +184,7 @@ exports[`renders correctly with default props 1`] = `
         <tbody>
           <tr
             className="table-danger"
+            data-testid="sources-table-row"
             onClick={[Function]}
           >
             <td>
@@ -200,6 +204,7 @@ exports[`renders correctly with default props 1`] = `
           </tr>
           <tr
             className=""
+            data-testid="sources-table-row"
             onClick={[Function]}
           >
             <td>
@@ -263,6 +268,7 @@ exports[`renders filtered content when a valid search is performed 1`] = `
           <tbody>
             <tr
               class=""
+              data-testid="sources-table-row"
             >
               <td>
                 1
@@ -326,6 +332,7 @@ exports[`resets the table content when the search query is removed 1`] = `
           <tbody>
             <tr
               class="table-danger"
+              data-testid="sources-table-row"
             >
               <td>
                 1
@@ -389,6 +396,7 @@ exports[`resets the table content when the search query is removed 2`] = `
           <tbody>
             <tr
               class="table-danger"
+              data-testid="sources-table-row"
             >
               <td>
                 1
@@ -407,6 +415,7 @@ exports[`resets the table content when the search query is removed 2`] = `
             </tr>
             <tr
               class=""
+              data-testid="sources-table-row"
             >
               <td>
                 2
