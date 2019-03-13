@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from core.models import Tag, AuditLogEntry
 from rest_framework.test import APIClient
+from core.pypika_utils import QueryBuilder
 
 TEST_USER = "test_user"
 TEST_PASS = "test_password"
@@ -74,3 +75,17 @@ class TestRestFramework(TestCase):
             format="json"
         )
         assert response.status_code == 201
+
+class TestPypikaUtils(TestCase):
+    
+    """Test case class for testing query generation by pypika"""
+
+    fixtures = ['test_data']
+    def setUp(self):
+        self.qb = QueryBuilder(initial_dataset='repo.crs')
+
+    def test_can_generate_select(self):
+        expected = 'Select * from repo.crs'
+        self.qb.select()
+        self.assertEqual(self.qb.get_sql_without_limit(),expected)
+        
