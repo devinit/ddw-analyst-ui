@@ -51,7 +51,7 @@ export const FETCH_SOURCES = `${prefix}.FETCH`;
 export const FETCH_SOURCES_SUCCESSFUL = `${prefix}.FETCH_SUCCESSFUL`;
 export const FETCH_SOURCES_FAILED = `${prefix}.FETCH_FAILED`;
 
-const defaultState: SourcesState = fromJS({ loading: false, sources: [], activeSourceId: 1 });
+export const defaultState: SourcesState = fromJS({ loading: false, sources: [], activeSourceId: 1 });
 
 export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (state = defaultState, action) => {
   if (action.type === FETCH_SOURCES) {
