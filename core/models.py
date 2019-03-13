@@ -84,9 +84,6 @@ class Source(BaseEntity):
     def __str__(self):
         return "{} from {}".format(self.indicator_acronym, self.source_acronym)
 
-    def sql_table(self):
-        return "{}.{}".format(self.schema, self.active_mirror_name)
-
 
 class OperationStep(BaseEntity):
     """These are the individual steps in a query."""

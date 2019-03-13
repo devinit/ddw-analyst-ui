@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from unittest import mock
-from core.models import Tag, AuditLogEntry,Operation
+from core.models import Tag, AuditLogEntry, Operation, OperationStep
 from rest_framework.test import APIClient
 from core.pypika_utils import QueryBuilder
 
@@ -77,17 +76,28 @@ class TestRestFramework(TestCase):
         )
         assert response.status_code == 201
 
+
 class TestPypikaUtils(TestCase):
-    
     """Test case class for testing query generation by pypika"""
-
     fixtures = ['test_data']
-    def setUp(self):
-        pass
-   #     self.qb = QueryBuilder(Operation.objects.first())
 
-   #  def test_can_generate_select(self):
-   #     expected = 'Select * from repo.crs'
-   #     self.qb.select()
-   #    self.assertEqual(self.qb.get_sql_without_limit(),expected)
-        
+    def setUp(self):
+        op = Operation.objects.create(
+            name="Test operation",
+            operation_query="Test query",
+            theme_id=1
+        )
+        OperationStep.objects.create(
+            operation=op,
+            step_id=1,
+            name="Name",
+            query_func="select",
+            query_kwargs="{}",
+            source_id=1
+        )
+        self.qb = QueryBuilder(op)
+
+    def test_can_generate_select(self):
+        expected = 'SELECT * FROM "repo"."crs_current"'
+        self.qb.select()
+        self.assertEqual(self.qb.get_sql_without_limit(), expected)
