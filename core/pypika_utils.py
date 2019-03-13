@@ -114,8 +114,7 @@ class QueryBuilder:
         if self.limit_regex.match(final_query):
             return final_query
         else:
-            self.current_query = self.current_query.limit(const.default_limit_count)
-            return self.current_query.get_sql()
+            return self.current_query.limit(const.default_limit_count).get_sql()
 
     def get_sql_without_limit(self):
         return self.current_query.get_sql()
