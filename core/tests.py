@@ -82,22 +82,34 @@ class TestPypikaUtils(TestCase):
     fixtures = ['test_data']
 
     def setUp(self):
-        op = Operation.objects.create(
+        self.op = Operation.objects.create(
             name="Test operation",
             operation_query="Test query",
             theme_id=1
         )
         OperationStep.objects.create(
-            operation=op,
+            operation=self.op,
             step_id=1,
-            name="Name",
+            name="Select",
             query_func="select",
             query_kwargs="{}",
             source_id=1
         )
-        self.qb = QueryBuilder(op)
 
     def test_can_generate_select(self):
         expected = 'SELECT * FROM "repo"."crs_current"'
-        self.qb.select()
-        self.assertEqual(self.qb.get_sql_without_limit(), expected)
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
+
+    def test_can_generate_filter(self):
+        expected = 'SELECT * FROM "repo"."crs_current" WHERE "year"=1973'
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name="Filter",
+            query_func="filter",
+            query_kwargs='{"filters":{"year":1973}}',
+            source_id=1
+        )
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
