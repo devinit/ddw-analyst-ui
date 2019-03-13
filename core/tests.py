@@ -30,6 +30,8 @@ class TestAuditLog(TestCase):
 
 class TestRestFramework(TestCase):
     """Test case class for testing functionality of REST framework"""
+    fixtures = ['test_data']
+
     def setUp(self):
         self.user = User.objects.create_user(TEST_USER, 'test@test.test', TEST_PASS)
         self.user_tag = Tag.objects.create(name="user_tag", user=self.user)
@@ -57,3 +59,18 @@ class TestRestFramework(TestCase):
         client.force_authenticate(user=self.user)
         response = client.delete('/api/tags/{}/'.format(self.user_tag.pk))
         assert response.status_code == 204
+
+    def test_post_nested_operation(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        response = client.post(
+            '/api/operations/',
+            {
+                "name": "Name",
+                "operation_query": "Query",
+                "theme": 1,
+                "operationstep_set": [{"name": "Select", "step_id": 1}]
+            },
+            format="json"
+        )
+        assert response.status_code == 201
