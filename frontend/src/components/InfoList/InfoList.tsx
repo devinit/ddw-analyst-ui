@@ -6,7 +6,7 @@ export interface InfoItem {
   caption: string;
   info: string;
 }
-type InfoMap = Map<keyof InfoItem, InfoItem[keyof InfoItem]>;
+export type InfoMap = Map<keyof InfoItem, InfoItem[keyof InfoItem]>;
 export type InfoListItems = List<InfoMap>;
 interface InfoListProps {
   list: InfoListItems;
@@ -22,15 +22,14 @@ interface InfoListState {
 }
 
 export class InfoList extends React.Component<InfoListProps, InfoListState> {
-  private limit = 10;
   private count = this.props.list.count();
-  private pages = Math.ceil(this.count / this.limit);
+  private pages = Math.ceil(this.count / this.props.limit);
   state: InfoListState = {
-    offset: 0,
-    limit: this.limit,
-    list: this.props.list.slice(0, this.limit),
+    offset: this.props.offset,
+    limit: this.props.limit,
+    list: this.props.list.slice(0, this.props.limit),
     count: this.props.list.count(),
-    pages: Math.ceil(this.props.list.count() / this.limit)
+    pages: Math.ceil(this.props.list.count() / this.props.limit)
   };
 
   static getDerivedStateFromProps(props: InfoListProps, state: InfoListState): Partial<InfoListState> | null { //tslint:disable-line
@@ -70,9 +69,9 @@ export class InfoList extends React.Component<InfoListProps, InfoListState> {
   }
 
   private renderPagination(list: InfoListItems) {
-    if (list.count() > this.limit) {
+    if (list.count() > this.state.limit) {
       const { offset, count } = this.state;
-      const max = offset + this.limit;
+      const max = offset + this.state.limit;
 
       return (
         <Row>
@@ -81,16 +80,16 @@ export class InfoList extends React.Component<InfoListProps, InfoListState> {
           </Col>
           <Col lg={ 6 }>
             <Pagination className="float-right">
-              <Pagination.First onClick={ this.goToFirst }>
+              <Pagination.First onClick={ this.goToFirst } data-testid="info-pagination-first">
                 <i className="material-icons">first_page</i>
               </Pagination.First>
-              <Pagination.Prev onClick={ this.goToPrev }>
+              <Pagination.Prev onClick={ this.goToPrev } data-testid="info-pagination-prev">
                 <i className="material-icons">chevron_left</i>
               </Pagination.Prev>
-              <Pagination.Next onClick={ this.goToNext }>
+              <Pagination.Next onClick={ this.goToNext } data-testid="info-pagination-next">
                 <i className="material-icons">chevron_right</i>
               </Pagination.Next>
-              <Pagination.Last onClick={ this.goToLast }>
+              <Pagination.Last onClick={ this.goToLast } data-testid="info-pagination-last">
                 <i className="material-icons">last_page</i>
               </Pagination.Last>
             </Pagination>
@@ -110,7 +109,7 @@ export class InfoList extends React.Component<InfoListProps, InfoListState> {
             placement="bottom"
             overlay={ this.renderPopOver(info) }
           >
-            <i className="material-icons">info</i>
+            <i className="material-icons" data-testid="info-trigger">info</i>
           </OverlayTrigger>
         </td>
       );
@@ -118,40 +117,40 @@ export class InfoList extends React.Component<InfoListProps, InfoListState> {
   }
 
   private renderPopOver(info: string) {
-    return <Popover id="popover-basic">{ info }</Popover>;
+    return <Popover id="popover-basic" data-testid="info-list-info">{ info }</Popover>;
   }
 
   private goToFirst = () => {
     this.setState({
       offset: 0,
-      list: this.props.list.slice(0, this.limit)
+      list: this.props.list.slice(0, this.state.limit)
     });
   }
 
   private goToLast = () => {
-    const offset = (this.pages - 1) * this.limit;
+    const offset = (this.pages - 1) * this.state.limit;
     this.setState({
       offset,
-      list: this.props.list.slice(offset, offset + this.limit)
+      list: this.props.list.slice(offset, offset + this.state.limit)
     });
   }
 
   private goToNext = () => {
-    const offset = this.state.offset + this.limit;
+    const offset = this.state.offset + this.state.limit;
     if (offset < this.count) {
       this.setState({
         offset,
-        list: this.props.list.slice(offset, offset + this.limit)
+        list: this.props.list.slice(offset, offset + this.state.limit)
       });
     }
   }
 
   private goToPrev = () => {
     if (this.state.offset > 0) {
-      const offset = this.state.offset - this.limit;
+      const offset = this.state.offset - this.state.limit;
       this.setState({
         offset,
-        list: this.props.list.slice(offset, offset + this.limit)
+        list: this.props.list.slice(offset, offset + this.state.limit)
       });
     }
   }
