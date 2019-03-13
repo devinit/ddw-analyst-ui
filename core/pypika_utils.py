@@ -1,7 +1,7 @@
-from pypika import functions as pypika_fn
+from pypika import analytics as an, functions as pypika_fn
 from pypika import Table, PostgreSQLQuery as Query
 import core.const as const
-import re
+import re,types
 import json
 
 
@@ -40,6 +40,33 @@ class QueryBuilder:
         self.select(select_by)
         self.current_dataset = self.current_query
         return self
+    
+    def window(self,window_fn,columns=None,over=None,order_by=None,**kwargs):
+        
+        self.current_query = Query.from_(self.current_dataset)
+        tmp_query= ''
+        window_ = getattr(an,window_fn)
+       
+        # Check if additional **kwargs are required in for given window function
+        if window_fn == 'DenseRank' or window_fn == 'Rank' or window_fn == 'RowNumber':
+            tmp_query = window_().over(*over)
+            
+            if order_by:
+                for order in order_by:
+                    tmp_query = tmp_query.orderby(getattr(self.current_dataset,order))
+        else:
+            tmp_query = window_(**kwargs).over(*over)
+            if order_by:
+                for order in order_by:
+                    tmp_query = tmp_query.orderby(getattr(self.current_dataset,order))
+        
+        if columns:
+            self.current_query = self.current_query.select(*columns,tmp_query)
+        else:
+            self.current_query = self.current_query.select(self.current_dataset.star,tmp_query)
+
+        return self
+
 
     def filter(self, filters):
         self.current_query = Query.from_(self.current_dataset)
@@ -87,4 +114,7 @@ class QueryBuilder:
         else:
             self.current_query = self.current_query.limit(const.default_limit_count)
             return self.current_query.get_sql()
-
+    
+    def get_sql_without_limit(self):  
+        return self.current_query.get_sql()
+    
