@@ -67,6 +67,7 @@ export class SourcesTable extends React.Component<SourcesTableProps, SourcesTabl
               placeholder="Search ..."
               className="w-50"
               onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
+              data-testid="sources-table-search"
             />
           </Card.Header>
           <Table responsive hover striped>
@@ -105,11 +106,7 @@ export class SourcesTable extends React.Component<SourcesTableProps, SourcesTabl
   }
 
   private onSearchChange = (event: React.FormEvent<any>) => {
-    const { value: searchQuery } = event.currentTarget as HTMLInputElement;
-    if (searchQuery) {
-      this.setState({ searchQuery });
-    } else {
-      this.setState({ searchQuery: '' });
-    }
+    const { value } = event.currentTarget as HTMLInputElement;
+    this.setState({ searchQuery: value || '' });
   }
 }

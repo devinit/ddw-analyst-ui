@@ -1,0 +1,432 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders an empty table if no sources are provided 1`] = `
+<div
+  className="card"
+>
+  <div
+    className="card-body"
+  >
+    <div
+      className="card-header"
+    >
+      <input
+        className="w-50 form-control"
+        data-testid="sources-table-search"
+        onChange={[Function]}
+        placeholder="Search ..."
+      />
+    </div>
+    <div
+      className="table-responsive"
+    >
+      <table
+        className="table table-striped table-hover"
+      >
+        <thead>
+          <tr>
+            <th>
+              #
+            </th>
+            <th>
+              Indicator
+            </th>
+            <th>
+              Updated On
+            </th>
+          </tr>
+        </thead>
+        <tbody />
+      </table>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders correctly when the sources are updated 1`] = `
+<div>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="card-header"
+      >
+        <input
+          class="w-50 form-control"
+          data-testid="sources-table-search"
+          placeholder="Search ..."
+        />
+      </div>
+      <div
+        class="table-responsive"
+      >
+        <table
+          class="table table-striped table-hover"
+        >
+          <thead>
+            <tr>
+              <th>
+                #
+              </th>
+              <th>
+                Indicator
+              </th>
+              <th>
+                Updated On
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="table-danger"
+            >
+              <td>
+                1
+              </td>
+              <td>
+                Common Reporting Standard
+                <span
+                  class="text-uppercase"
+                >
+                   (crs)
+                </span>
+              </td>
+              <td>
+                Sun Aug 19 2018
+              </td>
+            </tr>
+            <tr
+              class=""
+            >
+              <td>
+                2
+              </td>
+              <td>
+                World Bank Indicators
+                <span
+                  class="text-uppercase"
+                >
+                   (wdi)
+                </span>
+              </td>
+              <td>
+                Sun Aug 19 2018
+              </td>
+            </tr>
+            <tr
+              class=""
+            >
+              <td>
+                3
+              </td>
+              <td>
+                Official Development Assistance
+                <span
+                  class="text-uppercase"
+                >
+                   (DAC1)
+                </span>
+              </td>
+              <td>
+                Sun Aug 19 2018
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders correctly with default props 1`] = `
+<div
+  className="card"
+>
+  <div
+    className="card-body"
+  >
+    <div
+      className="card-header"
+    >
+      <input
+        className="w-50 form-control"
+        data-testid="sources-table-search"
+        onChange={[Function]}
+        placeholder="Search ..."
+      />
+    </div>
+    <div
+      className="table-responsive"
+    >
+      <table
+        className="table table-striped table-hover"
+      >
+        <thead>
+          <tr>
+            <th>
+              #
+            </th>
+            <th>
+              Indicator
+            </th>
+            <th>
+              Updated On
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            className="table-danger"
+            onClick={[Function]}
+          >
+            <td>
+              1
+            </td>
+            <td>
+              Common Reporting Standard
+              <span
+                className="text-uppercase"
+              >
+                 (crs)
+              </span>
+            </td>
+            <td>
+              Sun Aug 19 2018
+            </td>
+          </tr>
+          <tr
+            className=""
+            onClick={[Function]}
+          >
+            <td>
+              2
+            </td>
+            <td>
+              World Bank Indicators
+              <span
+                className="text-uppercase"
+              >
+                 (wdi)
+              </span>
+            </td>
+            <td>
+              Sun Aug 19 2018
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders filtered content when a valid search is performed 1`] = `
+<div>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="card-header"
+      >
+        <input
+          class="w-50 form-control"
+          data-testid="sources-table-search"
+          placeholder="Search ..."
+        />
+      </div>
+      <div
+        class="table-responsive"
+      >
+        <table
+          class="table table-striped table-hover"
+        >
+          <thead>
+            <tr>
+              <th>
+                #
+              </th>
+              <th>
+                Indicator
+              </th>
+              <th>
+                Updated On
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class=""
+            >
+              <td>
+                1
+              </td>
+              <td>
+                World Bank Indicators
+                <span
+                  class="text-uppercase"
+                >
+                   (wdi)
+                </span>
+              </td>
+              <td>
+                Sun Aug 19 2018
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`resets the table content when the search query is removed 1`] = `
+<div>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="card-header"
+      >
+        <input
+          class="w-50 form-control"
+          data-testid="sources-table-search"
+          placeholder="Search ..."
+        />
+      </div>
+      <div
+        class="table-responsive"
+      >
+        <table
+          class="table table-striped table-hover"
+        >
+          <thead>
+            <tr>
+              <th>
+                #
+              </th>
+              <th>
+                Indicator
+              </th>
+              <th>
+                Updated On
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="table-danger"
+            >
+              <td>
+                1
+              </td>
+              <td>
+                Common Reporting Standard
+                <span
+                  class="text-uppercase"
+                >
+                   (crs)
+                </span>
+              </td>
+              <td>
+                Sun Aug 19 2018
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`resets the table content when the search query is removed 2`] = `
+<div>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="card-header"
+      >
+        <input
+          class="w-50 form-control"
+          data-testid="sources-table-search"
+          placeholder="Search ..."
+        />
+      </div>
+      <div
+        class="table-responsive"
+      >
+        <table
+          class="table table-striped table-hover"
+        >
+          <thead>
+            <tr>
+              <th>
+                #
+              </th>
+              <th>
+                Indicator
+              </th>
+              <th>
+                Updated On
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="table-danger"
+            >
+              <td>
+                1
+              </td>
+              <td>
+                Common Reporting Standard
+                <span
+                  class="text-uppercase"
+                >
+                   (crs)
+                </span>
+              </td>
+              <td>
+                Sun Aug 19 2018
+              </td>
+            </tr>
+            <tr
+              class=""
+            >
+              <td>
+                2
+              </td>
+              <td>
+                World Bank Indicators
+                <span
+                  class="text-uppercase"
+                >
+                   (wdi)
+                </span>
+              </td>
+              <td>
+                Sun Aug 19 2018
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
