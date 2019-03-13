@@ -62,8 +62,13 @@ class OperationSerializer(serializers.ModelSerializer):
                 setattr(instance, attr, value)
         instance.save()
 
+        existing_steps = instance.operationstep_set.all()
+        existing_step_ids = [step.step_id for step in existing_steps]
         for updated_step in updated_steps:
-            updated_step_instance, _ = OperationStep.objects.get_or_create(operation=instance, step_id=updated_step.get("step_id"))
+            updated_step_id = updated_step.get("step_id")
+            if updated_step_id in existing_step_ids:
+                existing_step_ids.remove(updated_step_id)
+            updated_step_instance, _ = OperationStep.objects.get_or_create(operation=instance, step_id=updated_step_id)
             step_info = model_meta.get_field_info(updated_step_instance)
             for attr, value in updated_step.items():
                 if attr in step_info.relations and step_info.relations[attr].to_many:
@@ -72,6 +77,10 @@ class OperationSerializer(serializers.ModelSerializer):
                 else:
                     setattr(updated_step_instance, attr, value)
             updated_step_instance.save()
+
+        for step_for_delete_id in existing_step_ids:
+            step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
+            step_for_delete.delete()
 
         return instance
 
