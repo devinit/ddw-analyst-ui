@@ -15,21 +15,21 @@ Cypress.Commands.add('login', (email, password) => {
   cy.request({
       url: '/api/auth/login/',
       method: 'POST',
-      credentials: 'omit',
-      redirect: 'follow',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Basic ${Base64.encode(`${email}:${password}`)}`
       }
     })
-    .then(resp => {
-      expect(resp.status).to.eq(200);
-      expect(resp.body).to.have.property('token');
-      window.localStorage.setItem(
-        'ddw-analyst-ui/ddw_store/API_KEY',
-        resp.body.token
-      );
-      cy.visit('/');
+    .then(({body, status}) => {
+      expect(status).to.eq(200);
+      expect(body).to.have.property('token');
+      expect(body).to.have.property('user');
+      const localStorarePrefix = 'ddw-analyst-ui/ddw_store/';
+
+      window.localStorage.setItem(`${localStorarePrefix}API_KEY`, JSON.stringify(body.token));
+      window.localStorage.setItem(`${localStorarePrefix}USER`, JSON.stringify(body.user));
+
+      return body;
     });
 });
 //
