@@ -1,11 +1,23 @@
 from knox.views import LoginView as KnoxLoginView
 from knox.auth import TokenAuthentication
 from rest_framework.authentication import BasicAuthentication
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from core.models import Tag, OperationStep, Review, Operation, Theme, Sector, Source
-from core.serializers import TagSerializer, OperationStepSerializer, ReviewSerializer, OperationSerializer, ThemeSerializer, SectorSerializer, UserSerializer, SourceSerializer
+from core.serializers import TagSerializer, OperationStepSerializer, ReviewSerializer, OperationSerializer, ThemeSerializer, SectorSerializer, UserSerializer, SourceSerializer, DataSerializer
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
 from core.permissions import IsOwnerOrReadOnly
+
+
+class ViewData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    def get(self, request, pk):
+        operation_instance = Operation.objects.get(pk=pk)
+        data_serializer = DataSerializer(operation_instance)
+        return Response(data_serializer.data)
 
 
 class SectorList(generics.ListCreateAPIView):

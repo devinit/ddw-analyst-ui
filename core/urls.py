@@ -18,6 +18,7 @@ urlpatterns = [
     path('reviews/<int:pk>/', core_views.ReviewDetail.as_view()),
     path('operations/', core_views.OperationList.as_view()),
     path('operations/<int:pk>/', core_views.OperationDetail.as_view()),
+    path('operation_data/<int:pk>/', core_views.ViewData.as_view()),
     path('themes/', core_views.ThemeList.as_view()),
     path('themes/<int:pk>/', core_views.ThemeDetail.as_view()),
     path('sectors/', core_views.SectorList.as_view()),
