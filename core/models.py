@@ -60,9 +60,10 @@ class Operation(BaseEntity):
         return self.name
 
     def build_query(self, full=False):
+        count_query = QueryBuilder(self).count_sql()
         if full:
-            return QueryBuilder(self).get_sql_without_limit()
-        return QueryBuilder(self).get_sql()
+            return (count_query, QueryBuilder(self).get_sql_without_limit())
+        return (count_query, QueryBuilder(self).get_sql())
 
     def query_table(self, full=False):
         return fetch_data(self.build_query(full))

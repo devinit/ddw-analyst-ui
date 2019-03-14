@@ -109,6 +109,10 @@ class QueryBuilder:
 
         self.current_query = self.current_query.limit(count)
 
+    def count_sql(self):
+        self.current_query = Query.from_(self.current_dataset)
+        return self.current_query.select(pypika_fn.Count(self.current_dataset.star)).get_sql()
+
     def get_sql(self):
         final_query = self.current_query.get_sql()
         if self.limit_regex.match(final_query):
