@@ -221,4 +221,4 @@ VALUES
 insert into core_operationstep(operation_id,step_id,name,description,query_func,query_kwargs,source_id,updated_on,created_on)
 VALUES
 (1,1,'query','Get oda data from crs table','select','{}',1,now(),now()),
-(1,2,'filter','Filter oda by row on oda_donor and ftr','filter','{"filters":{"donor_code":2000,"ftr":"Badman"}}',1,now(),now());
+(1,2,'filter','Filter oda by row on oda_donor and ftr','filter','{"filters":{"year":1973}}',1,now(),now());

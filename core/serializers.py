@@ -4,6 +4,16 @@ from core.models import Tag, Source, SourceColumnMap, UpdateHistory, Sector, The
 from django.contrib.auth.models import Permission, User
 
 
+class DataSerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        columns, data = obj.query_table()
+        return {
+            "count": len(data),
+            "columns": columns,
+            "data": data
+        }
+
+
 class TagSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
 
