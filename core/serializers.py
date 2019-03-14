@@ -8,9 +8,9 @@ class DataSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
         full = obj["full"]
         operation_instance = obj["operation_instance"]
-        columns, data = operation_instance.query_table(full)
+        count_results, columns, data = operation_instance.query_table(full)
         return {
-            "count": len(data),
+            "count": count_results[0][0],
             "columns": columns,
             "data": data
         }
