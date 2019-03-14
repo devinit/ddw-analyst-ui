@@ -10,6 +10,7 @@ export interface SidebarLinkProps extends RouteComponentProps<{}> {
   caret?: boolean;
   single?: boolean;
   onClick?: (to: string) => void;
+  [`data-testid`]?: string;
 }
 
 class SidebarLink extends React.Component<SidebarLinkProps> {
@@ -24,6 +25,7 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
         data-toggle={ this.props.root && !this.props.single ? 'collapse' : '' }
         href={ this.props.to }
         onClick={ this.onClick }
+        data-testid={ this.props['data-testid'] }
       >
         { this.props.icon ? <i className="material-icons">{ this.props.icon }</i> : null }
         { this.renderContent() }

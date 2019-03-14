@@ -77,6 +77,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   icon="storage"
                   textNormal="Data Sources"
                   onClick={ this.setActiveRoute }
+                  data-testid="sidebar-link-sources"
                 />
               </Sidebar.Item>
             </Sidebar.Content>
