@@ -3,7 +3,7 @@
 exports[`renders correctly with default props 1`] = `
 <div>
   <div
-    class="card"
+    class="source-details card"
   >
     <div
       class="card-body"
@@ -125,7 +125,7 @@ exports[`renders correctly with default props 1`] = `
         >
           <div>
             <table
-              class="table table-sm"
+              class="table source-columns-table table-sm"
             >
               <tbody>
                 <tr>
@@ -156,7 +156,7 @@ exports[`renders correctly with default props 1`] = `
         >
           <div>
             <table
-              class="table table-sm"
+              class="table source-history-table table-sm"
             >
               <tbody>
                 <tr>

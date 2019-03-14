@@ -21,7 +21,7 @@ exports[`renders an empty table if no sources are provided 1`] = `
       className="table-responsive"
     >
       <table
-        className="table table-striped table-hover"
+        className="table sources-table table-striped table-hover"
       >
         <thead>
           <tr>
@@ -64,7 +64,7 @@ exports[`renders correctly when the sources are updated 1`] = `
         class="table-responsive"
       >
         <table
-          class="table table-striped table-hover"
+          class="table sources-table table-striped table-hover"
         >
           <thead>
             <tr>
@@ -166,7 +166,7 @@ exports[`renders correctly with default props 1`] = `
       className="table-responsive"
     >
       <table
-        className="table table-striped table-hover"
+        className="table sources-table table-striped table-hover"
       >
         <thead>
           <tr>
@@ -250,7 +250,7 @@ exports[`renders filtered content when a valid search is performed 1`] = `
         class="table-responsive"
       >
         <table
-          class="table table-striped table-hover"
+          class="table sources-table table-striped table-hover"
         >
           <thead>
             <tr>
@@ -314,7 +314,7 @@ exports[`resets the table content when the search query is removed 1`] = `
         class="table-responsive"
       >
         <table
-          class="table table-striped table-hover"
+          class="table sources-table table-striped table-hover"
         >
           <thead>
             <tr>
@@ -378,7 +378,7 @@ exports[`resets the table content when the search query is removed 2`] = `
         class="table-responsive"
       >
         <table
-          class="table table-striped table-hover"
+          class="table sources-table table-striped table-hover"
         >
           <thead>
             <tr>
