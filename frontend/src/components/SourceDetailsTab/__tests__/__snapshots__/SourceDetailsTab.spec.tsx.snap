@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with default props 1`] = `
+<div>
+  <div
+    class="source-details card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="nav-pills-danger nav card-header-pills nav-pills"
+        role="tablist"
+      >
+        <div
+          class="nav-item"
+        >
+          <a
+            aria-selected="true"
+            class="nav-link active"
+            data-rb-event-key="metadata"
+            href="#"
+            role="tab"
+          >
+            Metadata
+          </a>
+        </div>
+        <div
+          class="nav-item"
+        >
+          <a
+            aria-selected="false"
+            class="nav-link"
+            data-rb-event-key="columns"
+            href="#"
+            role="tab"
+            tabindex="-1"
+          >
+            Columns
+          </a>
+        </div>
+        <div
+          class="nav-item"
+        >
+          <a
+            aria-selected="false"
+            class="nav-link"
+            data-rb-event-key="history"
+            href="#"
+            role="tab"
+            tabindex="-1"
+          >
+            Update History
+          </a>
+        </div>
+      </div>
+      <div
+        class="tab-content"
+      >
+        <div
+          aria-hidden="false"
+          class="fade tab-pane active show"
+          role="tabpanel"
+        >
+          <div
+            class="font-weight-bold"
+          >
+            Source
+          </div>
+          <div
+            class="font-weight-light"
+          >
+            <span
+              class="text-uppercase"
+            >
+               (msc)
+            </span>
+          </div>
+          <div
+            class="font-weight-bold"
+          >
+            Abstract
+          </div>
+          <div
+            class="font-weight-light"
+          />
+          <hr />
+          <div
+            class="font-weight-light"
+          >
+            <a
+              target="_blank"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                business
+              </i>
+              <span
+                class="align-middle"
+              />
+            </a>
+          </div>
+          <div
+            class="font-weight-light"
+          >
+            <a
+              target="_blank"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                cloud_download
+              </i>
+              <span
+                class="align-middle"
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
+          <div>
+            <table
+              class="table source-columns-table table-sm"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    colspan="1"
+                  >
+                    Column 1
+                  </td>
+                  <td
+                    class="text-right"
+                  >
+                    <i
+                      class="material-icons"
+                      data-testid="info-trigger"
+                    >
+                      info
+                    </i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
+          <div>
+            <table
+              class="table source-history-table table-sm"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    colspan="1"
+                  >
+                    Sun Aug 19 2018 23:15:30 GMT+0300 (East Africa Time)
+                  </td>
+                  <td
+                    class="text-right"
+                  >
+                    <i
+                      class="material-icons"
+                      data-testid="info-trigger"
+                    >
+                      info
+                    </i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

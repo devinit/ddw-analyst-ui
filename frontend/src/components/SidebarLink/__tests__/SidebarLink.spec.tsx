@@ -118,11 +118,10 @@ test('calls the onClick function only when one is specified', () => {
   if (renderer) {
     renderer.props.onClick(new CustomEvent('click'));
     expect(onClickProp).toBeCalledTimes(1);
-    expect(history.push).not.toBeCalled();
   }
 });
 
-test('navigates to the onClick function when one is specified', () => {
+test('navigates to the link when one is specified', () => {
   const history = createBrowserHistory();
   history.push = jest.fn();
   const renderer = TestRenderer

@@ -9,7 +9,8 @@ export interface SidebarLinkProps extends RouteComponentProps<{}> {
   textNormal?: string;
   caret?: boolean;
   single?: boolean;
-  onClick?: () => void;
+  onClick?: (to: string) => void;
+  [`data-testid`]?: string;
 }
 
 class SidebarLink extends React.Component<SidebarLinkProps> {
@@ -24,6 +25,7 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
         data-toggle={ this.props.root && !this.props.single ? 'collapse' : '' }
         href={ this.props.to }
         onClick={ this.onClick }
+        data-testid={ this.props['data-testid'] }
       >
         { this.props.icon ? <i className="material-icons">{ this.props.icon }</i> : null }
         { this.renderContent() }
@@ -51,8 +53,9 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
   private onClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
     if (this.props.onClick) {
-      this.props.onClick();
-    } else if (this.props.to.indexOf('#') === -1) {
+      this.props.onClick(this.props.to);
+    }
+    if (this.props.to.indexOf('#') === -1) {
       this.props.history.push(this.props.to);
     }
   }
