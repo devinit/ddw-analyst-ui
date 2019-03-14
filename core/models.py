@@ -59,14 +59,14 @@ class Operation(BaseEntity):
     def __str__(self):
         return self.name
 
-    def build_query(self, full=False):
+    def build_query(self, limit, offset, full):
         count_query = QueryBuilder(self).count_sql()
-        if full:
+        if full:  # Overrides limit and offset
             return (count_query, QueryBuilder(self).get_sql_without_limit())
-        return (count_query, QueryBuilder(self).get_sql())
+        return (count_query, QueryBuilder(self).get_sql(limit, offset))
 
-    def query_table(self, full=False):
-        return fetch_data(self.build_query(full))
+    def query_table(self, limit, offset, full=False):
+        return fetch_data(self.build_query(limit, offset, full))
 
 
 class Source(BaseEntity):

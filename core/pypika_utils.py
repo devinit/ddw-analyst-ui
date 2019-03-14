@@ -101,24 +101,18 @@ class QueryBuilder:
             self.current_query = self.current_query.select(self.current_dataset.star)
         return self
 
-    def limit(self, count):
-        if count < 1:
-            count = const.default_limit_count
-        else:
-            pass
-
-        self.current_query = self.current_query.limit(count)
-
     def count_sql(self):
         self.current_query = Query.from_(self.current_dataset)
         return self.current_query.select(pypika_fn.Count(self.current_dataset.star)).get_sql()
 
-    def get_sql(self):
+    def get_sql(self, limit=const.default_limit_count, offset=0):
+        if limit == 0:
+            limit = "0"  # Pypika refused to allow limit 0 unless it's a string...
         final_query = self.current_query.get_sql()
         if self.limit_regex.match(final_query):
             return final_query
         else:
-            return self.current_query.limit(const.default_limit_count).get_sql()
+            return self.current_query.limit(limit).offset(offset).get_sql()
 
     def get_sql_without_limit(self):
         return self.current_query.get_sql()
