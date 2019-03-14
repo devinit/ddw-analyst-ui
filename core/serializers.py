@@ -6,9 +6,11 @@ from django.contrib.auth.models import User
 
 class DataSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
+        limit = obj["limit"]
+        offset = obj["offset"]
         full = obj["full"]
         operation_instance = obj["operation_instance"]
-        count_results, columns, data = operation_instance.query_table(full)
+        count_results, columns, data = operation_instance.query_table(limit, offset, full)
         return {
             "count": count_results[0][0],
             "columns": columns,

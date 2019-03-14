@@ -8,6 +8,7 @@ from core.serializers import TagSerializer, OperationStepSerializer, ReviewSeria
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
 from core.permissions import IsOwnerOrReadOnly
+from core.const import default_limit_count
 
 
 class ViewData(APIView):
@@ -15,9 +16,26 @@ class ViewData(APIView):
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     def get(self, request, pk):
-        full = request.GET.get('full') == "true"
+        try:
+            limit = int(request.GET.get('limit', default_limit_count))
+            page = int(request.GET.get('page', 1))
+            full = request.GET.get('full', "false") == "true"
+        except ValueError:  # Someone typed garbage into the url
+            limit = default_limit_count
+            page = 1
+            full = False
+        if page <= 0:
+            page = 1
+        if limit < 0:
+            limit = default_limit_count
+        offset = limit * (page - 1)
         operation_instance = Operation.objects.get(pk=pk)
-        data_serializer = DataSerializer({"full": full, "operation_instance": operation_instance})
+        data_serializer = DataSerializer({
+            "full": full,
+            "limit": limit,
+            "offset": offset,
+            "operation_instance": operation_instance
+        })
         return Response(data_serializer.data)
 
 
