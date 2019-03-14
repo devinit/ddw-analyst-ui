@@ -70,7 +70,7 @@ export class SourcesTable extends React.Component<SourcesTableProps, SourcesTabl
               data-testid="sources-table-search"
             />
           </Card.Header>
-          <Table responsive hover striped>
+          <Table responsive hover striped className="sources-table">
             <thead>
               <tr>
                 <th>#</th>

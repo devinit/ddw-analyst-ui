@@ -13,7 +13,7 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
   render() {
     return (
       <Tab.Container defaultActiveKey="metadata">
-        <Card>
+        <Card className="source-details">
           <Card.Body>
 
             <Nav variant="pills" className="nav-pills-danger" role="tablist">
@@ -36,6 +36,7 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
                   list={ this.getColumns() }
                   limit={ 10 }
                   offset={ 0 }
+                  className="source-columns-table"
                 />
               </Tab.Pane>
               <Tab.Pane eventKey="history">
@@ -43,6 +44,7 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
                   list={ this.getUpdateHistory() }
                   limit={ 10 }
                   offset={ 0 }
+                  className="source-history-table"
                 />
               </Tab.Pane>
             </Tab.Content>

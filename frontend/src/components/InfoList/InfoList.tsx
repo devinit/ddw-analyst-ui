@@ -12,6 +12,7 @@ interface InfoListProps {
   list: InfoListItems;
   limit: number;
   offset: number;
+  className?: string;
 }
 interface InfoListState {
   offset: number;
@@ -49,7 +50,7 @@ export class InfoList extends React.Component<InfoListProps, InfoListState> {
   render() {
     return (
       <div>
-        <Table size="sm">
+        <Table size="sm" className={ `${this.props.className || ''}` }>
           <tbody>
             {
               this.state.list.map((item, index) =>
