@@ -59,11 +59,13 @@ class Operation(BaseEntity):
     def __str__(self):
         return self.name
 
-    def build_query(self):
+    def build_query(self, full=False):
+        if full:
+            return QueryBuilder(self).get_sql_without_limit()
         return QueryBuilder(self).get_sql()
 
-    def query_table(self):
-        return fetch_data(self.build_query())
+    def query_table(self, full=False):
+        return fetch_data(self.build_query(full))
 
 
 class Source(BaseEntity):

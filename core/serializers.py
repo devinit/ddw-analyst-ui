@@ -6,7 +6,9 @@ from django.contrib.auth.models import Permission, User
 
 class DataSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
-        columns, data = obj.query_table()
+        full = obj["full"]
+        operation_instance = obj["operation_instance"]
+        columns, data = operation_instance.query_table(full)
         return {
             "count": len(data),
             "columns": columns,

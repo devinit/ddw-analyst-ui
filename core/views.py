@@ -15,8 +15,9 @@ class ViewData(APIView):
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     def get(self, request, pk):
+        full = request.GET.get('full') == "true"
         operation_instance = Operation.objects.get(pk=pk)
-        data_serializer = DataSerializer(operation_instance)
+        data_serializer = DataSerializer({"full": full, "operation_instance": operation_instance})
         return Response(data_serializer.data)
 
 
