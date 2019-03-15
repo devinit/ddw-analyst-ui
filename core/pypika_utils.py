@@ -26,7 +26,6 @@ class QueryBuilder:
                 query_kwargs_json = json.loads(kwargs)
                 self = query_func(**query_kwargs_json)
 
-
     def aggregate(self, group_by, agg_func_name, operational_column):
         self.current_query = Query.from_(self.current_dataset)
         self.current_query = self.current_query.groupby(*group_by)
@@ -46,7 +45,7 @@ class QueryBuilder:
     def window(self, window_fn, columns=None, over=None, order_by=None, **kwargs):
 
         self.current_query = Query.from_(self.current_dataset)
-        tmp_query= ''
+        tmp_query = ''
         window_ = getattr(an, window_fn)
 
         # Check if additional **kwargs are required in for given window function
@@ -70,7 +69,6 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-
     def filter(self, filters):
         self.current_query = Query.from_(self.current_dataset)
         self.select([self.current_dataset.star])
@@ -85,29 +83,29 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
         return self
 
-    def join(self, table_name,schema_name, join_on,criterion=None,columns=None):
-       
+    def join(self, table_name, schema_name, join_on, criterion=None, columns=None):
+
         table1 = self.current_dataset
-        table2 = Table(table_name,schema=schema_name)
+        table2 = Table(table_name, schema=schema_name)
         table1_columns = [table1.star]
         table2_columns = [table2.star]
-        
+
         if columns:
             print(columns)
-            table1_columns = map(lambda x: getattr(table1,x) ,columns.get('table1'))
-            table2_columns = map(lambda x: getattr(table2,x) , columns.get('table2'))
-            
+            table1_columns = map(lambda x: getattr(table1, x), columns.get('table1'))
+            table2_columns = map(lambda x: getattr(table2, x), columns.get('table2'))
+
         q = self.current_query.join(table2).on_field(*join_on).select(
             *table1_columns, *table2_columns
         )
 
-        #if criterion:     
+        # if criterion:
 
         self.current_query = q
         self.current_dataset = self.current_query
         return self
 
-    def select(self, columns=None,groupby=None):
+    def select(self, columns=None, groupby=None):
         if columns:
             self.current_query = self.current_query.select(*columns)
         else:
@@ -117,7 +115,7 @@ class QueryBuilder:
     def count_sql(self):
         self.current_query = Query.from_(self.current_dataset)
         return self.current_query.select(pypika_fn.Count(self.current_dataset.star)).get_sql()
- 
+
     def get_sql(self, limit=const.default_limit_count, offset=0):
         if limit == 0:
             limit = "0"  # Pypika refused to allow limit 0 unless it's a string...

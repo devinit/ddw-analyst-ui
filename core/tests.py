@@ -15,6 +15,7 @@ class TestFixtureLoad(TestCase):
         t = Tag.objects.get(pk=1)
         self.assertEquals(t.name, 'oda')
 
+
 class TestAuditLog(TestCase):
     """Test case class for testing functionality of audit log"""
     def setUp(self):
@@ -114,113 +115,111 @@ class TestPypikaUtils(TestCase):
 
     def test_can_generate_join(self):
         expected = 'SELECT "crs_current".*,"dac1_current".* FROM "repo"."crs_current" JOIN "repo"."dac1_current" ON '\
-        '"crs_current"."donor_code"="dac1_current"."donor_code"'
+            '"crs_current"."donor_code"="dac1_current"."donor_code"'
         OperationStep.objects.create(
-            operation = self.op,
-            step_id = 2,
-            name = 'Join',
-            query_func = 'join',
-            query_kwargs ='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]}',
-            source_id = 2
+            operation=self.op,
+            step_id=2,
+            name='Join',
+            query_func='join',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]}',
+            source_id=2
         )
         qb = QueryBuilder(self.op)
-        self.assertEqual(qb.get_sql_without_limit(),expected)
-    
+        self.assertEqual(qb.get_sql_without_limit(), expected)
+
     def test_can_generate_join_for_specific_columns(self):
         expected = 'SELECT "crs_current".*,"dac1_current"."part_code","dac1_current"."part_name" FROM "repo"."crs_current" JOIN "repo"."dac1_current" ON '\
-        '"crs_current"."donor_code"="dac1_current"."donor_code"'
+            '"crs_current"."donor_code"="dac1_current"."donor_code"'
 
         OperationStep.objects.create(
-            operation = self.op,
-            step_id = 2,
-            name = 'Join',
-            query_func = 'join',
-            query_kwargs ='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"],\
+            operation=self.op,
+            step_id=2,
+            name='Join',
+            query_func='join',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"],\
             "columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
-            source_id = 2
+            source_id=2
         )
 
         qb = QueryBuilder(self.op)
-        self.assertEqual(qb.get_sql_without_limit(),expected)
-
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_sum(self):
-        
+
         expected = 'SELECT "donor_code",SUM("usd_commitment") "usd_commitment_Sum" FROM "repo"."crs_current" GROUP BY "donor_code"'
 
         OperationStep.objects.create(
-            operation = self.op,
-            step_id = 2,
-            name = 'Aggregate',
-            query_func = 'aggregate',
-            query_kwargs ='{"group_by":["donor_code"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
-            source_id = 2
+            operation=self.op,
+            step_id=2,
+            name='Aggregate',
+            query_func='aggregate',
+            query_kwargs='{"group_by":["donor_code"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
+            source_id=2
         )
-        
+
         qb = QueryBuilder(self.op)
-        self.assertEqual(qb.get_sql_without_limit(),expected)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_sum_from_joined_column_fails(self):
         expected = 'SELECT "donor_code",SUM("usd_commitment") "usd_commitment_Sum" FROM "repo"."crs_current" GROUP BY "donor_code"'
 
         OperationStep.objects.create(
-            operation = self.op,
-            step_id = 2,
-            name = 'Join',
-            query_func = 'join',
-            query_kwargs ='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]}',
-            source_id = 2
+            operation=self.op,
+            step_id=2,
+            name='Join',
+            query_func='join',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]}',
+            source_id=2
         )
 
         OperationStep.objects.create(
-            operation = self.op,
-            step_id = 3,
-            name = 'Aggregate',
-            query_func = 'aggregate',
-            query_kwargs ='{"group_by":["donor_code"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
-            source_id = 2
+            operation=self.op,
+            step_id=3,
+            name='Aggregate',
+            query_func='aggregate',
+            query_kwargs='{"group_by":["donor_code"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
+            source_id=2
         )
 
-        
+
         qb = QueryBuilder(self.op)
-        self.assertNotEqual(qb.get_sql_without_limit(),expected)
-    
+        self.assertNotEqual(qb.get_sql_without_limit(), expected)
+
     def test_can_sum_from_joined_column_passes(self):
         expected = 'SELECT "donor_code",SUM("usd_commitment") "usd_commitment_Sum" FROM "repo"."crs_current" GROUP BY "donor_code"'
 
         OperationStep.objects.create(
-            operation = self.op,
-            step_id = 2,
-            name = 'Join',
-            query_func = 'join',
-            query_kwargs ='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]\
+            operation=self.op,
+            step_id=2,
+            name='Join',
+            query_func='join',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]\
             ,"columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
-            source_id = 2
+            source_id=2
         )
 
         OperationStep.objects.create(
-            operation = self.op,
-            step_id = 3,
-            name = 'Aggregate',
-            query_func = 'aggregate',
-            query_kwargs ='{"group_by":["donor_code"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
-            source_id = 2
+            operation=self.op,
+            step_id=3,
+            name='Aggregate',
+            query_func='aggregate',
+            query_kwargs='{"group_by":["donor_code"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
+            source_id=2
         )
 
-        
         qb = QueryBuilder(self.op)
-        #self.assertEqual(qb.get_sql_without_limit(),expected)
+        # self.assertEqual(qb.get_sql_without_limit(),expected)
         pass
 
     def test_can_generate_perform_ntil(self):
         pass
-    
+
     def test_can_generate_perform_dense_rank(self):
         pass
 
     def test_can_perform_first_value(self):
         pass
-    
+
     def test_can_perform_last_value(self):
         pass
 
@@ -229,13 +228,12 @@ class TestPypikaUtils(TestCase):
 
     def test_can_perform_avg(self):
         pass
-    
+
     def test_can_perform_stddve(self):
         pass
-    
+
     def test_can_generate_avg_aggregate(self):
         pass
-    
+
     def test_can_generate_select_with_limit(self):
         pass
-
