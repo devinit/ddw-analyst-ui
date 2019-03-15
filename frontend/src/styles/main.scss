@@ -1,3 +1,15 @@
+.app {
+  height: 100%;
+
+  .layout-loading {
+    height: 100%;
+  }
+}
+
+html {
+  font-size: inherit;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -10,4 +22,12 @@ select:-webkit-autofill:focus {
   border-bottom: 1px solid #d2d2d2;
   -webkit-text-fill-color: inherit;
   box-shadow: 0 0 0px 1000px #fff inset !important;
+}
+
+/*==== MATERIAL DESIGN ====*/
+.table-sm td,
+.table-sm th,
+.table.table-sm>tbody>tr>td,
+.table.table-sm>thead>tr>th {
+  padding: .3rem;
 }

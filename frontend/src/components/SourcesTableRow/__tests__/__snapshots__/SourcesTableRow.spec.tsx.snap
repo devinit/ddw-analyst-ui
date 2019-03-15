@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with the default props 1`] = `
+<tr
+  data-testid="sources-table-row"
+  onClick={[MockFunction]}
+>
+  <td>
+    1
+  </td>
+  <td>
+    World Bank Indicators
+    <span
+      className="text-uppercase"
+    >
+       (wbi)
+    </span>
+  </td>
+  <td>
+    Sun Aug 19 2018
+  </td>
+</tr>
+`;

@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with default props 1`] = `
+Array [
+  <div
+    className="font-weight-bold"
+  >
+    Source
+  </div>,
+  <div
+    className="font-weight-light"
+  >
+    <span
+      className="text-uppercase"
+    >
+       (msc)
+    </span>
+  </div>,
+  <div
+    className="font-weight-bold"
+  >
+    Abstract
+  </div>,
+  <div
+    className="font-weight-light"
+  />,
+  <hr />,
+  <div
+    className="font-weight-light"
+  >
+    <a
+      target="_blank"
+    >
+      <i
+        className="material-icons mr-2"
+      >
+        business
+      </i>
+      <span
+        className="align-middle"
+      />
+    </a>
+  </div>,
+  <div
+    className="font-weight-light"
+  >
+    <a
+      target="_blank"
+    >
+      <i
+        className="material-icons mr-2"
+      >
+        cloud_download
+      </i>
+      <span
+        className="align-middle"
+      />
+    </a>
+  </div>,
+]
+`;

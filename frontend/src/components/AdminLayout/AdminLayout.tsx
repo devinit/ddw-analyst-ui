@@ -23,7 +23,7 @@ export class AdminLayout extends React.Component<AdminLayoutProps> {
         { this.renderContent(Sidebar) }
         <div className="main-panel">
           { this.renderContent(Navbar) }
-          <div className="content">
+          <div className="content pt-0">
             <div className="container-fluid">
               { this.renderContent(AdminLayoutContent) }
             </div>
