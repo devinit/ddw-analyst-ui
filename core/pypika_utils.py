@@ -1,9 +1,19 @@
 from pypika import analytics as an, functions as pypika_fn
-from pypika import Table, PostgreSQLQuery as Query
+from pypika import Table, PostgreSQLQuery as Query, Field
 import core.const as const
 import re
-import types
 import json
+import operator
+from functools import reduce
+
+
+def text_search(text, search):
+    return re.search(search, text) is not None
+
+
+# Won't be needed in Python 3.8 Import from math module instead
+def prod(iterable):
+    return reduce(operator.mul, iterable, 1)
 
 
 class QueryBuilder:
@@ -79,8 +89,40 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def transform(self):
+    def multi_transform(self, trans_func_name, operational_columns):
         self.current_query = Query.from_(self.current_dataset)
+        multi_transform_mapping = {
+            "sum": sum,
+            "product": prod
+        }
+        trans_func = multi_transform_mapping[trans_func_name]
+        operational_alias = "_".join([operational_columns[0], trans_func_name])
+        select_by = [Field(operational_column) for operational_column in operational_columns]
+        self.current_query = self.curreny_query.select(
+            self.current_dataset.star, trans_func(select_by).as_(operational_alias)
+        )
+
+        self.current_dataset = self.current_query
+        return self
+
+    def scalar_transform(self, trans_func_name, operational_column, operational_value):
+        self.current_query = Query.from_(self.current_dataset)
+        scalar_transform_mapping = {
+            "add": operator.add,
+            "multiply": operator.mul,
+            "power": operator.pow,
+            "subtract": operator.sub,
+            "divide": operator.truediv,
+            "concat": operator.concat,
+            "text_search": text_search
+        }
+        trans_func = scalar_transform_mapping[trans_func_name]
+        operational_alias = "_".join([operational_column, trans_func_name])
+        self.current_query = self.curreny_query.select(
+            self.current_dataset.star, trans_func(Field(operational_column), operational_value).as_(operational_alias)
+        )
+
+        self.current_dataset = self.current_query
         return self
 
     def join(self, table_name, schema_name, join_on, criterion=None, columns=None):
