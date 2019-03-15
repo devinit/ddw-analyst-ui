@@ -181,7 +181,6 @@ class TestPypikaUtils(TestCase):
             source_id=2
         )
 
-
         qb = QueryBuilder(self.op)
         self.assertNotEqual(qb.get_sql_without_limit(), expected)
 
