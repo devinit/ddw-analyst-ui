@@ -101,13 +101,13 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_filter(self):
-        expected = 'SELECT * FROM "repo"."crs_current" WHERE "year"=1973'
+        expected = 'SELECT * FROM "repo"."crs_current" WHERE "year">=1973 AND ("short_description" ILIKE \'%sector%\' OR "short_description" ILIKE \'%wheat%\')'
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
             name="Filter",
             query_func="filter",
-            query_kwargs='{"filters":{"year":1973}}',
+            query_kwargs='{"filters":[{"field":"year", "value":1973, "func":"ge"},{"field":"short_description", "value":"%sector%|%wheat%", "func":"text_search"}]}',
             source_id=1
         )
         qb = QueryBuilder(self.op)

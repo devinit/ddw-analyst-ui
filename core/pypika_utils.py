@@ -7,8 +7,16 @@ import operator
 from functools import reduce
 
 
-def text_search(field, search_regex):
-    return field.regex(search_regex)
+def text_search(field, search_ilike):
+    if "|" in search_ilike:  # User is trying to search for multiple strings
+        search_ilikes = search_ilike.split("|")
+        text_searches = [text_search(field, search_ilike_child) for search_ilike_child in search_ilikes]
+        return reduce(operator.or_, text_searches)
+    elif "&" in search_ilike:
+        search_ilikes = search_ilike.split("&")
+        text_searches = [text_search(field, search_ilike_child) for search_ilike_child in search_ilikes]
+        return reduce(operator.and_, text_searches)
+    return field.ilike(search_ilike)
 
 
 # Won't be needed in Python 3.8 Import from math module instead
@@ -83,8 +91,18 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
         self.select([self.current_dataset.star])
 
-        for k, v in filters.items():
-            self.current_query = self.current_query.where(getattr(self.current_dataset, k) == v)
+        filter_mapping = {
+            "lt": operator.lt,
+            "le": operator.le,
+            "eq": operator.eq,
+            "ne": operator.ne,
+            "ge": operator.ge,
+            "gt": operator.gt,
+            "text_search": text_search
+        }
+        filter_operations = [filter_mapping[filter["func"]](Field(filter["field"]), filter["value"]) for filter in filters]
+        filter_operations_and = reduce(operator.and_, filter_operations)
+        self.current_query = self.current_query.where(filter_operations_and)
 
         self.current_dataset = self.current_query
         return self
