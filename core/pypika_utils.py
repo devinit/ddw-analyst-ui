@@ -67,6 +67,7 @@ class QueryBuilder:
         else:
             self.current_query = self.current_query.select(self.current_dataset.star, tmp_query)
 
+        self.current_dataset = self.current_query
         return self
 
 
@@ -84,17 +85,29 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
         return self
 
-    def join(self, table_name, join_on):
+    def join(self, table_name,schema_name, join_on,criterion=None,columns=None):
+       
         table1 = self.current_dataset
-        table2 = Table(table_name)
+        table2 = Table(table_name,schema=schema_name)
+        table1_columns = [table1.star]
+        table2_columns = [table2.star]
+        
+        if columns:
+            print(columns)
+            table1_columns = map(lambda x: getattr(table1,x) ,columns.get('table1'))
+            table2_columns = map(lambda x: getattr(table2,x) , columns.get('table2'))
+            
         q = self.current_query.join(table2).on_field(*join_on).select(
-            table1.star, table2.star
+            *table1_columns, *table2_columns
         )
 
+        #if criterion:     
+
         self.current_query = q
+        self.current_dataset = self.current_query
         return self
 
-    def select(self, columns=None):
+    def select(self, columns=None,groupby=None):
         if columns:
             self.current_query = self.current_query.select(*columns)
         else:
@@ -104,7 +117,7 @@ class QueryBuilder:
     def count_sql(self):
         self.current_query = Query.from_(self.current_dataset)
         return self.current_query.select(pypika_fn.Count(self.current_dataset.star)).get_sql()
-
+ 
     def get_sql(self, limit=const.default_limit_count, offset=0):
         if limit == 0:
             limit = "0"  # Pypika refused to allow limit 0 unless it's a string...
