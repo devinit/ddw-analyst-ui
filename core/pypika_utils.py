@@ -7,8 +7,8 @@ import operator
 from functools import reduce
 
 
-def text_search(text, search):
-    return re.search(search, text) is not None
+def text_search(field, search_regex):
+    return field.regex(search_regex)
 
 
 # Won't be needed in Python 3.8 Import from math module instead
