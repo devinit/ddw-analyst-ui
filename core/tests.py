@@ -185,8 +185,8 @@ class TestPypikaUtils(TestCase):
         self.assertNotEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_sum_from_joined_column_passes(self):
-        expected = 'SELECT "sq0"."year",SUM("sq0"."usd_commitment") "usd_commitment_Sum" FROM (SELECT "crs_current".*,"dac1_current"."part_code","dac1_current"."part_name"'\
-            ' FROM "repo"."crs_current" JOIN "repo"."dac1_current" ON "crs_current"."year"="dac1_current"."year") "sq0" GROUP BY "sq0"."year"'
+        expected = 'SELECT "sq0"."part_name",SUM("sq0"."usd_commitment") "usd_commitment_Sum" FROM (SELECT "crs_current".*,"dac1_current"."part_code","dac1_current"."part_name"'\
+            ' FROM "repo"."crs_current" JOIN "repo"."dac1_current" ON "crs_current"."year"="dac1_current"."year") "sq0" GROUP BY "sq0"."part_name"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -203,7 +203,7 @@ class TestPypikaUtils(TestCase):
             step_id=3,
             name='Aggregate',
             query_func='aggregate',
-            query_kwargs='{"group_by":["year"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
+            query_kwargs='{"group_by":["part_name"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
             source_id=2
         )
 
