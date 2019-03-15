@@ -101,8 +101,8 @@ class QueryBuilder:
             "text_search": text_search
         }
         filter_operations = [filter_mapping[filter["func"]](Field(filter["field"]), filter["value"]) for filter in filters]
-        filter_operations_and = reduce(operator.and_, filter_operations)
-        self.current_query = self.current_query.where(filter_operations_and)
+        filter_operations_or = reduce(operator.or_, filter_operations)
+        self.current_query = self.current_query.where(filter_operations_or)
 
         self.current_dataset = self.current_query
         return self
