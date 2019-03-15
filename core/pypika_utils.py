@@ -91,7 +91,6 @@ class QueryBuilder:
         table2_columns = [table2.star]
 
         if columns:
-            print(columns)
             table1_columns = map(lambda x: getattr(table1, x), columns.get('table1'))
             table2_columns = map(lambda x: getattr(table2, x), columns.get('table2'))
 
