@@ -186,14 +186,15 @@ class TestPypikaUtils(TestCase):
         self.assertNotEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_sum_from_joined_column_passes(self):
-        expected = 'SELECT "donor_code",SUM("usd_commitment") "usd_commitment_Sum" FROM "repo"."crs_current" GROUP BY "donor_code"'
+        expected = 'SELECT "sq0"."year",SUM("sq0"."usd_commitment") "usd_commitment_Sum" FROM (SELECT "crs_current".*,"dac1_current"."part_code","dac1_current"."part_name"'\
+            ' FROM "repo"."crs_current" JOIN "repo"."dac1_current" ON "crs_current"."year"="dac1_current"."year") "sq0" GROUP BY "sq0"."year"'
 
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]\
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["year"]\
             ,"columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
             source_id=2
         )
@@ -203,13 +204,12 @@ class TestPypikaUtils(TestCase):
             step_id=3,
             name='Aggregate',
             query_func='aggregate',
-            query_kwargs='{"group_by":["donor_code"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
+            query_kwargs='{"group_by":["year"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
             source_id=2
         )
 
         qb = QueryBuilder(self.op)
-        # self.assertEqual(qb.get_sql_without_limit(),expected)
-        pass
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_perform_ntil(self):
         pass
