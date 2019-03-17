@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Alert, Button, Card, Form, InputGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 import * as Yup from 'yup';
-import SocialLine from '../SocialLine';
+import SocialLine from '@bit/devinit.analyst-ui.components.social-line';
 
 interface LoginFormState {
   credentials: Credentials;

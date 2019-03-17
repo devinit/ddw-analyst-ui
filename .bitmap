@@ -278,35 +278,35 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "devinit.analyst-ui/components/login-form@0.0.3": {
+    "devinit.analyst-ui/components/conditional-render@0.0.2": {
         "files": [
             {
-                "relativePath": "frontend/src/components/LoginForm/LoginForm.tsx",
+                "relativePath": "frontend/src/components/ConditionalRender/ConditionalRender.tsx",
                 "test": false,
-                "name": "LoginForm.tsx"
+                "name": "ConditionalRender.tsx"
             },
             {
-                "relativePath": "frontend/src/components/LoginForm/__tests__/LoginForm.spec.tsx",
+                "relativePath": "frontend/src/components/ConditionalRender/__tests__/ConditionalRender.spec.tsx",
                 "test": true,
-                "name": "LoginForm.spec.tsx"
+                "name": "ConditionalRender.spec.tsx"
             },
             {
-                "relativePath": "frontend/src/components/LoginForm/__tests__/__snapshots__/LoginForm.spec.tsx.snap",
+                "relativePath": "frontend/src/components/ConditionalRender/__tests__/__snapshots__/ConditionalRender.spec.tsx.snap",
                 "test": false,
-                "name": "LoginForm.spec.tsx.snap"
+                "name": "ConditionalRender.spec.tsx.snap"
             },
             {
-                "relativePath": "frontend/src/components/LoginForm/index.tsx",
+                "relativePath": "frontend/src/components/ConditionalRender/index.ts",
                 "test": false,
-                "name": "index.tsx"
+                "name": "index.ts"
             }
         ],
-        "mainFile": "frontend/src/components/LoginForm/index.tsx",
-        "trackDir": "frontend/src/components/LoginForm",
+        "mainFile": "frontend/src/components/ConditionalRender/index.ts",
+        "trackDir": "frontend/src/components/ConditionalRender",
         "origin": "AUTHORED",
         "exported": true
     },
-    "devinit.analyst-ui/components/social-line@0.0.2": {
+    "devinit.analyst-ui/components/social-line@0.0.3": {
         "files": [
             {
                 "relativePath": "frontend/src/components/SocialLine/SocialLine.tsx",
@@ -334,31 +334,31 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "devinit.analyst-ui/components/conditional-render@0.0.2": {
+    "devinit.analyst-ui/components/login-form@0.0.5": {
         "files": [
             {
-                "relativePath": "frontend/src/components/ConditionalRender/ConditionalRender.tsx",
+                "relativePath": "frontend/src/components/LoginForm/LoginForm.tsx",
                 "test": false,
-                "name": "ConditionalRender.tsx"
+                "name": "LoginForm.tsx"
             },
             {
-                "relativePath": "frontend/src/components/ConditionalRender/__tests__/ConditionalRender.spec.tsx",
+                "relativePath": "frontend/src/components/LoginForm/__tests__/LoginForm.spec.tsx",
                 "test": true,
-                "name": "ConditionalRender.spec.tsx"
+                "name": "LoginForm.spec.tsx"
             },
             {
-                "relativePath": "frontend/src/components/ConditionalRender/__tests__/__snapshots__/ConditionalRender.spec.tsx.snap",
+                "relativePath": "frontend/src/components/LoginForm/__tests__/__snapshots__/LoginForm.spec.tsx.snap",
                 "test": false,
-                "name": "ConditionalRender.spec.tsx.snap"
+                "name": "LoginForm.spec.tsx.snap"
             },
             {
-                "relativePath": "frontend/src/components/ConditionalRender/index.ts",
+                "relativePath": "frontend/src/components/LoginForm/index.tsx",
                 "test": false,
-                "name": "index.ts"
+                "name": "index.tsx"
             }
         ],
-        "mainFile": "frontend/src/components/ConditionalRender/index.ts",
-        "trackDir": "frontend/src/components/ConditionalRender",
+        "mainFile": "frontend/src/components/LoginForm/index.tsx",
+        "trackDir": "frontend/src/components/LoginForm",
         "origin": "AUTHORED",
         "exported": true
     },
