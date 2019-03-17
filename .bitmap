@@ -29,62 +29,6 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "devinit.analyst-ui/social-line@1.0.1": {
-        "files": [
-            {
-                "relativePath": "frontend/src/components/SocialLine/SocialLine.tsx",
-                "test": false,
-                "name": "SocialLine.tsx"
-            },
-            {
-                "relativePath": "frontend/src/components/SocialLine/__tests__/SocialLine.spec.tsx",
-                "test": true,
-                "name": "SocialLine.spec.tsx"
-            },
-            {
-                "relativePath": "frontend/src/components/SocialLine/__tests__/__snapshots__/SocialLine.spec.tsx.snap",
-                "test": false,
-                "name": "SocialLine.spec.tsx.snap"
-            },
-            {
-                "relativePath": "frontend/src/components/SocialLine/index.ts",
-                "test": false,
-                "name": "index.ts"
-            }
-        ],
-        "mainFile": "frontend/src/components/SocialLine/index.ts",
-        "trackDir": "frontend/src/components/SocialLine",
-        "origin": "AUTHORED",
-        "exported": true
-    },
-    "devinit.analyst-ui/conditional-render@1.0.1": {
-        "files": [
-            {
-                "relativePath": "frontend/src/components/ConditionalRender/ConditionalRender.tsx",
-                "test": false,
-                "name": "ConditionalRender.tsx"
-            },
-            {
-                "relativePath": "frontend/src/components/ConditionalRender/__tests__/ConditionalRender.spec.tsx",
-                "test": true,
-                "name": "ConditionalRender.spec.tsx"
-            },
-            {
-                "relativePath": "frontend/src/components/ConditionalRender/__tests__/__snapshots__/ConditionalRender.spec.tsx.snap",
-                "test": false,
-                "name": "ConditionalRender.spec.tsx.snap"
-            },
-            {
-                "relativePath": "frontend/src/components/ConditionalRender/index.ts",
-                "test": false,
-                "name": "index.ts"
-            }
-        ],
-        "mainFile": "frontend/src/components/ConditionalRender/index.ts",
-        "trackDir": "frontend/src/components/ConditionalRender",
-        "origin": "AUTHORED",
-        "exported": true
-    },
     "devinit.analyst-ui/components/sidebar-link@0.0.1": {
         "files": [
             {
@@ -291,34 +235,6 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "devinit.analyst-ui/components/login-form@0.0.1": {
-        "files": [
-            {
-                "relativePath": "frontend/src/components/LoginForm/LoginForm.tsx",
-                "test": false,
-                "name": "LoginForm.tsx"
-            },
-            {
-                "relativePath": "frontend/src/components/LoginForm/__tests__/LoginForm.spec.tsx",
-                "test": true,
-                "name": "LoginForm.spec.tsx"
-            },
-            {
-                "relativePath": "frontend/src/components/LoginForm/__tests__/__snapshots__/LoginForm.spec.tsx.snap",
-                "test": false,
-                "name": "LoginForm.spec.tsx.snap"
-            },
-            {
-                "relativePath": "frontend/src/components/LoginForm/index.tsx",
-                "test": false,
-                "name": "index.tsx"
-            }
-        ],
-        "mainFile": "frontend/src/components/LoginForm/index.tsx",
-        "trackDir": "frontend/src/components/LoginForm",
-        "origin": "AUTHORED",
-        "exported": true
-    },
     "devinit.analyst-ui/components/admin-layout@0.0.1": {
         "files": [
             {
@@ -359,6 +275,90 @@
         ],
         "mainFile": "frontend/src/components/AdminLayout/index.ts",
         "trackDir": "frontend/src/components/AdminLayout",
+        "origin": "AUTHORED",
+        "exported": true
+    },
+    "devinit.analyst-ui/components/login-form@0.0.3": {
+        "files": [
+            {
+                "relativePath": "frontend/src/components/LoginForm/LoginForm.tsx",
+                "test": false,
+                "name": "LoginForm.tsx"
+            },
+            {
+                "relativePath": "frontend/src/components/LoginForm/__tests__/LoginForm.spec.tsx",
+                "test": true,
+                "name": "LoginForm.spec.tsx"
+            },
+            {
+                "relativePath": "frontend/src/components/LoginForm/__tests__/__snapshots__/LoginForm.spec.tsx.snap",
+                "test": false,
+                "name": "LoginForm.spec.tsx.snap"
+            },
+            {
+                "relativePath": "frontend/src/components/LoginForm/index.tsx",
+                "test": false,
+                "name": "index.tsx"
+            }
+        ],
+        "mainFile": "frontend/src/components/LoginForm/index.tsx",
+        "trackDir": "frontend/src/components/LoginForm",
+        "origin": "AUTHORED",
+        "exported": true
+    },
+    "devinit.analyst-ui/components/social-line@0.0.2": {
+        "files": [
+            {
+                "relativePath": "frontend/src/components/SocialLine/SocialLine.tsx",
+                "test": false,
+                "name": "SocialLine.tsx"
+            },
+            {
+                "relativePath": "frontend/src/components/SocialLine/__tests__/SocialLine.spec.tsx",
+                "test": true,
+                "name": "SocialLine.spec.tsx"
+            },
+            {
+                "relativePath": "frontend/src/components/SocialLine/__tests__/__snapshots__/SocialLine.spec.tsx.snap",
+                "test": false,
+                "name": "SocialLine.spec.tsx.snap"
+            },
+            {
+                "relativePath": "frontend/src/components/SocialLine/index.ts",
+                "test": false,
+                "name": "index.ts"
+            }
+        ],
+        "mainFile": "frontend/src/components/SocialLine/index.ts",
+        "trackDir": "frontend/src/components/SocialLine",
+        "origin": "AUTHORED",
+        "exported": true
+    },
+    "devinit.analyst-ui/components/conditional-render@0.0.2": {
+        "files": [
+            {
+                "relativePath": "frontend/src/components/ConditionalRender/ConditionalRender.tsx",
+                "test": false,
+                "name": "ConditionalRender.tsx"
+            },
+            {
+                "relativePath": "frontend/src/components/ConditionalRender/__tests__/ConditionalRender.spec.tsx",
+                "test": true,
+                "name": "ConditionalRender.spec.tsx"
+            },
+            {
+                "relativePath": "frontend/src/components/ConditionalRender/__tests__/__snapshots__/ConditionalRender.spec.tsx.snap",
+                "test": false,
+                "name": "ConditionalRender.spec.tsx.snap"
+            },
+            {
+                "relativePath": "frontend/src/components/ConditionalRender/index.ts",
+                "test": false,
+                "name": "index.ts"
+            }
+        ],
+        "mainFile": "frontend/src/components/ConditionalRender/index.ts",
+        "trackDir": "frontend/src/components/ConditionalRender",
         "origin": "AUTHORED",
         "exported": true
     },

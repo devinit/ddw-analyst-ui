@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Alert, Button, Card, Form, InputGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 import * as Yup from 'yup';
-import { SocialLine } from '../SocialLine';
+import SocialLine from '../SocialLine';
 
 interface LoginFormState {
   credentials: Credentials;
