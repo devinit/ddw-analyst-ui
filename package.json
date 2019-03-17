@@ -55,6 +55,7 @@
     "@types/react-test-renderer": "^16.8.1",
     "@types/redux-immutable": "^4.0.1",
     "@types/redux-logger": "^3.0.7",
+    "@types/styled-components": "^4.1.12",
     "@types/yup": "^0.26.12",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -107,6 +108,7 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.2",
     "semantic-ui-react": "^0.86.0",
+    "styled-components": "^4.1.3",
     "yup": "^0.26.10"
   }
 }
