@@ -4,4 +4,4 @@ import { SourceMap } from '../../../reducers/sources';
 export const setActiveSource = (activeSource: SourceMap): QueryBuilderAction =>
   ({ type: SET_ACTIVE_SOURCE, activeSource });
 
-export const setAction = (action?: QueryAction): QueryBuilderAction => ({ type: SET_ACTION, action });
+export const setAction = (query?: QueryAction): QueryBuilderAction => ({ type: SET_ACTION, query });

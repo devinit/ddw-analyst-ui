@@ -27,7 +27,7 @@ type QueryBuilderProps = ActionProps & ReduxState;
 const StyledIcon = styled.i`cursor: pointer;`;
 
 class QueryBuilder extends React.Component<QueryBuilderProps> {
-  private actions = [
+  private queries = [
     { key: 'filter', icon: 'filter', text: 'Filter', value: 'filter' },
     { key: 'join', icon: 'chain', text: 'Join', value: 'join' },
     { key: 'aggregate', icon: 'rain', text: 'Aggregate', value: 'aggregate' },
@@ -38,7 +38,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     const sources = this.props.sources.get('sources') as List<SourceMap>;
     const loading = this.props.sources.get('loading') as boolean;
     const activeSource = this.props.page.get('activeSource') as SourceMap;
-    const action = this.props.page.get('action') as string;
+    const query = this.props.page.get('query') as string;
 
     return (
       <Row>
@@ -63,12 +63,12 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
               </div>
               <div className={ classNames('mb-3', { 'd-none': !activeSource }) }>
                 <Dropdown
-                  options={ this.actions }
+                  options={ this.queries }
                   simple
                   item
-                  text="Actions"
+                  text="Queries"
                   onChange={ this.onSelectAction }
-                  disabled={ !!action }
+                  disabled={ !!query }
                 />
               </div>
             </Card.Body>
@@ -76,10 +76,10 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         </Col>
 
         <Col lg={ 8 }>
-          <Card className={ classNames({ 'd-none': !action }) }>
+          <Card className={ classNames({ 'd-none': !query }) }>
             <Card.Header>
               <Card.Title>
-                { action ? action.toUpperCase() : 'Select Action' }
+                { query ? query.toUpperCase() : 'Select Action' }
                 <StyledIcon className="material-icons float-right" onClick={ this.resetAction }>
                   close
                 </StyledIcon>

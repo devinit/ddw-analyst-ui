@@ -6,7 +6,7 @@ export type QueryBuilderAction = Action & State;
 export type QueryAction = 'filter' | 'join' | 'aggregate' | 'transform';
 interface State {
   activeSource?: SourceMap;
-  action?: QueryAction;
+  query?: QueryAction;
 }
 export type QueryBuilderState = Map<keyof State, State[keyof State]>;
 
@@ -21,7 +21,7 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
     return state.set('activeSource', action.activeSource);
   }
   if (action.type === SET_ACTION) {
-    return state.set('action', action.action);
+    return state.set('query', action.query);
   }
 
   return state;
