@@ -13,6 +13,7 @@ import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { DataSources } from '../pages/DataSources';
 import { Home } from '../pages/Home';
+import { QueryBuilder } from '../pages/QueryBuilder';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
@@ -80,6 +81,16 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   data-testid="sidebar-link-sources"
                 />
               </Sidebar.Item>
+              <Sidebar.Item active={ this.state.activeRoute === '/queries/build/' }>
+                <Sidebar.Link
+                  to="/queries/build/"
+                  single
+                  icon="query_builder"
+                  textNormal="Query Builder"
+                  onClick={ this.setActiveRoute }
+                  data-testid="sidebar-link-query-builder"
+                />
+              </Sidebar.Item>
             </Sidebar.Content>
           </Sidebar>
 
@@ -89,6 +100,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Navbar.Brand href="/">
                 <Route path="/" exact component={ () => <span>Home</span> }/>
                 <Route path="/sources" exact component={ () => <span>Data Sources</span> }/>
+                <Route path="/queries/build" exact component={ () => <span>Query Builder</span> }/>
               </Navbar.Brand>
             </div>
 
@@ -120,6 +132,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
             <Switch>
               <Route path="/" exact component={ Home }/>
               <Route path="/sources" exact component={ DataSources }/>
+              <Route path="/queries/build" exact component={ QueryBuilder }/>
             </Switch>
           </AdminLayout.Content>
         </AdminLayout>
