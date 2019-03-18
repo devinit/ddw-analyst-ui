@@ -10,3 +10,4 @@ markdown>=3.0.1
 django-filter>=2.1.0
 pypika>=0.25.2
 coverage>=4.5.3
+codecov>=2.0.15
