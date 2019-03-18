@@ -136,7 +136,7 @@ class QueryBuilder:
         }
         trans_func = scalar_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_column, trans_func_name])
-        self.current_query = self.curreny_query.select(
+        self.current_query = self.current_query.select(
             self.current_dataset.star, trans_func(Field(operational_column), operational_value).as_(operational_alias)
         )
 
@@ -165,10 +165,12 @@ class QueryBuilder:
         return self
 
     def select(self, columns=None, groupby=None):
+        self.current_query = Query.from_(self.current_dataset)
         if columns:
             self.current_query = self.current_query.select(*columns)
         else:
             self.current_query = self.current_query.select(self.current_dataset.star)
+        self.current_dataset = self.current_query
         return self
 
     def count_sql(self):
