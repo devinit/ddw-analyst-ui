@@ -220,13 +220,52 @@ class TestPypikaUtils(TestCase):
         pass
 
     def test_can_perform_median(self):
-        pass
+        # NOT VALID IN PSQL
+        expected = 'SELECT "sq0".*,MEDIAN(\'usd_disbursement_defl\') OVER(PARTITION BY year) FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Window Median',
+            query_func='window',
+            query_kwargs='{"window_fn":"Median","term":"usd_disbursement_defl","over":["year"]}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_avg(self):
-        pass
+        # NOT VALID IN PSQL
+        expected = 'SELECT "sq0".*,AVG(\'usd_disbursement_defl\') OVER(PARTITION BY year) FROM (SELECT * FROM "repo"."crs_current") "sq0"'
 
-    def test_can_perform_stddve(self):
-        pass
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Window Avg',
+            query_func='window',
+            query_kwargs='{"window_fn":"Avg","term":"usd_disbursement_defl","over":["year"]}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
+
+    def test_can_perform_stddev(self):
+        # NOT VALID IN PSQL
+        expected = 'SELECT "sq0".*,STDDEV(\'usd_disbursement_defl\') OVER(PARTITION BY year) FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Window StdDev',
+            query_func='window',
+            query_kwargs='{"window_fn":"StdDev","term":"usd_disbursement_defl","over":["year"]}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_avg_aggregate(self):
         pass
