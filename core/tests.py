@@ -232,4 +232,6 @@ class TestPypikaUtils(TestCase):
         pass
 
     def test_can_generate_select_with_limit(self):
-        pass
+        expected = 'SELECT * FROM "repo"."crs_current" LIMIT 10'
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql(), expected)
