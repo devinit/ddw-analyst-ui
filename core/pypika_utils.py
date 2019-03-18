@@ -50,10 +50,9 @@ class QueryBuilder:
 
     def aggregate(self, group_by, agg_func_name, operational_column):
         self.current_query = Query.from_(self.current_dataset)
-        self.current_query = self.current_query.groupby(*group_by)
 
         agg_func = getattr(pypika_fn, agg_func_name)  # https://pypika.readthedocs.io/en/latest/api/pypika.functions.html e.g. Sum, Count, Avg
-        select_by = group_by
+        select_by = group_by.copy()
         current_operational_column = getattr(self.current_dataset, operational_column)
 
         operational_alias = "_".join([operational_column, agg_func_name])
@@ -61,6 +60,7 @@ class QueryBuilder:
         select_by.append(agg_func(current_operational_column, alias=operational_alias))
 
         self.select(select_by)
+        self.current_query = self.current_query.groupby(*group_by)
         self.current_dataset = self.current_query
         return self
 

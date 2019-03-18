@@ -144,7 +144,7 @@ class TestPypikaUtils(TestCase):
 
     def test_can_sum(self):
 
-        expected = 'SELECT "sq0"."donor_code",SUM("sq0"."usd_commitment") "usd_commitment_Sum" FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0"."donor_code",SUM("sq0"."usd_commitment") "usd_commitment_Sum" FROM (SELECT * FROM "repo"."crs_current") "sq0" GROUP BY "sq0"."donor_code"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -183,7 +183,7 @@ class TestPypikaUtils(TestCase):
         self.assertNotEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_sum_from_joined_column_passes(self):
-        expected = 'SELECT "sq1"."part_name",SUM("sq1"."usd_commitment") "usd_commitment_Sum" FROM (SELECT "sq0"."donor_name","sq0"."usd_commitment","dac1_current"."part_code","dac1_current"."part_name" FROM (SELECT * FROM "repo"."crs_current") "sq0" JOIN "repo"."dac1_current" ON "sq0"."year"="dac1_current"."year") "sq1"'
+        expected = 'SELECT "sq1"."part_name",SUM("sq1"."usd_commitment") "usd_commitment_Sum" FROM (SELECT "sq0"."donor_name","sq0"."usd_commitment","dac1_current"."part_code","dac1_current"."part_name" FROM (SELECT * FROM "repo"."crs_current") "sq0" JOIN "repo"."dac1_current" ON "sq0"."year"="dac1_current"."year") "sq1" GROUP BY "sq1"."part_name"'
 
         OperationStep.objects.create(
             operation=self.op,
