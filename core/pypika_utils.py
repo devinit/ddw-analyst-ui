@@ -110,6 +110,9 @@ class QueryBuilder:
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
+        if not isinstance(operational_columns,list):
+            raise  ValueError("Expecting a list of operational columns")
+        
         self.current_query = Query.from_(self.current_dataset)
         multi_transform_mapping = {
             "sum": sum,
@@ -118,7 +121,7 @@ class QueryBuilder:
         trans_func = multi_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_columns[0], trans_func_name])
         select_by = [Field(operational_column) for operational_column in operational_columns]
-        self.current_query = self.curreny_query.select(
+        self.current_query = self.current_query.select(
             self.current_dataset.star, trans_func(select_by).as_(operational_alias)
         )
 
