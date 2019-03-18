@@ -18,7 +18,9 @@ def text_search(field, search_ilike):
         return reduce(operator.and_, text_searches)
     return field.ilike(search_ilike)
 
-
+def concat(field,args):
+    return pypika_fn.Concat(getattr(field,'name'),args)
+   
 # Won't be needed in Python 3.8 Import from math module instead
 def prod(iterable):
     return reduce(operator.mul, iterable, 1)
@@ -131,8 +133,7 @@ class QueryBuilder:
             "power": operator.pow,
             "subtract": operator.sub,
             "divide": operator.truediv,
-            "concat": operator.concat,
-            "text_search": text_search
+            "concat": concat
         }
         trans_func = scalar_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_column, trans_func_name])
