@@ -231,7 +231,11 @@ class TestPypikaUtils(TestCase):
     def test_can_generate_avg_aggregate(self):
         pass
 
-    def test_can_generate_select_with_limit(self):
+    def test_can_generate_select_with_default_limit(self):
         expected = 'SELECT * FROM "repo"."crs_current" LIMIT 10'
         qb = QueryBuilder(self.op)
         self.assertEqual(qb.get_sql(), expected)
+
+    def test_can_generate_select_with_defined_limit(self):
+        expected = 'SELECT * FROM "repo"."crs_current" LIMIT 5 OFFSET 10'
+        self.assertEqual(self.op.build_query(limit=5, offset=10, full=False)[1], expected)
