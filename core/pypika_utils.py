@@ -151,7 +151,7 @@ class QueryBuilder:
         return self
 
     def join(self, table_name, schema_name, join_on, criterion=None, columns=None):
-
+        self.current_query = Query.from_(self.current_dataset)
         table1 = self.current_dataset
         table2 = Table(table_name, schema=schema_name)
         table1_columns = [table1.star]
