@@ -18,9 +18,11 @@ def text_search(field, search_ilike):
         return reduce(operator.and_, text_searches)
     return field.ilike(search_ilike)
 
-def concat(field,args):
-    return pypika_fn.Concat(getattr(field,'name'),args)
-   
+
+def concat(field, args):
+    return pypika_fn.Concat(getattr(field, 'name'), args)
+
+
 # Won't be needed in Python 3.8 Import from math module instead
 def prod(iterable):
     return reduce(operator.mul, iterable, 1)
@@ -110,9 +112,9 @@ class QueryBuilder:
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
-        if not isinstance(operational_columns,list):
-            raise  ValueError("Expecting a list of operational columns")
-        
+        if not isinstance(operational_columns, list):
+            raise ValueError("Expecting a list of operational columns")
+
         self.current_query = Query.from_(self.current_dataset)
         multi_transform_mapping = {
             "sum": sum,
@@ -136,7 +138,8 @@ class QueryBuilder:
             "power": operator.pow,
             "subtract": operator.sub,
             "divide": operator.truediv,
-            "concat": concat
+            "concat": concat,
+            "text_search": text_search
         }
         trans_func = scalar_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_column, trans_func_name])
