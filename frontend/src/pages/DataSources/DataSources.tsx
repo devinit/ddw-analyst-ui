@@ -51,7 +51,11 @@ class DataSources extends React.Component<DataSourcesProps> {
   }
 
   componentDidMount() {
-    this.props.actions.fetchSources();
+    const sources = this.props.sources.get('sources') as List<SourceMap>;
+    const loading = this.props.sources.get('loading') as boolean;
+    if (!sources.count() && !loading) {
+      this.props.actions.fetchSources();
+    }
   }
 
   private renderDetailsTab(activeSource: SourceMap | undefined, loading = false) {
