@@ -3,6 +3,7 @@ import { combineReducers } from 'redux-immutable';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { dataSourcesReducer, dataSourcesReducerId } from '../pages/DataSources/reducers';
+import { queryBuilderReducer, queryBuilderReducerId } from '../pages/QueryBuilder/reducers';
 import { SourcesState, sourcesReducer } from '../reducers/sources';
 import { TokenState, tokenReducer } from '../reducers/token';
 import { UserState, userReducer } from '../reducers/user';
@@ -15,7 +16,8 @@ const structuredReducers = {
   user: userReducer,
   token: tokenReducer,
   sources: sourcesReducer,
-  [`${dataSourcesReducerId}`]: dataSourcesReducer
+  [`${dataSourcesReducerId}`]: dataSourcesReducer,
+  [`${queryBuilderReducerId}`]: queryBuilderReducer
 };
 const reducers = combineReducers(structuredReducers);
 
