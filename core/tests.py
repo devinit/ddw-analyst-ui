@@ -335,3 +335,33 @@ class TestPypikaUtils(TestCase):
     def test_can_generate_select_with_defined_limit(self):
         expected = 'SELECT * FROM "repo"."crs_current" LIMIT 5 OFFSET 10'
         self.assertEqual(self.op.build_query(limit=5, offset=10, full=False)[1], expected)
+
+    def test_can_perform_scalar_transform(self):
+        expected = 'SELECT "sq0".*,"sq0"."short_description" ILIKE \'%wheat%\' "short_description_text_search" FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Transform',
+            query_func='scalar_transform',
+            query_kwargs='{"trans_func_name":"text_search", "operational_column":"short_description", "operational_value":"%wheat%"}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
+
+    def test_can_perform_multi_transform(self):
+        expected = 'SELECT "sq0".*,0+"sq0"."usd_commitment"+"sq0"."usd_disbursement" "usd_commitment_sum" FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Transform',
+            query_func='multi_transform',
+            query_kwargs='{"trans_func_name":"sum", "operational_columns":["usd_commitment","usd_disbursement"]}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
