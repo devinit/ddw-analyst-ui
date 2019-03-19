@@ -238,10 +238,34 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_first_value(self):
-        pass
+        expected = 'SELECT "sq0".*,FIRST_VALUE("sq0"."usd_commitment") OVER(ORDER BY "sq0"."year") FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Window first val',
+            query_func='window',
+            query_kwargs='{"window_fn":"FirstValue","term":"usd_commitment","order_by":["year"]}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_last_value(self):
-        pass
+        expected = 'SELECT "sq0".*,LAST_VALUE("sq0"."usd_commitment") OVER(ORDER BY "sq0"."year") FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Window last val',
+            query_func='window',
+            query_kwargs='{"window_fn":"LastValue","term":"usd_commitment","order_by":["year"]}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_median(self):
         expected = 'SELECT "sq0".*,MEDIAN("sq0"."usd_commitment") OVER(PARTITION BY "sq0"."year") FROM (SELECT * FROM "repo"."crs_current") "sq0"'
@@ -289,7 +313,19 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_avg_aggregate(self):
-        pass
+        expected = 'SELECT "sq0"."year",AVG("sq0"."usd_commitment") "usd_commitment_Avg" FROM (SELECT * FROM "repo"."crs_current") "sq0" GROUP BY "sq0"."year"'
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Aggregate',
+            query_func='aggregate',
+            query_kwargs='{"group_by":["year"],"agg_func_name":"Avg", "operational_column":"usd_commitment"}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_select_with_default_limit(self):
         expected = 'SELECT * FROM "repo"."crs_current" LIMIT 10'

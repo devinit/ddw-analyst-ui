@@ -73,6 +73,8 @@ class QueryBuilder:
         # Check if additional **kwargs are required in for given window function
         if window_fn == 'DenseRank' or window_fn == 'Rank' or window_fn == 'RowNumber':
             tmp_query = window_()
+        elif window_fn == 'FirstValue' or window_fn == 'LastValue':  # Only uses first positional arg. Cannot use `term=`
+            tmp_query = window_(getattr(self.current_dataset, term))
         else:
             try:
                 tmp_query = window_(term=getattr(self.current_dataset, term), **kwargs)
