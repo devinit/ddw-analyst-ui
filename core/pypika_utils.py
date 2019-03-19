@@ -70,16 +70,20 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
         tmp_query = ''
         window_ = getattr(an, window_fn)
-        # Check if additional **kwargs are required in for given window function
-        if window_fn == 'DenseRank' or window_fn == 'Rank' or window_fn == 'RowNumber':
+        argumentless_analytics = ['DenseRank', 'Rank', 'RowNumber']
+        positional_arg_analytics = ['FirstValue', 'LastValue']
+        term_analytics = ['NTile', 'Median', 'Avg', 'StdDev', 'StdDevPop', 'StdDevSamp', 'Variance', 'VarPop', 'VarSamp', 'Count', 'Sum', 'Max', 'Min']
+        if window_fn in argumentless_analytics:
             tmp_query = window_()
-        elif window_fn == 'FirstValue' or window_fn == 'LastValue':  # Only uses first positional arg. Cannot use `term=`
+        elif window_fn in positional_arg_analytics:  # Only uses first positional arg. Cannot use `term=`
             tmp_query = window_(getattr(self.current_dataset, term))
-        else:
+        elif window_fn in term_analytics:
             try:
                 tmp_query = window_(term=getattr(self.current_dataset, term), **kwargs)
             except TypeError:  # Term is an integer, like with NTile
                 tmp_query = window_(term=term, **kwargs)
+        else:
+            raise Exception('window_fn was not found in predefined window functions.')
 
         if over:
             for over_elem in over:
