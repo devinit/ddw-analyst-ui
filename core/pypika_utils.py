@@ -1,5 +1,5 @@
 from pypika import analytics as an, functions as pypika_fn
-from pypika import Table, PostgreSQLQuery as Query, Field
+from pypika import Table, PostgreSQLQuery as Query
 import core.const as const
 import re
 import json
@@ -52,6 +52,7 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
 
         agg_func = getattr(pypika_fn, agg_func_name)  # https://pypika.readthedocs.io/en/latest/api/pypika.functions.html e.g. Sum, Count, Avg
+        group_by = [getattr(self.current_dataset, col) for col in group_by]
         select_by = group_by.copy()
         current_operational_column = getattr(self.current_dataset, operational_column)
 
@@ -64,27 +65,27 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def window(self, window_fn, columns=None, over=None, order_by=None, **kwargs):
+    def window(self, window_fn, term=None, over=None, order_by=None, columns=None, **kwargs):
 
         self.current_query = Query.from_(self.current_dataset)
         tmp_query = ''
         window_ = getattr(an, window_fn)
-
         # Check if additional **kwargs are required in for given window function
         if window_fn == 'DenseRank' or window_fn == 'Rank' or window_fn == 'RowNumber':
-            tmp_query = window_().over(*over)
-
-            if order_by:
-                for order in order_by:
-                    tmp_query = tmp_query.orderby(getattr(self.current_dataset, order))
+            tmp_query = window_()
         else:
-            tmp_query = window_(**kwargs).over(*over)
-            if order_by:
-                for order in order_by:
-                    tmp_query = tmp_query.orderby(getattr(self.current_dataset, order))
+            tmp_query = window_(term=getattr(self.current_dataset, term), **kwargs)
+
+        if over:
+            for over_elem in over:
+                tmp_query = tmp_query.over(getattr(self.current_dataset, over_elem))
+
+        if order_by:
+            for order in order_by:
+                tmp_query = tmp_query.orderby(getattr(self.current_dataset, order))
 
         if columns:
-            self.current_query = self.current_query.select(*columns, tmp_query)
+            self.current_query = self.current_query.select(*[getattr(self.current_dataset, col_elem) for col_elem in columns], tmp_query)
         else:
             self.current_query = self.current_query.select(self.current_dataset.star, tmp_query)
 
@@ -93,7 +94,6 @@ class QueryBuilder:
 
     def filter(self, filters):
         self.current_query = Query.from_(self.current_dataset)
-        self.select([self.current_dataset.star])
 
         filter_mapping = {
             "lt": operator.lt,
@@ -104,9 +104,9 @@ class QueryBuilder:
             "gt": operator.gt,
             "text_search": text_search
         }
-        filter_operations = [filter_mapping[filter["func"]](Field(filter["field"]), filter["value"]) for filter in filters]
+        filter_operations = [filter_mapping[filter["func"]](getattr(self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
-        self.current_query = self.current_query.where(filter_operations_or)
+        self.current_query = self.current_query.select(self.current_dataset.star).where(filter_operations_or)
 
         self.current_dataset = self.current_query
         return self
@@ -122,7 +122,7 @@ class QueryBuilder:
         }
         trans_func = multi_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_columns[0], trans_func_name])
-        select_by = [Field(operational_column) for operational_column in operational_columns]
+        select_by = [getattr(self.current_dataset, operational_column) for operational_column in operational_columns]
         self.current_query = self.current_query.select(
             self.current_dataset.star, trans_func(select_by).as_(operational_alias)
         )
@@ -144,7 +144,7 @@ class QueryBuilder:
         trans_func = scalar_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_column, trans_func_name])
         self.current_query = self.current_query.select(
-            self.current_dataset.star, trans_func(Field(operational_column), operational_value).as_(operational_alias)
+            self.current_dataset.star, trans_func(getattr(self.current_dataset, operational_column), operational_value).as_(operational_alias)
         )
 
         self.current_dataset = self.current_query
