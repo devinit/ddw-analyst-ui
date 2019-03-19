@@ -74,7 +74,10 @@ class QueryBuilder:
         if window_fn == 'DenseRank' or window_fn == 'Rank' or window_fn == 'RowNumber':
             tmp_query = window_()
         else:
-            tmp_query = window_(term=getattr(self.current_dataset, term), **kwargs)
+            try:
+                tmp_query = window_(term=getattr(self.current_dataset, term), **kwargs)
+            except TypeError:  # Term is an integer, like with NTile
+                tmp_query = window_(term=term, **kwargs)
 
         if over:
             for over_elem in over:

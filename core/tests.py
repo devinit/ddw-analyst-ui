@@ -207,8 +207,20 @@ class TestPypikaUtils(TestCase):
         qb = QueryBuilder(self.op)
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
-    def test_can_generate_perform_ntil(self):
-        pass
+    def test_can_generate_perform_ntile(self):
+        expected = 'SELECT "sq0".*,NTILE(4) OVER(ORDER BY "sq0"."usd_commitment") FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Window Ntile',
+            query_func='window',
+            query_kwargs='{"window_fn":"NTile","term":4,"order_by":["usd_commitment"]}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_perform_dense_rank(self):
         expected = 'SELECT "sq0".*,DENSE_RANK() OVER(ORDER BY "sq0"."usd_commitment") FROM (SELECT * FROM "repo"."crs_current") "sq0"'
