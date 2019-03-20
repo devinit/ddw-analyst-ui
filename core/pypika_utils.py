@@ -1,10 +1,18 @@
-from pypika import analytics as an, functions as pypika_fn
-from pypika import Table, PostgreSQLQuery as Query
-import core.const as const
-import re
+"""
+    Holds functions and classes that utilise pypika (https://pypika.readthedocs.io) to generate
+    SQL queries
+"""
 import json
 import operator
+import re
 from functools import reduce
+
+from pypika import PostgreSQLQuery as Query
+from pypika import Table
+from pypika import analytics as an
+from pypika import functions as pypika_fn
+
+from core.const import DEFAULT_LIMIT_COUNT
 
 
 def text_search(field, search_ilike):
@@ -12,7 +20,7 @@ def text_search(field, search_ilike):
         search_ilikes = search_ilike.split("|")
         text_searches = [text_search(field, search_ilike_child) for search_ilike_child in search_ilikes]
         return reduce(operator.or_, text_searches)
-    elif "&" in search_ilike:
+    if "&" in search_ilike:
         search_ilikes = search_ilike.split("&")
         text_searches = [text_search(field, search_ilike_child) for search_ilike_child in search_ilikes]
         return reduce(operator.and_, text_searches)
@@ -36,7 +44,10 @@ class QueryBuilder:
 
         query_steps = operation.operationstep_set
 
-        self.current_dataset = Table(query_steps.first().source.active_mirror_name, schema=query_steps.first().source.schema)
+        self.current_dataset = Table(
+            query_steps.first().source.active_mirror_name,
+            schema=query_steps.first().source.schema
+        )
         self.current_query = Query.from_(self.current_dataset)
 
         for query_step in query_steps.all():
@@ -72,7 +83,10 @@ class QueryBuilder:
         window_ = getattr(an, window_fn)
         argumentless_analytics = ['DenseRank', 'Rank', 'RowNumber']
         positional_arg_analytics = ['FirstValue', 'LastValue']
-        term_analytics = ['NTile', 'Median', 'Avg', 'StdDev', 'StdDevPop', 'StdDevSamp', 'Variance', 'VarPop', 'VarSamp', 'Count', 'Sum', 'Max', 'Min']
+        term_analytics = [
+            'NTile', 'Median', 'Avg', 'StdDev', 'StdDevPop', 'StdDevSamp',
+            'Variance', 'VarPop', 'VarSamp', 'Count', 'Sum', 'Max', 'Min'
+        ]
         if window_fn in argumentless_analytics:
             tmp_query = window_()
         elif window_fn in positional_arg_analytics:  # Only uses first positional arg. Cannot use `term=`
@@ -193,7 +207,7 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
         return self.current_query.select(pypika_fn.Count(self.current_dataset.star)).get_sql()
 
-    def get_sql(self, limit=const.default_limit_count, offset=0):
+    def get_sql(self, limit=DEFAULT_LIMIT_COUNT, offset=0):
         if limit == 0:
             limit = "0"  # Pypika refused to allow limit 0 unless it's a string...
         final_query = self.current_query.get_sql()
