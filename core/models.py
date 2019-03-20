@@ -1,11 +1,12 @@
-from django.db import models
+"""
+    Database Models
+"""
 from django.contrib.auth.models import User
+from django.db import models
+
 from core.pypika_utils import QueryBuilder
 from data.db_manager import fetch_data
 
-# Create your models here.
-
-# TODO: Discuss with team if there is a better way to managing migration and inspectdb at the same time
 # from core.models_template import *
 
 
@@ -46,29 +47,6 @@ class Tag(BaseEntity):
         return self.name
 
 
-class Operation(BaseEntity):
-    """This is the base model on which a query is built. It stores all of the meta-data for a query."""
-    name = models.TextField()
-    description = models.TextField(blank=True, null=True)
-    operation_query = models.TextField()
-    theme = models.ForeignKey(Theme, models.PROTECT)
-    sample_output_path = models.TextField(blank=True, null=True)
-    tags = models.ManyToManyField(Tag)
-    is_draft = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.name
-
-    def build_query(self, limit, offset, full):
-        count_query = QueryBuilder(self).count_sql()
-        if full:  # Overrides limit and offset
-            return (count_query, QueryBuilder(self).get_sql_without_limit())
-        return (count_query, QueryBuilder(self).get_sql(limit, offset))
-
-    def query_table(self, limit, offset, full=False):
-        return fetch_data(self.build_query(limit, offset, full))
-
-
 class Source(BaseEntity):
     """Metadata data source."""
     indicator = models.TextField()
@@ -86,6 +64,47 @@ class Source(BaseEntity):
 
     def __str__(self):
         return "{} from {}".format(self.indicator_acronym, self.source_acronym)
+
+
+class SourceColumnMap(BaseEntity):
+    """Column mapping for datasets."""
+    source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
+    name = models.TextField()
+    description = models.TextField(blank=True, null=True)
+    source_name = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        unique_together = (('source', 'name'),)
+
+
+class Operation(BaseEntity):
+    """
+        This is the base model on which a query is built. It stores all of the meta-data for a query
+    """
+    name = models.TextField()
+    description = models.TextField(blank=True, null=True)
+    operation_query = models.TextField()
+    theme = models.ForeignKey(Theme, models.PROTECT)
+    sample_output_path = models.TextField(blank=True, null=True)
+    tags = models.ManyToManyField(Tag)
+    is_draft = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+    def build_query(self, limit=None, offset=None):
+        """Build an SQL query"""
+        count_query = QueryBuilder(self).count_sql()
+        if limit is None:
+            return (count_query, QueryBuilder(self).get_sql_without_limit())
+        return (count_query, QueryBuilder(self).get_sql(limit, offset))
+
+    def query_table(self, limit, offset):
+        """Build a query then execute it to return the matching data"""
+        return fetch_data(self.build_query(limit, offset))
 
 
 class OperationStep(BaseEntity):
@@ -113,20 +132,6 @@ class Review(BaseEntity):
 
     def __str__(self):
         return "Review of {} by {}".format(self.operation, self.user)
-
-
-class SourceColumnMap(BaseEntity):
-    """Column mapping for datasets."""
-    source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
-    name = models.TextField()
-    description = models.TextField(blank=True, null=True)
-    source_name = models.TextField()
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        unique_together = (('source', 'name'),)
 
 
 class UpdateHistory(BaseEntity):
