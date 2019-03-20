@@ -121,7 +121,7 @@ class TestPypikaUtils(TestCase):
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]}',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"donor_code":"donor_code"}}',
             source_id=2
         )
         qb = QueryBuilder(self.op)
@@ -135,7 +135,7 @@ class TestPypikaUtils(TestCase):
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"],\
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"donor_code":"donor_code"},\
             "columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
             source_id=2
         )
@@ -167,7 +167,7 @@ class TestPypikaUtils(TestCase):
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["donor_code"]}',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"donor_code":"donor_code"}}',
             source_id=2
         )
 
@@ -191,7 +191,7 @@ class TestPypikaUtils(TestCase):
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":["year"]\
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"year":"year"}\
             ,"columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
             source_id=2
         )

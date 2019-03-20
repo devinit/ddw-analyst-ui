@@ -184,7 +184,9 @@ class QueryBuilder:
             table1_columns = map(lambda x: getattr(table1, x), columns.get('table1'))
             table2_columns = map(lambda x: getattr(table2, x), columns.get('table2'))
 
-        q = self.current_query.join(table2).on_field(*join_on).select(
+        q = self.current_query.join(table2).on(
+            *[operator.eq(getattr(table1, k), getattr(table2, v)) for k, v in join_on.items()]
+        ).select(
             *table1_columns, *table2_columns
         )
 
