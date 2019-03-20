@@ -12,6 +12,7 @@ node_js:
 - "10"
 before_install:
 - npm i -g npm
+- npm config set '@bit:registry' https://node.bit.dev
 - docker volume create --name=metadata
 - docker-compose up -d --build
 install:
