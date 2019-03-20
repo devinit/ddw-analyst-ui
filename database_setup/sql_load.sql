@@ -1,13 +1,13 @@
 
 insert into core_source
-(indicator,indicator_acronym,source,source_acronym,source_url,download_path,storage_type,active_mirror_name,description,last_updated_on,created_on)
+(indicator,indicator_acronym,source,source_acronym,source_url,download_path,storage_type,schema,active_mirror_name,description,last_updated_on,created_on)
 values
-('Common Reporting Standard','crs','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','crs_current','Data about flows of resources',now(),now()),
-('Official Development Assistance 1','dac1','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac1_current','Data about flows of resources',now(),now()),
-('Official Development Assistance2','dac2','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac2_current','Data about flows of resources',now(),now()),
-('Official Development Assistance 2b','dac2b','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac2b_current','Data about flows of resources',now(),now()),
-('Official Development Assistance 5','dac5','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','dac5_current','Data about flows of resources',now(),now()),
-('World Bank Indicators','WDI','World Bank Group','WBG','http://wdi.worldbank.org','http://wdi.worldbank.org/tables','schema','wdi','Data about flows of resources',now(),now());
+('Common Reporting Standard','crs','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','crs_current','Data about flows of resources',now(),now()),
+('Official Development Assistance 1','dac1','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','dac1_current','Data about flows of resources',now(),now()),
+('Official Development Assistance2','dac2','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','dac2_current','Data about flows of resources',now(),now()),
+('Official Development Assistance 2b','dac2b','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','dac2b_current','Data about flows of resources',now(),now()),
+('Official Development Assistance 5','dac5','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','dac5_current','Data about flows of resources',now(),now()),
+('World Bank Indicators','WDI','World Bank Group','WBG','http://wdi.worldbank.org','http://wdi.worldbank.org/tables','schema','repo','wdi','Data about flows of resources',now(),now());
 
 
 insert into core_updatehistory (source_id,history_table,released_on,release_description,invalidated_on,invalidation_description,is_major_release,created_on,updated_on)
@@ -218,7 +218,7 @@ VALUES
 (1,3);
 
 
-insert into core_operationstep(operation_id,step_id,name,description,query,updated_on,created_on)
+insert into core_operationstep(operation_id,step_id,name,description,query_func,query_kwargs,source_id,updated_on,created_on)
 VALUES
-(1,1,'query','Get oda data from crs table','select * from crs.current',now(),now()),
-(1,2,'filter','Filter oda by row on oda_donor and ftr','Select * from crs.current where donor_code = 2000 and ftr =''Badman''',now(),now());
+(1,1,'query','Get oda data from crs table','select','{}',1,now(),now()),
+(1,2,'filter','Filter oda by row on oda_donor and ftr','filter','{"filters":[{"field":"year", "value":1973, "func":"eq"}]',1,now(),now());

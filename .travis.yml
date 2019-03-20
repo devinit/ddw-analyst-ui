@@ -1,6 +1,11 @@
 sudo: required
 dist: trusty
 language: node_js
+addons:
+  apt:
+    packages:
+      - "python3"
+      - "python3-pip"
 services:
   - docker
 node_js:
@@ -12,6 +17,7 @@ before_install:
 install:
 - npm install --ignore-scripts
 - npm install -g codecov
+- pip3 install --user codecov
 script:
 - npm run lint
 - npm run coverage

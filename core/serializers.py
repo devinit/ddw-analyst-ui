@@ -1,6 +1,29 @@
-from rest_framework import serializers
-from core.models import Tag, Source, SourceColumnMap, UpdateHistory, Sector, Theme, OperationStep, Operation, Review
+"""
+    https://www.django-rest-framework.org/api-guide/serializers/
+    Serializers allow complex data such as querysets and model instances to be converted to native
+    Python datatypes that can then be easily rendered into JSON, XML or other content types.
+    Serializers also provide deserialization, allowing parsed data to be converted back into complex
+    types, after first validating the incoming data.
+"""
 from django.contrib.auth.models import Permission, User
+from rest_framework import serializers
+from rest_framework.utils import model_meta
+
+from core.models import (
+    Operation, OperationStep, Review, Sector, Source, SourceColumnMap, Tag, Theme, UpdateHistory)
+
+
+class DataSerializer(serializers.BaseSerializer):
+    def to_representation(self, instance):
+        limit = instance["limit"]
+        offset = instance["offset"]
+        operation_instance = instance["operation_instance"]
+        count_results, columns, data = operation_instance.query_table(limit, offset)
+        return {
+            "count": count_results[0][0],
+            "columns": columns,
+            "data": data
+        }
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -13,10 +36,23 @@ class TagSerializer(serializers.ModelSerializer):
 
 class OperationStepSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
+    source_name = serializers.ReadOnlyField(source='source.name')
 
     class Meta:
         model = OperationStep
-        fields = ('pk', 'step_id', 'name', 'description', 'query', 'user', 'created_on', 'updated_on')
+        fields = (
+            'pk',
+            'step_id',
+            'name',
+            'description',
+            'query_func',
+            'query_kwargs',
+            'user',
+            'source',
+            'source_name',
+            'created_on',
+            'updated_on'
+        )
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -29,14 +65,78 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class OperationSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-    theme = serializers.ReadOnlyField(source='theme.name')
+    theme_name = serializers.ReadOnlyField(source='theme.name')
     tags = TagSerializer(many=True, read_only=True)
     operationstep_set = OperationStepSerializer(many=True)
     review_set = ReviewSerializer(many=True, read_only=True)
+    operation_steps = operationstep_set
+    reviews = review_set
 
     class Meta:
         model = Operation
-        fields = ('pk', 'description', 'operation_query', 'theme', 'sample_output_path', 'tags', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
+        fields = (
+            'pk',
+            'name',
+            'description',
+            'operation_query',
+            'theme',
+            'theme_name',
+            'sample_output_path',
+            'tags',
+            'operationstep_set',
+            'review_set',
+            'is_draft',
+            'user',
+            'created_on',
+            'updated_on',
+            # alias fields
+            'operation_steps',
+            'reviews'
+        )
+
+    def create(self, validated_data):
+        read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set')
+        read_only_dict = dict()
+        for field in read_only_fields:
+            if field in validated_data:
+                read_only_dict[field] = validated_data.pop(field)
+        operation = Operation.objects.create(**validated_data)
+        for step in read_only_dict['operationstep_set']:
+            OperationStep.objects.create(operation=operation, **step)
+        return operation
+
+    def update(self, instance, validated_data):
+        info = model_meta.get_field_info(instance)
+        updated_steps = validated_data.pop('operationstep_set')
+        for attr, value in validated_data.items():
+            if attr in info.relations and info.relations[attr].to_many:
+                field = getattr(instance, attr)
+                field.set(value)
+            else:
+                setattr(instance, attr, value)
+        instance.save()
+
+        existing_steps = instance.operationstep_set.all()
+        existing_step_ids = [step.step_id for step in existing_steps]
+        for updated_step in updated_steps:
+            updated_step_id = updated_step.get("step_id")
+            if updated_step_id in existing_step_ids:
+                existing_step_ids.remove(updated_step_id)
+            updated_step_instance, _ = OperationStep.objects.get_or_create(operation=instance, step_id=updated_step_id)
+            step_info = model_meta.get_field_info(updated_step_instance)
+            for attr, value in updated_step.items():
+                if attr in step_info.relations and step_info.relations[attr].to_many:
+                    field = getattr(updated_step_instance, attr)
+                    field.set(value)
+                else:
+                    setattr(updated_step_instance, attr, value)
+            updated_step_instance.save()
+
+        for step_for_delete_id in existing_step_ids:
+            step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
+            step_for_delete.delete()
+
+        return instance
 
 
 class ThemeSerializer(serializers.ModelSerializer):
@@ -45,7 +145,7 @@ class ThemeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Theme
-        fields = ('pk', 'sector', 'name', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'sector', 'name', 'user', 'operation_set', 'created_on', 'updated_on')
 
 
 class SectorSerializer(serializers.ModelSerializer):
@@ -119,6 +219,7 @@ class SourceSerializer(serializers.ModelSerializer):
             'storage_type',
             'active_mirror_name',
             'description',
+            'user',
             'created_on',
             'updated_on',
             'sourcecolumnmap_set',
