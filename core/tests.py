@@ -128,14 +128,14 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_join_for_specific_columns(self):
-        expected = 'SELECT "sq0"."donor_name","sq0"."usd_commitment","dac1_current"."part_code","dac1_current"."part_name" FROM (SELECT * FROM "repo"."crs_current") "sq0" JOIN "repo"."dac1_current" ON "sq0"."donor_code"="dac1_current"."donor_code"'
+        expected = 'SELECT "sq0"."donor_name","sq0"."usd_commitment","dac1_current"."part_code","dac1_current"."part_name" FROM (SELECT * FROM "repo"."crs_current") "sq0" JOIN "repo"."dac1_current" ON "sq0"."donor_code"="dac1_current"."donor_code" AND "sq0"."year"="dac1_current"."year"'
 
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"donor_code":"donor_code"},\
+            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"donor_code":"donor_code","year":"year"},\
             "columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
             source_id=2
         )
