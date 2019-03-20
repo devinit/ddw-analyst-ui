@@ -1,30 +1,24 @@
+"""
+    https://www.django-rest-framework.org/api-guide/serializers/
+    Serializers allow complex data such as querysets and model instances to be converted to native
+    Python datatypes that can then be easily rendered into JSON, XML or other content types.
+    Serializers also provide deserialization, allowing parsed data to be converted back into complex
+    types, after first validating the incoming data.
+"""
+from django.contrib.auth.models import Permission, User
 from rest_framework import serializers
 from rest_framework.utils import model_meta
-from core.models import Tag, Source, SourceColumnMap, UpdateHistory, Sector, Theme, OperationStep, Operation, Review
-from django.contrib.auth.models import Permission, User
+
+from core.models import (
+    Operation, OperationStep, Review, Sector, Source, SourceColumnMap, Tag, Theme, UpdateHistory)
 
 
 class DataSerializer(serializers.BaseSerializer):
-    def to_representation(self, obj):
-        limit = obj["limit"]
-        offset = obj["offset"]
-        full = obj["full"]
-        operation_instance = obj["operation_instance"]
-        count_results, columns, data = operation_instance.query_table(limit, offset, full)
-        return {
-            "count": count_results[0][0],
-            "columns": columns,
-            "data": data
-        }
-
-
-class DataSerializer(serializers.BaseSerializer):
-    def to_representation(self, obj):
-        limit = obj["limit"]
-        offset = obj["offset"]
-        full = obj["full"]
-        operation_instance = obj["operation_instance"]
-        count_results, columns, data = operation_instance.query_table(limit, offset, full)
+    def to_representation(self, instance):
+        limit = instance["limit"]
+        offset = instance["offset"]
+        operation_instance = instance["operation_instance"]
+        count_results, columns, data = operation_instance.query_table(limit, offset)
         return {
             "count": count_results[0][0],
             "columns": columns,
@@ -46,7 +40,19 @@ class OperationStepSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OperationStep
-        fields = ('pk', 'step_id', 'name', 'description', 'query_func', 'query_kwargs', 'user', 'source', 'source_name', 'created_on', 'updated_on')
+        fields = (
+            'pk',
+            'step_id',
+            'name',
+            'description',
+            'query_func',
+            'query_kwargs',
+            'user',
+            'source',
+            'source_name',
+            'created_on',
+            'updated_on'
+        )
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -63,10 +69,30 @@ class OperationSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     operationstep_set = OperationStepSerializer(many=True)
     review_set = ReviewSerializer(many=True, read_only=True)
+    operation_steps = operationstep_set
+    reviews = review_set
 
     class Meta:
         model = Operation
-        fields = ('pk', 'name', 'description', 'operation_query', 'theme', 'theme_name', 'sample_output_path', 'tags', 'operationstep_set', 'review_set', 'is_draft', 'user', 'created_on', 'updated_on')
+        fields = (
+            'pk',
+            'name',
+            'description',
+            'operation_query',
+            'theme',
+            'theme_name',
+            'sample_output_path',
+            'tags',
+            'operationstep_set',
+            'review_set',
+            'is_draft',
+            'user',
+            'created_on',
+            'updated_on',
+            # alias fields
+            'operation_steps',
+            'reviews'
+        )
 
     def create(self, validated_data):
         read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set')
@@ -198,7 +224,7 @@ class SourceSerializer(serializers.ModelSerializer):
             'updated_on',
             'sourcecolumnmap_set',
             'updatehistory_set',
-            'tags'
+            'tags',
             # alias fields
             'columns',
             'update_history'

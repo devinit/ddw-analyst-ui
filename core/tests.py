@@ -1,7 +1,8 @@
-from django.test import TestCase
 from django.contrib.auth.models import User
-from core.models import Tag, AuditLogEntry, Operation, OperationStep
+from django.test import TestCase
 from rest_framework.test import APIClient
+
+from core.models import AuditLogEntry, Operation, OperationStep, Tag
 from core.pypika_utils import QueryBuilder
 
 TEST_USER = "test_user"
@@ -13,7 +14,7 @@ class TestFixtureLoad(TestCase):
 
     def test_tag_exists_after_load(self):
         t = Tag.objects.get(pk=1)
-        self.assertEquals(t.name, 'oda')
+        self.assertEqual(t.name, 'oda')
 
 
 class TestAuditLog(TestCase):
@@ -69,7 +70,7 @@ class TestRestFramework(TestCase):
                 "name": "Name",
                 "operation_query": "Query",
                 "theme": 1,
-                "operationstep_set": [{"name": "Select", "step_id": 1}]
+                "operation_steps": [{"name": "Select", "step_id": 1}]
             },
             format="json"
         )
@@ -334,7 +335,11 @@ class TestPypikaUtils(TestCase):
 
     def test_can_generate_select_with_defined_limit(self):
         expected = 'SELECT * FROM "repo"."crs_current" LIMIT 5 OFFSET 10'
-        self.assertEqual(self.op.build_query(limit=5, offset=10, full=False)[1], expected)
+        self.assertEqual(self.op.build_query(limit=5, offset=10)[1], expected)
+
+    def test_can_generate_select_without_limit(self):
+        expected = 'SELECT * FROM "repo"."crs_current"'
+        self.assertEqual(self.op.build_query(offset=10)[1], expected)
 
     def test_can_perform_scalar_transform(self):
         expected = 'SELECT "sq0".*,"sq0"."short_description" ILIKE \'%wheat%\' "short_description_text_search" FROM (SELECT * FROM "repo"."crs_current") "sq0"'
