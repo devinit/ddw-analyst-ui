@@ -1,2 +1,4 @@
+"""Constants used across the Core app"""
+
 # Default value for limit if its not specified in the query
-default_limit_count = 10
+DEFAULT_LIMIT_COUNT = 10

@@ -1,14 +1,21 @@
-from knox.views import LoginView as KnoxLoginView
-from knox.auth import TokenAuthentication
-from rest_framework.authentication import BasicAuthentication
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from core.models import Tag, OperationStep, Review, Operation, Theme, Sector, Source
-from core.serializers import TagSerializer, OperationStepSerializer, ReviewSerializer, OperationSerializer, ThemeSerializer, SectorSerializer, UserSerializer, SourceSerializer, DataSerializer
-from rest_framework import generics, permissions
+"""
+    Django Rest Framework views for handling rest operations
+"""
 from django.contrib.auth.models import User
+from knox.auth import TokenAuthentication
+from knox.views import LoginView as KnoxLoginView
+from rest_framework import generics, permissions
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from core.const import DEFAULT_LIMIT_COUNT
+from core.models import (
+    Operation, OperationStep, Review, Sector, Source, Tag, Theme)
 from core.permissions import IsOwnerOrReadOnly
-from core.const import default_limit_count
+from core.serializers import (
+    DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
+    SectorSerializer, SourceSerializer, TagSerializer, ThemeSerializer, UserSerializer)
 
 
 class ViewData(APIView):
@@ -17,21 +24,15 @@ class ViewData(APIView):
 
     def get(self, request, pk):
         try:
-            limit = int(request.GET.get('limit', default_limit_count))
-            page = int(request.GET.get('page', 1))
-            full = request.GET.get('full', "false") == "true"
+            limit = self.request.query_params.get('limit', None)
+            offset = self.request.query_params.get('offset', None)
         except ValueError:  # Someone typed garbage into the url
-            limit = default_limit_count
-            page = 1
-            full = False
-        if page <= 0:
-            page = 1
-        if limit < 0:
-            limit = default_limit_count
-        offset = limit * (page - 1)
+            limit = DEFAULT_LIMIT_COUNT
+            offset = 0
+        if limit == 0:
+            limit = DEFAULT_LIMIT_COUNT
         operation_instance = Operation.objects.get(pk=pk)
         data_serializer = DataSerializer({
-            "full": full,
             "limit": limit,
             "offset": offset,
             "operation_instance": operation_instance
