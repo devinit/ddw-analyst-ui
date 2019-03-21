@@ -2,14 +2,14 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { Button, Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
-import { Filter, FilterMap } from '../../types/query-builder';
+import { ErroredFilterMap, Filter, FilterMap } from '../../types/query-builder';
 
 interface FilterItemProps {
   columns: DropdownItemProps[];
   operations: DropdownItemProps[];
-  filter: FilterMap;
-  onUpdate: (filter: FilterMap) => void;
-  onDelete: (filter: FilterMap) => void;
+  filter: ErroredFilterMap;
+  onUpdate: (filter: ErroredFilterMap) => void;
+  onDelete: (filter: ErroredFilterMap) => void;
   errors?: { [P in keyof Filter]?: string };
 }
 
@@ -21,7 +21,8 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
   state: FilterItemState = { hasFocus: '' };
 
   render() {
-    const { columns, errors, filter, operations } = this.props;
+    const { columns, filter, operations } = this.props;
+    const errors = filter.get('error') as FilterMap | undefined;
 
     return (
       <Row className="mb-1">
@@ -33,11 +34,14 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             search
             options={ columns }
             onChange={ this.onSelectColumn }
-            defaultValue={ filter.get('field') }
-            error={ !!(errors && errors.field) }
+            defaultValue={ filter.get('field') as string }
+            error={ !!(errors && errors.get('field')) }
           />
-          <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(errors && errors.field) }) }>
-            { errors && errors.field }
+          <Form.Control.Feedback
+            type="invalid"
+            className={ classNames({ 'd-block': !!(errors && errors.get('field')) }) }
+          >
+            { errors && errors.get('field') }
           </Form.Control.Feedback>
         </Col>
 
@@ -48,28 +52,36 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             selection
             search
             options={ operations }
-            defaultValue={ this.props.filter.get('func') }
-            error={ !!(errors && errors.func) }
+            defaultValue={ this.props.filter.get('func') as string }
+            error={ !!(errors && errors.get('func')) }
           />
-          <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(errors && errors.func) }) }>
-            { errors && errors.func }
+          <Form.Control.Feedback
+            type="invalid"
+            className={ classNames({ 'd-block': !!(errors && errors.get('func')) }) }
+          >
+            { errors && errors.get('func') }
           </Form.Control.Feedback>
         </Col>
 
         <Col lg={ 3 }>
           <Form.Group
-            className={ this.getFormGroupClasses('value', filter.get('value') as string, !!(errors && errors.func)) }
+            className={
+              this.getFormGroupClasses('value', filter.get('value') as string, !!(errors && errors.get('value')))
+            }
           >
             <Form.Label className="bmd-label-floating">Value</Form.Label>
             <FormControl
               name="value"
               defaultValue={ filter.get('value') as string }
-              isInvalid={ !!(errors && errors.value) }
+              isInvalid={ !!(errors && errors.get('value')) }
               onFocus={ this.setFocusedField }
               onBlur={ this.resetFocus }
             />
-            <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(errors && errors.value) }) }>
-              { errors && errors.value }
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(errors && errors.get('value')) }) }
+            >
+              { errors && errors.get('value') }
             </Form.Control.Feedback>
           </Form.Group>
         </Col>

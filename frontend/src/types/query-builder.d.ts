@@ -7,8 +7,12 @@ export interface Filter {
   func: 'lt' | 'le' | 'eq' | 'gt' | 'ge' | 'text_search' | 'ne';
 }
 export type FilterMap = Map<keyof Filter, Filter[keyof Filter]>;
-export interface Filters {
-  filters: Filter[];
+export interface ErroredFilter extends Filter {
+  error: { [P in keyof Filter]: string };
+}
+export type ErroredFilterMap = Map<keyof ErroredFilter, ErroredFilter[keyof ErroredFilter]>;
+export interface Filters<T = Filter[] | ErroredFilter[]> {
+  filters: T;
 }
 export interface Operation {
   pk: number;
