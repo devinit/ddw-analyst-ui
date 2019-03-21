@@ -1,14 +1,14 @@
 import classNames from 'classnames';
-import { List, fromJS } from 'immutable';
+import { List } from 'immutable';
 import * as React from 'react';
-import { Button, Card, Col, Nav, Row, Tab } from 'react-bootstrap';
+import { Card, Col, Nav, Row, Tab } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 import * as sourcesActions from '../../actions/sources';
-import { OperationStepForm } from '../../components/OperationStepForm/OperationStepForm';
+import { OperationStepForm } from '../../components/OperationStepForm';
 import { SourceMap, SourcesState } from '../../reducers/sources';
+import OperationSteps from '../../components/OperationSteps';
 import { TokenState } from '../../reducers/token';
 import { ReduxStore } from '../../store';
 import { OperationStepMap } from '../../types/query-builder';
@@ -35,6 +35,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     const loading = this.props.sources.get('loading') as boolean;
     const activeSource = this.props.page.get('activeSource') as SourceMap | undefined;
     const activeStep = this.props.page.get('activeStep') as OperationStepMap | undefined;
+    const steps = this.props.page.get('steps') as List<OperationStepMap>;
 
     return (
       <Row>
@@ -44,43 +45,25 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
               <Card.Body>
 
                 <Nav variant="pills" className="nav-pills-danger" role="tablist">
-                  <Nav.Item>
-                    <Nav.Link eventKey="operation">Operation</Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link eventKey="steps">Operation Steps</Nav.Link>
-                  </Nav.Item>
+                  <Nav.Item><Nav.Link eventKey="operation">Operation</Nav.Link></Nav.Item>
+                  <Nav.Item><Nav.Link eventKey="steps">Operation Steps</Nav.Link></Nav.Item>
                 </Nav>
+
                 <Tab.Content>
                   <Tab.Pane eventKey="operation">
                     <OperationForm/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="steps">
-                    <div className="mb-3">
-                      <label>Active Data Set</label>
-                      <Dropdown
-                        placeholder="Select Data Set"
-                        fluid
-                        selection
-                        search
-                        options={ this.getSelectOptionsFromSources(sources) }
-                        loading={ loading }
-                        onClick={ this.fetchSources }
-                        onChange={ this.onSelectSource }
-                        defaultValue={ activeSource ? activeSource.get('pk') as string : undefined }
-                      />
-                    </div>
-                    <div className={ classNames('mb-3', { 'd-none': !activeSource }) }>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={ this.onAddAction }
-                        disabled={ !!activeStep }
-                      >
-                        <i className="material-icons mr-1">add</i>
-                        Add Operation
-                      </Button>
-                    </div>
+                    <OperationSteps
+                      sources={ sources }
+                      isFetchingSources={ loading }
+                      steps={ steps }
+                      fetchSources={ this.props.actions.fetchSources }
+                      onSelectSource={ this.props.actions.setActiveSource }
+                      onAddStep={ this.props.actions.updateActiveStep }
+                      activeSource={ activeSource }
+                      activeStep={ activeStep }
+                    />
                   </Tab.Pane>
                 </Tab.Content>
 
@@ -116,7 +99,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         <OperationStepForm
           source={ source }
           step={ step }
-          onSuccess={ this.props.actions.setActiveStep }
+          onSuccess={ this.props.actions.updateActiveStep }
         />
       );
     }
@@ -124,41 +107,8 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     return null;
   }
 
-  private getSelectOptionsFromSources(sources: List<SourceMap>): DropdownItemProps[] {
-    if (sources.count()) {
-      return sources.map(source => ({
-        key: source.get('pk'),
-        text: source.get('indicator'),
-        value: source.get('pk')
-      })).toJS();
-    }
-
-    return [];
-  }
-
-  private fetchSources = () => {
-    const sources = this.props.sources.get('sources') as List<SourceMap>;
-    const loading = this.props.sources.get('loading') as boolean;
-    if (!sources.count() && !loading) {
-      this.props.actions.fetchSources();
-    }
-  }
-
-  private onSelectSource = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    const sources = this.props.sources.get('sources') as List<SourceMap>;
-    const selectedSource = sources.find(source => source.get('pk') === data.value);
-    if (selectedSource) {
-      this.props.actions.setActiveSource(selectedSource);
-    }
-  }
-
-  private onAddAction = () => {
-    const steps = this.props.page.get('steps') as List<OperationStepMap>;
-    this.props.actions.setActiveStep(fromJS({ step_id: steps.count() + 1 }));
-  }
-
   private resetAction = () => {
-    this.props.actions.setActiveStep(undefined);
+    this.props.actions.updateActiveStep(undefined);
   }
 }
 
