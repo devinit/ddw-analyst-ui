@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { Col, Form, FormControl, Row } from 'react-bootstrap';
+import { Button, Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { Filter, FilterMap } from '../../types/query-builder';
 
@@ -9,6 +9,7 @@ interface FilterItemProps {
   operations: DropdownItemProps[];
   filter: FilterMap;
   onUpdate: (filter: FilterMap) => void;
+  onDelete: (filter: FilterMap) => void;
   errors?: { [P in keyof Filter]?: string };
 }
 
@@ -55,7 +56,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
           </Form.Control.Feedback>
         </Col>
 
-        <Col lg={ 4 }>
+        <Col lg={ 3 }>
           <Form.Group
             className={ this.getFormGroupClasses('value', filter.get('value') as string, !!(errors && errors.func)) }
           >
@@ -71,6 +72,12 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
               { errors && errors.value }
             </Form.Control.Feedback>
           </Form.Group>
+        </Col>
+
+        <Col lg={ 1 }>
+          <Button variant="link" className="btn-just-icon" onClick={ this.onDelete }>
+            <i className="material-icons">delete</i>
+          </Button>
         </Col>
       </Row>
     );
@@ -97,6 +104,10 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
 
   private resetFocus = () => {
     this.setState({ hasFocus: '' });
+  }
+
+  private onDelete = () => {
+    this.props.onDelete(this.props.filter);
   }
 }
 

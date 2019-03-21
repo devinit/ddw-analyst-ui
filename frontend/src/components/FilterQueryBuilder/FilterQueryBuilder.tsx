@@ -43,7 +43,8 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps>
           columns={ this.getSelectColumnsFromSource(source) }
           operations={ this.operations }
           filter={ filter }
-          onUpdate={ (filtr: FilterMap) => this.onUpdateFilterItem(filtr, index) }
+          onUpdate={ (filtr: FilterMap) => this.onUpdateItem(filtr, index) }
+          onDelete={ () => this.onDeleteItem(index) }
         />
       );
     }
@@ -77,9 +78,16 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps>
     }
   }
 
-  private onUpdateFilterItem = (filter: FilterMap, index: number) => {
+  private onUpdateItem = (filter: FilterMap, index: number) => {
     if (this.props.filters && this.props.onUpdateFilters) {
       const filters = this.props.filters.set(index, filter);
+      this.props.onUpdateFilters(JSON.stringify(Map({ filters } as any).toJS()));
+    }
+  }
+
+  private onDeleteItem(index: number) {
+    if (this.props.filters && this.props.onUpdateFilters) {
+      const filters = this.props.filters.delete(index);
       this.props.onUpdateFilters(JSON.stringify(Map({ filters } as any).toJS()));
     }
   }
