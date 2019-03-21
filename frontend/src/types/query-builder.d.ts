@@ -18,6 +18,7 @@ export interface Operation {
   theme: string;
   sample_output_path: string;
   operation_steps: List<OperationStepMap>;
+  is_draft: boolean;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {

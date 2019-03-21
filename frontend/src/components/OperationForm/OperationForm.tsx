@@ -1,5 +1,7 @@
 import classNames from 'classnames';
 import { Formik, FormikActions, FormikProps } from 'formik';
+import { fromJS } from 'immutable';
+import { debounce } from 'lodash';
 import * as React from 'react';
 import { Alert, Col, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
@@ -8,6 +10,7 @@ import { Operation, OperationMap } from '../../types/query-builder';
 interface OperationFormProps {
   operation?: OperationMap;
   alert?: string;
+  onUpdateOperation?: (operation: OperationMap) => void;
 }
 interface OperationFormState {
   alerts: Partial<Operation>;
@@ -20,19 +23,18 @@ export class OperationForm extends React.Component<OperationFormProps> {
     hasFocus: ''
   };
   private schema = Yup.object().shape({
-    step_id: Yup.string().required('Step ID is required!'),
-    name: Yup.string().required('Name is required!')
+    name: Yup.string().required('Name is required!'),
+    description: Yup.string().required('Description is required!')
   });
 
   render() {
-    const { operation } = this.props;
-    const initialValues: Partial<Operation> = operation ? operation.toJS() : {};
+    const values: Partial<Operation> = this.props.operation ? this.props.operation.toJS() : {};
 
     return (
-      <Formik validationSchema={ this.schema } initialValues={ initialValues } onSubmit={ this.onSuccess }>
+      <Formik validationSchema={ this.schema } initialValues={ values } onSubmit={ this.onSuccess }>
         {
-          ({ errors, handleChange, handleSubmit, touched, values }: FormikProps<Operation>) => (
-            <Form className="form" noValidate onSubmit={ handleSubmit } data-testid="operation-form">
+          ({ errors, setFieldValue }: FormikProps<Operation>) => (
+            <Form className="form" noValidate data-testid="operation-form">
               <Alert variant="danger" hidden={ !this.props.alert }>
                 { this.props.alert }
               </Alert>
@@ -45,9 +47,13 @@ export class OperationForm extends React.Component<OperationFormProps> {
                     name="name"
                     type="text"
                     defaultValue={ values.name }
+                    isInvalid={ !!errors.name }
+                    onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
+                    onFocus={ this.setFocusedField }
+                    onBlur={ this.resetFocus }
                   />
                   <Form.Control.Feedback type="invalid">
-                    { touched.name && errors.name ? errors.name : null }
+                    { errors.name ? errors.name : null }
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -58,14 +64,14 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   <Form.Control
                     name="description"
                     as="textarea"
-                    onChange={ handleChange }
-                    isInvalid={ !!errors.name }
+                    onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
+                    isInvalid={ !!errors.description }
                     onFocus={ this.setFocusedField }
                     onBlur={ this.resetFocus }
                     defaultValue={ values.description ? values.description.toString() : '' }
                   />
                   <Form.Control.Feedback type="invalid">
-                    { touched.description && errors.description ? errors.description : null }
+                    { errors.description ? errors.description : null }
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -76,14 +82,14 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   <Form.Control
                     name="sample_output_path"
                     type="text"
-                    onChange={ handleChange }
+                    onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
                     isInvalid={ !!errors.sample_output_path }
                     onFocus={ this.setFocusedField }
                     onBlur={ this.resetFocus }
                     defaultValue={ values.sample_output_path }
                   />
                   <Form.Control.Feedback type="invalid">
-                    { touched.sample_output_path && errors.sample_output_path ? errors.sample_output_path : null }
+                    { errors.sample_output_path ? errors.sample_output_path : null }
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -92,7 +98,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 <Form.Group>
                   <Form.Check type="checkbox">
                     <Form.Check.Label>
-                      <Form.Check.Input/>
+                      <Form.Check.Input onChange={ this.toggleDraft } checked={ values.is_draft }/>
                       Is Draft
                       <span className="form-check-sign">
                         <span className="check"/>
@@ -108,7 +114,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
     );
   }
 
-  private getFormGroupClasses(fieldName: string, value: string | number) {
+  private getFormGroupClasses(fieldName: string, value?: string | number) {
     return classNames('bmd-form-group', {
       'is-focused': this.state.hasFocus === fieldName,
       'is-filled': value
@@ -123,7 +129,34 @@ export class OperationForm extends React.Component<OperationFormProps> {
     this.setState({ hasFocus: '' });
   }
 
+  private onChange = (setFieldValue: (field: string, value: any) => void) =>
+    ({ currentTarget }: React.FormEvent<any>) => {
+      const { name, value } = currentTarget;
+      setFieldValue(name, value);
+      if (this.props.onUpdateOperation) {
+        if (this.props.operation) {
+          this.props.onUpdateOperation(this.props.operation.set(name, value));
+        } else {
+          const operation = fromJS({ [name]: value });
+          this.props.onUpdateOperation(operation);
+        }
+      }
+    }
+
+  private toggleDraft = () => {
+    if (this.props.onUpdateOperation) {
+      if (this.props.operation) {
+        const isDraft = !!this.props.operation.get('is_draft');
+        const operation = this.props.operation.set('is_draft', !isDraft);
+        this.props.onUpdateOperation(operation);
+      } else {
+        const operation = fromJS({ is_draft: true });
+        this.props.onUpdateOperation(operation);
+      }
+    }
+  }
+
   private onSuccess(_values: Operation, _formikActions: FormikActions<Operation>) {
-    //
+    // TODO: nothing really ... this is just a placeholder function
   }
 }

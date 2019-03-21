@@ -11,7 +11,7 @@ import { SourceMap, SourcesState } from '../../reducers/sources';
 import OperationSteps from '../../components/OperationSteps';
 import { TokenState } from '../../reducers/token';
 import { ReduxStore } from '../../store';
-import { OperationStepMap } from '../../types/query-builder';
+import { OperationMap, OperationStepMap } from '../../types/query-builder';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { QueryBuilderState, queryBuilderReducerId } from './reducers';
@@ -36,6 +36,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     const activeSource = this.props.page.get('activeSource') as SourceMap | undefined;
     const activeStep = this.props.page.get('activeStep') as OperationStepMap | undefined;
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
+    const operation = this.props.page.get('operation') as OperationMap | undefined;
 
     return (
       <Row>
@@ -51,7 +52,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
                 <Tab.Content>
                   <Tab.Pane eventKey="operation">
-                    <OperationForm/>
+                    <OperationForm operation={ operation } onUpdateOperation={ this.props.actions.updateOperation }/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="steps">
                     <OperationSteps
