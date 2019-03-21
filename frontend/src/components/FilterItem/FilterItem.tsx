@@ -23,8 +23,8 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
     const { columns, errors, filter, operations } = this.props;
 
     return (
-      <Row className="mb-3">
-        <Col lg={ 4 }>
+      <Row className="mb-1">
+        <Col lg={ 4 } className="my-2">
           <Dropdown
             placeholder="Select Column"
             fluid
@@ -40,7 +40,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
           </Form.Control.Feedback>
         </Col>
 
-        <Col lg={ 4 }>
+        <Col lg={ 4 } className="my-2">
           <Dropdown
             placeholder="Select Operation"
             fluid
