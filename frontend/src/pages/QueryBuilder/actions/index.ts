@@ -15,5 +15,5 @@ export const updateActiveStep = (step?: OperationStepMap): Partial<QueryBuilderA
   ({ type: UPDATE_ACTIVE_STEP, step });
 export const updateOperation = (operation?: OperationMap): Partial<QueryBuilderAction> =>
   ({ type: UPDATE_OPERATION, operation });
-export const addFilter = (step: OperationStepMap): Partial<QueryBuilderAction> =>
+export const addOperationStep = (step: OperationStepMap): Partial<QueryBuilderAction> =>
   ({ type: ADD_OPERATION_STEP, step });

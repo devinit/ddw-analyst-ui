@@ -19,6 +19,7 @@ interface OperationStepFormProps {
   step: OperationStepMap;
   alert?: string;
   onSuccess: (step: OperationStepMap) => void;
+  onUpdateStep: (step: OperationStepMap) => void;
 }
 
 export class OperationStepForm extends React.Component<OperationStepFormProps, OperationStepFormState> {
@@ -169,19 +170,22 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
       setFieldValue('query_func', data.value);
       if (data.value) {
         const step = this.props.step.set('query_func', data.value as string);
-        this.props.onSuccess(step);
+        this.props.onUpdateStep(step);
       }
     }
 
   private onSuccess = () => {
     if (this.validateStepOptions(this.props.step)) {
-      this.props.onSuccess(this.props.step);
+      const query = this.props.step.get('query_func');
+      if (query === 'filter') {
+        this.props.onSuccess(this.processFilter());
+      }
     }
   }
 
   private onUpdateOptions = (options: string) => {
     const step = this.props.step.set('query_kwargs', options);
-    this.props.onSuccess(step);
+    this.props.onUpdateStep(step);
   }
 
   private validateStepOptions(step: OperationStepMap) {
@@ -211,7 +215,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
 
       if (!valid) {
         const updatedStep = step.set('query_kwargs', JSON.stringify({ filters: updatedFilters }));
-        this.props.onSuccess(updatedStep);
+        this.props.onUpdateStep(updatedStep);
       }
 
       return valid;
@@ -220,5 +224,13 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
 
       return false;
     }
+  }
+
+  private processFilter(): OperationStepMap {
+    const options = this.props.step.get('query_kwargs') as string;
+    const { filters }: Filters<ErroredFilter[]> = options ? JSON.parse(options) : { filters: [] };
+    const filtersWithoutErrors = filters.map(({ field, func, value }) => ({ field, func, value }));
+
+    return this.props.step.set('query_kwargs', JSON.stringify({ filters: filtersWithoutErrors }));
   }
 }

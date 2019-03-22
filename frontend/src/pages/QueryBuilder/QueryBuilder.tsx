@@ -100,7 +100,8 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         <OperationStepForm
           source={ source }
           step={ step }
-          onSuccess={ this.props.actions.updateActiveStep }
+          onUpdateStep={ this.props.actions.updateActiveStep }
+          onSuccess={ this.onAddOperationStep }
         />
       );
     }
@@ -109,6 +110,11 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
   }
 
   private resetAction = () => {
+    this.props.actions.updateActiveStep(undefined);
+  }
+
+  private onAddOperationStep = (step: OperationStepMap) => {
+    this.props.actions.addOperationStep(step);
     this.props.actions.updateActiveStep(undefined);
   }
 }

@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { debounce } from 'lodash';
 import * as React from 'react';
 import { Button, Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
@@ -52,6 +53,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             selection
             search
             options={ operations }
+            onChange={ this.onSelectOperation }
             defaultValue={ this.props.filter.get('func') as string }
             error={ !!(errors && errors.get('func')) }
           />
@@ -76,6 +78,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
               isInvalid={ !!(errors && errors.get('value')) }
               onFocus={ this.setFocusedField }
               onBlur={ this.resetFocus }
+              onChange={ debounce(this.onChangeValue, 1000, { leading: true }) }
             />
             <Form.Control.Feedback
               type="invalid"
@@ -100,6 +103,18 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
       const filter = this.props.filter.set('field', data.value as string);
       this.props.onUpdate(filter);
     }
+  }
+
+  private onSelectOperation = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    if (data.value) {
+      const filter = this.props.filter.set('func', data.value as string);
+      this.props.onUpdate(filter);
+    }
+  }
+
+  private onChangeValue = ({ currentTarget }: React.FormEvent<any>) => {
+    const filter = this.props.filter.set('value', currentTarget.value);
+    this.props.onUpdate(filter);
   }
 
   private getFormGroupClasses(fieldName: string, value: string | number, hasError = false) {
