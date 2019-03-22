@@ -1,5 +1,5 @@
+import { SourceMap, SourcesState } from '../../reducers/sources';
 import classNames from 'classnames';
-import { List } from 'immutable';
 import * as React from 'react';
 import { Card, Col, Nav, Row, Tab } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import * as sourcesActions from '../../actions/sources';
 import { OperationStepForm } from '../../components/OperationStepForm';
-import { SourceMap, SourcesState } from '../../reducers/sources';
+import { List } from 'immutable';
 import OperationSteps from '../../components/OperationSteps';
 import { TokenState } from '../../reducers/token';
 import { ReduxStore } from '../../store';

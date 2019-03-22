@@ -4,9 +4,11 @@ import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { SourceMap } from '../../reducers/sources';
 import { List, fromJS } from 'immutable';
 import { OperationStepMap } from '../../types/query-builder';
-import { Button } from 'react-bootstrap';
+import { Button, ListGroup, Row } from 'react-bootstrap';
 import { Action } from 'redux';
 import { QueryBuilderAction } from '../../pages/QueryBuilder/reducers';
+import styled from 'styled-components';
+import OperationStep from '../OperationStepView';
 
 interface OperationStepsProps {
   sources: List<SourceMap>;
@@ -19,9 +21,11 @@ interface OperationStepsProps {
   onAddStep: (step?: OperationStepMap) => Partial<QueryBuilderAction>;
 }
 
+const StyledListItem = styled(ListGroup.Item)`border-bottom: 1px solid rgba(0,0,0,.125)`;
+
 class OperationSteps extends React.Component<OperationStepsProps> {
   render() {
-    const { activeSource, activeStep, isFetchingSources, sources } = this.props;
+    const { activeSource, activeStep, isFetchingSources, sources, steps } = this.props;
 
     return (
       <React.Fragment>
@@ -39,6 +43,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             defaultValue={ activeSource ? activeSource.get('pk') as string : undefined }
           />
         </div>
+
         <div className={ classNames('mb-3', { 'd-none': !activeSource }) }>
           <Button
             variant="danger"
@@ -50,8 +55,30 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             Add Operation
           </Button>
         </div>
+
+        { this.renderOperationSteps(steps) }
       </React.Fragment>
     );
+  }
+
+  private renderOperationSteps(steps: List<OperationStepMap>) {
+    if (steps.count()) {
+      return (
+        <Row>
+          <ListGroup variant="flush" className="w-100">
+            {
+              steps.map((step, index) =>
+                <StyledListItem className="py-2" key={ index }>
+                  <OperationStep step={ step }/>
+                </StyledListItem>
+              )
+            }
+          </ListGroup>
+        </Row>
+      );
+    }
+
+    return null;
   }
 
   private getSelectOptionsFromSources(sources: List<SourceMap>): DropdownItemProps[] {

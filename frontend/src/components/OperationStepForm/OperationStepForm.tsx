@@ -174,11 +174,11 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
       }
     }
 
-  private onSuccess = () => {
+  private onSuccess = (values: Partial<OperationStep>) => {
     if (this.validateStepOptions(this.props.step)) {
       const query = this.props.step.get('query_func');
       if (query === 'filter') {
-        this.props.onSuccess(this.processFilter());
+        this.props.onSuccess(this.processFilter(values));
       }
     }
   }
@@ -226,11 +226,17 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     }
   }
 
-  private processFilter(): OperationStepMap {
+  private processFilter(values: Partial<OperationStep>): OperationStepMap {
     const options = this.props.step.get('query_kwargs') as string;
     const { filters }: Filters<ErroredFilter[]> = options ? JSON.parse(options) : { filters: [] };
     const filtersWithoutErrors = filters.map(({ field, func, value }) => ({ field, func, value }));
 
-    return this.props.step.set('query_kwargs', JSON.stringify({ filters: filtersWithoutErrors }));
+    return this.props.step.withMutations(step => step
+      .set('query_kwargs', JSON.stringify({ filters: filtersWithoutErrors }))
+      .set('name', values.name || '')
+      .set('description', values.description || '')
+      .set('step_id', values.step_id || '')
+      .set('query_func', values.query_func || '')
+    );
   }
 }
