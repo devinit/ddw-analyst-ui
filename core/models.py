@@ -87,7 +87,7 @@ class Operation(BaseEntity):
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
     operation_query = models.TextField(blank=True, null=True)
-    theme = models.ForeignKey(Theme, models.SET_NULL, blank=True)
+    theme = models.ForeignKey(Theme, models.SET_NULL, blank=True, null=True)
     sample_output_path = models.TextField(blank=True, null=True)
     tags = models.ManyToManyField(Tag)
     is_draft = models.BooleanField(default=True)
