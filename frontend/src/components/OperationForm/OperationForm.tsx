@@ -11,6 +11,7 @@ interface OperationFormProps {
   operation?: OperationMap;
   alert?: string;
   valid?: boolean;
+  processing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
   onSuccess: () => void;
 }
@@ -21,7 +22,8 @@ interface OperationFormState {
 
 export class OperationForm extends React.Component<OperationFormProps> {
   static defaultProps: Partial<OperationFormProps> = {
-    valid: true
+    valid: true,
+    processing: false
   };
   state: OperationFormState = {
     alerts: {},
@@ -115,10 +117,10 @@ export class OperationForm extends React.Component<OperationFormProps> {
 
               <Button
                 variant="danger"
-                disabled={ !this.props.valid || !isValid || isSubmitting }
+                disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
                 onClick={ this.onSuccess }
               >
-                Save
+                { this.props.processing ? 'Saving ...' : 'Save' }
               </Button>
             </Form>
           )

@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import * as React from 'react';
 import { Card, Col, Nav, Row, Tab } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
+import { RouterProps } from 'react-router';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import * as sourcesActions from '../../actions/sources';
@@ -28,7 +29,7 @@ interface ReduxState {
   token: TokenState;
   page: QueryBuilderState;
 }
-type QueryBuilderProps = ActionProps & ReduxState;
+type QueryBuilderProps = ActionProps & ReduxState & RouterProps;
 
 const StyledIcon = styled.i`cursor: pointer;`;
 
@@ -40,6 +41,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     const activeStep = this.props.page.get('activeStep') as OperationStepMap | undefined;
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
     const operation = this.props.page.get('operation') as OperationMap | undefined;
+    const processing = this.props.page.get('processing') as boolean;
 
     return (
       <Row>
@@ -60,6 +62,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
                       valid={ steps.count() > 0 }
                       onUpdateOperation={ this.props.actions.updateOperation }
                       onSuccess={ this.onSaveOperation }
+                      processing={ processing }
                     />
                   </Tab.Pane>
                   <Tab.Pane eventKey="steps">
@@ -145,6 +148,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
       .then((response: AxiosResponse<Operation[]>) => {
         if (response.status === 200 || response.status === 201) {
           this.props.actions.operationSaved(true);
+          this.props.history.push('/');
         }
       })
       .catch(() => {

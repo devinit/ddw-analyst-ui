@@ -1,4 +1,4 @@
-import { List, fromJS } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
 import { OperationMap, OperationStepMap } from '../../../types/operations';
 import { SourceMap } from '../../../types/sources';
@@ -52,7 +52,14 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
     return state.set('processing', true);
   }
   if (action.type === SAVING_OPERATION_SUCCESS) {
-    return state.set('processing', false);
+    return state.withMutations(stet =>
+      stet
+        .set('processing', false)
+        .set('activeSource', undefined)
+        .set('activeStep', undefined)
+        .set('operation', undefined)
+        .set('steps', List())
+      );
   }
   if (action.type === SAVING_OPERATION_FAILED) {
     return state.set('processing', false);

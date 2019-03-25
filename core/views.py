@@ -10,8 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.const import DEFAULT_LIMIT_COUNT
-from core.models import (
-    Operation, OperationStep, Review, Sector, Source, Tag, Theme)
+from core.models import (Operation, OperationStep, Review, Sector, Source, Tag, Theme)
 from core.permissions import IsOwnerOrReadOnly
 from core.serializers import (
     DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
