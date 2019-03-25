@@ -1,16 +1,18 @@
 import classNames from 'classnames';
-import { Formik, FormikActions, FormikProps } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { fromJS } from 'immutable';
 import { debounce } from 'lodash';
 import * as React from 'react';
-import { Alert, Col, Form } from 'react-bootstrap';
+import { Alert, Button, Col, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
-import { Operation, OperationMap } from '../../types/query-builder';
+import { Operation, OperationMap } from '../../types/operations';
 
 interface OperationFormProps {
   operation?: OperationMap;
   alert?: string;
+  valid?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
+  onSuccess: () => void;
 }
 interface OperationFormState {
   alerts: Partial<Operation>;
@@ -18,6 +20,9 @@ interface OperationFormState {
 }
 
 export class OperationForm extends React.Component<OperationFormProps> {
+  static defaultProps: Partial<OperationFormProps> = {
+    valid: true
+  };
   state: OperationFormState = {
     alerts: {},
     hasFocus: ''
@@ -33,7 +38,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
     return (
       <Formik validationSchema={ this.schema } initialValues={ values } onSubmit={ this.onSuccess }>
         {
-          ({ errors, setFieldValue }: FormikProps<Operation>) => (
+          ({ errors, isSubmitting, isValid, setFieldValue }: FormikProps<Operation>) => (
             <Form className="form" noValidate data-testid="operation-form">
               <Alert variant="danger" hidden={ !this.props.alert }>
                 { this.props.alert }
@@ -98,7 +103,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 <Form.Group>
                   <Form.Check type="checkbox">
                     <Form.Check.Label>
-                      <Form.Check.Input onChange={ this.toggleDraft } checked={ values.is_draft }/>
+                      <Form.Check.Input onChange={ this.toggleDraft } defaultChecked={ values.is_draft }/>
                       Is Draft
                       <span className="form-check-sign">
                         <span className="check"/>
@@ -107,6 +112,14 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   </Form.Check>
                 </Form.Group>
               </Col>
+
+              <Button
+                variant="danger"
+                disabled={ !this.props.valid || !isValid || isSubmitting }
+                onClick={ this.onSuccess }
+              >
+                Save
+              </Button>
             </Form>
           )
         }
@@ -156,7 +169,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
     }
   }
 
-  private onSuccess(_values: Operation, _formikActions: FormikActions<Operation>) {
-    // TODO: nothing really ... this is just a placeholder function
+  private onSuccess = () => {
+    this.props.onSuccess();
   }
 }

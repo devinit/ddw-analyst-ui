@@ -21,7 +21,7 @@ export interface Operation {
   operation_query: string;
   theme: string;
   sample_output_path: string;
-  operation_steps: List<OperationStepMap>;
+  operation_steps: OperationStep[] | List<OperationStepMap>;
   is_draft: boolean;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
@@ -32,7 +32,7 @@ export interface OperationStep {
   description: string;
   query_func: QueryName;
   query_kwargs: string;
-  source_id: number;
+  source: number;
   created_on: string;
   updated_on: string;
 }

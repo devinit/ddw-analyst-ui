@@ -3,6 +3,7 @@ export const api = {
     LOGIN: '/api/auth/login/',
     LOGOUT: '/api/auth/logout/',
     USERS: '/api/users/',
-    SOURCES: '/api/sources/'
+    SOURCES: '/api/sources/',
+    OPERATIONS: '/api/operations/'
   }
 };
