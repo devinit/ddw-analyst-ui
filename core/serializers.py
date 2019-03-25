@@ -103,6 +103,9 @@ class OperationSerializer(serializers.ModelSerializer):
         operation = Operation.objects.create(**validated_data)
         for step in read_only_dict['operationstep_set']:
             OperationStep.objects.create(operation=operation, **step)
+        operation.operation_query = operation.build_query()
+        operation.save()
+
         return operation
 
     def update(self, instance, validated_data):
@@ -135,6 +138,9 @@ class OperationSerializer(serializers.ModelSerializer):
         for step_for_delete_id in existing_step_ids:
             step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
             step_for_delete.delete()
+
+        instance.operation_query = instance.build_query()
+        instance.save()
 
         return instance
 
