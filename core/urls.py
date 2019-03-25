@@ -26,3 +26,6 @@ urlpatterns = [
     path('sources/', core_views.SourceList.as_view()),
     path('sources/<int:pk>/', core_views.SourceDetail.as_view()),
 ]
+
+handler500 = 'rest_framework.exceptions.server_error'
+handler400 = 'rest_framework.exceptions.bad_request'
