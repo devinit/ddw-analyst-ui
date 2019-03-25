@@ -4,8 +4,9 @@ import * as localForage from 'localforage';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
 import { SET_ACTIVE_SOURCE } from '../pages/DataSources/reducers';
-import { FETCH_SOURCES, FETCH_SOURCES_FAILED, FETCH_SOURCES_SUCCESSFUL, Source } from '../reducers/sources';
+import { FETCH_SOURCES, FETCH_SOURCES_FAILED, FETCH_SOURCES_SUCCESSFUL } from '../reducers/sources';
 import { APIResponse } from '../types/api';
+import { Source } from '../types/sources';
 import { api, localForageKeys } from '../utils';
 
 function* fetchSources() {

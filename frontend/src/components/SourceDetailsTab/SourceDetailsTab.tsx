@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import * as React from 'react';
 import { Card, Nav, Tab } from 'react-bootstrap';
-import { ColumnList, SourceMap, UpdateHistoryList } from '../../reducers/sources';
+import { ColumnList, SourceMap, UpdateHistoryList } from '../../types/sources';
 import { InfoList, InfoListItems } from '../InfoList';
 import { SourceMetadata } from '../SourceMetadata';
 

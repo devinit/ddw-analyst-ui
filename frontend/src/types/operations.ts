@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 
 export type QueryName = 'filter' | 'join' | 'aggregate' | 'transform';
 export interface Filter {

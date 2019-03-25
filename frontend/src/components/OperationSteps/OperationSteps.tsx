@@ -1,13 +1,13 @@
 import classNames from 'classnames';
-import * as React from 'react';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
-import { SourceMap } from '../../reducers/sources';
 import { List, fromJS } from 'immutable';
-import { OperationStepMap } from '../../types/query-builder';
+import * as React from 'react';
 import { Button, ListGroup, Row } from 'react-bootstrap';
 import { Action } from 'redux';
-import { QueryBuilderAction } from '../../pages/QueryBuilder/reducers';
+import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { QueryBuilderAction } from '../../pages/QueryBuilder/reducers';
+import { OperationStepMap } from '../../types/operations';
+import { SourceMap } from '../../types/sources';
 import OperationStep from '../OperationStepView';
 
 interface OperationStepsProps {

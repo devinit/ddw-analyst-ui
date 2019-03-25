@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { debounce } from 'lodash';
 import * as React from 'react';
 import { Card, FormControl, Table } from 'react-bootstrap';
-import { SourceMap } from '../../reducers/sources';
+import { SourceMap } from '../../types/sources';
 import { SourcesTableRow } from '../SourcesTableRow';
 
 interface SourcesTableProps {

@@ -5,8 +5,8 @@ import * as React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import * as Yup from 'yup';
-import { SourceMap } from '../../reducers/sources';
-import { ErroredFilter, Filters, OperationStep, OperationStepMap } from '../../types/query-builder';
+import { ErroredFilter, Filters, OperationStep, OperationStepMap } from '../../types/operations';
+import { SourceMap } from '../../types/sources';
 import FilterQueryBuilder from '../FilterQueryBuilder';
 
 interface OperationStepFormState {

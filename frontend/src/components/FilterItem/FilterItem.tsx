@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import * as React from 'react';
 import { Button, Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
-import { ErroredFilterMap, Filter, FilterMap } from '../../types/query-builder';
+import { ErroredFilterMap, Filter, FilterMap } from '../../types/operations';
 
 interface FilterItemProps {
   columns: DropdownItemProps[];

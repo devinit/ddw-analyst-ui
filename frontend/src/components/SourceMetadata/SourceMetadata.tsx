@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SourceMap } from '../../reducers/sources';
+import { SourceMap } from '../../types/sources';
 
 export const SourceMetadata: React.SFC<{ source: SourceMap }> = props => {
   return (

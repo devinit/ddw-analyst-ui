@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Badge } from 'react-bootstrap';
 import { Popup } from 'semantic-ui-react';
-import { OperationStepMap } from '../../types/query-builder';
+import { OperationStepMap } from '../../types/operations';
 import styled from 'styled-components';
 
 interface OperationStepProps {

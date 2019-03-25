@@ -1,7 +1,7 @@
 import { List, fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
-import { SourceMap } from '../../../reducers/sources';
-import { OperationMap, OperationStepMap } from '../../../types/query-builder';
+import { OperationMap, OperationStepMap } from '../../../types/operations';
+import { SourceMap } from '../../../types/sources';
 
 export interface QueryBuilderAction extends Action {
   activeSource?: SourceMap;

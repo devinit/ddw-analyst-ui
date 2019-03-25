@@ -2,8 +2,8 @@ import { List, Map } from 'immutable';
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { DropdownItemProps } from 'semantic-ui-react';
-import { ColumnList, SourceMap } from '../../reducers/sources';
-import { FilterMap } from '../../types/query-builder';
+import { FilterMap } from '../../types/operations';
+import { ColumnList, SourceMap } from '../../types/sources';
 import FilterItem from '../FilterItem/FilterItem';
 
 interface FilterQueryBuilderProps {

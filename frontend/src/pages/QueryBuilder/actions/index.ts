@@ -1,5 +1,5 @@
-import { SourceMap } from '../../../reducers/sources';
-import { OperationMap, OperationStepMap } from '../../../types/query-builder';
+import { OperationMap, OperationStepMap } from '../../../types/operations';
+import { SourceMap } from '../../../types/sources';
 import {
   ADD_OPERATION_STEP,
   QueryBuilderAction,

@@ -5,7 +5,7 @@ import { List, Map } from 'immutable';
 import * as React from 'react';
 import { cleanup, fireEvent, render } from 'react-testing-library';
 import * as TestRenderer from 'react-test-renderer';
-import { ColumnList, SourceMap, UpdateHistoryList } from '../../../reducers/sources';
+import { ColumnList, SourceMap, UpdateHistoryList } from '../../../types/sources';
 import { SourcesTable } from '../SourcesTable';
 
 const columns: ColumnList = List([ Map({ source_name: 'Column 1', description: 'Column One' }) ]) as ColumnList;
