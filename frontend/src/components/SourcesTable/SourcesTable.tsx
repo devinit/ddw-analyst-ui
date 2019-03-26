@@ -61,15 +61,15 @@ export class SourcesTable extends React.Component<SourcesTableProps, SourcesTabl
   render() {
     return (
       <Card>
+        <Card.Header>
+          <FormControl
+            placeholder="Search ..."
+            className="w-50"
+            onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
+            data-testid="sources-table-search"
+          />
+        </Card.Header>
         <Card.Body>
-          <Card.Header>
-            <FormControl
-              placeholder="Search ..."
-              className="w-50"
-              onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
-              data-testid="sources-table-search"
-            />
-          </Card.Header>
           <Table responsive hover striped className="sources-table">
             <thead>
               <tr>
