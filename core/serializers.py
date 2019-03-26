@@ -7,21 +7,30 @@
 """
 from django.contrib.auth.models import Permission, User
 from rest_framework import serializers
+from rest_framework import pagination
 from rest_framework.utils import model_meta
+from core.const import DEFAULT_LIMIT_COUNT
 
 from core.models import (
     Operation, OperationStep, Review, Sector, Source, SourceColumnMap, Tag, Theme, UpdateHistory)
 
 
 class DataSerializer(serializers.BaseSerializer):
+    """
+        Handle a request for operation data
+    """
     def to_representation(self, instance):
-        limit = instance["limit"]
-        offset = instance["offset"]
-        operation_instance = instance["operation_instance"]
-        count, data = operation_instance.query_table(limit, offset)
+        request = instance['request']
+        limit = request.query_params.get('limit', None)
+        offset = request.query_params.get('offset', None)
+        if limit == 0:
+            limit = DEFAULT_LIMIT_COUNT
+        operation = instance['operation_instance']
+        count, data = operation.query_table(limit, offset)
+
         return {
-            "count": count,
-            "data": data
+            'count': count,
+            'data': data
         }
 
 

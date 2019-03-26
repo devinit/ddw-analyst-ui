@@ -6,37 +6,33 @@ from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import generics, permissions
 from rest_framework.authentication import BasicAuthentication
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.const import DEFAULT_LIMIT_COUNT
 from core.models import (Operation, OperationStep, Review, Sector, Source, Tag, Theme)
 from core.permissions import IsOwnerOrReadOnly
 from core.serializers import (
     DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
     SectorSerializer, SourceSerializer, TagSerializer, ThemeSerializer, UserSerializer)
+from core.pagination import DataPaginator
 
 
 class ViewData(APIView):
+    """
+    List all data from executing the operation query.
+    """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     def get(self, request, pk):
-        try:
-            limit = self.request.query_params.get('limit', None)
-            offset = self.request.query_params.get('offset', None)
-        except ValueError:  # Someone typed garbage into the url
-            limit = DEFAULT_LIMIT_COUNT
-            offset = 0
-        if limit == 0:
-            limit = DEFAULT_LIMIT_COUNT
-        operation_instance = Operation.objects.get(pk=pk)
-        data_serializer = DataSerializer({
-            "limit": limit,
-            "offset": offset,
-            "operation_instance": operation_instance
+        operation = Operation.objects.get(pk=pk)
+        serializer = DataSerializer({
+            "request": request,
+            "operation_instance": operation
         })
-        return Response(data_serializer.data)
+        paginator = DataPaginator()
+        paginator.set_count(serializer.data['count'])
+        page_data = paginator.paginate_queryset(serializer.data['data'], request)
+        return paginator.get_paginated_response(page_data)
 
 
 class SectorList(generics.ListCreateAPIView):
