@@ -18,10 +18,9 @@ class DataSerializer(serializers.BaseSerializer):
         limit = instance["limit"]
         offset = instance["offset"]
         operation_instance = instance["operation_instance"]
-        count_results, columns, data = operation_instance.query_table(limit, offset)
+        count, data = operation_instance.query_table(limit, offset)
         return {
-            "count": count_results[0][0],
-            "columns": columns,
+            "count": count,
             "data": data
         }
 
