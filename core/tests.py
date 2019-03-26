@@ -70,7 +70,15 @@ class TestRestFramework(TestCase):
                 "name": "Name",
                 "operation_query": "Query",
                 "theme": 1,
-                "operation_steps": [{"name": "Select", "step_id": 1}]
+                "operation_steps": [
+                    {
+                        "name": "Select",
+                        "step_id": 1,
+                        "source": 1,
+                        "query_func": "filter",
+                        "query_kwargs": "{\"filters\":[{\"field\":\"year\",\"func\":\"lt\",\"value\":\"1987\"}]}"
+                    }
+                ]
             },
             format="json"
         )
