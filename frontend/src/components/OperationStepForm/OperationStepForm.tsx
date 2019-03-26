@@ -18,6 +18,7 @@ interface OperationStepFormProps {
   source: SourceMap;
   step: OperationStepMap;
   alert?: string;
+  editing?: boolean;
   onSuccess: (step: OperationStepMap) => void;
   onUpdateStep: (step: OperationStepMap) => void;
 }
@@ -128,7 +129,9 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                 </Col>
 
                 <Col md={ 12 } className="mt-3">
-                  <Button variant="danger" className="float-right" type="submit">Add Operation</Button>
+                  <Button variant="danger" className="float-right" type="submit">
+                    { this.props.editing ? 'Edit Step' : 'Add Step' }
+                  </Button>
                 </Col>
               </Form>
             );

@@ -42,6 +42,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
     const operation = this.props.page.get('operation') as OperationMap | undefined;
     const processing = this.props.page.get('processing') as boolean;
+    const editingStep = this.props.page.get('editingStep') as boolean;
 
     return (
       <Row>
@@ -75,6 +76,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
                       onAddStep={ this.props.actions.updateActiveStep }
                       activeSource={ activeSource }
                       activeStep={ activeStep }
+                      onClickStep={ (step) => this.props.actions.updateActiveStep(step, true) }
                     />
                   </Tab.Pane>
                 </Tab.Content>
@@ -96,7 +98,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
             </Card.Header>
             <Card.Body>
               <div className="mb-2">
-                { this.renderOperationStepForm(activeSource, activeStep) }
+                { this.renderOperationStepForm(activeSource, activeStep, editingStep) }
               </div>
             </Card.Body>
           </Card>
@@ -105,7 +107,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     );
   }
 
-  private renderOperationStepForm(source?: SourceMap, step?: OperationStepMap) {
+  private renderOperationStepForm(source?: SourceMap, step?: OperationStepMap, editing = false) {
     if (step && source) {
       return (
         <OperationStepForm
@@ -113,6 +115,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           step={ step }
           onUpdateStep={ this.props.actions.updateActiveStep }
           onSuccess={ this.onAddOperationStep }
+          editing={ editing }
         />
       );
     }
@@ -125,7 +128,11 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
   }
 
   private onAddOperationStep = (step: OperationStepMap) => {
-    this.props.actions.addOperationStep(step);
+    if (this.props.page.get('editingStep')) {
+      this.props.actions.editOperationStep(step);
+    } else {
+      this.props.actions.addOperationStep(step);
+    }
     this.props.actions.updateActiveStep(undefined);
   }
 

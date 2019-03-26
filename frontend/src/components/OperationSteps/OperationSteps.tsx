@@ -19,9 +19,13 @@ interface OperationStepsProps {
   fetchSources: () => Action;
   onSelectSource: (source: SourceMap) => Partial<QueryBuilderAction>;
   onAddStep: (step?: OperationStepMap) => Partial<QueryBuilderAction>;
+  onClickStep: (step?: OperationStepMap) => void;
 }
 
-const StyledListItem = styled(ListGroup.Item)`border-bottom: 1px solid rgba(0,0,0,.125)`;
+const StyledListItem = styled(ListGroup.Item)`
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  cursor: ${props => props.disabled ? 'default' : 'pointer' };
+`;
 
 class OperationSteps extends React.Component<OperationStepsProps> {
   render() {
@@ -56,22 +60,32 @@ class OperationSteps extends React.Component<OperationStepsProps> {
           </Button>
         </div>
 
-        { this.renderOperationSteps(steps) }
+        { this.renderOperationSteps(steps, activeStep) }
       </React.Fragment>
     );
   }
 
-  private renderOperationSteps(steps: List<OperationStepMap>) {
+  private renderOperationSteps(steps: List<OperationStepMap>, activeStep?: OperationStepMap) {
     if (steps.count()) {
       return (
         <Row>
           <ListGroup variant="flush" className="w-100">
             {
-              steps.map((step, index) =>
-                <StyledListItem className="py-2" key={ index }>
-                  <OperationStep step={ step }/>
-                </StyledListItem>
-              )
+              steps.map((step, index) => {
+                const isActiveStep = activeStep && activeStep.get('step_id') === step.get('step_id');
+
+                return (
+                  <StyledListItem
+                    className="py-2"
+                    key={ index }
+                    onClick={ !activeStep && this.onClickStep(step) }
+                    disabled={ activeStep && !isActiveStep }
+                    variant={ isActiveStep ? 'danger' : undefined }
+                  >
+                    <OperationStep step={ step }/>
+                  </StyledListItem>
+                );
+              })
             }
           </ListGroup>
         </Row>
@@ -108,6 +122,10 @@ class OperationSteps extends React.Component<OperationStepsProps> {
 
   private onAddStep = () => {
     this.props.onAddStep(fromJS({ step_id: this.props.steps.count() + 1 }));
+  }
+
+  private onClickStep = (step: OperationStepMap) => () => {
+    this.props.onClickStep(step);
   }
 }
 

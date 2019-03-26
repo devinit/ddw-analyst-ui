@@ -14,6 +14,7 @@ const StyledPopup = styled(Popup)`
     border: none;
   }
 `;
+const StyledIcon = styled.i`font-size:18px;`;
 
 export class OperationStepView extends React.Component<OperationStepProps> {
   render() {
@@ -38,7 +39,9 @@ export class OperationStepView extends React.Component<OperationStepProps> {
     if (step.get('description')) {
       return (
         <StyledPopup
-          trigger={ <i className="material-icons float-right" data-testid="step-info-trigger">info</i> }
+          trigger={
+            <StyledIcon className="material-icons float-right mt-1" data-testid="step-info-trigger">info</StyledIcon>
+          }
           content={ <StyledPopContent>{ step.get('description') }</StyledPopContent> }
           basic
         />

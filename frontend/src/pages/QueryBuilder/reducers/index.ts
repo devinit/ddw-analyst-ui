@@ -7,6 +7,7 @@ export interface QueryBuilderAction extends Action {
   activeSource?: SourceMap;
   step: OperationStepMap;
   operation?: OperationMap;
+  editingStep: boolean;
 }
 interface State {
   activeSource?: SourceMap;
@@ -14,6 +15,7 @@ interface State {
   activeStep?: OperationStepMap;
   operation?: OperationMap;
   processing: boolean;
+  editingStep: boolean;
 }
 export type QueryBuilderState = Map<keyof State, State[keyof State]>;
 
@@ -25,11 +27,13 @@ export const ADD_OPERATION_STEP = `${queryBuilderReducerId}.ADD_OPERATION_STEP`;
 export const SAVING_OPERATION = `${queryBuilderReducerId}.SAVING_OPERATION`;
 export const SAVING_OPERATION_SUCCESS = `${queryBuilderReducerId}.SAVING_OPERATION_SUCCESS`;
 export const SAVING_OPERATION_FAILED = `${queryBuilderReducerId}.SAVING_OPERATION_FAILED`;
+export const EDIT_OPERATION_STEP = `${queryBuilderReducerId}.EDIT_OPERATION_STEP`;
 
 const defaultState: QueryBuilderState = fromJS({
   activeSource: undefined,
   steps: [],
   activeStep: undefined,
+  editingStep: false,
   processing: false
 });
 
@@ -38,7 +42,7 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
     return state.set('activeSource', action.activeSource);
   }
   if (action.type === UPDATE_ACTIVE_STEP) {
-    return state.set('activeStep', action.step);
+    return state.withMutations(stet => stet.set('activeStep', action.step).set('editingStep', action.editingStep));
   }
   if (action.type === UPDATE_OPERATION) {
     return state.set('operation', action.operation);
@@ -63,6 +67,17 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
   }
   if (action.type === SAVING_OPERATION_FAILED) {
     return state.set('processing', false);
+  }
+  if (action.type === EDIT_OPERATION_STEP) {
+    const steps = state.get('steps') as List<OperationStepMap>;
+    if (steps) {
+      const stepIndex = steps.findIndex(step => step.get('step_id') === action.step.get('step_id'));
+
+      return state.withMutations(stet =>
+        stet.set('steps', steps.set(stepIndex, action.step)).set('editingStep', false));
+    }
+
+    return state;
   }
 
   return state;
