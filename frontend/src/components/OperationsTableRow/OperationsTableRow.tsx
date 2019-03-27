@@ -1,4 +1,5 @@
 import * as React from 'react';
+import OperationsTableRowActions from '../OperationsTableRowActions';
 
 export interface OperationsTableRowProps {
   count: number;
@@ -8,12 +9,24 @@ export interface OperationsTableRowProps {
   onClick: () => void;
 }
 
-export const OperationsTableRow: React.SFC<OperationsTableRowProps> = props => {
-  return (
-    <tr className={ props.classNames } onClick={ props.onClick } data-testid="operations-table-row">
-      <td>{ props.name }</td>
-      <td>{ new Date(props.updatedOn).toDateString() }</td>
-      <td>Actions Go Here!</td>
-    </tr>
-  );
-};
+export class OperationsTableRow extends React.Component<OperationsTableRowProps> {
+  static Actions = OperationsTableRowActions;
+
+  render() {
+    return (
+      <tr className={ this.props.classNames } onClick={ this.props.onClick } data-testid="operations-table-row">
+        <td>{ this.props.name }</td>
+        <td>{ new Date(this.props.updatedOn).toDateString() }</td>
+        <td className="td-actions text-right">{ this.renderActions() }</td>
+      </tr>
+    );
+  }
+
+  private renderActions(): React.ReactNode {
+    return React.Children.map(this.props.children, child => {
+      if (React.isValidElement(child) && child.type === OperationsTableRowActions) {
+        return child;
+      }
+    });
+  }
+}

@@ -1,6 +1,6 @@
 import { MapDispatchToProps, connect } from 'react-redux';
 import { List } from 'immutable';
-import { Card, Col, FormControl, Pagination, Row } from 'react-bootstrap';
+import { Button, Card, Col, FormControl, OverlayTrigger, Pagination, Popover, Row } from 'react-bootstrap';
 import { OperationMap } from '../../types/operations';
 import { debounce } from 'lodash';
 import { OperationsTable } from '../OperationsTable/OperationsTable';
@@ -50,7 +50,9 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
             />
           </Card.Header>
           <Card.Body>
-            <OperationsTable operations={ operations } onRowClick={ this.onRowClick }/>
+            <OperationsTable>
+              { this.renderRows(operations) }
+            </OperationsTable>
             { this.renderPagination() }
           </Card.Body>
         </Card>
@@ -66,6 +68,36 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
     }
   }
 
+  private renderRows(operations: List<OperationMap>) {
+    if (operations && operations.size) {
+      return operations.map((operation, index) => (
+        <OperationsTable.Row
+          key={ index }
+          count={ index + 1 }
+          onClick={ () => this.onRowClick(operation) }
+          name={ operation.get('name') as string }
+          updatedOn={ operation.get('updated_on') as string }
+        >
+          <OperationsTable.Actions>
+            <OverlayTrigger placement="top" overlay={ <Popover id="view">View Operation Data</Popover> }>
+              <Button variant="danger" size="sm" className="btn-link">
+                <i className="material-icons">view_list</i>
+              </Button>
+            </OverlayTrigger>
+            <Button variant="danger" size="sm" className="btn-link">
+              <i className="material-icons">edit</i>
+            </Button>
+            <Button variant="danger" size="sm" className="btn-link">
+              <i className="material-icons">close</i>
+            </Button>
+          </OperationsTable.Actions>
+        </OperationsTable.Row>
+      ));
+    }
+
+    return null;
+  }
+
   private renderPagination() {
     const count = this.props.operations.get('count') as number;
     const { offset, limit } = this.props;
@@ -78,16 +110,16 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
         </Col>
         <Col md={ 6 }>
           <Pagination className="float-right">
-            <Pagination.First onClick={ this.goToFirst } data-testid="info-pagination-first">
+            <Pagination.First onClick={ this.goToFirst } data-testid="operations-pagination-first">
               <i className="material-icons">first_page</i>
             </Pagination.First>
-            <Pagination.Prev onClick={ this.goToPrev } data-testid="info-pagination-prev">
+            <Pagination.Prev onClick={ this.goToPrev } data-testid="operations-pagination-prev">
               <i className="material-icons">chevron_left</i>
             </Pagination.Prev>
-            <Pagination.Next onClick={ this.goToNext } data-testid="info-pagination-next">
+            <Pagination.Next onClick={ this.goToNext } data-testid="operations-pagination-next">
               <i className="material-icons">chevron_right</i>
             </Pagination.Next>
-            <Pagination.Last onClick={ this.goToLast } data-testid="info-pagination-last">
+            <Pagination.Last onClick={ this.goToLast } data-testid="operations-pagination-last">
               <i className="material-icons">last_page</i>
             </Pagination.Last>
           </Pagination>
@@ -101,7 +133,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
     this.setState({ searchQuery: value || '' });
   }
 
-  private onRowClick = () => {
+  private onRowClick = (_operation: OperationMap) => {
     //
   }
 
