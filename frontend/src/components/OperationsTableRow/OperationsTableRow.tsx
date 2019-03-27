@@ -12,7 +12,7 @@ export const OperationsTableRow: React.SFC<OperationsTableRowProps> = props => {
   return (
     <tr className={ props.classNames } onClick={ props.onClick } data-testid="operations-table-row">
       <td>{ props.count }</td>
-      <td>={ props.name }</td>
+      <td>{ props.name }</td>
       <td>{ new Date(props.updatedOn).toDateString() }</td>
       <td>Actions Go Here!</td>
     </tr>

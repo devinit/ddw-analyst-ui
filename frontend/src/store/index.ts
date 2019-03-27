@@ -4,6 +4,7 @@ import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { dataSourcesReducer, dataSourcesReducerId } from '../pages/DataSources/reducers';
 import { queryBuilderReducer, queryBuilderReducerId } from '../pages/QueryBuilder/reducers';
+import { OperationsState, operationsReducer } from '../reducers/operations';
 import { SourcesState, sourcesReducer } from '../reducers/sources';
 import { TokenState, tokenReducer } from '../reducers/token';
 import { UserState, userReducer } from '../reducers/user';
@@ -16,6 +17,7 @@ const structuredReducers = {
   user: userReducer,
   token: tokenReducer,
   sources: sourcesReducer,
+  operations: operationsReducer,
   [`${dataSourcesReducerId}`]: dataSourcesReducer,
   [`${queryBuilderReducerId}`]: queryBuilderReducer
 };
@@ -32,6 +34,7 @@ export interface StoreState {
   user: UserState;
   token: TokenState;
   sources: SourcesState;
+  operations: OperationsState;
   [key: string]: any;
 }
 
