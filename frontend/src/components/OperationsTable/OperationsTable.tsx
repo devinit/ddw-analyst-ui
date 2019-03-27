@@ -15,7 +15,6 @@ export class OperationsTable extends React.Component<OperationsTableProps> {
       <Table responsive hover striped className="operations-table">
         <thead>
           <tr>
-            <th>#</th>
             <th>Name</th>
             <th>Updated On</th>
             <th>Actions</th>

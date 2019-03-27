@@ -2,16 +2,18 @@ import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
-import { FETCH_OPERATIONS, FETCH_OPERATIONS_FAILED, FETCH_OPERATIONS_SUCCESSFUL } from '../reducers/operations';
+import { onFetchOperationsFailed, onFetchOperationsSuccessful } from '../pages/DataSources/actions';
+import { updateOperationInfo } from '../pages/Home/actions';
+import { FETCH_OPERATIONS, OperationsAction } from '../reducers/operations';
 import { APIResponse } from '../types/api';
 import { Operation } from '../types/operations';
 import { api, localForageKeys } from '../utils';
 
-function* fetchOperations() {
+function* fetchOperations({ payload }: OperationsAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios.request({
-      url: api.routes.OPERATIONS,
+      url: payload.link || `${api.routes.OPERATIONS}?limit=${payload.limit}&offset=${payload.offset}`,
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -21,12 +23,13 @@ function* fetchOperations() {
     .then((response: AxiosResponse<Operation[]>) => response);
 
     if (status === 200 && data.results) {
-      yield put({ type: FETCH_OPERATIONS_SUCCESSFUL, operations: data.results });
+      yield put(onFetchOperationsSuccessful(data.results, data.count));
+      yield put(updateOperationInfo({ next: data.next, previous: data.previous }, payload.offset));
     } else {
-      yield put({ type: FETCH_OPERATIONS_FAILED }); // TODO: add a reason for failure
+      yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
     }
   } catch (error) {
-    yield put({ type: FETCH_OPERATIONS_FAILED }); // TODO: add a reason for failure
+    yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
   }
 }
 

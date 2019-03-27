@@ -1,4 +1,9 @@
-import { Action } from 'redux';
-import { FETCH_OPERATIONS } from '../reducers/operations';
+import { FETCH_OPERATIONS, OperationsAction } from '../reducers/operations';
 
-export const fetchOperations = (): Action => ({ type: FETCH_OPERATIONS });
+interface FetchOptions {
+  limit?: number;
+  offset?: number;
+  link?: string;
+}
+export const fetchOperations = ({ limit = 10, offset = 0, link }: FetchOptions): Partial<OperationsAction> =>
+  ({ type: FETCH_OPERATIONS, payload: { limit, offset, link } });

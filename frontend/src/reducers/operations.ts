@@ -2,11 +2,20 @@ import { List, Map, fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
 import { Operation, OperationMap } from '../types/operations';
 
-export type OperationsAction = Action & { operations?: Operation[], activeSourceIndex?: number };
-
+export interface OperationsAction extends Action {
+  operations?: Operation[];
+  count: number;
+  activeSourceIndex?: number;
+  payload: Partial<{
+    limit: number;
+    offset: number;
+    link: string;
+  }>;
+}
 interface State {
   loading: boolean;
   operations: List<OperationMap>;
+  count: number;
   activeOperationId: number;
 }
 export type OperationsState = Map<keyof State, State[keyof State]>;
@@ -24,7 +33,10 @@ export const operationsReducer: Reducer<OperationsState, OperationsAction> = (st
   }
   if (action.type === FETCH_OPERATIONS_SUCCESSFUL && action.operations) {
     return state.withMutations(map =>
-      map.set('loading', false).set('operations', fromJS(action.operations))
+      map
+        .set('loading', false)
+        .set('operations', fromJS(action.operations))
+        .set('count', action.count)
     );
   }
   if (action.type === FETCH_OPERATIONS_FAILED) {

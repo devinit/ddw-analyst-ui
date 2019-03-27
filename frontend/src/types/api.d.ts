@@ -4,3 +4,8 @@ export interface APIResponse<T> {
   previous: string;
   results: T
 }
+export interface Links {
+  next: string | null;
+  previous: string | null;
+}
+export type LinksMap = Map<keyof Links, Links[keyof Links]>;

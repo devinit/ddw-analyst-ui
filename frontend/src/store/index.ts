@@ -1,10 +1,11 @@
+import { OperationsState, operationsReducer } from '../reducers/operations';
 import { applyMiddleware, createStore } from 'redux';
-import { combineReducers } from 'redux-immutable';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { dataSourcesReducer, dataSourcesReducerId } from '../pages/DataSources/reducers';
+import { homeReducer, homeReducerId } from '../pages/Home/reducers';
 import { queryBuilderReducer, queryBuilderReducerId } from '../pages/QueryBuilder/reducers';
-import { OperationsState, operationsReducer } from '../reducers/operations';
+import { combineReducers } from 'redux-immutable';
 import { SourcesState, sourcesReducer } from '../reducers/sources';
 import { TokenState, tokenReducer } from '../reducers/token';
 import { UserState, userReducer } from '../reducers/user';
@@ -19,7 +20,8 @@ const structuredReducers = {
   sources: sourcesReducer,
   operations: operationsReducer,
   [`${dataSourcesReducerId}`]: dataSourcesReducer,
-  [`${queryBuilderReducerId}`]: queryBuilderReducer
+  [`${queryBuilderReducerId}`]: queryBuilderReducer,
+  [`${homeReducerId}`]: homeReducer
 };
 const reducers = combineReducers(structuredReducers);
 
