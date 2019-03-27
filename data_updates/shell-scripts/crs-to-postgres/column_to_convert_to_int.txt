@@ -1,0 +1,5 @@
+row_no
+purpose_code
+sector_code
+channel_code
+channel_parent_category

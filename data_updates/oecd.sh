@@ -21,11 +21,8 @@ echo -e "================ Fetcing DAC Table5 =====================\n"
 exec python3 ./Python/download_oecd_dac_table_5.py
 
 
-echo -e "\n\n Using R scripts to cleanup downloaded data"
+echo -e "\n\n Using R scripts to cleanup downloaded data and load to postgres DB"
 
+exec R --vanilla ./R/load_mirrors.R
 
-db_username=$PG_DDL_USER
-db_port=$PG_DDL_PORT
-db_default_db=$PG_DDL_DB
-
-echo -e "Starting setup with : \nUsername: $db_username \nDB Port : $db_port \nDefault DB : $db_default_db";
+echo -e "\n=============== Successfully processed OECD mirros===============\n"
