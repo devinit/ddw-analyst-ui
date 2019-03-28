@@ -14,7 +14,7 @@ export class OperationsTable extends React.Component {
           <tr>
             <th>Name</th>
             <th>Updated On</th>
-            <th>Actions</th>
+            <th className="text-right">Actions</th>
           </tr>
         </thead>
         <tbody>

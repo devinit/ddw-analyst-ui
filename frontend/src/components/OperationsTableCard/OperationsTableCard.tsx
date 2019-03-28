@@ -1,16 +1,17 @@
-import { MapDispatchToProps, connect } from 'react-redux';
 import { List } from 'immutable';
-import { Button, Card, Col, FormControl, OverlayTrigger, Pagination, Popover, Row } from 'react-bootstrap';
-import { OperationMap } from '../../types/operations';
 import { debounce } from 'lodash';
-import { OperationsTable } from '../OperationsTable/OperationsTable';
 import * as React from 'react';
+import { Button, Card, Col, FormControl, OverlayTrigger, Pagination, Popover, Row } from 'react-bootstrap';
+import { MapDispatchToProps, connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
 import { OperationsState } from '../../reducers/operations';
-import { Dimmer, Loader } from 'semantic-ui-react';
-import { bindActionCreators } from 'redux';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
+import { OperationMap } from '../../types/operations';
+import { OperationsTable } from '../OperationsTable/OperationsTable';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -18,10 +19,10 @@ interface ActionProps {
 interface ReduxState {
   operations: OperationsState;
 }
-interface ComponentProps {
+interface ComponentProps extends RouteComponentProps {
   limit: number;
   offset: number;
-  links: LinksMap;
+  links?: LinksMap;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
 
@@ -80,7 +81,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
         >
           <OperationsTable.Actions>
             <OverlayTrigger placement="top" overlay={ <Popover id="view">View Operation Data</Popover> }>
-              <Button variant="danger" size="sm" className="btn-link">
+              <Button variant="danger" size="sm" className="btn-link" onClick={ this.viewData(operation) }>
                 <i className="material-icons">view_list</i>
               </Button>
             </OverlayTrigger>
@@ -162,6 +163,11 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
       this.props.actions.fetchOperations({ limit: this.props.limit, offset });
     }
   }
+
+  private viewData = (operation: OperationMap) => () => {
+    const id = operation.get('id');
+    this.props.history.push(`/queries/data/${id}`);
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dispatch): ActionProps => ({
@@ -173,6 +179,6 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   };
 };
 
-const connector = connect(mapStateToProps, mapDispatchToProps)(OperationsTableCard);
+const connector = withRouter<ComponentProps>(connect(mapStateToProps, mapDispatchToProps)(OperationsTableCard));
 
 export { connector as OperationsTableCard, connector as default };
