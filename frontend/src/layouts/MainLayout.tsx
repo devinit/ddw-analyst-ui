@@ -14,6 +14,7 @@ import { Sidebar } from '../components/Sidebar';
 import { DataSources } from '../pages/DataSources';
 import { Home } from '../pages/Home';
 import { QueryBuilder } from '../pages/QueryBuilder';
+import QueryData from '../pages/QueryData/QueryData';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
@@ -133,6 +134,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/" exact component={ Home }/>
               <Route path="/sources" exact component={ DataSources }/>
               <Route path="/queries/build" exact component={ QueryBuilder }/>
+              <Route path="/queries/data/:id" exact component={ QueryData }/>
             </Switch>
           </AdminLayout.Content>
         </AdminLayout>
