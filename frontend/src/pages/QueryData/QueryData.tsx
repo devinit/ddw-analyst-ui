@@ -31,15 +31,18 @@ class QueryData extends React.Component<QueryDataProps> {
 
   componentDidMount() {
     const operation = this.props.page.get('operation') as OperationMap | undefined;
+    const { id } = this.props.match.params;
     if (!operation) {
-      this.setOperation();
+      this.setOperation(id);
+    }
+    if (id) {
+      this.props.actions.fetchOperationData(id);
     }
   }
 
-  private setOperation() {
-    const { id } = this.props.match.params;
+  private setOperation(id?: string) {
     if (id) {
-      const operation = this.props.operations.find(ope => ope.get('id') === parseInt(id as string, 10));
+      const operation = this.props.operations.find(ope => ope.get('id') === parseInt(id, 10));
       if (operation) {
         this.props.actions.setOperation(operation);
       } else {
