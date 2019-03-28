@@ -1,19 +1,20 @@
-import { OperationsState, operationsReducer } from '../reducers/operations';
+import { Map } from 'immutable';
 import { applyMiddleware, createStore } from 'redux';
+import { combineReducers } from 'redux-immutable';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { dataSourcesReducer, dataSourcesReducerId } from '../pages/DataSources/reducers';
 import { homeReducer, homeReducerId } from '../pages/Home/reducers';
 import { queryBuilderReducer, queryBuilderReducerId } from '../pages/QueryBuilder/reducers';
 import { queryDataReducer, queryDataReducerId } from '../pages/QueryData/reducers';
-import { combineReducers } from 'redux-immutable';
+import { OperationsState, operationsReducer } from '../reducers/operations';
 import { SourcesState, sourcesReducer } from '../reducers/sources';
 import { TokenState, tokenReducer } from '../reducers/token';
 import { UserState, userReducer } from '../reducers/user';
 import rootSaga from '../sagas';
 
 const loggerMiddleware = createLogger();
-const sagaMiddleware = createSagaMiddleware();
+export const sagaMiddleware = createSagaMiddleware();
 
 const structuredReducers = {
   user: userReducer,
