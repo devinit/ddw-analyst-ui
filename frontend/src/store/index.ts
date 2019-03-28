@@ -5,6 +5,7 @@ import createSagaMiddleware from 'redux-saga';
 import { dataSourcesReducer, dataSourcesReducerId } from '../pages/DataSources/reducers';
 import { homeReducer, homeReducerId } from '../pages/Home/reducers';
 import { queryBuilderReducer, queryBuilderReducerId } from '../pages/QueryBuilder/reducers';
+import { queryDataReducer, queryDataReducerId } from '../pages/QueryData/reducers';
 import { combineReducers } from 'redux-immutable';
 import { SourcesState, sourcesReducer } from '../reducers/sources';
 import { TokenState, tokenReducer } from '../reducers/token';
@@ -21,7 +22,8 @@ const structuredReducers = {
   operations: operationsReducer,
   [`${dataSourcesReducerId}`]: dataSourcesReducer,
   [`${queryBuilderReducerId}`]: queryBuilderReducer,
-  [`${homeReducerId}`]: homeReducer
+  [`${homeReducerId}`]: homeReducer,
+  [`${queryDataReducerId}`]: queryDataReducer
 };
 const reducers = combineReducers(structuredReducers);
 

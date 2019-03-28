@@ -1,6 +1,20 @@
 import * as React from 'react';
+import { MapDispatchToProps, connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ReduxStore } from '../../store';
+import * as pageActions from './actions';
+import { QueryDataState, queryDataReducerId } from './reducers';
 
-class QueryData extends React.Component {
+interface ActionProps {
+  actions: typeof pageActions;
+}
+interface ReduxState {
+  page: QueryDataState;
+}
+
+type QueryDataProps = ActionProps & ReduxState;
+
+class QueryData extends React.Component<QueryDataProps> {
   render() {
     return (
       <div>
@@ -10,4 +24,13 @@ class QueryData extends React.Component {
   }
 }
 
-export default QueryData;
+const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
+  actions: bindActionCreators(pageActions, dispatch)
+});
+const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
+  page: reduxStore.get(`${queryDataReducerId}`)
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps)(QueryData);
+
+export { connector as QueryData, connector as default };
