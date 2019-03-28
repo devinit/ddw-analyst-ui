@@ -20,7 +20,7 @@ test('should handle FETCH_SOURCES', () => {
 
 test('should handle FETCH_SOURCES_SUCCESSFUL', () => {
   const source = {
-    pk: 1,
+    id: 1,
     indicator: 'Common Reporting Standard',
     indicator_acronym: 'crs',
     source_acronym: 'oecd',

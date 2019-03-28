@@ -93,7 +93,7 @@ export class SourcesTable extends React.Component<SourcesTableProps, SourcesTabl
         <SourcesTableRow
           key={ index }
           count={ index + 1 }
-          classNames={ classNames({ 'table-danger':  activeSource.get('pk') === source.get('pk') }) }
+          classNames={ classNames({ 'table-danger':  activeSource.get('id') === source.get('id') }) }
           onClick={ () => this.props.onRowClick(source) }
           indicator={ source.get('indicator') as string }
           indicatorAcronym={ source.get('indicator_acronym') as string }

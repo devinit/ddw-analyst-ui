@@ -1,7 +1,7 @@
 import { List, Map } from 'immutable';
 
 export interface Source {
-  pk: number;
+  id: number;
   indicator: string;
   indicator_acronym: string | null;
   source: string | null;
@@ -18,7 +18,7 @@ export interface Source {
   update_history: UpdateHistoryList;
 }
 export interface Column {
-  pk: number;
+  id: number;
   name: string | null;
   description: string | null;
   source_name: string | null;

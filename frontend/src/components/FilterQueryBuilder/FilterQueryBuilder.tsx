@@ -56,7 +56,7 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps>
     const columns = source.get('columns') as ColumnList;
     if (columns && columns.count()) {
       return columns.map(column => ({
-        key: column.get('pk'),
+        key: column.get('id'),
         text: column.get('source_name'),
         value: column.get('name')
       })).toJS();

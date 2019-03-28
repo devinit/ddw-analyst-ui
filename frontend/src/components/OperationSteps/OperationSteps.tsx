@@ -44,7 +44,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             loading={ isFetchingSources }
             onClick={ this.fetchSources }
             onChange={ this.onSelectSource }
-            defaultValue={ activeSource ? activeSource.get('pk') as string : undefined }
+            defaultValue={ activeSource ? activeSource.get('id') as string : undefined }
           />
         </div>
 
@@ -98,9 +98,9 @@ class OperationSteps extends React.Component<OperationStepsProps> {
   private getSelectOptionsFromSources(sources: List<SourceMap>): DropdownItemProps[] {
     if (sources.count()) {
       return sources.map(source => ({
-        key: source.get('pk'),
+        key: source.get('id'),
         text: source.get('indicator'),
-        value: source.get('pk')
+        value: source.get('id')
       })).toJS();
     }
 
@@ -114,7 +114,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
   }
 
   private onSelectSource = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    const selectedSource = this.props.sources.find(source => source.get('pk') === data.value);
+    const selectedSource = this.props.sources.find(source => source.get('id') === data.value);
     if (selectedSource) {
       this.props.onSelectSource(selectedSource);
     }

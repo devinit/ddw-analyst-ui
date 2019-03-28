@@ -231,7 +231,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
 
   private processFilter(values: Partial<OperationStep>): OperationStepMap {
     const options = this.props.step.get('query_kwargs') as string;
-    const source = this.props.source.get('pk') as number;
+    const source = this.props.source.get('id') as number;
     const { filters }: Filters<ErroredFilter[]> = options ? JSON.parse(options) : { filters: [] };
     const filtersWithoutErrors = filters.map(({ field, func, value }) => ({ field, func, value }));
 

@@ -13,7 +13,7 @@ const updateHistory: UpdateHistoryList = List([
   Map({ released_on: new Date('August 19, 2018 23:15:30').toISOString(), release_description: 'My Release' })
 ]) as UpdateHistoryList;
 const source: SourceMap = Map({
-  pk: 1,
+  id: 1,
   indicator: 'Common Reporting Standard',
   indicator_acronym: 'crs',
   columns,
@@ -22,7 +22,7 @@ const source: SourceMap = Map({
   last_updated_on: new Date('August 19, 2018 23:15:30').toISOString()
 }) as SourceMap;
 const source2 = source
-  .set('pk', 2)
+  .set('id', 2)
   .set('indicator', 'World Bank Indicators')
   .set('indicator_acronym', 'wdi')
   .set('last_updated_on', new Date('August 19, 2018 23:15:30').toISOString());
@@ -72,7 +72,7 @@ test('renders correctly when the sources are updated', () => {
     <SourcesTable activeSource={ source } sources={ sourcesList } onRowClick={ jest.fn() }/>
   );
   sourcesList = sourcesList.push(source
-    .set('pk', 3)
+    .set('id', 3)
     .set('indicator', 'Official Development Assistance')
     .set('indicator_acronym', 'DAC1')
     .set('last_updated_on', new Date('August 19, 2018 23:15:30').toISOString()));

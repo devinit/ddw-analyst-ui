@@ -15,7 +15,7 @@ export interface Filters<T = Filter[] | ErroredFilter[]> {
   filters: T;
 }
 export interface Operation {
-  pk: number;
+  id: number;
   name: string;
   description: string;
   operation_query: string;
@@ -28,7 +28,7 @@ export interface Operation {
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {
-  pk: number;
+  id: number;
   step_id: number;
   name: string;
   description: string;
