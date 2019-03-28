@@ -14,4 +14,5 @@ urlpatterns = [
     path('login/', views.index),
     path('sources/', views.index),
     path('queries/build/', views.index),
+    path('queries/data/<int:pk>/', views.with_id),
 ]
