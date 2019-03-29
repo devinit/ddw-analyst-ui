@@ -5,14 +5,14 @@ import time
 import urllib.request as RemoteCrs
 from bs4 import BeautifulSoup
 from progress_hook import  reporthook
+import constants
 
 # 1) Read the contents of the OECD "Bulk Download" web page.
 
 # Supply the web page address.
-url = "https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1"
-
+print(constants.CRS_SCRAPE_PATH)
 # Open the web page.
-request = RemoteCrs.Request(url)
+request = RemoteCrs.Request(constants.CRS_SCRAPE_PATH)
 response = RemoteCrs.urlopen(request)
 html = response.read()
 # Possible error (but don't know how to handle exceptions at the moment):
@@ -75,7 +75,7 @@ for tag in anchor_tags:
 # 3) Download the files!
 
 # Define the root of the URI of the file that you want to download.
-uri_root = "https://stats.oecd.org/FileView2.aspx?IDFile="
+uri_root = constants.CRS_DOWNLOAD_PATH
 
 #https://stats.oecd.org/FileView2.aspx?IDFile=b64f050c-4e2f-44ed-a8e6-db32ce00fd4f
 
@@ -84,8 +84,8 @@ download_date = time.strftime("%Y_%m_%d")
 
 # Create a folder in the current directory named with the download date.
 current_directory = os.getcwd()
-content_directory = "Crs_"+download_date
-print("Creating directory " + content_directory + " in:\t " + current_directory)
+content_directory = os.path.join(constants.TMP_DOWNLOAD_PATH,"Crs_"+download_date)
+print("Creating directory " + content_directory + " in:\t " + constants.TMP_DOWNLOAD_PATH)
 print("...")
 print("")
 
