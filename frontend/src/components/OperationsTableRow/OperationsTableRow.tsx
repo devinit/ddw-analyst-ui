@@ -6,7 +6,7 @@ export interface OperationsTableRowProps {
   name: string;
   updatedOn: string;
   classNames?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export class OperationsTableRow extends React.Component<OperationsTableRowProps> {

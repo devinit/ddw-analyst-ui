@@ -76,7 +76,6 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
         <OperationsTable.Row
           key={ index }
           count={ index + 1 }
-          onClick={ () => this.onRowClick(operation) }
           name={ operation.get('name') as string }
           updatedOn={ operation.get('updated_on') as string }
         >
@@ -133,10 +132,6 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
   private onSearchChange = (event: React.FormEvent<any>) => {
     const { value } = event.currentTarget as HTMLInputElement;
     this.setState({ searchQuery: value || '' });
-  }
-
-  private onRowClick = (_operation: OperationMap) => {
-    //
   }
 
   private goToFirst = () => {
