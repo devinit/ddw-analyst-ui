@@ -1,12 +1,14 @@
 import { List } from 'immutable';
 import * as React from 'react';
+import { Card } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
+import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
 import { ReduxStore } from '../../store';
+import { OperationDataMap, OperationMap } from '../../types/operations';
 import * as pageActions from './actions';
 import { QueryDataState, queryDataReducerId } from './reducers';
-import { OperationMap } from '../../types/operations';
-import { RouteComponentProps } from 'react-router';
 
 interface ActionProps {
   actions: typeof pageActions;
@@ -22,10 +24,17 @@ type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams
 
 class QueryData extends React.Component<QueryDataProps> {
   render() {
+    const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
+
     return (
-      <div>
-        Query Data Goes Here!
-      </div>
+      <Card>
+        <Card.Header className="card-header-text card-header-danger">
+          <Card.Text>Query Data</Card.Text>
+        </Card.Header>
+        <Card.Body>
+          <OperationDataTable data={ data }/>
+        </Card.Body>
+      </Card>
     );
   }
 
