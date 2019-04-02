@@ -7,6 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
+import { updateOperation } from '../../pages/QueryBuilder/actions';
 import { setOperation as setQueryDataOperation } from '../../pages/QueryData/actions';
 import { OperationsState } from '../../reducers/operations';
 import { ReduxStore } from '../../store';
@@ -15,7 +16,10 @@ import { OperationMap } from '../../types/operations';
 import { OperationsTable } from '../OperationsTable/OperationsTable';
 
 interface ActionProps {
-  actions: typeof operationsActions & { setQueryDataOperation: typeof setQueryDataOperation };
+  actions: typeof operationsActions & {
+    setQueryDataOperation: typeof setQueryDataOperation;
+    setActiveOperation: typeof updateOperation;
+  };
 }
 interface ReduxState {
   operations: OperationsState;
@@ -85,7 +89,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
                 <i className="material-icons">view_list</i>
               </Button>
             </OverlayTrigger>
-            <Button variant="danger" size="sm" className="btn-link">
+            <Button variant="danger" size="sm" className="btn-link" onClick={ this.onEditOperation(operation) }>
               <i className="material-icons">edit</i>
             </Button>
             <Button variant="danger" size="sm" className="btn-link">
@@ -165,10 +169,19 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
     this.props.actions.setQueryDataOperation(operation);
     this.props.history.push(`/queries/data/${id}`);
   }
+
+  private onEditOperation = (operation: OperationMap) => () => {
+    this.props.actions.setActiveOperation(operation);
+    this.props.history.push('/queries/build/');
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({ setQueryDataOperation, ...operationsActions }, dispatch)
+  actions: bindActionCreators({
+    setQueryDataOperation,
+    ...operationsActions,
+    setActiveOperation: updateOperation
+  }, dispatch)
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {

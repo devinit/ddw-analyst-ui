@@ -38,7 +38,12 @@ export class OperationForm extends React.Component<OperationFormProps> {
     const values: Partial<Operation> = this.props.operation ? this.props.operation.toJS() : {};
 
     return (
-      <Formik validationSchema={ this.schema } initialValues={ values } onSubmit={ this.onSuccess }>
+      <Formik
+        validationSchema={ this.schema }
+        initialValues={ values }
+        onSubmit={ this.onSuccess }
+        isInitialValid={ this.schema.isValidSync(values) }
+      >
         {
           ({ errors, isSubmitting, isValid, setFieldValue }: FormikProps<Operation>) => (
             <Form className="form" noValidate data-testid="operation-form">

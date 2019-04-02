@@ -6,6 +6,7 @@ import { SourceMap } from '../../../types/sources';
 export interface QueryBuilderAction extends Action {
   activeSource?: SourceMap;
   step: OperationStepMap;
+  steps: List<OperationStepMap>;
   operation?: OperationMap;
   editingStep: boolean;
 }
@@ -24,6 +25,7 @@ export const SET_ACTIVE_SOURCE = `${queryBuilderReducerId}.SET_ACTIVE_SOURCE`;
 export const UPDATE_ACTIVE_STEP = `${queryBuilderReducerId}.UPDATE_ACTIVE_STEP`;
 export const UPDATE_OPERATION = `${queryBuilderReducerId}.UPDATE_OPERATION`;
 export const ADD_OPERATION_STEP = `${queryBuilderReducerId}.ADD_OPERATION_STEP`;
+export const SET_OPERATION_STEPS = `${queryBuilderReducerId}.SET_OPERATION_STEPS`;
 export const SAVING_OPERATION = `${queryBuilderReducerId}.SAVING_OPERATION`;
 export const SAVING_OPERATION_SUCCESS = `${queryBuilderReducerId}.SAVING_OPERATION_SUCCESS`;
 export const SAVING_OPERATION_FAILED = `${queryBuilderReducerId}.SAVING_OPERATION_FAILED`;
@@ -51,6 +53,9 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
     const steps = state.get('steps') as List<OperationStepMap>;
 
     return state.set('steps', steps.push(action.step));
+  }
+  if (action.type === SET_OPERATION_STEPS) {
+    return state.set('steps', action.steps);
   }
   if (action.type === SAVING_OPERATION) {
     return state.set('processing', true);

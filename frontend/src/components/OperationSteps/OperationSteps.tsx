@@ -44,7 +44,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             loading={ isFetchingSources }
             onClick={ this.fetchSources }
             onChange={ this.onSelectSource }
-            defaultValue={ activeSource ? activeSource.get('id') as string : undefined }
+            value={ activeSource ? activeSource.get('id') as string : undefined }
           />
         </div>
 
@@ -63,6 +63,18 @@ class OperationSteps extends React.Component<OperationStepsProps> {
         { this.renderOperationSteps(steps, activeStep) }
       </React.Fragment>
     );
+  }
+
+  componentDidMount() {
+    if (this.props.activeSource && this.props.sources && this.props.sources.count() === 0) {
+      this.fetchSources();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.activeSource && this.props.sources && this.props.sources.count() === 0) {
+      this.fetchSources();
+    }
   }
 
   private renderOperationSteps(steps: List<OperationStepMap>, activeStep?: OperationStepMap) {
