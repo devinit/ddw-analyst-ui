@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
+import { ColumnList } from '../../types/sources';
 import * as pageActions from './actions';
 import { QueryDataState, queryDataReducerId } from './reducers';
 
@@ -25,6 +26,7 @@ type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams
 class QueryData extends React.Component<QueryDataProps> {
   render() {
     const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
+    const columns = this.props.page.getIn([ 'source', 'columns' ]) as ColumnList | undefined;
 
     return (
       <Card>
@@ -32,7 +34,7 @@ class QueryData extends React.Component<QueryDataProps> {
           <Card.Text>Query Data</Card.Text>
         </Card.Header>
         <Card.Body>
-          <OperationDataTable data={ data }/>
+          <OperationDataTable data={ data } columns={ columns }/>
         </Card.Body>
       </Card>
     );

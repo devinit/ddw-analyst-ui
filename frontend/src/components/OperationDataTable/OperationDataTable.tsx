@@ -2,23 +2,26 @@ import { List } from 'immutable';
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { OperationDataMap } from '../../types/operations';
+import { ColumnList } from '../../types/sources';
 
 interface OperationDataTableProps {
   data?: List<OperationDataMap>;
+  columns?: ColumnList;
 }
 
 export class OperationDataTable extends React.Component<OperationDataTableProps> {
   private MAX_COLUMNS = 6;
 
   render() {
-    if (this.props.data) {
+    if (this.props.data && this.props.columns) {
       const columns = this.getColumns(this.props.data.get(0));
+      const columnMapping = this.getColumnMapping(this.props.columns, columns);
 
       return (
         <Table responsive hover striped className="operation-data-table">
           <thead>
             <tr>
-              { columns.map(column => <th key={ column }>{ column }</th>) }
+              { columnMapping.map(column => <th key={ column }>{ column }</th>) }
             </tr>
           </thead>
           <tbody>{ this.renderTableRows(this.props.data, columns) }</tbody>
@@ -29,7 +32,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
     return null;
   }
 
-  private getColumns(item?: OperationDataMap) {
+  private getColumns(item?: OperationDataMap): (string | number)[] {
     if (item) {
       const columns: (string | number)[] = [];
       let count = 0;
@@ -44,6 +47,17 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
     }
 
     return [];
+  }
+
+  private getColumnMapping(columnList: ColumnList, columnKeys: (string | number)[]) {
+    return columnKeys.map(key => {
+      const column = columnList.find(col => col.get('name') === key);
+      if (column) {
+        return column.get('source_name') as string;
+      }
+
+      return key;
+    });
   }
 
   private renderTableRows(data: List<OperationDataMap>, columns: (string | number)[]) {
