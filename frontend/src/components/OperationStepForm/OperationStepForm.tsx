@@ -20,7 +20,7 @@ interface OperationStepFormProps {
   alert?: string;
   editing?: boolean;
   onSuccess: (step: OperationStepMap) => void;
-  onUpdateStep: (step: OperationStepMap) => void;
+  onUpdateStep: (step: OperationStepMap, editingStep?: boolean) => void;
 }
 
 export class OperationStepForm extends React.Component<OperationStepFormProps, OperationStepFormState> {
@@ -173,7 +173,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
       setFieldValue('query_func', data.value);
       if (data.value) {
         const step = this.props.step.set('query_func', data.value as string);
-        this.props.onUpdateStep(step);
+        this.props.onUpdateStep(step, this.props.editing);
       }
     }
 
@@ -188,7 +188,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
 
   private onUpdateOptions = (options: string) => {
     const step = this.props.step.set('query_kwargs', options);
-    this.props.onUpdateStep(step);
+    this.props.onUpdateStep(step, this.props.editing);
   }
 
   private validateStepOptions(step: OperationStepMap) {
@@ -218,7 +218,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
 
       if (!valid) {
         const updatedStep = step.set('query_kwargs', JSON.stringify({ filters: updatedFilters }));
-        this.props.onUpdateStep(updatedStep);
+        this.props.onUpdateStep(updatedStep, this.props.editing);
       }
 
       return valid;

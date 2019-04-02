@@ -140,12 +140,14 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     this.props.actions.savingOperation();
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
     const operation = this.props.page.get('operation') as OperationMap;
+    const id = operation.get('id');
+    const url = id ? `${api.routes.OPERATIONS}${id}/` : api.routes.OPERATIONS;
 
     const data: Operation = { ...operation.toJS() as Operation, operation_steps: steps.toJS() };
     if (this.props.token) {
       axios.request({
-        url: api.routes.OPERATIONS,
-        method: 'post',
+        url,
+        method: id ? 'put' : 'post',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `token ${this.props.token}`
