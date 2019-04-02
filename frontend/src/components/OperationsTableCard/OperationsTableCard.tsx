@@ -50,7 +50,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
             <Card.Text>Queries</Card.Text>
             <FormControl
               placeholder="Search ..."
-              className="w-25"
+              className="w-25 d-none"
               onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
               data-testid="sources-table-search"
             />
