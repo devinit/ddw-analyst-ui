@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
+import { setToken } from '../actions/token';
 import { onFetchOperationsFailed, onFetchOperationsSuccessful } from '../pages/DataSources/actions';
 import { updateOperationInfo } from '../pages/Home/actions';
 import { FETCH_OPERATIONS, OperationsAction } from '../reducers/operations';
@@ -20,11 +21,15 @@ function* fetchOperations({ payload }: OperationsAction) {
         'Authorization': `token ${token}`
       }
     })
-    .then((response: AxiosResponse<Operation[]>) => response);
+    .then((response: AxiosResponse<Operation[]>) => response)
+    .catch(error => error.response);
 
     if (status === 200 && data.results) {
       yield put(onFetchOperationsSuccessful(data.results, data.count));
       yield put(updateOperationInfo({ next: data.next, previous: data.previous }, payload.offset));
+    } else if (status === 401) {
+      yield put(setToken(''));
+      yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
     } else {
       yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
     }

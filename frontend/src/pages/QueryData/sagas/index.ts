@@ -3,6 +3,7 @@ import { fromJS } from 'immutable';
 import * as localForage from 'localforage';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
+import { setToken } from '../../../actions/token';
 import { Operation } from '../../../types/operations';
 import { api, localForageKeys } from '../../../utils';
 import { fetchOperationDataFailed, fetchOperationFailed, setOperation, setOperationData } from '../actions';
@@ -42,10 +43,14 @@ function* fetchOperationData({ payload }: QueryDataAction) {
         'Authorization': `token ${token}`
       }
     })
-    .then((response: AxiosResponse<Operation>) => response);
+    .then((response: AxiosResponse<Operation>) => response)
+    .catch(error => error.response);
 
     if (status === 200 || status === 201 && data) {
       yield put(setOperationData(fromJS(data)));
+    } else if (status === 401) {
+      yield put(setToken(''));
+      yield put(fetchOperationDataFailed() as QueryDataAction);
     } else {
       yield put(fetchOperationDataFailed() as QueryDataAction);
     }

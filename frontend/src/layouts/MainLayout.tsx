@@ -24,7 +24,11 @@ interface ActionProps { actions: typeof UserActions & typeof TokenActions; }
 interface ComponentProps {
   loading: boolean;
 }
-type MainLayoutProps = ComponentProps & RouteComponentProps<{}> & ActionProps;
+interface ReduxProps {
+  user?: UserState;
+  token?: TokenState;
+}
+type MainLayoutProps = ComponentProps & RouteComponentProps<{}> & ActionProps & ReduxProps;
 
 interface MainLayoutState {
   loading: boolean;
@@ -159,6 +163,12 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
       });
   }
 
+  componentDidUpdate(prevProps: MainLayoutProps) {
+    if (prevProps.token && !this.props.token) {
+      this.clearStorageAndGoToLogin();
+    }
+  }
+
   private onLogOut = () => {
     localForage.getItem<string>(localForageKeys.API_KEY)
       .then(token => {
@@ -215,7 +225,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   }
 }
 
-const mapStateToProps = (reduxStore: ReduxStore): { user?: UserState, token?: TokenState } => ({
+const mapStateToProps = (reduxStore: ReduxStore): ReduxProps => ({
   user: reduxStore.get('user') as UserState,
   token: reduxStore.get('token') as TokenState
 });
