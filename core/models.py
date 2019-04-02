@@ -91,6 +91,7 @@ class Operation(BaseEntity):
     sample_output_path = models.TextField(blank=True, null=True)
     tags = models.ManyToManyField(Tag)
     is_draft = models.BooleanField(default=True)
+    # TODO: add direction relationship to source
 
     def __str__(self):
         return self.name

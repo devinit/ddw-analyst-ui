@@ -9,6 +9,7 @@ import { OperationMap, OperationStepMap } from '../../../types/operations';
 import { Source } from '../../../types/sources';
 import { api, localForageKeys } from '../../../utils';
 import { SET_ACTIVE_SOURCE, SET_OPERATION_STEPS, UPDATE_OPERATION } from '../reducers';
+import { setToken } from '../../../actions/token';
 
 function* setOperationData({ operation }: { operation?: OperationMap } & Action) {
   if (!operation) {
@@ -33,10 +34,13 @@ function* setOperationData({ operation }: { operation?: OperationMap } & Action)
         'Authorization': `token ${token}`
       }
     })
-    .then((response: AxiosResponse<Source[]>) => response);
+    .then((response: AxiosResponse<Source[]>) => response)
+    .catch(error => error.response);
 
     if (status === 200 || status === 201) {
       yield put({ type: SET_ACTIVE_SOURCE, activeSource: fromJS(data) });
+    } else if (status === 401) {
+      yield put(setToken(''));
     } else {
       yield console.log('Failed to fetch source'); //tslint:disable-line
     }

@@ -20,10 +20,14 @@ function* fetchOperation({ payload }: QueryDataAction) {
         'Authorization': `token ${token}`
       }
     })
-    .then((response: AxiosResponse<Operation>) => response);
+    .then((response: AxiosResponse<Operation>) => response)
+    .catch(error => error.response);
 
     if (status === 200 || status === 201 && data) {
       yield put(setOperation(fromJS(data)));
+    } else if (status === 401) {
+      yield put(setToken(''));
+      yield put(fetchOperationFailed() as QueryDataAction);
     } else {
       yield put(fetchOperationFailed() as QueryDataAction);
     }
