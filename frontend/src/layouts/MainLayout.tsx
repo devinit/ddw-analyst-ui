@@ -196,7 +196,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
   private validateToken(token: string, user: User) {
     axios.request({
-      url: `${api.routes.USERS}${user.id}`,
+      url: `${api.routes.USERS}${user.id}/`,
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
