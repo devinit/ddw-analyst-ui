@@ -5,6 +5,7 @@ import {
   FETCH_OPERATION_DATA,
   FETCH_OPERATION_DATA_FAILED,
   FETCH_OPERATION_FAILED,
+  FETCH_SOURCE,
   QueryDataAction,
   SET_OPERATION,
   SET_OPERATION_DATA,
@@ -18,4 +19,5 @@ export const fetchOperationData = (id: string): Partial<QueryDataAction> =>
   ({ type: FETCH_OPERATION_DATA, payload: { id } });
 export const fetchOperationDataFailed = (): Partial<QueryDataAction> => ({ type: FETCH_OPERATION_DATA_FAILED });
 export const setOperationData = (data: OperationDataMap) => ({ type: SET_OPERATION_DATA, data });
-export const setSource = (source: SourceMap, loading = false) => ({ type: SET_SOURCE, source, loading });
+export const setOperationSource = (source: SourceMap, loading = false) => ({ type: SET_SOURCE, source, loading });
+export const fetchOperationSource = (operation: OperationMap) => ({ type: FETCH_SOURCE, operation });

@@ -45,6 +45,8 @@ class QueryData extends React.Component<QueryDataProps> {
     const { id } = this.props.match.params;
     if (!operation) {
       this.setOperation(id);
+    } else {
+      this.props.actions.fetchOperationSource(operation);
     }
     if (id) {
       this.props.actions.fetchOperationData(id);
@@ -56,6 +58,7 @@ class QueryData extends React.Component<QueryDataProps> {
       const operation = this.props.operations.find(ope => ope.get('id') === parseInt(id, 10));
       if (operation) {
         this.props.actions.setOperation(operation);
+        this.props.actions.fetchOperationSource(operation);
       } else {
         this.props.actions.fetchOperation(id);
       }

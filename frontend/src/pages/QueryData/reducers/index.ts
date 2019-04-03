@@ -30,19 +30,13 @@ export const queryDataReducer: Reducer<QueryDataState, QueryDataAction> = (state
   if (action.type === SET_OPERATION) {
     return state.set('operation', action.operation).set('loading', action.loading);
   }
-  if (action.type === FETCH_OPERATION) {
-    return state.set('loading', true);
-  }
-  if (action.type === FETCH_OPERATION_FAILED) {
-    return state.set('loading', false);
-  }
-  if (action.type === FETCH_OPERATION_DATA) {
+  if (action.type === FETCH_OPERATION || action.type === FETCH_OPERATION_DATA || action.type === FETCH_SOURCE) {
     return state.set('loading', true);
   }
   if (action.type === SET_OPERATION_DATA) {
     return state.set('data', action.data).set('loading', false);
   }
-  if (action.type === FETCH_OPERATION_DATA_FAILED) {
+  if (action.type === FETCH_OPERATION_FAILED || action.type === FETCH_OPERATION_DATA_FAILED) {
     return state.set('loading', false);
   }
   if (action.type === SET_SOURCE) {
