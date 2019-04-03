@@ -8,7 +8,7 @@
     "build": "grunt release",
     "test": "jest --coverage && python3 manage.py test",
     "test:docker": "jest && docker-compose run web python3 manage.py test",
-    "collectstatic": "python manage.py collectstatic --no-input",
+    "collectstatic": "python3 manage.py collectstatic --no-input",
     "docker:dev": "grunt 'docker dev'",
     "docker:build": "docker-compose up --build",
     "docker:collectstatic": "docker-compose run web python3 manage.py collectstatic --no-input",
