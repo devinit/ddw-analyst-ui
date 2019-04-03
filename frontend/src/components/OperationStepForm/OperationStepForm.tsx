@@ -21,6 +21,7 @@ interface OperationStepFormProps {
   editing?: boolean;
   onSuccess: (step: OperationStepMap) => void;
   onUpdateStep: (step: OperationStepMap, editingStep?: boolean) => void;
+  onDeleteStep: (step: OperationStepMap) => void;
 }
 
 export class OperationStepForm extends React.Component<OperationStepFormProps, OperationStepFormState> {
@@ -131,6 +132,14 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                 <Col md={ 12 } className="mt-3">
                   <Button variant="danger" className="float-right" type="submit">
                     { this.props.editing ? 'Edit Step' : 'Add Step' }
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className={ classNames('float-right', { 'd-none': !this.props.editing }) }
+                    type="submit"
+                    onClick={ () => this.props.onDeleteStep(this.props.step) }
+                  >
+                    <i className="material-icons">delete</i>
                   </Button>
                 </Col>
               </Form>

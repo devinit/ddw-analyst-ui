@@ -115,6 +115,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           step={ step }
           onUpdateStep={ this.props.actions.updateActiveStep }
           onSuccess={ this.onAddOperationStep }
+          onDeleteStep={ this.onDeleteOperationStep }
           editing={ editing }
         />
       );
@@ -164,6 +165,11 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         this.props.actions.operationSaved(false);
       });
     }
+  }
+
+  private onDeleteOperationStep = (step: OperationStepMap) => {
+    this.props.actions.updateActiveStep(undefined);
+    this.props.actions.deleteOperationStep(step);
   }
 }
 

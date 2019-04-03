@@ -2,6 +2,7 @@ import { OperationMap, OperationStepMap } from '../../../types/operations';
 import { SourceMap } from '../../../types/sources';
 import {
   ADD_OPERATION_STEP,
+  DELETE_OPERATION_STEP,
   EDIT_OPERATION_STEP,
   QueryBuilderAction,
   SAVING_OPERATION,
@@ -23,6 +24,8 @@ export const addOperationStep = (step: OperationStepMap): Partial<QueryBuilderAc
   ({ type: ADD_OPERATION_STEP, step });
 export const editOperationStep = (step: OperationStepMap): Partial<QueryBuilderAction> =>
   ({ type: EDIT_OPERATION_STEP, step });
+export const deleteOperationStep = (step: OperationStepMap): Partial<QueryBuilderAction> =>
+  ({ type: DELETE_OPERATION_STEP, step });
 export const savingOperation = (): Partial<QueryBuilderAction> => ({ type: SAVING_OPERATION });
 export const operationSaved = (saved: boolean): Partial<QueryBuilderAction> =>
   saved ? ({ type: SAVING_OPERATION_SUCCESS }) : ({ type: SAVING_OPERATION_FAILED });
