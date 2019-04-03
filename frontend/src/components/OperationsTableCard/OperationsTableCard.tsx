@@ -71,6 +71,8 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
     const loading = this.props.operations.get('loading') as boolean;
     if (!operations.count() && !loading) {
       this.props.actions.fetchOperations({ limit: 10, offset: 0 });
+    } else {
+      this.props.actions.fetchOperations({ limit: this.props.limit, offset: this.props.offset });
     }
   }
 
