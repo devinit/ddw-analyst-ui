@@ -61,7 +61,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
                     <OperationForm
                       operation={ operation }
                       valid={ steps.count() > 0 }
-                      onUpdateOperation={ this.props.actions.updateOperation }
+                      onUpdateOperation={ this.onUpdateOperation }
                       onSuccess={ this.onSaveOperation }
                       processing={ processing }
                     />
@@ -135,6 +135,10 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
       this.props.actions.addOperationStep(step);
     }
     this.props.actions.updateActiveStep(undefined);
+  }
+
+  private onUpdateOperation = (operation: OperationMap) => {
+    this.props.actions.setOperation(operation, true);
   }
 
   private onSaveOperation = () => {

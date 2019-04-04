@@ -9,6 +9,7 @@ import {
   SAVING_OPERATION_FAILED,
   SAVING_OPERATION_SUCCESS,
   SET_ACTIVE_SOURCE,
+  SET_OPERATION,
   UPDATE_ACTIVE_STEP,
   UPDATE_OPERATION
 } from '../reducers';
@@ -18,8 +19,8 @@ export const setActiveSource = (activeSource: SourceMap): Partial<QueryBuilderAc
 
 export const updateActiveStep = (step?: OperationStepMap, editingStep = false): Partial<QueryBuilderAction> =>
   ({ type: UPDATE_ACTIVE_STEP, step, editingStep });
-export const updateOperation = (operation?: OperationMap): Partial<QueryBuilderAction> =>
-  ({ type: UPDATE_OPERATION, operation });
+export const setOperation = (operation?: OperationMap, update = false): Partial<QueryBuilderAction> =>
+  ({ type: update ? UPDATE_OPERATION : SET_OPERATION, operation });
 export const addOperationStep = (step: OperationStepMap): Partial<QueryBuilderAction> =>
   ({ type: ADD_OPERATION_STEP, step });
 export const editOperationStep = (step: OperationStepMap): Partial<QueryBuilderAction> =>

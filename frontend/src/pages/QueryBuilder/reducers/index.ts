@@ -23,6 +23,7 @@ export type QueryBuilderState = Map<keyof State, State[keyof State]>;
 export const queryBuilderReducerId = 'pages/QueryBuilder';
 export const SET_ACTIVE_SOURCE = `${queryBuilderReducerId}.SET_ACTIVE_SOURCE`;
 export const UPDATE_ACTIVE_STEP = `${queryBuilderReducerId}.UPDATE_ACTIVE_STEP`;
+export const SET_OPERATION = `${queryBuilderReducerId}.SET_OPERATION`;
 export const UPDATE_OPERATION = `${queryBuilderReducerId}.UPDATE_OPERATION`;
 export const ADD_OPERATION_STEP = `${queryBuilderReducerId}.ADD_OPERATION_STEP`;
 export const SET_OPERATION_STEPS = `${queryBuilderReducerId}.SET_OPERATION_STEPS`;
@@ -47,7 +48,7 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
   if (action.type === UPDATE_ACTIVE_STEP) {
     return state.withMutations(stet => stet.set('activeStep', action.step).set('editingStep', action.editingStep));
   }
-  if (action.type === UPDATE_OPERATION) {
+  if (action.type === UPDATE_OPERATION || action.type === SET_OPERATION) {
     return state.set('operation', action.operation);
   }
   if (action.type === ADD_OPERATION_STEP) {

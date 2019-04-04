@@ -1,14 +1,14 @@
+import { APIResponse } from '../../../types/api';
 import axios, { AxiosResponse } from 'axios';
-import { List, fromJS } from 'immutable';
 import * as localForage from 'localforage';
 import { Action } from 'redux';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
-import { APIResponse } from '../../../types/api';
+import { List, fromJS } from 'immutable';
 import { OperationMap, OperationStepMap } from '../../../types/operations';
 import { Source } from '../../../types/sources';
 import { api, localForageKeys } from '../../../utils';
-import { SET_ACTIVE_SOURCE, SET_OPERATION_STEPS, UPDATE_OPERATION } from '../reducers';
+import { SET_ACTIVE_SOURCE, SET_OPERATION, SET_OPERATION_STEPS } from '../reducers';
 import { setToken } from '../../../actions/token';
 
 function* setOperationData({ operation }: { operation?: OperationMap } & Action) {
@@ -50,5 +50,5 @@ function* setOperationData({ operation }: { operation?: OperationMap } & Action)
 }
 
 export function* queryBuilderSagas() {
-  yield takeLatest(UPDATE_OPERATION, setOperationData);
+  yield takeLatest(SET_OPERATION, setOperationData);
 }

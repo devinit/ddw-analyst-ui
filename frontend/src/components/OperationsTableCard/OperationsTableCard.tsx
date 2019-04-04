@@ -7,7 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
-import { updateOperation } from '../../pages/QueryBuilder/actions';
+import { setOperation } from '../../pages/QueryBuilder/actions';
 import { setOperation as setQueryDataOperation } from '../../pages/QueryData/actions';
 import { OperationsState } from '../../reducers/operations';
 import { ReduxStore } from '../../store';
@@ -18,7 +18,7 @@ import { OperationsTable } from '../OperationsTable/OperationsTable';
 interface ActionProps {
   actions: typeof operationsActions & {
     setQueryDataOperation: typeof setQueryDataOperation;
-    setActiveOperation: typeof updateOperation;
+    setActiveOperation: typeof setOperation;
   };
 }
 interface ReduxState {
@@ -182,7 +182,7 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dis
   actions: bindActionCreators({
     setQueryDataOperation,
     ...operationsActions,
-    setActiveOperation: updateOperation
+    setActiveOperation: setOperation
   }, dispatch)
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
