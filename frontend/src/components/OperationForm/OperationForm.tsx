@@ -6,6 +6,7 @@ import * as React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Operation, OperationMap } from '../../types/operations';
+import { CheckBox } from '../CheckBox';
 
 interface OperationFormProps {
   operation?: OperationMap;
@@ -107,17 +108,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
               </Col>
 
               <Col>
-                <Form.Group>
-                  <Form.Check type="checkbox">
-                    <Form.Check.Label>
-                      <Form.Check.Input onChange={ this.toggleDraft } defaultChecked={ values.is_draft }/>
-                      Is Draft
-                      <span className="form-check-sign">
-                        <span className="check"/>
-                      </span>
-                    </Form.Check.Label>
-                  </Form.Check>
-                </Form.Group>
+                <CheckBox defaultChecked={ values.is_draft } onChange={ this.toggleDraft } label="Is Draft"/>
               </Col>
 
               <Button
