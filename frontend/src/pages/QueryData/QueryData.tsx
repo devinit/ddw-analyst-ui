@@ -1,10 +1,10 @@
+import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
 import { List } from 'immutable';
-import * as React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
+import * as React from 'react';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
 import { ColumnList } from '../../types/sources';
@@ -29,14 +29,18 @@ class QueryData extends React.Component<QueryDataProps> {
     const columns = this.props.page.getIn([ 'source', 'columns' ]) as ColumnList | undefined;
 
     return (
-      <Card>
-        <Card.Header className="card-header-text card-header-danger">
-          <Card.Text>Query Data</Card.Text>
-        </Card.Header>
-        <Card.Body>
-          <OperationDataTable data={ data } columns={ columns }/>
-        </Card.Body>
-      </Card>
+      <Row>
+        <Col>
+          <Card>
+            <Card.Header className="card-header-text card-header-danger">
+              <Card.Text>Query Data</Card.Text>
+            </Card.Header>
+            <Card.Body>
+              <OperationDataTable data={ data } columns={ columns }/>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     );
   }
 
