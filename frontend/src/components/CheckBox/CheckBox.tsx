@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form } from 'react-bootstrap';
 
 interface CheckBoxProps {
-  onChange: () => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   defaultChecked?: boolean;
   label: string;
 }
