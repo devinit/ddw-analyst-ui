@@ -141,7 +141,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     this.props.actions.setOperation(operation, true);
   }
 
-  private onSaveOperation = () => {
+  private onSaveOperation = (preview = false) => {
     this.props.actions.savingOperation();
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
     const operation = this.props.page.get('operation') as OperationMap;
@@ -159,10 +159,14 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         },
         data
       })
-      .then((response: AxiosResponse<Operation[]>) => {
+      .then((response: AxiosResponse<Operation>) => {
         if (response.status === 200 || response.status === 201) {
           this.props.actions.operationSaved(true);
-          this.props.history.push('/');
+          if (preview) {
+            this.props.history.push(`/queries/data/${response.data.id}/`);
+          } else {
+            this.props.history.push('/');
+          }
         }
       })
       .catch(() => {

@@ -14,7 +14,7 @@ interface OperationFormProps {
   valid?: boolean;
   processing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
-  onSuccess: () => void;
+  onSuccess: (preview?: boolean) => void;
 }
 interface OperationFormState {
   alerts: Partial<Operation>;
@@ -42,7 +42,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
       <Formik
         validationSchema={ this.schema }
         initialValues={ values }
-        onSubmit={ this.onSuccess }
+        onSubmit={ this.onSuccess() }
         isInitialValid={ this.schema.isValidSync(values) }
       >
         {
@@ -114,9 +114,16 @@ export class OperationForm extends React.Component<OperationFormProps> {
               <Button
                 variant="danger"
                 disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
-                onClick={ this.onSuccess }
+                onClick={ this.onSuccess() }
               >
                 { this.props.processing ? 'Saving ...' : 'Save' }
+              </Button>
+              <Button
+                variant="danger"
+                disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
+                onClick={ this.onSuccess(true) }
+              >
+                { this.props.processing ? 'Saving ...' : 'Save & Preview' }
               </Button>
             </Form>
           )
@@ -167,7 +174,5 @@ export class OperationForm extends React.Component<OperationFormProps> {
     }
   }
 
-  private onSuccess = () => {
-    this.props.onSuccess();
-  }
+  private onSuccess = (preview = false) => () => this.props.onSuccess(preview);
 }
