@@ -88,11 +88,11 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
           <OperationsTable.Actions>
             <OverlayTrigger placement="top" overlay={ <Popover id="view">View Operation Data</Popover> }>
               <Button variant="danger" size="sm" className="btn-link" onClick={ this.viewData(operation) }>
-                <i className="material-icons">view_headline</i>
+                View Data
               </Button>
             </OverlayTrigger>
             <Button variant="danger" size="sm" className="btn-link" onClick={ this.onEditOperation(operation) }>
-              <i className="material-icons">edit</i>
+              Edit
             </Button>
             <Button variant="danger" size="sm" className="btn-link d-none">
               <i className="material-icons">delete</i>
