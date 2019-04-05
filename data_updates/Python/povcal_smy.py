@@ -4,6 +4,28 @@ import io
 from sqlalchemy import create_engine
 import progressbar
 import numpy as np
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
+
+def requests_retry_session(
+    retries=3,
+    backoff_factor=0.3,
+    status_forcelist=(500, 502, 504),
+    session=None,
+):
+    session = session or requests.Session()
+    retry = Retry(
+        total=retries,
+        read=retries,
+        connect=retries,
+        backoff_factor=backoff_factor,
+        status_forcelist=status_forcelist,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    return session
 
 
 def fetch_data(poverty_line):
@@ -20,7 +42,7 @@ def fetch_data(poverty_line):
 
     smy_url = url + "&".join(["{}={}".format(item[0], item[1]) for item in smy_params.items()])
 
-    s_response = requests.get(url=smy_url).content
+    s_response = requests_retry_session().get(url=smy_url, timeout=30).content
 
     smy_data = pd.read_csv(io.StringIO(s_response.decode('utf-8')))
 
