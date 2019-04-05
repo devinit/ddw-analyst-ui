@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
-import { ConditionalRender } from '../ConditionalRender';
+import { ConditionalRender } from '@bit/devinit.analyst-ui.components.conditional-render';
 
 interface SocialLineProps {
   google?: boolean;

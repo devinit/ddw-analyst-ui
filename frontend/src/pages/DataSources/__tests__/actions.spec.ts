@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { SourceMap } from '../../../reducers/sources';
+import { SourceMap } from '../../../types/sources';
 import { SET_ACTIVE_SOURCE } from '../reducers';
 import { setActiveSource } from '../actions';
 

@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
-import { SourceMap } from '../../../reducers/sources';
+import { SourceMap } from '../../../types/sources';
 
 export type DataSourcesAction = Action & { activeSource?: SourceMap };
 interface State {

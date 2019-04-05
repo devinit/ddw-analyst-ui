@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { Formik, FormikActions, FormikProps } from 'formik';
-import { css } from 'glamor';
 import * as React from 'react';
 import { Alert, Button, Card, Form, InputGroup } from 'react-bootstrap';
+import styled from 'styled-components';
 import * as Yup from 'yup';
-import { SocialLine } from '../SocialLine';
+import SocialLine from '@bit/devinit.analyst-ui.components.social-line';
 
 interface LoginFormState {
   credentials: Credentials;
@@ -22,14 +22,15 @@ interface LoginFormProps {
   onSuccess: (values: Credentials, formikActions: FormikActions<Credentials>) => void;
 }
 
+const StyledFormFeedback = styled(Form.Control.Feedback)`margin-left: 55px`;
+const StyledAlert = styled(Alert)`margin-left: 15px`;
+
 export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
   static defaultProps: Partial<LoginFormProps> = { showForm: true };
   state: LoginFormState = {
     credentials: { username: '', password: '' },
     alerts: {}
   };
-  private feedbackStyles = css({ marginLeft: '55px' });
-  private alertStyles = css({ marginLeft: '15px' });
   private schema = Yup.object().shape({
     username: Yup.string().required('Username is required!'),
     password: Yup.string().required('Password is required!')
@@ -49,9 +50,9 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                 </Card.Header>
                 <Card.Body>
                   <p className="card-description text-center d-none">Or Go With</p>
-                  <Alert variant="danger" hidden={ !this.props.alert } { ...this.alertStyles }>
+                  <StyledAlert variant="danger" hidden={ !this.props.alert }>
                     { this.props.alert }
-                  </Alert>
+                  </StyledAlert>
                   <span className="bmd-form-group">
                     <InputGroup>
                       <InputGroup.Prepend>
@@ -65,9 +66,9 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                         onChange={ handleChange }
                         isInvalid={ !!errors.username }
                       />
-                      <Form.Control.Feedback type="invalid" { ...this.feedbackStyles }>
+                      <StyledFormFeedback type="invalid">
                         { touched.username && errors.username ? errors.username : null }
-                      </Form.Control.Feedback>
+                      </StyledFormFeedback>
                     </InputGroup>
                   </span>
                   <span className="bmd-form-group">
@@ -82,9 +83,9 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                         onChange={ handleChange }
                         isInvalid={ !!errors.password }
                       />
-                      <Form.Control.Feedback type="invalid" { ...this.feedbackStyles }>
+                      <StyledFormFeedback type="invalid">
                         { touched.password && errors.password ? errors.password : null }
-                      </Form.Control.Feedback>
+                      </StyledFormFeedback>
                     </InputGroup>
                   </span>
                 </Card.Body>

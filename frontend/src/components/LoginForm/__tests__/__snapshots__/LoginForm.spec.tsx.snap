@@ -31,8 +31,7 @@ exports[`renders a card with the class card-hidden when showForm is set to false
         Or Go With
       </p>
       <div
-        className="fade alert alert-danger show"
-        data-css-1ji61oe=""
+        className="fade sc-bwzfXH desjYZ alert alert-danger show"
         hidden={true}
         role="alert"
       />
@@ -64,8 +63,7 @@ exports[`renders a card with the class card-hidden when showForm is set to false
             type="email"
           />
           <div
-            className="invalid-feedback"
-            data-css-1ml2z9r=""
+            className="sc-bdVaJa jLtXnO invalid-feedback"
           />
         </div>
       </span>
@@ -96,8 +94,7 @@ exports[`renders a card with the class card-hidden when showForm is set to false
             type="password"
           />
           <div
-            className="invalid-feedback"
-            data-css-1ml2z9r=""
+            className="sc-bdVaJa jLtXnO invalid-feedback"
           />
         </div>
       </span>
@@ -148,8 +145,7 @@ exports[`renders an alert 1`] = `
         Or Go With
       </p>
       <div
-        className="fade alert alert-danger show"
-        data-css-1ji61oe=""
+        className="fade sc-bwzfXH desjYZ alert alert-danger show"
         hidden={false}
         role="alert"
       >
@@ -183,8 +179,7 @@ exports[`renders an alert 1`] = `
             type="email"
           />
           <div
-            className="invalid-feedback"
-            data-css-1ml2z9r=""
+            className="sc-bdVaJa jLtXnO invalid-feedback"
           />
         </div>
       </span>
@@ -215,8 +210,7 @@ exports[`renders an alert 1`] = `
             type="password"
           />
           <div
-            className="invalid-feedback"
-            data-css-1ml2z9r=""
+            className="sc-bdVaJa jLtXnO invalid-feedback"
           />
         </div>
       </span>
@@ -267,8 +261,7 @@ exports[`renders correctly with the default props 1`] = `
         Or Go With
       </p>
       <div
-        className="fade alert alert-danger show"
-        data-css-1ji61oe=""
+        className="fade sc-bwzfXH desjYZ alert alert-danger show"
         hidden={true}
         role="alert"
       />
@@ -300,8 +293,7 @@ exports[`renders correctly with the default props 1`] = `
             type="email"
           />
           <div
-            className="invalid-feedback"
-            data-css-1ml2z9r=""
+            className="sc-bdVaJa jLtXnO invalid-feedback"
           />
         </div>
       </span>
@@ -332,8 +324,7 @@ exports[`renders correctly with the default props 1`] = `
             type="password"
           />
           <div
-            className="invalid-feedback"
-            data-css-1ml2z9r=""
+            className="sc-bdVaJa jLtXnO invalid-feedback"
           />
         </div>
       </span>

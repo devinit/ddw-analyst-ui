@@ -1,6 +1,6 @@
 import { Map, fromJS } from 'immutable';
 import { SET_ACTIVE_SOURCE, dataSourcesReducer } from '../reducers';
-import { SourceMap } from '../../../reducers/sources';
+import { SourceMap } from '../../../types/sources';
 
 const activeSource = Map({
   pk: 1,

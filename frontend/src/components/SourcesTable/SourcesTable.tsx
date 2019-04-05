@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { debounce } from 'lodash';
 import * as React from 'react';
 import { Card, FormControl, Table } from 'react-bootstrap';
-import { SourceMap } from '../../reducers/sources';
+import { SourceMap } from '../../types/sources';
 import { SourcesTableRow } from '../SourcesTableRow';
 
 interface SourcesTableProps {
@@ -61,15 +61,15 @@ export class SourcesTable extends React.Component<SourcesTableProps, SourcesTabl
   render() {
     return (
       <Card>
+        <Card.Header>
+          <FormControl
+            placeholder="Search ..."
+            className="w-50"
+            onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
+            data-testid="sources-table-search"
+          />
+        </Card.Header>
         <Card.Body>
-          <Card.Header>
-            <FormControl
-              placeholder="Search ..."
-              className="w-50"
-              onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
-              data-testid="sources-table-search"
-            />
-          </Card.Header>
           <Table responsive hover striped className="sources-table">
             <thead>
               <tr>
@@ -93,7 +93,7 @@ export class SourcesTable extends React.Component<SourcesTableProps, SourcesTabl
         <SourcesTableRow
           key={ index }
           count={ index + 1 }
-          classNames={ classNames({ 'table-danger':  activeSource.get('pk') === source.get('pk') }) }
+          classNames={ classNames({ 'table-danger':  activeSource.get('id') === source.get('id') }) }
           onClick={ () => this.props.onRowClick(source) }
           indicator={ source.get('indicator') as string }
           indicatorAcronym={ source.get('indicator_acronym') as string }

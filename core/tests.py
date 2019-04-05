@@ -70,7 +70,15 @@ class TestRestFramework(TestCase):
                 "name": "Name",
                 "operation_query": "Query",
                 "theme": 1,
-                "operation_steps": [{"name": "Select", "step_id": 1}]
+                "operation_steps": [
+                    {
+                        "name": "Select",
+                        "step_id": 1,
+                        "source": 1,
+                        "query_func": "filter",
+                        "query_kwargs": "{\"filters\":[{\"field\":\"year\",\"func\":\"lt\",\"value\":\"1987\"}]}"
+                    }
+                ]
             },
             format="json"
         )
@@ -96,8 +104,21 @@ class TestPypikaUtils(TestCase):
             source_id=1
         )
 
-    def test_can_generate_select(self):
+    def test_can_generate_select_all(self):
         expected = 'SELECT * FROM "repo"."crs_current"'
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
+
+    def test_can_generate_select_by_column(self):
+        expected = 'SELECT "sq0"."year" FROM (SELECT * FROM "repo"."crs_current") "sq0"'
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name="Select",
+            query_func="select",
+            query_kwargs="{ \"columns\": [ \"year\" ] }",
+            source_id=1
+        )
         qb = QueryBuilder(self.op)
         self.assertEqual(qb.get_sql_without_limit(), expected)
 

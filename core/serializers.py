@@ -7,22 +7,30 @@
 """
 from django.contrib.auth.models import Permission, User
 from rest_framework import serializers
+from rest_framework import pagination
 from rest_framework.utils import model_meta
+from core.const import DEFAULT_LIMIT_COUNT
 
 from core.models import (
     Operation, OperationStep, Review, Sector, Source, SourceColumnMap, Tag, Theme, UpdateHistory)
 
 
 class DataSerializer(serializers.BaseSerializer):
+    """
+        Handle a request for operation data
+    """
     def to_representation(self, instance):
-        limit = instance["limit"]
-        offset = instance["offset"]
-        operation_instance = instance["operation_instance"]
-        count_results, columns, data = operation_instance.query_table(limit, offset)
+        request = instance['request']
+        limit = request.query_params.get('limit', None)
+        offset = request.query_params.get('offset', None)
+        if limit == 0:
+            limit = DEFAULT_LIMIT_COUNT
+        operation = instance['operation_instance']
+        count, data = operation.query_table(limit, offset)
+
         return {
-            "count": count_results[0][0],
-            "columns": columns,
-            "data": data
+            'count': count,
+            'data': data
         }
 
 
@@ -37,11 +45,12 @@ class TagSerializer(serializers.ModelSerializer):
 class OperationStepSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     source_name = serializers.ReadOnlyField(source='source.name')
+    id = serializers.ReadOnlyField(source='pk')
 
     class Meta:
         model = OperationStep
         fields = (
-            'pk',
+            'id',
             'step_id',
             'name',
             'description',
@@ -67,15 +76,14 @@ class OperationSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     theme_name = serializers.ReadOnlyField(source='theme.name')
     tags = TagSerializer(many=True, read_only=True)
-    operationstep_set = OperationStepSerializer(many=True)
-    review_set = ReviewSerializer(many=True, read_only=True)
-    operation_steps = operationstep_set
-    reviews = review_set
+    operation_steps = OperationStepSerializer(source='operationstep_set', many=True)
+    reviews = ReviewSerializer(source='review_set', many=True, read_only=True)
+    id = serializers.ReadOnlyField(source='pk')
 
     class Meta:
         model = Operation
         fields = (
-            'pk',
+            'id',
             'name',
             'description',
             'operation_query',
@@ -83,15 +91,12 @@ class OperationSerializer(serializers.ModelSerializer):
             'theme_name',
             'sample_output_path',
             'tags',
-            'operationstep_set',
-            'review_set',
+            'operation_steps',
+            'reviews',
             'is_draft',
             'user',
             'created_on',
-            'updated_on',
-            # alias fields
-            'operation_steps',
-            'reviews'
+            'updated_on'
         )
 
     def create(self, validated_data):
@@ -103,6 +108,9 @@ class OperationSerializer(serializers.ModelSerializer):
         operation = Operation.objects.create(**validated_data)
         for step in read_only_dict['operationstep_set']:
             OperationStep.objects.create(operation=operation, **step)
+        operation.operation_query = operation.build_query()
+        operation.save()
+
         return operation
 
     def update(self, instance, validated_data):
@@ -135,6 +143,9 @@ class OperationSerializer(serializers.ModelSerializer):
         for step_for_delete_id in existing_step_ids:
             step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
             step_for_delete.delete()
+
+        instance.operation_query = instance.build_query()
+        instance.save()
 
         return instance
 
@@ -176,10 +187,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 class SourceColumnMapSerializer(serializers.ModelSerializer):
     source = serializers.ReadOnlyField(source='source.indicator')
+    id = serializers.ReadOnlyField(source='pk')
 
     class Meta:
         model = SourceColumnMap
-        fields = ('pk', 'source', 'name', 'description', 'source_name')
+        fields = ('id', 'source', 'name', 'description', 'source_name')
 
 
 class UpdateHistorySerializer(serializers.ModelSerializer):
@@ -199,16 +211,15 @@ class UpdateHistorySerializer(serializers.ModelSerializer):
 
 
 class SourceSerializer(serializers.ModelSerializer):
-    sourcecolumnmap_set = SourceColumnMapSerializer(many=True, read_only=True)
-    updatehistory_set = UpdateHistorySerializer(many=True, read_only=True)
+    columns = SourceColumnMapSerializer(source='sourcecolumnmap_set', many=True, read_only=True)
+    update_history = UpdateHistorySerializer(source='updatehistory_set', many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
-    columns = sourcecolumnmap_set
-    update_history = updatehistory_set
+    id = serializers.ReadOnlyField(source='pk')
 
     class Meta:
         model = Source
         fields = (
-            'pk',
+            'id',
             'indicator',
             'indicator_acronym',
             'source',
@@ -222,10 +233,7 @@ class SourceSerializer(serializers.ModelSerializer):
             'user',
             'created_on',
             'updated_on',
-            'sourcecolumnmap_set',
-            'updatehistory_set',
-            'tags',
-            # alias fields
             'columns',
-            'update_history'
+            'update_history',
+            'tags'
         )

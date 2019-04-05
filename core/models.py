@@ -86,11 +86,12 @@ class Operation(BaseEntity):
     """
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
-    operation_query = models.TextField()
-    theme = models.ForeignKey(Theme, models.PROTECT)
+    operation_query = models.TextField(blank=True, null=True)
+    theme = models.ForeignKey(Theme, models.SET_NULL, blank=True, null=True)
     sample_output_path = models.TextField(blank=True, null=True)
     tags = models.ManyToManyField(Tag)
     is_draft = models.BooleanField(default=True)
+    # TODO: add direction relationship to source
 
     def __str__(self):
         return self.name

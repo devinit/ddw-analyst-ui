@@ -7,7 +7,8 @@ import * as sourcesActions from '../../actions/sources';
 import * as React from 'react';
 import * as pageActions from './actions';
 import { SourcesTable } from '../../components/SourcesTable';
-import { SourceMap, SourcesState } from '../../reducers/sources';
+import { SourcesState } from '../../reducers/sources';
+import { SourceMap } from '../../types/sources';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { DataSourcesState, dataSourcesReducerId } from './reducers';
@@ -51,7 +52,11 @@ class DataSources extends React.Component<DataSourcesProps> {
   }
 
   componentDidMount() {
-    this.props.actions.fetchSources();
+    const sources = this.props.sources.get('sources') as List<SourceMap>;
+    const loading = this.props.sources.get('loading') as boolean;
+    if (!sources.count() && !loading) {
+      this.props.actions.fetchSources();
+    }
   }
 
   private renderDetailsTab(activeSource: SourceMap | undefined, loading = false) {

@@ -5,18 +5,18 @@ exports[`renders an empty table if no sources are provided 1`] = `
   className="card"
 >
   <div
+    className="card-header"
+  >
+    <input
+      className="w-50 form-control"
+      data-testid="sources-table-search"
+      onChange={[Function]}
+      placeholder="Search ..."
+    />
+  </div>
+  <div
     className="card-body"
   >
-    <div
-      className="card-header"
-    >
-      <input
-        className="w-50 form-control"
-        data-testid="sources-table-search"
-        onChange={[Function]}
-        placeholder="Search ..."
-      />
-    </div>
     <div
       className="table-responsive"
     >
@@ -49,17 +49,17 @@ exports[`renders correctly when the sources are updated 1`] = `
     class="card"
   >
     <div
+      class="card-header"
+    >
+      <input
+        class="w-50 form-control"
+        data-testid="sources-table-search"
+        placeholder="Search ..."
+      />
+    </div>
+    <div
       class="card-body"
     >
-      <div
-        class="card-header"
-      >
-        <input
-          class="w-50 form-control"
-          data-testid="sources-table-search"
-          placeholder="Search ..."
-        />
-      </div>
       <div
         class="table-responsive"
       >
@@ -150,18 +150,18 @@ exports[`renders correctly with default props 1`] = `
   className="card"
 >
   <div
+    className="card-header"
+  >
+    <input
+      className="w-50 form-control"
+      data-testid="sources-table-search"
+      onChange={[Function]}
+      placeholder="Search ..."
+    />
+  </div>
+  <div
     className="card-body"
   >
-    <div
-      className="card-header"
-    >
-      <input
-        className="w-50 form-control"
-        data-testid="sources-table-search"
-        onChange={[Function]}
-        placeholder="Search ..."
-      />
-    </div>
     <div
       className="table-responsive"
     >
@@ -235,17 +235,17 @@ exports[`renders filtered content when a valid search is performed 1`] = `
     class="card"
   >
     <div
+      class="card-header"
+    >
+      <input
+        class="w-50 form-control"
+        data-testid="sources-table-search"
+        placeholder="Search ..."
+      />
+    </div>
+    <div
       class="card-body"
     >
-      <div
-        class="card-header"
-      >
-        <input
-          class="w-50 form-control"
-          data-testid="sources-table-search"
-          placeholder="Search ..."
-        />
-      </div>
       <div
         class="table-responsive"
       >
@@ -299,17 +299,17 @@ exports[`resets the table content when the search query is removed 1`] = `
     class="card"
   >
     <div
+      class="card-header"
+    >
+      <input
+        class="w-50 form-control"
+        data-testid="sources-table-search"
+        placeholder="Search ..."
+      />
+    </div>
+    <div
       class="card-body"
     >
-      <div
-        class="card-header"
-      >
-        <input
-          class="w-50 form-control"
-          data-testid="sources-table-search"
-          placeholder="Search ..."
-        />
-      </div>
       <div
         class="table-responsive"
       >
@@ -363,17 +363,17 @@ exports[`resets the table content when the search query is removed 2`] = `
     class="card"
   >
     <div
+      class="card-header"
+    >
+      <input
+        class="w-50 form-control"
+        data-testid="sources-table-search"
+        placeholder="Search ..."
+      />
+    </div>
+    <div
       class="card-body"
     >
-      <div
-        class="card-header"
-      >
-        <input
-          class="w-50 form-control"
-          data-testid="sources-table-search"
-          placeholder="Search ..."
-        />
-      </div>
       <div
         class="table-responsive"
       >

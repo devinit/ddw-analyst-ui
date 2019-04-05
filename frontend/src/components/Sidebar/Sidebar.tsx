@@ -4,8 +4,6 @@ import { SidebarItem } from '../SidebarItem';
 import { SidebarLink } from '../SidebarLink';
 import { SidebarLogo } from '../SidebarLogo';
 
-import './Sidebar.scss';
-
 interface SidebarProps {
   dataColour?: 'rose' | 'purple' | 'azure' | 'danger' | 'green' | 'orange';
   backgroundColour?: 'black' | 'white' | 'red';

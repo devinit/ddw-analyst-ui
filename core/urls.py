@@ -18,7 +18,7 @@ urlpatterns = [
     path('reviews/<int:pk>/', core_views.ReviewDetail.as_view()),
     path('operations/', core_views.OperationList.as_view()),
     path('operations/<int:pk>/', core_views.OperationDetail.as_view()),
-    path('operation_data/<int:pk>/', core_views.ViewData.as_view()),
+    path('operations/data/<int:pk>/', core_views.ViewData.as_view()),
     path('themes/', core_views.ThemeList.as_view()),
     path('themes/<int:pk>/', core_views.ThemeDetail.as_view()),
     path('sectors/', core_views.SectorList.as_view()),
@@ -26,3 +26,6 @@ urlpatterns = [
     path('sources/', core_views.SourceList.as_view()),
     path('sources/<int:pk>/', core_views.SourceDetail.as_view()),
 ]
+
+handler500 = 'rest_framework.exceptions.server_error'
+handler400 = 'rest_framework.exceptions.bad_request'

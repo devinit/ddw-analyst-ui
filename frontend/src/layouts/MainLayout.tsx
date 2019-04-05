@@ -13,6 +13,8 @@ import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { DataSources } from '../pages/DataSources';
 import { Home } from '../pages/Home';
+import { QueryBuilder } from '../pages/QueryBuilder';
+import QueryData from '../pages/QueryData/QueryData';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
@@ -22,7 +24,11 @@ interface ActionProps { actions: typeof UserActions & typeof TokenActions; }
 interface ComponentProps {
   loading: boolean;
 }
-type MainLayoutProps = ComponentProps & RouteComponentProps<{}> & ActionProps;
+interface ReduxProps {
+  user?: UserState;
+  token?: TokenState;
+}
+type MainLayoutProps = ComponentProps & RouteComponentProps<{}> & ActionProps & ReduxProps;
 
 interface MainLayoutState {
   loading: boolean;
@@ -80,6 +86,16 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   data-testid="sidebar-link-sources"
                 />
               </Sidebar.Item>
+              <Sidebar.Item active={ this.state.activeRoute === '/queries/build/' }>
+                <Sidebar.Link
+                  to="/queries/build/"
+                  single
+                  icon="query_builder"
+                  textNormal="Query Builder"
+                  onClick={ this.setActiveRoute }
+                  data-testid="sidebar-link-query-builder"
+                />
+              </Sidebar.Item>
             </Sidebar.Content>
           </Sidebar>
 
@@ -89,6 +105,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Navbar.Brand href="/">
                 <Route path="/" exact component={ () => <span>Home</span> }/>
                 <Route path="/sources" exact component={ () => <span>Data Sources</span> }/>
+                <Route path="/queries/build" exact component={ () => <span>Query Builder</span> }/>
               </Navbar.Brand>
             </div>
 
@@ -120,6 +137,8 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
             <Switch>
               <Route path="/" exact component={ Home }/>
               <Route path="/sources" exact component={ DataSources }/>
+              <Route path="/queries/build" exact component={ QueryBuilder }/>
+              <Route path="/queries/data/:id" exact component={ QueryData }/>
             </Switch>
           </AdminLayout.Content>
         </AdminLayout>
@@ -142,6 +161,12 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
       .catch(() => {
         this.clearStorageAndGoToLogin();
       });
+  }
+
+  componentDidUpdate(prevProps: MainLayoutProps) {
+    if (prevProps.token && !this.props.token) {
+      this.clearStorageAndGoToLogin();
+    }
   }
 
   private onLogOut = () => {
@@ -171,7 +196,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
   private validateToken(token: string, user: User) {
     axios.request({
-      url: `${api.routes.USERS}${user.id}`,
+      url: `${api.routes.USERS}${user.id}/`,
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -200,7 +225,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   }
 }
 
-const mapStateToProps = (reduxStore: ReduxStore): { user?: UserState, token?: TokenState } => ({
+const mapStateToProps = (reduxStore: ReduxStore): ReduxProps => ({
   user: reduxStore.get('user') as UserState,
   token: reduxStore.get('token') as TokenState
 });

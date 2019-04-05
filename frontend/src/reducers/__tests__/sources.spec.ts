@@ -2,12 +2,12 @@ import {
   FETCH_SOURCES,
   FETCH_SOURCES_FAILED,
   FETCH_SOURCES_SUCCESSFUL,
-  Source,
   defaultState,
   sourcesReducer
 } from '../sources';
 import { Action } from 'redux';
 import { fromJS } from 'immutable';
+import { Source } from '../../types/sources';
 
 test('should return the initial state', () => {
   expect(sourcesReducer(undefined, {} as Action)).toEqual(defaultState);
@@ -20,7 +20,7 @@ test('should handle FETCH_SOURCES', () => {
 
 test('should handle FETCH_SOURCES_SUCCESSFUL', () => {
   const source = {
-    pk: 1,
+    id: 1,
     indicator: 'Common Reporting Standard',
     indicator_acronym: 'crs',
     source_acronym: 'oecd',

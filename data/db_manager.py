@@ -11,5 +11,7 @@ def fetch_data(queries, database="datasets"):
         count_results = cursor.fetchall()
         cursor.execute(main_query)
         columns = [col[0] for col in cursor.description]
-        results = cursor.fetchall()
-        return (count_results, columns, results)
+        results = [
+            dict(zip(columns, row)) for row in cursor.fetchall()
+        ]
+        return (count_results[0][0], results)

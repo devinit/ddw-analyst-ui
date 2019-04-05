@@ -31,3 +31,9 @@ select:-webkit-autofill:focus {
 .table.table-sm>thead>tr>th {
   padding: .3rem;
 }
+
+@media (max-width: 991px) {
+  .off-canvas-sidebar nav .navbar-collapse:before, .sidebar:before {
+    background-color: inherit;
+  }
+}
