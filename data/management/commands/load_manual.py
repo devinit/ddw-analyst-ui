@@ -20,7 +20,7 @@ class Command(BaseCommand):
         with open(meta_path) as csv_f:
             reader = csv.DictReader(csv_f)
             for row in reader:
-                filename = row["filename"]
+                active_mirror_name = row["active_mirror_name"]
                 tag_strs = row["tags"].split(",")
 
                 for not_modeled_attr in ["tags", "filename"]:
@@ -39,12 +39,12 @@ class Command(BaseCommand):
                     tag, _ = Tag.objects.get_or_create(name=tag_str)
                     source.tags.add(tag)
 
-                source_mapping[filename] = source
+                source_mapping[active_mirror_name] = source
 
         with open(meta_columns_path) as csv_f:
             reader = csv.DictReader(csv_f)
             for row in reader:
-                source = source_mapping[row["filename"]]
+                source = source_mapping[row["active_mirror_name"]]
                 source_column_map, _ = SourceColumnMap.objects.get_or_create(source=source, name=row["col_name"])
                 source_column_map.description = row["col_description"]
                 source_column_map.save()
