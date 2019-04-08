@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import * as React from 'react';
-import { Card, Col, Nav, Row, Tab } from 'react-bootstrap';
+import { Card, Col, Row, Tab } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouterProps } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -32,6 +32,12 @@ interface ReduxState {
 type QueryBuilderProps = ActionProps & ReduxState & RouterProps;
 
 const StyledIcon = styled.i`cursor: pointer;`;
+const StyledCardBody = styled(Card.Body)`
+  &.card-body {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+`;
 
 class QueryBuilder extends React.Component<QueryBuilderProps> {
   render() {
@@ -49,39 +55,32 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         <Col lg={ 4 }>
           <Tab.Container defaultActiveKey="operation">
             <Card className="source-details">
-              <Card.Body>
+              <Card.Header className="card-header-text card-header-danger">
+                <Card.Text>Operation</Card.Text>
+              </Card.Header>
+              <StyledCardBody>
 
-                <Nav variant="pills" className="nav-pills-danger" role="tablist">
-                  <Nav.Item><Nav.Link eventKey="operation">Operation</Nav.Link></Nav.Item>
-                  <Nav.Item><Nav.Link eventKey="steps">Operation Steps</Nav.Link></Nav.Item>
-                </Nav>
+                <OperationForm
+                  operation={ operation }
+                  valid={ steps.count() > 0 }
+                  onUpdateOperation={ this.onUpdateOperation }
+                  onSuccess={ this.onSaveOperation }
+                  processing={ processing }
+                >
+                  <OperationSteps
+                    sources={ sources }
+                    isFetchingSources={ loading }
+                    steps={ steps }
+                    fetchSources={ this.props.actions.fetchSources }
+                    onSelectSource={ this.props.actions.setActiveSource }
+                    onAddStep={ this.props.actions.updateActiveStep }
+                    activeSource={ activeSource }
+                    activeStep={ activeStep }
+                    onClickStep={ (step) => this.props.actions.updateActiveStep(step, true) }
+                  />
+                </OperationForm>
 
-                <Tab.Content>
-                  <Tab.Pane eventKey="operation">
-                    <OperationForm
-                      operation={ operation }
-                      valid={ steps.count() > 0 }
-                      onUpdateOperation={ this.onUpdateOperation }
-                      onSuccess={ this.onSaveOperation }
-                      processing={ processing }
-                    />
-                  </Tab.Pane>
-                  <Tab.Pane eventKey="steps">
-                    <OperationSteps
-                      sources={ sources }
-                      isFetchingSources={ loading }
-                      steps={ steps }
-                      fetchSources={ this.props.actions.fetchSources }
-                      onSelectSource={ this.props.actions.setActiveSource }
-                      onAddStep={ this.props.actions.updateActiveStep }
-                      activeSource={ activeSource }
-                      activeStep={ activeStep }
-                      onClickStep={ (step) => this.props.actions.updateActiveStep(step, true) }
-                    />
-                  </Tab.Pane>
-                </Tab.Content>
-
-              </Card.Body>
+              </StyledCardBody>
             </Card>
           </Tab.Container>
         </Col>

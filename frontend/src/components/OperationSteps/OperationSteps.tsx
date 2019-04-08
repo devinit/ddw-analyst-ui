@@ -56,7 +56,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             disabled={ !!activeStep }
           >
             <i className="material-icons mr-1">add</i>
-            Add Operation
+            Add Step
           </Button>
         </div>
 
