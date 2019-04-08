@@ -1,0 +1,4 @@
+filename,col_name,col_description
+cblb.csv,country_name,Country name
+cblb.csv,di_id,ISO Alpha 2
+cblb.csv,cblb,Country Being Left Behind (1 = True)

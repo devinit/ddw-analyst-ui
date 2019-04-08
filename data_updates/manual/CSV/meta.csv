@@ -1,0 +1,2 @@
+filename,sector,theme,indicator,indicator_acronym,source,source_acronym,source_url,download_path,last_updated_on,schema,storage_type,active_mirror_name,description,tags
+cblb.csv,No One Left Behind,Poverty and inequality,Countries Being Left Behind,CBLB,Development Initiatives,DI,http://devinit.org/wp-content/uploads/2018/07/countries-being-left-behind_report.pdf,,03/04/19,repo,schema,cblb,"Countries being left behind refers to the 30 countries identified to be most at risk by poverty, human development, and climate and fragility models and measures.",poverty
