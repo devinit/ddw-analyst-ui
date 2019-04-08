@@ -2,3 +2,79 @@ active_mirror_name,col_name,col_description
 cblb,country_name,Country name
 cblb,di_id,ISO Alpha 2
 cblb,cblb,Country Being Left Behind (1 = True)
+PovCalNetSmy,isInterpolated,Data is interpolated between survey years
+PovCalNetSmy,useMicroData,Calculated using microdata
+PovCalNetSmy,CountryCode,Country code
+PovCalNetSmy,CountryName,Country name
+PovCalNetSmy,RegionCode,World Bank region code
+PovCalNetSmy,CoverageType,"Survey type (Rural, Urban, National, Average)"
+PovCalNetSmy,RequestYear,Standardized data year
+PovCalNetSmy,DataYear,Survey data year
+PovCalNetSmy,DataType,"Monetary type (Income, Consumption eXpenditure)"
+PovCalNetSmy,PPP,Purchasing power parity
+PovCalNetSmy,PovertyLine,Poverty line in PPP
+PovCalNetSmy,Mean,Mean observed monetary value
+PovCalNetSmy,HeadCount,Percent of population under poverty line
+PovCalNetSmy,PovGap,
+PovCalNetSmy,PovGapSqr,
+PovCalNetSmy,Watts,
+PovCalNetSmy,Gini,
+PovCalNetSmy,Median,
+PovCalNetSmy,pr.mld,
+PovCalNetSmy,Polarization,
+PovCalNetSmy,ReqYearPopulation,
+PovCalNetSmy,SvyInfoID,
+PovCalNetSmy,Decile1,
+PovCalNetSmy,Decile2,
+PovCalNetSmy,Decile3,
+PovCalNetSmy,Decile4,
+PovCalNetSmy,Decile5,
+PovCalNetSmy,Decile6,
+PovCalNetSmy,Decile7,
+PovCalNetSmy,Decile8,
+PovCalNetSmy,Decile9,
+PovCalNetSmy,Decile10,
+PovCalNetAgg,requestYear,
+PovCalNetAgg,regionTitle,
+PovCalNetAgg,regionCID,
+PovCalNetAgg,povertyLine,
+PovCalNetAgg,mean,
+PovCalNetAgg,hc,
+PovCalNetAgg,pg,
+PovCalNetAgg,p2,
+PovCalNetAgg,population,
+PovCalNetP20,isInterpolated,
+PovCalNetP20,useMicroData,
+PovCalNetP20,CountryCode,
+PovCalNetP20,CountryName,
+PovCalNetP20,RegionCode,
+PovCalNetP20,CoverageType,
+PovCalNetP20,RequestYear,
+PovCalNetP20,DataYear,
+PovCalNetP20,DataType,
+PovCalNetP20,PPP,
+PovCalNetP20,PovertyLine,
+PovCalNetP20,Mean,
+PovCalNetP20,HeadCount,
+PovCalNetP20,PovGap,
+PovCalNetP20,PovGapSqr,
+PovCalNetP20,Watts,
+PovCalNetP20,Gini,
+PovCalNetP20,Median,
+PovCalNetP20,pr.mld,
+PovCalNetP20,Polarization,
+PovCalNetP20,ReqYearPopulation,
+PovCalNetP20,SvyInfoID,
+PovCalNetP20,Decile1,
+PovCalNetP20,Decile2,
+PovCalNetP20,Decile3,
+PovCalNetP20,Decile4,
+PovCalNetP20,Decile5,
+PovCalNetP20,Decile6,
+PovCalNetP20,Decile7,
+PovCalNetP20,Decile8,
+PovCalNetP20,Decile9,
+PovCalNetP20,Decile10,
+PovCalNetDist,i,
+PovCalNetDist,P,
+PovCalNetDist,L,
