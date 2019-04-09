@@ -80,3 +80,32 @@ PovCalNetDist,P,Cumulative percentile of population
 PovCalNetDist,L,Cumulative percent of consumption/income
 PovCalNetDist,svy,Survey code comprised of a 3 digit country code and a 1 digit coverage type code
 PovCalNetDist,year,Survey year
+ldcs,country_name,Country name
+ldcs,di_id,ISO Alpha 2
+ldcs,ldc,Least developed country (1 = True)
+fragility,country_name,Country name
+fragility,di_id,ISO Alpha 2
+fragility,fragile_2018,Fragility status in 2018
+historical_income_groupings,country_name,Country name
+historical_income_groupings,di_id,ISO Alpha 2
+historical_income_groupings,year,Year
+historical_income_groupings,income_group,World Bank income grouping
+oecd_regions,country_name,Country name
+oecd_regions,di_id,ISO Alpha 2
+oecd_regions,region_name,Region name
+oecd_regions,region_code,Region code
+developing_countries,country_name,Country name
+developing_countries,di_id,ISO Alpha 2
+developing_countries,developing,Developing country marker (1 = True)
+di_deflators_2016,di_id,ISO Alpha 2
+di_deflators_2016,country_name,Country name
+di_deflators_2016,dac_marker,Country is a member of the OECD DAC
+di_deflators_2016,eu_marker,Country is a member of the EU
+di_deflators_2016,year,Year
+di_deflators_2016,value,Deflator multiplier
+di_deflators_2017,di_id,ISO Alpha 2
+di_deflators_2017,country_name,Country name
+di_deflators_2017,dac_marker,Country is a member of the OECD DAC
+di_deflators_2017,eu_marker,Country is a member of the EU
+di_deflators_2017,year,Year
+di_deflators_2017,value,Deflator multiplier
