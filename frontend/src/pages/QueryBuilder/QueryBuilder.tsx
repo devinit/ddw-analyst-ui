@@ -1,5 +1,5 @@
+import { OperationForm } from '../../components/OperationForm';
 import axios, { AxiosResponse } from 'axios';
-import classNames from 'classnames';
 import { List } from 'immutable';
 import * as React from 'react';
 import { Card, Col, Row, Tab } from 'react-bootstrap';
@@ -7,9 +7,9 @@ import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
-import { fetchOperation, setOperation } from '../../actions/operations';
+import { deleteOperation, fetchOperation, setOperation } from '../../actions/operations';
 import * as sourcesActions from '../../actions/sources';
-import { OperationForm } from '../../components/OperationForm';
+import classNames from 'classnames';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
 import { SourcesState } from '../../reducers/sources';
@@ -26,6 +26,7 @@ interface ActionProps {
   actions: typeof sourcesActions & typeof pageActions & {
     fetchOperation: typeof fetchOperation;
     setActiveOperation: typeof setOperation;
+    deleteOperation: typeof deleteOperation;
   };
 }
 interface ReduxState {
@@ -127,6 +128,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         onUpdateOperation={ this.onUpdateOperation }
         onSuccess={ this.onSaveOperation }
         processing={ this.props.page.get('processing') as boolean }
+        onDeleteOperation={ this.onDeleteOperation }
       >
         <OperationSteps
           sources={ this.props.sources.get('sources') as List<SourceMap> }
@@ -194,6 +196,13 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     this.props.actions.setActiveOperation(operation, true);
   }
 
+  private onDeleteOperation = (operation: OperationMap) => {
+    const operationID = operation.get('id') as string | undefined;
+    if (operationID) {
+    this.props.actions.deleteOperation(operationID, this.props.history);
+    }
+  }
+
   private onSaveOperation = (preview = false) => {
     this.props.actions.savingOperation();
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
@@ -242,7 +251,8 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): Acti
     ...sourcesActions,
     ...pageActions,
     fetchOperation,
-    setActiveOperation: setOperation
+    setActiveOperation: setOperation,
+    deleteOperation
   }, dispatch)
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {

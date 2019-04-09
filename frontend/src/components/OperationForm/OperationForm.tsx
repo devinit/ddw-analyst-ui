@@ -14,6 +14,7 @@ interface OperationFormProps {
   valid?: boolean;
   processing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
+  onDeleteOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
 }
 interface OperationFormState {
@@ -103,6 +104,13 @@ export class OperationForm extends React.Component<OperationFormProps> {
               >
                 { this.props.processing ? 'Saving ...' : 'Save & Preview' }
               </Button>
+              <Button
+                variant="secondary"
+                className={ classNames('float-right', { 'd-none': !this.props.operation }) }
+                onClick={ this.onDelete }
+              >
+                <i className="material-icons">delete</i>
+              </Button>
             </Form>
           )
         }
@@ -153,4 +161,10 @@ export class OperationForm extends React.Component<OperationFormProps> {
   }
 
   private onSuccess = (preview = false) => () => this.props.onSuccess(preview);
+
+  private onDelete = () => {
+    if (this.props.onDeleteOperation && this.props.operation) {
+      this.props.onDeleteOperation(this.props.operation);
+    }
+  }
 }

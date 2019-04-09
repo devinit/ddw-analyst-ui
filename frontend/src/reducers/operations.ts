@@ -1,6 +1,7 @@
 import { List, Map, fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
 import { Operation, OperationMap } from '../types/operations';
+import { History } from 'history';
 
 export interface OperationsAction extends Action {
   operations?: Operation[];
@@ -12,6 +13,7 @@ export interface OperationsAction extends Action {
     offset: number;
     link: string;
     id: number | string;
+    history: History;
   }>;
   loading?: boolean;
 }
@@ -31,6 +33,9 @@ export const FETCH_OPERATIONS_FAILED = `${prefix}.FETCH_FAILED`;
 export const SET_ACTIVE_OPERATION = `${prefix}.SET_ACTIVE_OPERATION`;
 export const FETCH_OPERATION = `${prefix}.FETCH_OPERATION`;
 export const FETCH_OPERATION_FAILED = `${prefix}.FETCH_FAILED`;
+export const DELETE_OPERATION = `${prefix}.DELETE_OPERATION`;
+export const DELETE_OPERATION_SUCCESSFUL = `${prefix}.DELETE_OPERATION_SUCCESSFUL`;
+export const DELETE_OPERATION_FAILED = `${prefix}.DELETE_OPERATION_FAILED`;
 
 export const defaultState: OperationsState = fromJS({ loading: false, operations: [], activeOperationId: 1 });
 

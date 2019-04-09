@@ -110,7 +110,7 @@ class Operation(BaseEntity):
 
 class OperationStep(BaseEntity):
     """These are the individual steps in a query."""
-    operation = models.ForeignKey(Operation, models.PROTECT)
+    operation = models.ForeignKey(Operation, models.CASCADE)
     step_id = models.SmallIntegerField()
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)

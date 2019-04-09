@@ -62,11 +62,8 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
   }
 
   componentDidMount() {
-    const operations = this.props.operations.get('operations') as List<OperationMap>;
     const loading = this.props.operations.get('loading') as boolean;
-    if (!operations.count() && !loading) {
-      this.props.actions.fetchOperations({ limit: 10, offset: 0 });
-    } else {
+    if (!loading) {
       this.props.actions.fetchOperations({ limit: this.props.limit, offset: this.props.offset });
     }
   }
@@ -89,9 +86,6 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
             </OverlayTrigger>
             <Button variant="danger" size="sm" className="btn-link" onClick={ this.onEditOperation(operation) }>
               Edit
-            </Button>
-            <Button variant="danger" size="sm" className="btn-link d-none">
-              <i className="material-icons">delete</i>
             </Button>
           </OperationsTable.Actions>
         </OperationsTable.Row>
