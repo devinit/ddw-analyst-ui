@@ -3,78 +3,80 @@ cblb,country_name,Country name
 cblb,di_id,ISO Alpha 2
 cblb,cblb,Country Being Left Behind (1 = True)
 PovCalNetSmy,isInterpolated,Data is interpolated between survey years
-PovCalNetSmy,useMicroData,Calculated using microdata
+PovCalNetSmy,useMicroData,Whether the data is based on unit (microdata) observations (1) or grouped (aggregate)
 PovCalNetSmy,CountryCode,Country code
 PovCalNetSmy,CountryName,Country name
 PovCalNetSmy,RegionCode,World Bank region code
 PovCalNetSmy,CoverageType,"Survey type (Rural, Urban, National, Average)"
 PovCalNetSmy,RequestYear,Standardized data year
 PovCalNetSmy,DataYear,Survey data year
-PovCalNetSmy,DataType,"Monetary type (Income, Consumption eXpenditure)"
-PovCalNetSmy,PPP,Purchasing power parity
+PovCalNetSmy,DataType,"Survey of income (i), consumption (c), or expenditure (x)"
+PovCalNetSmy,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP
 PovCalNetSmy,PovertyLine,Poverty line in PPP
-PovCalNetSmy,Mean,Mean observed monetary value
+PovCalNetSmy,Mean,Mean consumption/income of the economy
 PovCalNetSmy,HeadCount,Percent of population under poverty line
-PovCalNetSmy,PovGap,
-PovCalNetSmy,PovGapSqr,
-PovCalNetSmy,Watts,
-PovCalNetSmy,Gini,
-PovCalNetSmy,Median,
-PovCalNetSmy,pr.mld,
-PovCalNetSmy,Polarization,
-PovCalNetSmy,ReqYearPopulation,
-PovCalNetSmy,SvyInfoID,
-PovCalNetSmy,Decile1,
-PovCalNetSmy,Decile2,
-PovCalNetSmy,Decile3,
-PovCalNetSmy,Decile4,
-PovCalNetSmy,Decile5,
-PovCalNetSmy,Decile6,
-PovCalNetSmy,Decile7,
-PovCalNetSmy,Decile8,
-PovCalNetSmy,Decile9,
-PovCalNetSmy,Decile10,
-PovCalNetAgg,requestYear,
-PovCalNetAgg,regionTitle,
-PovCalNetAgg,regionCID,
-PovCalNetAgg,povertyLine,
-PovCalNetAgg,mean,
-PovCalNetAgg,hc,
-PovCalNetAgg,pg,
-PovCalNetAgg,p2,
-PovCalNetAgg,population,
-PovCalNetP20,isInterpolated,
-PovCalNetP20,useMicroData,
-PovCalNetP20,CountryCode,
-PovCalNetP20,CountryName,
-PovCalNetP20,RegionCode,
-PovCalNetP20,CoverageType,
-PovCalNetP20,RequestYear,
-PovCalNetP20,DataYear,
-PovCalNetP20,DataType,
-PovCalNetP20,PPP,
-PovCalNetP20,PovertyLine,
-PovCalNetP20,Mean,
-PovCalNetP20,HeadCount,
-PovCalNetP20,PovGap,
-PovCalNetP20,PovGapSqr,
-PovCalNetP20,Watts,
-PovCalNetP20,Gini,
-PovCalNetP20,Median,
-PovCalNetP20,pr.mld,
-PovCalNetP20,Polarization,
-PovCalNetP20,ReqYearPopulation,
-PovCalNetP20,SvyInfoID,
-PovCalNetP20,Decile1,
-PovCalNetP20,Decile2,
-PovCalNetP20,Decile3,
-PovCalNetP20,Decile4,
-PovCalNetP20,Decile5,
-PovCalNetP20,Decile6,
-PovCalNetP20,Decile7,
-PovCalNetP20,Decile8,
-PovCalNetP20,Decile9,
-PovCalNetP20,Decile10,
-PovCalNetDist,i,
-PovCalNetDist,P,
-PovCalNetDist,L,
+PovCalNetSmy,PovGap,The ratio of the average income under the poverty line to the poverty line
+PovCalNetSmy,PovGapSqr,Poverty gap index squared
+PovCalNetSmy,Watts,Watts poverty index - a measure of depth of poverty
+PovCalNetSmy,Gini,Gini coefficient - a measure of inequality
+PovCalNetSmy,Median,Median consumption/income of the economy
+PovCalNetSmy,pr.mld,Mean log deviation
+PovCalNetSmy,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median
+PovCalNetSmy,ReqYearPopulation,Population of the country in the standardized data year
+PovCalNetSmy,SvyInfoID,Survey identification code
+PovCalNetSmy,Decile1,Percent of total consumption/income owned by the bottom 10%
+PovCalNetSmy,Decile2,Percent of total consumption/income owned by those between the 10% and 20% percentiles
+PovCalNetSmy,Decile3,Percent of total consumption/income owned by those between the 20% and 30% percentiles
+PovCalNetSmy,Decile4,Percent of total consumption/income owned by those between the 30% and 40% percentiles
+PovCalNetSmy,Decile5,Percent of total consumption/income owned by those between the 40% and 50% percentiles
+PovCalNetSmy,Decile6,Percent of total consumption/income owned by those between the 50% and 60% percentiles
+PovCalNetSmy,Decile7,Percent of total consumption/income owned by those between the 60% and 70% percentiles
+PovCalNetSmy,Decile8,Percent of total consumption/income owned by those between the 70% and 80% percentiles
+PovCalNetSmy,Decile9,Percent of total consumption/income owned by those between the 80% and 90% percentiles
+PovCalNetSmy,Decile10,Percent of total consumption/income owned by the top 10%
+PovCalNetAgg,requestYear,Standarized data year
+PovCalNetAgg,regionTitle,Region name
+PovCalNetAgg,regionCID,Region code
+PovCalNetAgg,povertyLine,Poverty line in PPP
+PovCalNetAgg,mean,Mean consumption/income of the economy
+PovCalNetAgg,hc,Percent of population under the poverty line
+PovCalNetAgg,pg,The ratio of the average income under the poverty line to the poverty line
+PovCalNetAgg,p2,Poverty gap index squared
+PovCalNetAgg,population,Population of the country in the standardized data year
+PovCalNetP20,isInterpolated,Data is interpolated between survey years
+PovCalNetP20,useMicroData,Whether the data is based on unit (microdata) observations (1) or grouped (aggregate)
+PovCalNetP20,CountryCode,Country code
+PovCalNetP20,CountryName,Country name
+PovCalNetP20,RegionCode,World Bank region code
+PovCalNetP20,CoverageType,"Survey type (Rural, Urban, National, Average)"
+PovCalNetP20,RequestYear,Standardized data year
+PovCalNetP20,DataYear,Survey data year
+PovCalNetP20,DataType,"Survey of income (i), consumption (c), or expenditure (x)"
+PovCalNetP20,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP
+PovCalNetP20,PovertyLine,Poverty line in PPP
+PovCalNetP20,Mean,Mean consumption/income of the economy
+PovCalNetP20,HeadCount,Percent of population under poverty line
+PovCalNetP20,PovGap,The ratio of the average income under the poverty line to the poverty line
+PovCalNetP20,PovGapSqr,Poverty gap index squared
+PovCalNetP20,Watts,Watts poverty index - a measure of depth of poverty
+PovCalNetP20,Gini,Gini coefficient - a measure of inequality
+PovCalNetP20,Median,Median consumption/income of the economy
+PovCalNetP20,pr.mld,Mean log deviation
+PovCalNetP20,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median
+PovCalNetP20,ReqYearPopulation,Population of the country in the standardized data year
+PovCalNetP20,SvyInfoID,Survey identification code
+PovCalNetP20,Decile1,Percent of total consumption/income owned by the bottom 10%
+PovCalNetP20,Decile2,Percent of total consumption/income owned by those between the 10% and 20% percentiles
+PovCalNetP20,Decile3,Percent of total consumption/income owned by those between the 20% and 30% percentiles
+PovCalNetP20,Decile4,Percent of total consumption/income owned by those between the 30% and 40% percentiles
+PovCalNetP20,Decile5,Percent of total consumption/income owned by those between the 40% and 50% percentiles
+PovCalNetP20,Decile6,Percent of total consumption/income owned by those between the 50% and 60% percentiles
+PovCalNetP20,Decile7,Percent of total consumption/income owned by those between the 60% and 70% percentiles
+PovCalNetP20,Decile8,Percent of total consumption/income owned by those between the 70% and 80% percentiles
+PovCalNetP20,Decile9,Percent of total consumption/income owned by those between the 80% and 90% percentiles
+PovCalNetP20,Decile10,Percent of total consumption/income owned by the top 10%
+PovCalNetDist,i,Population percentile index (maximum varies by survey)
+PovCalNetDist,P,Cumulative percentile of population
+PovCalNetDist,L,Cumulative percent of consumption/income
+PovCalNetDist,svy,Survey code comprised of a 3 digit country code and a 1 digit coverage type code
+PovCalNetDist,year,Survey year
