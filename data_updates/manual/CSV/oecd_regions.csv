@@ -1,0 +1,147 @@
+country_name,di_id,region_name,region_code
+Afghanistan,AF,South & Central Asia,south-central-asia
+Albania,AL,Europe,europe
+Algeria,DZ,North Africa,north-of-sahara
+Angola,AO,Sub-Saharan Africa,south-of-sahara
+Antigua and Barbuda,AG,North & Central America,north-central-america
+Argentina,AR,South America,south-america
+Armenia,AM,South & Central Asia,south-central-asia
+Azerbaijan,AZ,South & Central Asia,south-central-asia
+Bangladesh,BD,South & Central Asia,south-central-asia
+Belarus,BY,Europe,europe
+Belize,BZ,North & Central America,north-central-america
+Benin,BJ,Sub-Saharan Africa,south-of-sahara
+Bhutan,BT,South & Central Asia,south-central-asia
+Bolivia,BO,South America,south-america
+Bosnia and Herzegovina,BA,Europe,europe
+Botswana,BW,Sub-Saharan Africa,south-of-sahara
+Brazil,BR,South America,south-america
+Burkina Faso,BF,Sub-Saharan Africa,south-of-sahara
+Burundi,BI,Sub-Saharan Africa,south-of-sahara
+Cambodia,KH,East Asia,far-east-asia
+Cameroon,CM,Sub-Saharan Africa,south-of-sahara
+Cabo Verde,CV,Sub-Saharan Africa,south-of-sahara
+Central African Republic,CF,Sub-Saharan Africa,south-of-sahara
+Chad,TD,Sub-Saharan Africa,south-of-sahara
+Chile,CL,South America,south-america
+China (People's Republic of),CN,East Asia,far-east-asia
+Colombia,CO,South America,south-america
+Comoros,KM,Sub-Saharan Africa,south-of-sahara
+Democratic Republic of the Congo,CD,Sub-Saharan Africa,south-of-sahara
+Congo,CG,Sub-Saharan Africa,south-of-sahara
+Cook Islands,CK,Oceania,oceania
+Costa Rica,CR,North & Central America,north-central-america
+Côte d'Ivoire,CI,Sub-Saharan Africa,south-of-sahara
+Cuba,CU,North & Central America,north-central-america
+Djibouti,DJ,Sub-Saharan Africa,south-of-sahara
+Dominica,DM,North & Central America,north-central-america
+Dominican Republic,DO,North & Central America,north-central-america
+Ecuador,EC,South America,south-america
+Egypt,EG,North Africa,north-of-sahara
+El Salvador,SV,North & Central America,north-central-america
+Equatorial Guinea,GQ,Sub-Saharan Africa,south-of-sahara
+Eritrea,ER,Sub-Saharan Africa,south-of-sahara
+Ethiopia,ET,Sub-Saharan Africa,south-of-sahara
+Fiji,FJ,Oceania,oceania
+Gabon,GA,Sub-Saharan Africa,south-of-sahara
+Gambia,GM,Sub-Saharan Africa,south-of-sahara
+Georgia,GE,South & Central Asia,south-central-asia
+Ghana,GH,Sub-Saharan Africa,south-of-sahara
+Grenada,GD,North & Central America,north-central-america
+Guatemala,GT,North & Central America,north-central-america
+Guinea,GN,Sub-Saharan Africa,south-of-sahara
+Guinea-Bissau,GW,Sub-Saharan Africa,south-of-sahara
+Guyana,GY,South America,south-america
+Haiti,HT,North & Central America,north-central-america
+Honduras,HN,North & Central America,north-central-america
+India,IN,South & Central Asia,south-central-asia
+Indonesia,ID,East Asia,far-east-asia
+Iran,IR,Middle East,middle-east
+Iraq,IQ,Middle East,middle-east
+Jamaica,JM,North & Central America,north-central-america
+Jordan,JO,Middle East,middle-east
+Kazakhstan,KZ,South & Central Asia,south-central-asia
+Kenya,KE,Sub-Saharan Africa,south-of-sahara
+Kiribati,KI,Oceania,oceania
+Democratic People's Republic of Korea,KP,East Asia,far-east-asia
+Kosovo,XK,Europe,europe
+Kyrgyzstan,KG,South & Central Asia,south-central-asia
+Lao People's Democratic Republic,LA,East Asia,far-east-asia
+Lebanon,LB,Middle East,middle-east
+Lesotho,LS,Sub-Saharan Africa,south-of-sahara
+Liberia,LR,Sub-Saharan Africa,south-of-sahara
+Libya,LY,North Africa,north-of-sahara
+Former Yugoslav Republic of Macedonia,MK,Europe,europe
+Madagascar,MG,Sub-Saharan Africa,south-of-sahara
+Malawi,MW,Sub-Saharan Africa,south-of-sahara
+Malaysia,MY,East Asia,far-east-asia
+Maldives,MV,South & Central Asia,south-central-asia
+Mali,ML,Sub-Saharan Africa,south-of-sahara
+Marshall Islands,MH,Oceania,oceania
+Mauritania,MR,Sub-Saharan Africa,south-of-sahara
+Mauritius,MU,Sub-Saharan Africa,south-of-sahara
+Mexico,MX,North & Central America,north-central-america
+Micronesia,FM,Oceania,oceania
+Moldova,MD,Europe,europe
+Mongolia,MN,East Asia,far-east-asia
+Montenegro,ME,Europe,europe
+Montserrat,MS,North & Central America,north-central-america
+Morocco,MA,North Africa,north-of-sahara
+Mozambique,MZ,Sub-Saharan Africa,south-of-sahara
+Myanmar,MM,South & Central Asia,south-central-asia
+Namibia,NA,Sub-Saharan Africa,south-of-sahara
+Nauru,NR,Oceania,oceania
+Nepal,NP,South & Central Asia,south-central-asia
+Nicaragua,NI,North & Central America,north-central-america
+Niger,NE,Sub-Saharan Africa,south-of-sahara
+Nigeria,NG,Sub-Saharan Africa,south-of-sahara
+Niue,NU,Oceania,oceania
+Pakistan,PK,South & Central Asia,south-central-asia
+Palau,PW,Oceania,oceania
+Panama,PA,North & Central America,north-central-america
+Papua New Guinea,PG,Oceania,oceania
+Paraguay,PY,South America,south-america
+Peru,PE,South America,south-america
+Philippines,PH,East Asia,far-east-asia
+Rwanda,RW,Sub-Saharan Africa,south-of-sahara
+Samoa,WS,Oceania,oceania
+Sao Tome and Principe,ST,Sub-Saharan Africa,south-of-sahara
+Senegal,SN,Sub-Saharan Africa,south-of-sahara
+Serbia,RS,Europe,europe
+Seychelles,SC,Sub-Saharan Africa,south-of-sahara
+Sierra Leone,SL,Sub-Saharan Africa,south-of-sahara
+Solomon Islands,SB,Oceania,oceania
+Somalia,SO,Sub-Saharan Africa,south-of-sahara
+South Africa,ZA,Sub-Saharan Africa,south-of-sahara
+South Sudan,SS,Sub-Saharan Africa,south-of-sahara
+Sri Lanka,LK,South & Central Asia,south-central-asia
+Saint Helena,SH,Sub-Saharan Africa,south-of-sahara
+Saint Lucia,LC,North & Central America,north-central-america
+Saint Vincent and the Grenadines,VC,North & Central America,north-central-america
+Sudan,SD,Sub-Saharan Africa,south-of-sahara
+Suriname,SR,South America,south-america
+Eswatini,SZ,Sub-Saharan Africa,south-of-sahara
+Syrian Arab Republic,SY,Middle East,middle-east
+Tajikistan,TJ,South & Central Asia,south-central-asia
+Tanzania,TZ,Sub-Saharan Africa,south-of-sahara
+Thailand,TH,East Asia,far-east-asia
+Timor-Leste,TL,East Asia,far-east-asia
+Togo,TG,Sub-Saharan Africa,south-of-sahara
+Tokelau,TK,Oceania,oceania
+Tonga,TO,Oceania,oceania
+Tunisia,TN,North Africa,north-of-sahara
+Turkey,TR,Europe,europe
+Turkmenistan,TM,South & Central Asia,south-central-asia
+Tuvalu,TV,Oceania,oceania
+Uganda,UG,Sub-Saharan Africa,south-of-sahara
+Ukraine,UA,Europe,europe
+Uruguay,UY,South America,south-america
+Uzbekistan,UZ,South & Central Asia,south-central-asia
+Vanuatu,VU,Oceania,oceania
+Venezuela,VE,South America,south-america
+Viet Nam,VN,East Asia,far-east-asia
+Wallis and Futuna,WF,Oceania,oceania
+West Bank and Gaza Strip,PS,Middle East,middle-east
+Yemen,YE,Middle East,middle-east
+Zambia,ZM,Sub-Saharan Africa,south-of-sahara
+Zimbabwe,ZW,Sub-Saharan Africa,south-of-sahara
