@@ -1,14 +1,21 @@
+import { SET_ACTIVE_SOURCE } from '../pages/DataSources/reducers';
 import axios, { AxiosResponse } from 'axios';
-import { fromJS } from 'immutable';
 import * as localForage from 'localforage';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
-import { SET_ACTIVE_SOURCE } from '../pages/DataSources/reducers';
-import { FETCH_SOURCES, FETCH_SOURCES_FAILED, FETCH_SOURCES_SUCCESSFUL } from '../reducers/sources';
+import { fromJS } from 'immutable';
+import {
+  FETCH_SOURCE,
+  FETCH_SOURCES,
+  FETCH_SOURCES_FAILED,
+  FETCH_SOURCES_SUCCESSFUL,
+  SourcesAction
+} from '../reducers/sources';
 import { APIResponse } from '../types/api';
 import { Source } from '../types/sources';
 import { api, localForageKeys } from '../utils';
 import { setToken } from '../actions/token';
+import { setActiveSource } from '../actions/sources';
 
 function* fetchSources() {
   try {
@@ -40,6 +47,37 @@ function* fetchSources() {
   }
 }
 
+function* fetchSource({ payload }: SourcesAction) {
+  const sourceId = payload && payload.id;
+  if (!sourceId) {
+    return;
+  }
+  try {
+    const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    const { status, data }: AxiosResponse<APIResponse<Source>> = yield axios.request({
+      url: `${api.routes.SOURCES}${sourceId}/`,
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `token ${token}`
+      }
+    })
+    .then((response: AxiosResponse<Source[]>) => response)
+    .catch(error => error.response);
+
+    if (status === 200 || status === 201) {
+      yield put(setActiveSource(fromJS(data)) as SourcesAction);
+    } else if (status === 401) {
+      yield put(setToken(''));
+    } else {
+      yield console.log('Failed to fetch source'); //tslint:disable-line
+    }
+  } catch (error) {
+    yield console.log('Failed to fetch source'); //tslint:disable-line
+  }
+}
+
 export function* sourcesSaga() {
   yield takeLatest(FETCH_SOURCES, fetchSources);
+  yield takeLatest(FETCH_SOURCE, fetchSource);
 }

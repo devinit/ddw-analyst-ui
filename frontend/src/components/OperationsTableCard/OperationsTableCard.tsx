@@ -7,8 +7,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
-import { setOperation } from '../../pages/QueryBuilder/actions';
-import { setOperation as setQueryDataOperation } from '../../pages/QueryData/actions';
 import { OperationsState } from '../../reducers/operations';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
@@ -16,10 +14,7 @@ import { OperationMap } from '../../types/operations';
 import { OperationsTable } from '../OperationsTable/OperationsTable';
 
 interface ActionProps {
-  actions: typeof operationsActions & {
-    setQueryDataOperation: typeof setQueryDataOperation;
-    setActiveOperation: typeof setOperation;
-  };
+  actions: typeof operationsActions;
 }
 interface ReduxState {
   operations: OperationsState;
@@ -168,22 +163,17 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
 
   private viewData = (operation: OperationMap) => () => {
     const id = operation.get('id');
-    this.props.actions.setQueryDataOperation(operation);
+    this.props.actions.setOperation(operation);
     this.props.history.push(`/queries/data/${id}`);
   }
 
   private onEditOperation = (operation: OperationMap) => () => {
-    this.props.actions.setActiveOperation(operation);
-    this.props.history.push('/queries/build/');
+    this.props.history.push(`/queries/build/${operation.get('id') as number}/`);
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({
-    setQueryDataOperation,
-    ...operationsActions,
-    setActiveOperation: setOperation
-  }, dispatch)
+  actions: bindActionCreators(operationsActions, dispatch)
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {

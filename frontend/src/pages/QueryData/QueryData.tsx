@@ -7,16 +7,26 @@ import { bindActionCreators } from 'redux';
 import * as React from 'react';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
-import { ColumnList } from '../../types/sources';
+import { ColumnList, SourceMap } from '../../types/sources';
 import * as pageActions from './actions';
+import { fetchOperation, setOperation } from '../../actions/operations';
+import { fetchActiveSource, setActiveSource } from '../../actions/sources';
 import { QueryDataState, queryDataReducerId } from './reducers';
+import { getSourceIDFromOperation } from '../../utils';
 
 interface ActionProps {
-  actions: typeof pageActions;
+  actions: typeof pageActions & {
+    fetchOperation: typeof fetchOperation;
+    setOperation: typeof setOperation;
+    fetchActiveSource: typeof fetchActiveSource;
+    setActiveSource: typeof setActiveSource;
+  };
 }
 interface ReduxState {
   page: QueryDataState;
   operations: List<OperationMap>;
+  activeOperation?: OperationMap;
+  source?: SourceMap;
 }
 interface RouteParams {
   id?: string;
@@ -26,7 +36,7 @@ type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams
 class QueryData extends React.Component<QueryDataProps> {
   render() {
     const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
-    const columns = this.props.page.getIn([ 'source', 'columns' ]) as ColumnList | undefined;
+    const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
 
     return (
       <Row>
@@ -50,7 +60,10 @@ class QueryData extends React.Component<QueryDataProps> {
     if (!operation) {
       this.setOperation(id);
     } else {
-      this.props.actions.fetchOperationSource(operation);
+      const sourceID = getSourceIDFromOperation(operation);
+      if (sourceID) {
+        this.props.actions.fetchActiveSource(sourceID);
+      }
     }
     if (id) {
       this.props.actions.fetchOperationData(id);
@@ -58,24 +71,36 @@ class QueryData extends React.Component<QueryDataProps> {
   }
 
   private setOperation(id?: string) {
-    if (id) {
-      const operation = this.props.operations.find(ope => ope.get('id') === parseInt(id, 10));
-      if (operation) {
-        this.props.actions.setOperation(operation);
-        this.props.actions.fetchOperationSource(operation);
-      } else {
-        this.props.actions.fetchOperation(id);
+    if (!id) {
+      return;
+    }
+    const operation = this.props.operations.find(ope => ope.get('id') === parseInt(id, 10));
+    if (operation) {
+      this.props.actions.setOperation(operation);
+      const sourceID = getSourceIDFromOperation(operation);
+      if (sourceID) {
+        this.props.actions.fetchActiveSource(sourceID);
       }
+    } else {
+      this.props.actions.fetchOperation(id);
     }
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
-  actions: bindActionCreators(pageActions, dispatch)
+  actions: bindActionCreators({
+    ...pageActions,
+    fetchActiveSource,
+    setActiveSource,
+    fetchOperation,
+    setOperation
+  }, dispatch)
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
   page: reduxStore.get(`${queryDataReducerId}`),
-  operations: reduxStore.getIn([ 'operations', 'operations' ])
+  operations: reduxStore.getIn([ 'operations', 'operations' ]),
+  activeOperation: reduxStore.getIn([ 'operations', 'activeOperation' ]),
+  source: reduxStore.getIn([ 'sources', 'activeSource' ])
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps)(QueryData);
