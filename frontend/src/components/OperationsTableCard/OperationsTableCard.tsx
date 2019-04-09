@@ -156,13 +156,15 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
     }
   }
 
-  private viewData = (operation: OperationMap) => () => {
+  private viewData = (operation: OperationMap) => (event: React.MouseEvent<any, MouseEvent>) => {
+    event.stopPropagation();
     const id = operation.get('id');
     this.props.actions.setOperation(operation);
     this.props.history.push(`/queries/data/${id}`);
   }
 
-  private onEditOperation = (operation: OperationMap) => () => {
+  private onEditOperation = (operation: OperationMap) => (event: React.MouseEvent<any, MouseEvent>) => {
+    event.stopPropagation();
     this.props.history.push(`/queries/build/${operation.get('id') as number}/`);
   }
 }

@@ -7,7 +7,7 @@ export interface OperationsTableRowProps {
   name: string;
   updatedOn: string;
   classNames?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void;
 }
 
 const StyledRow = styled.tr`
