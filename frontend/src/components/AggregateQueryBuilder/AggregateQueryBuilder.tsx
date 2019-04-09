@@ -1,0 +1,98 @@
+import * as React from 'react';
+import { Col, Form } from 'react-bootstrap';
+import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { ColumnList, SourceMap } from '../../types/sources';
+
+interface AggregateQueryBuilderProps {
+  source: SourceMap;
+  groupBy?: string[];
+  function?: string;
+  column?: string;
+  onUpdate?: (options: string) => void;
+}
+
+export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilderProps> {
+  private functions = [
+    { key: 'Avg', text: 'Average', value: 'Avg' },
+    { key: 'Sum', text: 'Sum', value: 'Sum' },
+    { key: 'Max', text: 'Maximum', value: 'Max' },
+    { key: 'Min', text: 'Minimum', value: 'Min' },
+    { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' }
+  ];
+
+  render() {
+    const columns = this.props.source.get('columns') as ColumnList;
+
+    return (
+      <React.Fragment>
+
+        <Col md={ 6 } className="mt-2 pl-0">
+          <Form.Group>
+            <Form.Label className="bmd-label-floating">Aggregate Function</Form.Label>
+            <Dropdown
+              name="agg_func_name"
+              placeholder="Select Function"
+              fluid
+              search
+              selection
+              options={ this.functions }
+              value={ this.props.function }
+              onChange={ this.onChange }
+            />
+          </Form.Group>
+        </Col>
+
+        <Col md={ 7 } className="mt-2 pl-0">
+          <Form.Group>
+            <Form.Label className="bmd-label-floating">Of</Form.Label>
+            <Dropdown
+              name="operational_column"
+              placeholder="Select Column"
+              fluid
+              search
+              selection
+              options={ this.getSelectOptionsFromColumns(columns) }
+              value={ this.props.column }
+              onChange={ this.onChange }
+            />
+          </Form.Group>
+        </Col>
+        <Form.Group>
+          <Form.Label className="bmd-label-floating">Group By</Form.Label>
+          <Dropdown
+            name="group_by"
+            placeholder="Select Columns"
+            fluid
+            multiple
+            search
+            selection
+            options={ this.getSelectOptionsFromColumns(columns) }
+            value={ this.props.groupBy }
+            onChange={ this.onChange }
+          />
+        </Form.Group>
+      </React.Fragment>
+    );
+  }
+
+  private getSelectOptionsFromColumns(columns: ColumnList): DropdownItemProps[] {
+    if (columns.count()) {
+      return columns.map(column => ({
+        key: column.get('id'),
+        text: column.get('source_name'),
+        value: column.get('name')
+      })).toJS();
+    }
+
+    return [];
+  }
+
+  private onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    if (this.props.onUpdate) {
+      const { name, value } = data;
+      const { function: func, groupBy, column } = this.props;
+      const options = { group_by: groupBy, agg_func_name: func, operational_column: column };
+      this.props.onUpdate(JSON.stringify({ ...options, [name]: value }));
+    }
+  }
+}

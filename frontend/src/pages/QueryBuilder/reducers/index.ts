@@ -27,7 +27,6 @@ export const EDIT_OPERATION_STEP = `${queryBuilderReducerId}.EDIT_OPERATION_STEP
 export const DELETE_OPERATION_STEP = `${queryBuilderReducerId}.DELETE_OPERATION_STEP`;
 
 const defaultState: QueryBuilderState = fromJS({
-  activeSource: undefined,
   steps: [],
   activeStep: undefined,
   editingStep: false,

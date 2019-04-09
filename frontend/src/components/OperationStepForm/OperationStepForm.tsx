@@ -9,6 +9,7 @@ import { ErroredFilter, Filters, OperationStep, OperationStepMap } from '../../t
 import { SourceMap } from '../../types/sources';
 import FilterQueryBuilder from '../FilterQueryBuilder';
 import { SelectQueryBuilder } from '../SelectQueryBuilder';
+import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
 
 interface OperationStepFormState {
   alerts: FormikErrors<OperationStep>;
@@ -172,6 +173,19 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
         <SelectQueryBuilder source={ source } columns={ columns } onUpdateColumns={ this.onUpdateOptions }/>
       );
     }
+    if (query === 'aggregate') {
+      const parsedOptions = options ? JSON.parse(options) : { group_by: [], agg_func_name: '', operational_column: '' };
+
+      return (
+        <AggregateQueryBuilder
+          source={ source }
+          groupBy={ parsedOptions.group_by }
+          function={ parsedOptions.agg_func_name }
+          column={ parsedOptions.operational_column }
+          onUpdate={ this.onUpdateOptions }
+        />
+      );
+    }
   }
 
   private getFormGroupClasses(fieldName: string, value: string | number) {
@@ -218,6 +232,8 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     if (query === 'select') {
       return this.validateSelect(step);
     }
+    // TODO: validate other operations as well
+    return true;
   }
 
   private validateFilter(step: OperationStepMap) {
