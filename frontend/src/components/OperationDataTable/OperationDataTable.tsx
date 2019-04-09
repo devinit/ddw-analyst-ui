@@ -13,7 +13,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
   private MAX_COLUMNS = 6;
 
   render() {
-    if (this.props.data && this.props.columns) {
+    if (this.props.data && this.props.data.count() && this.props.columns) {
       const columns = this.getColumns(this.props.data.get(0));
       const columnMapping = this.getColumnMapping(this.props.columns, columns);
 
@@ -29,7 +29,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
       );
     }
 
-    return null;
+    return <div>No results found</div>;
   }
 
   private getColumns(item?: OperationDataMap): (string | number)[] {
