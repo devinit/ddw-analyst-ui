@@ -55,7 +55,7 @@ export const operationsReducer: Reducer<OperationsState, OperationsAction> = (st
     return state.set('loading', false);
   }
   if (action.type === SET_ACTIVE_OPERATION) {
-    return state.set('activeOperation', action.activeOperation).set('loading', !!action.loading);
+    return state.set('activeOperation', action.activeOperation).set('loading', false);
   }
 
   return state;
