@@ -79,6 +79,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
           count={ index + 1 }
           name={ operation.get('name') as string }
           updatedOn={ operation.get('updated_on') as string }
+          onClick={ this.onEditOperation(operation) }
         >
           <OperationsTable.Actions>
             <OverlayTrigger placement="top" overlay={ <Popover id="view">View Operation Data</Popover> }>

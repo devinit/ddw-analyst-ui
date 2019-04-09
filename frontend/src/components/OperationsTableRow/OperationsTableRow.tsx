@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 
 export interface OperationsTableRowProps {
@@ -9,16 +10,20 @@ export interface OperationsTableRowProps {
   onClick?: () => void;
 }
 
+const StyledRow = styled.tr`
+  cursor: ${props => props.onClick ? 'pointer' : 'default'};
+`;
+
 export class OperationsTableRow extends React.Component<OperationsTableRowProps> {
   static Actions = OperationsTableRowActions;
 
   render() {
     return (
-      <tr className={ this.props.classNames } onClick={ this.props.onClick } data-testid="operations-table-row">
+      <StyledRow className={ this.props.classNames } onClick={ this.props.onClick } data-testid="operations-table-row">
         <td>{ this.props.name }</td>
         <td>{ new Date(this.props.updatedOn).toDateString() }</td>
         <td className="td-actions text-right">{ this.renderActions() }</td>
-      </tr>
+      </StyledRow>
     );
   }
 
