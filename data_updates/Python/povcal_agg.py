@@ -9,9 +9,9 @@ from requests.packages.urllib3.util.retry import Retry
 
 
 def requests_retry_session(
-    retries=3,
+    retries=10,
     backoff_factor=0.3,
-    status_forcelist=(500, 502, 504),
+    status_forcelist=(),
     session=None,
 ):
     session = session or requests.Session()
@@ -41,12 +41,11 @@ def fetch_data(poverty_line):
     }
 
     agg_url = url + "&".join(["{}={}".format(item[0], item[1]) for item in agg_params.items()])
-
-    a_response = requests_retry_session().get(url=agg_url, timeout=30).content
-
-    agg_data = pd.read_csv(io.StringIO(a_response.decode('utf-8')))
-
-    return agg_data
+    try:
+        a_response = requests_retry_session().get(url=agg_url, timeout=30).content
+        return pd.read_csv(io.StringIO(a_response.decode('utf-8')))
+    except:
+        return pd.DataFrame(columns=["regionCID", "requestYear", "povertyLine", "hc"])
 
 
 def fetch_old_data(schema_name, table_name, boundary, engine):

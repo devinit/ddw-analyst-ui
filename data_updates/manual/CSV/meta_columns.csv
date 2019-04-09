@@ -3,24 +3,24 @@ cblb,country_name,Country name
 cblb,di_id,ISO Alpha 2
 cblb,cblb,Country Being Left Behind (1 = True)
 PovCalNetSmy,isInterpolated,Data is interpolated between survey years
-PovCalNetSmy,useMicroData,Whether the data is based on unit (microdata) observations (1) or grouped (aggregate)
+PovCalNetSmy,useMicroData,Whether the data is based on unit observations (1) or grouped observations (0)
 PovCalNetSmy,CountryCode,Country code
 PovCalNetSmy,CountryName,Country name
 PovCalNetSmy,RegionCode,World Bank region code
-PovCalNetSmy,CoverageType,"Survey type (Rural, Urban, National, Average)"
+PovCalNetSmy,CoverageType,"Survey type (Rural, Urban, National, Aggregate)"
 PovCalNetSmy,RequestYear,Standardized data year
 PovCalNetSmy,DataYear,Survey data year
-PovCalNetSmy,DataType,"Survey of income (i), consumption (c), or expenditure (x)"
+PovCalNetSmy,DataType,"Survey of income (i), consumption (c), or combined (x)"
 PovCalNetSmy,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP
 PovCalNetSmy,PovertyLine,Poverty line in PPP
 PovCalNetSmy,Mean,Mean consumption/income of the economy
 PovCalNetSmy,HeadCount,Percent of population under poverty line
 PovCalNetSmy,PovGap,The ratio of the average income under the poverty line to the poverty line
-PovCalNetSmy,PovGapSqr,Poverty gap index squared
+PovCalNetSmy,PovGapSqr,Squared Poverty Gap Index - a measure of poverty severity
 PovCalNetSmy,Watts,Watts poverty index - a measure of depth of poverty
 PovCalNetSmy,Gini,Gini coefficient - a measure of inequality
 PovCalNetSmy,Median,Median consumption/income of the economy
-PovCalNetSmy,pr.mld,Mean log deviation
+PovCalNetSmy,pr.mld,Mean log deviation - a measure of inequality
 PovCalNetSmy,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median
 PovCalNetSmy,ReqYearPopulation,Population of the country in the standardized data year
 PovCalNetSmy,SvyInfoID,Survey identification code
@@ -41,27 +41,27 @@ PovCalNetAgg,povertyLine,Poverty line in PPP
 PovCalNetAgg,mean,Mean consumption/income of the economy
 PovCalNetAgg,hc,Percent of population under the poverty line
 PovCalNetAgg,pg,The ratio of the average income under the poverty line to the poverty line
-PovCalNetAgg,p2,Poverty gap index squared
+PovCalNetAgg,p2,Squared Poverty Gap Index - a measure of poverty severity
 PovCalNetAgg,population,Population of the country in the standardized data year
 PovCalNetP20,isInterpolated,Data is interpolated between survey years
-PovCalNetP20,useMicroData,Whether the data is based on unit (microdata) observations (1) or grouped (aggregate)
+PovCalNetP20,useMicroData,Whether the data is based on unit observations (1) or grouped observations (0)
 PovCalNetP20,CountryCode,Country code
 PovCalNetP20,CountryName,Country name
 PovCalNetP20,RegionCode,World Bank region code
-PovCalNetP20,CoverageType,"Survey type (Rural, Urban, National, Average)"
+PovCalNetP20,CoverageType,"Survey type (Rural, Urban, National, Aggregate)"
 PovCalNetP20,RequestYear,Standardized data year
 PovCalNetP20,DataYear,Survey data year
-PovCalNetP20,DataType,"Survey of income (i), consumption (c), or expenditure (x)"
+PovCalNetP20,DataType,"Survey of income (i), consumption (c), or combined (x)"
 PovCalNetP20,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP
 PovCalNetP20,PovertyLine,Poverty line in PPP
 PovCalNetP20,Mean,Mean consumption/income of the economy
 PovCalNetP20,HeadCount,Percent of population under poverty line
 PovCalNetP20,PovGap,The ratio of the average income under the poverty line to the poverty line
-PovCalNetP20,PovGapSqr,Poverty gap index squared
+PovCalNetP20,PovGapSqr,Squared Poverty Gap Index - a measure of poverty severity
 PovCalNetP20,Watts,Watts poverty index - a measure of depth of poverty
 PovCalNetP20,Gini,Gini coefficient - a measure of inequality
 PovCalNetP20,Median,Median consumption/income of the economy
-PovCalNetP20,pr.mld,Mean log deviation
+PovCalNetP20,pr.mld,Mean log deviation - a measure of inequality
 PovCalNetP20,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median
 PovCalNetP20,ReqYearPopulation,Population of the country in the standardized data year
 PovCalNetP20,SvyInfoID,Survey identification code
