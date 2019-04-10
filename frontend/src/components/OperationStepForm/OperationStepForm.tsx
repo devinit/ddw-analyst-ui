@@ -7,9 +7,10 @@ import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import * as Yup from 'yup';
 import { ErroredFilter, Filters, OperationStep, OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
+import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
 import FilterQueryBuilder from '../FilterQueryBuilder';
 import { SelectQueryBuilder } from '../SelectQueryBuilder';
-import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
+import { TransformQueryBuilder } from '../TransformQueryBuilder';
 
 interface OperationStepFormState {
   alerts: FormikErrors<OperationStep>;
@@ -41,7 +42,8 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     { key: 'filter', icon: 'filter', text: 'Filter', value: 'filter' },
     { key: 'join', icon: 'chain', text: 'Join', value: 'join' },
     { key: 'aggregate', icon: 'rain', text: 'Aggregate', value: 'aggregate' },
-    { key: 'transform', icon: 'magic', text: 'Transform', value: 'transform' }
+    { key: 'scalar_transform', icon: 'magic', text: 'Scalar Transform', value: 'scalar_transform' },
+    { key: 'multi_transform', icon: 'magic', text: 'Multi Transform', value: 'multi_transform' }
   ];
 
   render() {
@@ -186,6 +188,23 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
         />
       );
     }
+    if (query === 'scalar_transform' || query === 'multi_transform') {
+      const parsedOptions = options
+        ? JSON.parse(options)
+        : { operational_value: '', trans_func_name: '', operational_column: '', operational_columns: [] };
+
+      return (
+        <TransformQueryBuilder
+          source={ source }
+          value={ parsedOptions.operational_value }
+          function={ parsedOptions.trans_func_name }
+          column={ parsedOptions.operational_column }
+          columns={ parsedOptions.operational_columns }
+          multi={ query === 'multi_transform' }
+          onUpdate={ this.onUpdateOptions }
+        />
+      );
+    }
   }
 
   private getFormGroupClasses(fieldName: string, value: string | number) {
@@ -207,7 +226,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
       setFieldValue('query_func', data.value);
       if (data.value) {
-        const step = this.props.step.set('query_func', data.value as string);
+        const step = this.props.step.set('query_func', data.value as string).set('query_kwargs', '');
         this.props.onUpdateStep(step, this.props.editing);
       }
     }

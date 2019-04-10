@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Badge } from 'react-bootstrap';
 import { Popup } from 'semantic-ui-react';
-import { OperationStepMap } from '../../types/operations';
 import styled from 'styled-components';
+import { OperationStepMap } from '../../types/operations';
 
 interface OperationStepProps {
   step: OperationStepMap;
@@ -24,7 +24,7 @@ export class OperationStepView extends React.Component<OperationStepProps> {
       <React.Fragment>
         <div>
           <Badge variant="secondary">
-            { (step.get('query_func') as string).toUpperCase() }
+            { (step.get('query_func') as string).toUpperCase().split('_').join(' ') }
           </Badge>
         </div>
         <div>
