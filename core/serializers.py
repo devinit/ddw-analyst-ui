@@ -222,6 +222,7 @@ class SourceSerializer(serializers.ModelSerializer):
             'id',
             'indicator',
             'indicator_acronym',
+            'schema',
             'source',
             'source_acronym',
             'source_url',
