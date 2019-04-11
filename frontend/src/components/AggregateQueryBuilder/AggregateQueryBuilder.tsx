@@ -51,7 +51,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
               fluid
               search
               selection
-              options={ this.getSelectOptionsFromColumns(columns) }
+              options={ this.getSelectOptionsFromColumns(columns, true) }
               value={ this.props.column }
               onChange={ this.onChange }
             />
@@ -75,8 +75,10 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
     );
   }
 
-  private getSelectOptionsFromColumns(columns: ColumnList): DropdownItemProps[] {
+  private getSelectOptionsFromColumns(columns: ColumnList, numerical = false): DropdownItemProps[] {
     if (columns.count()) {
+      columns = numerical ? columns.filter(column => column.get('data_type') === 'N') : columns;
+
       return columns.map(column => ({
         key: column.get('id'),
         text: column.get('source_name'),
