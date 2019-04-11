@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 
 
 def main():
-    engine = create_engine('postgresql://postgres@/analyst_ui')
+    engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     smy = pd.read_sql_table("PovCalNetSmy", con=engine, schema="repo")
     agg = pd.read_sql_table("PovCalNetAgg", con=engine, schema="repo")
 

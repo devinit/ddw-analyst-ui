@@ -1,12 +1,15 @@
 list.of.packages <- c("data.table","XML","RPostgreSQL")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-project.org")
 lapply(list.of.packages, require, character.only=T)
 
 drv = dbDriver("PostgreSQL")
 con = dbConnect(drv,
                 dbname="analyst_ui"
-                ,user="postgres")
+                ,user="analyst_ui_user"
+                ,password="analyst_ui_pass"
+                ,host="db"
+                ,port=5432)
 
 table.name = "PovCalNetDist"
 table.quote = c("repo",table.name)

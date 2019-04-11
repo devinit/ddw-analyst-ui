@@ -9,6 +9,7 @@ WORKDIR /src
 # install dependencies
 RUN apt-get update
 RUN apt-get install -y net-tools
+RUN apt-get install -y r-base-core
 RUN pip install -r requirements.txt
 ENV DJANGO_SETTINGS_MODULE=ddw_analyst_ui.docker_settings
 

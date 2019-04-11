@@ -5,7 +5,7 @@ import os
 
 
 def main():
-    engine = create_engine('postgresql://postgres@/analyst_ui')
+    engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     glob_path = os.path.join(dir_path, "..", "manual", "CSV", "*.csv")

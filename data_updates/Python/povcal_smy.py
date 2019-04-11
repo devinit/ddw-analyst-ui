@@ -73,7 +73,7 @@ def fetch_and_write_full_data(schema_name, table_name, engine):
 
 
 def main():
-    engine = create_engine('postgresql://postgres@/analyst_ui')
+    engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     test_data = fetch_data(poverty_line=1.9)
     existing_data = fetch_old_data("repo", "PovCalNetSmy", '"PovertyLine" = 1.9', engine)
     its_the_same = data_is_the_same(test_data, existing_data)

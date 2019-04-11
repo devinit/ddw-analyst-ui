@@ -1,6 +1,6 @@
 list.of.packages <- c("data.table","httr","utils","RPostgreSQL","reshape2")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-project.org")
 lapply(list.of.packages, require, character.only=T)
 
 make.sql.names <- function(x){
@@ -10,7 +10,10 @@ make.sql.names <- function(x){
 drv = dbDriver("PostgreSQL")
 con = dbConnect(drv,
                 dbname="analyst_ui"
-                ,user="postgres")
+                ,user="analyst_ui_user"
+                ,password="analyst_ui_pass"
+                ,host="db"
+                ,port=5432)
 
 table.name = "wdi"
 table.quote = c("repo",table.name)

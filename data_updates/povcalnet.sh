@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd /root/ddw-analyst-ui
 source env/bin/activate
 python3 data_updates/Python/povcal_agg.py  # "repo"."PovCalNetAgg"
 python3 data_updates/Python/povcal_smy.py  # "repo"."PovCalNetSmy"
