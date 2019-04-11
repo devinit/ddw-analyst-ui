@@ -1,0 +1,68 @@
+import { fromJS } from 'immutable';
+import * as React from 'react';
+import { Filters, OperationStepMap } from '../../types/operations';
+import { SourceMap } from '../../types/sources';
+import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
+import FilterQueryBuilder from '../FilterQueryBuilder';
+import { SelectQueryBuilder } from '../SelectQueryBuilder';
+import { TransformQueryBuilder } from '../TransformQueryBuilder';
+
+interface QueryBuilderHandlerProps {
+  source: SourceMap;
+  step: OperationStepMap;
+  onUpdateOptions: (options: string) => void;
+}
+
+export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
+  render() {
+    const { onUpdateOptions, step, source } = this.props;
+    const query = step.get('query_func');
+    const options = step.get('query_kwargs') as string;
+    if (query === 'filter') {
+      const { filters }: Filters = options ? JSON.parse(options) : { filters: [] };
+
+      return (
+        <FilterQueryBuilder source={ source } filters={ fromJS(filters) } onUpdateFilters={ onUpdateOptions } />
+      );
+    }
+    if (query === 'select') {
+      const { columns } = options ? JSON.parse(options) : { columns: [] }; // TODO: specify type
+
+      return (
+        <SelectQueryBuilder source={ source } columns={ columns } onUpdateColumns={ this.props.onUpdateOptions }/>
+      );
+    }
+    if (query === 'aggregate') {
+      const parsedOptions = options ? JSON.parse(options) : { group_by: [], agg_func_name: '', operational_column: '' };
+
+      return (
+        <AggregateQueryBuilder
+          source={ source }
+          groupBy={ parsedOptions.group_by }
+          function={ parsedOptions.agg_func_name }
+          column={ parsedOptions.operational_column }
+          onUpdate={ onUpdateOptions }
+        />
+      );
+    }
+    if (query === 'scalar_transform' || query === 'multi_transform') {
+      const parsedOptions = options
+        ? JSON.parse(options)
+        : { operational_value: '', trans_func_name: '', operational_column: '', operational_columns: [] };
+
+      return (
+        <TransformQueryBuilder
+          source={ source }
+          value={ parsedOptions.operational_value }
+          function={ parsedOptions.trans_func_name }
+          column={ parsedOptions.operational_column }
+          columns={ parsedOptions.operational_columns }
+          multi={ query === 'multi_transform' }
+          onUpdate={ onUpdateOptions }
+        />
+      );
+    }
+
+    return null;
+  }
+}

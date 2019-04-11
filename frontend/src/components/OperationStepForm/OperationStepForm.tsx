@@ -1,16 +1,12 @@
 import classNames from 'classnames';
 import { Formik, FormikErrors, FormikProps } from 'formik';
-import { fromJS } from 'immutable';
 import * as React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import * as Yup from 'yup';
 import { ErroredFilter, Filters, OperationStep, OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
-import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
-import FilterQueryBuilder from '../FilterQueryBuilder';
-import { SelectQueryBuilder } from '../SelectQueryBuilder';
-import { TransformQueryBuilder } from '../TransformQueryBuilder';
+import { QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface OperationStepFormState {
   alerts: FormikErrors<OperationStep>;
@@ -134,7 +130,11 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                 </Col>
 
                 <Col md={ 12 } className="mt-3">
-                  { this.renderSpecificQueryBuilder(this.props.source, this.props.step) }
+                  <QueryBuilderHandler
+                    source={ this.props.source }
+                    step={ this.props.step }
+                    onUpdateOptions={ this.onUpdateOptions }
+                  />
                 </Col>
 
                 <Col md={ 12 } className="mt-3">
@@ -156,55 +156,6 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
         }
       </Formik>
     );
-  }
-
-  private renderSpecificQueryBuilder(source: SourceMap, step: OperationStepMap) {
-    const query = step.get('query_func');
-    const options = step.get('query_kwargs') as string;
-    if (query === 'filter') {
-      const { filters }: Filters = options ? JSON.parse(options) : { filters: [] };
-
-      return (
-        <FilterQueryBuilder source={ source } filters={ fromJS(filters) } onUpdateFilters={ this.onUpdateOptions }/>
-      );
-    }
-    if (query === 'select') {
-      const { columns } = options ? JSON.parse(options) : { columns: [] }; // TODO: specify type
-
-      return (
-        <SelectQueryBuilder source={ source } columns={ columns } onUpdateColumns={ this.onUpdateOptions }/>
-      );
-    }
-    if (query === 'aggregate') {
-      const parsedOptions = options ? JSON.parse(options) : { group_by: [], agg_func_name: '', operational_column: '' };
-
-      return (
-        <AggregateQueryBuilder
-          source={ source }
-          groupBy={ parsedOptions.group_by }
-          function={ parsedOptions.agg_func_name }
-          column={ parsedOptions.operational_column }
-          onUpdate={ this.onUpdateOptions }
-        />
-      );
-    }
-    if (query === 'scalar_transform' || query === 'multi_transform') {
-      const parsedOptions = options
-        ? JSON.parse(options)
-        : { operational_value: '', trans_func_name: '', operational_column: '', operational_columns: [] };
-
-      return (
-        <TransformQueryBuilder
-          source={ source }
-          value={ parsedOptions.operational_value }
-          function={ parsedOptions.trans_func_name }
-          column={ parsedOptions.operational_column }
-          columns={ parsedOptions.operational_columns }
-          multi={ query === 'multi_transform' }
-          onUpdate={ this.onUpdateOptions }
-        />
-      );
-    }
   }
 
   private getFormGroupClasses(fieldName: string, value: string | number) {
