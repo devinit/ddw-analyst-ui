@@ -36,7 +36,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
     return (
       <React.Fragment>
 
-        <Col md={ 6 } className="mt-2 pl-0">
+        <Col md={ 5 } className="mt-2 pl-0">
           <Form.Group>
             <Form.Label className="bmd-label-floating">Transform Function</Form.Label>
             <Dropdown
@@ -52,7 +52,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
           </Form.Group>
         </Col>
 
-        <Col md={ this.props.multi ? 12 : 7 } className="mt-2 pl-0">
+        <Col md={ this.props.multi ? 12 : 5 } className={ classNames('mt-2 pl-0', { 'd-none': !this.props.function }) }>
           <Form.Group>
             <Form.Label className="bmd-label-floating">On</Form.Label>
             <Dropdown
@@ -62,14 +62,14 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               fluid
               search
               selection
-              options={ this.getSelectOptionsFromColumns(columns) }
+              options={ this.getSelectOptionsFromColumns(columns, this.props.function) }
               value={ this.props.multi ? this.props.columns : this.props.column }
               onChange={ this.onSelectChange }
             />
           </Form.Group>
         </Col>
 
-        <Col md={ 5 } className="mt-2 pl-0">
+        <Col md={ 7 } className={ classNames('mt-2 pl-0', { 'd-none': !this.props.function }) }>
           <Form.Group
             hidden={ this.props.multi }
             className={ this.getFormGroupClasses('operational_value', this.props.value || '') }
@@ -77,7 +77,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
             <Form.Label className="bmd-label-floating">Value</Form.Label>
             <Form.Control
               name="operational_value"
-              type="text"
+              type={ this.props.function && this.isNumerical(this.props.function) ? 'number' : 'text' }
               onChange={ this.onTextChange }
               onFocus={ this.setFocusedField }
               onBlur={ this.resetFocus }
@@ -96,8 +96,17 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
     });
   }
 
-  private getSelectOptionsFromColumns(columns: ColumnList): DropdownItemProps[] {
+  private isNumerical(functn: string) {
+    return functn !== 'text_search' && functn !== 'concat';
+  }
+
+  private getSelectOptionsFromColumns(columns: ColumnList, functn?: string): DropdownItemProps[] {
     if (columns.count()) {
+      if (functn) {
+        const dataType: 'N' | 'C' = this.isNumerical(functn) ? 'N' : 'C';
+        columns = columns.filter(column => column.get('data_type') === dataType);
+      }
+
       return columns.map(column => ({
         key: column.get('id'),
         text: column.get('source_name'),

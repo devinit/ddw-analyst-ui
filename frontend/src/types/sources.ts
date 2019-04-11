@@ -11,6 +11,7 @@ export interface Source {
   last_updated_on: string;
   storage_type: string | null;
   active_mirror_name: string | null;
+  schema: string | null;
   description: string | null;
   created_on: string;
   updated_on: string | null;
@@ -22,6 +23,7 @@ export interface Column {
   name: string | null;
   description: string | null;
   source_name: string | null;
+  data_type: 'N' | 'C' | null;
 }
 export interface UpdateHistory {
   source: number;
