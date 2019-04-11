@@ -1,9 +1,10 @@
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 import * as React from 'react';
 import { Card, Nav, Tab } from 'react-bootstrap';
 import { ColumnList, SourceMap, UpdateHistoryList } from '../../types/sources';
 import { InfoList, InfoListItems } from '../InfoList';
 import { SourceMetadata } from '../SourceMetadata';
+import { PaginatedContent } from '../PaginatedContent';
 
 interface SourceDetailsProps {
   source: SourceMap;
@@ -32,19 +33,19 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
                 <SourceMetadata source={ this.props.source }/>
               </Tab.Pane>
               <Tab.Pane eventKey="columns">
-                <InfoList
+                <PaginatedContent
+                  content={ <InfoList list={ List() } className="source-columns-table" /> }
                   list={ this.getColumns() }
                   limit={ 10 }
                   offset={ 0 }
-                  className="source-columns-table"
                 />
               </Tab.Pane>
               <Tab.Pane eventKey="history">
-                <InfoList
+                <PaginatedContent
+                  content={ <InfoList list={ List() } className="source-columns-table" /> }
                   list={ this.getUpdateHistory() }
                   limit={ 10 }
                   offset={ 0 }
-                  className="source-history-table"
                 />
               </Tab.Pane>
             </Tab.Content>

@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 test('renders correctly with the default props', () => {
-  const { container } = render(<InfoList list={ list } limit={ 10 } offset={ 0 }/>);
+  const { container } = render(<InfoList list={ list }/>);
 
   expect(container).toMatchSnapshot();
 });
@@ -21,24 +21,24 @@ test('renders correctly with the default props', () => {
 test('renders all list items', async () => {
   list = list.push(Map({ caption: 'Item 2', info: 'My Second Item' }) as InfoMap);
   expect(list.count()).toEqual(2);
-  const { container } = render(<InfoList list={ list } limit={ 10 } offset={ 0 }/>);
+  const { container } = render(<InfoList list={ list }/>);
 
   expect(container).toMatchSnapshot();
 });
 
 test('updates when the list changes', () => {
-  const { container, rerender } = render(<InfoList list={ list } limit={ 10 } offset={ 0 }/>);
+  const { container, rerender } = render(<InfoList list={ list }/>);
 
   expect(container).toMatchSnapshot();
 
   list = list.push(Map({ caption: 'Item 2', info: 'My Second Item' }) as InfoMap);
-  rerender(<InfoList list={ list } limit={ 10 } offset={ 0 }/>);
+  rerender(<InfoList list={ list }/>);
 
   expect(container).toMatchSnapshot();
 });
 
 test('renders the info on hover', async () => {
-  const { getByTestId } = render(<InfoList list={ list } limit={ 10 } offset={ 0 }/>);
+  const { getByTestId } = render(<InfoList list={ list }/>);
 
   fireEvent.mouseEnter(getByTestId('info-trigger'));
   const popOver = await waitForElement(() => getByTestId('info-list-info'));
@@ -48,28 +48,7 @@ test('renders the info on hover', async () => {
 
 test('does not render the info trigger when no info is provided', async () => {
   list = list.set(0, Map({ caption: 'Item 1', info: '' }) as InfoMap);
-  const { container } = render(<InfoList list={ list } limit={ 10 } offset={ 0 }/>);
+  const { container } = render(<InfoList list={ list }/>);
 
-  expect(container).toMatchSnapshot();
-});
-
-test('renders the pagination when the list exceeds the page limit', async () => {
-  for (let count = 1; count < 12; count++) {
-    list = list.push(Map({ caption: `Item ${count + 1}`, info: `Item Number ${ count + 1}` }) as InfoMap);
-  }
-  const { container, getByTestId } = render(<InfoList list={ list } limit={ 5 } offset={ 0 }/>);
-
-  expect(container).toMatchSnapshot();
-
-  fireEvent.click(getByTestId('info-pagination-next'));
-  expect(container).toMatchSnapshot();
-
-  fireEvent.click(getByTestId('info-pagination-prev'));
-  expect(container).toMatchSnapshot();
-
-  fireEvent.click(getByTestId('info-pagination-last'));
-  expect(container).toMatchSnapshot();
-
-  fireEvent.click(getByTestId('info-pagination-first'));
   expect(container).toMatchSnapshot();
 });

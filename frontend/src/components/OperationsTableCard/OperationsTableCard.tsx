@@ -7,8 +7,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
-import { updateOperation } from '../../pages/QueryBuilder/actions';
-import { setOperation as setQueryDataOperation } from '../../pages/QueryData/actions';
 import { OperationsState } from '../../reducers/operations';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
@@ -16,10 +14,7 @@ import { OperationMap } from '../../types/operations';
 import { OperationsTable } from '../OperationsTable/OperationsTable';
 
 interface ActionProps {
-  actions: typeof operationsActions & {
-    setQueryDataOperation: typeof setQueryDataOperation;
-    setActiveOperation: typeof updateOperation;
-  };
+  actions: typeof operationsActions;
 }
 interface ReduxState {
   operations: OperationsState;
@@ -67,11 +62,8 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
   }
 
   componentDidMount() {
-    const operations = this.props.operations.get('operations') as List<OperationMap>;
     const loading = this.props.operations.get('loading') as boolean;
-    if (!operations.count() && !loading) {
-      this.props.actions.fetchOperations({ limit: 10, offset: 0 });
-    } else {
+    if (!loading) {
       this.props.actions.fetchOperations({ limit: this.props.limit, offset: this.props.offset });
     }
   }
@@ -84,18 +76,16 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
           count={ index + 1 }
           name={ operation.get('name') as string }
           updatedOn={ operation.get('updated_on') as string }
+          onClick={ this.onEditOperation(operation) }
         >
           <OperationsTable.Actions>
             <OverlayTrigger placement="top" overlay={ <Popover id="view">View Operation Data</Popover> }>
               <Button variant="danger" size="sm" className="btn-link" onClick={ this.viewData(operation) }>
-                <i className="material-icons">view_headline</i>
+                View Data
               </Button>
             </OverlayTrigger>
             <Button variant="danger" size="sm" className="btn-link" onClick={ this.onEditOperation(operation) }>
-              <i className="material-icons">edit</i>
-            </Button>
-            <Button variant="danger" size="sm" className="btn-link d-none">
-              <i className="material-icons">delete</i>
+              Edit
             </Button>
           </OperationsTable.Actions>
         </OperationsTable.Row>
@@ -166,24 +156,21 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
     }
   }
 
-  private viewData = (operation: OperationMap) => () => {
+  private viewData = (operation: OperationMap) => (event: React.MouseEvent<any, MouseEvent>) => {
+    event.stopPropagation();
     const id = operation.get('id');
-    this.props.actions.setQueryDataOperation(operation);
+    this.props.actions.setOperation(operation);
     this.props.history.push(`/queries/data/${id}`);
   }
 
-  private onEditOperation = (operation: OperationMap) => () => {
-    this.props.actions.setActiveOperation(operation);
-    this.props.history.push('/queries/build/');
+  private onEditOperation = (operation: OperationMap) => (event: React.MouseEvent<any, MouseEvent>) => {
+    event.stopPropagation();
+    this.props.history.push(`/queries/build/${operation.get('id') as number}/`);
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({
-    setQueryDataOperation,
-    ...operationsActions,
-    setActiveOperation: updateOperation
-  }, dispatch)
+  actions: bindActionCreators(operationsActions, dispatch)
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {

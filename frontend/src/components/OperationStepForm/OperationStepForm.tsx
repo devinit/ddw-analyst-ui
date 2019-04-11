@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { ErroredFilter, Filters, OperationStep, OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import FilterQueryBuilder from '../FilterQueryBuilder';
+import { SelectQueryBuilder } from '../SelectQueryBuilder';
 
 interface OperationStepFormState {
   alerts: FormikErrors<OperationStep>;
@@ -35,6 +36,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     query_func: Yup.string().required('Operation is required!')
   });
   private queries = [
+    { key: 'select', icon: 'check', text: 'Select', value: 'select' },
     { key: 'filter', icon: 'filter', text: 'Filter', value: 'filter' },
     { key: 'join', icon: 'chain', text: 'Join', value: 'join' },
     { key: 'aggregate', icon: 'rain', text: 'Aggregate', value: 'aggregate' },
@@ -109,20 +111,23 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                 </Col>
 
                 <Col md={ 5 } className="mt-2">
-                  <Dropdown
-                    placeholder="Select Query"
-                    fluid
-                    options={ this.queries }
-                    selection
-                    defaultValue={ values.query_func }
-                    onChange={ this.onSelectQuery(setFieldValue) }
-                  />
-                  <Form.Control.Feedback
-                    type="invalid"
-                    className={ classNames({ 'd-block': !!(errors && errors.query_func) }) }
-                  >
-                    { errors.query_func ? errors.query_func : null }
-                  </Form.Control.Feedback>
+                  <Form.Group>
+                    <Form.Label className="bmd-label-floating">Query</Form.Label>
+                    <Dropdown
+                      placeholder="Select Query"
+                      fluid
+                      options={ this.queries }
+                      selection
+                      defaultValue={ values.query_func }
+                      onChange={ this.onSelectQuery(setFieldValue) }
+                    />
+                    <Form.Control.Feedback
+                      type="invalid"
+                      className={ classNames({ 'd-block': !!(errors && errors.query_func) }) }
+                    >
+                      { errors.query_func ? errors.query_func : null }
+                    </Form.Control.Feedback>
+                  </Form.Group>
                 </Col>
 
                 <Col md={ 12 } className="mt-3">
@@ -152,12 +157,19 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
 
   private renderSpecificQueryBuilder(source: SourceMap, step: OperationStepMap) {
     const query = step.get('query_func');
+    const options = step.get('query_kwargs') as string;
     if (query === 'filter') {
-      const options = step.get('query_kwargs') as string;
       const { filters }: Filters = options ? JSON.parse(options) : { filters: [] };
 
       return (
         <FilterQueryBuilder source={ source } filters={ fromJS(filters) } onUpdateFilters={ this.onUpdateOptions }/>
+      );
+    }
+    if (query === 'select') {
+      const { columns } = options ? JSON.parse(options) : { columns: [] }; // TODO: specify type
+
+      return (
+        <SelectQueryBuilder source={ source } columns={ columns } onUpdateColumns={ this.onUpdateOptions }/>
       );
     }
   }
@@ -186,12 +198,10 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
       }
     }
 
-  private onSuccess = (values: Partial<OperationStep>) => {
+  private onSuccess = (step: Partial<OperationStep>) => {
     if (this.validateStepOptions(this.props.step)) {
       const query = this.props.step.get('query_func');
-      if (query === 'filter') {
-        this.props.onSuccess(this.processFilter(values));
-      }
+      this.props.onSuccess(this.processStep(step, query as string));
     }
   }
 
@@ -204,6 +214,9 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     const query = step.get('query_func');
     if (query === 'filter') {
       return this.validateFilter(step);
+    }
+    if (query === 'select') {
+      return this.validateSelect(step);
     }
   }
 
@@ -238,19 +251,33 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     }
   }
 
-  private processFilter(values: Partial<OperationStep>): OperationStepMap {
+  private processStep(values: Partial<OperationStep>, query: string): OperationStepMap {
     const options = this.props.step.get('query_kwargs') as string;
     const source = this.props.source.get('id') as number;
-    const { filters }: Filters<ErroredFilter[]> = options ? JSON.parse(options) : { filters: [] };
-    const filtersWithoutErrors = filters.map(({ field, func, value }) => ({ field, func, value }));
+    let step = this.props.step;
+    if (query === 'filter') {
+      const { filters }: Filters<ErroredFilter[]> = options ? JSON.parse(options) : { filters: [] };
+      const filtersWithoutErrors = filters.map(({ field, func, value }) => ({ field, func, value }));
+      step = step.set('query_kwargs', JSON.stringify({ filters: filtersWithoutErrors }));
+    }
 
-    return this.props.step.withMutations(step => step
-      .set('query_kwargs', JSON.stringify({ filters: filtersWithoutErrors }))
+    return step.withMutations(_step => _step
       .set('name', values.name || '')
       .set('description', values.description || '')
       .set('step_id', values.step_id || '')
       .set('query_func', values.query_func || '')
       .set('source', source || '')
     );
+  }
+
+  private validateSelect(step: OperationStepMap) {
+    const options = step.get('query_kwargs') as string;
+    const { columns }: { columns: string[] } = options ? JSON.parse(options) : { columns: [] };
+    if (columns.length) {
+      return true;
+    }
+    this.setState({ alerts: { query_func: 'At least one column is required!' } });
+
+    return false;
   }
 }

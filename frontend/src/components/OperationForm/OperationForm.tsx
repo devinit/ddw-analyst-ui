@@ -3,9 +3,10 @@ import { Formik, FormikProps } from 'formik';
 import { fromJS } from 'immutable';
 import { debounce } from 'lodash';
 import * as React from 'react';
-import { Alert, Button, Col, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Operation, OperationMap } from '../../types/operations';
+import { CheckBox } from '../CheckBox';
 
 interface OperationFormProps {
   operation?: OperationMap;
@@ -13,7 +14,8 @@ interface OperationFormProps {
   valid?: boolean;
   processing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
-  onSuccess: () => void;
+  onDeleteOperation?: (operation: OperationMap) => void;
+  onSuccess: (preview?: boolean) => void;
 }
 interface OperationFormState {
   alerts: Partial<Operation>;
@@ -41,7 +43,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
       <Formik
         validationSchema={ this.schema }
         initialValues={ values }
-        onSubmit={ this.onSuccess }
+        onSubmit={ this.onSuccess() }
         isInitialValid={ this.schema.isValidSync(values) }
       >
         {
@@ -51,81 +53,63 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 { this.props.alert }
               </Alert>
 
-              <Col>
-                <Form.Group className={ this.getFormGroupClasses('name', values.name) }>
-                  <Form.Label className="bmd-label-floating">Name</Form.Label>
-                  <Form.Control
-                    required
-                    name="name"
-                    type="text"
-                    defaultValue={ values.name }
-                    isInvalid={ !!errors.name }
-                    onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
-                    onFocus={ this.setFocusedField }
-                    onBlur={ this.resetFocus }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    { errors.name ? errors.name : null }
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
+              <Form.Group className={ this.getFormGroupClasses('name', values.name) }>
+                <Form.Label className="bmd-label-floating">Name</Form.Label>
+                <Form.Control
+                  required
+                  name="name"
+                  type="text"
+                  defaultValue={ values.name }
+                  isInvalid={ !!errors.name }
+                  onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
+                  onFocus={ this.setFocusedField }
+                  onBlur={ this.resetFocus }
+                />
+                <Form.Control.Feedback type="invalid">
+                  { errors.name ? errors.name : null }
+                </Form.Control.Feedback>
+              </Form.Group>
 
-              <Col>
-                <Form.Group className={ this.getFormGroupClasses('description', values.description) }>
-                  <Form.Label className="bmd-label-floating">Description</Form.Label>
-                  <Form.Control
-                    name="description"
-                    as="textarea"
-                    onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
-                    isInvalid={ !!errors.description }
-                    onFocus={ this.setFocusedField }
-                    onBlur={ this.resetFocus }
-                    defaultValue={ values.description ? values.description.toString() : '' }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    { errors.description ? errors.description : null }
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
+              <Form.Group className={ this.getFormGroupClasses('description', values.description) }>
+                <Form.Label className="bmd-label-floating">Description</Form.Label>
+                <Form.Control
+                  name="description"
+                  as="textarea"
+                  onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
+                  isInvalid={ !!errors.description }
+                  onFocus={ this.setFocusedField }
+                  onBlur={ this.resetFocus }
+                  defaultValue={ values.description ? values.description.toString() : '' }
+                />
+                <Form.Control.Feedback type="invalid">
+                  { errors.description ? errors.description : null }
+                </Form.Control.Feedback>
+              </Form.Group>
 
-              <Col>
-                <Form.Group className={ this.getFormGroupClasses('sample_output_path', values.sample_output_path) }>
-                  <Form.Label className="bmd-label-floating">Sample Output Path</Form.Label>
-                  <Form.Control
-                    name="sample_output_path"
-                    type="text"
-                    onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
-                    isInvalid={ !!errors.sample_output_path }
-                    onFocus={ this.setFocusedField }
-                    onBlur={ this.resetFocus }
-                    defaultValue={ values.sample_output_path }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    { errors.sample_output_path ? errors.sample_output_path : null }
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
+              <CheckBox defaultChecked={ values.is_draft } onChange={ this.toggleDraft } label="Is Draft"/>
 
-              <Col>
-                <Form.Group>
-                  <Form.Check type="checkbox">
-                    <Form.Check.Label>
-                      <Form.Check.Input onChange={ this.toggleDraft } defaultChecked={ values.is_draft }/>
-                      Is Draft
-                      <span className="form-check-sign">
-                        <span className="check"/>
-                      </span>
-                    </Form.Check.Label>
-                  </Form.Check>
-                </Form.Group>
-              </Col>
+              { this.props.children }
 
               <Button
                 variant="danger"
                 disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
-                onClick={ this.onSuccess }
+                onClick={ this.onSuccess() }
               >
                 { this.props.processing ? 'Saving ...' : 'Save' }
+              </Button>
+              <Button
+                variant="danger"
+                disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
+                onClick={ this.onSuccess(true) }
+              >
+                { this.props.processing ? 'Saving ...' : 'Save & Preview' }
+              </Button>
+              <Button
+                variant="secondary"
+                className={ classNames('float-right', { 'd-none': !this.props.operation }) }
+                onClick={ this.onDelete }
+              >
+                <i className="material-icons">delete</i>
               </Button>
             </Form>
           )
@@ -176,7 +160,11 @@ export class OperationForm extends React.Component<OperationFormProps> {
     }
   }
 
-  private onSuccess = () => {
-    this.props.onSuccess();
+  private onSuccess = (preview = false) => () => this.props.onSuccess(preview);
+
+  private onDelete = () => {
+    if (this.props.onDeleteOperation && this.props.operation) {
+      this.props.onDeleteOperation(this.props.operation);
+    }
   }
 }

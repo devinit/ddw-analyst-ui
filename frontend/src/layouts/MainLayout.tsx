@@ -105,7 +105,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Navbar.Brand href="/">
                 <Route path="/" exact component={ () => <span>Home</span> }/>
                 <Route path="/sources" exact component={ () => <span>Data Sources</span> }/>
-                <Route path="/queries/build" exact component={ () => <span>Query Builder</span> }/>
+                <Route path="/queries/build" component={ () => <span>Query Builder</span> }/>
               </Navbar.Brand>
             </div>
 
@@ -138,6 +138,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/" exact component={ Home }/>
               <Route path="/sources" exact component={ DataSources }/>
               <Route path="/queries/build" exact component={ QueryBuilder }/>
+              <Route path="/queries/build/:id" exact component={ QueryBuilder }/>
               <Route path="/queries/data/:id" exact component={ QueryData }/>
             </Switch>
           </AdminLayout.Content>

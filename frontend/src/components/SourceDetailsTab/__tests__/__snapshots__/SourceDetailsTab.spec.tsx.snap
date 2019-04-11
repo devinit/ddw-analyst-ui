@@ -124,29 +124,31 @@ exports[`renders correctly with default props 1`] = `
           role="tabpanel"
         >
           <div>
-            <table
-              class="table source-columns-table table-sm"
-            >
-              <tbody>
-                <tr>
-                  <td
-                    colspan="1"
-                  >
-                    Column 1
-                  </td>
-                  <td
-                    class="text-right"
-                  >
-                    <i
-                      class="material-icons"
-                      data-testid="info-trigger"
+            <div>
+              <table
+                class="table source-columns-table table-sm"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      colspan="1"
                     >
-                      info
-                    </i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                      Column 1
+                    </td>
+                    <td
+                      class="text-right"
+                    >
+                      <i
+                        class="material-icons"
+                        data-testid="info-trigger"
+                      >
+                        info
+                      </i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div
@@ -155,29 +157,31 @@ exports[`renders correctly with default props 1`] = `
           role="tabpanel"
         >
           <div>
-            <table
-              class="table source-history-table table-sm"
-            >
-              <tbody>
-                <tr>
-                  <td
-                    colspan="1"
-                  >
-                    Sun Aug 19 2018 23:15:30 GMT+0300 (East Africa Time)
-                  </td>
-                  <td
-                    class="text-right"
-                  >
-                    <i
-                      class="material-icons"
-                      data-testid="info-trigger"
+            <div>
+              <table
+                class="table source-columns-table table-sm"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      colspan="1"
                     >
-                      info
-                    </i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                      Sun Aug 19 2018 23:15:30 GMT+0300 (East Africa Time)
+                    </td>
+                    <td
+                      class="text-right"
+                    >
+                      <i
+                        class="material-icons"
+                        data-testid="info-trigger"
+                      >
+                        info
+                      </i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
