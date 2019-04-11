@@ -109,3 +109,9 @@ di_deflators_2017,dac_marker,Country is a member of the OECD DAC,N
 di_deflators_2017,eu_marker,Country is a member of the EU,N
 di_deflators_2017,year,Year,N
 di_deflators_2017,value,Deflator multiplier,N
+wdi,country_name,Country name,C
+wdi,country_code,Country code,C
+wdi,indicator_name,Indicator name,C
+wdi,indicator_code,Indicator code,C
+wdi,year,Year,N
+wdi,value,Value,N
