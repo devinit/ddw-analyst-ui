@@ -191,7 +191,7 @@ class SourceColumnMapSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SourceColumnMap
-        fields = ('id', 'source', 'name', 'description', 'source_name')
+        fields = ('id', 'source', 'name', 'description', 'source_name', 'data_type')
 
 
 class UpdateHistorySerializer(serializers.ModelSerializer):
