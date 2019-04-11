@@ -16,6 +16,7 @@ interface OperationFormProps {
   onUpdateOperation?: (operation: OperationMap) => void;
   onDeleteOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
+  onReset?: () => void;
 }
 interface OperationFormState {
   alerts: Partial<Operation>;
@@ -59,7 +60,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   required
                   name="name"
                   type="text"
-                  defaultValue={ values.name }
+                  value={ values.name || '' }
                   isInvalid={ !!errors.name }
                   onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
                   onFocus={ this.setFocusedField }
@@ -79,7 +80,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   isInvalid={ !!errors.description }
                   onFocus={ this.setFocusedField }
                   onBlur={ this.resetFocus }
-                  defaultValue={ values.description ? values.description.toString() : '' }
+                  value={ values.description ? values.description.toString() : '' }
                 />
                 <Form.Control.Feedback type="invalid">
                   { errors.description ? errors.description : null }
@@ -94,6 +95,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 variant="danger"
                 disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
                 onClick={ this.onSuccess() }
+                size="sm"
               >
                 { this.props.processing ? 'Saving ...' : 'Save' }
               </Button>
@@ -101,13 +103,19 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 variant="danger"
                 disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
                 onClick={ this.onSuccess(true) }
+                size="sm"
               >
                 { this.props.processing ? 'Saving ...' : 'Save & Preview' }
+              </Button>
+              <Button variant="danger" onClick={ this.props.onReset } size="sm">
+                <i className="material-icons">refresh</i>
+                Reset
               </Button>
               <Button
                 variant="secondary"
                 className={ classNames('float-right', { 'd-none': !this.props.operation }) }
                 onClick={ this.onDelete }
+                size="sm"
               >
                 <i className="material-icons">delete</i>
               </Button>

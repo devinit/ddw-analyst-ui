@@ -129,6 +129,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         onSuccess={ this.onSaveOperation }
         processing={ this.props.page.get('processing') as boolean }
         onDeleteOperation={ this.onDeleteOperation }
+        onReset={ () => this.props.actions.setActiveOperation() }
       >
         <OperationSteps
           sources={ this.props.sources.get('sources') as List<SourceMap> }
