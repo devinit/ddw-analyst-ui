@@ -1,117 +1,117 @@
-active_mirror_name,col_name,col_description,data_type
-cblb,country_name,Country name,C
-cblb,di_id,ISO Alpha 2,C
-cblb,cblb,Country Being Left Behind (1 = True),N
-PovCalNetSmy,isInterpolated,Data is interpolated between survey years,N
-PovCalNetSmy,useMicroData,Whether the data is based on unit observations (1) or grouped observations (0),N
-PovCalNetSmy,CountryCode,Country code,C
-PovCalNetSmy,CountryName,Country name,C
-PovCalNetSmy,RegionCode,World Bank region code,C
-PovCalNetSmy,CoverageType,"Survey type (Rural, Urban, National, Aggregate)",C
-PovCalNetSmy,RequestYear,Standardized data year,N
-PovCalNetSmy,DataYear,Survey data year,N
-PovCalNetSmy,DataType,"Survey of income (i), consumption (c), or combined (x)",C
-PovCalNetSmy,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP,N
-PovCalNetSmy,PovertyLine,Poverty line in PPP,N
-PovCalNetSmy,Mean,Mean consumption/income of the economy,N
-PovCalNetSmy,HeadCount,Percent of population under poverty line,N
-PovCalNetSmy,PovGap,The ratio of the average income under the poverty line to the poverty line,N
-PovCalNetSmy,PovGapSqr,Squared Poverty Gap Index - a measure of poverty severity,N
-PovCalNetSmy,Watts,Watts poverty index - a measure of depth of poverty,N
-PovCalNetSmy,Gini,Gini coefficient - a measure of inequality,N
-PovCalNetSmy,Median,Median consumption/income of the economy,N
-PovCalNetSmy,pr.mld,Mean log deviation - a measure of inequality,N
-PovCalNetSmy,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median,N
-PovCalNetSmy,ReqYearPopulation,Population of the country in the standardized data year,N
-PovCalNetSmy,SvyInfoID,Survey identification code,C
-PovCalNetSmy,Decile1,Percent of total consumption/income owned by the bottom 10%,N
-PovCalNetSmy,Decile2,Percent of total consumption/income owned by those between the 10% and 20% percentiles,N
-PovCalNetSmy,Decile3,Percent of total consumption/income owned by those between the 20% and 30% percentiles,N
-PovCalNetSmy,Decile4,Percent of total consumption/income owned by those between the 30% and 40% percentiles,N
-PovCalNetSmy,Decile5,Percent of total consumption/income owned by those between the 40% and 50% percentiles,N
-PovCalNetSmy,Decile6,Percent of total consumption/income owned by those between the 50% and 60% percentiles,N
-PovCalNetSmy,Decile7,Percent of total consumption/income owned by those between the 60% and 70% percentiles,N
-PovCalNetSmy,Decile8,Percent of total consumption/income owned by those between the 70% and 80% percentiles,N
-PovCalNetSmy,Decile9,Percent of total consumption/income owned by those between the 80% and 90% percentiles,N
-PovCalNetSmy,Decile10,Percent of total consumption/income owned by the top 10%,N
-PovCalNetAgg,requestYear,Standarized data year,N
-PovCalNetAgg,regionTitle,Region name,C
-PovCalNetAgg,regionCID,Region code,C
-PovCalNetAgg,povertyLine,Poverty line in PPP,N
-PovCalNetAgg,mean,Mean consumption/income of the economy,N
-PovCalNetAgg,hc,Percent of population under the poverty line,N
-PovCalNetAgg,pg,The ratio of the average income under the poverty line to the poverty line,N
-PovCalNetAgg,p2,Squared Poverty Gap Index - a measure of poverty severity,N
-PovCalNetAgg,population,Population of the country in the standardized data year,N
-PovCalNetP20,isInterpolated,Data is interpolated between survey years,N
-PovCalNetP20,useMicroData,Whether the data is based on unit observations (1) or grouped observations (0),N
-PovCalNetP20,CountryCode,Country code,C
-PovCalNetP20,CountryName,Country name,C
-PovCalNetP20,RegionCode,World Bank region code,C
-PovCalNetP20,CoverageType,"Survey type (Rural, Urban, National, Aggregate)",C
-PovCalNetP20,RequestYear,Standardized data year,N
-PovCalNetP20,DataYear,Survey data year,N
-PovCalNetP20,DataType,"Survey of income (i), consumption (c), or combined (x)",C
-PovCalNetP20,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP,N
-PovCalNetP20,PovertyLine,Poverty line in PPP,N
-PovCalNetP20,Mean,Mean consumption/income of the economy,N
-PovCalNetP20,HeadCount,Percent of population under poverty line,N
-PovCalNetP20,PovGap,The ratio of the average income under the poverty line to the poverty line,N
-PovCalNetP20,PovGapSqr,Squared Poverty Gap Index - a measure of poverty severity,N
-PovCalNetP20,Watts,Watts poverty index - a measure of depth of poverty,N
-PovCalNetP20,Gini,Gini coefficient - a measure of inequality,N
-PovCalNetP20,Median,Median consumption/income of the economy,N
-PovCalNetP20,pr.mld,Mean log deviation - a measure of inequality,N
-PovCalNetP20,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median,N
-PovCalNetP20,ReqYearPopulation,Population of the country in the standardized data year,N
-PovCalNetP20,SvyInfoID,Survey identification code,C
-PovCalNetP20,Decile1,Percent of total consumption/income owned by the bottom 10%,N
-PovCalNetP20,Decile2,Percent of total consumption/income owned by those between the 10% and 20% percentiles,N
-PovCalNetP20,Decile3,Percent of total consumption/income owned by those between the 20% and 30% percentiles,N
-PovCalNetP20,Decile4,Percent of total consumption/income owned by those between the 30% and 40% percentiles,N
-PovCalNetP20,Decile5,Percent of total consumption/income owned by those between the 40% and 50% percentiles,N
-PovCalNetP20,Decile6,Percent of total consumption/income owned by those between the 50% and 60% percentiles,N
-PovCalNetP20,Decile7,Percent of total consumption/income owned by those between the 60% and 70% percentiles,N
-PovCalNetP20,Decile8,Percent of total consumption/income owned by those between the 70% and 80% percentiles,N
-PovCalNetP20,Decile9,Percent of total consumption/income owned by those between the 80% and 90% percentiles,N
-PovCalNetP20,Decile10,Percent of total consumption/income owned by the top 10%,N
-PovCalNetDist,i,Population percentile index (maximum varies by survey),N
-PovCalNetDist,P,Cumulative percentile of population,N
-PovCalNetDist,L,Cumulative percent of consumption/income,N
-PovCalNetDist,svy,Survey code comprised of a 3 digit country code and a 1 digit coverage type code,C
-PovCalNetDist,year,Survey year,N
-ldcs,country_name,Country name,C
-ldcs,di_id,ISO Alpha 2,C
-ldcs,ldc,Least developed country (1 = True),N
-fragility,country_name,Country name,C
-fragility,di_id,ISO Alpha 2,C
-fragility,fragile_2018,Fragility status in 2018,N
-historical_income_groupings,country_name,Country name,C
-historical_income_groupings,di_id,ISO Alpha 2,C
-historical_income_groupings,year,Year,N
-historical_income_groupings,income_group,World Bank income grouping,C
-oecd_regions,country_name,Country name,C
-oecd_regions,di_id,ISO Alpha 2,C
-oecd_regions,region_name,Region name,C
-oecd_regions,region_code,Region code,C
-developing_countries,country_name,Country name,C
-developing_countries,di_id,ISO Alpha 2,C
-developing_countries,developing,Developing country marker (1 = True),N
-di_deflators_2016,di_id,ISO Alpha 2,C
-di_deflators_2016,country_name,Country name,C
-di_deflators_2016,dac_marker,Country is a member of the OECD DAC,N
-di_deflators_2016,eu_marker,Country is a member of the EU,N
-di_deflators_2016,year,Year,N
-di_deflators_2016,value,Deflator multiplier,N
-di_deflators_2017,di_id,ISO Alpha 2,C
-di_deflators_2017,country_name,Country name,C
-di_deflators_2017,dac_marker,Country is a member of the OECD DAC,N
-di_deflators_2017,eu_marker,Country is a member of the EU,N
-di_deflators_2017,year,Year,N
-di_deflators_2017,value,Deflator multiplier,N
-wdi,country_name,Country name,C
-wdi,country_code,Country code,C
-wdi,indicator_name,Indicator name,C
-wdi,indicator_code,Indicator code,C
-wdi,year,Year,N
-wdi,value,Value,N
+active_mirror_name,col_name,col_source_name,col_description,data_type
+cblb,country_name,country_name,Country name,C
+cblb,di_id,di_id,ISO Alpha 2,C
+cblb,cblb,cblb,Country Being Left Behind (1 = True),N
+PovCalNetSmy,isInterpolated,isInterpolated,Data is interpolated between survey years,N
+PovCalNetSmy,useMicroData,useMicroData,Whether the data is based on unit observations (1) or grouped observations (0),N
+PovCalNetSmy,CountryCode,CountryCode,Country code,C
+PovCalNetSmy,CountryName,CountryName,Country name,C
+PovCalNetSmy,RegionCode,RegionCode,World Bank region code,C
+PovCalNetSmy,CoverageType,CoverageType,"Survey type (Rural, Urban, National, Aggregate)",C
+PovCalNetSmy,RequestYear,RequestYear,Standardized data year,N
+PovCalNetSmy,DataYear,DataYear,Survey data year,N
+PovCalNetSmy,DataType,DataType,"Survey of income (i), consumption (c), or combined (x)",C
+PovCalNetSmy,PPP,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP,N
+PovCalNetSmy,PovertyLine,PovertyLine,Poverty line in PPP,N
+PovCalNetSmy,Mean,Mean,Mean consumption/income of the economy,N
+PovCalNetSmy,HeadCount,HeadCount,Percent of population under poverty line,N
+PovCalNetSmy,PovGap,PovGap,The ratio of the average income under the poverty line to the poverty line,N
+PovCalNetSmy,PovGapSqr,PovGapSqr,Squared Poverty Gap Index - a measure of poverty severity,N
+PovCalNetSmy,Watts,Watts,Watts poverty index - a measure of depth of poverty,N
+PovCalNetSmy,Gini,Gini,Gini coefficient - a measure of inequality,N
+PovCalNetSmy,Median,Median,Median consumption/income of the economy,N
+PovCalNetSmy,pr.mld,pr.mld,Mean log deviation - a measure of inequality,N
+PovCalNetSmy,Polarization,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median,N
+PovCalNetSmy,ReqYearPopulation,ReqYearPopulation,Population of the country in the standardized data year,N
+PovCalNetSmy,SvyInfoID,SvyInfoID,Survey identification code,C
+PovCalNetSmy,Decile1,Decile1,Percent of total consumption/income owned by the bottom 10%,N
+PovCalNetSmy,Decile2,Decile2,Percent of total consumption/income owned by those between the 10% and 20% percentiles,N
+PovCalNetSmy,Decile3,Decile3,Percent of total consumption/income owned by those between the 20% and 30% percentiles,N
+PovCalNetSmy,Decile4,Decile4,Percent of total consumption/income owned by those between the 30% and 40% percentiles,N
+PovCalNetSmy,Decile5,Decile5,Percent of total consumption/income owned by those between the 40% and 50% percentiles,N
+PovCalNetSmy,Decile6,Decile6,Percent of total consumption/income owned by those between the 50% and 60% percentiles,N
+PovCalNetSmy,Decile7,Decile7,Percent of total consumption/income owned by those between the 60% and 70% percentiles,N
+PovCalNetSmy,Decile8,Decile8,Percent of total consumption/income owned by those between the 70% and 80% percentiles,N
+PovCalNetSmy,Decile9,Decile9,Percent of total consumption/income owned by those between the 80% and 90% percentiles,N
+PovCalNetSmy,Decile10,Decile10,Percent of total consumption/income owned by the top 10%,N
+PovCalNetAgg,requestYear,requestYear,Standarized data year,N
+PovCalNetAgg,regionTitle,regionTitle,Region name,C
+PovCalNetAgg,regionCID,regionCID,Region code,C
+PovCalNetAgg,povertyLine,povertyLine,Poverty line in PPP,N
+PovCalNetAgg,mean,mean,Mean consumption/income of the economy,N
+PovCalNetAgg,hc,hc,Percent of population under the poverty line,N
+PovCalNetAgg,pg,pg,The ratio of the average income under the poverty line to the poverty line,N
+PovCalNetAgg,p2,p2,Squared Poverty Gap Index - a measure of poverty severity,N
+PovCalNetAgg,population,population,Population of the country in the standardized data year,N
+PovCalNetP20,isInterpolated,isInterpolated,Data is interpolated between survey years,N
+PovCalNetP20,useMicroData,useMicroData,Whether the data is based on unit observations (1) or grouped observations (0),N
+PovCalNetP20,CountryCode,CountryCode,Country code,C
+PovCalNetP20,CountryName,CountryName,Country name,C
+PovCalNetP20,RegionCode,RegionCode,World Bank region code,C
+PovCalNetP20,CoverageType,CoverageType,"Survey type (Rural, Urban, National, Aggregate)",C
+PovCalNetP20,RequestYear,RequestYear,Standardized data year,N
+PovCalNetP20,DataYear,DataYear,Survey data year,N
+PovCalNetP20,DataType,DataType,"Survey of income (i), consumption (c), or combined (x)",C
+PovCalNetP20,PPP,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP,N
+PovCalNetP20,PovertyLine,PovertyLine,Poverty line in PPP,N
+PovCalNetP20,Mean,Mean,Mean consumption/income of the economy,N
+PovCalNetP20,HeadCount,HeadCount,Percent of population under poverty line,N
+PovCalNetP20,PovGap,PovGap,The ratio of the average income under the poverty line to the poverty line,N
+PovCalNetP20,PovGapSqr,PovGapSqr,Squared Poverty Gap Index - a measure of poverty severity,N
+PovCalNetP20,Watts,Watts,Watts poverty index - a measure of depth of poverty,N
+PovCalNetP20,Gini,Gini,Gini coefficient - a measure of inequality,N
+PovCalNetP20,Median,Median,Median consumption/income of the economy,N
+PovCalNetP20,pr.mld,pr.mld,Mean log deviation - a measure of inequality,N
+PovCalNetP20,Polarization,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median,N
+PovCalNetP20,ReqYearPopulation,ReqYearPopulation,Population of the country in the standardized data year,N
+PovCalNetP20,SvyInfoID,SvyInfoID,Survey identification code,C
+PovCalNetP20,Decile1,Decile1,Percent of total consumption/income owned by the bottom 10%,N
+PovCalNetP20,Decile2,Decile2,Percent of total consumption/income owned by those between the 10% and 20% percentiles,N
+PovCalNetP20,Decile3,Decile3,Percent of total consumption/income owned by those between the 20% and 30% percentiles,N
+PovCalNetP20,Decile4,Decile4,Percent of total consumption/income owned by those between the 30% and 40% percentiles,N
+PovCalNetP20,Decile5,Decile5,Percent of total consumption/income owned by those between the 40% and 50% percentiles,N
+PovCalNetP20,Decile6,Decile6,Percent of total consumption/income owned by those between the 50% and 60% percentiles,N
+PovCalNetP20,Decile7,Decile7,Percent of total consumption/income owned by those between the 60% and 70% percentiles,N
+PovCalNetP20,Decile8,Decile8,Percent of total consumption/income owned by those between the 70% and 80% percentiles,N
+PovCalNetP20,Decile9,Decile9,Percent of total consumption/income owned by those between the 80% and 90% percentiles,N
+PovCalNetP20,Decile10,Decile10,Percent of total consumption/income owned by the top 10%,N
+PovCalNetDist,i,i,Population percentile index (maximum varies by survey),N
+PovCalNetDist,P,P,Cumulative percentile of population,N
+PovCalNetDist,L,L,Cumulative percent of consumption/income,N
+PovCalNetDist,svy,svy,Survey code comprised of a 3 digit country code and a 1 digit coverage type code,C
+PovCalNetDist,year,year,Survey year,N
+ldcs,country_name,country_name,Country name,C
+ldcs,di_id,di_id,ISO Alpha 2,C
+ldcs,ldc,ldc,Least developed country (1 = True),N
+fragility,country_name,country_name,Country name,C
+fragility,di_id,di_id,ISO Alpha 2,C
+fragility,fragile_2018,fragile_2018,Fragility status in 2018,N
+historical_income_groupings,country_name,country_name,Country name,C
+historical_income_groupings,di_id,di_id,ISO Alpha 2,C
+historical_income_groupings,year,year,Year,N
+historical_income_groupings,income_group,income_group,World Bank income grouping,C
+oecd_regions,country_name,country_name,Country name,C
+oecd_regions,di_id,di_id,ISO Alpha 2,C
+oecd_regions,region_name,region_name,Region name,C
+oecd_regions,region_code,region_code,Region code,C
+developing_countries,country_name,country_name,Country name,C
+developing_countries,di_id,di_id,ISO Alpha 2,C
+developing_countries,developing,developing,Developing country marker (1 = True),N
+di_deflators_2016,di_id,di_id,ISO Alpha 2,C
+di_deflators_2016,country_name,country_name,Country name,C
+di_deflators_2016,dac_marker,dac_marker,Country is a member of the OECD DAC,N
+di_deflators_2016,eu_marker,eu_marker,Country is a member of the EU,N
+di_deflators_2016,year,year,Year,N
+di_deflators_2016,value,value,Deflator multiplier,N
+di_deflators_2017,di_id,di_id,ISO Alpha 2,C
+di_deflators_2017,country_name,country_name,Country name,C
+di_deflators_2017,dac_marker,dac_marker,Country is a member of the OECD DAC,N
+di_deflators_2017,eu_marker,eu_marker,Country is a member of the EU,N
+di_deflators_2017,year,year,Year,N
+di_deflators_2017,value,value,Deflator multiplier,N
+wdi,country_name,country_name,Country name,C
+wdi,country_code,country_code,Country code,C
+wdi,indicator_name,indicator_name,Indicator name,C
+wdi,indicator_code,indicator_code,Indicator code,C
+wdi,year,year,Year,N
+wdi,value,value,Value,N
