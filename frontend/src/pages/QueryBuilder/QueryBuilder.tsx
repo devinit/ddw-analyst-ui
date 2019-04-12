@@ -57,7 +57,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
     return (
       <Row>
-        <Col md={ 4 }>
+        <Col md={ 12 } lg={ 4 }>
           <Tab.Container defaultActiveKey="operation">
             <Card className="source-details">
               <Card.Header className="card-header-text card-header-danger">
@@ -72,7 +72,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           </Tab.Container>
         </Col>
 
-        <Col md={ 8 }>
+        <Col md={ 12 } lg={ 8 }>
           <Card className={ classNames({ 'd-none': !activeStep }) }>
             <Card.Header>
               <Card.Title>
