@@ -21,7 +21,7 @@ function* fetchSources() {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status, data }: AxiosResponse<APIResponse<Source[]>> = yield axios.request({
-      url: api.routes.SOURCES,
+      url: `${api.routes.SOURCES}?limit=1000`,
       method: 'get',
       headers: {
         'Content-Type': 'application/json',

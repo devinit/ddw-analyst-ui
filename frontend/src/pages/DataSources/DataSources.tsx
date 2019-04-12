@@ -37,11 +37,8 @@ class DataSources extends React.Component<DataSourcesProps> {
             <Loader content="Loading" />
           </Dimmer>
 
-          <SourcesTable
-            sources={ sources }
-            activeSource={ activeSource }
-            onRowClick={ this.onRowClick }
-          />
+          <SourcesTable sources={ sources } activeSource={ activeSource } onRowClick={ this.onRowClick }/>
+
         </Col>
 
         <Col lg={ 5 }>
