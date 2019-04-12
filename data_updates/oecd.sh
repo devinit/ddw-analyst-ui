@@ -1,28 +1,28 @@
 #!/bin/bash
 
-echo -e "Initializing download process"
+echo "Initializing download process"
 
 # Fetching enviroment variables to use in operation
 # We have two options here, either to use python scripts as below or to Us load_mirrors.R which does the same job
 # Because its a python enviroment sticking with python scripts
-echo -e "================ Fetcing CRS =====================\n"
-exec python3 ./Python/download_oecd_crs.py
+echo "================ Fetcing CRS ====================="
+python3 data_updates/Python/download_oecd.py -t CRS
 
-echo -e "================ Fetcing DAC Table1 =====================\n"
-exec python3 ./Python/download_oecd_dac_table_1.py
+echo "================ Fetcing DAC Table1 ====================="
+python3 data_updates/Python/download_oecd.py -t TABLE1
 
-echo -e "================ Fetcing DAC Table2a =====================\n"
-exec python3 ./Python/download_oecd_dac_table_2a.py
+echo "================ Fetcing DAC Table2a ====================="
+python3 data_updates/Python/download_oecd.py -t TABLE2A
 
-echo -e "================ Fetcing DAC Table2b =====================\n"
-exec python3 ./Python/download_oecd_dac_table_2b.py
+echo "================ Fetcing DAC Table2b ====================="
+python3 data_updates/Python/download_oecd.py -t TABLE2B
 
-echo -e "================ Fetcing DAC Table5 =====================\n"
-exec python3 ./Python/download_oecd_dac_table_5.py
+echo "================ Fetcing DAC Table5 ====================="
+python3 data_updates/Python/download_oecd.py -t TABLE5
 
 
-echo -e "\n\n Using R scripts to cleanup downloaded data and load to postgres DB"
+echo "Using R scripts to cleanup downloaded data and load to postgres DB"
 
-exec R --vanilla ./R/load_mirrors.R
+Rscript data_updates/Python/R/load_mirrors.R
 
-echo -e "\n=============== Successfully processed OECD mirros===============\n"
+echo "=============== Successfully processed OECD mirrors==============="

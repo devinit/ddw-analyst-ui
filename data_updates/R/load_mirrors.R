@@ -1,24 +1,71 @@
-list.of.packages <- c("data.table","tidyverse")
+list.of.packages <- c("data.table","tidyverse", "here", "RPostgreSQL")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-project.org")
 lapply(list.of.packages, require, character.only=T)
 
-source("baseYearConstants.R")
-#Load dac2a mirror data from source data
-#Path to row downloaded data 
-#Make sure all files are already extracted
-wd <- "~/ddw_update/"
-setwd(wd)
+# Only works while running with `Rscript` from repo root, use commented below if running manually
+script.dir <- here()
+# script.dir = "/src"
+# script.dir = "/home/alex/git/ddw-analyst-ui"
+source(paste0(script.dir,"/data_updates/R/constants.R"))
 
-dac2a_path <- "~/ddw_update/data_source/oecd_dac_table_2a/Table2a_Data.csv"
-dac2b_path <- "~/ddw_update/data_source/oecd_dac_table_2b/Table2b_Data.csv"
-dac5_path <- "~/ddw_update/data_source/oecd_dac_table_5/Table5_Data.csv"
-dac1_path <- "~/ddw_update/data_source/oecd_dac_table_1/Table1_Data.csv"
+drv = dbDriver("PostgreSQL")
+con = dbConnect(drv,
+                dbname="analyst_ui"
+                ,user="analyst_ui_user"
+                ,password="analyst_ui_pass"
+                ,host="db"
+                ,port=5432)
+# con = dbConnect(drv,
+#                 dbname="analyst_ui"
+#                 ,user="postgres")
 
-#This cannot point to a file, we will be working with several files
-#Checking header lengths, invalid characters and missing data content
+# Unzip all
+crs_latest_path = paste0(tmp_file_directory,"Crs_latest")
+crs_zips = list.files(path=crs_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
+for(crs_zip in crs_zips){
+  message("Unzipping ",crs_zip)
+  unzip(crs_zip, exdir=crs_latest_path, overwrite=T)
+}
+crs_path <- crs_latest_path
+crs.table.name = "crs_current"
+crs.table.quote = c("repo",crs.table.name)
 
-crs_path <- "~/ddw_update/data_source/oecd_dac_crs"
+table1_latest_path = paste0(tmp_file_directory,"Table1_latest")
+table1_zips = list.files(path=table1_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
+for(table1_zip in table1_zips){
+  message("Unzipping ",table1_zip)
+  dac1_path = unzip(table1_zip, exdir=table1_latest_path, overwrite=T)
+}
+dac1.table.name = "dac1_current"
+dac1.table.quote = c("repo",dac1.table.name)
+
+table2a_latest_path = paste0(tmp_file_directory,"Table2a_latest")
+table2a_zips = list.files(path=table2a_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
+for(table2a_zip in table2a_zips){
+  message("Unzipping ",table2a_zip)
+  dac2a_path = unzip(table2a_zip, exdir=table2a_latest_path, overwrite=T)
+}
+dac2a.table.name = "dac2a_current"
+dac2a.table.quote = c("repo",dac2a.table.name)
+
+table2b_latest_path = paste0(tmp_file_directory,"Table2b_latest")
+table2b_zips = list.files(path=table2b_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
+for(table2b_zip in table2b_zips){
+  message("Unzipping ",table2b_zip)
+  dac2b_path = unzip(table2b_zip, exdir=table2b_latest_path, overwrite=T)
+}
+dac2b.table.name = "dac2b_current"
+dac2b.table.quote = c("repo",dac2b.table.name)
+
+table5_latest_path = paste0(tmp_file_directory,"Table5_latest")
+table5_zips = list.files(path=table5_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
+for(table5_zip in table5_zips){
+  message("Unzipping ",table5_zip)
+  dac5_path = unzip(table5_zip, exdir=table5_latest_path, overwrite=T)
+}
+dac5.table.name = "dac5_current"
+dac5.table.quote = c("repo",dac5.table.name)
 
 clean_dac2a_file = function(){
   
@@ -55,13 +102,7 @@ clean_dac2a_file = function(){
              'flags'
              ));
   
-  if(!dir.exists('mirrors')){
-    dir.create('mirrors')
-  }
-
-  fwrite(dac2a,file = 'mirrors/dac2a.csv',append = FALSE);
-  rm(dac2a);
-  
+  dbWriteTable(con, name = dac2a.table.quote, value = dac2a, row.names = F, overwrite = T)
 }
 
 clean_dac2b_file = function(){
@@ -99,11 +140,7 @@ clean_dac2b_file = function(){
              'flags'
            ));
   
-  if(!dir.exists('mirrors')){
-    dir.create('mirrors')
-  }
-  
-  fwrite(dac2b,file = 'mirrors/dac2b.csv',append = FALSE);
+  dbWriteTable(con, name = dac2b.table.quote, value = dac2b, row.names = F, overwrite = T)
   
 }
 
@@ -137,11 +174,7 @@ clean_dac5_file = function(){
              ,'flags'
            ));
   
-  if(!dir.exists('mirrors')){
-    dir.create('mirrors')
-  }
-  
-  fwrite(dac5,file = 'mirrors/dac5.csv',append = FALSE);
+  dbWriteTable(con, name = dac5.table.quote, value = dac5, row.names = F, overwrite = T)
 
 }
 
@@ -180,11 +213,7 @@ clean_dac1_file = function(){
              ,'flags'
            ));
   
-  if(!dir.exists('mirrors')){
-    dir.create('mirrors')
-  }
-  
-  fwrite(dac1,file = 'mirrors/dac1.csv',append = FALSE);
+  dbWriteTable(con, name = dac1.table.quote, value = dac1, row.names = F, overwrite = T)
 }
 
 #This can be done better, read actual files and use ncol before doing processing, that way
@@ -213,9 +242,11 @@ check_crs_headers = function(file_v){
 
 merge_crs_tables = function(file_vec){
   
-  if(!dir.exists('crs_cleanup')){
-    dir.create('crs_cleanup')
+  clean_up_folder = paste0(tmp_file_directory, "/crs_cleanup")
+  if(dir.exists(clean_up_folder)){
+    unlink(clean_up_folder)
   }
+  dir.create(clean_up_folder)
   
   data.list = list()
   data.index = 1
@@ -225,11 +256,13 @@ merge_crs_tables = function(file_vec){
   for(txt in file_vec){
     r = readBin(txt, raw(), file.info(txt)$size)
     r[r==as.raw(0)] = as.raw(0x20) ## replace with 0x20 = <space>
-    writeBin(r, paste0("crs_cleanup/",basename(txt)) )
-    tmp = fread(paste0("crs_cleanup/",basename(txt)),sep="|")
+    writeBin(r, paste0(clean_up_folder,"/",basename(txt)) )
+    tmp = fread(paste0(clean_up_folder,"/",basename(txt)),sep="|")
     data.list[[data.index]] = tmp
     data.index = data.index + 1
   }
+  
+  unlink(clean_up_folder)
   
   crs = do.call(rbind,data.list)
   message("Total CRS rows: ",nrow(crs))
@@ -413,11 +446,7 @@ merge_crs_tables = function(file_vec){
              ,"capital_expenditure"
            ));
   
-  if(!dir.exists('mirrors')){
-    dir.create('mirrors')
-  }
-  
-  fwrite(crs,file = 'mirrors/crs_mirror.csv',append = FALSE);
+  dbWriteTable(con, name = crs.table.quote, value = crs, row.names = F, overwrite = T)
 }
 
 clean_crs_file = function(){
@@ -427,132 +456,15 @@ clean_crs_file = function(){
   merge_crs_tables(file_list);
 }
 
-
-#This can be done better, read actual files and use ncol before doing processing, that way
-#You wont need this method
-check_crs_headers = function(file_v){
-  
-  expected_2016_length <- 86
-  
-  #Check that the length of the total number of columns match what is expected
-  #If column lengths don't match, do a manual visual check to see what has been added or removed
-  #All columns need to have the same lenghth for all files of CRS because each change affects all years
-  for(fi in file_v){
-    
-    fo <- file(fi,"r")
-    first_line <- readLines(fo,n = 1)
-    split_vec <- strsplit(first_line,"|",fixed=TRUE)[[1]]
-    
-    if((length(split_vec) < expected_2016_length) || (length(split_vec) > expected_2016_length)){
-      e <- simpleError(sprintf("Found length %f for file %s but expecting %f ",length(split_vec),fi,expected_2016_length))
-      stop(e)
-    }
-  }
-  
- 
-}
-
-
-# This function loads the crs mirror to the first available postgre instance in the dev envrioment.
-# The assumption is that postgre is running on port 5432 and the executing user has all the relevant privileges to
-# created and populate a new database
-load_crs_mirror_to_postgres = function(){
-  
-  
-  #Create database oecd_crs_mirror_tmp and create in it schema crs
-  setwd('~/git/ddw-r-scripts')
-  create_schema_script <- paste0(getwd(),'/shell-scripts/crs-to-postgres/create.crs.schema.and.grant.privilege.to.user.sh')
-  system(paste0(create_schema_script,' oecd_crs_mirror'))
-  
-  
-  create_table_script <- paste0(getwd(),'/shell-scripts/crs-to-postgres/create.table.sh')
-  system(paste0(create_table_script,' oecd_crs_mirror crs ',release,
-                paste0(' ',getwd(),
-                       '/shell-scripts/crs-to-postgres/table_template_temporary.txt')))
-  
-  #populate crs data into mirror database
-  copy_data_to_table <- paste0(getwd(),'/shell-scripts/crs-to-postgres/read.in.specific.table.sh')
-  system(paste0(copy_data_to_table,' oecd_crs_mirror crs ',release,
-                paste0(' ',getwd(),'/shell-scripts/crs-to-postgres/read_in_table_template.txt '),
-                paste0(wd,'mirrors/crs_mirror.csv')))
-  
-  #After loading crs script to DB, need to change column datatypes to the proper datatypes
-  
-  # #Convert text to timestamp columns
-  # char_to_timestamp <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.timestamp.sh')
-  # system(paste0(char_to_timestamp,' oecd_crs_mirror crs ',release,
-  #             paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_timestamp.txt"')))
-  
-  
-  char_to_text <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.text.sh')
-  system(paste0(char_to_text,' oecd_crs_mirror crs ',release,
-                paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_text.txt"')))
-  
-  char_to_smallint <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.smallint.sh')
-  system(paste0(char_to_smallint,' oecd_crs_mirror crs ',release,
-                paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_smallint.txt"')))
-  
-  text_to_numeric <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.numeric.sh')
-  system(paste0(text_to_numeric,' oecd_crs_mirror crs ',release,
-                paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_numeric.txt"')))
-  
-  char_to_int <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.int.sh')
-  system(paste0(char_to_int,' oecd_crs_mirror crs ',release,
-                paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_int.txt"')))
-  
-  
-}
-
-load_dac1_to_postgres <- function(){
-  encoding <- 'UTF8'
-  max_year <- current_year +1
-  mirror_path <- "~/ddw_update/mirrors/dac1.csv"
-  
-  load_command <- paste0(getwd(),'/shell-scripts/dac1-to-postgres/create.table.table.1.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
-  system(load_command)
-}
-
-load_dac2a_to_postgres <- function(){
-  encoding <- 'LATIN9'
-  max_year <- current_year +1
-  mirror_path <- "~/ddw_update/mirrors/dac2a.csv"
-  load_command <- paste0(getwd(),'/shell-scripts/dac2a-to-postgres/create.table.table.2a.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
-  
-  system(load_command)
-  
-}
-
-load_dac2b_to_postgres <- function(){
-  encoding <- 'LATIN9'
-  max_year <- current_year +1
-  mirror_path <- "~/ddw_update/mirrors/dac2b.csv"
-  load_command <- paste0(getwd(),'/shell-scripts/dac2b-to-postgres/create.table.table.2b.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
-  
-  system(load_command)
-  
-}
-
-load_dac5_to_postgres <- function(){
-  encoding <- 'LATIN9'
-  max_year <- current_year +1
-  mirror_path <- "~/ddw_update/mirrors/dac5.csv"
-  load_command <- paste0(getwd(),'/shell-scripts/dac5-to-postgres/create.table.table.5.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
-  
-  system(load_command)
-  
-}
-
 clean_crs_file()
-load_crs_mirror_to_postgres()
 
 clean_dac2a_file()
-load_dac2a_to_postgres()
 
 clean_dac1_file()
-load_dac1_to_postgres()
 
 clean_dac2b_file()
-load_dac2b_to_postgres()
 
 clean_dac5_file()
-load_dac5_to_postgres()
+
+dbDisconnect(con)
+

@@ -2,11 +2,13 @@
 
 import os
 import time
-import urllib.request as RemoteCrs
+import requests
 from bs4 import BeautifulSoup
-from progress_hook import  reporthook
 import constants
-import sys,getopt
+import sys
+import getopt
+import shutil
+
 
 def main(argv):
     def printhelp():
@@ -14,15 +16,15 @@ def main(argv):
         sys.exit(2)
 
     try:
-        opts, args = getopt.getopt(argv,"ht:",["help","table="])
+        opts, args = getopt.getopt(argv, "ht:", ["help", "table="])
         if not opts:
             printhelp()
-           
+
     except getopt.GetoptError:
         printhelp()
 
     for opt, arg in opts:
-        if opt in ("-h","--help"):
+        if opt in ("-h", "--help"):
             print('Usage:\tdownload_oecd.py -t <tablename>\n')
             print('Options:\n')
             print('\t-t, --table\tName of table to download from')
@@ -37,29 +39,27 @@ def main(argv):
                 printhelp()
             elif arg == 'TABLE1':
                 print("Downloading table 1")
-                download(constants.TABLE1_SCRAPE_PATH,constants.OECD_DOWNLOAD_PATH,'Table1_')
+                download(constants.TABLE1_SCRAPE_PATH, constants.OECD_DOWNLOAD_PATH, 'Table1_')
             elif arg == 'TABLE2A':
                 print('Downloading table 2a')
-                download(constants.TABLE2A_SCRAPE_PATH,constants.OECD_DOWNLOAD_PATH,'Table2a_')
+                download(constants.TABLE2A_SCRAPE_PATH, constants.OECD_DOWNLOAD_PATH, 'Table2a_')
             elif arg == 'TABLE2B':
                 print('Downloading table 2b')
-                download(constants.TABLE2B_SCRAPE_PATH,constants.OECD_DOWNLOAD_PATH,'Table2b_')
+                download(constants.TABLE2B_SCRAPE_PATH, constants.OECD_DOWNLOAD_PATH, 'Table2b_')
             elif arg == "CRS":
                 print('Download table CRS1')
-                download(constants.CRS_SCRAPE_PATH,constants.OECD_DOWNLOAD_PATH,'Crs_')
+                download(constants.CRS_SCRAPE_PATH, constants.OECD_DOWNLOAD_PATH, 'Crs_')
             elif arg == "TABLE5":
                 print('Download table Table5')
-                download(constants.TABLE5_SCRAPE_PATH,constants.OECD_DOWNLOAD_PATH,'Table5_')
+                download(constants.TABLE5_SCRAPE_PATH, constants.OECD_DOWNLOAD_PATH, 'Table5_')
             else:
                 printhelp()
 
-def download(scrape_path,download_path,output_folder_prefix):
-    
-    request = RemoteCrs.Request(scrape_path)
-    response = RemoteCrs.urlopen(request)
-    html = response.read()
+def download(scrape_path, download_path, output_folder_prefix):
 
-    soup = BeautifulSoup(html,'lxml')
+    html = requests.get(scrape_path).content
+
+    soup = BeautifulSoup(html, 'lxml')
 
     anchor_tags = soup('a')
 
@@ -68,21 +68,21 @@ def download(scrape_path,download_path,output_folder_prefix):
 
         # Save the name of the file and the file id in a dictionary.
         files_to_download[tag.text.split("/")[0]] = tag['onclick'][15:-3]
-        #print(files_to_download)
+        # print(files_to_download)
 
     # 3) Download the files!
 
     # Define the root of the URI of the file that you want to download.
     uri_root = download_path
 
-    #https://stats.oecd.org/FileView2.aspx?IDFile=b64f050c-4e2f-44ed-a8e6-db32ce00fd4f
+    # https://stats.oecd.org/FileView2.aspx?IDFile=b64f050c-4e2f-44ed-a8e6-db32ce00fd4f
 
     # Store the date on which the download was made in a string.
-    download_date = time.strftime("%Y_%m_%d")
+    download_date = time.strftime("%Y_%m_%d_%H_%M_%S")
 
     # Create a folder in the current directory named with the download date.
-    current_directory = os.getcwd()
-    content_directory = os.path.join(constants.TMP_DOWNLOAD_PATH,output_folder_prefix+download_date)
+    content_directory = os.path.join(constants.TMP_DOWNLOAD_PATH, output_folder_prefix+"latest")
+    timestamp_file = os.path.join(content_directory, ".timestamp")
     print("Creating directory " + content_directory + " in:\t " + constants.TMP_DOWNLOAD_PATH)
     print("...")
     print("")
@@ -90,10 +90,20 @@ def download(scrape_path,download_path,output_folder_prefix):
     # Do this only if the directory does not already exists so as not to override the data.
     if not os.path.exists(content_directory):
         os.mkdir(content_directory)
+        with open(timestamp_file, "w") as ts_f:
+            ts_f.write(download_date)
     else:
+        # Move `_latest` to timestamped folder
+        with open(timestamp_file, "r") as ts_f:
+            past_date = ts_f.read()
+        timestamped_directory = os.path.join(constants.TMP_DOWNLOAD_PATH, output_folder_prefix+past_date)
         print("The directory " + content_directory + " already exists")
-        print("Check the folder to make sure you are not deleting existing data")
-        exit()
+        print("Moving to " + timestamped_directory)
+        shutil.copytree(content_directory, timestamped_directory)
+        shutil.rmtree(content_directory)
+        os.mkdir(content_directory)
+        with open(timestamp_file, "w") as ts_f:
+            ts_f.write(download_date)
 
     # Change into to recently created directory.
     os.chdir(content_directory)
@@ -103,47 +113,37 @@ def download(scrape_path,download_path,output_folder_prefix):
     to_get.sort()
 
     # Download the files in order.
-    for file in to_get:
+    for file_to_get in to_get:
 
         # Replace the "_" in the file ids with "-".
-        uri_suffix = files_to_download[file].replace("_", "-")
+        uri_suffix = files_to_download[file_to_get].replace("_", "-")
 
         # Define the full URI.
         uri = uri_root + uri_suffix
 
         # Define the name of the target file.
-        name = str(file).strip() + ".zip"
+        name = str(file_to_get).strip() + ".zip"
         name = name.replace(" ", "_")
         name = name.replace("-", "_")
 
-        # Add the download date to the file name.
-        name = download_date + "_" + name
-
         # Display download information for the user.
-        print("Downloading OECD file:\t\t\t", file)
+        print("Downloading OECD file:\t\t\t", file_to_get)
         print("Downloading from:\t\t\t", uri)
         print("Saving data as:\t\t\t\t", name)
         print("...")
         print("")
 
-        # This does not work in Python3!
-        # Download the file.
-        #page = urllib.URLopener()
-        #page.retrieve(uri, name)
-
-        # This solution came from:
-        # http://stackoverflow.com/questions/7243750/download-file-from-web-in-python-3 
-        # Download the file from 'uri' and save it locally under 'name':
-        RemoteCrs.urlretrieve(uri, name,reporthook)
+        r = requests.get(uri, stream=True)
+        path = os.path.join(content_directory, name)
+        with open(path, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1024):
+                if chunk:
+                    f.write(chunk)
+                    f.flush()
 
     # Finished!
     print("Finished.\t\t\t")
 
-    # Change back into the current directory.
-    os.chdir(current_directory)
-    print("In directory:\t\t\t\t", current_directory)
-        
 
-            
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])
