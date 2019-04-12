@@ -4,6 +4,7 @@ import { Filters, OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
 import FilterQueryBuilder from '../FilterQueryBuilder';
+import { JoinQueryBuilder } from '../JoinQueryBuilder';
 import { SelectQueryBuilder } from '../SelectQueryBuilder';
 import { TransformQueryBuilder } from '../TransformQueryBuilder';
 
@@ -58,6 +59,19 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
           column={ parsedOptions.operational_column }
           columns={ parsedOptions.operational_columns }
           multi={ query === 'multi_transform' }
+          onUpdate={ onUpdateOptions }
+        />
+      );
+    }
+    if (query === 'join') {
+      const parsedOptions = options ? JSON.parse(options) : { table_name: '', schema_name: '', join_on: {} };
+
+      return (
+        <JoinQueryBuilder
+          source={ source }
+          tableName={ parsedOptions.table_name }
+          schema={ parsedOptions.schema_name }
+          columnMapping={ parsedOptions.join_on }
           onUpdate={ onUpdateOptions }
         />
       );

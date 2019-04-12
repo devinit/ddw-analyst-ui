@@ -107,7 +107,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
               >
                 { this.props.processing ? 'Saving ...' : 'Save & Preview' }
               </Button>
-              <Button variant="danger" onClick={ this.props.onReset } size="sm">
+              <Button variant="danger" onClick={ this.props.onReset } size="sm" hidden={ !this.props.onReset }>
                 <i className="material-icons">refresh</i>
                 Reset
               </Button>
