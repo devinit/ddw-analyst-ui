@@ -16,5 +16,5 @@ export const getSourceIDFromOperation = (operation: OperationMap): string | unde
   return steps.getIn([ 0, 'source' ]);
 };
 
-export const formatString = (name: string) =>
+export const formatString = (name = '') =>
   name.split('_').map(word => `${word.charAt(0).toUpperCase()}${word.substr(1)}`).join(' ');
