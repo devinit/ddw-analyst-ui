@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { fetchOperation, setOperation } from '../../actions/operations';
 import { fetchActiveSource, setActiveSource } from '../../actions/sources';
 import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
+import { PaginatedContent } from '../../components/PaginatedContent';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
@@ -36,9 +37,6 @@ type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams
 
 class QueryData extends React.Component<QueryDataProps> {
   render() {
-    const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
-    const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
-
     return (
       <Row>
         <Col>
@@ -52,7 +50,7 @@ class QueryData extends React.Component<QueryDataProps> {
               </div>
             </Card.Header>
             <Card.Body>
-              <OperationDataTable data={ data } columns={ columns }/>
+              { this.renderTable() }
             </Card.Body>
           </Card>
         </Col>
@@ -74,6 +72,23 @@ class QueryData extends React.Component<QueryDataProps> {
     if (id) {
       this.props.actions.fetchOperationData(id);
     }
+  }
+
+  private renderTable() {
+    const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
+    const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
+
+    if (data && data.count() !== 0) {
+      return (
+        <PaginatedContent
+          content={ <OperationDataTable list={ data } columns={ columns }/> }
+          list={ data || List() }
+          limit={ 10 }
+          offset={ 0 }
+        />
+      );
+    }
+    return <div>No results found</div>;
   }
 
   private setOperation(id?: string) {

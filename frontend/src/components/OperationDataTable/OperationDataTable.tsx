@@ -5,7 +5,7 @@ import { OperationDataMap } from '../../types/operations';
 import { ColumnList } from '../../types/sources';
 
 interface OperationDataTableProps {
-  data?: List<OperationDataMap>;
+  list?: List<OperationDataMap>;
   columns?: ColumnList;
 }
 
@@ -13,8 +13,8 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
   private MAX_COLUMNS = 6;
 
   render() {
-    if (this.props.data && this.props.data.count() && this.props.columns) {
-      const columns = this.getColumns(this.props.data.get(0));
+    if (this.props.list && this.props.list.count() && this.props.columns) {
+      const columns = this.getColumns(this.props.list.get(0));
       const columnMapping = this.getColumnMapping(this.props.columns, columns);
 
       return (
@@ -24,7 +24,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
               { columnMapping.map(column => <th key={ column }>{ column }</th>) }
             </tr>
           </thead>
-          <tbody>{ this.renderTableRows(this.props.data, columns) }</tbody>
+          <tbody>{ this.renderTableRows(this.props.list, columns) }</tbody>
         </Table>
       );
     }
