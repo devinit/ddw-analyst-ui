@@ -12,11 +12,11 @@ interface OperationDataTableProps {
 
 export class OperationDataTable extends React.Component<OperationDataTableProps> {
   private MAX_COLUMNS = 6;
+  private columns = this.props.list ? this.getColumns(this.props.list.get(0)) : [];
 
   render() {
     if (this.props.list && this.props.list.count() && this.props.columns) {
-      const columns = this.getColumns(this.props.list.get(0));
-      const columnMapping = this.getColumnMapping(this.props.columns, columns);
+      const columnMapping = this.getColumnMapping(this.props.columns, this.columns);
 
       return (
         <Table responsive hover striped className="operation-data-table">
@@ -25,7 +25,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
               { columnMapping.map(column => <th key={ column } className="text-truncate">{ column }</th>) }
             </tr>
           </thead>
-          <tbody>{ this.renderTableRows(this.props.list, columns) }</tbody>
+          <tbody>{ this.renderTableRows(this.props.list, this.columns) }</tbody>
         </Table>
       );
     }
