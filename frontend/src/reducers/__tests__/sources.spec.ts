@@ -33,9 +33,10 @@ test('should handle FETCH_SOURCES_SUCCESSFUL', () => {
 
   expect(sourcesReducer(undefined, {
     type: FETCH_SOURCES_SUCCESSFUL,
-    sources: [ source ]
+    sources: [ source ],
+    count: 1
   } as SourcesAction))
-  .toEqual(defaultState.set('loading', false).set('sources', fromJS([ source ])));
+  .toEqual(defaultState.set('loading', false).set('sources', fromJS([ source ])).set('count', 1));
 });
 
 test('should handle FETCH_SOURCES_FAILED', () => {
