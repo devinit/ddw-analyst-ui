@@ -17,11 +17,11 @@ import { api, localForageKeys } from '../utils';
 import { setToken } from '../actions/token';
 import { setActiveSource } from '../actions/sources';
 
-function* fetchSources() {
+function* fetchSources({ payload }: SourcesAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status, data }: AxiosResponse<APIResponse<Source[]>> = yield axios.request({
-      url: `${api.routes.SOURCES}?limit=1000`,
+      url: payload.link || `${api.routes.SOURCES}?limit=${payload.limit}&offset=${payload.offset}`,
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ function* fetchSources() {
     .catch(error => error.response);
 
     if (status === 200 && data.results) {
-      yield put({ type: FETCH_SOURCES_SUCCESSFUL, sources: data.results });
+      yield put({ type: FETCH_SOURCES_SUCCESSFUL, sources: data.results, count: data.count });
       if (data.results.length) {
         yield put({ type: SET_ACTIVE_SOURCE, activeSource: fromJS(data.results[0]) });
       }
