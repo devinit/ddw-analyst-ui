@@ -255,3 +255,15 @@ dac5_current,time,time,Time,N
 dac5_current,year,year,Year,N
 dac5_current,value,value,Value,N
 dac5_current,flags,flags,Flags,C
+weo,WEO.Country.Code,WEO.Country.Code,WEO Country Code,C
+weo,ISO,ISO,ISO,C
+weo,WEO.Subject.Code,WEO.Subject.Code,WEO Subject Code,C
+weo,Country,Country,Country,C
+weo,Subject.Descriptor,Subject.Descriptor,Subject Descriptor,C
+weo,Subject.Notes,Subject.Notes,Subject Notes,C
+weo,Units,Units,Units,C
+weo,Scale,Scale,Scale,C
+weo,Country.Series.specific.Notes,Country.Series.specific.Notes,Country Series specific Notes,C
+weo,Estimates.Start.After,Estimates.Start.After,Estimates Start After,N
+weo,value,value,value,N
+weo,year,year,year,N
