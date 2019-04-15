@@ -74,6 +74,10 @@ class QueryData extends React.Component<QueryDataProps> {
     }
   }
 
+  componentWillUnmount() {
+    this.props.actions.setOperationData(List());
+  }
+
   private renderTable() {
     const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
     const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
