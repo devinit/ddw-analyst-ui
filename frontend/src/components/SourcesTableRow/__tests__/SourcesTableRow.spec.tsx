@@ -8,7 +8,6 @@ import { SourcesTableRow, SourcesTableRowProps } from '../SourcesTableRow';
 
 const props: SourcesTableRowProps = {
   onClick: jest.fn(),
-  count: 1,
   indicator: 'World Bank Indicators',
   indicatorAcronym: 'wbi',
   updatedOn: new Date('August 19, 2018 23:15:30').toISOString()

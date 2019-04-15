@@ -17,7 +17,6 @@ export class SourcesTable extends React.Component<SourcesTableProps> {
       <Table responsive hover striped className="sources-table">
         <thead>
           <tr>
-            <th>#</th>
             <th>Indicator</th>
             <th>Updated On</th>
           </tr>
@@ -34,7 +33,6 @@ export class SourcesTable extends React.Component<SourcesTableProps> {
       return sources.map((source, index) => (
         <SourcesTableRow
           key={ index }
-          count={ index + 1 }
           classNames={ classNames({ 'table-danger':  activeSource.get('id') === source.get('id') }) }
           onClick={ () => this.props.onRowClick(source) }
           indicator={ source.get('indicator') as string }
