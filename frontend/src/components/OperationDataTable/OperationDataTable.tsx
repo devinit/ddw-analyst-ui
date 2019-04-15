@@ -17,7 +17,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
   render() {
     if (this.props.list && this.props.list.count() && this.props.columns) {
       const customColumns = this.getCustomColumns(this.props.list.get(0) as OperationDataMap, this.props.columns);
-      const columns = [ ...this.columns, ...customColumns ];
+      const columns = [ ...this.columns.slice(0, this.columns.length - customColumns.length), ...customColumns ];
 
       return (
         <Table responsive hover striped className="operation-data-table">
