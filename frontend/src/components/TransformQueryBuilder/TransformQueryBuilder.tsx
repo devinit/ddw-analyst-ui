@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { ColumnList, SourceMap } from '../../types/sources';
+import { formatString } from '../../utils';
 
 interface TransformQueryBuilderProps {
   multi?: boolean;
@@ -109,7 +110,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
 
       return columns.map(column => ({
         key: column.get('id'),
-        text: column.get('source_name'),
+        text: formatString(column.get('name') as string),
         value: column.get('name')
       })).toJS();
     }

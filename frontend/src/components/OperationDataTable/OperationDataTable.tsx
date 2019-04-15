@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { OperationDataMap } from '../../types/operations';
 import { ColumnList } from '../../types/sources';
+import { formatString } from '../../utils';
 
 interface OperationDataTableProps {
   list?: List<OperationDataMap>;
@@ -21,7 +22,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
         <Table responsive hover striped className="operation-data-table">
           <thead>
             <tr>
-              { columnMapping.map(column => <th key={ column }>{ column }</th>) }
+              { columnMapping.map(column => <th key={ column } className="text-truncate">{ column }</th>) }
             </tr>
           </thead>
           <tbody>{ this.renderTableRows(this.props.list, columns) }</tbody>
@@ -53,7 +54,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
     return columnKeys.map(key => {
       const column = columnList.find(col => col.get('name') === key);
       if (column) {
-        return column.get('source_name') as string;
+        return formatString(column.get('name') as string);
       }
 
       return key;
@@ -64,7 +65,7 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
     if (data && columns.length) {
       return data.map((item, key) =>
         <tr key={ key }>
-          { columns.map(column => <td key={ column } className="col-2 text-truncate">{ item.get(column) }</td>) }
+          { columns.map(column => <td key={ column }>{ item.get(column) }</td>) }
         </tr>
       );
     }

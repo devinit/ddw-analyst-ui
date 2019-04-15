@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { ColumnList, SourceMap } from '../../types/sources';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { Button, Form } from 'react-bootstrap';
+import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { ColumnList, SourceMap } from '../../types/sources';
+import { formatString } from '../../utils';
 
 interface SelectQueryBuilderProps {
   source: SourceMap;
@@ -46,7 +47,7 @@ export class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps>
     if (columns.count()) {
       return columns.map(column => ({
         key: column.get('id'),
-        text: column.get('source_name'),
+        text: formatString(column.get('name') as string),
         value: column.get('name')
       })).toJS();
     }

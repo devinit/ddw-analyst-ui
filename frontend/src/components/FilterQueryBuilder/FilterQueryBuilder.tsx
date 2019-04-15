@@ -4,7 +4,8 @@ import { Button } from 'react-bootstrap';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { FilterMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import FilterItem from '../FilterItem/FilterItem';
+import { formatString } from '../../utils';
+import { FilterItem } from '../FilterItem';
 
 interface FilterQueryBuilderProps {
   source: SourceMap;
@@ -57,7 +58,7 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps>
     if (columns && columns.count()) {
       return columns.map(column => ({
         key: column.get('id'),
-        text: column.get('source_name'),
+        text: formatString(column.get('name') as string),
         value: column.get('name')
       })).toJS();
     }
