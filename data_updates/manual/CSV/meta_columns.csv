@@ -115,3 +115,143 @@ wdi,indicator_name,indicator_name,Indicator name,C
 wdi,indicator_code,indicator_code,Indicator code,C
 wdi,year,year,Year,N
 wdi,value,value,Value,N
+crs_current,year,year,Year,N
+crs_current,donor_code,donor_code,Donor Code,N
+crs_current,donor_name,donor_name,Donor Name,C
+crs_current,agency_code,agency_code,Agency Code,N
+crs_current,agency_name,agency_name,Agency Name,C
+crs_current,crs_id,crs_id,Crs Id,C
+crs_current,project_number,project_number,Project Number,C
+crs_current,initial_report,initial_report,Initial Report,N
+crs_current,recipient_code,recipient_code,Recipient Code,N
+crs_current,recipient_name,recipient_name,Recipient Name,C
+crs_current,region_code,region_code,Region Code,N
+crs_current,region_name,region_name,Region Name,C
+crs_current,income_group_code,income_group_code,Income Group Code,N
+crs_current,income_group_name,income_group_name,Income Group Name,C
+crs_current,flow_code,flow_code,Flow Code,N
+crs_current,flow_name,flow_name,Flow Name,C
+crs_current,bilateral_multilateral,bilateral_multilateral,Bilateral Multilateral,N
+crs_current,category,category,Category,N
+crs_current,finance_type,finance_type,Finance Type,N
+crs_current,aid_type,aid_type,Aid Type,C
+crs_current,usd_commitment,usd_commitment,Usd Commitment,N
+crs_current,usd_disbursement,usd_disbursement,Usd Disbursement,N
+crs_current,usd_received,usd_received,Usd Received,N
+crs_current,usd_commitment_deflated,usd_commitment_deflated,Usd Commitment Deflated,N
+crs_current,usd_disbursement_deflated,usd_disbursement_deflated,Usd Disbursement Deflated,N
+crs_current,usd_received_deflated,usd_received_deflated,Usd Received Deflated,N
+crs_current,usd_adjustment,usd_adjustment,Usd Adjustment,N
+crs_current,usd_adjustment_deflated,usd_adjustment_deflated,Usd Adjustment Deflated,N
+crs_current,usd_amount_untied,usd_amount_untied,Usd Amount Untied,N
+crs_current,usd_amount_partial_tied,usd_amount_partial_tied,Usd Amount Partial Tied,N
+crs_current,usd_amount_tied,usd_amount_tied,Usd Amount Tied,N
+crs_current,usd_amount_untied_deflated,usd_amount_untied_deflated,Usd Amount Untied Deflated,N
+crs_current,usd_amount_partial_tied_deflated,usd_amount_partial_tied_deflated,Usd Amount Partial Tied Deflated,N
+crs_current,usd_amount_tied_deflated,usd_amount_tied_deflated,Usd Amount Tied Deflated,N
+crs_current,usd_irtc,usd_irtc,Usd Irtc,N
+crs_current,usd_expert_commitment,usd_expert_commitment,Usd Expert Commitment,N
+crs_current,usd_expert_extended,usd_expert_extended,Usd Expert Extended,N
+crs_current,usd_export_credit,usd_export_credit,Usd Export Credit,N
+crs_current,currency_code,currency_code,Currency Code,N
+crs_current,commitment_national,commitment_national,Commitment National,N
+crs_current,disbursement_national,disbursement_national,Disbursement National,N
+crs_current,grant_equivalent,grant_equivalent,Grant Equivalent,N
+crs_current,usd_grant_equivalent,usd_grant_equivalent,Usd Grant Equivalent,N
+crs_current,short_description,short_description,Short Description,C
+crs_current,project_title,project_title,Project Title,C
+crs_current,purpose_code,purpose_code,Purpose Code,N
+crs_current,purpose_name,purpose_name,Purpose Name,C
+crs_current,sector_code,sector_code,Sector Code,N
+crs_current,sector_name,sector_name,Sector Name,C
+crs_current,channel_code,channel_code,Channel Code,N
+crs_current,channel_name,channel_name,Channel Name,C
+crs_current,channel_reported_name,channel_reported_name,Channel Reported Name,C
+crs_current,channel_parent_category,channel_parent_category,Channel Parent Category,N
+crs_current,geography,geography,Geography,C
+crs_current,expected_start_date,expected_start_date,Expected Start Date,C
+crs_current,completion_date,completion_date,Completion Date,C
+crs_current,long_description,long_description,Long Description,C
+crs_current,gender,gender,Gender,N
+crs_current,environment,environment,Environment,N
+crs_current,trade,trade,Trade,N
+crs_current,pdgg,pdgg,Pdgg,N
+crs_current,ftc,ftc,Ftc,N
+crs_current,pba,pba,Pba,N
+crs_current,investment_project,investment_project,Investment Project,N
+crs_current,associated_finance,associated_finance,Associated Finance,N
+crs_current,biodiversity,biodiversity,Biodiversity,N
+crs_current,climate_mitigation,climate_mitigation,Climate Mitigation,N
+crs_current,climate_adaptation,climate_adaptation,Climate Adaptation,N
+crs_current,desertification,desertification,Desertification,N
+crs_current,commitment_date,commitment_date,Commitment Date,C
+crs_current,type_repayment,type_repayment,Type Repayment,N
+crs_current,number_repayment,number_repayment,Number Repayment,N
+crs_current,interest_1,interest_1,Interest 1,C
+crs_current,interest_2,interest_2,Interest 2,N
+crs_current,repay_date_1,repay_date_1,Repay Date 1,C
+crs_current,repay_date_2,repay_date_2,Repay Date 2,C
+crs_current,grant_element,grant_element,Grant Element,N
+crs_current,usd_interest,usd_interest,Usd Interest,N
+crs_current,usd_outstanding,usd_outstanding,Usd Outstanding,N
+crs_current,usd_arrears_principal,usd_arrears_principal,Usd Arrears Principal,N
+crs_current,usd_arrears_interest,usd_arrears_interest,Usd Arrears Interest,N
+crs_current,usd_future_debt_service_principal,usd_future_debt_service_principal,Usd Future Debt Service Principal,C
+crs_current,usd_future_debt_service_interest,usd_future_debt_service_interest,Usd Future Debt Service Interest,C
+crs_current,rmnch,rmnch,Rmnch,N
+crs_current,budget_identifier,budget_identifier,Budget Identifier,N
+crs_current,capital_expenditure,capital_expenditure,Capital Expenditure,N
+dac1_current,donor_code,donor_code,Donor Code,N
+dac1_current,donor_name,donor_name,Donor Name,C
+dac1_current,part_code,part_code,Part Code,N
+dac1_current,part_name,part_name,Part Name,C
+dac1_current,aid_type_code,aid_type_code,Aid Type Code,N
+dac1_current,aid_type_name,aid_type_name,Aid Type Name,C
+dac1_current,flows,flows,Flows,N
+dac1_current,fund_flows,fund_flows,Fund Flows,C
+dac1_current,amount_type_code,amount_type_code,Amount Type Code,C
+dac1_current,amount_type_name,amount_type_name,Amount Type Name,C
+dac1_current,time,time,Time,N
+dac1_current,year,year,Year,N
+dac1_current,value,value,Value,N
+dac1_current,flags,flags,Flags,C
+dac2a_current,recipient_code,recipient_code,Recipient Code,N
+dac2a_current,recipient_name,recipient_name,Recipient Name,C
+dac2a_current,donor_code,donor_code,Donor Code,N
+dac2a_current,donor_name,donor_name,Donor Name,C
+dac2a_current,part_code,part_code,Part Code,N
+dac2a_current,part_name,part_name,Part Name,C
+dac2a_current,aid_type_code,aid_type_code,Aid Type Code,N
+dac2a_current,aid_type_name,aid_type_name,Aid Type Name,C
+dac2a_current,data_type,data_type,Data Type,C
+dac2a_current,amount_type,amount_type,Amount Type,C
+dac2a_current,time,time,Time,N
+dac2a_current,year,year,Year,N
+dac2a_current,value,value,Value,N
+dac2a_current,flags,flags,Flags,C
+dac2b_current,recipient_code,recipient_code,Recipient Code,N
+dac2b_current,recipient_name,recipient_name,Recipient Name,C
+dac2b_current,donor_code,donor_code,Donor Code,N
+dac2b_current,donor_name,donor_name,Donor Name,C
+dac2b_current,part_code,part_code,Part Code,N
+dac2b_current,part_name,part_name,Part Name,C
+dac2b_current,aid_type_code,aid_type_code,Aid Type Code,N
+dac2b_current,aid_type_name,aid_type_name,Aid Type Name,C
+dac2b_current,data_type,data_type,Data Type,C
+dac2b_current,amount_type,amount_type,Amount Type,C
+dac2b_current,time,time,Time,N
+dac2b_current,year,year,Year,N
+dac2b_current,value,value,Value,N
+dac2b_current,flags,flags,Flags,C
+dac5_current,donor_code,donor_code,Donor Code,N
+dac5_current,donor_name,donor_name,Donor Name,C
+dac5_current,sector_code,sector_code,Sector Code,N
+dac5_current,sector_name,sector_name,Sector Name,C
+dac5_current,aid_type_code,aid_type_code,Aid Type Code,N
+dac5_current,aid_type_name,aid_type_name,Aid Type Name,C
+dac5_current,amount_type_code,amount_type_code,Amount Type Code,C
+dac5_current,amount_type_name,amount_type_name,Amount Type Name,C
+dac5_current,time,time,Time,N
+dac5_current,year,year,Year,N
+dac5_current,value,value,Value,N
+dac5_current,flags,flags,Flags,C
