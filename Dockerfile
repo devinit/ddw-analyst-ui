@@ -13,7 +13,7 @@ RUN pip install -r requirements.txt
 
 # R dependencies
 RUN apt-get install -y r-base-core
-RUN apt-get install software-properties-common
+RUN apt-get install -y software-properties-common
 RUN add-apt-repository -y "ppa:marutter/rrutter"
 RUN add-apt-repository -y "ppa:marutter/c2d4u"
 RUN apt-get update
