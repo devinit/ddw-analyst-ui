@@ -7,21 +7,6 @@ make.sql.names <- function(x){
   return(substr(iconv(gsub(".","_",make.names(x),fixed=T),to="ASCII",sub=""),1,63))
 }
 
-melt_chunk <- function(x, id.vars, variable.name, chunk.size=1000){
-  data_list = list()
-  num_chunks = floor(nrow(x)/chunk.size)
-  for(i in 0:num_chunks){
-    message("Melting chunk ",i,"/",num_chunks)
-    start_ind = 1 + (i * chunk.size)
-    end_ind = (i+1) * chunk.size
-    end_ind = min(end_ind,nrow(x))
-    chunk = x[start_ind:end_ind]
-    chunk.m = melt(chunk,id.vars=id.vars,variable.name=variable.name)
-    data_list[[i+1]] = chunk.m
-  }
-  return(rbindlist(data_list))
-}
-
 drv = dbDriver("PostgreSQL")
 con = dbConnect(drv,
                 dbname="analyst_ui"
@@ -29,6 +14,9 @@ con = dbConnect(drv,
                 ,password="analyst_ui_pass"
                 ,host="db"
                 ,port=5432)
+# con = dbConnect(drv,
+#                 dbname="analyst_ui"
+#                 ,user="postgres")
 
 table.name = "wdi"
 table.quote = c("repo",table.name)
@@ -49,10 +37,27 @@ if(res$status_code==200){
   wdi = fread(tmp.csv, header=T)
   wdi[,V64:=NULL]
   names(wdi)[1:4] = tolower(make.sql.names(make.names(names(wdi)[1:4])))
-  wdi.m = melt_chunk(wdi,id.vars=c("country_name","country_code", "indicator_name", "indicator_code"),variable.name="year")
-  rm(wdi)
-  gc()
-  dbWriteTable(con, name = table.quote, value = wdi.m, row.names = F, overwrite = T)
+  
+  # Append melt
+  id.vars=c("country_name","country_code", "indicator_name", "indicator_code")
+  variable.name="year"
+  chunk.size=10000
+  num_chunks = floor(nrow(wdi)/chunk.size)
+  pb = txtProgressBar(max=num_chunks,style=3)
+  for(i in 0:num_chunks){
+    setTxtProgressBar(pb, i)
+    start_ind = 1 + (i * chunk.size)
+    end_ind = (i+1) * chunk.size
+    end_ind = min(end_ind,nrow(wdi))
+    chunk = wdi[start_ind:end_ind,]
+    chunk.m = melt(chunk,id.vars=id.vars,variable.name=variable.name)
+    rm(chunk)
+    gc()
+    dbWriteTable(con, name = table.quote, value = chunk.m, row.names = F, overwrite = (i==0), append = (i>0))
+    rm(chunk.m)
+    gc()
+  }
+  close(pb)
   dbDisconnect(con)
 }else{
   stop("HTTP error: ",res$status_code)
