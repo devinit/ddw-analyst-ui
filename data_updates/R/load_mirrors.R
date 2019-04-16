@@ -20,50 +20,27 @@ con = dbConnect(drv,
 #                 dbname="analyst_ui"
 #                 ,user="postgres")
 
-# Unzip all
-crs_latest_path = paste0(tmp_file_directory,"Crs_latest")
-crs_zips = list.files(path=crs_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
-for(crs_zip in crs_zips){
-  message("Unzipping ",crs_zip)
-  unzip(crs_zip, exdir=crs_latest_path, overwrite=T)
-}
-crs_path <- crs_latest_path
+crs_path = paste0(tmp_file_directory,"Crs_latest")
 crs.table.name = "crs_current"
 crs.table.quote = c("repo",crs.table.name)
 
 table1_latest_path = paste0(tmp_file_directory,"Table1_latest")
-table1_zips = list.files(path=table1_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
-for(table1_zip in table1_zips){
-  message("Unzipping ",table1_zip)
-  dac1_path = unzip(table1_zip, exdir=table1_latest_path, overwrite=T)
-}
+dac1_path = list.files(path=table1_latest_path, pattern="*.csv", ignore.case=T, full.names=T)
 dac1.table.name = "dac1_current"
 dac1.table.quote = c("repo",dac1.table.name)
 
 table2a_latest_path = paste0(tmp_file_directory,"Table2a_latest")
-table2a_zips = list.files(path=table2a_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
-for(table2a_zip in table2a_zips){
-  message("Unzipping ",table2a_zip)
-  dac2a_path = unzip(table2a_zip, exdir=table2a_latest_path, overwrite=T)
-}
+dac2a_path = list.files(path=table2a_latest_path, pattern="*.csv", ignore.case=T, full.names=T)
 dac2a.table.name = "dac2a_current"
 dac2a.table.quote = c("repo",dac2a.table.name)
 
 table2b_latest_path = paste0(tmp_file_directory,"Table2b_latest")
-table2b_zips = list.files(path=table2b_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
-for(table2b_zip in table2b_zips){
-  message("Unzipping ",table2b_zip)
-  dac2b_path = unzip(table2b_zip, exdir=table2b_latest_path, overwrite=T)
-}
+dac2b_path = list.files(path=table2b_latest_path, pattern="*.csv", ignore.case=T, full.names=T)
 dac2b.table.name = "dac2b_current"
 dac2b.table.quote = c("repo",dac2b.table.name)
 
 table5_latest_path = paste0(tmp_file_directory,"Table5_latest")
-table5_zips = list.files(path=table5_latest_path, pattern="*.zip", ignore.case=T, full.names=T)
-for(table5_zip in table5_zips){
-  message("Unzipping ",table5_zip)
-  dac5_path = unzip(table5_zip, exdir=table5_latest_path, overwrite=T)
-}
+dac5_path = list.files(path=table5_latest_path, pattern="*.csv", ignore.case=T, full.names=T)
 dac5.table.name = "dac5_current"
 dac5.table.quote = c("repo",dac5.table.name)
 
@@ -217,24 +194,187 @@ clean_dac1_file = function(){
 }
 
 merge_crs_tables = function(file_vec){
+  crs_field_types = c(
+    "integer",
+    "integer",
+    "text",
+    "integer",
+    "text",
+    "text",
+    "text",
+    "integer",
+    "integer",
+    "text",
+    "integer",
+    "text",
+    "integer",
+    "text",
+    "integer",
+    "text",
+    "integer",
+    "integer",
+    "integer",
+    "text",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "integer",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "text",
+    "text",
+    "integer",
+    "text",
+    "integer",
+    "text",
+    "integer",
+    "text",
+    "text",
+    "integer",
+    "text",
+    "text",
+    "text",
+    "text",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "text",
+    "integer",
+    "integer",
+    "text",
+    "float8",
+    "text",
+    "text",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "bool",
+    "bool",
+    "integer",
+    "integer",
+    "float8"
+  )
+  names(crs_field_types) = c(
+    "year"
+    ,"donor_code"
+    ,"donor_name"
+    ,"agency_code"
+    ,"agency_name"
+    ,"crs_id"
+    ,"project_number"
+    ,"initial_report"
+    ,"recipient_code"
+    ,"recipient_name"
+    ,"region_code"
+    ,"region_name"
+    ,"income_group_code"
+    ,"income_group_name"
+    ,"flow_code"
+    ,"flow_name"
+    ,"bilateral_multilateral"
+    ,"category"
+    ,"finance_type"
+    ,"aid_type"
+    ,"usd_commitment"
+    ,"usd_disbursement"
+    ,"usd_received"
+    ,"usd_commitment_deflated"
+    ,"usd_disbursement_deflated"
+    ,"usd_received_deflated"
+    ,"usd_adjustment"
+    ,"usd_adjustment_deflated"
+    ,"usd_amount_untied"
+    ,"usd_amount_partial_tied"
+    ,"usd_amount_tied"
+    ,"usd_amount_untied_deflated"
+    ,"usd_amount_partial_tied_deflated"
+    ,"usd_amount_tied_deflated"
+    ,"usd_irtc"
+    ,"usd_expert_commitment"
+    ,"usd_expert_extended"
+    ,"usd_export_credit"
+    ,"currency_code"
+    ,"commitment_national"
+    ,"disbursement_national"
+    ,"grant_equivalent" # Guessed column name
+    ,"usd_grant_equivalent"
+    ,"short_description"
+    ,"project_title"
+    ,"purpose_code"
+    ,"purpose_name"
+    ,"sector_code"
+    ,"sector_name"
+    ,"channel_code"
+    ,"channel_name"
+    ,"channel_reported_name"
+    ,"channel_parent_category" # Guessed column name
+    ,"geography"
+    ,"expected_start_date"
+    ,"completion_date"
+    ,"long_description"
+    ,"gender"
+    ,"environment"
+    ,"trade"
+    ,"pdgg"
+    ,"ftc"
+    ,"pba"
+    ,"investment_project"
+    ,"associated_finance"
+    ,"biodiversity"
+    ,"climate_mitigation"
+    ,"climate_adaptation"
+    ,"desertification"
+    ,"commitment_date"
+    ,"type_repayment"
+    ,"number_repayment"
+    ,"interest_1"
+    ,"interest_2"
+    ,"repay_date_1"
+    ,"repay_date_2"
+    ,"grant_element"
+    ,"usd_interest"
+    ,"usd_outstanding"
+    ,"usd_arrears_principal"
+    ,"usd_arrears_interest"
+    ,"usd_future_debt_service_principal"
+    ,"usd_future_debt_service_interest"
+    ,"rmnch"
+    ,"budget_identifier"
+    ,"capital_expenditure"
+  )
   
-  clean_up_folder = paste0(tmp_file_directory, "/crs_cleanup")
-  if(dir.exists(clean_up_folder)){
-    unlink(clean_up_folder)
-  }
-  dir.create(clean_up_folder)
-  
-  # Loop through, and use the `fread` function from `data.table` package.
-  # CRS has some embedded null characters, which we need to fix.
   overwrite_crs = TRUE
   for(txt in file_vec){
-    r = readBin(txt, raw(), file.info(txt)$size)
-    r[r==as.raw(0)] = as.raw(0x20) ## replace with 0x20 = <space>
-    writeBin(r, paste0(clean_up_folder,"/",basename(txt)) )
-    rm(r)
-    gc()
-    tmp = fread(paste0(clean_up_folder,"/",basename(txt)),sep="|")
-    setnames(tmp,
+    crs = fread(txt,sep="|")
+    setnames(crs,
              c(
                "Year"
                ,"DonorCode"
@@ -412,12 +552,17 @@ merge_crs_tables = function(file_vec){
                ,"budget_identifier"
                ,"capital_expenditure"
              ));
-    dbWriteTable(con, name = crs.table.quote, value = tmp, row.names = F, overwrite = overwrite_crs, append=!overwrite_crs)
+    dbWriteTable(
+      con,
+      name = crs.table.quote,
+      value = crs,
+      row.names = F,
+      overwrite = overwrite_crs,
+      append=!overwrite_crs,
+      field.types=crs_field_types)
     overwrite_crs = FALSE
   }
-  
-  unlink(clean_up_folder)
-  
+
 }
 
 clean_crs_file = function(){

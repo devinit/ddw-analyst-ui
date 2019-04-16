@@ -8,6 +8,8 @@ import constants
 import sys
 import getopt
 import shutil
+import zipfile
+import subprocess
 
 
 def main(argv):
@@ -105,9 +107,6 @@ def download(scrape_path, download_path, output_folder_prefix):
         with open(timestamp_file, "w") as ts_f:
             ts_f.write(download_date)
 
-    # Change into to recently created directory.
-    os.chdir(content_directory)
-
     # Sort the keys (file names) of the dictionary so that you download the files in order.
     to_get = list(files_to_download.keys())
     to_get.sort()
@@ -140,6 +139,17 @@ def download(scrape_path, download_path, output_folder_prefix):
                 if chunk:
                     f.write(chunk)
                     f.flush()
+
+        # Unzip
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        remove_null_script_path = os.path.abspath(os.path.join(dir_path, "..", "remove_null.sh"))
+        with zipfile.ZipFile(path, "r") as zip_ref:
+            zip_ref.extractall(content_directory)
+            extracted_files = zip_ref.namelist()
+            for extracted_file in extracted_files:
+                full_path_extracted_file = os.path.join(content_directory, extracted_file)
+                rm_null_cmd = [remove_null_script_path, full_path_extracted_file]
+                subprocess.run(rm_null_cmd)
 
     # Finished!
     print("Finished.\t\t\t")
