@@ -49,7 +49,7 @@ class QueryData extends React.Component<QueryDataProps> {
                 </Button>
               </div>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className="table-full-width">
               { this.renderTable() }
             </Card.Body>
           </Card>
