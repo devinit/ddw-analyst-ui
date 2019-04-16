@@ -1,4 +1,4 @@
-list.of.packages <- c("data.table","tidyverse", "here", "RPostgreSQL")
+list.of.packages <- c("data.table", "here", "RPostgreSQL")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-project.org")
 lapply(list.of.packages, require, character.only=T)
@@ -216,30 +216,6 @@ clean_dac1_file = function(){
   dbWriteTable(con, name = dac1.table.quote, value = dac1, row.names = F, overwrite = T)
 }
 
-#This can be done better, read actual files and use ncol before doing processing, that way
-#You wont need this method
-check_crs_headers = function(file_v){
-  
-  expected_2016_length <- 86
-  
-  #Check that the length of the total number of columns match what is expected
-  #If column lengths don't match, do a manual visual check to see what has been added or removed
-  #All columns need to have the same lenghth for all files of CRS because each change affects all years
-  for(fi in file_v){
-    
-    fo <- file(fi,"r")
-    first_line <- readLines(fo,n = 1)
-    split_vec <- strsplit(first_line,"|",fixed=TRUE)[[1]]
-    
-    if((length(split_vec) < expected_2016_length) || (length(split_vec) > expected_2016_length)){
-      e <- simpleError(sprintf("Found length %f for file %s but expecting %f ",length(split_vec),fi,expected_2016_length))
-      stop(e)
-    }
-  }
-  
- 
-}
-
 merge_crs_tables = function(file_vec){
   
   clean_up_folder = paste0(tmp_file_directory, "/crs_cleanup")
@@ -451,8 +427,6 @@ merge_crs_tables = function(file_vec){
 
 clean_crs_file = function(){
   file_list <- list.files(path = crs_path,pattern = "*.txt",full.names = TRUE,recursive = FALSE);
-  
-  check_crs_headers(file_list)
   merge_crs_tables(file_list);
 }
 
