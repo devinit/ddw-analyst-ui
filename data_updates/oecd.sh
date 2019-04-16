@@ -23,6 +23,6 @@ python3 data_updates/Python/download_oecd.py -t TABLE5
 
 echo "Using R scripts to cleanup downloaded data and load to postgres DB"
 
-Rscript data_updates/Python/R/load_mirrors.R
+Rscript data_updates/R/load_mirrors.R
 
 echo "=============== Successfully processed OECD mirrors==============="
