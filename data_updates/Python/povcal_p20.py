@@ -4,8 +4,7 @@ from sqlalchemy import create_engine
 
 def main():
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
-    smy = pd.read_sql_query('SELECT * from "repo"."PovCalNetSmy" where "PovertyLine"<5', con=engine)
-    world = pd.read_sql_query('SELECT * from "repo"."PovCalNetSmy" where "regionCID"=\'WLD\'', con=engine)
+    world = pd.read_sql_query('SELECT * from "repo"."PovCalNetAgg" where "regionCID"=\'WLD\'', con=engine)
 
     world["diff"] = abs(world["hc"]-0.2)
 
@@ -14,7 +13,7 @@ def main():
     for unique_year in unique_years:
         year_min = min(world[(world["requestYear"] == unique_year)]["diff"])
         p20_thresh = round(world[(world["diff"] == year_min) & (world["requestYear"] == unique_year)]["povertyLine"].values[0], 2)
-        p20_year_data = smy[(smy["PovertyLine"] == p20_thresh) & (smy["RequestYear"] == unique_year)].copy()
+        p20_year_data = pd.read_sql_query('SELECT * from "repo"."PovCalNetSmy" where "PovertyLine"={} and "RequestYear"={}'.format(p20_thresh, unique_year), con=engine)
         p20_data_list.append(p20_year_data)
 
     p20_data = pd.concat(p20_data_list, ignore_index=True)
