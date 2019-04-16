@@ -4,10 +4,8 @@ from sqlalchemy import create_engine
 
 def main():
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
-    smy = pd.read_sql_table("PovCalNetSmy", con=engine, schema="repo")
-    agg = pd.read_sql_table("PovCalNetAgg", con=engine, schema="repo")
-
-    world = agg[agg["regionCID"] == "WLD"].copy()
+    smy = pd.read_sql_query('SELECT * from "repo"."PovCalNetSmy" where "PovertyLine"<5', con=engine)
+    world = pd.read_sql_query('SELECT * from "repo"."PovCalNetSmy" where "regionCID"=\'WLD\'', con=engine)
 
     world["diff"] = abs(world["hc"]-0.2)
 
