@@ -69,7 +69,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
   }
 
   private renderRows(operations: List<OperationMap>) {
-    if (operations && operations.size) {
+    if (operations && operations.count()) {
       return operations.map((operation, index) => (
         <OperationsTable.Row
           key={ index }
@@ -92,13 +92,17 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
       ));
     }
 
-    return null;
+    return <div>No results found</div>;
   }
 
   private renderPagination() {
     const count = this.props.operations.get('count') as number;
     const { offset, limit } = this.props;
     const max = offset + limit;
+
+    if (!count) {
+      return null;
+    }
 
     return (
       <Row>
