@@ -41,7 +41,7 @@ if(res$status_code==200){
   # Append melt
   id.vars=c("country_name","country_code", "indicator_name", "indicator_code")
   variable.name="year"
-  chunk.size=10000
+  chunk.size=5000
   num_chunks = floor(nrow(wdi)/chunk.size)
   pb = txtProgressBar(max=num_chunks,style=3)
   for(i in 0:num_chunks){

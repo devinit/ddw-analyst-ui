@@ -44,115 +44,77 @@ dac5_path = list.files(path=table5_latest_path, pattern="*.csv", ignore.case=T, 
 dac5.table.name = "dac5_current"
 dac5.table.quote = c("repo",dac5.table.name)
 
+chunk_load_table = function(con, table.quote, filename, col.names, sep=",", field.types=NULL, allow.overwrite=TRUE, encoding="latin1", chunk.size=5000){
+  index = 0
+  message(filename)
+  file_con = file(description=filename, open="r", encoding=encoding)
+  repeat{
+    index = index + 1
+    dataChunk = read.delim(file_con, nrows=chunk.size, skip=0, header=(index==1), sep=sep, col.names=col.names, as.is=T, na.strings=c("\032",""))
+    dataChunk = dataChunk[rowSums(is.na(dataChunk)) != ncol(dataChunk),]
+    dbWriteTable(con, name = table.quote, value = dataChunk, row.names = F, overwrite=((index==1) & allow.overwrite), append=((index>1) | !allow.overwrite), field.types=field.types)
+    if(nrow(dataChunk) != chunk.size){
+      break
+    }
+    rm(dataChunk)
+    gc()
+  }
+  close(file_con)
+}
+
 clean_dac2a_file = function(){
-  
-  dac2a <- fread(dac2a_path)
-  setnames(dac2a,
-           c('RECIPIENT',
-                   'Recipient',
-                   'DONOR',
-                   'Donor',
-                    'PART',
-                   'Part',
-                   'AIDTYPE',
-                   'Aid type',
-                   'DATATYPE',
-                   'Amount type',
-                   'TIME',
-                   'Year',
-                   'Value',
-                   'Flags')
-                   ,
-           c('recipient_code',
-             'recipient_name',
-             'donor_code',
-             'donor_name',
-             'part_code',
-             'part_name',
-             'aid_type_code',
-             'aid_type_name',
-             'data_type',
-             'amount_type',
-             'time',
-             'year',
-             'value',
-             'flags'
-             ));
-  
-  dbWriteTable(con, name = dac2a.table.quote, value = dac2a, row.names = F, overwrite = T)
+  dac2a.names = c('recipient_code',
+                  'recipient_name',
+                  'donor_code',
+                  'donor_name',
+                  'part_code',
+                  'part_name',
+                  'aid_type_code',
+                  'aid_type_name',
+                  'data_type',
+                  'amount_type',
+                  'time',
+                  'year',
+                  'value',
+                  'flags'
+                )
+  chunk_load_table(con, dac2a.table.quote, dac2a_path, dac2a.names)
 }
 
 clean_dac2b_file = function(){
-  
-  dac2b <- fread(dac2b_path)
-  setnames(dac2b,
-           c('RECIPIENT'
-             ,'Recipient'
-             ,'DONOR'
-             ,'Donor'
-             ,'PART'
-             ,'Part'
-             ,'AIDTYPE'
-             ,'Aid type'
-             ,'DATATYPE'
-             ,'Amount type'
-             ,'TIME'
-             ,'Year'
-             ,'Value'
-             ,'Flags')
-           ,
-           c('recipient_code',
-             'recipient_name',
-             'donor_code',
-             'donor_name',
-             'part_code',
-             'part_name',
-             'aid_type_code',
-             'aid_type_name',
-             'data_type',
-             'amount_type',
-             'time',
-             'year',
-             'value',
-             'flags'
-           ));
-  
-  dbWriteTable(con, name = dac2b.table.quote, value = dac2b, row.names = F, overwrite = T)
-  
+  dac2b.names = c('recipient_code',
+                  'recipient_name',
+                  'donor_code',
+                  'donor_name',
+                  'part_code',
+                  'part_name',
+                  'aid_type_code',
+                  'aid_type_name',
+                  'data_type',
+                  'amount_type',
+                  'time',
+                  'year',
+                  'value',
+                  'flags'
+  )
+  chunk_load_table(con, dac2b.table.quote, dac2b_path, dac2b.names)
 }
 
 clean_dac5_file = function(){
-  dac5 <- fread(dac5_path)
-  setnames(dac5,
-           c('DONOR'
-             ,'Donor'
-             ,'SECTOR'
-             ,'Sector'
-             ,'AIDTYPE'
-             ,'Aid type'
-             ,'AMOUNTTYPE'
-             ,'Amount type'
-             ,'TIME'
-             ,'Year'
-             ,'Value'
-             ,'Flags')
-           ,
-           c('donor_code'
-             ,'donor_name'
-             ,'sector_code'
-             ,'sector_name'
-             ,'aid_type_code'
-             ,'aid_type_name'
-             ,'amount_type_code'
-             ,'amount_type_name'
-             ,'time'
-             ,'year'
-             ,'value'
-             ,'flags'
-           ));
-  
-  dbWriteTable(con, name = dac5.table.quote, value = dac5, row.names = F, overwrite = T)
-
+  dac5.names = c('donor_code'
+                 ,'donor_name'
+                 ,'sector_code'
+                 ,'sector_name'
+                 ,'aid_type_code'
+                 ,'aid_type_name'
+                 ,'amount_type_code'
+                 ,'amount_type_name'
+                 ,'time'
+                 ,'year'
+                 ,'value'
+                 ,'flags'
+  )
+  chunk_load_table(con, dac5.table.quote, dac5_path, dac5.names)
 }
 
 
@@ -370,196 +332,9 @@ merge_crs_tables = function(file_vec){
     ,"budget_identifier"
     ,"capital_expenditure"
   )
-  
   overwrite_crs = TRUE
   for(txt in file_vec){
-    crs = fread(txt,sep="|")
-    setnames(crs,
-             c(
-               "Year"
-               ,"DonorCode"
-               ,"DonorName"
-               ,"AgencyCode"
-               ,"AgencyName"
-               ,"CRSid"
-               ,"ProjectNumber"
-               ,"InitialReport"
-               ,"RecipientCode"
-               ,"RecipientName"
-               ,"RegionCode"
-               ,"RegionName"
-               ,"IncomegroupCode"
-               ,"IncomegroupName"
-               ,"FlowCode"
-               ,"FlowName"
-               ,"bi_multi"
-               ,"Category"
-               ,"Finance_t"
-               ,"Aid_t"
-               ,"usd_commitment"
-               ,"usd_disbursement"
-               ,"usd_received"
-               ,"usd_commitment_defl"
-               ,"usd_disbursement_defl"
-               ,"usd_received_defl"
-               ,"usd_adjustment"
-               ,"usd_adjustment_defl"
-               ,"usd_amountuntied"
-               ,"usd_amountpartialtied"
-               ,"usd_amounttied"
-               ,"usd_amountuntied_defl"
-               ,"usd_amountpartialtied_defl"
-               ,"usd_amounttied_defl"
-               ,"usd_IRTC"
-               ,"usd_expert_commitment"
-               ,"usd_expert_extended"
-               ,"usd_export_credit"
-               ,"CurrencyCode"
-               ,"commitment_national"
-               ,"disbursement_national"
-               ,"GrantEquiv"
-               ,"usd_GrantEquiv"
-               ,"ShortDescription"
-               ,"ProjectTitle"
-               ,"PurposeCode"
-               ,"PurposeName"
-               ,"SectorCode"
-               ,"SectorName"
-               ,"ChannelCode"
-               ,"ChannelName"
-               ,"ChannelReportedName"
-               ,"ParentChannelCode"
-               ,"Geography"
-               ,"ExpectedStartDate"
-               ,"CompletionDate"
-               ,"LongDescription"
-               ,"Gender"
-               ,"Environment"
-               ,"Trade"
-               ,"Pdgg"
-               ,"FTC"
-               ,"PBA"
-               ,"InvestmentProject"
-               ,"AssocFinance"
-               ,"biodiversity"
-               ,"climateMitigation"
-               ,"climateAdaptation"
-               ,"desertification"
-               ,"commitmentdate"
-               ,"typerepayment"
-               ,"numberrepayment"
-               ,"interest1"
-               ,"interest2"
-               ,"repaydate1"
-               ,"repaydate2"
-               ,"grantelement"
-               ,"usd_interest"
-               ,"usd_outstanding"
-               ,"usd_arrears_principal"
-               ,"usd_arrears_interest"
-               ,"usd_future_DS_principal"
-               ,"usd_future_DS_interest"
-               ,"RMNCH"
-               ,"BudgetIdent"
-               ,"CapitalExpend"
-             )
-             ,
-             c(
-               "year"
-               ,"donor_code"
-               ,"donor_name"
-               ,"agency_code"
-               ,"agency_name"
-               ,"crs_id"
-               ,"project_number"
-               ,"initial_report"
-               ,"recipient_code"
-               ,"recipient_name"
-               ,"region_code"
-               ,"region_name"
-               ,"income_group_code"
-               ,"income_group_name"
-               ,"flow_code"
-               ,"flow_name"
-               ,"bilateral_multilateral"
-               ,"category"
-               ,"finance_type"
-               ,"aid_type"
-               ,"usd_commitment"
-               ,"usd_disbursement"
-               ,"usd_received"
-               ,"usd_commitment_deflated"
-               ,"usd_disbursement_deflated"
-               ,"usd_received_deflated"
-               ,"usd_adjustment"
-               ,"usd_adjustment_deflated"
-               ,"usd_amount_untied"
-               ,"usd_amount_partial_tied"
-               ,"usd_amount_tied"
-               ,"usd_amount_untied_deflated"
-               ,"usd_amount_partial_tied_deflated"
-               ,"usd_amount_tied_deflated"
-               ,"usd_irtc"
-               ,"usd_expert_commitment"
-               ,"usd_expert_extended"
-               ,"usd_export_credit"
-               ,"currency_code"
-               ,"commitment_national"
-               ,"disbursement_national"
-               ,"grant_equivalent" # Guessed column name
-               ,"usd_grant_equivalent"
-               ,"short_description"
-               ,"project_title"
-               ,"purpose_code"
-               ,"purpose_name"
-               ,"sector_code"
-               ,"sector_name"
-               ,"channel_code"
-               ,"channel_name"
-               ,"channel_reported_name"
-               ,"channel_parent_category" # Guessed column name
-               ,"geography"
-               ,"expected_start_date"
-               ,"completion_date"
-               ,"long_description"
-               ,"gender"
-               ,"environment"
-               ,"trade"
-               ,"pdgg"
-               ,"ftc"
-               ,"pba"
-               ,"investment_project"
-               ,"associated_finance"
-               ,"biodiversity"
-               ,"climate_mitigation"
-               ,"climate_adaptation"
-               ,"desertification"
-               ,"commitment_date"
-               ,"type_repayment"
-               ,"number_repayment"
-               ,"interest_1"
-               ,"interest_2"
-               ,"repay_date_1"
-               ,"repay_date_2"
-               ,"grant_element"
-               ,"usd_interest"
-               ,"usd_outstanding"
-               ,"usd_arrears_principal"
-               ,"usd_arrears_interest"
-               ,"usd_future_debt_service_principal"
-               ,"usd_future_debt_service_interest"
-               ,"rmnch"
-               ,"budget_identifier"
-               ,"capital_expenditure"
-             ));
-    dbWriteTable(
-      con,
-      name = crs.table.quote,
-      value = crs,
-      row.names = F,
-      overwrite = overwrite_crs,
-      append=!overwrite_crs,
-      field.types=crs_field_types)
+    chunk_load_table(con, crs.table.quote, txt, names(crs_field_types), sep="|", field.types=crs_field_types, allow.overwrite=overwrite_crs)
     overwrite_crs = FALSE
   }
 
