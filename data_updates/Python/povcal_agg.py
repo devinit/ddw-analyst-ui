@@ -45,6 +45,7 @@ def fetch_data(poverty_line):
         a_response = requests_retry_session().get(url=agg_url, timeout=30).content
         return pd.read_csv(io.StringIO(a_response.decode('utf-8')))
     except:
+        print("Fetch for poverty-line {} failed".format(poverty_line))
         return pd.DataFrame(columns=["regionCID", "requestYear", "povertyLine", "hc"])
 
 

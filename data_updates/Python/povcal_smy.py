@@ -46,7 +46,8 @@ def fetch_data(poverty_line):
         s_response = requests_retry_session().get(url=smy_url, timeout=30).content
         return pd.read_csv(io.StringIO(s_response.decode('utf-8')))
     except:
-        pd.DataFrame(columns=["CountryCode", "RequestYear", "PovertyLine", "HeadCount"])
+        print("Fetch for poverty-line {} failed".format(poverty_line))
+        return pd.DataFrame(columns=["CountryCode", "RequestYear", "PovertyLine", "HeadCount"])
 
 
 def fetch_old_data(schema_name, table_name, boundary, engine):
