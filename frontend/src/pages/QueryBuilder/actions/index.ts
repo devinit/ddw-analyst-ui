@@ -4,6 +4,7 @@ import {
   DELETE_OPERATION_STEP,
   EDIT_OPERATION_STEP,
   QueryBuilderAction,
+  RESET_STATE,
   SAVING_OPERATION,
   SAVING_OPERATION_FAILED,
   SAVING_OPERATION_SUCCESS,
@@ -21,3 +22,4 @@ export const deleteOperationStep = (step: OperationStepMap): Partial<QueryBuilde
 export const savingOperation = (): Partial<QueryBuilderAction> => ({ type: SAVING_OPERATION });
 export const operationSaved = (saved: boolean): Partial<QueryBuilderAction> =>
   saved ? ({ type: SAVING_OPERATION_SUCCESS }) : ({ type: SAVING_OPERATION_FAILED });
+export const resetQueryBuilderState = (): Partial<QueryBuilderAction> => ({ type: RESET_STATE });

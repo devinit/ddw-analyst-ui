@@ -108,6 +108,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
   componentWillUnmount() {
     this.props.actions.setActiveOperation();
+    this.props.actions.resetQueryBuilderState();
   }
 
   private renderOperationForm() {
