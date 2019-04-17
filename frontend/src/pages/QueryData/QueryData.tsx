@@ -85,6 +85,7 @@ class QueryData extends React.Component<QueryDataProps> {
     if (data && data.count() !== 0) {
       return (
         <PaginatedContent
+          className="ml-1"
           content={ <OperationDataTable list={ data } columns={ columns }/> }
           list={ data || List() }
           limit={ 10 }
