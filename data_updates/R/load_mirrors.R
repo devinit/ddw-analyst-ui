@@ -50,7 +50,7 @@ chunk_load_table = function(con, table.quote, filename, col.names, sep=",", fiel
   file_con = file(description=filename, open="r", encoding=encoding)
   repeat{
     index = index + 1
-    dataChunk = read.delim(file_con, nrows=chunk.size, skip=0, header=(index==1), sep=sep, col.names=col.names, as.is=T, na.strings=c("\032",""))
+    dataChunk = read.delim(file_con, nrows=chunk.size, skip=0, header=(index==1), sep=sep, col.names=col.names, as.is=T, na.strings=c("\032",""),quote="")
     dataChunk = dataChunk[rowSums(is.na(dataChunk)) != ncol(dataChunk),]
     dbWriteTable(con, name = table.quote, value = dataChunk, row.names = F, overwrite=((index==1) & allow.overwrite), append=((index>1) | !allow.overwrite), field.types=field.types)
     if(nrow(dataChunk) != chunk.size){
