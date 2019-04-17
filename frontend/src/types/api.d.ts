@@ -9,3 +9,9 @@ export interface Links {
   previous: string | null;
 }
 export type LinksMap = Map<keyof Links, Links[keyof Links]>;
+
+export interface FetchOptions {
+  limit?: number;
+  offset?: number;
+  link?: string;
+}

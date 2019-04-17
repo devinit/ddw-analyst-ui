@@ -1,3 +1,4 @@
+import { History } from 'history';
 import {
   DELETE_OPERATION,
   DELETE_OPERATION_FAILED,
@@ -8,14 +9,9 @@ import {
   OperationsAction,
   SET_ACTIVE_OPERATION
 } from '../reducers/operations';
+import { FetchOptions } from '../types/api';
 import { OperationMap } from '../types/operations';
-import { History } from 'history';
 
-interface FetchOptions {
-  limit?: number;
-  offset?: number;
-  link?: string;
-}
 export const fetchOperations = ({ limit = 10, offset = 0, link }: FetchOptions): Partial<OperationsAction> =>
   ({ type: FETCH_OPERATIONS, payload: { limit, offset, link } });
 export const fetchOperation = (id: string): Partial<OperationsAction> => ({ type: FETCH_OPERATION, payload: { id } });

@@ -2,19 +2,19 @@ import {
   FETCH_SOURCES,
   FETCH_SOURCES_FAILED,
   FETCH_SOURCES_SUCCESSFUL,
+  SourcesAction,
   defaultState,
   sourcesReducer
 } from '../sources';
-import { Action } from 'redux';
 import { fromJS } from 'immutable';
 import { Source } from '../../types/sources';
 
 test('should return the initial state', () => {
-  expect(sourcesReducer(undefined, {} as Action)).toEqual(defaultState);
+  expect(sourcesReducer(undefined, {} as SourcesAction)).toEqual(defaultState);
 });
 
 test('should handle FETCH_SOURCES', () => {
-  expect(sourcesReducer(undefined, { type: FETCH_SOURCES }))
+  expect(sourcesReducer(undefined, { type: FETCH_SOURCES } as SourcesAction))
     .toEqual(defaultState.set('loading', true));
 });
 
@@ -33,12 +33,13 @@ test('should handle FETCH_SOURCES_SUCCESSFUL', () => {
 
   expect(sourcesReducer(undefined, {
     type: FETCH_SOURCES_SUCCESSFUL,
-    sources: [ source ]
-  }))
-  .toEqual(defaultState.set('loading', false).set('sources', fromJS([ source ])));
+    sources: [ source ],
+    count: 1
+  } as SourcesAction))
+  .toEqual(defaultState.set('loading', false).set('sources', fromJS([ source ])).set('count', 1));
 });
 
 test('should handle FETCH_SOURCES_FAILED', () => {
-  expect(sourcesReducer(defaultState, { type: FETCH_SOURCES_FAILED }))
+  expect(sourcesReducer(defaultState, { type: FETCH_SOURCES_FAILED } as SourcesAction))
     .toEqual(defaultState.set('loading', false));
 });

@@ -1,9 +1,9 @@
+import classNames from 'classnames';
 import * as React from 'react';
 
 export interface SourcesTableRowProps {
   classNames?: string;
   onClick: () => void;
-  count: number;
   indicator: string;
   indicatorAcronym: string;
   updatedOn: string;
@@ -12,10 +12,9 @@ export interface SourcesTableRowProps {
 export const SourcesTableRow: React.SFC<SourcesTableRowProps> = props => {
   return (
     <tr className={ props.classNames } onClick={ props.onClick } data-testid="sources-table-row">
-      <td>{ props.count }</td>
       <td>
         { props.indicator }
-        <span className="text-uppercase">
+        <span className={ classNames('text-uppercase', { 'd-none': !props.indicatorAcronym }) }>
           { ` (${props.indicatorAcronym})` }
         </span>
       </td>

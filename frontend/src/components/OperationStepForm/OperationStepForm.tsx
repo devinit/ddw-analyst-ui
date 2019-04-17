@@ -1,14 +1,12 @@
 import classNames from 'classnames';
 import { Formik, FormikErrors, FormikProps } from 'formik';
-import { fromJS } from 'immutable';
 import * as React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import * as Yup from 'yup';
 import { ErroredFilter, Filters, OperationStep, OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
-import FilterQueryBuilder from '../FilterQueryBuilder';
-import { SelectQueryBuilder } from '../SelectQueryBuilder';
+import { QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface OperationStepFormState {
   alerts: FormikErrors<OperationStep>;
@@ -40,7 +38,8 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     { key: 'filter', icon: 'filter', text: 'Filter', value: 'filter' },
     { key: 'join', icon: 'chain', text: 'Join', value: 'join' },
     { key: 'aggregate', icon: 'rain', text: 'Aggregate', value: 'aggregate' },
-    { key: 'transform', icon: 'magic', text: 'Transform', value: 'transform' }
+    { key: 'scalar_transform', icon: 'magic', text: 'Scalar Transform', value: 'scalar_transform' },
+    { key: 'multi_transform', icon: 'magic', text: 'Multi Transform', value: 'multi_transform' }
   ];
 
   render() {
@@ -131,7 +130,11 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                 </Col>
 
                 <Col md={ 12 } className="mt-3">
-                  { this.renderSpecificQueryBuilder(this.props.source, this.props.step) }
+                  <QueryBuilderHandler
+                    source={ this.props.source }
+                    step={ this.props.step }
+                    onUpdateOptions={ this.onUpdateOptions }
+                  />
                 </Col>
 
                 <Col md={ 12 } className="mt-3">
@@ -155,25 +158,6 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     );
   }
 
-  private renderSpecificQueryBuilder(source: SourceMap, step: OperationStepMap) {
-    const query = step.get('query_func');
-    const options = step.get('query_kwargs') as string;
-    if (query === 'filter') {
-      const { filters }: Filters = options ? JSON.parse(options) : { filters: [] };
-
-      return (
-        <FilterQueryBuilder source={ source } filters={ fromJS(filters) } onUpdateFilters={ this.onUpdateOptions }/>
-      );
-    }
-    if (query === 'select') {
-      const { columns } = options ? JSON.parse(options) : { columns: [] }; // TODO: specify type
-
-      return (
-        <SelectQueryBuilder source={ source } columns={ columns } onUpdateColumns={ this.onUpdateOptions }/>
-      );
-    }
-  }
-
   private getFormGroupClasses(fieldName: string, value: string | number) {
     return classNames('bmd-form-group', {
       'is-focused': this.state.hasFocus === fieldName,
@@ -193,7 +177,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
       setFieldValue('query_func', data.value);
       if (data.value) {
-        const step = this.props.step.set('query_func', data.value as string);
+        const step = this.props.step.set('query_func', data.value as string).set('query_kwargs', '');
         this.props.onUpdateStep(step, this.props.editing);
       }
     }
@@ -218,6 +202,8 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     if (query === 'select') {
       return this.validateSelect(step);
     }
+    // TODO: validate other operations as well
+    return true;
   }
 
   private validateFilter(step: OperationStepMap) {

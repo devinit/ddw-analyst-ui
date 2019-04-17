@@ -1,18 +1,20 @@
-import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
 import { List } from 'immutable';
-import { Card, Col, Row } from 'react-bootstrap';
+import { unparse } from 'papaparse';
+import * as React from 'react';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
-import * as React from 'react';
+import { fetchOperation, setOperation } from '../../actions/operations';
+import { fetchActiveSource, setActiveSource } from '../../actions/sources';
+import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
+import { PaginatedContent } from '../../components/PaginatedContent';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import * as pageActions from './actions';
-import { fetchOperation, setOperation } from '../../actions/operations';
-import { fetchActiveSource, setActiveSource } from '../../actions/sources';
-import { QueryDataState, queryDataReducerId } from './reducers';
 import { getSourceIDFromOperation } from '../../utils';
+import * as pageActions from './actions';
+import { QueryDataState, queryDataReducerId } from './reducers';
 
 interface ActionProps {
   actions: typeof pageActions & {
@@ -35,18 +37,20 @@ type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams
 
 class QueryData extends React.Component<QueryDataProps> {
   render() {
-    const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
-    const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
-
     return (
       <Row>
         <Col>
           <Card>
             <Card.Header className="card-header-text card-header-danger">
               <Card.Text>Query Data</Card.Text>
+              <div>
+                <Button variant="danger" size="sm" onClick={ this.exportToCSV }>
+                  Export to CSV
+                </Button>
+              </div>
             </Card.Header>
-            <Card.Body>
-              <OperationDataTable data={ data } columns={ columns }/>
+            <Card.Body className="table-full-width">
+              { this.renderTable() }
             </Card.Body>
           </Card>
         </Col>
@@ -70,6 +74,28 @@ class QueryData extends React.Component<QueryDataProps> {
     }
   }
 
+  componentWillUnmount() {
+    this.props.actions.setOperationData(List());
+  }
+
+  private renderTable() {
+    const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
+    const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
+
+    if (data && data.count() !== 0) {
+      return (
+        <PaginatedContent
+          className="ml-1"
+          content={ <OperationDataTable list={ data } columns={ columns }/> }
+          list={ data || List() }
+          limit={ 10 }
+          offset={ 0 }
+        />
+      );
+    }
+    return <div>No results found</div>;
+  }
+
   private setOperation(id?: string) {
     if (!id) {
       return;
@@ -83,6 +109,18 @@ class QueryData extends React.Component<QueryDataProps> {
       }
     } else {
       this.props.actions.fetchOperation(id);
+    }
+  }
+
+  private exportToCSV = () => {
+    const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
+    if (data.count()) {
+      const csv = encodeURI(`data:text/csv;charset=utf-8,${unparse(data.toJS())}`);
+      const filename = 'export.csv';
+      const link = document.createElement('a');
+      link.setAttribute('href', csv);
+      link.setAttribute('download', filename);
+      link.click();
     }
   }
 }

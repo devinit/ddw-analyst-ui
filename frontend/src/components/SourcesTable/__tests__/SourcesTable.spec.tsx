@@ -3,7 +3,7 @@
  */
 import { List, Map } from 'immutable';
 import * as React from 'react';
-import { cleanup, fireEvent, render } from 'react-testing-library';
+import { cleanup, render } from 'react-testing-library';
 import * as TestRenderer from 'react-test-renderer';
 import { ColumnList, SourceMap, UpdateHistoryList } from '../../../types/sources';
 import { SourcesTable } from '../SourcesTable';
@@ -44,27 +44,6 @@ test('renders an empty table if no sources are provided', () => {
     .toJSON();
 
   expect(renderer).toMatchSnapshot();
-});
-
-test('renders filtered content when a valid search is performed', () => {
-  const { container, getByTestId } = render(
-    <SourcesTable activeSource={ source } sources={ sourcesList } onRowClick={ jest.fn() }/>
-  );
-
-  fireEvent.change(getByTestId('sources-table-search'), { target: { value: 'world' } });
-  expect(container).toMatchSnapshot();
-});
-
-test('resets the table content when the search query is removed', () => {
-  const { container, getByTestId } = render(
-    <SourcesTable activeSource={ source } sources={ sourcesList } onRowClick={ jest.fn() }/>
-  );
-
-  fireEvent.change(getByTestId('sources-table-search'), { target: { value: 'common' } });
-  expect(container).toMatchSnapshot();
-
-  fireEvent.change(getByTestId('sources-table-search'), { target: { value: '' } });
-  expect(container).toMatchSnapshot();
 });
 
 test('renders correctly when the sources are updated', () => {

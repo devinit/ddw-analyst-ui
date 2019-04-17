@@ -25,9 +25,9 @@ export const SAVING_OPERATION_SUCCESS = `${queryBuilderReducerId}.SAVING_OPERATI
 export const SAVING_OPERATION_FAILED = `${queryBuilderReducerId}.SAVING_OPERATION_FAILED`;
 export const EDIT_OPERATION_STEP = `${queryBuilderReducerId}.EDIT_OPERATION_STEP`;
 export const DELETE_OPERATION_STEP = `${queryBuilderReducerId}.DELETE_OPERATION_STEP`;
+export const RESET_STATE = `${queryBuilderReducerId}.RESET_STATE`;
 
 const defaultState: QueryBuilderState = fromJS({
-  activeSource: undefined,
   steps: [],
   activeStep: undefined,
   editingStep: false,
@@ -81,6 +81,9 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
     }
 
     return state;
+  }
+  if (action.type === RESET_STATE) {
+    return defaultState;
   }
 
   return state;

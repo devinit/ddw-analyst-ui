@@ -68,6 +68,11 @@ class Source(BaseEntity):
 
 class SourceColumnMap(BaseEntity):
     """Column mapping for datasets."""
+    DATA_TYPE_CHOICES = (
+        ("C", "Character"),
+        ("N", "Numeric")
+    )
+    data_type = models.CharField(max_length=1, choices=DATA_TYPE_CHOICES, blank=True, null=True)
     source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
     name = models.TextField()
     description = models.TextField(blank=True, null=True)

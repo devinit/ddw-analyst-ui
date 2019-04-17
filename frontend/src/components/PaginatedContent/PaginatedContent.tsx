@@ -57,7 +57,7 @@ export class PaginatedContent extends React.Component<PaginatedContentProps, Pag
       const max = offset + this.state.limit;
 
       return (
-        <Row>
+        <Row className={ this.props.className }>
           <Col lg={ 6 }>
             Showing { offset + 1 } to { max > count ? count : max } of { count }
           </Col>

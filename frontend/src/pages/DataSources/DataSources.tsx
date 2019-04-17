@@ -1,18 +1,18 @@
 import { List } from 'immutable';
-import { SourceDetailsTab } from '../../components/SourceDetailsTab';
+import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
 import * as sourcesActions from '../../actions/sources';
-import * as React from 'react';
-import * as pageActions from './actions';
-import { SourcesTable } from '../../components/SourcesTable';
+import { SourceDetailsTab } from '../../components/SourceDetailsTab';
+import { SourcesTableCard } from '../../components/SourcesTableCard';
 import { SourcesState } from '../../reducers/sources';
-import { SourceMap } from '../../types/sources';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
+import { SourceMap } from '../../types/sources';
+import * as pageActions from './actions';
 import { DataSourcesState, dataSourcesReducerId } from './reducers';
-import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
 
 interface ActionProps {
   actions: typeof sourcesActions & typeof pageActions;
@@ -37,11 +37,13 @@ class DataSources extends React.Component<DataSourcesProps> {
             <Loader content="Loading" />
           </Dimmer>
 
-          <SourcesTable
+          <SourcesTableCard
             sources={ sources }
             activeSource={ activeSource }
+            count={ this.props.sources.get('count') }
             onRowClick={ this.onRowClick }
           />
+
         </Col>
 
         <Col lg={ 5 }>
@@ -49,14 +51,6 @@ class DataSources extends React.Component<DataSourcesProps> {
         </Col>
       </Row>
     );
-  }
-
-  componentDidMount() {
-    const sources = this.props.sources.get('sources') as List<SourceMap>;
-    const loading = this.props.sources.get('loading') as boolean;
-    if (!sources.count() && !loading) {
-      this.props.actions.fetchSources();
-    }
   }
 
   private renderDetailsTab(activeSource: SourceMap | undefined, loading = false) {

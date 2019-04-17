@@ -2,10 +2,11 @@ import classNames from 'classnames';
 import { List, fromJS } from 'immutable';
 import * as React from 'react';
 import { Button, ListGroup, Row } from 'react-bootstrap';
-import { Action } from 'redux';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { QueryBuilderAction } from '../../pages/QueryBuilder/reducers';
+import { SourcesAction } from '../../reducers/sources';
+import { FetchOptions } from '../../types/api';
 import { OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import OperationStep from '../OperationStepView';
@@ -16,7 +17,7 @@ interface OperationStepsProps {
   steps: List<OperationStepMap>;
   activeSource?: SourceMap;
   activeStep?: OperationStepMap;
-  fetchSources: () => Action;
+  fetchSources: (options: FetchOptions) => Partial<SourcesAction>;
   onSelectSource: (source: SourceMap) => Partial<QueryBuilderAction>;
   onAddStep: (step?: OperationStepMap) => Partial<QueryBuilderAction>;
   onClickStep: (step?: OperationStepMap) => void;
@@ -120,8 +121,8 @@ class OperationSteps extends React.Component<OperationStepsProps> {
   }
 
   private fetchSources = () => {
-    if (!this.props.sources.count() && !this.props.isFetchingSources) {
-      this.props.fetchSources();
+    if (!this.props.isFetchingSources) {
+      this.props.fetchSources({ limit: 100 });
     }
   }
 

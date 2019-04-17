@@ -2,9 +2,10 @@ import { List, Map } from 'immutable';
 import * as React from 'react';
 import { Card, Nav, Tab } from 'react-bootstrap';
 import { ColumnList, SourceMap, UpdateHistoryList } from '../../types/sources';
+import { formatString } from '../../utils';
 import { InfoList, InfoListItems } from '../InfoList';
-import { SourceMetadata } from '../SourceMetadata';
 import { PaginatedContent } from '../PaginatedContent';
+import { SourceMetadata } from '../SourceMetadata';
 
 interface SourceDetailsProps {
   source: SourceMap;
@@ -59,7 +60,7 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
   private getColumns(): InfoListItems {
     return (this.props.source.get('columns') as ColumnList).map(column =>
       Map()
-        .set('caption', column.get('source_name') as string)
+        .set('caption', formatString(column.get('name') as string))
         .set('info', column.get('description') as string)) as InfoListItems;
   }
 

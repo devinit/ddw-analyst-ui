@@ -6,7 +6,13 @@ export interface SourcesAction extends Action {
   sources?: Source[];
   activeSource?: SourceMap;
   activeSourceIndex?: number;
-  payload?: { id: string | number };
+  count: number;
+  payload: Partial<{
+    limit: number;
+    offset: number;
+    link: string;
+    id: number | string;
+  }>;
   loading?: boolean;
 }
 
@@ -14,6 +20,7 @@ interface State {
   loading: boolean;
   sources: List<SourceMap>;
   activeSource?: SourceMap;
+  count: number;
 }
 export type SourcesState = Map<keyof State, State[keyof State]>;
 
@@ -32,7 +39,7 @@ export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (state = def
   }
   if (action.type === FETCH_SOURCES_SUCCESSFUL && action.sources) {
     return state.withMutations(map =>
-      map.set('loading', false).set('sources', fromJS(action.sources))
+      map.set('loading', false).set('sources', fromJS(action.sources)).set('count', action.count)
     );
   }
   if (action.type === FETCH_SOURCES_FAILED) {

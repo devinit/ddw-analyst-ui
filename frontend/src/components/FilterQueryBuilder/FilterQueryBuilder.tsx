@@ -1,10 +1,11 @@
 import { List, Map } from 'immutable';
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { FilterMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import FilterItem from '../FilterItem/FilterItem';
+import { formatString } from '../../utils';
+import { FilterItem } from '../FilterItem';
 
 interface FilterQueryBuilderProps {
   source: SourceMap;
@@ -12,7 +13,12 @@ interface FilterQueryBuilderProps {
   onUpdateFilters?: (filters: string) => void;
 }
 
-export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps> {
+interface FilterQueryBuilderState {
+  showInfo: boolean;
+}
+
+export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps, FilterQueryBuilderState> {
+  state: FilterQueryBuilderState = { showInfo: false };
   private operations = [
     { key: 'lt', text: 'is Less Than', value: 'lt' },
     { key: 'le', text: 'is Less Than Or Equals', value: 'le' },
@@ -31,6 +37,14 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps>
           <i className="material-icons mr-1">add</i>
           Add Filter
         </Button>
+        <Button variant="secondary" size="sm" onClick={ this.toggleInfo }>
+          <i className="material-icons">info</i>
+        </Button>
+        <Alert variant="info" hidden={ !this.state.showInfo }>
+          Multiple filter options on the same step translate as an OR operation
+          (rows that match one of them are returned), while adding multiple filter steps on an
+          operation translates as an AND (rows that match both are returned).
+        </Alert>
       </div>
     );
   }
@@ -57,7 +71,7 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps>
     if (columns && columns.count()) {
       return columns.map(column => ({
         key: column.get('id'),
-        text: column.get('source_name'),
+        text: formatString(column.get('name') as string),
         value: column.get('name')
       })).toJS();
     }
@@ -90,5 +104,9 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps>
       const filters = this.props.filters.delete(index);
       this.props.onUpdateFilters(JSON.stringify(Map({ filters } as any).toJS()));
     }
+  }
+
+  private toggleInfo = () => {
+    this.setState({ showInfo: !this.state.showInfo });
   }
 }
