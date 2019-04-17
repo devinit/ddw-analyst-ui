@@ -121,7 +121,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
   }
 
   private fetchSources = () => {
-    if (!this.props.sources.count() && !this.props.isFetchingSources) {
+    if (!this.props.isFetchingSources) {
       this.props.fetchSources({ limit: 100 });
     }
   }
