@@ -44,13 +44,13 @@ dac5_path = list.files(path=table5_latest_path, pattern="*.csv", ignore.case=T, 
 dac5.table.name = "dac5_current"
 dac5.table.quote = c("repo",dac5.table.name)
 
-chunk_load_table = function(con, table.quote, filename, col.names, sep=",", field.types=NULL, allow.overwrite=TRUE, encoding="latin1", chunk.size=5000){
+chunk_load_table = function(con, table.quote, filename, col.names, quote="\"", sep=",", field.types=NULL, allow.overwrite=TRUE, encoding="latin1", chunk.size=5000){
   index = 0
   message(filename)
   file_con = file(description=filename, open="r", encoding=encoding)
   repeat{
     index = index + 1
-    dataChunk = read.delim(file_con, nrows=chunk.size, skip=0, header=(index==1), sep=sep, col.names=col.names, as.is=T, na.strings=c("\032",""),quote="")
+    dataChunk = read.delim(file_con, nrows=chunk.size, skip=0, header=(index==1), sep=sep, col.names=col.names, as.is=T, na.strings=c("\032",""),quote=quote)
     dataChunk = dataChunk[rowSums(is.na(dataChunk)) != ncol(dataChunk),]
     dbWriteTable(con, name = table.quote, value = dataChunk, row.names = F, overwrite=((index==1) & allow.overwrite), append=((index>1) | !allow.overwrite), field.types=field.types)
     if(nrow(dataChunk) != chunk.size){
@@ -334,7 +334,7 @@ merge_crs_tables = function(file_vec){
   )
   overwrite_crs = TRUE
   for(txt in file_vec){
-    chunk_load_table(con, crs.table.quote, txt, names(crs_field_types), sep="|", field.types=crs_field_types, allow.overwrite=overwrite_crs)
+    chunk_load_table(con, crs.table.quote, txt, names(crs_field_types), quote="", sep="|", field.types=crs_field_types, allow.overwrite=overwrite_crs)
     overwrite_crs = FALSE
   }
 
