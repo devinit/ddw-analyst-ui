@@ -267,3 +267,61 @@ weo,Country.Series.specific.Notes,Country.Series.specific.Notes,Country Series s
 weo,Estimates.Start.After,Estimates.Start.After,Estimates Start After,N
 weo,value,value,value,N
 weo,year,year,year,N
+fts,id,id,id,N
+fts,amountUSD,amountUSD,amountUSD,N
+fts,budgetYear,budgetYear,budgetYear,N
+fts,createdAt,createdAt,createdAt,C
+fts,date,date,date,C
+fts,decisionDate,decisionDate,decisionDate,C
+fts,description,description,description,C
+fts,firstReportedDate,firstReportedDate,firstReportedDate,C
+fts,flowType,flowType,flowType,C
+fts,newMoney,newMoney,newMoney,C
+fts,originalCurrency,originalCurrency,originalCurrency,C
+fts,method,method,method,C
+fts,parentFlowId,parentFlowId,parentFlowId,N
+fts,status,status,status,C
+fts,updatedAt,updatedAt,updatedAt,C
+fts,versionId,versionId,versionId,N
+fts,boundary,boundary,boundary,C
+fts,onBoundary,onBoundary,onBoundary,C
+fts,source_Organization_id,source_Organization_id,source Organization id,N
+fts,source_UsageYear_id,source_UsageYear_id,source UsageYear id,C
+fts,source_Organization_name,source_Organization_name,source Organization name,C
+fts,source_UsageYear_name,source_UsageYear_name,source UsageYear name,C
+fts,destination_Plan_id,destination_Plan_id,destination Plan id,C
+fts,destination_Organization_id,destination_Organization_id,destination Organization id,C
+fts,destination_GlobalCluster_id,destination_GlobalCluster_id,destination GlobalCluster id,C
+fts,destination_Location_id,destination_Location_id,destination Location id,C
+fts,destination_Project_id,destination_Project_id,destination Project id,N
+fts,destination_UsageYear_id,destination_UsageYear_id,destination UsageYear id,C
+fts,destination_Plan_name,destination_Plan_name,destination Plan name,C
+fts,destination_Organization_name,destination_Organization_name,destination Organization name,C
+fts,destination_GlobalCluster_name,destination_GlobalCluster_name,destination GlobalCluster name,C
+fts,destination_Location_name,destination_Location_name,destination Location name,C
+fts,destination_Project_name,destination_Project_name,destination Project name,C
+fts,destination_UsageYear_name,destination_UsageYear_name,destination UsageYear name,C
+fts,report_type,report_type,report type,C
+fts,report_organisation,report_organisation,report organisation,C
+fts,report_channel,report_channel,report channel,C
+fts,report_date,report_date,report date,C
+fts,originalAmount,originalAmount,originalAmount,N
+fts,source_Location_id,source_Location_id,source Location id,C
+fts,source_Location_name,source_Location_name,source Location name,C
+fts,destination_Emergency_id,destination_Emergency_id,destination Emergency id,N
+fts,destination_Emergency_name,destination_Emergency_name,destination Emergency name,C
+fts,refCode,refCode,refCode,C
+fts,source_GlobalCluster_id,source_GlobalCluster_id,source GlobalCluster id,C
+fts,source_GlobalCluster_name,source_GlobalCluster_name,source GlobalCluster name,C
+fts,exchangeRate,exchangeRate,exchangeRate,N
+fts,source_Plan_id,source_Plan_id,source Plan id,C
+fts,source_Plan_name,source_Plan_name,source Plan name,C
+fts,grandBargainEarmarkingType,grandBargainEarmarkingType,grandBargainEarmarkingType,C
+fts,source_Emergency_id,source_Emergency_id,source Emergency id,N
+fts,source_Emergency_name,source_Emergency_name,source Emergency name,C
+fts,source_Project_id,source_Project_id,source Project id,N
+fts,source_Project_name,source_Project_name,source Project name,C
+fts,destination_Cluster_id,destination_Cluster_id,destination Cluster id,C
+fts,destination_Cluster_name,destination_Cluster_name,destination Cluster name,C
+fts,source_Cluster_id,source_Cluster_id,source Cluster id,C
+fts,source_Cluster_name,source_Cluster_name,source Cluster name,C
