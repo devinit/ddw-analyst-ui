@@ -120,7 +120,7 @@ crs_current,donor_code,donor_code,Donor Code,N
 crs_current,donor_name,donor_name,Donor Name,C
 crs_current,agency_code,agency_code,Agency Code,N
 crs_current,agency_name,agency_name,Agency Name,C
-crs_current,crs_id,crs_id,Crs Id,C
+crs_current,crs_id,crs_id,CRS ID,C
 crs_current,project_number,project_number,Project Number,C
 crs_current,initial_report,initial_report,Initial Report,N
 crs_current,recipient_code,recipient_code,Recipient Code,N
@@ -135,29 +135,29 @@ crs_current,bilateral_multilateral,bilateral_multilateral,Bilateral Multilateral
 crs_current,category,category,Category,N
 crs_current,finance_type,finance_type,Finance Type,N
 crs_current,aid_type,aid_type,Aid Type,C
-crs_current,usd_commitment,usd_commitment,Usd Commitment,N
-crs_current,usd_disbursement,usd_disbursement,Usd Disbursement,N
-crs_current,usd_received,usd_received,Usd Received,N
-crs_current,usd_commitment_deflated,usd_commitment_deflated,Usd Commitment Deflated,N
-crs_current,usd_disbursement_deflated,usd_disbursement_deflated,Usd Disbursement Deflated,N
-crs_current,usd_received_deflated,usd_received_deflated,Usd Received Deflated,N
-crs_current,usd_adjustment,usd_adjustment,Usd Adjustment,N
-crs_current,usd_adjustment_deflated,usd_adjustment_deflated,Usd Adjustment Deflated,N
-crs_current,usd_amount_untied,usd_amount_untied,Usd Amount Untied,N
-crs_current,usd_amount_partial_tied,usd_amount_partial_tied,Usd Amount Partial Tied,N
-crs_current,usd_amount_tied,usd_amount_tied,Usd Amount Tied,N
-crs_current,usd_amount_untied_deflated,usd_amount_untied_deflated,Usd Amount Untied Deflated,N
-crs_current,usd_amount_partial_tied_deflated,usd_amount_partial_tied_deflated,Usd Amount Partial Tied Deflated,N
-crs_current,usd_amount_tied_deflated,usd_amount_tied_deflated,Usd Amount Tied Deflated,N
-crs_current,usd_irtc,usd_irtc,Usd Irtc,N
-crs_current,usd_expert_commitment,usd_expert_commitment,Usd Expert Commitment,N
-crs_current,usd_expert_extended,usd_expert_extended,Usd Expert Extended,N
-crs_current,usd_export_credit,usd_export_credit,Usd Export Credit,N
+crs_current,usd_commitment,usd_commitment,USD Commitment,N
+crs_current,usd_disbursement,usd_disbursement,USD Disbursement,N
+crs_current,usd_received,usd_received,USD Received,N
+crs_current,usd_commitment_deflated,usd_commitment_deflated,USD Commitment Deflated,N
+crs_current,usd_disbursement_deflated,usd_disbursement_deflated,USD Disbursement Deflated,N
+crs_current,usd_received_deflated,usd_received_deflated,USD Received Deflated,N
+crs_current,usd_adjustment,usd_adjustment,USD Adjustment,N
+crs_current,usd_adjustment_deflated,usd_adjustment_deflated,USD Adjustment Deflated,N
+crs_current,usd_amount_untied,usd_amount_untied,USD Amount Untied,N
+crs_current,usd_amount_partial_tied,usd_amount_partial_tied,USD Amount Partial Tied,N
+crs_current,usd_amount_tied,usd_amount_tied,USD Amount Tied,N
+crs_current,usd_amount_untied_deflated,usd_amount_untied_deflated,USD Amount Untied Deflated,N
+crs_current,usd_amount_partial_tied_deflated,usd_amount_partial_tied_deflated,USD Amount Partial Tied Deflated,N
+crs_current,usd_amount_tied_deflated,usd_amount_tied_deflated,USD Amount Tied Deflated,N
+crs_current,usd_irtc,usd_irtc,USD Irtc,N
+crs_current,usd_expert_commitment,usd_expert_commitment,USD Expert Commitment,N
+crs_current,usd_expert_extended,usd_expert_extended,USD Expert Extended,N
+crs_current,usd_export_credit,usd_export_credit,USD Export Credit,N
 crs_current,currency_code,currency_code,Currency Code,N
 crs_current,commitment_national,commitment_national,Commitment National,N
 crs_current,disbursement_national,disbursement_national,Disbursement National,N
 crs_current,grant_equivalent,grant_equivalent,Grant Equivalent,N
-crs_current,usd_grant_equivalent,usd_grant_equivalent,Usd Grant Equivalent,N
+crs_current,usd_grant_equivalent,usd_grant_equivalent,USD Grant Equivalent,N
 crs_current,short_description,short_description,Short Description,C
 crs_current,project_title,project_title,Project Title,C
 crs_current,purpose_code,purpose_code,Purpose Code,N
@@ -175,9 +175,9 @@ crs_current,long_description,long_description,Long Description,C
 crs_current,gender,gender,Gender,N
 crs_current,environment,environment,Environment,N
 crs_current,trade,trade,Trade,N
-crs_current,pdgg,pdgg,Pdgg,N
-crs_current,ftc,ftc,Ftc,N
-crs_current,pba,pba,Pba,N
+crs_current,pdgg,pdgg,Participatory Democracy and Good Governance,N
+crs_current,ftc,ftc,Free-standing Technical Co-operation,N
+crs_current,pba,pba,Programme Based Approach,N
 crs_current,investment_project,investment_project,Investment Project,N
 crs_current,associated_finance,associated_finance,Associated Finance,N
 crs_current,biodiversity,biodiversity,Biodiversity,N
@@ -192,13 +192,13 @@ crs_current,interest_2,interest_2,Interest 2,N
 crs_current,repay_date_1,repay_date_1,Repay Date 1,C
 crs_current,repay_date_2,repay_date_2,Repay Date 2,C
 crs_current,grant_element,grant_element,Grant Element,N
-crs_current,usd_interest,usd_interest,Usd Interest,N
-crs_current,usd_outstanding,usd_outstanding,Usd Outstanding,N
-crs_current,usd_arrears_principal,usd_arrears_principal,Usd Arrears Principal,N
-crs_current,usd_arrears_interest,usd_arrears_interest,Usd Arrears Interest,N
-crs_current,usd_future_debt_service_principal,usd_future_debt_service_principal,Usd Future Debt Service Principal,C
-crs_current,usd_future_debt_service_interest,usd_future_debt_service_interest,Usd Future Debt Service Interest,C
-crs_current,rmnch,rmnch,Rmnch,N
+crs_current,usd_interest,usd_interest,USD Interest,N
+crs_current,usd_outstanding,usd_outstanding,USD Outstanding,N
+crs_current,usd_arrears_principal,usd_arrears_principal,USD Arrears Principal,N
+crs_current,usd_arrears_interest,usd_arrears_interest,USD Arrears Interest,N
+crs_current,usd_future_debt_service_principal,usd_future_debt_service_principal,USD Future Debt Service Principal,C
+crs_current,usd_future_debt_service_interest,usd_future_debt_service_interest,USD Future Debt Service Interest,C
+crs_current,rmnch,rmnch,"Reproductive, Maternal, Newborn and Child Health",N
 crs_current,budget_identifier,budget_identifier,Budget Identifier,N
 crs_current,capital_expenditure,capital_expenditure,Capital Expenditure,N
 dac1_current,donor_code,donor_code,Donor Code,N
@@ -265,63 +265,63 @@ weo,Units,Units,Units,C
 weo,Scale,Scale,Scale,C
 weo,Country.Series.specific.Notes,Country.Series.specific.Notes,Country Series specific Notes,C
 weo,Estimates.Start.After,Estimates.Start.After,Estimates Start After,N
-weo,value,value,value,N
-weo,year,year,year,N
-fts,id,id,id,N
-fts,amountUSD,amountUSD,amountUSD,N
-fts,budgetYear,budgetYear,budgetYear,N
-fts,createdAt,createdAt,createdAt,C
-fts,date,date,date,C
-fts,decisionDate,decisionDate,decisionDate,C
-fts,description,description,description,C
-fts,firstReportedDate,firstReportedDate,firstReportedDate,C
-fts,flowType,flowType,flowType,C
-fts,newMoney,newMoney,newMoney,C
-fts,originalCurrency,originalCurrency,originalCurrency,C
-fts,method,method,method,C
-fts,parentFlowId,parentFlowId,parentFlowId,N
-fts,status,status,status,C
-fts,updatedAt,updatedAt,updatedAt,C
-fts,versionId,versionId,versionId,N
-fts,boundary,boundary,boundary,C
-fts,onBoundary,onBoundary,onBoundary,C
-fts,source_Organization_id,source_Organization_id,source Organization id,N
-fts,source_UsageYear_id,source_UsageYear_id,source UsageYear id,C
-fts,source_Organization_name,source_Organization_name,source Organization name,C
-fts,source_UsageYear_name,source_UsageYear_name,source UsageYear name,C
-fts,destination_Plan_id,destination_Plan_id,destination Plan id,C
-fts,destination_Organization_id,destination_Organization_id,destination Organization id,C
-fts,destination_GlobalCluster_id,destination_GlobalCluster_id,destination GlobalCluster id,C
-fts,destination_Location_id,destination_Location_id,destination Location id,C
-fts,destination_Project_id,destination_Project_id,destination Project id,N
-fts,destination_UsageYear_id,destination_UsageYear_id,destination UsageYear id,C
-fts,destination_Plan_name,destination_Plan_name,destination Plan name,C
-fts,destination_Organization_name,destination_Organization_name,destination Organization name,C
-fts,destination_GlobalCluster_name,destination_GlobalCluster_name,destination GlobalCluster name,C
-fts,destination_Location_name,destination_Location_name,destination Location name,C
-fts,destination_Project_name,destination_Project_name,destination Project name,C
-fts,destination_UsageYear_name,destination_UsageYear_name,destination UsageYear name,C
-fts,report_type,report_type,report type,C
-fts,report_organisation,report_organisation,report organisation,C
-fts,report_channel,report_channel,report channel,C
-fts,report_date,report_date,report date,C
-fts,originalAmount,originalAmount,originalAmount,N
-fts,source_Location_id,source_Location_id,source Location id,C
-fts,source_Location_name,source_Location_name,source Location name,C
-fts,destination_Emergency_id,destination_Emergency_id,destination Emergency id,N
-fts,destination_Emergency_name,destination_Emergency_name,destination Emergency name,C
-fts,refCode,refCode,refCode,C
-fts,source_GlobalCluster_id,source_GlobalCluster_id,source GlobalCluster id,C
-fts,source_GlobalCluster_name,source_GlobalCluster_name,source GlobalCluster name,C
-fts,exchangeRate,exchangeRate,exchangeRate,N
-fts,source_Plan_id,source_Plan_id,source Plan id,C
-fts,source_Plan_name,source_Plan_name,source Plan name,C
-fts,grandBargainEarmarkingType,grandBargainEarmarkingType,grandBargainEarmarkingType,C
-fts,source_Emergency_id,source_Emergency_id,source Emergency id,N
-fts,source_Emergency_name,source_Emergency_name,source Emergency name,C
-fts,source_Project_id,source_Project_id,source Project id,N
-fts,source_Project_name,source_Project_name,source Project name,C
-fts,destination_Cluster_id,destination_Cluster_id,destination Cluster id,C
-fts,destination_Cluster_name,destination_Cluster_name,destination Cluster name,C
-fts,source_Cluster_id,source_Cluster_id,source Cluster id,C
-fts,source_Cluster_name,source_Cluster_name,source Cluster name,C
+weo,value,value,Value,N
+weo,year,year,Year,N
+fts,id,id,ID,N
+fts,amountUSD,amountUSD,Amount USD,N
+fts,budgetYear,budgetYear,Budget Year,N
+fts,createdAt,createdAt,Record creation date,C
+fts,date,date,Date,C
+fts,decisionDate,decisionDate,Decision date,C
+fts,description,description,Description,C
+fts,firstReportedDate,firstReportedDate,First reported data,C
+fts,flowType,flowType,Flow type,C
+fts,newMoney,newMoney,New money,C
+fts,originalCurrency,originalCurrency,Original currency,C
+fts,method,method,Method,C
+fts,parentFlowId,parentFlowId,Parent flow ID,N
+fts,status,status,Status,C
+fts,updatedAt,updatedAt,Updated at,C
+fts,versionId,versionId,Verion ID,N
+fts,boundary,boundary,Boundary,C
+fts,onBoundary,onBoundary,On boundary,C
+fts,source_Organization_id,source_Organization_id,Source organisation ID,N
+fts,source_UsageYear_id,source_UsageYear_id,Source usage year ID,C
+fts,source_Organization_name,source_Organization_name,Source organisation name,C
+fts,source_UsageYear_name,source_UsageYear_name,Source usage year,C
+fts,destination_Plan_id,destination_Plan_id,Destination plan ID,C
+fts,destination_Organization_id,destination_Organization_id,Destination organisation ID,C
+fts,destination_GlobalCluster_id,destination_GlobalCluster_id,Destination global cluster ID,C
+fts,destination_Location_id,destination_Location_id,Destination location ID,C
+fts,destination_Project_id,destination_Project_id,Destination project ID,N
+fts,destination_UsageYear_id,destination_UsageYear_id,Destination usage year ID,C
+fts,destination_Plan_name,destination_Plan_name,Destination plan name,C
+fts,destination_Organization_name,destination_Organization_name,Destination organisation name,C
+fts,destination_GlobalCluster_name,destination_GlobalCluster_name,Destination global cluster name,C
+fts,destination_Location_name,destination_Location_name,Destination location name,C
+fts,destination_Project_name,destination_Project_name,Destination project name,C
+fts,destination_UsageYear_name,destination_UsageYear_name,Destination usage year,C
+fts,report_type,report_type,Reporting type,C
+fts,report_organisation,report_organisation,Reporting organisation,C
+fts,report_channel,report_channel,Reporting channel,C
+fts,report_date,report_date,Reporting date,C
+fts,originalAmount,originalAmount,Original amount,N
+fts,source_Location_id,source_Location_id,Source location ID,C
+fts,source_Location_name,source_Location_name,Source location name,C
+fts,destination_Emergency_id,destination_Emergency_id,Destination emergency ID,N
+fts,destination_Emergency_name,destination_Emergency_name,Destination emergency name,C
+fts,refCode,refCode,Reference code,C
+fts,source_GlobalCluster_id,source_GlobalCluster_id,Source global cluster ID,C
+fts,source_GlobalCluster_name,source_GlobalCluster_name,Source global cluster name,C
+fts,exchangeRate,exchangeRate,Exchange rate,N
+fts,source_Plan_id,source_Plan_id,Source plan ID,C
+fts,source_Plan_name,source_Plan_name,Source plan name,C
+fts,grandBargainEarmarkingType,grandBargainEarmarkingType,Grand Bargain earmarking type,C
+fts,source_Emergency_id,source_Emergency_id,Source emergency ID,N
+fts,source_Emergency_name,source_Emergency_name,Source emergency name,C
+fts,source_Project_id,source_Project_id,Source project ID,N
+fts,source_Project_name,source_Project_name,Source project name,C
+fts,destination_Cluster_id,destination_Cluster_id,Destination cluster ID,C
+fts,destination_Cluster_name,destination_Cluster_name,Destination cluster name,C
+fts,source_Cluster_id,source_Cluster_id,Source cluster ID,C
+fts,source_Cluster_name,source_Cluster_name,Source cluster name,C
