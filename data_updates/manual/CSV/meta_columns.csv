@@ -325,3 +325,13 @@ fts,destination_Cluster_id,destination_Cluster_id,Destination cluster ID,C
 fts,destination_Cluster_name,destination_Cluster_name,Destination cluster name,C
 fts,source_Cluster_id,source_Cluster_id,Source cluster ID,C
 fts,source_Cluster_name,source_Cluster_name,Source cluster name,C
+all_resource_flows,id,id,Row ID,C
+all_resource_flows,year,year,Year,N
+all_resource_flows,country_name,country_name,Country name,C
+all_resource_flows,iso2,iso2,ISO alpha 2,C
+all_resource_flows,iso3,iso3,ISO alpha 3,C
+all_resource_flows,flow_direction,flow_direction,Flow direction,C
+all_resource_flows,flow_type,flow_type,Flow type,C
+all_resource_flows,flow_name,flow_name,Flow name,C
+all_resource_flows,value_2016,value_2016,Value (constant 2016 USD),N
+all_resource_flows,value_2017,value_2017,Value (constant 2017 USD),N
