@@ -344,3 +344,31 @@ all_resource_flows,flow_type,flow_type,Flow type,C
 all_resource_flows,flow_name,flow_name,Flow name,C
 all_resource_flows,value_2016,value_2016,Value (constant 2016 USD),N
 all_resource_flows,value_2017,value_2017,Value (constant 2017 USD),N
+fts_isos,country_name,country_name,Country name,C
+fts_isos,country_code,country_code,Country code,C
+dac5_current_isos,country_name,country_name,Country name,C
+dac5_current_isos,country_code,country_code,Country code,C
+dac2b_current_isos,country_name,country_name,Country name,C
+dac2b_current_isos,country_code,country_code,Country code,C
+dac2a_current_isos,country_name,country_name,Country name,C
+dac2a_current_isos,country_code,country_code,Country code,C
+dac1_current_isos,country_name,country_name,Country name,C
+dac1_current_isos,country_code,country_code,Country code,C
+crs_current_regisos,region_name,region_name,Region name,C
+crs_current_regisos,region_code,region_code,Region code,C
+crs_current_isos,country_name,country_name,Country name,C
+crs_current_isos,country_code,country_code,Country code,C
+wdi_isos,country_name,country_name,Country name,C
+wdi_isos,country_code,country_code,Country code,C
+PovCalNetDist_isos,country_name,country_name,Country name,C
+PovCalNetDist_isos,country_code,country_code,Country code,C
+PovCalNetSmy_regisos,region_name,region_name,Region name,C
+PovCalNetSmy_regisos,region_code,region_code,Region code,C
+PovCalNetSmy_isos,country_name,country_name,Country name,C
+PovCalNetSmy_isos,country_code,country_code,Country code,C
+PovCalNetP20_regisos,region_name,region_name,Region name,C
+PovCalNetP20_regisos,region_code,region_code,Region code,C
+PovCalNetP20_isos,country_name,country_name,Country name,C
+PovCalNetP20_isos,country_code,country_code,Country code,C
+PovCalNetAgg_regisos,region_name,region_name,Region name,C
+PovCalNetAgg_regisos,region_code,region_code,Region code,C
