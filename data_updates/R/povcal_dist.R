@@ -80,6 +80,7 @@ for(i in 1:nrow(ext)){
   if(!is.null(dist.tmp)){
     dist.tmp$svy = svy
     dist.tmp$year = year
+    dist.tmp$country_code = substr(svy,1,3)
     data.list[[data.index]] = dist.tmp
     data.index = data.index + 1
   }else{

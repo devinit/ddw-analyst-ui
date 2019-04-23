@@ -80,6 +80,7 @@ PovCalNetDist,i,i,Population percentile index (maximum varies by survey),N
 PovCalNetDist,P,P,Cumulative percentile of population,N
 PovCalNetDist,L,L,Cumulative percent of consumption/income,N
 PovCalNetDist,svy,svy,Survey code comprised of a 3 digit country code and a 1 digit coverage type code,C
+PovCalNetDist,country_code,country_code,Country code,C
 PovCalNetDist,year,year,Survey year,N
 ldcs,country_name,country_name,Country name,C
 ldcs,di_id,di_id,ISO Alpha 2,C
