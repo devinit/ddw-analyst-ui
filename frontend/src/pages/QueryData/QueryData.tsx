@@ -35,8 +35,13 @@ interface RouteParams {
   id?: string;
 }
 type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams>;
+interface ComponentState {
+  exporting: boolean;
+}
 
-class QueryData extends React.Component<QueryDataProps> {
+class QueryData extends React.Component<QueryDataProps, ComponentState> {
+  state: ComponentState = { exporting: false };
+
   render() {
     const loading = this.props.page.get('loading') as boolean;
 
@@ -51,8 +56,8 @@ class QueryData extends React.Component<QueryDataProps> {
             <Card.Header className="card-header-text card-header-danger">
               <Card.Text>Query Data</Card.Text>
               <div>
-                <Button variant="danger" size="sm" onClick={ this.exportToCSV }>
-                  Export to CSV
+                <Button variant="danger" size="sm" onClick={ this.exportToCSV } disabled={ this.state.exporting }>
+                  { this.state.exporting ? 'Exporting ...' : 'Export to CSV' }
                 </Button>
               </div>
             </Card.Header>
@@ -121,14 +126,17 @@ class QueryData extends React.Component<QueryDataProps> {
   }
 
   private exportToCSV = () => {
+    this.setState({ exporting: true });
     const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
     if (data.count()) {
-      const csv = encodeURI(`data:text/csv;charset=utf-8,${unparse(data.toJS())}`);
       const filename = 'export.csv';
       const link = document.createElement('a');
-      link.setAttribute('href', csv);
+      const csvData = new Blob([ unparse(data.toJS()) ], { type: 'text/csv' });
+      const url = URL.createObjectURL(csvData);
+      link.setAttribute('href', url);
       link.setAttribute('download', filename);
       link.click();
+      this.setState({ exporting: false });
     }
   }
 }
