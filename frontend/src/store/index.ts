@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
@@ -27,10 +27,11 @@ const structuredReducers = {
   [`${queryDataReducerId}`]: queryDataReducer
 };
 const reducers = combineReducers(structuredReducers);
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
   reducers,
-  applyMiddleware(sagaMiddleware, loggerMiddleware)
+  composeEnhancers(applyMiddleware(sagaMiddleware, loggerMiddleware))
 );
 
 sagaMiddleware.run(rootSaga);
