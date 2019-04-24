@@ -27,7 +27,7 @@ class Command(BaseCommand):
                     row.pop(not_modeled_attr)
                 # Get or create without save first, assuming indicator is unique
                 try:
-                    source = Source.objects.get(indicator=row["indicator"])
+                    source = Source.objects.get(active_mirror_name=row["active_mirror_name"])
                     for (key, value) in row.items():
                         setattr(source, key, value)
                 except Source.DoesNotExist:
