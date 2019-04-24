@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: { frontend: `./frontend/src/index.ts` },
+  entry: [ '@babel/polyfill', './frontend/src/index.ts' ],
   output: {
     path: path.resolve(__dirname, 'frontend/static/frontend/'),
     filename: 'js/bundle.js',

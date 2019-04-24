@@ -91,6 +91,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.3",
     "@bit/devinit.analyst-ui.components.conditional-render": "0.0.2",
     "@bit/devinit.analyst-ui.components.social-line": "0.0.3",
     "@material-ui/core": "^3.9.3",
