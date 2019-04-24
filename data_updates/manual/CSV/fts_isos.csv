@@ -1,325 +1,217 @@
-"country_name","country_code"
-"Sudan","212"
-,
-"Eritrea","69"
-"Ethiopia","71"
-"Iraq","106"
-"Mozambique","152"
-"Serbia and Montenegro (until 2006-2009)","25724802"
-"Kenya","116"
-"Ukraine","234"
-"Sierra Leone","200"
-"Zambia","249"
-"Bangladesh","19"
-"Indonesia","104"
-"Philippines","176"
-"Sri Lanka","210"
-"Azerbaijan","16"
-"Algeria","4"
-"Venezuela, Bolivarian Republic of","242"
-"South Africa","207"
-"Syrian Arab Republic","218"
-"Jordan","114"
-"Djibouti","62"
-"Angola","7"
-"Burundi","37"
-"occupied Palestinian territory","171"
-"Afghanistan","1"
-"Mongolia","148"
-"Tajikistan","220"
-"Timor-Leste","223"
-"Russian Federation","184"
-"Korea, Democratic People's Republic of","118"
-"Armenia","12"
-"Viet Nam","243"
-"Moldova, Republic of","146"
-"Somalia","206"
-"Congo","51"
-"Uganda","233"
-"Congo, The Democratic Republic of the","52"
-"Tanzania, United Republic of","221"
-"Rwanda","185"
-"Albania","3"
-"Georgia","82"
-"Cambodia","38"
-"India","103"
-"Zimbabwe","250"
-"Pakistan","169"
-"Madagascar","133"
-"Uzbekistan","240"
-"Nepal","156"
-"Belize","23"
-"Colombia","49"
-"Lao People's Democratic Republic","122"
-"Bhutan","26"
-"Romania","183"
-"Iran, Islamic Republic of","105"
-"Nicaragua","161"
-"China","46"
-"Chile","45"
-"Hungary","101"
-"Bosnia and Herzegovina","28"
-"Croatia","56"
-"North Macedonia, Republic of","132"
-"Botswana","30"
-"Lebanon","124"
-"Central African Republic","43"
-"Peru","175"
-"Liberia","126"
-"Thailand","222"
-"Bulgaria","35"
-"El Salvador","67"
-"Belarus","21"
-"Brazil","32"
-"Guatemala","91"
-"Yemen","248"
-"Chad","44"
-"Ghana","84"
-"Egypt","66"
-"Malawi","134"
-"Burkina Faso","36"
-"Bolivia, Plurinational State of","27"
-"Cuba","57"
-"Guinea","93"
-"Vanuatu","241"
-"Ecuador","65"
-"Benin","24"
-"Cameroon","39"
-"Togo","224"
-"Guinea-Bissau","94"
-"Mali","137"
-"Mauritania","141"
-"Morocco","151"
-"Senegal","197"
-"Haiti","96"
-"Myanmar","153"
-"Namibia","154"
-"Israel","109"
-"Serbia","198"
-"Côte d'Ivoire","55"
-"Tunisia","228"
-"Kuwait","120"
-"Niger","162"
-"Montenegro","149"
-"Poland","178"
-"Kazakhstan","115"
-"Sweden","216"
-"Nigeria","163"
-"Turkey","229"
-"Cook Islands","53"
-"Australia","14"
-"Lesotho","125"
-"Eswatini","215"
-"Mauritius","142"
-"Czech Republic","60"
-"Papua New Guinea","173"
-"Costa Rica","54"
-"Mexico","144"
-"Germany","83"
-"Slovakia","203"
-"Honduras","99"
-"Austria","15"
-"Argentina","11"
-"Korea, Republic of","119"
-"Seychelles","199"
-"Singapore","201"
-"Cape Verde","41"
-"Guam","90"
-"Solomon Islands","205"
-"Kyrgyzstan","121"
-"Jamaica","111"
-"Panama","172"
-"Tonga","226"
-"Gabon","80"
-"Paraguay","174"
-"Western Sahara","247"
-"Micronesia, Federated States of","145"
-"Fiji","74"
-"New Caledonia","159"
-"Gambia","81"
-"Portugal","179"
-"Dominican Republic","64"
-"Uruguay","239"
-"Ireland","107"
-"Aruba","13"
-"Niue","164"
-"Grenada","88"
-"Japan","112"
-"Maldives","136"
-"Malaysia","135"
-"Guyana","95"
-"Bahamas","17"
-"Cayman Islands","42"
-"Comoros","50"
-"Switzerland","217"
-"Libya","127"
-"Italy","110"
-"Turkmenistan","230"
-"São Tomé and Príncipe","195"
-"Antigua and Barbuda","10"
-"Suriname","213"
-"Cyprus","59"
-"Saint Kitts and Nevis","188"
-"Marshall Islands","139"
-"Barbados","20"
-"Anguilla (United Kingdom)","8"
-"Montserrat","150"
-"Palau","170"
-"Samoa","193"
-"Saint Helena, Ascension and Tristan da Cunha","187"
-"Saint Lucia","189"
-"Trinidad and Tobago","227"
-"Oman","168"
-"Dominica","63"
-"Greece","86"
-"Slovenia","204"
-"Norway","167"
-"Netherlands","157"
-"Saudi Arabia","196"
-"Turks and Caicos Islands","231"
-"Saint Vincent and the Grenadines","192"
-"French Polynesia","78"
-"South Sudan","211"
-"New Zealand","160"
-"Malta","138"
-"United States","237"
-"Tuvalu","232"
-"Equatorial Guinea","68"
-"Spain","209"
-"Jordan | Iraq | Syrian Arab Republic | Turkey | Egypt | Lebanon","114 | 106 | 218 | 229 | 66 | 124"
-"Turkey | Lebanon | Jordan","229 | 124 | 114"
-"United Arab Emirates","235"
-"Honduras | Guatemala","99 | 91"
-"United Kingdom","236"
-"Jordan | Turkey | Lebanon","114 | 229 | 124"
-"Kiribati","117"
-"Guatemala | Honduras","91 | 99"
-"Egypt | Iraq | Jordan | Turkey | Lebanon","66 | 106 | 114 | 229 | 124"
-"Turkey | Jordan | Lebanon","229 | 114 | 124"
-"Taiwan, Province of China","219"
-"Sudan | Kenya | Ethiopia | South Sudan","212 | 116 | 71 | 211"
-"Lebanon | Jordan","124 | 114"
-"Jordan | Lebanon","114 | 124"
-"Canada","40"
-"Denmark","61"
-"Belgium","22"
-"Turkey | Lebanon | Jordan | Iraq | Egypt","229 | 124 | 114 | 106 | 66"
-"Cuba | Jamaica | Bahamas | Haiti","57 | 111 | 17 | 96"
-"Jordan | Egypt | Turkey | Iraq | Lebanon","114 | 66 | 229 | 106 | 124"
-"Egypt | Turkey | Iraq | Jordan | Lebanon","66 | 229 | 106 | 114 | 124"
-"South Sudan | Uganda | Ethiopia","211 | 233 | 71"
-"Niger | Nigeria","162 | 163"
-"Chad | Cameroon","44 | 39"
-"Lebanon | Turkey | Jordan","124 | 229 | 114"
-"Turkey | Lebanon | Jordan | Egypt | Iraq","229 | 124 | 114 | 66 | 106"
-"Lebanon | Egypt | Turkey | Iraq | Jordan","124 | 66 | 229 | 106 | 114"
-"Jordan | Iraq | Turkey | Egypt | Lebanon","114 | 106 | 229 | 66 | 124"
-"Egypt | Turkey | Jordan | Iraq | Lebanon","66 | 229 | 114 | 106 | 124"
-"Egypt | Iraq | Jordan | Lebanon | Turkey","66 | 106 | 114 | 124 | 229"
-"Egypt | Turkey | Iraq | Lebanon | Jordan","66 | 229 | 106 | 124 | 114"
-"Egypt | Iraq | Jordan | Lebanon | Syrian Arab Republic | Turkey","66 | 106 | 114 | 124 | 218 | 229"
-"Syrian Arab Republic | Lebanon | Jordan","218 | 124 | 114"
-"Qatar","181"
-"West Bank | Gaza Strip | occupied Palestinian territory","4107 | 4108 | 171"
-"Lebanon | Jordan | Turkey | Egypt | Iraq","124 | 114 | 229 | 66 | 106"
-"Lebanon | Egypt | Turkey | Syrian Arab Republic | Iraq | Jordan","124 | 66 | 229 | 218 | 106 | 114"
-"Lebanon | Jordan | Iraq | Turkey | Egypt","124 | 114 | 106 | 229 | 66"
-"Iraq | Jordan | Turkey | Egypt | Lebanon","106 | 114 | 229 | 66 | 124"
-"Lebanon | Egypt | Turkey | Jordan | Iraq","124 | 66 | 229 | 114 | 106"
-"West Bank | occupied Palestinian territory | Gaza Strip","4107 | 171 | 4108"
-"Lebanon | Iraq | Turkey | Jordan | Egypt","124 | 106 | 229 | 114 | 66"
-"Lebanon | Egypt | Iraq | Jordan | Turkey","124 | 66 | 106 | 114 | 229"
-"Lebanon | Turkey | Jordan | Iraq | Egypt","124 | 229 | 114 | 106 | 66"
-"Lebanon | Jordan | Iraq | Egypt | Turkey","124 | 114 | 106 | 66 | 229"
-"Saint Barthélemy (France) | Anguilla (United Kingdom) | Antigua and Barbuda","186 | 8 | 10"
-"Iraq | Lebanon | Jordan | Turkey | Egypt","106 | 124 | 114 | 229 | 66"
-"Sint Maarten (Dutch part)","202"
-"Antigua and Barbuda | Bahamas | Sint Maarten (Dutch part)","10 | 17 | 202"
-"Saint Martin (France)","190"
-"Sint Maarten (Dutch part) | Bahamas | Antigua and Barbuda | Saint Kitts and Nevis","202 | 17 | 10 | 188"
-"Virgin Islands, British | Saint Kitts and Nevis | Turks and Caicos Islands | Sint Maarten (Dutch part) | Saint Martin (France) | Bahamas | Antigua and Barbuda | Anguilla (United Kingdom) | Saint Barthélemy (France)","244 | 188 | 231 | 202 | 190 | 17 | 10 | 8 | 186"
-"Anguilla (United Kingdom) | Antigua and Barbuda | Bahamas | Saint Barthélemy (France) | Saint Kitts and Nevis | Saint Martin (France) | Sint Maarten (Dutch part) | Turks and Caicos Islands | Virgin Islands, British","8 | 10 | 17 | 186 | 188 | 190 | 202 | 231 | 244"
-"Sweden | Iraq","216 | 106"
-"Saint Kitts and Nevis | Antigua and Barbuda","188 | 10"
-"Chad | Cameroon | Niger | Nigeria","44 | 39 | 162 | 163"
-"Sweden | Uganda","216 | 233"
-"Antigua and Barbuda | Saint Kitts and Nevis","10 | 188"
-"Sudan | Eritrea","212 | 69"
-"Sint Maarten (Dutch part) | Saint Kitts and Nevis | Saint Barthélemy (France) | Virgin Islands, British | Turks and Caicos Islands | Anguilla (United Kingdom) | Bahamas | Antigua and Barbuda | Saint Martin (France)","202 | 188 | 186 | 244 | 231 | 8 | 17 | 10 | 190"
-"Sint Maarten (Dutch part) | Saint Kitts and Nevis | Saint Barthélemy (France) | Virgin Islands, British | Turks and Caicos Islands | Anguilla (United Kingdom) | Bahamas | Saint Martin (France) | Antigua and Barbuda","202 | 188 | 186 | 244 | 231 | 8 | 17 | 190 | 10"
-"Antigua and Barbuda | Saint Martin (France) | Bahamas | Anguilla (United Kingdom) | Turks and Caicos Islands | Virgin Islands, British | Saint Barthélemy (France) | Saint Kitts and Nevis | Sint Maarten (Dutch part)","10 | 190 | 17 | 8 | 231 | 244 | 186 | 188 | 202"
-"Barbados | Turks and Caicos Islands | Saint Vincent and the Grenadines | Sint Maarten (Dutch part) | Saint Martin (France) | Saint Lucia | Saint Kitts and Nevis | Anguilla (United Kingdom) | Antigua and Barbuda | Bahamas | Bonaire, Saint Eustatius and Saba (The Netherlands) | Virgin Islands, British | Cuba | Dominica | Dominican Republic | Guadeloupe (France) | Haiti | Martinique (France) | Montserrat | Puerto Rico (United States) | Saint Barthélemy (France)","20 | 231 | 192 | 202 | 190 | 189 | 188 | 8 | 10 | 17 | 29 | 244 | 57 | 63 | 64 | 89 | 96 | 140 | 150 | 180 | 186"
-"Mali | Senegal | Gambia | Guinea | Guinea-Bissau","137 | 197 | 81 | 93 | 94"
-"occupied Palestinian territory | Gaza Strip | West Bank","171 | 4108 | 4107"
-"Chad | Cameroon | Nigeria | Niger","44 | 39 | 163 | 162"
-"Estonia","70"
-"Nigeria | South Sudan | Somalia | Yemen","163 | 211 | 206 | 248"
-"Nigeria | South Sudan | Somalia","163 | 211 | 206"
-"Somalia | South Sudan | Nigeria","206 | 211 | 163"
-"Jordan | Lebanon | Iraq | Turkey | Egypt","114 | 124 | 106 | 229 | 66"
-"Anguilla (United Kingdom) | Antigua and Barbuda | Bahamas | Bonaire, Saint Eustatius and Saba (The Netherlands) | Virgin Islands, British | Cuba | Dominica | Dominican Republic | Guadeloupe (France) | Haiti | Martinique (France) | Montserrat | Puerto Rico (United States) | Saint Barthélemy (France) | Saint Kitts and Nevis | Saint Lucia | Saint Martin (France) | Sint Maarten (Dutch part) | Saint Vincent and the Grenadines | Turks and Caicos Islands | Barbados","8 | 10 | 17 | 29 | 244 | 57 | 63 | 64 | 89 | 96 | 140 | 150 | 180 | 186 | 188 | 189 | 190 | 202 | 192 | 231 | 20"
-"Barbados | Turks and Caicos Islands | Saint Vincent and the Grenadines | Sint Maarten (Dutch part) | Saint Martin (France) | Saint Lucia | Saint Kitts and Nevis | Saint Barthélemy (France) | Puerto Rico (United States) | Montserrat | Martinique (France) | Haiti | Guadeloupe (France) | Dominican Republic | Dominica | Cuba | Virgin Islands, British | Bonaire, Saint Eustatius and Saba (The Netherlands) | Bahamas | Antigua and Barbuda | Anguilla (United Kingdom)","20 | 231 | 192 | 202 | 190 | 189 | 188 | 186 | 180 | 150 | 140 | 96 | 89 | 64 | 63 | 57 | 244 | 29 | 17 | 10 | 8"
-"Cuba | Dominica","57 | 63"
-"Iran, Islamic Republic of | Uganda","105 | 233"
-"Morocco | Panama","151 | 172"
-"Uganda | Kenya","233 | 116"
-"Puerto Rico (United States)","180"
-"Libya | Tunisia","127 | 228"
-"Bonaire, Saint Eustatius and Saba (The Netherlands) | Bahamas | Antigua and Barbuda | Anguilla (United Kingdom) | Barbados | Turks and Caicos Islands | Saint Vincent and the Grenadines | Sint Maarten (Dutch part) | Saint Martin (France) | Saint Lucia | Saint Kitts and Nevis | Saint Barthélemy (France) | Puerto Rico (United States) | Montserrat | Martinique (France) | Haiti | Guadeloupe (France) | Dominican Republic | Dominica | Cuba | Virgin Islands, British","29 | 17 | 10 | 8 | 20 | 231 | 192 | 202 | 190 | 189 | 188 | 186 | 180 | 150 | 140 | 96 | 89 | 64 | 63 | 57 | 244"
-"Kyrgyzstan | Tajikistan","121 | 220"
-"Jordan | Lebanon | Turkey","114 | 124 | 229"
-"Sweden | Chad","216 | 44"
-"Brazil | Colombia | Ecuador | Guyana | Peru | Trinidad and Tobago","32 | 49 | 65 | 95 | 175 | 227"
-"Lesotho | Namibia | Eswatini | South Africa | Zambia | Zimbabwe","125 | 154 | 215 | 207 | 249 | 250"
-"Syrian Arab Republic | Egypt | Iraq | Turkey | Jordan | Lebanon","218 | 66 | 106 | 229 | 114 | 124"
-"Congo, The Democratic Republic of the | Rwanda","52 | 185"
-"Uruguay | Trinidad and Tobago | Peru | Paraguay | Panama | Mexico | Guyana | Ecuador | Dominican Republic | Curaçao | Costa Rica | Colombia | Chile | Brazil | Aruba | Argentina","239 | 227 | 175 | 174 | 172 | 144 | 95 | 65 | 64 | 58 | 54 | 49 | 45 | 32 | 13 | 11"
-"Djibouti | Ethiopia | Yemen","62 | 71 | 248"
-"Lebanon | Jordan | Turkey | Iraq | Egypt","124 | 114 | 229 | 106 | 66"
-"Colombia | Peru","49 | 175"
-"Venezuela, Bolivarian Republic of | Colombia | Brazil","242 | 49 | 32"
-"Venezuela, Bolivarian Republic of | Ecuador | Colombia","242 | 65 | 49"
-"Syrian Arab Republic | Lebanon | Jordan | Turkey","218 | 124 | 114 | 229"
-"occupied Palestinian territory | Sudan | Lebanon","171 | 212 | 124"
-"Honduras | Mexico | Guatemala","99 | 144 | 91"
-"Argentina | Aruba | Brazil | Chile | Colombia | Costa Rica | Curaçao | Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru | Trinidad and Tobago | Uruguay","11 | 13 | 32 | 45 | 49 | 54 | 58 | 64 | 65 | 95 | 144 | 172 | 174 | 175 | 227 | 239"
-"Venezuela, Bolivarian Republic of | Colombia","242 | 49"
-"Curaçao","58"
-"Tanzania, United Republic of | Uganda | Kenya","221 | 233 | 116"
-"Sweden | Cameroon","216 | 39"
-"Turkey | Jordan | Iraq | Egypt","229 | 114 | 106 | 66"
-"Egypt | Iraq | Jordan | Turkey | Lebanon | Syrian Arab Republic","66 | 106 | 114 | 229 | 124 | 218"
-"Uganda | Tanzania, United Republic of | Rwanda | Congo, The Democratic Republic of the","233 | 221 | 185 | 52"
-"Malawi | Mozambique | Zimbabwe","134 | 152 | 250"
-"Zimbabwe | Malawi | Mozambique","250 | 134 | 152"
-"Zimbabwe | Mozambique | Malawi","250 | 152 | 134"
-"Argentina | Brazil | Colombia | Costa Rica | Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru","11 | 32 | 49 | 54 | 64 | 65 | 95 | 144 | 172 | 174 | 175"
-"Argentina | Aruba | Brazil | Colombia | Costa Rica | Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru","11 | 13 | 32 | 49 | 54 | 64 | 65 | 95 | 144 | 172 | 174 | 175"
-"Finland","75"
-"France","76"
-"Luxembourg","130"
-"Liechtenstein","128"
-"San Marino","194"
-"Iceland","102"
-"Monaco","147"
-"Réunion","182"
-"Latvia","123"
-"Holy See (Vatican City State)","98"
-"Lithuania","129"
-"Andorra","6"
-"Brunei Darussalam","34"
-"Faroe Islands","73"
-"Bahrain","18"
-"Virgin Islands, British","244"
-"Nauru","155"
-"Germany | United States","83 | 237"
-"Sweden | Liberia","216 | 126"
-"United States | France","237 | 76"
-"Sweden | Lebanon","216 | 124"
-"Ireland | United States","107 | 237"
-"Australia | Austria","14 | 15"
-"Lebanon | Syrian Arab Republic","124 | 218"
-"Myanmar | Australia","153 | 14"
-"Jersey","113"
-"Korea, Republic of | Lithuania","119 | 129"
-"Japan | United Kingdom","112 | 236"
+country_name,country_code,iso3
+Serbia and Montenegro (until 2006-2009),25724802,
+Aruba,13,ABW
+Afghanistan,1,AFG
+Angola,7,AGO
+Anguilla (United Kingdom),8,AIA
+Albania,3,ALB
+Andorra,6,AND
+United Arab Emirates,235,ARE
+Argentina,11,ARG
+Armenia,12,ARM
+Antigua and Barbuda,10,ATG
+Australia,14,AUS
+Austria,15,AUT
+Azerbaijan,16,AZE
+Burundi,37,BDI
+Belgium,22,BEL
+Benin,24,BEN
+Burkina Faso,36,BFA
+Bangladesh,19,BGD
+Bulgaria,35,BGR
+Bahrain,18,BHR
+Bahamas,17,BHS
+Bosnia and Herzegovina,28,BIH
+Belarus,21,BLR
+Belize,23,BLZ
+"Bolivia, Plurinational State of",27,BOL
+Brazil,32,BRA
+Barbados,20,BRB
+Brunei Darussalam,34,BRN
+Bhutan,26,BTN
+Botswana,30,BWA
+Central African Republic,43,CAF
+Canada,40,CAN
+Switzerland,217,CHE
+Chile,45,CHL
+China,46,CHN
+Côte d'Ivoire,55,CIV
+Cameroon,39,CMR
+"Congo, The Democratic Republic of the",52,COD
+Congo,51,COG
+Cook Islands,53,COK
+Colombia,49,COL
+Comoros,50,COM
+Cape Verde,41,CPV
+Costa Rica,54,CRI
+Cuba,57,CUB
+Curaçao,58,CUW
+Cayman Islands,42,CYM
+Cyprus,59,CYP
+Czech Republic,60,CZE
+Germany,83,DEU
+Djibouti,62,DJI
+Dominica,63,DMA
+Denmark,61,DNK
+Dominican Republic,64,DOM
+Algeria,4,DZA
+Ecuador,65,ECU
+Egypt,66,EGY
+Eritrea,69,ERI
+Western Sahara,247,ESH
+Spain,209,ESP
+Estonia,70,EST
+Ethiopia,71,ETH
+Finland,75,FIN
+Fiji,74,FJI
+France,76,FRA
+Faroe Islands,73,FRO
+"Micronesia, Federated States of",145,FSM
+Gabon,80,GAB
+United Kingdom,236,GBR
+Georgia,82,GEO
+Ghana,84,GHA
+Guinea,93,GIN
+Gambia,81,GMB
+Guinea-Bissau,94,GNB
+Equatorial Guinea,68,GNQ
+Greece,86,GRC
+Grenada,88,GRD
+Guatemala,91,GTM
+Guam,90,GUM
+Guyana,95,GUY
+Honduras,99,HND
+Croatia,56,HRV
+Haiti,96,HTI
+Hungary,101,HUN
+Indonesia,104,IDN
+India,103,IND
+Ireland,107,IRL
+"Iran, Islamic Republic of",105,IRN
+Iraq,106,IRQ
+Iceland,102,ISL
+Israel,109,ISR
+Italy,110,ITA
+Jamaica,111,JAM
+Jersey,113,JEY
+Jordan,114,JOR
+Japan,112,JPN
+Kazakhstan,115,KAZ
+Kenya,116,KEN
+Kyrgyzstan,121,KGZ
+Cambodia,38,KHM
+Kiribati,117,KIR
+Saint Kitts and Nevis,188,KNA
+"Korea, Republic of",119,KOR
+Kuwait,120,KWT
+Lao People's Democratic Republic,122,LAO
+Lebanon,124,LBN
+Liberia,126,LBR
+Libya,127,LBY
+Saint Lucia,189,LCA
+Liechtenstein,128,LIE
+Sri Lanka,210,LKA
+Lesotho,125,LSO
+Lithuania,129,LTU
+Luxembourg,130,LUX
+Latvia,123,LVA
+Saint Martin (France),190,MAF
+Morocco,151,MAR
+Monaco,147,MCO
+"Moldova, Republic of",146,MDA
+Madagascar,133,MDG
+Maldives,136,MDV
+Mexico,144,MEX
+Marshall Islands,139,MHL
+"North Macedonia, Republic of",132,MKD
+Mali,137,MLI
+Malta,138,MLT
+Myanmar,153,MMR
+Montenegro,149,MNE
+Mongolia,148,MNG
+Mozambique,152,MOZ
+Mauritania,141,MRT
+Montserrat,150,MSR
+Mauritius,142,MUS
+Malawi,134,MWI
+Malaysia,135,MYS
+Namibia,154,NAM
+New Caledonia,159,NCL
+Niger,162,NER
+Nigeria,163,NGA
+Nicaragua,161,NIC
+Niue,164,NIU
+Netherlands,157,NLD
+Norway,167,NOR
+Nepal,156,NPL
+Nauru,155,NRU
+New Zealand,160,NZL
+Oman,168,OMN
+Pakistan,169,PAK
+Panama,172,PAN
+Peru,175,PER
+Philippines,176,PHL
+Palau,170,PLW
+Papua New Guinea,173,PNG
+Poland,178,POL
+Puerto Rico (United States),180,PRI
+"Korea, Democratic People's Republic of",118,PRK
+Portugal,179,PRT
+Paraguay,174,PRY
+occupied Palestinian territory,171,PSE
+French Polynesia,78,PYF
+Qatar,181,QAT
+Réunion,182,REU
+Romania,183,ROU
+Russian Federation,184,RUS
+Rwanda,185,RWA
+Saudi Arabia,196,SAU
+Sudan,212,SDN
+Senegal,197,SEN
+Singapore,201,SGP
+"Saint Helena, Ascension and Tristan da Cunha",187,SHN
+Solomon Islands,205,SLB
+Sierra Leone,200,SLE
+El Salvador,67,SLV
+San Marino,194,SMR
+Somalia,206,SOM
+Serbia,198,SRB
+South Sudan,211,SSD
+São Tomé and Príncipe,195,STP
+Suriname,213,SUR
+Slovakia,203,SVK
+Slovenia,204,SVN
+Sweden,216,SWE
+Eswatini,215,SWZ
+Sint Maarten (Dutch part),202,SXM
+Seychelles,199,SYC
+Syrian Arab Republic,218,SYR
+Turks and Caicos Islands,231,TCA
+Chad,44,TCD
+Togo,224,TGO
+Thailand,222,THA
+Tajikistan,220,TJK
+Turkmenistan,230,TKM
+Timor-Leste,223,TLS
+Tonga,226,TON
+Trinidad and Tobago,227,TTO
+Tunisia,228,TUN
+Turkey,229,TUR
+Tuvalu,232,TUV
+"Tanzania, United Republic of",221,TZA
+Uganda,233,UGA
+Ukraine,234,UKR
+Uruguay,239,URY
+United States,237,USA
+Uzbekistan,240,UZB
+Holy See (Vatican City State),98,VAT
+Saint Vincent and the Grenadines,192,VCT
+"Venezuela, Bolivarian Republic of",242,VEN
+"Virgin Islands, British",244,VIR
+Viet Nam,243,VNM
+Vanuatu,241,VUT
+Samoa,193,WSM
+Yemen,248,YEM
+South Africa,207,ZAF
+Zambia,249,ZMB
+Zimbabwe,250,ZWE
