@@ -61,7 +61,7 @@ class QueryData extends React.Component<QueryDataProps, ComponentState> {
                 </Button>
               </div>
             </Card.Header>
-            <Card.Body className="table-full-width">
+            <Card.Body>
               { this.renderTable() }
             </Card.Body>
           </Card>
@@ -98,7 +98,6 @@ class QueryData extends React.Component<QueryDataProps, ComponentState> {
     if (data && data.count() !== 0) {
       return (
         <PaginatedContent
-          className="ml-1"
           content={ <OperationDataTable list={ data } columns={ columns }/> }
           list={ data || List() }
           limit={ 10 }
@@ -106,7 +105,7 @@ class QueryData extends React.Component<QueryDataProps, ComponentState> {
         />
       );
     }
-    return <div className="m-3">{ loading ? 'Loading ...' : 'No results found' }</div>;
+    return <div>{ loading ? 'Loading ...' : 'No results found' }</div>;
   }
 
   private setOperation(id?: string) {
