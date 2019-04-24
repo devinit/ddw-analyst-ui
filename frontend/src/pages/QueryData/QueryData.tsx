@@ -5,6 +5,7 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import { fetchOperation, setOperation } from '../../actions/operations';
 import { fetchActiveSource, setActiveSource } from '../../actions/sources';
 import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
@@ -37,9 +38,15 @@ type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams
 
 class QueryData extends React.Component<QueryDataProps> {
   render() {
+    const loading = this.props.page.get('loading') as boolean;
+
     return (
       <Row>
         <Col>
+          <Dimmer active={ loading } inverted>
+            <Loader content="Loading" />
+          </Dimmer>
+
           <Card>
             <Card.Header className="card-header-text card-header-danger">
               <Card.Text>Query Data</Card.Text>
@@ -81,6 +88,7 @@ class QueryData extends React.Component<QueryDataProps> {
   private renderTable() {
     const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
     const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
+    const loading = this.props.page.get('loading') as boolean;
 
     if (data && data.count() !== 0) {
       return (
@@ -93,7 +101,7 @@ class QueryData extends React.Component<QueryDataProps> {
         />
       );
     }
-    return <div>No results found</div>;
+    return <div className="m-3">{ loading ? 'Loading ...' : 'No results found' }</div>;
   }
 
   private setOperation(id?: string) {
