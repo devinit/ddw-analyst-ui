@@ -18,8 +18,6 @@ interface PaginatedContentState {
 }
 
 export class PaginatedContent extends React.Component<PaginatedContentProps, PaginatedContentState> {
-  private count = this.props.list.count();
-  private pages = Math.ceil(this.count / this.props.limit);
   state: PaginatedContentState = {
     offset: this.props.offset,
     limit: this.props.limit,
@@ -90,7 +88,7 @@ export class PaginatedContent extends React.Component<PaginatedContentProps, Pag
   }
 
   private goToLast = () => {
-    const offset = (this.pages - 1) * this.state.limit;
+    const offset = (this.state.pages - 1) * this.state.limit;
     this.setState({
       offset,
       list: this.props.list.slice(offset, offset + this.state.limit)
@@ -99,7 +97,7 @@ export class PaginatedContent extends React.Component<PaginatedContentProps, Pag
 
   private goToNext = () => {
     const offset = this.state.offset + this.state.limit;
-    if (offset < this.count) {
+    if (offset < this.state.count) {
       this.setState({
         offset,
         list: this.props.list.slice(offset, offset + this.state.limit)
