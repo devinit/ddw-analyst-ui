@@ -32,7 +32,12 @@ function* fetchSources({ payload }: SourcesAction) {
     .catch(error => error.response);
 
     if (status === 200 && data.results) {
-      yield put({ type: FETCH_SOURCES_SUCCESSFUL, sources: data.results, count: data.count });
+      yield put({
+        type: FETCH_SOURCES_SUCCESSFUL,
+        sources: data.results,
+        count: data.count,
+        payload
+      });
       if (data.results.length) {
         yield put({ type: SET_ACTIVE_SOURCE, activeSource: fromJS(data.results[0]) });
       }
