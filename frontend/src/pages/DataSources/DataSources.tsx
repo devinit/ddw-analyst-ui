@@ -91,4 +91,4 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
 
 const connector = connect(mapStateToProps, mapDispatchToProps)(DataSources);
 
-export { connector as DataSources };
+export { connector as DataSources, connector as default };
