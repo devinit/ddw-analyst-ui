@@ -302,6 +302,7 @@ fts,destination_Plan_id,destination_Plan_id,Destination plan ID,C
 fts,destination_Organization_id,destination_Organization_id,Destination organisation ID,C
 fts,destination_GlobalCluster_id,destination_GlobalCluster_id,Destination global cluster ID,C
 fts,destination_Location_id,destination_Location_id,Destination location ID,C
+fts,destination_iso3,destination_iso3,Destination ISO Alpha 3,C
 fts,destination_Project_id,destination_Project_id,Destination project ID,N
 fts,destination_UsageYear_id,destination_UsageYear_id,Destination usage year ID,C
 fts,destination_Plan_name,destination_Plan_name,Destination plan name,C
@@ -316,6 +317,7 @@ fts,report_channel,report_channel,Reporting channel,C
 fts,report_date,report_date,Reporting date,C
 fts,originalAmount,originalAmount,Original amount,N
 fts,source_Location_id,source_Location_id,Source location ID,C
+fts,source_iso3,source_iso3,Source ISO Alpha 3,C
 fts,source_Location_name,source_Location_name,Source location name,C
 fts,destination_Emergency_id,destination_Emergency_id,Destination emergency ID,N
 fts,destination_Emergency_name,destination_Emergency_name,Destination emergency name,C

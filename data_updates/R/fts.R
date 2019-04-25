@@ -1,18 +1,45 @@
-list.of.packages <- c("data.table","httr","RPostgreSQL")
+list.of.packages <- c("data.table","httr","RPostgreSQL","here")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
+# Only works while running with `Rscript` from repo root, use commented below if running manually
+# script.dir <- here()
+# script.dir = "/src"
+script.dir = "/home/alex/git/ddw-analyst-ui"
+isos = read.csv(paste0(script.dir,"/data_updates/manual/CSV/fts_isos.csv"), na.strings="", as.is=T, fileEncoding="utf8")
+isos$country_name = NULL
+isos$country_code = as.character(isos$country_code)
+
+source_isos = copy(isos)
+setnames(source_isos, c("country_code","iso3"), c("source_Location_id","source_iso3"))
+dest_isos = copy(isos)
+setnames(dest_isos, c("country_code","iso3"), c("destination_Location_id", "destination_iso3"))
+
+merge_isos = function(flow_df){
+  if("source_Location_id" %in% names(flow_df)){
+    flow_df = merge(flow_df, source_isos, by="source_Location_id", all.x=T)  
+  }else{
+    flow_df$source_iso3 = NA
+  }
+  if("destination_Location_id" %in% names(flow_df)){
+    flow_df = merge(flow_df, dest_isos, by="destination_Location_id", all.x=T)  
+  }else{
+    flow_df$destination_iso3 = NA
+  }
+  return(flow_df)
+}
+
 drv = dbDriver("PostgreSQL")
-con = dbConnect(drv,
-                dbname="analyst_ui"
-                ,user="analyst_ui_user"
-                ,password="analyst_ui_pass"
-                ,host="db"
-                ,port=5432)
 # con = dbConnect(drv,
 #                 dbname="analyst_ui"
-#                 ,user="postgres")
+#                 ,user="analyst_ui_user"
+#                 ,password="analyst_ui_pass"
+#                 ,host="db"
+#                 ,port=5432)
+con = dbConnect(drv,
+                dbname="analyst_ui"
+                ,user="postgres")
 
 table.name = "fts"
 table.quote = c("repo",table.name)
@@ -79,6 +106,7 @@ full.fts.types = c(
   "destination_Organization_id"="text",
   "destination_GlobalCluster_id"="text",
   "destination_Location_id"="text",
+  "destination_iso3"="text",
   "destination_Project_id"="integer",
   "destination_UsageYear_id"="text",
   "destination_Plan_name"="text",
@@ -93,6 +121,7 @@ full.fts.types = c(
   "report_date"="text",
   "originalAmount"="float8",
   "source_Location_id"="text",
+  "source_iso3"="text",
   "source_Location_name"="text",
   "destination_Emergency_id"="integer",
   "destination_Emergency_name"="text",
@@ -155,6 +184,7 @@ fts.flow = function(boundary=NULL,auth=NULL, con, table.quote, new_table){
     rm(res)
     flows = dat$data$flows
     flow_df = rbindlist(lapply(flows,flatten_flow),fill=T)
+    flow_df = merge_isos(flow_df)
     flow_df_name_diff = setdiff(names(full.fts.types), names(flow_df))
     for(name_diff in flow_df_name_diff){
       flow_df[,name_diff]=NA
@@ -175,6 +205,7 @@ fts.flow = function(boundary=NULL,auth=NULL, con, table.quote, new_table){
         rm(res)
         flows = dat$data$flows
         flow_df = rbindlist(lapply(flows,flatten_flow),fill=T)
+        flow_df = merge_isos(flow_df)
         flow_df_name_diff = setdiff(names(full.fts.types), names(flow_df))
         for(name_diff in flow_df_name_diff){
           flow_df[,name_diff]=NA
