@@ -6,8 +6,7 @@ import * as React from 'react';
 import { MemoryRouter, withRouter } from 'react-router-dom';
 import * as TestRenderer from 'react-test-renderer';
 import { cleanup, render, waitForElement } from 'react-testing-library';
-import { LoginActions } from '..';
-import { Login } from '../Login';
+import { Login, LoginActions } from '../Login';
 
 let actions: LoginActions;
 afterEach(cleanup);

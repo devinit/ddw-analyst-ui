@@ -1,3 +1,3 @@
-import LoginReduxConnector, { Login, LoginActions } from './Login';
+import LoginReduxConnector, { Login } from './Login';
 
-export { LoginReduxConnector as default, Login, LoginActions };
+export { LoginReduxConnector as default, Login };
