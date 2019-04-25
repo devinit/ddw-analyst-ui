@@ -1,3 +1,0 @@
-short_description
-project_title
-long_description

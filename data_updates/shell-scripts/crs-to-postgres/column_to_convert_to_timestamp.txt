@@ -1,5 +1,0 @@
-expected_start_date
-completion_date
-commitment_date
-repay_date_1
-repay_date_2
