@@ -1,3 +1,1 @@
-import LoginReduxConnector, { Login } from './Login';
-
-export { LoginReduxConnector as default, Login };
+export * from './AsyncLoader';
