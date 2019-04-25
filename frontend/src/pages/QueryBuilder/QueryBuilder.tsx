@@ -52,8 +52,8 @@ const StyledCardBody = styled(Card.Body)`
 
 class QueryBuilder extends React.Component<QueryBuilderProps> {
   render() {
-    const { activeSource } = this.props;
-    const activeStep = this.props.page.get('activeStep') as OperationStepMap | undefined;
+    const { activeSource, page } = this.props;
+    const activeStep = page.get('activeStep') as OperationStepMap | undefined;
 
     return (
       <Row>
@@ -85,7 +85,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
             <Card.Body>
               <div className="mb-2">
                 {
-                  this.renderOperationStepForm(activeSource, activeStep, this.props.page.get('editingStep') as boolean)
+                  this.renderOperationStepForm(activeSource, activeStep, page.get('editingStep') as boolean)
                 }
               </div>
             </Card.Body>
@@ -270,4 +270,4 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
 
 const connector = connect(mapStateToProps, mapDispatchToProps)(QueryBuilder);
 
-export { connector as QueryBuilder };
+export { connector as default };
