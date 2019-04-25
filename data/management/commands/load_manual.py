@@ -48,5 +48,5 @@ class Command(BaseCommand):
                 source_column_map, _ = SourceColumnMap.objects.get_or_create(source=source, name=row["col_name"])
                 source_column_map.source_name = row["col_source_name"]
                 source_column_map.description = row["col_description"]
-                # source_column_map.data_type = row["data_type"]
+                source_column_map.data_type = row["data_type"]
                 source_column_map.save()
