@@ -9,7 +9,6 @@ module.exports = {
     filename: 'js/bundle.js',
     chunkFilename: 'js/[name].bundle.js',
     publicPath: '/static/frontend/'
-
   },
   resolve: {
     extensions: [ '.ts', '.tsx', '.js' ]
