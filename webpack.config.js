@@ -7,6 +7,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'frontend/static/frontend/'),
     filename: 'js/bundle.js',
+    chunkFilename: 'js/[name].bundle.js',
+    publicPath: '/static/frontend/'
 
   },
   resolve: {
