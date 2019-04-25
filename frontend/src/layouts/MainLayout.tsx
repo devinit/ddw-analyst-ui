@@ -12,7 +12,7 @@ import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { DataSources } from '../pages/DataSources';
-import { Home } from '../pages/Home';
+import { AsyncHome } from '../pages/Home';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
 import QueryData from '../pages/QueryData/QueryData';
 import { TokenState } from '../reducers/token';
@@ -135,7 +135,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
           <AdminLayout.Content>
             <Switch>
-              <Route path="/" exact component={ Home }/>
+              <Route path="/" exact component={ AsyncHome }/>
               <Route path="/sources" exact component={ DataSources }/>
               <Route path="/queries/build" exact component={ AsyncQueryBuilder }/>
               <Route path="/queries/build/:id" exact component={ AsyncQueryBuilder }/>
