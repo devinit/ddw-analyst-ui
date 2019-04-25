@@ -235,4 +235,4 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dis
 });
 const ReduxConnector = connect(mapStateToProps, mapDispatchToProps)(MainLayout);
 
-export { ReduxConnector as MainLayout };
+export { ReduxConnector as MainLayout, ReduxConnector as default };
