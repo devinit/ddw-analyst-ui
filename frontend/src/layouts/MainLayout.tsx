@@ -14,7 +14,7 @@ import { Sidebar } from '../components/Sidebar';
 import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncHome } from '../pages/Home';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
-import QueryData from '../pages/QueryData/QueryData';
+import { AsyncQueryData } from '../pages/QueryData';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
@@ -139,7 +139,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/sources" exact component={ AsyncDataSources }/>
               <Route path="/queries/build" exact component={ AsyncQueryBuilder }/>
               <Route path="/queries/build/:id" exact component={ AsyncQueryBuilder }/>
-              <Route path="/queries/data/:id" exact component={ QueryData }/>
+              <Route path="/queries/data/:id" exact component={ AsyncQueryData }/>
             </Switch>
           </AdminLayout.Content>
         </AdminLayout>

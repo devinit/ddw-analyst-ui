@@ -1,1 +1,1 @@
-export * from './QueryData';
+export * from './AsyncLoader';
