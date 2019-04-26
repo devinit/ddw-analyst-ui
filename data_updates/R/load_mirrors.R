@@ -4,21 +4,71 @@ if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-
 lapply(list.of.packages, require, character.only=T)
 
 # Only works while running with `Rscript` from repo root, use commented below if running manually
-script.dir <- here()
+# script.dir <- here()
 # script.dir = "/src"
-# script.dir = "/home/alex/git/ddw-analyst-ui"
+script.dir = "/home/alex/git/ddw-analyst-ui"
 source(paste0(script.dir,"/data_updates/R/constants.R"))
 
+crs_recipient_isos = read.csv(paste0(script.dir,"/data_updates/manual/CSV/crs_current_isos.csv"), na.strings="", as.is=T, fileEncoding="utf8")
+crs_recipient_isos$country_name = NULL
+crs_donor_isos = copy(crs_recipient_isos)
+setnames(crs_recipient_isos, c("country_code","iso3"), c("recipient_code","recipient_iso3"))
+setnames(crs_donor_isos, c("country_code","iso3"), c("donor_code","donor_iso3"))
+
+dac2a_recipient_isos = read.csv(paste0(script.dir,"/data_updates/manual/CSV/dac2a_current_isos.csv"), na.strings="", as.is=T, fileEncoding="utf8")
+dac2a_recipient_isos$country_name = NULL
+dac2a_donor_isos = copy(dac2a_recipient_isos)
+setnames(dac2a_recipient_isos, c("country_code","iso3"), c("recipient_code","recipient_iso3"))
+setnames(dac2a_donor_isos, c("country_code","iso3"), c("donor_code","donor_iso3"))
+
+dac2b_recipient_isos = read.csv(paste0(script.dir,"/data_updates/manual/CSV/dac2b_current_isos.csv"), na.strings="", as.is=T, fileEncoding="utf8")
+dac2b_recipient_isos$country_name = NULL
+dac2b_donor_isos = copy(dac2b_recipient_isos)
+setnames(dac2b_recipient_isos, c("country_code","iso3"), c("recipient_code","recipient_iso3"))
+setnames(dac2b_donor_isos, c("country_code","iso3"), c("donor_code","donor_iso3"))
+
+dac1_donor_isos = read.csv(paste0(script.dir,"/data_updates/manual/CSV/dac1_current_isos.csv"), na.strings="", as.is=T, fileEncoding="utf8")
+dac1_donor_isos$country_name = NULL
+setnames(dac1_donor_isos, c("country_code","iso3"), c("donor_code","donor_iso3"))
+
+dac5_donor_isos = read.csv(paste0(script.dir,"/data_updates/manual/CSV/dac5_current_isos.csv"), na.strings="", as.is=T, fileEncoding="utf8")
+dac5_donor_isos$country_name = NULL
+setnames(dac5_donor_isos, c("country_code","iso3"), c("donor_code","donor_iso3"))
+
+merge_recip_isos = function(df, recip_isos){
+  if(length(recip_isos)==0){
+    return(df)
+  }
+  if("recipient_code" %in% names(df)){
+    df = merge(df, recip_isos, by="recipient_code", all.x=T)  
+  }else{
+    df$recipient_iso3 = NA
+  }
+  return(df)
+}
+
+merge_donor_isos = function(df, donor_isos){
+  if(length(recip_isos)==0){
+    return(df)
+  }
+  if("donor_code" %in% names(df)){
+    df = merge(df, donor_isos, by="donor_code", all.x=T)  
+  }else{
+    df$donor_iso3 = NA
+  }
+  return(df)
+}
+
 drv = dbDriver("PostgreSQL")
-con = dbConnect(drv,
-                dbname="analyst_ui"
-                ,user="analyst_ui_user"
-                ,password="analyst_ui_pass"
-                ,host="db"
-                ,port=5432)
 # con = dbConnect(drv,
 #                 dbname="analyst_ui"
-#                 ,user="postgres")
+#                 ,user="analyst_ui_user"
+#                 ,password="analyst_ui_pass"
+#                 ,host="db"
+#                 ,port=5432)
+con = dbConnect(drv,
+                dbname="analyst_ui"
+                ,user="postgres")
 
 crs_path = paste0(tmp_file_directory,"Crs_latest")
 crs.table.name = "crs_current"
@@ -44,7 +94,7 @@ dac5_path = list.files(path=table5_latest_path, pattern="*.csv", ignore.case=T, 
 dac5.table.name = "dac5_current"
 dac5.table.quote = c("repo",dac5.table.name)
 
-chunk_load_table = function(con, table.quote, filename, col.names, quote="\"", sep=",", field.types=NULL, allow.overwrite=TRUE, encoding="latin1", chunk.size=5000){
+chunk_load_table = function(con, table.quote, filename, col.names, quote="\"", sep=",", field.types=NULL, allow.overwrite=TRUE, encoding="latin1", donor_isos=NULL, recip_isos=NULL, chunk.size=5000){
   index = 0
   message(filename)
   file_con = file(description=filename, open="r", encoding=encoding)
@@ -52,6 +102,8 @@ chunk_load_table = function(con, table.quote, filename, col.names, quote="\"", s
     index = index + 1
     dataChunk = read.delim(file_con, nrows=chunk.size, skip=0, header=(index==1), sep=sep, col.names=col.names, as.is=T, na.strings=c("\032",""),quote=quote)
     dataChunk = dataChunk[rowSums(is.na(dataChunk)) != ncol(dataChunk),]
+    dataChunk = merge_donor_isos(dataChunk, donor_isos)
+    dataChunk = merge_recip_isos(dataChunk, recip_isos)
     dbWriteTable(con, name = table.quote, value = dataChunk, row.names = F, overwrite=((index==1) & allow.overwrite), append=((index>1) | !allow.overwrite), field.types=field.types)
     if(nrow(dataChunk) != chunk.size){
       break
@@ -76,9 +128,11 @@ clean_dac2a_file = function(){
                   'time',
                   'year',
                   'value',
-                  'flags'
+                  'flags',
+                  'donor_iso3',
+                  'recipient_iso3'
                 )
-  chunk_load_table(con, dac2a.table.quote, dac2a_path, dac2a.names)
+  chunk_load_table(con, dac2a.table.quote, dac2a_path, dac2a.names, donor_isos=dac2a_donor_isos, recip_isos=dac2a_recipient_isos)
 }
 
 clean_dac2b_file = function(){
@@ -95,9 +149,11 @@ clean_dac2b_file = function(){
                   'time',
                   'year',
                   'value',
-                  'flags'
+                  'flags',
+                  'donor_iso3',
+                  'recipient_iso3'
   )
-  chunk_load_table(con, dac2b.table.quote, dac2b_path, dac2b.names)
+  chunk_load_table(con, dac2b.table.quote, dac2b_path, dac2b.names, donor_isos=dac2b_donor_isos, recip_isos=dac2b_recipient_isos)
 }
 
 clean_dac5_file = function(){
@@ -113,8 +169,9 @@ clean_dac5_file = function(){
                  ,'year'
                  ,'value'
                  ,'flags'
+                 ,'donor_iso3'
   )
-  chunk_load_table(con, dac5.table.quote, dac5_path, dac5.names)
+  chunk_load_table(con, dac5.table.quote, dac5_path, dac5.names, donor_isos=dac2a_donor_isos)
 }
 
 
@@ -151,7 +208,7 @@ clean_dac1_file = function(){
              ,'value'
              ,'flags'
            ));
-  
+  dac1 = merge_donor_isos(dac1, dac1_donor_isos)
   dbWriteTable(con, name = dac1.table.quote, value = dac1, row.names = F, overwrite = T)
 }
 
@@ -242,7 +299,9 @@ merge_crs_tables = function(file_vec){
     "bool",
     "integer",
     "integer",
-    "float8"
+    "float8",
+    "text",
+    "text"
   )
   names(crs_field_types) = c(
     "year"
@@ -331,10 +390,12 @@ merge_crs_tables = function(file_vec){
     ,"rmnch"
     ,"budget_identifier"
     ,"capital_expenditure"
+    ,'donor_iso3'
+    ,'recipient_iso3'
   )
   overwrite_crs = TRUE
   for(txt in file_vec){
-    chunk_load_table(con, crs.table.quote, txt, names(crs_field_types), quote="", sep="|", field.types=crs_field_types, allow.overwrite=overwrite_crs)
+    chunk_load_table(con, crs.table.quote, txt, names(crs_field_types), quote="", sep="|", field.types=crs_field_types, allow.overwrite=overwrite_crs, donor_isos=crs_donor_isos, recip_isos=crs_recipient_isos)
     overwrite_crs = FALSE
   }
 
