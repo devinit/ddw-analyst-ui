@@ -54,3 +54,10 @@ export interface JoinOptions {
   schema_name: string;
   join_on: { [key: string]: string };
 }
+
+export interface TransformOptions {
+  operational_value: string;
+  trans_func_name: string;
+  operational_column: string;
+  operational_columns: string[];
+}

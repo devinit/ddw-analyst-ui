@@ -68,6 +68,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
 
       return (
         <TransformQueryBuilder
+          alerts={ alerts }
           source={ source }
           value={ parsedOptions.operational_value }
           function={ parsedOptions.trans_func_name }

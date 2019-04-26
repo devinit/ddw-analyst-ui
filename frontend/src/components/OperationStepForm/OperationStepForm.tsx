@@ -4,7 +4,14 @@ import * as React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import * as Yup from 'yup';
-import { ErroredFilter, Filters, JoinOptions, OperationStep, OperationStepMap } from '../../types/operations';
+import {
+  ErroredFilter,
+  Filters,
+  JoinOptions,
+  OperationStep,
+  OperationStepMap,
+  TransformOptions
+} from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { QueryBuilderHandler } from '../QueryBuilderHandler';
 
@@ -208,7 +215,9 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     if (query === 'join') {
       return this.validateJoin(step);
     }
-    // TODO: validate other operations as well
+    if (query === 'scalar_transform' || query === 'multi_transform') {
+      return this.validateTransform(step);
+    }
     return true;
   }
 
@@ -268,7 +277,31 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     }
     this.setState({ alerts });
 
-    return false;
+    return Object.keys(alerts).length === 0;
+  }
+
+  private validateTransform(step: OperationStepMap) {
+    const options = step.get('query_kwargs') as string;
+    const query = step.get('query_func');
+    const { trans_func_name, operational_column, operational_columns, operational_value }: TransformOptions = options
+      ? JSON.parse(options)
+      : { columns: [] };
+    const alerts: { [ key: string ]: string } = {};
+    if (!trans_func_name) {
+      alerts.trans_func_name = 'Transform function is required';
+    }
+    if (query === 'scalar_transform' && !operational_column) {
+      alerts.operational_column = 'Trasform column is required';
+    }
+    if (query === 'scalar_transform' && !operational_value) {
+      alerts.operational_value = 'Value is required';
+    }
+    if (query === 'multi_transform' && (!operational_columns || operational_columns.length < 2)) {
+      alerts.operational_columns = 'At least 2 columns are required';
+    }
+    this.setState({ alerts });
+
+    return Object.keys(alerts).length === 0;
   }
 
   private processStep(values: Partial<OperationStep>, query: string): OperationStepMap {
