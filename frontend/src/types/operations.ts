@@ -48,3 +48,9 @@ export interface OperationDataAPIResponse {
 export interface OperationData { [key: string]: string | number | null; }
 export type OperationDataMap = Map<keyof OperationData, OperationData[keyof OperationData]>;
 export type OperationDataAPIResponseMap = Map<keyof OperationDataAPIResponse, OperationDataAPIResponse[keyof OperationDataAPIResponse]> //tslint:disable-line
+
+export interface JoinOptions {
+  table_name: string;
+  schema_name: string;
+  join_on: { [key: string]: string };
+}

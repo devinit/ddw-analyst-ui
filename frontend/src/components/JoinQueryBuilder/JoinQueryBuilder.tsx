@@ -1,18 +1,21 @@
 import classNames from 'classnames';
 import { List } from 'immutable';
 import * as React from 'react';
-import { Button, Col, Form } from 'react-bootstrap';
+import { Alert, Button, Col, Form } from 'react-bootstrap';
 import { MapStateToProps, connect } from 'react-redux';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { ReduxStore } from '../../store';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { JoinColumnsMapper } from '../JoinColumnsMapper';
+import { JoinOptions } from '../../types/operations';
 
 interface ReduxState {
   sources: List<SourceMap>;
 }
+type Alerts = { [P in keyof JoinOptions ]: string };
 
 interface ComponentProps {
+  alerts?: Partial<Alerts>;
   source: SourceMap;
   tableName?: string;
   schema?: string;
@@ -22,10 +25,14 @@ interface ComponentProps {
 type JoinQueryBuilderProps = ComponentProps & ReduxState;
 
 class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
+  static defaultProps: Partial<JoinQueryBuilderProps> = {
+    alerts: {}
+  };
+
   render() {
     const secondarySource = this.getSourceFromTableName(this.props.sources, this.props.tableName);
     const sourceID = secondarySource && secondarySource.get('id');
-    const { columnMapping, source: primarySource } = this.props;
+    const { columnMapping, source: primarySource, alerts } = this.props;
 
     return (
       <React.Fragment>
@@ -43,10 +50,17 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
               value={ sourceID as string | undefined }
               onChange={ this.onChange }
             />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && (alerts.table_name || alerts.schema_name)) }) }
+            >
+              { alerts && (alerts.table_name || alerts.schema_name) }
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
 
         <Col md={ 12 } className={ classNames('mt-2 pl-0', { 'd-none': !secondarySource }) }>
+          <Alert variant="danger" hidden={ !alerts || !alerts.join_on }>{ alerts && alerts.join_on }</Alert>
           {
             columnMapping && secondarySource
               ? this.renderColumnMappings(columnMapping, primarySource, secondarySource)
