@@ -118,7 +118,9 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                       options={ this.queries }
                       selection
                       defaultValue={ values.query_func }
-                      onChange={ this.onSelectQuery(setFieldValue) }
+                      onChange={ (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) =>
+                          this.onSelectQuery(data, setFieldValue)
+                      }
                     />
                     <Form.Control.Feedback
                       type="invalid"
@@ -173,14 +175,14 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     this.setState({ hasFocus: '' });
   }
 
-  private onSelectQuery = (setFieldValue: (field: string, value: any) => void) =>
-    (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-      setFieldValue('query_func', data.value);
-      if (data.value) {
-        const step = this.props.step.set('query_func', data.value as string).set('query_kwargs', '');
-        this.props.onUpdateStep(step, this.props.editing);
-      }
+  private onSelectQuery = (data: DropdownProps, setFieldValue: (field: string, value: any) => void) => {
+    setFieldValue('query_func', data.value);
+    if (data.value) {
+      const step = this.props.step.set('query_func', data.value as string).set('query_kwargs', '');
+      this.props.onUpdateStep(step, this.props.editing);
     }
+    this.setState({ alerts: {} });
+  }
 
   private onSuccess = (step: Partial<OperationStep>) => {
     if (this.validateStepOptions(this.props.step)) {
