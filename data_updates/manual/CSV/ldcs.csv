@@ -1,0 +1,48 @@
+country_name,di_id,iso3,ldc
+Afghanistan,AF,AFG,1
+Angola,AO,AGO,1
+Bangladesh,BD,BGD,1
+Benin,BJ,BEN,1
+Bhutan,BT,BTN,1
+Burkina Faso,BF,BFA,1
+Burundi,BI,BDI,1
+Cambodia,KH,KHM,1
+Central African Republic,CF,CAF,1
+Chad,TD,TCD,1
+Comoros,KM,COM,1
+Democratic Republic of the Congo,CD,COD,1
+Djibouti,DJ,DJI,1
+Eritrea,ER,ERI,1
+Ethiopia,ET,ETH,1
+Gambia,GM,GMB,1
+Guinea,GN,GIN,1
+Guinea-Bissau,GW,GNB,1
+Haiti,HT,HTI,1
+Kiribati,KI,KIR,1
+Laos,LA,LAO,1
+Lesotho,LS,LSO,1
+Liberia,LR,LBR,1
+Madagascar,MG,MDG,1
+Malawi,MW,MWI,1
+Mali,ML,MLI,1
+Mauritania,MR,MRT,1
+Mozambique,MZ,MOZ,1
+Myanmar,MM,MMR,1
+Nepal,NP,NPL,1
+Niger,NE,NER,1
+Rwanda,RW,RWA,1
+São Tomé and Príncipe,ST,STP,1
+Senegal,SN,SEN,1
+Sierra Leone,SL,SLE,1
+Solomon Islands,SB,SLB,1
+Somalia,SO,SOM,1
+South Sudan,SS,SSD,1
+Sudan,SD,SDN,1
+Timor-Leste,TL,TLS,1
+Togo,TG,TGO,1
+Tuvalu,TV,TUV,1
+Uganda,UG,UGA,1
+Tanzania,TZ,TZA,1
+Vanuatu,VU,VUT,1
+Yemen,YE,YEM,1
+Zambia,ZM,ZMB,1

@@ -8,10 +8,10 @@ The new and improved DDW Analyst UI interface
 
 1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata`
 2. Create a persistent dev volume `docker volume create --name=metadata`
-3. Build your app `docker-compose up --build`
-4. Migrate the database. `docker-compose run web python manage.py migrate`
-5. Load test data `docker-compose run web python manage.py loaddata test_data` `docker-compose run web python manage.py loaddata --database=datasets test_datasets`
-6. Create a superuser. `docker-compose run web python manage.py createsuperuser`
+3. Build your app `docker-compose up --build -d`
+4. Migrate the database. `docker-compose exec web python manage.py migrate`
+5. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
+6. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
 7. Install frontend dependencies `npm install`
 8. Bundle frontend code and collect static files `npm run build` or `npm run docker:dev` for local development
 9. Run the app. `docker-compose up`
