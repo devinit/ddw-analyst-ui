@@ -4,9 +4,9 @@ if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
 # Only works while running with `Rscript` from repo root, use commented below if running manually
-# script.dir <- here()
+script.dir <- here()
 # script.dir = "/src"
-script.dir = "/home/alex/git/ddw-analyst-ui"
+# script.dir = "/home/alex/git/ddw-analyst-ui"
 isos = read.csv(paste0(script.dir,"/data_updates/manual/CSV/fts_isos.csv"), na.strings="", as.is=T, fileEncoding="utf8")
 isos$country_name = NULL
 isos$country_code = as.character(isos$country_code)
@@ -31,15 +31,15 @@ merge_isos = function(flow_df){
 }
 
 drv = dbDriver("PostgreSQL")
-# con = dbConnect(drv,
-#                 dbname="analyst_ui"
-#                 ,user="analyst_ui_user"
-#                 ,password="analyst_ui_pass"
-#                 ,host="db"
-#                 ,port=5432)
 con = dbConnect(drv,
                 dbname="analyst_ui"
-                ,user="postgres")
+                ,user="analyst_ui_user"
+                ,password="analyst_ui_pass"
+                ,host="db"
+                ,port=5432)
+# con = dbConnect(drv,
+#                 dbname="analyst_ui"
+#                 ,user="postgres")
 
 table.name = "fts"
 table.quote = c("repo",table.name)
