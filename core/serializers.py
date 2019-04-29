@@ -26,7 +26,7 @@ class DataSerializer(serializers.BaseSerializer):
         if limit == 0:
             limit = DEFAULT_LIMIT_COUNT
         operation = instance['operation_instance']
-        count, data = operation.query_table(limit, offset)
+        count, data = operation.query_table(limit, offset, estimate_count=True)
 
         return {
             'count': count,
