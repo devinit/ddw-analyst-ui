@@ -5,6 +5,7 @@ import { Alert, Button, Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import * as Yup from 'yup';
 import {
+  AggregateOptions,
   ErroredFilter,
   Filters,
   JoinOptions,
@@ -218,6 +219,9 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     if (query === 'scalar_transform' || query === 'multi_transform') {
       return this.validateTransform(step);
     }
+    if (query === 'aggregate') {
+      return this.validateAggregate(step);
+    }
     return true;
   }
 
@@ -285,7 +289,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     const query = step.get('query_func');
     const { trans_func_name, operational_column, operational_columns, operational_value }: TransformOptions = options
       ? JSON.parse(options)
-      : { columns: [] };
+      : {};
     const alerts: { [ key: string ]: string } = {};
     if (!trans_func_name) {
       alerts.trans_func_name = 'Transform function is required';
@@ -298,6 +302,21 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     }
     if (query === 'multi_transform' && (!operational_columns || operational_columns.length < 2)) {
       alerts.operational_columns = 'At least 2 columns are required';
+    }
+    this.setState({ alerts });
+
+    return Object.keys(alerts).length === 0;
+  }
+
+  private validateAggregate(step: OperationStepMap) {
+    const options = step.get('query_kwargs') as string;
+    const { agg_func_name, operational_column }: AggregateOptions = options ? JSON.parse(options) : {};
+    const alerts: { [ key: string ]: string } = {};
+    if (!agg_func_name) {
+      alerts.agg_func_name = 'Aggregate function is required';
+    }
+    if (!operational_column) {
+      alerts.operational_column = 'Aggregate column is required';
     }
     this.setState({ alerts });
 

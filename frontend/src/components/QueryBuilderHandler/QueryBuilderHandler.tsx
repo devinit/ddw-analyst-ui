@@ -53,6 +53,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
 
       return (
         <AggregateQueryBuilder
+          alerts={ alerts }
           source={ source }
           groupBy={ parsedOptions.group_by }
           function={ parsedOptions.agg_func_name }

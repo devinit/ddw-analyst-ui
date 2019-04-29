@@ -61,3 +61,9 @@ export interface TransformOptions {
   operational_column: string;
   operational_columns: string[];
 }
+
+export interface AggregateOptions {
+  group_by: string[];
+  agg_func_name: string;
+  operational_column: string;
+}
