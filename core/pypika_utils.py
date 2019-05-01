@@ -43,10 +43,11 @@ class QueryBuilder:
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
 
         query_steps = operation.operationstep_set
-
+        self.initial_table_name = query_steps.first().source.active_mirror_name
+        self.initial_schema_name = query_steps.first().source.schema
         self.current_dataset = Table(
-            query_steps.first().source.active_mirror_name,
-            schema=query_steps.first().source.schema
+            self.initial_table_name,
+            schema=self.initial_schema_name
         )
         self.current_query = Query.from_(self.current_dataset)
 
@@ -202,7 +203,10 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def count_sql(self):
+    def count_sql(self, estimate=True):
+        if estimate:
+            stats_table = Table("pg_stat_user_tables")
+            return Query.from_(stats_table).select(stats_table.n_live_tup).where(stats_table.relname == self.initial_table_name).where(stats_table.schemaname == self.initial_schema_name).get_sql()
         self.current_query = Query.from_(self.current_dataset)
         return self.current_query.select(pypika_fn.Count(self.current_dataset.star)).get_sql()
 
