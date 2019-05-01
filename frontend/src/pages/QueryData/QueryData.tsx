@@ -130,7 +130,7 @@ class QueryData extends React.Component<QueryDataProps, ComponentState> {
     if (data.count()) {
       const filename = 'export.csv';
       const link = document.createElement('a');
-      const csvData = new Blob([ unparse(data.toJS()) ], { type: 'text/csv' });
+      const csvData = new Blob([ `\ufeff${unparse(data.toJS())}` ], { type: 'text/csv' });
       const url = URL.createObjectURL(csvData);
       link.setAttribute('href', url);
       link.setAttribute('download', filename);
