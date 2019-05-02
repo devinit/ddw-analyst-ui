@@ -1,7 +1,4 @@
 from django.db import connections
-from django.conf import settings
-import csv
-import os
 
 
 def fetch_data(queries, database="datasets"):
