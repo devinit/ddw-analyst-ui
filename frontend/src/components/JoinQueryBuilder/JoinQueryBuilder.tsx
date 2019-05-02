@@ -2,16 +2,20 @@ import classNames from 'classnames';
 import { List } from 'immutable';
 import * as React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
-import { MapStateToProps, connect } from 'react-redux';
+import { MapDispatchToProps, MapStateToProps, connect } from 'react-redux';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { ReduxStore } from '../../store';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { JoinColumnsMapper } from '../JoinColumnsMapper';
 import { JoinOptions } from '../../types/operations';
+import * as sourcesActions from '../../actions/sources';
+import { bindActionCreators } from 'redux';
 
 interface ReduxState {
   sources: List<SourceMap>;
+  isFetchingSources: boolean;
 }
+type ActionProps = typeof sourcesActions;
 type Alerts = { [P in keyof JoinOptions ]: string };
 
 interface ComponentProps {
@@ -22,7 +26,7 @@ interface ComponentProps {
   columnMapping?: { [key: string]: string };
   onUpdate?: (options: string) => void;
 }
-type JoinQueryBuilderProps = ComponentProps & ReduxState;
+type JoinQueryBuilderProps = ComponentProps & ReduxState & ActionProps;
 
 class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
   static defaultProps: Partial<JoinQueryBuilderProps> = {
@@ -47,6 +51,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
               search
               selection
               options={ this.getSelectOptionsFromSources(this.props.sources, this.props.source) }
+              loading={ this.props.isFetchingSources }
               value={ sourceID as string | undefined }
               onChange={ this.onChange }
             />
@@ -73,6 +78,12 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
         </Col>
       </React.Fragment>
     );
+  }
+
+  componentDidMount() {
+    if (!this.props.isFetchingSources) {
+      this.props.fetchSources({ limit: 1000 });
+    }
   }
 
   private renderColumnMappings(columnMapping: { [key: string]: string }, primarySource: SourceMap, secondarySource: SourceMap) { //tslint:disable-line
@@ -152,11 +163,15 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
   }
 }
 
+const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps =>
+  bindActionCreators(sourcesActions, dispatch);
+
 const mapStateToProps: MapStateToProps<ReduxState, ComponentProps, ReduxStore> =
   (reduxStore: ReduxStore): ReduxState => ({
-    sources: reduxStore.getIn([ 'sources', 'sources' ]) as List<SourceMap>
+    sources: reduxStore.getIn([ 'sources', 'sources' ]) as List<SourceMap>,
+    isFetchingSources: reduxStore.getIn([ 'sources', 'loading' ]) as boolean
   });
 
-const connector = connect(mapStateToProps)(JoinQueryBuilder);
+const connector = connect(mapStateToProps, mapDispatchToProps)(JoinQueryBuilder);
 
 export { connector as JoinQueryBuilder };
