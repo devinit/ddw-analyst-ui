@@ -276,7 +276,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
       alerts.table_name = 'Select a source';
     } else if (join_on && Object.keys(join_on).some(validateMapping)) {
       alerts.join_on = 'Invalid mapping. Make sure that both sides of every mapping are specified';
-    } else {
+    } else if (!join_on || Object.keys(join_on).length === 0) {
       alerts.join_on = 'At least one column mapping is required';
     }
     this.setState({ alerts });
