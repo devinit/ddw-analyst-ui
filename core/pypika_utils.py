@@ -28,7 +28,11 @@ def text_search(field, search_ilike):
 
 
 def concat(field, args):
-    return pypika_fn.Concat(getattr(field, 'name'), args)
+    return pypika_fn.Concat(field, args)
+
+
+def multi_concat(iterable):
+    return reduce(pypika_fn.Concat, iterable)
 
 
 # Won't be needed in Python 3.8 Import from math module instead
@@ -142,7 +146,8 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
         multi_transform_mapping = {
             "sum": sum,
-            "product": prod
+            "product": prod,
+            "concat": multi_concat
         }
         trans_func = multi_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_columns[0], trans_func_name])
