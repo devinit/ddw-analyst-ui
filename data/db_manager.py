@@ -30,7 +30,7 @@ def stream_to_file(queries, database="datasets"):
         main_cursor.execute(main_query)
         first_row = main_cursor.fetchone()
         header = [col[0] for col in main_cursor.description]
-        with open(csv_name, 'wb') as csv_file:
+        with open(csv_name, 'w') as csv_file:
             writer = csv.writer(csv_file, delimiter=",")
             writer.writerow(header)
             writer.writerow(first_row)
