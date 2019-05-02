@@ -14,6 +14,54 @@ from core.serializers import (
     DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
     SectorSerializer, SourceSerializer, TagSerializer, ThemeSerializer, UserSerializer)
 from core.pagination import DataPaginator
+from django.http import StreamingHttpResponse
+from django.db import connections
+import csv
+import codecs
+
+
+class Echo:
+    """An object that implements just the write method of the file-like
+    interface.
+    """
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
+
+
+class StreamingExporter:
+    """Sets up generator for streaming PSQL content"""
+    def __init__(self, pk):
+        operation = Operation.objects.get(pk=pk)
+        self.main_query = operation.build_query()[1]
+
+    def stream(self):
+        with connections["datasets"].chunked_cursor() as main_cursor:
+            main_cursor.execute(self.main_query)
+            first_row = main_cursor.fetchone()
+            header = [col[0] for col in main_cursor.description]
+            pseudo_buffer = Echo()
+            yield pseudo_buffer.write(codecs.BOM_UTF8)
+            writer = csv.writer(pseudo_buffer, delimiter=",")
+            yield writer.writerow(header)
+            yield writer.writerow(first_row)
+            next_row = main_cursor.fetchone()
+            while next_row is not None:
+                yield writer.writerow(next_row)
+                next_row = main_cursor.fetchone()
+
+
+class StreamingExportView(APIView):
+    """API view for data streaming"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    def get(self, request, pk):
+        operation = Operation.objects.get(pk=pk)
+        exporter = StreamingExporter(pk)
+        response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
+        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
+        return response
 
 
 class ViewData(APIView):

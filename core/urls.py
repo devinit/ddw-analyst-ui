@@ -25,6 +25,7 @@ urlpatterns = [
     path('sectors/<int:pk>/', core_views.SectorDetail.as_view()),
     path('sources/', core_views.SourceList.as_view()),
     path('sources/<int:pk>/', core_views.SourceDetail.as_view()),
+    path('export_stream/<int:pk>/', core_views.StreamingExportView.as_view(), name="export_stream")
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'

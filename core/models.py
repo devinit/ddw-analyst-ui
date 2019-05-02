@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from core.pypika_utils import QueryBuilder
-from data.db_manager import fetch_data, stream_to_file
+from data.db_manager import fetch_data
+from django.urls import reverse
 
 # from core.models_template import *
 
@@ -116,8 +117,7 @@ class Operation(BaseEntity):
         return fetch_data(queries)
 
     def export_data(self):
-        queries = self.build_query()
-        return stream_to_file(queries)
+        return reverse('export_stream', args=[self.pk])
 
 
 class OperationStep(BaseEntity):

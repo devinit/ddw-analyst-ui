@@ -18,25 +18,3 @@ def fetch_data(queries, database="datasets"):
             dict(zip(columns, row)) for row in ([first_row] + main_cursor.fetchall())
         ]
         return (count_results[0][0], results)
-
-
-def stream_to_file(queries, database="datasets"):
-    """Stream large amounts of data to a file."""
-    _, main_query = queries
-    count = 1
-    with connections[database].chunked_cursor() as main_cursor:
-        cur_name = main_cursor.name + ".csv"
-        csv_name = os.path.join(settings.STATIC_ROOT, cur_name)
-        main_cursor.execute(main_query)
-        first_row = main_cursor.fetchone()
-        header = [col[0] for col in main_cursor.description]
-        with open(csv_name, 'w') as csv_file:
-            writer = csv.writer(csv_file, delimiter=",")
-            writer.writerow(header)
-            writer.writerow(first_row)
-            next_row = main_cursor.fetchone()
-            while next_row is not None:
-                count += 1
-                writer.writerow(next_row)
-                next_row = main_cursor.fetchone()
-        return (count, cur_name)
