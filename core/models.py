@@ -110,9 +110,13 @@ class Operation(BaseEntity):
 
     def query_table(self, limit, offset, estimate_count):
         """Build a query then execute it to return the matching data"""
+        if limit is None or limit > 10000:
+            limit = 10000
         queries = self.build_query(limit, offset, estimate_count)
-        if limit is not None and limit <= 10000:
-            return fetch_data(queries)
+        return fetch_data(queries)
+
+    def export_data(self):
+        queries = self.build_query()
         return stream_to_file(queries)
 
 
