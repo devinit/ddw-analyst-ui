@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from core.pypika_utils import QueryBuilder
-from data.db_manager import fetch_data
+from data.db_manager import fetch_data, stream_to_file
 
 # from core.models_template import *
 
@@ -110,7 +110,10 @@ class Operation(BaseEntity):
 
     def query_table(self, limit, offset, estimate_count):
         """Build a query then execute it to return the matching data"""
-        return fetch_data(self.build_query(limit, offset, estimate_count))
+        queries = self.build_query(limit, offset, estimate_count)
+        if limit is not None and limit > 10000:
+            return fetch_data(queries)
+        return stream_to_file(queries)
 
 
 class OperationStep(BaseEntity):
