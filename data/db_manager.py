@@ -1,17 +1,16 @@
 from django.db import connections
-from django.db import transaction
 
 
-@transaction.atomic
 def fetch_data(queries, database="datasets"):
     """Fetch data from a database given a custom query."""
     count_query, main_query = queries
-    with connections[database].cursor() as cursor:
-        cursor.execute(count_query)
-        count_results = cursor.fetchall()
-        cursor.execute(main_query)
-        columns = [col[0] for col in cursor.description]
+    with connections[database].chunked_cursor() as count_cursor:
+        count_cursor.execute(count_query)
+        count_results = count_cursor.fetchall()
+    with connections[database].chunked_cursor() as main_cursor:
+        main_cursor.execute(main_query)
+        columns = [col[0] for col in main_cursor.description]
         results = [
-            dict(zip(columns, row)) for row in cursor.fetchall()
+            dict(zip(columns, row)) for row in main_cursor.fetchall()
         ]
         return (count_results[0][0], results)
