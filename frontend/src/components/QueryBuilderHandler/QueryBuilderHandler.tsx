@@ -10,6 +10,7 @@ import { TransformQueryBuilder } from '../TransformQueryBuilder';
 import { Alert } from 'react-bootstrap';
 
 interface QueryBuilderHandlerProps {
+  alerts?: { [key: string]: string };
   source: SourceMap;
   step: OperationStepMap;
   onUpdateOptions: (options: string) => void;
@@ -30,7 +31,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
   }
 
   renderQueryBuilder() {
-    const { onUpdateOptions, step, source } = this.props;
+    const { alerts, onUpdateOptions, step, source } = this.props;
     const query = step.get('query_func');
     const options = step.get('query_kwargs') as string;
     if (query === 'filter') {
@@ -52,6 +53,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
 
       return (
         <AggregateQueryBuilder
+          alerts={ alerts }
           source={ source }
           groupBy={ parsedOptions.group_by }
           function={ parsedOptions.agg_func_name }
@@ -67,6 +69,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
 
       return (
         <TransformQueryBuilder
+          alerts={ alerts }
           source={ source }
           value={ parsedOptions.operational_value }
           function={ parsedOptions.trans_func_name }
@@ -82,6 +85,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
 
       return (
         <JoinQueryBuilder
+          alerts={ alerts }
           source={ source }
           tableName={ parsedOptions.table_name }
           schema={ parsedOptions.schema_name }

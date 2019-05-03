@@ -1,15 +1,23 @@
 import classNames from 'classnames';
-import { Formik, FormikErrors, FormikProps } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import * as Yup from 'yup';
-import { ErroredFilter, Filters, OperationStep, OperationStepMap } from '../../types/operations';
+import {
+  AggregateOptions,
+  ErroredFilter,
+  Filters,
+  JoinOptions,
+  OperationStep,
+  OperationStepMap,
+  TransformOptions
+} from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface OperationStepFormState {
-  alerts: FormikErrors<OperationStep>;
+  alerts: { [key: string]: string };
   hasFocus: string;
 }
 
@@ -118,7 +126,9 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                       options={ this.queries }
                       selection
                       defaultValue={ values.query_func }
-                      onChange={ this.onSelectQuery(setFieldValue) }
+                      onChange={ (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) =>
+                          this.onSelectQuery(data, setFieldValue)
+                      }
                     />
                     <Form.Control.Feedback
                       type="invalid"
@@ -133,6 +143,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                   <QueryBuilderHandler
                     source={ this.props.source }
                     step={ this.props.step }
+                    alerts={ this.state.alerts }
                     onUpdateOptions={ this.onUpdateOptions }
                   />
                 </Col>
@@ -173,14 +184,14 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     this.setState({ hasFocus: '' });
   }
 
-  private onSelectQuery = (setFieldValue: (field: string, value: any) => void) =>
-    (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-      setFieldValue('query_func', data.value);
-      if (data.value) {
-        const step = this.props.step.set('query_func', data.value as string).set('query_kwargs', '');
-        this.props.onUpdateStep(step, this.props.editing);
-      }
+  private onSelectQuery = (data: DropdownProps, setFieldValue: (field: string, value: any) => void) => {
+    setFieldValue('query_func', data.value);
+    if (data.value) {
+      const step = this.props.step.set('query_func', data.value as string).set('query_kwargs', '');
+      this.props.onUpdateStep(step, this.props.editing);
     }
+    this.setState({ alerts: {} });
+  }
 
   private onSuccess = (step: Partial<OperationStep>) => {
     if (this.validateStepOptions(this.props.step)) {
@@ -202,7 +213,15 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     if (query === 'select') {
       return this.validateSelect(step);
     }
-    // TODO: validate other operations as well
+    if (query === 'join') {
+      return this.validateJoin(step);
+    }
+    if (query === 'scalar_transform' || query === 'multi_transform') {
+      return this.validateTransform(step);
+    }
+    if (query === 'aggregate') {
+      return this.validateAggregate(step);
+    }
     return true;
   }
 
@@ -237,6 +256,73 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     }
   }
 
+  private validateSelect(step: OperationStepMap) {
+    const options = step.get('query_kwargs') as string;
+    const { columns }: { columns: string[] } = options ? JSON.parse(options) : { columns: [] };
+    if (columns.length) {
+      return true;
+    }
+    this.setState({ alerts: { query_func: 'At least one column is required!' } });
+
+    return false;
+  }
+
+  private validateJoin(step: OperationStepMap) {
+    const options = step.get('query_kwargs') as string;
+    const { table_name, schema_name, join_on }: JoinOptions = options ? JSON.parse(options) : { columns: [] };
+    const alerts: { [ key: string ]: string } = {};
+    const validateMapping = (key: string) => key === 'column1' || !join_on[key] || join_on[key] === 'column2';
+    if (!table_name || !schema_name) {
+      alerts.table_name = 'Select a source';
+    } else if (join_on && Object.keys(join_on).some(validateMapping)) {
+      alerts.join_on = 'Invalid mapping. Make sure that both sides of every mapping are specified';
+    } else if (!join_on || Object.keys(join_on).length === 0) {
+      alerts.join_on = 'At least one column mapping is required';
+    }
+    this.setState({ alerts });
+
+    return Object.keys(alerts).length === 0;
+  }
+
+  private validateTransform(step: OperationStepMap) {
+    const options = step.get('query_kwargs') as string;
+    const query = step.get('query_func');
+    const { trans_func_name, operational_column, operational_columns, operational_value }: TransformOptions = options
+      ? JSON.parse(options)
+      : {};
+    const alerts: { [ key: string ]: string } = {};
+    if (!trans_func_name) {
+      alerts.trans_func_name = 'Transform function is required';
+    }
+    if (query === 'scalar_transform' && !operational_column) {
+      alerts.operational_column = 'Trasform column is required';
+    }
+    if (query === 'scalar_transform' && !operational_value) {
+      alerts.operational_value = 'Value is required';
+    }
+    if (query === 'multi_transform' && (!operational_columns || operational_columns.length < 2)) {
+      alerts.operational_columns = 'At least 2 columns are required';
+    }
+    this.setState({ alerts });
+
+    return Object.keys(alerts).length === 0;
+  }
+
+  private validateAggregate(step: OperationStepMap) {
+    const options = step.get('query_kwargs') as string;
+    const { agg_func_name, operational_column }: AggregateOptions = options ? JSON.parse(options) : {};
+    const alerts: { [ key: string ]: string } = {};
+    if (!agg_func_name) {
+      alerts.agg_func_name = 'Aggregate function is required';
+    }
+    if (!operational_column) {
+      alerts.operational_column = 'Aggregate column is required';
+    }
+    this.setState({ alerts });
+
+    return Object.keys(alerts).length === 0;
+  }
+
   private processStep(values: Partial<OperationStep>, query: string): OperationStepMap {
     const options = this.props.step.get('query_kwargs') as string;
     const source = this.props.source.get('id') as number;
@@ -254,16 +340,5 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
       .set('query_func', values.query_func || '')
       .set('source', source || '')
     );
-  }
-
-  private validateSelect(step: OperationStepMap) {
-    const options = step.get('query_kwargs') as string;
-    const { columns }: { columns: string[] } = options ? JSON.parse(options) : { columns: [] };
-    if (columns.length) {
-      return true;
-    }
-    this.setState({ alerts: { query_func: 'At least one column is required!' } });
-
-    return false;
   }
 }

@@ -21,6 +21,8 @@ interface State {
   sources: List<SourceMap>;
   activeSource?: SourceMap;
   count: number;
+  limit: number;
+  offset: number;
 }
 export type SourcesState = Map<keyof State, State[keyof State]>;
 
@@ -31,7 +33,13 @@ export const FETCH_SOURCES_FAILED = `${prefix}.FETCH_FAILED`;
 export const SET_SOURCE = `${prefix}.SET_SOURCE`;
 export const FETCH_SOURCE = `${prefix}.FETCH_SOURCE`;
 
-export const defaultState: SourcesState = fromJS({ loading: false, sources: [], activeSourceId: 1 });
+export const defaultState: SourcesState = fromJS({
+  loading: false,
+  sources: [],
+  activeSourceId: 1,
+  limit: 10,
+  offset: 0
+});
 
 export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (state = defaultState, action) => {
   if (action.type === FETCH_SOURCES || action.type === FETCH_SOURCE) {
@@ -39,7 +47,12 @@ export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (state = def
   }
   if (action.type === FETCH_SOURCES_SUCCESSFUL && action.sources) {
     return state.withMutations(map =>
-      map.set('loading', false).set('sources', fromJS(action.sources)).set('count', action.count)
+      map
+        .set('loading', false)
+        .set('sources', fromJS(action.sources))
+        .set('count', action.count)
+        .set('limit', action.payload ? action.payload.limit : state.get('limit'))
+        .set('offset', action.payload ? action.payload.offset : state.get('offset'))
     );
   }
   if (action.type === FETCH_SOURCES_FAILED) {

@@ -4,8 +4,11 @@ import { Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { formatString } from '../../utils';
+import { TransformOptions } from '../../types/operations';
 
+type Alerts = { [P in keyof TransformOptions ]: string };
 interface TransformQueryBuilderProps {
+  alerts?: Partial<Alerts>;
   multi?: boolean;
   source: SourceMap;
   columns?: string[];
@@ -16,6 +19,10 @@ interface TransformQueryBuilderProps {
 }
 
 export class TransformQueryBuilder extends React.Component<TransformQueryBuilderProps, { hasFocus: string }> {
+  static defaultProps: Partial<TransformQueryBuilderProps> = {
+    alerts: {}
+  };
+
   private scalarFunctions = [
     { key: 'add', text: 'Add', value: 'add' },
     { key: 'multiply', text: 'Multiply', value: 'multiply' },
@@ -33,6 +40,8 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
 
   render() {
     const columns = this.props.source.get('columns') as ColumnList;
+    const { alerts, multi } = this.props;
+    const columnAlert = alerts && (multi ? alerts.operational_columns : alerts.operational_column);
 
     return (
       <React.Fragment>
@@ -50,6 +59,12 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               value={ this.props.function }
               onChange={ this.onSelectChange }
             />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && alerts.trans_func_name) }) }
+            >
+              { alerts && alerts.trans_func_name }
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
 
@@ -67,6 +82,9 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               value={ this.props.multi ? this.props.columns : this.props.column }
               onChange={ this.onSelectChange }
             />
+            <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': columnAlert }) }>
+              { columnAlert }
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
 
@@ -84,6 +102,12 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               onBlur={ this.resetFocus }
               defaultValue={ this.props.value }
             />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && alerts.operational_value) }) }
+            >
+              { alerts && alerts.operational_value }
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
       </React.Fragment>

@@ -1,31 +1,42 @@
 import classNames from 'classnames';
 import { List } from 'immutable';
 import * as React from 'react';
-import { Button, Col, Form } from 'react-bootstrap';
-import { MapStateToProps, connect } from 'react-redux';
+import { Alert, Button, Col, Form } from 'react-bootstrap';
+import { MapDispatchToProps, MapStateToProps, connect } from 'react-redux';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { ReduxStore } from '../../store';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { JoinColumnsMapper } from '../JoinColumnsMapper';
+import { JoinOptions } from '../../types/operations';
+import * as sourcesActions from '../../actions/sources';
+import { bindActionCreators } from 'redux';
 
 interface ReduxState {
   sources: List<SourceMap>;
+  isFetchingSources: boolean;
 }
+type ActionProps = typeof sourcesActions;
+type Alerts = { [P in keyof JoinOptions ]: string };
 
 interface ComponentProps {
+  alerts?: Partial<Alerts>;
   source: SourceMap;
   tableName?: string;
   schema?: string;
   columnMapping?: { [key: string]: string };
   onUpdate?: (options: string) => void;
 }
-type JoinQueryBuilderProps = ComponentProps & ReduxState;
+type JoinQueryBuilderProps = ComponentProps & ReduxState & ActionProps;
 
 class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
+  static defaultProps: Partial<JoinQueryBuilderProps> = {
+    alerts: {}
+  };
+
   render() {
     const secondarySource = this.getSourceFromTableName(this.props.sources, this.props.tableName);
     const sourceID = secondarySource && secondarySource.get('id');
-    const { columnMapping, source: primarySource } = this.props;
+    const { columnMapping, source: primarySource, alerts } = this.props;
 
     return (
       <React.Fragment>
@@ -40,13 +51,21 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
               search
               selection
               options={ this.getSelectOptionsFromSources(this.props.sources, this.props.source) }
+              loading={ this.props.isFetchingSources }
               value={ sourceID as string | undefined }
               onChange={ this.onChange }
             />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && (alerts.table_name || alerts.schema_name)) }) }
+            >
+              { alerts && (alerts.table_name || alerts.schema_name) }
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
 
         <Col md={ 12 } className={ classNames('mt-2 pl-0', { 'd-none': !secondarySource }) }>
+          <Alert variant="danger" hidden={ !alerts || !alerts.join_on }>{ alerts && alerts.join_on }</Alert>
           {
             columnMapping && secondarySource
               ? this.renderColumnMappings(columnMapping, primarySource, secondarySource)
@@ -59,6 +78,12 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
         </Col>
       </React.Fragment>
     );
+  }
+
+  componentDidMount() {
+    if (!this.props.isFetchingSources) {
+      this.props.fetchSources({ limit: 1000 });
+    }
   }
 
   private renderColumnMappings(columnMapping: { [key: string]: string }, primarySource: SourceMap, secondarySource: SourceMap) { //tslint:disable-line
@@ -138,11 +163,15 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
   }
 }
 
+const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps =>
+  bindActionCreators(sourcesActions, dispatch);
+
 const mapStateToProps: MapStateToProps<ReduxState, ComponentProps, ReduxStore> =
   (reduxStore: ReduxStore): ReduxState => ({
-    sources: reduxStore.getIn([ 'sources', 'sources' ]) as List<SourceMap>
+    sources: reduxStore.getIn([ 'sources', 'sources' ]) as List<SourceMap>,
+    isFetchingSources: reduxStore.getIn([ 'sources', 'loading' ]) as boolean
   });
 
-const connector = connect(mapStateToProps)(JoinQueryBuilder);
+const connector = connect(mapStateToProps, mapDispatchToProps)(JoinQueryBuilder);
 
 export { connector as JoinQueryBuilder };

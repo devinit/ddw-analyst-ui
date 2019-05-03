@@ -11,10 +11,10 @@ import * as UserActions from '../actions/user';
 import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
-import { DataSources } from '../pages/DataSources';
-import { Home } from '../pages/Home';
-import { QueryBuilder } from '../pages/QueryBuilder';
-import QueryData from '../pages/QueryData/QueryData';
+import { AsyncDataSources } from '../pages/DataSources';
+import { AsyncHome } from '../pages/Home';
+import { AsyncQueryBuilder } from '../pages/QueryBuilder';
+import { AsyncQueryData } from '../pages/QueryData';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
@@ -135,11 +135,11 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
           <AdminLayout.Content>
             <Switch>
-              <Route path="/" exact component={ Home }/>
-              <Route path="/sources" exact component={ DataSources }/>
-              <Route path="/queries/build" exact component={ QueryBuilder }/>
-              <Route path="/queries/build/:id" exact component={ QueryBuilder }/>
-              <Route path="/queries/data/:id" exact component={ QueryData }/>
+              <Route path="/" exact component={ AsyncHome }/>
+              <Route path="/sources" exact component={ AsyncDataSources }/>
+              <Route path="/queries/build" exact component={ AsyncQueryBuilder }/>
+              <Route path="/queries/build/:id" exact component={ AsyncQueryBuilder }/>
+              <Route path="/queries/data/:id" exact component={ AsyncQueryData }/>
             </Switch>
           </AdminLayout.Content>
         </AdminLayout>
@@ -235,4 +235,4 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dis
 });
 const ReduxConnector = connect(mapStateToProps, mapDispatchToProps)(MainLayout);
 
-export { ReduxConnector as MainLayout };
+export { ReduxConnector as MainLayout, ReduxConnector as default };

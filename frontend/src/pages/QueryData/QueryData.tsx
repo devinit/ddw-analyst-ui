@@ -5,6 +5,7 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import { fetchOperation, setOperation } from '../../actions/operations';
 import { fetchActiveSource, setActiveSource } from '../../actions/sources';
 import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
@@ -34,22 +35,33 @@ interface RouteParams {
   id?: string;
 }
 type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams>;
+interface ComponentState {
+  exporting: boolean;
+}
 
-class QueryData extends React.Component<QueryDataProps> {
+class QueryData extends React.Component<QueryDataProps, ComponentState> {
+  state: ComponentState = { exporting: false };
+
   render() {
+    const loading = this.props.page.get('loading') as boolean;
+
     return (
       <Row>
         <Col>
+          <Dimmer active={ loading } inverted>
+            <Loader content="Loading" />
+          </Dimmer>
+
           <Card>
             <Card.Header className="card-header-text card-header-danger">
               <Card.Text>Query Data</Card.Text>
               <div>
-                <Button variant="danger" size="sm" onClick={ this.exportToCSV }>
-                  Export to CSV
+                <Button variant="danger" size="sm" onClick={ this.exportToCSV } disabled={ this.state.exporting }>
+                  { this.state.exporting ? 'Exporting ...' : 'Export to CSV' }
                 </Button>
               </div>
             </Card.Header>
-            <Card.Body className="table-full-width">
+            <Card.Body>
               { this.renderTable() }
             </Card.Body>
           </Card>
@@ -81,11 +93,11 @@ class QueryData extends React.Component<QueryDataProps> {
   private renderTable() {
     const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
     const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
+    const loading = this.props.page.get('loading') as boolean;
 
     if (data && data.count() !== 0) {
       return (
         <PaginatedContent
-          className="ml-1"
           content={ <OperationDataTable list={ data } columns={ columns }/> }
           list={ data || List() }
           limit={ 10 }
@@ -93,7 +105,7 @@ class QueryData extends React.Component<QueryDataProps> {
         />
       );
     }
-    return <div>No results found</div>;
+    return <div>{ loading ? 'Loading ...' : 'No results found' }</div>;
   }
 
   private setOperation(id?: string) {
@@ -113,14 +125,17 @@ class QueryData extends React.Component<QueryDataProps> {
   }
 
   private exportToCSV = () => {
+    this.setState({ exporting: true });
     const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
     if (data.count()) {
-      const csv = encodeURI(`data:text/csv;charset=utf-8,${unparse(data.toJS())}`);
       const filename = 'export.csv';
       const link = document.createElement('a');
-      link.setAttribute('href', csv);
+      const csvData = new Blob([ `\ufeff${unparse(data.toJS())}` ], { type: 'text/csv' });
+      const url = URL.createObjectURL(csvData);
+      link.setAttribute('href', url);
       link.setAttribute('download', filename);
       link.click();
+      this.setState({ exporting: false });
     }
   }
 }

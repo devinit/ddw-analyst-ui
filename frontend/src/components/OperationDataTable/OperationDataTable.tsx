@@ -1,6 +1,7 @@
 import { List } from 'immutable';
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
+import styled from 'styled-components';
 import { OperationDataMap } from '../../types/operations';
 import { ColumnList } from '../../types/sources';
 import { formatString } from '../../utils';
@@ -9,6 +10,8 @@ interface OperationDataTableProps {
   list?: List<OperationDataMap>;
   columns?: ColumnList;
 }
+
+const StyledTableHeader = styled.th`border-top: 1px solid #ddd !important;`;
 
 export class OperationDataTable extends React.Component<OperationDataTableProps> {
   private columns = this.props.list ? this.getColumns(this.props.list.get(0)) : [];
@@ -19,7 +22,13 @@ export class OperationDataTable extends React.Component<OperationDataTableProps>
         <Table bordered responsive hover striped className="operation-data-table">
           <thead>
             <tr>
-              { this.columns.map(column => <th key={ column } className="text-truncate">{ formatString(column) }</th>) }
+              {
+                this.columns.map(column =>
+                  <StyledTableHeader key={ column } className="text-truncate">
+                    { formatString(column) }
+                  </StyledTableHeader>
+                )
+              }
             </tr>
           </thead>
           <tbody>{ this.renderTableRows(this.props.list, this.columns) }</tbody>

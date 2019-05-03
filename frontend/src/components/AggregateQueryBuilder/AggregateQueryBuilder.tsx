@@ -1,10 +1,14 @@
+import classNames from 'classnames';
 import * as React from 'react';
 import { Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { AggregateOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { formatString } from '../../utils';
 
+type Alerts = { [P in keyof AggregateOptions ]: string };
 interface AggregateQueryBuilderProps {
+  alerts?: Partial<Alerts>;
   source: SourceMap;
   groupBy?: string[];
   function?: string;
@@ -18,11 +22,13 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
     { key: 'Sum', text: 'Sum', value: 'Sum' },
     { key: 'Max', text: 'Maximum', value: 'Max' },
     { key: 'Min', text: 'Minimum', value: 'Min' },
-    { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' }
+    { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' },
+    { key: 'DistinctOptionFunction', text: 'Distinct', value: 'DistinctOptionFunction' }
   ];
 
   render() {
     const columns = this.props.source.get('columns') as ColumnList;
+    const { alerts } = this.props;
 
     return (
       <React.Fragment>
@@ -40,6 +46,12 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
               value={ this.props.function }
               onChange={ this.onChange }
             />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && alerts.agg_func_name) }) }
+            >
+              { alerts && alerts.agg_func_name }
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
 
@@ -56,6 +68,12 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
               value={ this.props.column }
               onChange={ this.onChange }
             />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && alerts.operational_column) }) }
+            >
+              { alerts && alerts.operational_column }
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
         <Form.Group>
@@ -71,6 +89,12 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
             value={ this.props.groupBy }
             onChange={ this.onChange }
           />
+          <Form.Control.Feedback
+            type="invalid"
+            className={ classNames({ 'd-block': !!(alerts && alerts.group_by) }) }
+          >
+            { alerts && alerts.group_by }
+          </Form.Control.Feedback>
         </Form.Group>
       </React.Fragment>
     );
