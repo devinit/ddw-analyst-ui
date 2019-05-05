@@ -41,9 +41,22 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
           <i className="material-icons">info</i>
         </Button>
         <Alert variant="info" hidden={ !this.state.showInfo }>
-          Multiple filter options on the same step translate as an OR operation
-          (rows that match one of them are returned), while adding multiple filter steps on an
-          operation translates as an AND (rows that match both are returned).
+          <p>
+            <b>Multiple filter options</b> on the same step translate as an OR operation
+            (rows that match one of them are returned), while adding multiple filter steps on an
+            operation translates as an AND (rows that match both are returned).
+          </p>
+
+          <p>The example below explains how the <b>contains</b> operation works:</p>
+          <p>Consider a <b>contains</b> operation for donor country</p>
+          <p>
+            <ul>
+              <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
+              <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
+              <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
+              <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
+            </ul>
+          </p>
         </Alert>
       </div>
     );
