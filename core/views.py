@@ -2,11 +2,13 @@
     Django Rest Framework views for handling rest operations
 """
 from django.contrib.auth.models import User
+from django.http import Http404
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import exceptions, generics, permissions
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from core.models import (Operation, OperationStep, Review, Sector, Source, Tag, Theme)
 from core.permissions import IsOwnerOrReadOnly
@@ -77,8 +79,14 @@ class ViewData(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
+    def get_object(self, pk):
+        try:
+            return Operation.objects.get(pk=pk)
+        except Operation.DoesNotExist:
+            raise Http404
+
     def get(self, request, pk):
-        operation = Operation.objects.get(pk=pk)
+        operation = self.get_object(pk)
         serializer = DataSerializer({
             "request": request,
             "operation_instance": operation

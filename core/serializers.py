@@ -108,6 +108,7 @@ class OperationSerializer(serializers.ModelSerializer):
         operation = Operation.objects.create(**validated_data)
         for step in read_only_dict['operationstep_set']:
             OperationStep.objects.create(operation=operation, **step)
+        operation.user = read_only_dict['user']
         operation.operation_query = operation.build_query()
         operation.save()
 
