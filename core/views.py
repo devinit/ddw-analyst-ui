@@ -14,12 +14,13 @@ from core.serializers import (
     DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
     SectorSerializer, SourceSerializer, TagSerializer, ThemeSerializer, UserSerializer)
 from core.pagination import DataPaginator
+
 from django.http import StreamingHttpResponse
 from django.db import connections
 import csv
 import codecs
-
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 
 
 class Echo:
@@ -51,12 +52,12 @@ class StreamingExporter:
                 yield writer.writerow(next_row)
                 next_row = main_cursor.fetchone()
 
-
+@csrf_exempt
 def streaming_export_view(request, pk):
     posted_token = request.POST.get("token", None)
     if posted_token is not None:
         token_auth = TokenAuthentication()
-        user, token = token_auth.authenticate_credentials(posted_token)
+        user, token = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
         if user.is_authenticated:
             operation = Operation.objects.get(pk=pk)
             exporter = StreamingExporter(operation)
