@@ -19,6 +19,8 @@ from django.db import connections
 import csv
 import codecs
 
+from django.shortcuts import redirect
+
 
 class Echo:
     """An object that implements just the write method of the file-like
@@ -31,8 +33,7 @@ class Echo:
 
 class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
-    def __init__(self, pk):
-        operation = Operation.objects.get(pk=pk)
+    def __init__(self, operation):
         self.main_query = operation.build_query()[1]
 
     def stream(self):
@@ -51,17 +52,18 @@ class StreamingExporter:
                 next_row = main_cursor.fetchone()
 
 
-class StreamingExportView(APIView):
-    """API view for data streaming"""
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-
-    def get(self, request, pk):
-        operation = Operation.objects.get(pk=pk)
-        exporter = StreamingExporter(pk)
-        response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
-        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
-        return response
+def streaming_export_view(request, pk):
+    posted_token = request.POST.get("token", None)
+    if posted_token is not None:
+        token_auth = TokenAuthentication()
+        user, token = token_auth.authenticate_credentials(posted_token)
+        if user.is_authenticated:
+            operation = Operation.objects.get(pk=pk)
+            exporter = StreamingExporter(operation)
+            response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
+            response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
+            return response
+    return redirect('/login/')
 
 
 class ViewData(APIView):
