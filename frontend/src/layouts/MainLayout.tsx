@@ -207,7 +207,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
     .then(({ status, data }: AxiosResponse<User>) => {
       if (status === 200 && data) {
         this.props.actions.setToken(token);
-        this.props.actions.setUser({ id: data.id, username: data.username });
+        this.props.actions.setUser({ id: data.id, username: data.username, is_superuser: data.is_superuser });
         this.setState({ loading: false });
       } else {
         this.clearStorageAndGoToLogin();

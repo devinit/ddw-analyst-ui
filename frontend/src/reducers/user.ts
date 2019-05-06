@@ -6,6 +6,7 @@ export type UserAction = Action & User;
 export interface User {
   id: number;
   username: string;
+  is_superuser: boolean;
 }
 export type UserState = Map<keyof User, User[keyof User]>;
 
@@ -17,7 +18,7 @@ const defaultState: UserState = fromJS({});
 export const userReducer: Reducer<UserState, UserAction> = (state = defaultState, action) => {
     if (action.type === SET_USER) {
         return state.withMutations(map =>
-          map.set('id', action.id).set('username', action.username)
+          map.set('id', action.id).set('username', action.username).set('is_superuser', action.is_superuser)
         );
     }
 

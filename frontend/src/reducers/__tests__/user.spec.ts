@@ -6,7 +6,7 @@ test('should return the initial state', () => {
 });
 
 test('should handle SET_USER', () => {
-  const user = { id: 1, username: 'admin' };
+  const user = { id: 1, username: 'admin', is_superuser: false };
   expect(userReducer(fromJS({}), { type: SET_USER, ...user }))
     .toEqual(fromJS(user));
 });

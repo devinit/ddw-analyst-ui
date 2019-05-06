@@ -4,7 +4,8 @@ import { setUser } from '../user';
 test('should create an action to set the user', () => {
   const user: User = {
     id: 2,
-    username: 'admin'
+    username: 'admin',
+    is_superuser: true
   };
   const expectedAction = { type: SET_USER, ...user };
 

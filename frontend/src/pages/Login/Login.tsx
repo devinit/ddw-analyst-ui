@@ -101,11 +101,11 @@ export class Login extends React.Component<LoginProps, LoginState> {
     .catch(console.log); // tslint:disable-line
   }
 
-  private storeTokenPlusUser(token: string, { id, username }: User) {
+  private storeTokenPlusUser(token: string, { id, username, is_superuser }: User) {
     localForage.setItem(localForageKeys.API_KEY, token);
     localForage.setItem(localForageKeys.USER, { id, username });
     this.props.actions.setToken(token);
-    this.props.actions.setUser({ id, username });
+    this.props.actions.setUser({ id, username, is_superuser });
   }
 
   private removeNavOpenClass() {
