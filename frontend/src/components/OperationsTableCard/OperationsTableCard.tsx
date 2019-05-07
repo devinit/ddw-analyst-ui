@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 import { debounce } from 'lodash';
 import * as React from 'react';
-import { Button, Card, Col, FormControl, OverlayTrigger, Pagination, Popover, Row } from 'react-bootstrap';
+import { Button, Card, Col, FormControl, Nav, OverlayTrigger, Pagination, Popover, Row, Tab } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -40,32 +40,48 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
         <Dimmer active={ loading } inverted>
           <Loader content="Loading" />
         </Dimmer>
-        <Card>
-          <Card.Header className="card-header-text card-header-danger">
-            <Card.Text>Queries</Card.Text>
-            <FormControl
-              placeholder="Search ..."
-              className="w-25 d-none"
-              onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
-              data-testid="sources-table-search"
-            />
-          </Card.Header>
-          <Card.Body>
-            <OperationsTable>
-              { this.renderRows(operations) }
-            </OperationsTable>
-            { this.renderPagination() }
-          </Card.Body>
-        </Card>
+        <Tab.Container defaultActiveKey="myQueries">
+          <Card>
+            <Card.Header className="card-header-text card-header-danger">
+              <FormControl
+                placeholder="Search ..."
+                className="w-25 d-none"
+                onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
+                data-testid="sources-table-search"
+              />
+            </Card.Header>
+            <Card.Body>
+              <Nav variant="pills" className="nav-pills-danger" role="tablist">
+                <Nav.Item onClick={ () => this.fetchQueries(true) }>
+                  <Nav.Link eventKey="myQueries">My Queries</Nav.Link>
+                </Nav.Item>
+                <Nav.Item onClick={ () => this.fetchQueries() }>
+                  <Nav.Link eventKey="otherQueries">Others</Nav.Link>
+                </Nav.Item>
+              </Nav>
+              <Tab.Content>
+                <Tab.Pane eventKey="myQueries">
+                  <OperationsTable>
+                    { this.renderRows(operations) }
+                  </OperationsTable>
+                  { this.renderPagination() }
+                </Tab.Pane>
+                <Tab.Pane eventKey="otherQueries">
+                  <OperationsTable>
+                    { this.renderRows(operations) }
+                  </OperationsTable>
+                  { this.renderPagination() }
+                </Tab.Pane>
+              </Tab.Content>
+            </Card.Body>
+          </Card>
+        </Tab.Container>
       </React.Fragment>
     );
   }
 
   componentDidMount() {
-    const loading = this.props.operations.get('loading') as boolean;
-    if (!loading) {
-      this.props.actions.fetchOperations({ limit: this.props.limit, offset: this.props.offset });
-    }
+    this.fetchQueries(true);
   }
 
   private renderRows(operations: List<OperationMap>) {
@@ -127,6 +143,13 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
         </Col>
       </Row>
     );
+  }
+
+  private fetchQueries(mine = false) {
+    const loading = this.props.operations.get('loading') as boolean;
+    if (!loading) {
+      this.props.actions.fetchOperations({ limit: this.props.limit, offset: 0, mine });
+    }
   }
 
   private onSearchChange = (event: React.FormEvent<any>) => {
