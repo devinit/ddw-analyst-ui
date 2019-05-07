@@ -149,7 +149,7 @@ class OperationList(generics.ListCreateAPIView):
         """
         Filters to return the operations that are not for the currently authenticated user.
         """
-        return Operation.objects.filter(~Q(user=self.request.user))
+        return Operation.objects.filter(~Q(user=self.request.user)).order_by('-updated_on')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -169,7 +169,7 @@ class UserOperationList(generics.ListAPIView):
         """
         Filters to return a list of all the operations for the currently authenticated user.
         """
-        return Operation.objects.filter(user=self.request.user)
+        return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
 
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
