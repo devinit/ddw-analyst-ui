@@ -10,6 +10,7 @@ import { CheckBox } from '../CheckBox';
 
 interface OperationFormProps {
   operation?: OperationMap;
+  editable?: boolean;
   alert?: string;
   valid?: boolean;
   processing?: boolean;
@@ -65,6 +66,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
                   onFocus={ this.setFocusedField }
                   onBlur={ this.resetFocus }
+                  disabled={ !!values.id && !this.props.editable }
                 />
                 <Form.Control.Feedback type="invalid">
                   { errors.name ? errors.name : null }
@@ -81,13 +83,19 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   onFocus={ this.setFocusedField }
                   onBlur={ this.resetFocus }
                   value={ values.description ? values.description.toString() : '' }
+                  disabled={ !!values.id && !this.props.editable }
                 />
                 <Form.Control.Feedback type="invalid">
                   { errors.description ? errors.description : null }
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <CheckBox defaultChecked={ values.is_draft } onChange={ this.toggleDraft } label="Is Draft"/>
+              <CheckBox
+                defaultChecked={ values.is_draft }
+                onChange={ this.toggleDraft }
+                label="Is Draft"
+                disabled={ !!values.id && !this.props.editable }
+              />
 
               { this.props.children }
 
@@ -96,6 +104,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
                 onClick={ this.onSuccess() }
                 size="sm"
+                hidden={ !!values.id && !this.props.editable }
               >
                 { this.props.processing ? 'Saving ...' : 'Save' }
               </Button>
@@ -104,10 +113,16 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
                 onClick={ this.onSuccess(true) }
                 size="sm"
+                hidden={ !!values.id && !this.props.editable }
               >
                 { this.props.processing ? 'Saving ...' : 'Save & Preview' }
               </Button>
-              <Button variant="danger" onClick={ this.props.onReset } size="sm" hidden={ !this.props.onReset }>
+              <Button
+                variant="danger"
+                onClick={ this.props.onReset }
+                size="sm"
+                hidden={ !this.props.onReset || !!(values.id && !this.props.editable) }
+              >
                 <i className="material-icons">refresh</i>
                 Reset
               </Button>
@@ -116,6 +131,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 className={ classNames('float-right', { 'd-none': !this.props.operation }) }
                 onClick={ this.onDelete }
                 size="sm"
+                hidden={ !!values.id && !this.props.editable }
               >
                 <i className="material-icons">delete</i>
               </Button>

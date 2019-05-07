@@ -13,6 +13,7 @@ import OperationStep from '../OperationStepView';
 
 interface OperationStepsProps {
   sources: List<SourceMap>;
+  editable?: boolean;
   isFetchingSources: boolean;
   steps: List<OperationStepMap>;
   activeSource?: SourceMap;
@@ -30,7 +31,7 @@ const StyledListItem = styled(ListGroup.Item)`
 
 class OperationSteps extends React.Component<OperationStepsProps> {
   render() {
-    const { activeSource, activeStep, isFetchingSources, sources, steps } = this.props;
+    const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = this.props;
 
     return (
       <React.Fragment>
@@ -46,6 +47,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             onClick={ this.fetchSources }
             onChange={ this.onSelectSource }
             value={ activeSource ? activeSource.get('id') as string : undefined }
+            disabled={ !editable }
           />
         </div>
 
@@ -55,6 +57,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             size="sm"
             onClick={ this.onAddStep }
             disabled={ !!activeStep }
+            hidden={ !editable }
           >
             <i className="material-icons mr-1">add</i>
             Add Step
