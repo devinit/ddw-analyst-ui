@@ -62,7 +62,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
               <Tab.Content>
                 <Tab.Pane eventKey="myQueries">
                   <OperationsTable>
-                    { this.renderRows(operations) }
+                    { this.renderRows(operations, true) }
                   </OperationsTable>
                   { this.renderPagination() }
                 </Tab.Pane>
@@ -84,7 +84,13 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
     this.fetchQueries(true);
   }
 
-  private renderRows(operations: List<OperationMap>) {
+  private renderRows(operations: List<OperationMap>, allowEdit = false) {
+    const EditAction = ({ operation }: { operation: OperationMap }) => (
+        <Button variant="danger" size="sm" className="btn-link" onClick={ this.onEditOperation(operation) }>
+          Edit
+        </Button>
+    );
+
     if (operations && operations.count()) {
       return operations.map((operation, index) => (
         <OperationsTable.Row
@@ -100,9 +106,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
                 View Data
               </Button>
             </OverlayTrigger>
-            <Button variant="danger" size="sm" className="btn-link" onClick={ this.onEditOperation(operation) }>
-              Edit
-            </Button>
+            { allowEdit ? <EditAction operation={ operation } /> : null }
           </OperationsTable.Actions>
         </OperationsTable.Row>
       ));
