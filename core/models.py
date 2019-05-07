@@ -6,6 +6,7 @@ from django.db import models
 
 from core.pypika_utils import QueryBuilder
 from data.db_manager import fetch_data
+from django.urls import reverse
 
 # from core.models_template import *
 
@@ -110,7 +111,13 @@ class Operation(BaseEntity):
 
     def query_table(self, limit, offset, estimate_count):
         """Build a query then execute it to return the matching data"""
-        return fetch_data(self.build_query(limit, offset, estimate_count))
+        if limit is None or limit > 10000:
+            limit = 10000
+        queries = self.build_query(limit, offset, estimate_count)
+        return fetch_data(queries)
+
+    def export_data(self):
+        return reverse('export_stream', args=[self.pk])
 
 
 class OperationStep(BaseEntity):

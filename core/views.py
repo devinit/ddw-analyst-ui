@@ -4,7 +4,7 @@
 from django.contrib.auth.models import User
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import generics, permissions
+from rest_framework import exceptions, generics, permissions
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.views import APIView
 
@@ -14,6 +14,60 @@ from core.serializers import (
     DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
     SectorSerializer, SourceSerializer, TagSerializer, ThemeSerializer, UserSerializer)
 from core.pagination import DataPaginator
+
+from django.http import StreamingHttpResponse
+from django.db import connections
+import csv
+import codecs
+from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
+
+
+class Echo:
+    """An object that implements just the write method of the file-like
+    interface.
+    """
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
+
+
+class StreamingExporter:
+    """Sets up generator for streaming PSQL content"""
+    def __init__(self, operation):
+        self.main_query = operation.build_query()[1]
+
+    def stream(self):
+        with connections["datasets"].chunked_cursor() as main_cursor:
+            main_cursor.execute(self.main_query)
+            first_row = main_cursor.fetchone()
+            header = [col[0] for col in main_cursor.description]
+            pseudo_buffer = Echo()
+            yield pseudo_buffer.write(codecs.BOM_UTF8)
+            writer = csv.writer(pseudo_buffer, delimiter=",")
+            yield writer.writerow(header)
+            yield writer.writerow(first_row)
+            next_row = main_cursor.fetchone()
+            while next_row is not None:
+                yield writer.writerow(next_row)
+                next_row = main_cursor.fetchone()
+
+@csrf_exempt
+def streaming_export_view(request, pk):
+    posted_token = request.POST.get("token", None)
+    if posted_token is not None:
+        token_auth = TokenAuthentication()
+        try:
+            user, token = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
+            if user.is_authenticated:
+                operation = Operation.objects.get(pk=pk)
+                exporter = StreamingExporter(operation)
+                response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
+                response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
+                return response
+        except exceptions.AuthenticationFailed:
+            return redirect('/login/')
+    return redirect('/login/')
 
 
 class ViewData(APIView):
