@@ -179,7 +179,7 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def join(self, table_name, schema_name, join_on, columns_x, columns_y, suffix_x="X", suffix_y="Y"):
+    def join(self, table_name, schema_name, join_on, columns_x, columns_y, suffix_y="2"):
         self.current_query = Query.from_(self.current_dataset)
         table1 = self.current_dataset
         table2 = Table(table_name, schema=schema_name)
@@ -194,7 +194,7 @@ class QueryBuilder:
         select_on = [table1.get(col) for col in joined_table1_columns]  # Select from Table1 the columns being joined
         select_on += uncommon_table1_unjoined_columns  # And all of the unjoined, unaliased unique columns from Table1
         select_on += uncommon_table2_unjoined_columns  # And all of the unjoined, unaliased unique columns from Table2
-        select_on += [table1.get(col).as_("{}_{}".format(col, suffix_x)) for col in common_unjoined_columns]  # And all of the unjoined, aliased common columns from 1
+        select_on += [table1.get(col) for col in common_unjoined_columns]  # And all of the unjoined, unaliased common columns from 1
         select_on += [table2.get(col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]  # And all of the unjoined, aliased common columns from 2
 
         self.current_query = self.current_query.join(table2).on(
