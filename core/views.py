@@ -2,13 +2,13 @@
     Django Rest Framework views for handling rest operations
 """
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import Http404
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import exceptions, generics, permissions
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.views import APIView
-from rest_framework.response import Response
 
 from core.models import (Operation, OperationStep, Review, Sector, Source, Tag, Theme)
 from core.permissions import IsOwnerOrReadOnly
@@ -136,14 +136,40 @@ class ThemeDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class OperationList(generics.ListCreateAPIView):
+    """
+    This view should return a list of all the operations that are not for the currently authenticated user.
+    """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
 
+    def get_queryset(self):
+        """
+        Filters to return the operations that are not for the currently authenticated user.
+        """
+        return Operation.objects.filter(~Q(user=self.request.user))
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class UserOperationList(generics.ListAPIView):
+    """
+    This view should return a list of all the operations for the currently authenticated user.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    queryset = Operation.objects.all()
+    serializer_class = OperationSerializer
+
+    def get_queryset(self):
+        """
+        Filters to return a list of all the operations for the currently authenticated user.
+        """
+        return Operation.objects.filter(user=self.request.user)
 
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
