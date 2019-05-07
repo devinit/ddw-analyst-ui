@@ -179,20 +179,23 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def join(self, table_name, schema_name, join_on, columns_x, columns_y, suffix_y="2"):
+    def join(self, table_name, schema_name, join_on, columns_x=None, columns_y=None, suffix_y="2"):
         self.current_query = Query.from_(self.current_dataset)
         table1 = self.current_dataset
         table2 = Table(table_name, schema=schema_name)
-        joined_table1_columns = [join_on_item[0] for join_on_item in join_on.items()]
-        joined_table2_columns = [join_on_item[1] for join_on_item in join_on.items()]
-        unjoined_table1_columns = [col for col in columns_x if col not in joined_table1_columns]
-        unjoined_table2_columns = [col for col in columns_y if col not in joined_table2_columns]
-        common_unjoined_columns = list(set(unjoined_table1_columns) & set(unjoined_table2_columns))
-        uncommon_table2_unjoined_columns = [table2.get(col) for col in unjoined_table2_columns if col not in common_unjoined_columns]
+        if columns_x and columns_y:
+            joined_table1_columns = [join_on_item[0] for join_on_item in join_on.items()]
+            joined_table2_columns = [join_on_item[1] for join_on_item in join_on.items()]
+            unjoined_table1_columns = [col for col in columns_x if col not in joined_table1_columns]
+            unjoined_table2_columns = [col for col in columns_y if col not in joined_table2_columns]
+            common_unjoined_columns = list(set(unjoined_table1_columns) & set(unjoined_table2_columns))
+            uncommon_table2_unjoined_columns = [table2.get(col) for col in unjoined_table2_columns if col not in common_unjoined_columns]
 
-        select_on = [table1.star]  # All of the columns from table1
-        select_on += uncommon_table2_unjoined_columns  # And all of the unjoined, unaliased unique columns from Table2
-        select_on += [table2.get(col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]  # And all of the unjoined, aliased common columns from 2
+            select_on = [table1.star]  # All of the columns from table1
+            select_on += uncommon_table2_unjoined_columns  # And all of the unjoined, unaliased unique columns from Table2
+            select_on += [table2.get(col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]  # And all of the unjoined, aliased common columns from 2
+        else:
+            select_on = [table1.star] + [table2.star]
 
         self.current_query = self.current_query.join(table2).on(
             reduce(operator.and_, [operator.eq(getattr(table1, k), getattr(table2, v)) for k, v in join_on.items()])
