@@ -116,7 +116,7 @@
 "MA","MAR","Morocco",,,"1980",0.80876477169526
 "MZ","MOZ","Mozambique",,,"1980",2.97447418217806
 "MM","MMR","Myanmar",,,"1980",
-,"NAM","Namibia",,,"1980",
+"NA","NAM","Namibia",,,"1980",
 "NR","NRU","Nauru",,,"1980",
 "NP","NPL","Nepal",,,"1980",0.40869571709038
 "NL","NLD","Netherlands",1,1,"1980",0.49952837
@@ -190,8 +190,8 @@
 "YE","YEM","Yemen",,,"1980",
 "ZM","ZMB","Zambia",,,"1980",0.551219407004988
 "ZW","ZWE","Zimbabwe",,,"1980",
-"TOTAL DAC","","TOTAL DAC",,,"1980",0.44844432
-"EU Institutions","","EU Institutions",,,"1980",0.41706713
+"TOTAL DAC",,"TOTAL DAC",,,"1980",0.44844432
+"EU Institutions",,"EU Institutions",,,"1980",0.41706713
 "AI","AIA","Anguilla",,,"1980",0.52771292
 "CK","COK","Cook Islands",,,"1980",0.31157848
 "CU","CUB","Cuba",,,"1980",0.518274789470039
@@ -202,7 +202,7 @@
 "TK","TKL","Tokelau",,,"1980",0.31157848
 "WF","WLF","Wallis and Futuna",,,"1980",0.52647767
 "PS","PSE","West Bank and Gaza Strip",,,"1980",
-"","","Horn of Africa (ex-Somalia)",,,"1980",
+,,"Horn of Africa (ex-Somalia)",,,"1980",
 "AF","AFG","Afghanistan",,,"1981",
 "AL","ALB","Albania",,,"1981",0.409469365673414
 "DZ","DZA","Algeria",,,"1981",0.730015310711168
@@ -320,7 +320,7 @@
 "MA","MAR","Morocco",,,"1981",0.675301732997261
 "MZ","MOZ","Mozambique",,,"1981",2.20028375596
 "MM","MMR","Myanmar",,,"1981",
-,"NAM","Namibia",,,"1981",
+"NA","NAM","Namibia",,,"1981",
 "NR","NRU","Nauru",,,"1981",
 "NP","NPL","Nepal",,,"1981",0.441055306698682
 "NL","NLD","Netherlands",1,1,"1981",0.41936386
@@ -394,8 +394,8 @@
 "YE","YEM","Yemen",,,"1981",
 "ZM","ZMB","Zambia",,,"1981",0.533863986744324
 "ZW","ZWE","Zimbabwe",,,"1981",
-"TOTAL DAC","","TOTAL DAC",,,"1981",0.43688259
-"EU Institutions","","EU Institutions",,,"1981",0.36669705
+"TOTAL DAC",,"TOTAL DAC",,,"1981",0.43688259
+"EU Institutions",,"EU Institutions",,,"1981",0.36669705
 "AI","AIA","Anguilla",,,"1981",0.51262433
 "CK","COK","Cook Islands",,,"1981",0.32368814
 "CU","CUB","Cuba",,,"1981",0.438181962549659
@@ -406,7 +406,7 @@
 "TK","TKL","Tokelau",,,"1981",0.32368814
 "WF","WLF","Wallis and Futuna",,,"1981",0.45713084
 "PS","PSE","West Bank and Gaza Strip",,,"1981",
-"","","Horn of Africa (ex-Somalia)",,,"1981",
+,,"Horn of Africa (ex-Somalia)",,,"1981",
 "AF","AFG","Afghanistan",,,"1982",
 "AL","ALB","Albania",,,"1982",0.4098905031721
 "DZ","DZA","Algeria",,,"1982",0.692413338918224
@@ -524,7 +524,7 @@
 "MA","MAR","Morocco",,,"1982",0.621839238951024
 "MZ","MOZ","Mozambique",,,"1982",2.41405895829867
 "MM","MMR","Myanmar",,,"1982",
-,"NAM","Namibia",,,"1982",
+"NA","NAM","Namibia",,,"1982",
 "NR","NRU","Nauru",,,"1982",
 "NP","NPL","Nepal",,,"1982",0.429580191722611
 "NL","NLD","Netherlands",1,1,"1982",0.41305818
@@ -598,8 +598,8 @@
 "YE","YEM","Yemen",,,"1982",
 "ZM","ZMB","Zambia",,,"1982",0.530690278304918
 "ZW","ZWE","Zimbabwe",,,"1982",
-"TOTAL DAC","","TOTAL DAC",,,"1982",0.42698211
-"EU Institutions","","EU Institutions",,,"1982",0.35404027
+"TOTAL DAC",,"TOTAL DAC",,,"1982",0.42698211
+"EU Institutions",,"EU Institutions",,,"1982",0.35404027
 "AI","AIA","Anguilla",,,"1982",0.48095127
 "CK","COK","Cook Islands",,,"1982",0.31118082
 "CU","CUB","Cuba",,,"1982",0.418340742409245
@@ -610,7 +610,7 @@
 "TK","TKL","Tokelau",,,"1982",0.31118082
 "WF","WLF","Wallis and Futuna",,,"1982",0.42395708
 "PS","PSE","West Bank and Gaza Strip",,,"1982",
-"","","Horn of Africa (ex-Somalia)",,,"1982",
+,,"Horn of Africa (ex-Somalia)",,,"1982",
 "AF","AFG","Afghanistan",,,"1983",
 "AL","ALB","Albania",,,"1983",0.409492135661082
 "DZ","DZA","Algeria",,,"1983",0.697267467124629
@@ -728,7 +728,7 @@
 "MA","MAR","Morocco",,,"1983",0.565245836546411
 "MZ","MOZ","Mozambique",,,"1983",2.56492365072519
 "MM","MMR","Myanmar",,,"1983",
-,"NAM","Namibia",,,"1983",
+"NA","NAM","Namibia",,,"1983",
 "NR","NRU","Nauru",,,"1983",
 "NP","NPL","Nepal",,,"1983",0.484393305637564
 "NL","NLD","Netherlands",1,1,"1983",0.39463108
@@ -802,8 +802,8 @@
 "YE","YEM","Yemen",,,"1983",
 "ZM","ZMB","Zambia",,,"1983",0.463389836942985
 "ZW","ZWE","Zimbabwe",,,"1983",
-"TOTAL DAC","","TOTAL DAC",,,"1983",0.42645242
-"EU Institutions","","EU Institutions",,,"1983",0.34734659
+"TOTAL DAC",,"TOTAL DAC",,,"1983",0.42645242
+"EU Institutions",,"EU Institutions",,,"1983",0.34734659
 "AI","AIA","Anguilla",,,"1983",0.44050084
 "CK","COK","Cook Islands",,,"1983",0.29828347
 "CU","CUB","Cuba",,,"1983",0.420566925401159
@@ -814,7 +814,7 @@
 "TK","TKL","Tokelau",,,"1983",0.29828347
 "WF","WLF","Wallis and Futuna",,,"1983",0.40064674
 "PS","PSE","West Bank and Gaza Strip",,,"1983",
-"","","Horn of Africa (ex-Somalia)",,,"1983",
+,,"Horn of Africa (ex-Somalia)",,,"1983",
 "AF","AFG","Afghanistan",,,"1984",
 "AL","ALB","Albania",,,"1984",0.396442428135808
 "DZ","DZA","Algeria",,,"1984",0.715638423502983
@@ -932,7 +932,7 @@
 "MA","MAR","Morocco",,,"1984",0.495473980498647
 "MZ","MOZ","Mozambique",,,"1984",2.85759482451012
 "MM","MMR","Myanmar",,,"1984",
-,"NAM","Namibia",,,"1984",
+"NA","NAM","Namibia",,,"1984",
 "NR","NRU","Nauru",,,"1984",
 "NP","NPL","Nepal",,,"1984",0.467170515968796
 "NL","NLD","Netherlands",1,1,"1984",0.35588564
@@ -1006,8 +1006,8 @@
 "YE","YEM","Yemen",,,"1984",
 "ZM","ZMB","Zambia",,,"1984",0.387595011601192
 "ZW","ZWE","Zimbabwe",,,"1984",
-"TOTAL DAC","","TOTAL DAC",,,"1984",0.41759319
-"EU Institutions","","EU Institutions",,,"1984",0.32672359
+"TOTAL DAC",,"TOTAL DAC",,,"1984",0.41759319
+"EU Institutions",,"EU Institutions",,,"1984",0.32672359
 "AI","AIA","Anguilla",,,"1984",0.40659382
 "CK","COK","Cook Islands",,,"1984",0.26788594
 "CU","CUB","Cuba",,,"1984",0.421859460494939
@@ -1018,7 +1018,7 @@
 "TK","TKL","Tokelau",,,"1984",0.26788594
 "WF","WLF","Wallis and Futuna",,,"1984",0.37396221
 "PS","PSE","West Bank and Gaza Strip",,,"1984",
-"","","Horn of Africa (ex-Somalia)",,,"1984",
+,,"Horn of Africa (ex-Somalia)",,,"1984",
 "AF","AFG","Afghanistan",,,"1985",
 "AL","ALB","Albania",,,"1985",0.411091631862059
 "DZ","DZA","Algeria",,,"1985",0.804232266935567
@@ -1136,7 +1136,7 @@
 "MA","MAR","Morocco",,,"1985",0.470350012135475
 "MZ","MOZ","Mozambique",,,"1985",3.74008505429348
 "MM","MMR","Myanmar",,,"1985",
-,"NAM","Namibia",,,"1985",
+"NA","NAM","Namibia",,,"1985",
 "NR","NRU","Nauru",,,"1985",
 "NP","NPL","Nepal",,,"1985",0.457027718661742
 "NL","NLD","Netherlands",1,1,"1985",0.34990485
@@ -1210,8 +1210,8 @@
 "YE","YEM","Yemen",,,"1985",
 "ZM","ZMB","Zambia",,,"1985",0.363097755832018
 "ZW","ZWE","Zimbabwe",,,"1985",
-"TOTAL DAC","","TOTAL DAC",,,"1985",0.42024086
-"EU Institutions","","EU Institutions",,,"1985",0.3323651
+"TOTAL DAC",,"TOTAL DAC",,,"1985",0.42024086
+"EU Institutions",,"EU Institutions",,,"1985",0.3323651
 "AI","AIA","Anguilla",,,"1985",0.41298415
 "CK","COK","Cook Islands",,,"1985",0.26960596
 "CU","CUB","Cuba",,,"1985",0.395903083742146
@@ -1222,7 +1222,7 @@
 "TK","TKL","Tokelau",,,"1985",0.26960596
 "WF","WLF","Wallis and Futuna",,,"1985",0.38365756
 "PS","PSE","West Bank and Gaza Strip",,,"1985",
-"","","Horn of Africa (ex-Somalia)",,,"1985",
+,,"Horn of Africa (ex-Somalia)",,,"1985",
 "AF","AFG","Afghanistan",,,"1986",
 "AL","ALB","Albania",,,"1986",0.430567182470472
 "DZ","DZA","Algeria",,,"1986",0.811156313573953
@@ -1340,7 +1340,7 @@
 "MA","MAR","Morocco",,,"1986",0.573488817501806
 "MZ","MOZ","Mozambique",,,"1986",4.49307537734641
 "MM","MMR","Myanmar",,,"1986",
-,"NAM","Namibia",,,"1986",
+"NA","NAM","Namibia",,,"1986",
 "NR","NRU","Nauru",,,"1986",
 "NP","NPL","Nepal",,,"1986",0.47561786138818
 "NL","NLD","Netherlands",1,1,"1986",0.47502956
@@ -1414,8 +1414,8 @@
 "YE","YEM","Yemen",,,"1986",
 "ZM","ZMB","Zambia",,,"1986",0.245963220410139
 "ZW","ZWE","Zimbabwe",,,"1986",
-"TOTAL DAC","","TOTAL DAC",,,"1986",0.51103214
-"EU Institutions","","EU Institutions",,,"1986",0.45049716
+"TOTAL DAC",,"TOTAL DAC",,,"1986",0.51103214
+"EU Institutions",,"EU Institutions",,,"1986",0.45049716
 "AI","AIA","Anguilla",,,"1986",0.49282021
 "CK","COK","Cook Islands",,,"1986",0.32852672
 "CU","CUB","Cuba",,,"1986",0.41806449513517
@@ -1426,7 +1426,7 @@
 "TK","TKL","Tokelau",,,"1986",0.32852672
 "WF","WLF","Wallis and Futuna",,,"1986",0.52293216
 "PS","PSE","West Bank and Gaza Strip",,,"1986",
-"","","Horn of Africa (ex-Somalia)",,,"1986",
+,,"Horn of Africa (ex-Somalia)",,,"1986",
 "AF","AFG","Afghanistan",,,"1987",
 "AL","ALB","Albania",,,"1987",0.430516178215532
 "DZ","DZA","Algeria",,,"1987",0.840304732448358
@@ -1544,7 +1544,7 @@
 "MA","MAR","Morocco",,,"1987",0.649100381128556
 "MZ","MOZ","Mozambique",,,"1987",1.77011549277095
 "MM","MMR","Myanmar",,,"1987",
-,"NAM","Namibia",,,"1987",
+"NA","NAM","Namibia",,,"1987",
 "NR","NRU","Nauru",,,"1987",
 "NP","NPL","Nepal",,,"1987",0.485243253548329
 "NL","NLD","Netherlands",1,1,"1987",0.57041103
@@ -1618,8 +1618,8 @@
 "YE","YEM","Yemen",,,"1987",
 "ZM","ZMB","Zambia",,,"1987",0.30028151254452
 "ZW","ZWE","Zimbabwe",,,"1987",
-"TOTAL DAC","","TOTAL DAC",,,"1987",0.58936956
-"EU Institutions","","EU Institutions",,,"1987",0.54423058
+"TOTAL DAC",,"TOTAL DAC",,,"1987",0.58936956
+"EU Institutions",,"EU Institutions",,,"1987",0.54423058
 "AI","AIA","Anguilla",,,"1987",0.57947944
 "CK","COK","Cook Islands",,,"1987",0.41962773
 "CU","CUB","Cuba",,,"1987",0.445811996190211
@@ -1630,7 +1630,7 @@
 "TK","TKL","Tokelau",,,"1987",0.41962773
 "WF","WLF","Wallis and Futuna",,,"1987",0.6175267
 "PS","PSE","West Bank and Gaza Strip",,,"1987",
-"","","Horn of Africa (ex-Somalia)",,,"1987",
+,,"Horn of Africa (ex-Somalia)",,,"1987",
 "AF","AFG","Afghanistan",,,"1988",
 "AL","ALB","Albania",,,"1988",0.43050324610221
 "DZ","DZA","Algeria",,,"1988",0.699120633219351
@@ -1748,7 +1748,7 @@
 "MA","MAR","Morocco",,,"1988",0.696159478024827
 "MZ","MOZ","Mozambique",,,"1988",1.43752582844459
 "MM","MMR","Myanmar",,,"1988",
-,"NAM","Namibia",,,"1988",
+"NA","NAM","Namibia",,,"1988",
 "NR","NRU","Nauru",,,"1988",
 "NP","NPL","Nepal",,,"1988",0.531168115513171
 "NL","NLD","Netherlands",1,1,"1988",0.5923043
@@ -1822,8 +1822,8 @@
 "YE","YEM","Yemen",,,"1988",
 "ZM","ZMB","Zambia",,,"1988",0.462905802276917
 "ZW","ZWE","Zimbabwe",,,"1988",
-"TOTAL DAC","","TOTAL DAC",,,"1988",0.63314661
-"EU Institutions","","EU Institutions",,,"1988",0.57770039
+"TOTAL DAC",,"TOTAL DAC",,,"1988",0.63314661
+"EU Institutions",,"EU Institutions",,,"1988",0.57770039
 "AI","AIA","Anguilla",,,"1988",0.66748045
 "CK","COK","Cook Islands",,,"1988",0.50182293
 "CU","CUB","Cuba",,,"1988",0.468159535281204
@@ -1834,7 +1834,7 @@
 "TK","TKL","Tokelau",,,"1988",0.50182293
 "WF","WLF","Wallis and Futuna",,,"1988",0.64283254
 "PS","PSE","West Bank and Gaza Strip",,,"1988",
-"","","Horn of Africa (ex-Somalia)",,,"1988",
+,,"Horn of Africa (ex-Somalia)",,,"1988",
 "AF","AFG","Afghanistan",,,"1989",
 "AL","ALB","Albania",,,"1989",0.430667516547529
 "DZ","DZA","Algeria",,,"1989",0.678643415837394
@@ -1952,7 +1952,7 @@
 "MA","MAR","Morocco",,,"1989",0.699962381032175
 "MZ","MOZ","Mozambique",,,"1989",1.41062046262769
 "MM","MMR","Myanmar",,,"1989",
-,"NAM","Namibia",,,"1989",
+"NA","NAM","Namibia",,,"1989",
 "NR","NRU","Nauru",,,"1989",
 "NP","NPL","Nepal",,,"1989",0.514709775324654
 "NL","NLD","Netherlands",1,1,"1989",0.55955732
@@ -2026,8 +2026,8 @@
 "YE","YEM","Yemen",,,"1989",
 "ZM","ZMB","Zambia",,,"1989",0.512161948024232
 "ZW","ZWE","Zimbabwe",,,"1989",
-"TOTAL DAC","","TOTAL DAC",,,"1989",0.63331134
-"EU Institutions","","EU Institutions",,,"1989",0.56080879
+"TOTAL DAC",,"TOTAL DAC",,,"1989",0.63331134
+"EU Institutions",,"EU Institutions",,,"1989",0.56080879
 "AI","AIA","Anguilla",,,"1989",0.66146616
 "CK","COK","Cook Islands",,,"1989",0.48032265
 "CU","CUB","Cuba",,,"1989",0.457621786206905
@@ -2038,7 +2038,7 @@
 "TK","TKL","Tokelau",,,"1989",0.48032265
 "WF","WLF","Wallis and Futuna",,,"1989",0.61996253
 "PS","PSE","West Bank and Gaza Strip",,,"1989",
-"","","Horn of Africa (ex-Somalia)",,,"1989",
+,,"Horn of Africa (ex-Somalia)",,,"1989",
 "AF","AFG","Afghanistan",,,"1990",
 "AL","ALB","Albania",,,"1990",0.382436749531031
 "DZ","DZA","Algeria",,,"1990",0.792824010394261
@@ -2156,7 +2156,7 @@
 "MA","MAR","Morocco",,,"1990",0.760336114394351
 "MZ","MOZ","Mozambique",,,"1990",2.24094044429533
 "MM","MMR","Myanmar",,,"1990",
-,"NAM","Namibia",,,"1990",0.601653371295994
+"NA","NAM","Namibia",,,"1990",0.601653371295994
 "NR","NRU","Nauru",,,"1990",
 "NP","NPL","Nepal",,,"1990",0.506209460308113
 "NL","NLD","Netherlands",1,1,"1990",0.6618997
@@ -2230,8 +2230,8 @@
 "YE","YEM","Yemen",,,"1990",0.786573809928481
 "ZM","ZMB","Zambia",,,"1990",0.482099847850783
 "ZW","ZWE","Zimbabwe",,,"1990",
-"TOTAL DAC","","TOTAL DAC",,,"1990",0.69823931
-"EU Institutions","","EU Institutions",,,"1990",0.67618559
+"TOTAL DAC",,"TOTAL DAC",,,"1990",0.69823931
+"EU Institutions",,"EU Institutions",,,"1990",0.67618559
 "AI","AIA","Anguilla",,,"1990",0.77589744
 "CK","COK","Cook Islands",,,"1990",0.49350278
 "CU","CUB","Cuba",,,"1990",0.49982627521972
@@ -2242,7 +2242,7 @@
 "TK","TKL","Tokelau",,,"1990",0.49350278
 "WF","WLF","Wallis and Futuna",,,"1990",0.74528509
 "PS","PSE","West Bank and Gaza Strip",,,"1990",
-"","","Horn of Africa (ex-Somalia)",,,"1990",
+,,"Horn of Africa (ex-Somalia)",,,"1990",
 "AF","AFG","Afghanistan",,,"1991",
 "AL","ALB","Albania",,,"1991",0.318792953077233
 "DZ","DZA","Algeria",,,"1991",0.60509439986194
@@ -2360,7 +2360,7 @@
 "MA","MAR","Morocco",,,"1991",0.758649237160978
 "MZ","MOZ","Mozambique",,,"1991",1.63821054878958
 "MM","MMR","Myanmar",,,"1991",
-,"NAM","Namibia",,,"1991",0.574357438535031
+"NA","NAM","Namibia",,,"1991",0.574357438535031
 "NR","NRU","Nauru",,,"1991",
 "NP","NPL","Nepal",,,"1991",0.520766473278929
 "NL","NLD","Netherlands",1,1,"1991",0.66469342
@@ -2434,8 +2434,8 @@
 "YE","YEM","Yemen",,,"1991",0.858286728795403
 "ZM","ZMB","Zambia",,,"1991",0.43840285692415
 "ZW","ZWE","Zimbabwe",,,"1991",
-"TOTAL DAC","","TOTAL DAC",,,"1991",0.72488423
-"EU Institutions","","EU Institutions",,,"1991",0.68679316
+"TOTAL DAC",,"TOTAL DAC",,,"1991",0.72488423
+"EU Institutions",,"EU Institutions",,,"1991",0.68679316
 "AI","AIA","Anguilla",,,"1991",0.82139619
 "CK","COK","Cook Islands",,,"1991",0.48026616
 "CU","CUB","Cuba",,,"1991",0.475093106487723
@@ -2446,7 +2446,7 @@
 "TK","TKL","Tokelau",,,"1991",0.48026616
 "WF","WLF","Wallis and Futuna",,,"1991",0.73799198
 "PS","PSE","West Bank and Gaza Strip",,,"1991",
-"","","Horn of Africa (ex-Somalia)",,,"1991",
+,,"Horn of Africa (ex-Somalia)",,,"1991",
 "AF","AFG","Afghanistan",,,"1992",
 "AL","ALB","Albania",,,"1992",0.217249187925301
 "DZ","DZA","Algeria",,,"1992",0.628068138791657
@@ -2564,7 +2564,7 @@
 "MA","MAR","Morocco",,,"1992",0.809132670995273
 "MZ","MOZ","Mozambique",,,"1992",1.16979776770516
 "MM","MMR","Myanmar",,,"1992",
-,"NAM","Namibia",,,"1992",0.555099180445249
+"NA","NAM","Namibia",,,"1992",0.555099180445249
 "NR","NRU","Nauru",,,"1992",
 "NP","NPL","Nepal",,,"1992",0.454551115404711
 "NL","NLD","Netherlands",1,1,"1992",0.72430538
@@ -2638,8 +2638,8 @@
 "YE","YEM","Yemen",,,"1992",0.97134410847363
 "ZM","ZMB","Zambia",,,"1992",0.420739839874363
 "ZW","ZWE","Zimbabwe",,,"1992",
-"TOTAL DAC","","TOTAL DAC",,,"1992",0.7638583
-"EU Institutions","","EU Institutions",,,"1992",0.75103395
+"TOTAL DAC",,"TOTAL DAC",,,"1992",0.7638583
+"EU Institutions",,"EU Institutions",,,"1992",0.75103395
 "AI","AIA","Anguilla",,,"1992",0.84238422
 "CK","COK","Cook Islands",,,"1992",0.45503471
 "CU","CUB","Cuba",,,"1992",0.488026489266424
@@ -2650,7 +2650,7 @@
 "TK","TKL","Tokelau",,,"1992",0.45503471
 "WF","WLF","Wallis and Futuna",,,"1992",0.80201735
 "PS","PSE","West Bank and Gaza Strip",,,"1992",
-"","","Horn of Africa (ex-Somalia)",,,"1992",1.11003491758143
+,,"Horn of Africa (ex-Somalia)",,,"1992",1.11003491758143
 "AF","AFG","Afghanistan",,,"1993",
 "AL","ALB","Albania",,,"1993",0.34353441345956
 "DZ","DZA","Algeria",,,"1993",0.664313060134719
@@ -2768,7 +2768,7 @@
 "MA","MAR","Morocco",,,"1993",0.765457990345454
 "MZ","MOZ","Mozambique",,,"1993",1.1189828117375
 "MM","MMR","Myanmar",,,"1993",
-,"NAM","Namibia",,,"1993",0.5412134881926
+"NA","NAM","Namibia",,,"1993",0.5412134881926
 "NR","NRU","Nauru",,,"1993",
 "NP","NPL","Nepal",,,"1993",0.470043346174324
 "NL","NLD","Netherlands",1,1,"1993",0.69672221
@@ -2842,8 +2842,8 @@
 "YE","YEM","Yemen",,,"1993",1.13044353448146
 "ZM","ZMB","Zambia",,,"1993",0.41349096461002
 "ZW","ZWE","Zimbabwe",,,"1993",
-"TOTAL DAC","","TOTAL DAC",,,"1993",0.74647519
-"EU Institutions","","EU Institutions",,,"1993",0.7049823
+"TOTAL DAC",,"TOTAL DAC",,,"1993",0.74647519
+"EU Institutions",,"EU Institutions",,,"1993",0.7049823
 "AI","AIA","Anguilla",,,"1993",0.73993958
 "CK","COK","Cook Islands",,,"1993",0.46706479
 "CU","CUB","Cuba",,,"1993",0.580631915890027
@@ -2854,7 +2854,7 @@
 "TK","TKL","Tokelau",,,"1993",0.46706479
 "WF","WLF","Wallis and Futuna",,,"1993",0.76236152
 "PS","PSE","West Bank and Gaza Strip",,,"1993",
-"","","Horn of Africa (ex-Somalia)",,,"1993",0.628139961025353
+,,"Horn of Africa (ex-Somalia)",,,"1993",0.628139961025353
 "AF","AFG","Afghanistan",,,"1994",
 "AL","ALB","Albania",,,"1994",0.507456357793816
 "DZ","DZA","Algeria",,,"1994",0.55805401665785
@@ -2972,7 +2972,7 @@
 "MA","MAR","Morocco",,,"1994",0.778517375409471
 "MZ","MOZ","Mozambique",,,"1994",1.14387947889935
 "MM","MMR","Myanmar",,,"1994",
-,"NAM","Namibia",,,"1994",0.591397878254718
+"NA","NAM","Namibia",,,"1994",0.591397878254718
 "NR","NRU","Nauru",,,"1994",
 "NP","NPL","Nepal",,,"1994",0.453774121185014
 "NL","NLD","Netherlands",1,1,"1994",0.72583413
@@ -3046,8 +3046,8 @@
 "YE","YEM","Yemen",,,"1994",1.36536241823157
 "ZM","ZMB","Zambia",,,"1994",0.491485797307739
 "ZW","ZWE","Zimbabwe",,,"1994",
-"TOTAL DAC","","TOTAL DAC",,,"1994",0.78140253
-"EU Institutions","","EU Institutions",,,"1994",0.7349141
+"TOTAL DAC",,"TOTAL DAC",,,"1994",0.78140253
+"EU Institutions",,"EU Institutions",,,"1994",0.7349141
 "AI","AIA","Anguilla",,,"1994",0.76394944
 "CK","COK","Cook Islands",,,"1994",0.5165481
 "CU","CUB","Cuba",,,"1994",0.733233780215333
@@ -3058,7 +3058,7 @@
 "TK","TKL","Tokelau",,,"1994",0.5165481
 "WF","WLF","Wallis and Futuna",,,"1994",0.78434079
 "PS","PSE","West Bank and Gaza Strip",,,"1994",0.530700991156614
-"","","Horn of Africa (ex-Somalia)",,,"1994",0.537385357297804
+,,"Horn of Africa (ex-Somalia)",,,"1994",0.537385357297804
 "AF","AFG","Afghanistan",,,"1995",
 "AL","ALB","Albania",,,"1995",0.568812075614167
 "DZ","DZA","Algeria",,,"1995",0.532815967464783
@@ -3176,7 +3176,7 @@
 "MA","MAR","Morocco",,,"1995",0.902145448052144
 "MZ","MOZ","Mozambique",,,"1995",1.14889315943036
 "MM","MMR","Myanmar",,,"1995",
-,"NAM","Namibia",,,"1995",0.611489560907405
+"NA","NAM","Namibia",,,"1995",0.611489560907405
 "NR","NRU","Nauru",,,"1995",
 "NP","NPL","Nepal",,,"1995",0.47612134284054
 "NL","NLD","Netherlands",1,1,"1995",0.83985404
@@ -3250,8 +3250,8 @@
 "YE","YEM","Yemen",,,"1995",0.590095017092542
 "ZM","ZMB","Zambia",,,"1995",0.49619041648873
 "ZW","ZWE","Zimbabwe",,,"1995",
-"TOTAL DAC","","TOTAL DAC",,,"1995",0.87119054
-"EU Institutions","","EU Institutions",,,"1995",0.82957827
+"TOTAL DAC",,"TOTAL DAC",,,"1995",0.87119054
+"EU Institutions",,"EU Institutions",,,"1995",0.82957827
 "AI","AIA","Anguilla",,,"1995",0.80707111
 "CK","COK","Cook Islands",,,"1995",0.58330146
 "CU","CUB","Cuba",,,"1995",0.765495071956801
@@ -3262,7 +3262,7 @@
 "TK","TKL","Tokelau",,,"1995",0.58330146
 "WF","WLF","Wallis and Futuna",,,"1995",0.88227214
 "PS","PSE","West Bank and Gaza Strip",,,"1995",0.572014591246189
-"","","Horn of Africa (ex-Somalia)",,,"1995",0.533374635280861
+,,"Horn of Africa (ex-Somalia)",,,"1995",0.533374635280861
 "AF","AFG","Afghanistan",,,"1996",
 "AL","ALB","Albania",,,"1996",0.578895347132438
 "DZ","DZA","Algeria",,,"1996",0.572797346732141
@@ -3380,7 +3380,7 @@
 "MA","MAR","Morocco",,,"1996",0.887827766516609
 "MZ","MOZ","Mozambique",,,"1996",1.24450323273007
 "MM","MMR","Myanmar",,,"1996",
-,"NAM","Namibia",,,"1996",0.591029212176851
+"NA","NAM","Namibia",,,"1996",0.591029212176851
 "NR","NRU","Nauru",,,"1996",
 "NP","NPL","Nepal",,,"1996",0.465891091376879
 "NL","NLD","Netherlands",1,1,"1996",0.80926543
@@ -3454,8 +3454,8 @@
 "YE","YEM","Yemen",,,"1996",0.286296971195734
 "ZM","ZMB","Zambia",,,"1996",0.442546302599271
 "ZW","ZWE","Zimbabwe",,,"1996",
-"TOTAL DAC","","TOTAL DAC",,,"1996",0.82477026
-"EU Institutions","","EU Institutions",,,"1996",0.82099633
+"TOTAL DAC",,"TOTAL DAC",,,"1996",0.82477026
+"EU Institutions",,"EU Institutions",,,"1996",0.82099633
 "AI","AIA","Anguilla",,,"1996",0.83057957
 "CK","COK","Cook Islands",,,"1996",0.62455368
 "CU","CUB","Cuba",,,"1996",0.583592946741456
@@ -3466,7 +3466,7 @@
 "TK","TKL","Tokelau",,,"1996",0.62455368
 "WF","WLF","Wallis and Futuna",,,"1996",0.87228319
 "PS","PSE","West Bank and Gaza Strip",,,"1996",0.586976325475476
-"","","Horn of Africa (ex-Somalia)",,,"1996",0.503266920120541
+,,"Horn of Africa (ex-Somalia)",,,"1996",0.503266920120541
 "AF","AFG","Afghanistan",,,"1997",
 "AL","ALB","Albania",,,"1997",0.458781191472793
 "DZ","DZA","Algeria",,,"1997",0.581495384579327
@@ -3584,7 +3584,7 @@
 "MA","MAR","Morocco",,,"1997",0.818009703639742
 "MZ","MOZ","Mozambique",,,"1997",1.33062110857772
 "MM","MMR","Myanmar",,,"1997",
-,"NAM","Namibia",,,"1997",0.590167813883398
+"NA","NAM","Namibia",,,"1997",0.590167813883398
 "NR","NRU","Nauru",,,"1997",
 "NP","NPL","Nepal",,,"1997",0.481120766183618
 "NL","NLD","Netherlands",1,1,"1997",0.71726836
@@ -3658,8 +3658,8 @@
 "YE","YEM","Yemen",,,"1997",0.286388870276564
 "ZM","ZMB","Zambia",,,"1997",0.509673778965147
 "ZW","ZWE","Zimbabwe",,,"1997",
-"TOTAL DAC","","TOTAL DAC",,,"1997",0.77128134
-"EU Institutions","","EU Institutions",,,"1997",0.74359445
+"TOTAL DAC",,"TOTAL DAC",,,"1997",0.77128134
+"EU Institutions",,"EU Institutions",,,"1997",0.74359445
 "AI","AIA","Anguilla",,,"1997",0.87803502
 "CK","COK","Cook Islands",,,"1997",0.60277929
 "CU","CUB","Cuba",,,"1997",0.575699342909459
@@ -3670,7 +3670,7 @@
 "TK","TKL","Tokelau",,,"1997",0.60277929
 "WF","WLF","Wallis and Futuna",,,"1997",0.77127518
 "PS","PSE","West Bank and Gaza Strip",,,"1997",0.564472244014494
-"","","Horn of Africa (ex-Somalia)",,,"1997",0.490764958768948
+,,"Horn of Africa (ex-Somalia)",,,"1997",0.490764958768948
 "AF","AFG","Afghanistan",,,"1998",
 "AL","ALB","Albania",,,"1998",0.477732404896175
 "DZ","DZA","Algeria",,,"1998",0.553403567970223
@@ -3788,7 +3788,7 @@
 "MA","MAR","Morocco",,,"1998",0.814602672097909
 "MZ","MOZ","Mozambique",,,"1998",1.36552479644977
 "MM","MMR","Myanmar",,,"1998",0.601043067042326
-,"NAM","Namibia",,,"1998",0.505207909575711
+"NA","NAM","Namibia",,,"1998",0.505207909575711
 "NR","NRU","Nauru",,,"1998",
 "NP","NPL","Nepal",,,"1998",0.464624250760847
 "NL","NLD","Netherlands",1,1,"1998",0.72034395
@@ -3862,8 +3862,8 @@
 "YE","YEM","Yemen",,,"1998",0.249773860989384
 "ZM","ZMB","Zambia",,,"1998",0.420686324223982
 "ZW","ZWE","Zimbabwe",,,"1998",0.523214926014744
-"TOTAL DAC","","TOTAL DAC",,,"1998",0.75597629
-"EU Institutions","","EU Institutions",,,"1998",0.74465249
+"TOTAL DAC",,"TOTAL DAC",,,"1998",0.75597629
+"EU Institutions",,"EU Institutions",,,"1998",0.74465249
 "AI","AIA","Anguilla",,,"1998",0.89765134
 "CK","COK","Cook Islands",,,"1998",0.49314832
 "CU","CUB","Cuba",,,"1998",0.583178284886039
@@ -3874,7 +3874,7 @@
 "TK","TKL","Tokelau",,,"1998",0.49314832
 "WF","WLF","Wallis and Futuna",,,"1998",0.77050599
 "PS","PSE","West Bank and Gaza Strip",,,"1998",0.534147584837271
-"","","Horn of Africa (ex-Somalia)",,,"1998",0.465891452326051
+,,"Horn of Africa (ex-Somalia)",,,"1998",0.465891452326051
 "AF","AFG","Afghanistan",,,"1999",
 "AL","ALB","Albania",,,"1999",0.53046304320644
 "DZ","DZA","Algeria",,,"1999",0.543554968442109
@@ -3992,7 +3992,7 @@
 "MA","MAR","Morocco",,,"1999",0.802536806106995
 "MZ","MOZ","Mozambique",,,"1999",1.38697522867782
 "MM","MMR","Myanmar",,,"1999",0.711823248438251
-,"NAM","Namibia",,,"1999",0.514448384637249
+"NA","NAM","Namibia",,,"1999",0.514448384637249
 "NR","NRU","Nauru",,,"1999",
 "NP","NPL","Nepal",,,"1999",0.457471643519994
 "NL","NLD","Netherlands",1,1,"1999",0.70032149
@@ -4066,8 +4066,8 @@
 "YE","YEM","Yemen",,,"1999",0.290825228992275
 "ZM","ZMB","Zambia",,,"1999",0.386881933015475
 "ZW","ZWE","Zimbabwe",,,"1999",0.51466214506942
-"TOTAL DAC","","TOTAL DAC",,,"1999",0.76688501
-"EU Institutions","","EU Institutions",,,"1999",0.71710288
+"TOTAL DAC",,"TOTAL DAC",,,"1999",0.76688501
+"EU Institutions",,"EU Institutions",,,"1999",0.71710288
 "AI","AIA","Anguilla",,,"1999",0.88350241
 "CK","COK","Cook Islands",,,"1999",0.48970615
 "CU","CUB","Cuba",,,"1999",0.605275469537749
@@ -4078,7 +4078,7 @@
 "TK","TKL","Tokelau",,,"1999",0.48970615
 "WF","WLF","Wallis and Futuna",,,"1999",0.73982608
 "PS","PSE","West Bank and Gaza Strip",,,"1999",0.517966432811444
-"","","Horn of Africa (ex-Somalia)",,,"1999",0.437956875998344
+,,"Horn of Africa (ex-Somalia)",,,"1999",0.437956875998344
 "AF","AFG","Afghanistan",,,"2000",0.597501313918464
 "AL","ALB","Albania",,,"2000",0.538361933390588
 "DZ","DZA","Algeria",,,"2000",0.586951468463649
@@ -4196,7 +4196,7 @@
 "MA","MAR","Morocco",,,"2000",0.735020951308306
 "MZ","MOZ","Mozambique",,,"2000",1.23207395673352
 "MM","MMR","Myanmar",,,"2000",0.656652269504237
-,"NAM","Namibia",,,"2000",0.574475495102998
+"NA","NAM","Namibia",,,"2000",0.574475495102998
 "NR","NRU","Nauru",,,"2000",0.974053392772752
 "NP","NPL","Nepal",,,"2000",0.457191741019521
 "NL","NLD","Netherlands",1,1,"2000",0.62629039
@@ -4270,8 +4270,8 @@
 "YE","YEM","Yemen",,,"2000",0.34703650209431
 "ZM","ZMB","Zambia",,,"2000",0.393805200128871
 "ZW","ZWE","Zimbabwe",,,"2000",0.517810395286304
-"TOTAL DAC","","TOTAL DAC",,,"2000",0.74063124
-"EU Institutions","","EU Institutions",,,"2000",0.62870363
+"TOTAL DAC",,"TOTAL DAC",,,"2000",0.74063124
+"EU Institutions",,"EU Institutions",,,"2000",0.62870363
 "AI","AIA","Anguilla",,,"2000",0.84415367
 "CK","COK","Cook Islands",,,"2000",0.42998348
 "CU","CUB","Cuba",,,"2000",0.615814304744003
@@ -4282,7 +4282,7 @@
 "TK","TKL","Tokelau",,,"2000",0.42998348
 "WF","WLF","Wallis and Futuna",,,"2000",0.64982524
 "PS","PSE","West Bank and Gaza Strip",,,"2000",0.572054274907406
-"","","Horn of Africa (ex-Somalia)",,,"2000",0.428533310079723
+,,"Horn of Africa (ex-Somalia)",,,"2000",0.428533310079723
 "AF","AFG","Afghanistan",,,"2001",0.597501313918464
 "AL","ALB","Albania",,,"2001",0.560650177256673
 "DZ","DZA","Algeria",,,"2001",0.569814160564399
@@ -4400,7 +4400,7 @@
 "MA","MAR","Morocco",,,"2001",0.695479791451493
 "MZ","MOZ","Mozambique",,,"2001",1.06960926325988
 "MM","MMR","Myanmar",,,"2001",0.428962023538672
-,"NAM","Namibia",,,"2001",0.509262593794932
+"NA","NAM","Namibia",,,"2001",0.509262593794932
 "NR","NRU","Nauru",,,"2001",0.974053392772752
 "NP","NPL","Nepal",,,"2001",0.444911695622192
 "NL","NLD","Netherlands",1,1,"2001",0.63395871
@@ -4474,8 +4474,8 @@
 "YE","YEM","Yemen",,,"2001",0.340329081167139
 "ZM","ZMB","Zambia",,,"2001",0.425116228378598
 "ZW","ZWE","Zimbabwe",,,"2001",0.51576840377352
-"TOTAL DAC","","TOTAL DAC",,,"2001",0.70354584
-"EU Institutions","","EU Institutions",,,"2001",0.62594663
+"TOTAL DAC",,"TOTAL DAC",,,"2001",0.70354584
+"EU Institutions",,"EU Institutions",,,"2001",0.62594663
 "AI","AIA","Anguilla",,,"2001",0.80974464
 "CK","COK","Cook Islands",,,"2001",0.41541655
 "CU","CUB","Cuba",,,"2001",0.618615884874434
@@ -4486,7 +4486,7 @@
 "TK","TKL","Tokelau",,,"2001",0.41541655
 "WF","WLF","Wallis and Futuna",,,"2001",0.64408713
 "PS","PSE","West Bank and Gaza Strip",,,"2001",0.585467175897269
-"","","Horn of Africa (ex-Somalia)",,,"2001",0.40132577207738
+,,"Horn of Africa (ex-Somalia)",,,"2001",0.40132577207738
 "AF","AFG","Afghanistan",,,"2002",0.597501313918464
 "AL","ALB","Albania",,,"2002",0.593663007007511
 "DZ","DZA","Algeria",,,"2002",0.559467544562597
@@ -4604,7 +4604,7 @@
 "MA","MAR","Morocco",,,"2002",0.721911008202577
 "MZ","MOZ","Mozambique",,,"2002",1.07141282324811
 "MM","MMR","Myanmar",,,"2002",0.400667924141479
-,"NAM","Namibia",,,"2002",0.453034659002605
+"NA","NAM","Namibia",,,"2002",0.453034659002605
 "NR","NRU","Nauru",,,"2002",0.974053392772752
 "NP","NPL","Nepal",,,"2002",0.450790284562653
 "NL","NLD","Netherlands",1,1,"2002",0.69223933
@@ -4678,8 +4678,8 @@
 "YE","YEM","Yemen",,,"2002",0.355359822968642
 "ZM","ZMB","Zambia",,,"2002",0.416722592773682
 "ZW","ZWE","Zimbabwe",,,"2002",0.533522900839626
-"TOTAL DAC","","TOTAL DAC",,,"2002",0.72869495
-"EU Institutions","","EU Institutions",,,"2002",0.67500146
+"TOTAL DAC",,"TOTAL DAC",,,"2002",0.72869495
+"EU Institutions",,"EU Institutions",,,"2002",0.67500146
 "AI","AIA","Anguilla",,,"2002",0.86193926
 "CK","COK","Cook Islands",,,"2002",0.46058362
 "CU","CUB","Cuba",,,"2002",0.646658830210609
@@ -4690,7 +4690,7 @@
 "TK","TKL","Tokelau",,,"2002",0.46058362
 "WF","WLF","Wallis and Futuna",,,"2002",0.69187675
 "PS","PSE","West Bank and Gaza Strip",,,"2002",0.594178118562746
-"","","Horn of Africa (ex-Somalia)",,,"2002",0.378284413246475
+,,"Horn of Africa (ex-Somalia)",,,"2002",0.378284413246475
 "AF","AFG","Afghanistan",,,"2003",0.573133432618601
 "AL","ALB","Albania",,,"2003",0.725970374079505
 "DZ","DZA","Algeria",,,"2003",0.623978359711
@@ -4808,7 +4808,7 @@
 "MA","MAR","Morocco",,,"2003",0.839792131999685
 "MZ","MOZ","Mozambique",,,"2003",1.1216316054034
 "MM","MMR","Myanmar",,,"2003",0.5435129599462
-,"NAM","Namibia",,,"2003",0.640928607250463
+"NA","NAM","Namibia",,,"2003",0.640928607250463
 "NR","NRU","Nauru",,,"2003",0.974053392772752
 "NP","NPL","Nepal",,,"2003",0.459226377621131
 "NL","NLD","Netherlands",1,1,"2003",0.8477077
@@ -4882,8 +4882,8 @@
 "YE","YEM","Yemen",,,"2003",0.377280849004762
 "ZM","ZMB","Zambia",,,"2003",0.455440284937952
 "ZW","ZWE","Zimbabwe",,,"2003",0.567969244825265
-"TOTAL DAC","","TOTAL DAC",,,"2003",0.82470556
-"EU Institutions","","EU Institutions",,,"2003",0.82716973
+"TOTAL DAC",,"TOTAL DAC",,,"2003",0.82470556
+"EU Institutions",,"EU Institutions",,,"2003",0.82716973
 "AI","AIA","Anguilla",,,"2003",0.96063437
 "CK","COK","Cook Islands",,,"2003",0.58562514
 "CU","CUB","Cuba",,,"2003",0.6658872987057
@@ -4894,7 +4894,7 @@
 "TK","TKL","Tokelau",,,"2003",0.58562514
 "WF","WLF","Wallis and Futuna",,,"2003",0.84485157
 "PS","PSE","West Bank and Gaza Strip",,,"2003",0.58154817611641
-"","","Horn of Africa (ex-Somalia)",,,"2003",0.425683909843391
+,,"Horn of Africa (ex-Somalia)",,,"2003",0.425683909843391
 "AF","AFG","Afghanistan",,,"2004",0.643462870236763
 "AL","ALB","Albania",,,"2004",0.881031017779924
 "DZ","DZA","Algeria",,,"2004",0.752198117670405
@@ -5012,7 +5012,7 @@
 "MA","MAR","Morocco",,,"2004",0.917743031473904
 "MZ","MOZ","Mozambique",,,"2004",1.2653534902494
 "MM","MMR","Myanmar",,,"2004",0.483156405308791
-,"NAM","Namibia",,,"2004",0.806417916528527
+"NA","NAM","Namibia",,,"2004",0.806417916528527
 "NR","NRU","Nauru",,,"2004",0.974053392772752
 "NP","NPL","Nepal",,,"2004",0.504263451120094
 "NL","NLD","Netherlands",1,1,"2004",0.94431293
@@ -5086,8 +5086,8 @@
 "YE","YEM","Yemen",,,"2004",0.427254325893586
 "ZM","ZMB","Zambia",,,"2004",0.540013598429777
 "ZW","ZWE","Zimbabwe",,,"2004",0.599064242376708
-"TOTAL DAC","","TOTAL DAC",,,"2004",0.89511186
-"EU Institutions","","EU Institutions",,,"2004",0.92691048
+"TOTAL DAC",,"TOTAL DAC",,,"2004",0.89511186
+"EU Institutions",,"EU Institutions",,,"2004",0.92691048
 "AI","AIA","Anguilla",,,"2004",1.10465344
 "CK","COK","Cook Islands",,,"2004",0.69192136
 "CU","CUB","Cuba",,,"2004",0.669922432964308
@@ -5098,7 +5098,7 @@
 "TK","TKL","Tokelau",,,"2004",0.69192136
 "WF","WLF","Wallis and Futuna",,,"2004",0.94394587
 "PS","PSE","West Bank and Gaza Strip",,,"2004",0.575011621515908
-"","","Horn of Africa (ex-Somalia)",,,"2004",0.457764622694174
+,,"Horn of Africa (ex-Somalia)",,,"2004",0.457764622694174
 "AF","AFG","Afghanistan",,,"2005",0.689555669392506
 "AL","ALB","Albania",,,"2005",0.935639861393553
 "DZ","DZA","Algeria",,,"2005",0.859055230067928
@@ -5216,7 +5216,7 @@
 "MA","MAR","Morocco",,,"2005",0.928980141442008
 "MZ","MOZ","Mozambique",,,"2005",1.30974509015481
 "MM","MMR","Myanmar",,,"2005",0.482605811455664
-,"NAM","Namibia",,,"2005",0.845072118345597
+"NA","NAM","Namibia",,,"2005",0.845072118345597
 "NR","NRU","Nauru",,,"2005",0.979942849297027
 "NP","NPL","Nepal",,,"2005",0.548005952133731
 "NL","NLD","Netherlands",1,1,"2005",0.96350305
@@ -5290,8 +5290,8 @@
 "YE","YEM","Yemen",,,"2005",0.488190670525902
 "ZM","ZMB","Zambia",,,"2005",0.674455266328397
 "ZW","ZWE","Zimbabwe",,,"2005",0.618385575260312
-"TOTAL DAC","","TOTAL DAC",,,"2005",0.91812244
-"EU Institutions","","EU Institutions",,,"2005",0.94477642
+"TOTAL DAC",,"TOTAL DAC",,,"2005",0.91812244
+"EU Institutions",,"EU Institutions",,,"2005",0.94477642
 "AI","AIA","Anguilla",,,"2005",1.1237846
 "CK","COK","Cook Islands",,,"2005",0.75308447
 "CU","CUB","Cuba",,,"2005",0.672468678635371
@@ -5302,7 +5302,7 @@
 "TK","TKL","Tokelau",,,"2005",0.75308447
 "WF","WLF","Wallis and Futuna",,,"2005",0.96258977
 "PS","PSE","West Bank and Gaza Strip",,,"2005",0.579219286768103
-"","","Horn of Africa (ex-Somalia)",,,"2005",0.493862885321495
+,,"Horn of Africa (ex-Somalia)",,,"2005",0.493862885321495
 "AF","AFG","Afghanistan",,,"2006",0.734911898582087
 "AL","ALB","Albania",,,"2006",0.977081095401161
 "DZ","DZA","Algeria",,,"2006",0.958039147445133
@@ -5420,7 +5420,7 @@
 "MA","MAR","Morocco",,,"2006",0.950803956810747
 "MZ","MOZ","Mozambique",,,"2006",1.30359392117232
 "MM","MMR","Myanmar",,,"2006",0.516366849663984
-,"NAM","Namibia",,,"2006",0.894295817927093
+"NA","NAM","Namibia",,,"2006",0.894295817927093
 "NR","NRU","Nauru",,,"2006",0.813205996152955
 "NP","NPL","Nepal",,,"2006",0.586163830513663
 "NL","NLD","Netherlands",1,1,"2006",0.99731696
@@ -5494,8 +5494,8 @@
 "YE","YEM","Yemen",,,"2006",0.539112544034437
 "ZM","ZMB","Zambia",,,"2006",0.957006527689377
 "ZW","ZWE","Zimbabwe",,,"2006",0.577039187185712
-"TOTAL DAC","","TOTAL DAC",,,"2006",0.94755978
-"EU Institutions","","EU Institutions",,,"2006",0.97256945
+"TOTAL DAC",,"TOTAL DAC",,,"2006",0.94755978
+"EU Institutions",,"EU Institutions",,,"2006",0.97256945
 "AI","AIA","Anguilla",,,"2006",1.1710016
 "CK","COK","Cook Islands",,,"2006",0.71034499
 "CU","CUB","Cuba",,,"2006",0.74217383151211
@@ -5506,7 +5506,7 @@
 "TK","TKL","Tokelau",,,"2006",0.71034499
 "WF","WLF","Wallis and Futuna",,,"2006",0.9932677
 "PS","PSE","West Bank and Gaza Strip",,,"2006",0.612496651077156
-"","","Horn of Africa (ex-Somalia)",,,"2006",0.548512151261689
+,,"Horn of Africa (ex-Somalia)",,,"2006",0.548512151261689
 "AF","AFG","Afghanistan",,,"2007",0.801130135806622
 "AL","ALB","Albania",,,"2007",1.10516815359367
 "DZ","DZA","Algeria",,,"2007",1.06893140003399
@@ -5624,7 +5624,7 @@
 "MA","MAR","Morocco",,,"2007",1.05751174866217
 "MZ","MOZ","Mozambique",,,"2007",1.38328631725874
 "MM","MMR","Myanmar",,,"2007",0.641652240626588
-,"NAM","Namibia",,,"2007",0.94345756069666
+"NA","NAM","Namibia",,,"2007",0.94345756069666
 "NR","NRU","Nauru",,,"2007",0.773502131731192
 "NP","NPL","Nepal",,,"2007",0.64710921710948
 "NL","NLD","Netherlands",1,1,"2007",1.11016226
@@ -5698,8 +5698,8 @@
 "YE","YEM","Yemen",,,"2007",0.592524206361866
 "ZM","ZMB","Zambia",,,"2007",0.973244722276213
 "ZW","ZWE","Zimbabwe",,,"2007",0.57123332938457
-"TOTAL DAC","","TOTAL DAC",,,"2007",1.02244908
-"EU Institutions","","EU Institutions",,,"2007",1.08590898
+"TOTAL DAC",,"TOTAL DAC",,,"2007",1.02244908
+"EU Institutions",,"EU Institutions",,,"2007",1.08590898
 "AI","AIA","Anguilla",,,"2007",1.30579023
 "CK","COK","Cook Islands",,,"2007",0.83946472
 "CU","CUB","Cuba",,,"2007",0.768816205600483
@@ -5710,7 +5710,7 @@
 "TK","TKL","Tokelau",,,"2007",0.83946472
 "WF","WLF","Wallis and Futuna",,,"2007",1.11091465
 "PS","PSE","West Bank and Gaza Strip",,,"2007",0.644339761823235
-"","","Horn of Africa (ex-Somalia)",,,"2007",0.630953325073286
+,,"Horn of Africa (ex-Somalia)",,,"2007",0.630953325073286
 "AF","AFG","Afghanistan",,,"2008",0.928286731482511
 "AL","ALB","Albania",,,"2008",1.24243989756653
 "DZ","DZA","Algeria",,,"2008",1.32299571129235
@@ -5828,7 +5828,7 @@
 "MA","MAR","Morocco",,,"2008",1.16846874282437
 "MZ","MOZ","Mozambique",,,"2008",1.57992088304849
 "MM","MMR","Myanmar",,,"2008",0.918777173546353
-,"NAM","Namibia",,,"2008",0.894465667338867
+"NA","NAM","Namibia",,,"2008",0.894465667338867
 "NR","NRU","Nauru",,,"2008",1.12211008627934
 "NP","NPL","Nepal",,,"2008",0.741007052485784
 "NL","NLD","Netherlands",1,1,"2008",1.19646382
@@ -5902,8 +5902,8 @@
 "YE","YEM","Yemen",,,"2008",0.710553932160538
 "ZM","ZMB","Zambia",,,"2008",1.150628811551
 "ZW","ZWE","Zimbabwe",,,"2008",0.588135138040595
-"TOTAL DAC","","TOTAL DAC",,,"2008",1.07122188
-"EU Institutions","","EU Institutions",,,"2008",1.16652959
+"TOTAL DAC",,"TOTAL DAC",,,"2008",1.07122188
+"EU Institutions",,"EU Institutions",,,"2008",1.16652959
 "AI","AIA","Anguilla",,,"2008",1.2141491
 "CK","COK","Cook Islands",,,"2008",0.82108245
 "CU","CUB","Cuba",,,"2008",0.766167383393253
@@ -5914,7 +5914,7 @@
 "TK","TKL","Tokelau",,,"2008",0.82108245
 "WF","WLF","Wallis and Futuna",,,"2008",1.19821727
 "PS","PSE","West Bank and Gaza Strip",,,"2008",0.736236844301991
-"","","Horn of Africa (ex-Somalia)",,,"2008",0.777769080378597
+,,"Horn of Africa (ex-Somalia)",,,"2008",0.777769080378597
 "AF","AFG","Afghanistan",,,"2009",0.902072541553348
 "AL","ALB","Albania",,,"2009",1.1268309771192
 "DZ","DZA","Algeria",,,"2009",1.0433284001582
@@ -6032,7 +6032,7 @@
 "MA","MAR","Morocco",,,"2009",1.12562342858747
 "MZ","MOZ","Mozambique",,,"2009",1.44545981537432
 "MM","MMR","Myanmar",,,"2009",0.962705041265704
-,"NAM","Namibia",,,"2009",0.935808329417195
+"NA","NAM","Namibia",,,"2009",0.935808329417195
 "NR","NRU","Nauru",,,"2009",1.16507487000833
 "NP","NPL","Nepal",,,"2009",0.726390812077583
 "NL","NLD","Netherlands",1,1,"2009",1.15767679
@@ -6106,8 +6106,8 @@
 "YE","YEM","Yemen",,,"2009",0.638831456190342
 "ZM","ZMB","Zambia",,,"2009",0.90156850143904
 "ZW","ZWE","Zimbabwe",,,"2009",0.789237123897069
-"TOTAL DAC","","TOTAL DAC",,,"2009",1.03566056
-"EU Institutions","","EU Institutions",,,"2009",1.13713638
+"TOTAL DAC",,"TOTAL DAC",,,"2009",1.03566056
+"EU Institutions",,"EU Institutions",,,"2009",1.13713638
 "AI","AIA","Anguilla",,,"2009",1.0651835
 "CK","COK","Cook Islands",,,"2009",0.7488201
 "CU","CUB","Cuba",,,"2009",0.771026225555156
@@ -6118,7 +6118,7 @@
 "TK","TKL","Tokelau",,,"2009",0.7488201
 "WF","WLF","Wallis and Futuna",,,"2009",1.15766887
 "PS","PSE","West Bank and Gaza Strip",,,"2009",0.737922781888185
-"","","Horn of Africa (ex-Somalia)",,,"2009",0.862869915262813
+,,"Horn of Africa (ex-Somalia)",,,"2009",0.862869915262813
 "AF","AFG","Afghanistan",,,"2010",1.05656720556482
 "AL","ALB","Albania",,,"2010",1.07262577260291
 "DZ","DZA","Algeria",,,"2010",1.18436724347099
@@ -6236,7 +6236,7 @@
 "MA","MAR","Morocco",,,"2010",1.08798338964393
 "MZ","MOZ","Mozambique",,,"2010",1.26012998581318
 "MM","MMR","Myanmar",,,"2010",1.19147065054065
-,"NAM","Namibia",,,"2010",1.11672833228429
+"NA","NAM","Namibia",,,"2010",1.11672833228429
 "NR","NRU","Nauru",,,"2010",1.14263171755439
 "NP","NPL","Nepal",,,"2010",0.86267049639019
 "NL","NLD","Netherlands",1,1,"2010",1.11130421
@@ -6310,8 +6310,8 @@
 "YE","YEM","Yemen",,,"2010",0.729502674058901
 "ZM","ZMB","Zambia",,,"2010",1.08066779413407
 "ZW","ZWE","Zimbabwe",,,"2010",0.8215365134678
-"TOTAL DAC","","TOTAL DAC",,,"2010",1.04552183
-"EU Institutions","","EU Institutions",,,"2010",1.08862541
+"TOTAL DAC",,"TOTAL DAC",,,"2010",1.04552183
+"EU Institutions",,"EU Institutions",,,"2010",1.08862541
 "AI","AIA","Anguilla",,,"2010",1.06930576
 "CK","COK","Cook Islands",,,"2010",0.88799781
 "CU","CUB","Cuba",,,"2010",0.78029433496136
@@ -6322,7 +6322,7 @@
 "TK","TKL","Tokelau",,,"2010",0.88799781
 "WF","WLF","Wallis and Futuna",,,"2010",1.11281648
 "PS","PSE","West Bank and Gaza Strip",,,"2010",0.837125930407431
-"","","Horn of Africa (ex-Somalia)",,,"2010",0.73856060836094
+,,"Horn of Africa (ex-Somalia)",,,"2010",0.73856060836094
 "AF","AFG","Afghanistan",,,"2011",1.15835858098372
 "AL","ALB","Albania",,,"2011",1.12994469699794
 "DZ","DZA","Algeria",,,"2011",1.43082629927029
@@ -6440,7 +6440,7 @@
 "MA","MAR","Morocco",,,"2011",1.12417849927807
 "MZ","MOZ","Mozambique",,,"2011",1.47721457513096
 "MM","MMR","Myanmar",,,"2011",1.36608089035149
-,"NAM","Namibia",,,"2011",1.17020216174131
+"NA","NAM","Namibia",,,"2011",1.17020216174131
 "NR","NRU","Nauru",,,"2011",1.52420048441102
 "NP","NPL","Nepal",,,"2011",0.99097502432356
 "NL","NLD","Netherlands",1,1,"2011",1.16918207
@@ -6514,8 +6514,8 @@
 "YE","YEM","Yemen",,,"2011",0.884959398287611
 "ZM","ZMB","Zambia",,,"2011",1.18509633915229
 "ZW","ZWE","Zimbabwe",,,"2011",0.842469647499643
-"TOTAL DAC","","TOTAL DAC",,,"2011",1.10859466
-"EU Institutions","","EU Institutions",,,"2011",1.15407806
+"TOTAL DAC",,"TOTAL DAC",,,"2011",1.10859466
+"EU Institutions",,"EU Institutions",,,"2011",1.15407806
 "AI","AIA","Anguilla",,,"2011",1.13123508
 "CK","COK","Cook Islands",,,"2011",1.00107901
 "CU","CUB","Cuba",,,"2011",0.814032444951128
@@ -6526,7 +6526,7 @@
 "TK","TKL","Tokelau",,,"2011",1.00107901
 "WF","WLF","Wallis and Futuna",,,"2011",1.17930423
 "PS","PSE","West Bank and Gaza Strip",,,"2011",0.874377261062811
-"","","Horn of Africa (ex-Somalia)",,,"2011",0.718887733305188
+,,"Horn of Africa (ex-Somalia)",,,"2011",0.718887733305188
 "AF","AFG","Afghanistan",,,"2012",1.15291159778656
 "AL","ALB","Albania",,,"2012",1.06464193972534
 "DZ","DZA","Algeria",,,"2012",1.44447163146934
@@ -6644,7 +6644,7 @@
 "MA","MAR","Morocco",,,"2012",1.05790199234296
 "MZ","MOZ","Mozambique",,,"2012",1.59284548345906
 "MM","MMR","Myanmar",,,"2012",1.27192251894609
-,"NAM","Namibia",,,"2012",1.16698772203424
+"NA","NAM","Namibia",,,"2012",1.16698772203424
 "NR","NRU","Nauru",,,"2012",1.97249784608395
 "NP","NPL","Nepal",,,"2012",0.937848394689722
 "NL","NLD","Netherlands",1,1,"2012",1.09639797
@@ -6718,8 +6718,8 @@
 "YE","YEM","Yemen",,,"2012",0.934922651997401
 "ZM","ZMB","Zambia",,,"2012",1.19732684768972
 "ZW","ZWE","Zimbabwe",,,"2012",0.876467727724988
-"TOTAL DAC","","TOTAL DAC",,,"2012",1.08284112
-"EU Institutions","","EU Institutions",,,"2012",1.08036781
+"TOTAL DAC",,"TOTAL DAC",,,"2012",1.08284112
+"EU Institutions",,"EU Institutions",,,"2012",1.08036781
 "AI","AIA","Anguilla",,,"2012",1.13562478
 "CK","COK","Cook Islands",,,"2012",1.0233386
 "CU","CUB","Cuba",,,"2012",0.83775382094725
@@ -6730,7 +6730,7 @@
 "TK","TKL","Tokelau",,,"2012",1.0233386
 "WF","WLF","Wallis and Futuna",,,"2012",1.10285874
 "PS","PSE","West Bank and Gaza Strip",,,"2012",0.886666222415722
-"","","Horn of Africa (ex-Somalia)",,,"2012",0.863528316702973
+,,"Horn of Africa (ex-Somalia)",,,"2012",0.863528316702973
 "AF","AFG","Afghanistan",,,"2013",1.08430264671142
 "AL","ALB","Albania",,,"2013",1.09498514456012
 "DZ","DZA","Algeria",,,"2013",1.41009603726858
@@ -6848,7 +6848,7 @@
 "MA","MAR","Morocco",,,"2013",1.1001639255905
 "MZ","MOZ","Mozambique",,,"2013",1.56846960861363
 "MM","MMR","Myanmar",,,"2013",1.17689534160713
-,"NAM","Namibia",,,"2013",1.08015679980611
+"NA","NAM","Namibia",,,"2013",1.08015679980611
 "NR","NRU","Nauru",,,"2013",1.54031179324183
 "NP","NPL","Nepal",,,"2013",0.920630217043501
 "NL","NLD","Netherlands",1,1,"2013",1.14704516
@@ -6922,8 +6922,8 @@
 "YE","YEM","Yemen",,,"2013",1.01822090060774
 "ZM","ZMB","Zambia",,,"2013",1.25333562601516
 "ZW","ZWE","Zimbabwe",,,"2013",0.958724862034861
-"TOTAL DAC","","TOTAL DAC",,,"2013",1.09190854
-"EU Institutions","","EU Institutions",,,"2013",1.12970201
+"TOTAL DAC",,"TOTAL DAC",,,"2013",1.09190854
+"EU Institutions",,"EU Institutions",,,"2013",1.12970201
 "AI","AIA","Anguilla",,,"2013",1.14143701
 "CK","COK","Cook Islands",,,"2013",1.06965286
 "CU","CUB","Cuba",,,"2013",0.860019895334316
@@ -6934,7 +6934,7 @@
 "TK","TKL","Tokelau",,,"2013",1.06965286
 "WF","WLF","Wallis and Futuna",,,"2013",1.14800435
 "PS","PSE","West Bank and Gaza Strip",,,"2013",0.959454993985886
-"","","Horn of Africa (ex-Somalia)",,,"2013",0.872828004530168
+,,"Horn of Africa (ex-Somalia)",,,"2013",0.872828004530168
 "AF","AFG","Afghanistan",,,"2014",1.07917348943334
 "AL","ALB","Albania",,,"2014",1.11066132722228
 "DZ","DZA","Algeria",,,"2014",1.38473615000782
@@ -7052,7 +7052,7 @@
 "MA","MAR","Morocco",,,"2014",1.10421455524197
 "MZ","MOZ","Mozambique",,,"2014",1.53811144215686
 "MM","MMR","Myanmar",,,"2014",1.18843575451789
-,"NAM","Namibia",,,"2014",1.02139026330709
+"NA","NAM","Namibia",,,"2014",1.02139026330709
 "NR","NRU","Nauru",,,"2014",1.21104142867574
 "NP","NPL","Nepal",,,"2014",0.90128911164655
 "NL","NLD","Netherlands",1,1,"2014",1.14905942
@@ -7126,8 +7126,8 @@
 "YE","YEM","Yemen",,,"2014",1.09117952123803
 "ZM","ZMB","Zambia",,,"2014",1.15889449285277
 "ZW","ZWE","Zimbabwe",,,"2014",0.956275385883537
-"TOTAL DAC","","TOTAL DAC",,,"2014",1.09613693
-"EU Institutions","","EU Institutions",,,"2014",1.13922523
+"TOTAL DAC",,"TOTAL DAC",,,"2014",1.09613693
+"EU Institutions",,"EU Institutions",,,"2014",1.13922523
 "AI","AIA","Anguilla",,,"2014",1.22251731
 "CK","COK","Cook Islands",,,"2014",1.10703033
 "CU","CUB","Cuba",,,"2014",0.889804512550309
@@ -7138,7 +7138,7 @@
 "TK","TKL","Tokelau",,,"2014",1.10703033
 "WF","WLF","Wallis and Futuna",,,"2014",1.15384891
 "PS","PSE","West Bank and Gaza Strip",,,"2014",0.979663125994541
-"","","Horn of Africa (ex-Somalia)",,,"2014",0.92370894017545
+,,"Horn of Africa (ex-Somalia)",,,"2014",0.92370894017545
 "AF","AFG","Afghanistan",,,"2015",1.03964020371841
 "AL","ALB","Albania",,,"2015",0.934186596123723
 "DZ","DZA","Algeria",,,"2015",1.03660524957178
@@ -7256,7 +7256,7 @@
 "MA","MAR","Morocco",,,"2015",0.970750106748943
 "MZ","MOZ","Mozambique",,,"2015",1.2655855265703
 "MM","MMR","Myanmar",,,"2015",1.0110247699019
-,"NAM","Namibia",,,"2015",0.885521215173191
+"NA","NAM","Namibia",,,"2015",0.885521215173191
 "NR","NRU","Nauru",,,"2015",1.00680700350877
 "NP","NPL","Nepal",,,"2015",0.934076960171117
 "NL","NLD","Netherlands",1,1,"2015",0.96818878
@@ -7330,8 +7330,8 @@
 "YE","YEM","Yemen",,,"2015",1.29138663872887
 "ZM","ZMB","Zambia",,,"2015",0.880996414464187
 "ZW","ZWE","Zimbabwe",,,"2015",0.961953074538072
-"TOTAL DAC","","TOTAL DAC",,,"2015",0.98746246
-"EU Institutions","","EU Institutions",,,"2015",0.96577661
+"TOTAL DAC",,"TOTAL DAC",,,"2015",0.98746246
+"EU Institutions",,"EU Institutions",,,"2015",0.96577661
 "AI","AIA","Anguilla",,,"2015",1.13948101
 "CK","COK","Cook Islands",,,"2015",0.93234757
 "CU","CUB","Cuba",,,"2015",0.920410266256907
@@ -7342,7 +7342,7 @@
 "TK","TKL","Tokelau",,,"2015",0.93234757
 "WF","WLF","Wallis and Futuna",,,"2015",0.97568153
 "PS","PSE","West Bank and Gaza Strip",,,"2015",0.944013353473903
-"","","Horn of Africa (ex-Somalia)",,,"2015",0.976820198556931
+,,"Horn of Africa (ex-Somalia)",,,"2015",0.976820198556931
 "AF","AFG","Afghanistan",,,"2016",0.985705767234989
 "AL","ALB","Albania",,,"2016",0.944021901187285
 "DZ","DZA","Algeria",,,"2016",0.969065799289785
@@ -7460,7 +7460,7 @@
 "MA","MAR","Morocco",,,"2016",0.980500697481519
 "MZ","MOZ","Mozambique",,,"2016",0.898158341808358
 "MM","MMR","Myanmar",,,"2016",1.01189118268611
-,"NAM","Namibia",,,"2016",0.843164356555212
+"NA","NAM","Namibia",,,"2016",0.843164356555212
 "NR","NRU","Nauru",,,"2016",0.930168421052632
 "NP","NPL","Nepal",,,"2016",0.918849081993569
 "NL","NLD","Netherlands",1,1,"2016",0.96971731
@@ -7534,8 +7534,8 @@
 "YE","YEM","Yemen",,,"2016",1.08609125769044
 "ZM","ZMB","Zambia",,,"2016",0.837024754909541
 "ZW","ZWE","Zimbabwe",,,"2016",0.959220656007309
-"TOTAL DAC","","TOTAL DAC",,,"2016",0.98214716
-"EU Institutions","","EU Institutions",,,"2016",0.97028056
+"TOTAL DAC",,"TOTAL DAC",,,"2016",0.98214716
+"EU Institutions",,"EU Institutions",,,"2016",0.97028056
 "AI","AIA","Anguilla",,,"2016",1.027203
 "CK","COK","Cook Islands",,,"2016",0.94746386
 "CU","CUB","Cuba",,,"2016",0.960233573031483
@@ -7546,7 +7546,7 @@
 "TK","TKL","Tokelau",,,"2016",0.94746386
 "WF","WLF","Wallis and Futuna",,,"2016",0.97454475
 "PS","PSE","West Bank and Gaza Strip",,,"2016",0.955111274537826
-"","","Horn of Africa (ex-Somalia)",,,"2016",1.02068508330188
+,,"Horn of Africa (ex-Somalia)",,,"2016",1.02068508330188
 "AF","AFG","Afghanistan",,,"2017",1
 "AL","ALB","Albania",,,"2017",1
 "DZ","DZA","Algeria",,,"2017",1
@@ -7664,7 +7664,7 @@
 "MA","MAR","Morocco",,,"2017",1
 "MZ","MOZ","Mozambique",,,"2017",1
 "MM","MMR","Myanmar",,,"2017",1
-,"NAM","Namibia",,,"2017",1
+"NA","NAM","Namibia",,,"2017",1
 "NR","NRU","Nauru",,,"2017",1
 "NP","NPL","Nepal",,,"2017",1
 "NL","NLD","Netherlands",1,1,"2017",1
@@ -7738,8 +7738,8 @@
 "YE","YEM","Yemen",,,"2017",1
 "ZM","ZMB","Zambia",,,"2017",1
 "ZW","ZWE","Zimbabwe",,,"2017",1
-"TOTAL DAC","","TOTAL DAC",,,"2017",1
-"EU Institutions","","EU Institutions",,,"2017",1
+"TOTAL DAC",,"TOTAL DAC",,,"2017",1
+"EU Institutions",,"EU Institutions",,,"2017",1
 "AI","AIA","Anguilla",,,"2017",1
 "CK","COK","Cook Islands",,,"2017",1
 "CU","CUB","Cuba",,,"2017",1
@@ -7750,7 +7750,7 @@
 "TK","TKL","Tokelau",,,"2017",1
 "WF","WLF","Wallis and Futuna",,,"2017",1
 "PS","PSE","West Bank and Gaza Strip",,,"2017",1
-"","","Horn of Africa (ex-Somalia)",,,"2017",1
+,,"Horn of Africa (ex-Somalia)",,,"2017",1
 "AF","AFG","Afghanistan",,,"2018",0.9461167547205
 "AL","ALB","Albania",,,"2018",1.11792982281945
 "DZ","DZA","Algeria",,,"2018",1.05517993566215
@@ -7868,7 +7868,7 @@
 "MA","MAR","Morocco",,,"2018",1.04640072312348
 "MZ","MOZ","Mozambique",,,"2018",1.10973193682066
 "MM","MMR","Myanmar",,,"2018",1.00640302127087
-,"NAM","Namibia",,,"2018",1.04430804985257
+"NA","NAM","Namibia",,,"2018",1.04430804985257
 "NR","NRU","Nauru",,,"2018",1.05120840449206
 "NP","NPL","Nepal",,,"2018",1.08950850052592
 "NL","NLD","Netherlands",1,1,"2018",1.07051748
@@ -7942,8 +7942,8 @@
 "YE","YEM","Yemen",,,"2018",1.03140038932801
 "ZM","ZMB","Zambia",,,"2018",0.940658093114023
 "ZW","ZWE","Zimbabwe",,,"2018",1.15377648925444
-"TOTAL DAC","","TOTAL DAC",,,"2018",1.04262474
-"EU Institutions","","EU Institutions",,,"2018",1.0623194
+"TOTAL DAC",,"TOTAL DAC",,,"2018",1.04262474
+"EU Institutions",,"EU Institutions",,,"2018",1.0623194
 "AI","AIA","Anguilla",,,"2018",1.05566535
 "CK","COK","Cook Islands",,,"2018",0.98433064
 "CU","CUB","Cuba",,,"2018",
@@ -7954,7 +7954,7 @@
 "TK","TKL","Tokelau",,,"2018",0.98433064
 "WF","WLF","Wallis and Futuna",,,"2018",1.05683869
 "PS","PSE","West Bank and Gaza Strip",,,"2018",1
-"","","Horn of Africa (ex-Somalia)",,,"2018",0.993143015884497
+,,"Horn of Africa (ex-Somalia)",,,"2018",0.993143015884497
 "AF","AFG","Afghanistan",,,"2019",0.937554941088895
 "AL","ALB","Albania",,,"2019",1.13218849692221
 "DZ","DZA","Algeria",,,"2019",1.04984737626499
@@ -8072,7 +8072,7 @@
 "MA","MAR","Morocco",,,"2019",1.0402183356706
 "MZ","MOZ","Mozambique",,,"2019",1.13686523885228
 "MM","MMR","Myanmar",,,"2019",0.905532204030664
-,"NAM","Namibia",,,"2019",1.04030129896032
+"NA","NAM","Namibia",,,"2019",1.04030129896032
 "NR","NRU","Nauru",,,"2019",1.03479894407857
 "NP","NPL","Nepal",,,"2019",1.02657137921024
 "NL","NLD","Netherlands",1,1,"2019",1.05205153550123
@@ -8146,8 +8146,8 @@
 "YE","YEM","Yemen",,,"2019",1.09190715654287
 "ZM","ZMB","Zambia",,,"2019",0.89204146988309
 "ZW","ZWE","Zimbabwe",,,"2019",1.03886330436749
-"TOTAL DAC","","TOTAL DAC",,,"2019",1.03743062202136
-"EU Institutions","","EU Institutions",,,"2019",1.04178185298891
+"TOTAL DAC",,"TOTAL DAC",,,"2019",1.03743062202136
+"EU Institutions",,"EU Institutions",,,"2019",1.04178185298891
 "AI","AIA","Anguilla",,,"2019",1.04459305252547
 "CK","COK","Cook Islands",,,"2019",0.995128293856199
 "CU","CUB","Cuba",,,"2019",
@@ -8158,7 +8158,7 @@
 "TK","TKL","Tokelau",,,"2019",0.995128293856199
 "WF","WLF","Wallis and Futuna",,,"2019",1.03777352785292
 "PS","PSE","West Bank and Gaza Strip",,,"2019",
-"","","Horn of Africa (ex-Somalia)",,,"2019",1.04769494990219
+,,"Horn of Africa (ex-Somalia)",,,"2019",1.04769494990219
 "AF","AFG","Afghanistan",,,"2020",0.937208280062762
 "AL","ALB","Albania",,,"2020",1.1754885499923
 "DZ","DZA","Algeria",,,"2020",1.0841301044429
@@ -8276,7 +8276,7 @@
 "MA","MAR","Morocco",,,"2020",1.06549795072533
 "MZ","MOZ","Mozambique",,,"2020",1.15870527594246
 "MM","MMR","Myanmar",,,"2020",0.923756963281432
-,"NAM","Namibia",,,"2020",1.06827424521345
+"NA","NAM","Namibia",,,"2020",1.06827424521345
 "NR","NRU","Nauru",,,"2020",1.06112853598295
 "NP","NPL","Nepal",,,"2020",1.10345104083697
 "NL","NLD","Netherlands",1,1,"2020",1.08090470913896
@@ -8350,8 +8350,8 @@
 "YE","YEM","Yemen",,,"2020",1.07088362416782
 "ZM","ZMB","Zambia",,,"2020",0.890368635904301
 "ZW","ZWE","Zimbabwe",,,"2020",1.16497564098508
-"TOTAL DAC","","TOTAL DAC",,,"2020",1.06612823787508
-"EU Institutions","","EU Institutions",,,"2020",1.07158502864876
+"TOTAL DAC",,"TOTAL DAC",,,"2020",1.06612823787508
+"EU Institutions",,"EU Institutions",,,"2020",1.07158502864876
 "AI","AIA","Anguilla",,,"2020",1.06580481979818
 "CK","COK","Cook Islands",,,"2020",1.03331892394705
 "CU","CUB","Cuba",,,"2020",
@@ -8362,7 +8362,7 @@
 "TK","TKL","Tokelau",,,"2020",1.03331892394705
 "WF","WLF","Wallis and Futuna",,,"2020",1.06571205738395
 "PS","PSE","West Bank and Gaza Strip",,,"2020",
-"","","Horn of Africa (ex-Somalia)",,,"2020",1.06433141383638
+,,"Horn of Africa (ex-Somalia)",,,"2020",1.06433141383638
 "AF","AFG","Afghanistan",,,"2021",0.955480425314141
 "AL","ALB","Albania",,,"2021",1.22339184469052
 "DZ","DZA","Algeria",,,"2021",1.10749727009815
@@ -8480,7 +8480,7 @@
 "MA","MAR","Morocco",,,"2021",1.08805377220299
 "MZ","MOZ","Mozambique",,,"2021",1.18415804123106
 "MM","MMR","Myanmar",,,"2021",0.946958812243784
-,"NAM","Namibia",,,"2021",1.09453862201159
+"NA","NAM","Namibia",,,"2021",1.09453862201159
 "NR","NRU","Nauru",,,"2021",1.07229755123298
 "NP","NPL","Nepal",,,"2021",1.15254034389202
 "NL","NLD","Netherlands",1,1,"2021",1.10652351616048
@@ -8554,8 +8554,8 @@
 "YE","YEM","Yemen",,,"2021",1.0491521660331
 "ZM","ZMB","Zambia",,,"2021",0.902443299158081
 "ZW","ZWE","Zimbabwe",,,"2021",1.21709676802605
-"TOTAL DAC","","TOTAL DAC",,,"2021",1.09322987430971
-"EU Institutions","","EU Institutions",,,"2021",1.09790399464537
+"TOTAL DAC",,"TOTAL DAC",,,"2021",1.09322987430971
+"EU Institutions",,"EU Institutions",,,"2021",1.09790399464537
 "AI","AIA","Anguilla",,,"2021",1.08548402798161
 "CK","COK","Cook Islands",,,"2021",1.06954038147535
 "CU","CUB","Cuba",,,"2021",
@@ -8566,7 +8566,7 @@
 "TK","TKL","Tokelau",,,"2021",1.06954038147535
 "WF","WLF","Wallis and Futuna",,,"2021",1.08891349827362
 "PS","PSE","West Bank and Gaza Strip",,,"2021",
-"","","Horn of Africa (ex-Somalia)",,,"2021",1.08845692329222
+,,"Horn of Africa (ex-Somalia)",,,"2021",1.08845692329222
 "AF","AFG","Afghanistan",,,"2022",0.983140993116068
 "AL","ALB","Albania",,,"2022",1.27778270931726
 "DZ","DZA","Algeria",,,"2022",1.14313527106133
@@ -8684,7 +8684,7 @@
 "MA","MAR","Morocco",,,"2022",1.11166959697394
 "MZ","MOZ","Mozambique",,,"2022",1.21205334878864
 "MM","MMR","Myanmar",,,"2022",0.973810933084793
-,"NAM","Namibia",,,"2022",1.12251089964765
+"NA","NAM","Namibia",,,"2022",1.12251089964765
 "NR","NRU","Nauru",,,"2022",1.09438772293308
 "NP","NPL","Nepal",,,"2022",1.20004166429586
 "NL","NLD","Netherlands",1,1,"2022",1.13453847713708
@@ -8758,8 +8758,8 @@
 "YE","YEM","Yemen",,,"2022",1.04251135455286
 "ZM","ZMB","Zambia",,,"2022",0.921008596480795
 "ZW","ZWE","Zimbabwe",,,"2022",1.26574011911904
-"TOTAL DAC","","TOTAL DAC",,,"2022",1.12250815564063
-"EU Institutions","","EU Institutions",,,"2022",1.12756311138483
+"TOTAL DAC",,"TOTAL DAC",,,"2022",1.12250815564063
+"EU Institutions",,"EU Institutions",,,"2022",1.12756311138483
 "AI","AIA","Anguilla",,,"2022",1.10953268658854
 "CK","COK","Cook Islands",,,"2022",1.10751363899041
 "CU","CUB","Cuba",,,"2022",
@@ -8770,7 +8770,7 @@
 "TK","TKL","Tokelau",,,"2022",1.10751363899041
 "WF","WLF","Wallis and Futuna",,,"2022",1.11511489300666
 "PS","PSE","West Bank and Gaza Strip",,,"2022",
-"","","Horn of Africa (ex-Somalia)",,,"2022",1.11059830107669
+,,"Horn of Africa (ex-Somalia)",,,"2022",1.11059830107669
 "AF","AFG","Afghanistan",,,"2023",1.01078511855837
 "AL","ALB","Albania",,,"2023",1.32575658517388
 "DZ","DZA","Algeria",,,"2023",1.18131012688211
@@ -8888,7 +8888,7 @@
 "MA","MAR","Morocco",,,"2023",1.13493991856247
 "MZ","MOZ","Mozambique",,,"2023",1.24034130741792
 "MM","MMR","Myanmar",,,"2023",0.999444053938771
-,"NAM","Namibia",,,"2023",1.14958643538538
+"NA","NAM","Namibia",,,"2023",1.14958643538538
 "NR","NRU","Nauru",,,"2023",1.12022331062152
 "NP","NPL","Nepal",,,"2023",1.24747984379405
 "NL","NLD","Netherlands",1,1,"2023",1.16220113740025
@@ -8962,8 +8962,8 @@
 "YE","YEM","Yemen",,,"2023",1.03609682332282
 "ZM","ZMB","Zambia",,,"2023",0.944901870987783
 "ZW","ZWE","Zimbabwe",,,"2023",1.3152720242983
-"TOTAL DAC","","TOTAL DAC",,,"2023",1.15216134238869
-"EU Institutions","","EU Institutions",,,"2023",1.15689991859837
+"TOTAL DAC",,"TOTAL DAC",,,"2023",1.15216134238869
+"EU Institutions",,"EU Institutions",,,"2023",1.15689991859837
 "AI","AIA","Anguilla",,,"2023",1.13502771165446
 "CK","COK","Cook Islands",,,"2023",1.14169246853223
 "CU","CUB","Cuba",,,"2023",
@@ -8974,4 +8974,4 @@
 "TK","TKL","Tokelau",,,"2023",1.14169246853223
 "WF","WLF","Wallis and Futuna",,,"2023",1.14088629789676
 "PS","PSE","West Bank and Gaza Strip",,,"2023",
-"","","Horn of Africa (ex-Somalia)",,,"2023",1.13600761292265
+,,"Horn of Africa (ex-Somalia)",,,"2023",1.13600761292265
