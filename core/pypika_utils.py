@@ -46,7 +46,7 @@ class QueryBuilder:
 
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
 
-        query_steps = operation.operationstep_set
+        query_steps = operation.operationstep_set.order_by('step_id')
         self.initial_table_name = query_steps.first().source.active_mirror_name
         self.initial_schema_name = query_steps.first().source.schema
         self.current_dataset = Table(
@@ -189,11 +189,11 @@ class QueryBuilder:
             unjoined_table1_columns = [col for col in columns_x if col not in joined_table1_columns]
             unjoined_table2_columns = [col for col in columns_y if col not in joined_table2_columns]
             common_unjoined_columns = list(set(unjoined_table1_columns) & set(unjoined_table2_columns))
-            uncommon_table2_unjoined_columns = [table2.get(col) for col in unjoined_table2_columns if col not in common_unjoined_columns]
+            uncommon_table2_unjoined_columns = [getattr(table2, col) for col in unjoined_table2_columns if col not in common_unjoined_columns]
 
             select_on = [table1.star]  # All of the columns from table1
             select_on += uncommon_table2_unjoined_columns  # And all of the unjoined, unaliased unique columns from Table2
-            select_on += [table2.get(col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]  # And all of the unjoined, aliased common columns from 2
+            select_on += [getattr(table2, col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]  # And all of the unjoined, aliased common columns from 2
         else:
             select_on = [table1.star] + [table2.star]
 
