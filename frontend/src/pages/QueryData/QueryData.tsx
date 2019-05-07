@@ -1,7 +1,6 @@
 import { List } from 'immutable';
-import { unparse } from 'papaparse';
 import * as React from 'react';
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -13,7 +12,7 @@ import { PaginatedContent } from '../../components/PaginatedContent';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { getSourceIDFromOperation } from '../../utils';
+import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import { QueryDataState, queryDataReducerId } from './reducers';
 
@@ -30,20 +29,18 @@ interface ReduxState {
   operations: List<OperationMap>;
   activeOperation?: OperationMap;
   source?: SourceMap;
+  token: string;
 }
 interface RouteParams {
   id?: string;
 }
 type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams>;
-interface ComponentState {
-  exporting: boolean;
-}
 
-class QueryData extends React.Component<QueryDataProps, ComponentState> {
-  state: ComponentState = { exporting: false };
-
+class QueryData extends React.Component<QueryDataProps> {
   render() {
     const loading = this.props.page.get('loading') as boolean;
+    const token = this.props.token;
+    const { id } = this.props.match.params;
 
     return (
       <Row>
@@ -55,11 +52,12 @@ class QueryData extends React.Component<QueryDataProps, ComponentState> {
           <Card>
             <Card.Header className="card-header-text card-header-danger">
               <Card.Text>Query Data</Card.Text>
-              <div>
-                <Button variant="danger" size="sm" onClick={ this.exportToCSV } disabled={ this.state.exporting }>
-                  { this.state.exporting ? 'Exporting ...' : 'Export to CSV' }
+              <Form action={ `${api.routes.EXPORT}${id}/` } method="POST">
+                <Form.Control type="hidden" name="token" value={ token } />
+                <Button type="submit" variant="danger" size="sm">
+                  Export to CSV
                 </Button>
-              </div>
+              </Form>
             </Card.Header>
             <Card.Body>
               { this.renderTable() }
@@ -123,21 +121,6 @@ class QueryData extends React.Component<QueryDataProps, ComponentState> {
       this.props.actions.fetchOperation(id);
     }
   }
-
-  private exportToCSV = () => {
-    this.setState({ exporting: true });
-    const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
-    if (data.count()) {
-      const filename = 'export.csv';
-      const link = document.createElement('a');
-      const csvData = new Blob([ `\ufeff${unparse(data.toJS())}` ], { type: 'text/csv' });
-      const url = URL.createObjectURL(csvData);
-      link.setAttribute('href', url);
-      link.setAttribute('download', filename);
-      link.click();
-      this.setState({ exporting: false });
-    }
-  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
@@ -153,7 +136,8 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
   page: reduxStore.get(`${queryDataReducerId}`),
   operations: reduxStore.getIn([ 'operations', 'operations' ]),
   activeOperation: reduxStore.getIn([ 'operations', 'activeOperation' ]),
-  source: reduxStore.getIn([ 'sources', 'activeSource' ])
+  source: reduxStore.getIn([ 'sources', 'activeSource' ]),
+  token: reduxStore.get('token')
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps)(QueryData);

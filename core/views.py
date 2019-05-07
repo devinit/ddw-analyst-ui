@@ -4,7 +4,7 @@
 from django.contrib.auth.models import User
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import generics, permissions
+from rest_framework import exceptions, generics, permissions
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.views import APIView
 
@@ -57,13 +57,16 @@ def streaming_export_view(request, pk):
     posted_token = request.POST.get("token", None)
     if posted_token is not None:
         token_auth = TokenAuthentication()
-        user, token = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
-        if user.is_authenticated:
-            operation = Operation.objects.get(pk=pk)
-            exporter = StreamingExporter(operation)
-            response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
-            response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
-            return response
+        try:
+            user, token = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
+            if user.is_authenticated:
+                operation = Operation.objects.get(pk=pk)
+                exporter = StreamingExporter(operation)
+                response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
+                response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
+                return response
+        except exceptions.AuthenticationFailed:
+            return redirect('/login/')
     return redirect('/login/')
 
 

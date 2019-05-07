@@ -4,6 +4,7 @@ export const api = {
     LOGOUT: '/api/auth/logout/',
     USERS: '/api/users/',
     SOURCES: '/api/sources/',
-    OPERATIONS: '/api/operations/'
+    OPERATIONS: '/api/operations/',
+    EXPORT: '/api/export/'
   }
 };
