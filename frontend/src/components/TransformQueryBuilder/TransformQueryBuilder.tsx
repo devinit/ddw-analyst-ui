@@ -15,6 +15,7 @@ interface TransformQueryBuilderProps {
   function?: string;
   column?: string;
   value?: string;
+  editable?: boolean;
   onUpdate?: (options: string) => void;
 }
 
@@ -25,7 +26,8 @@ interface TransformQueryBuilderState {
 
 export class TransformQueryBuilder extends React.Component<TransformQueryBuilderProps, TransformQueryBuilderState> {
   static defaultProps: Partial<TransformQueryBuilderProps> = {
-    alerts: {}
+    alerts: {},
+    editable: true
   };
 
   private scalarFunctions = [
@@ -65,13 +67,14 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
                   options={ this.props.multi ? this.multiFunctions : this.scalarFunctions }
                   value={ this.props.function }
                   onChange={ this.onSelectChange }
+                  disabled={ !this.props.editable }
                 />
               </Col>
               <Col md={ 2 }>
                 <Button
                   variant="secondary"
                   size="sm"
-                  hidden={ this.props.function !== 'text_search' }
+                  hidden={ this.props.function !== 'text_search' || !this.props.editable }
                   onClick={ this.toggleInfo }
                 >
                   <i className="material-icons">info</i>
@@ -113,6 +116,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               options={ this.getSelectOptionsFromColumns(columns, this.props.function) }
               value={ this.props.multi ? this.props.columns : this.props.column }
               onChange={ this.onSelectChange }
+              disabled={ !this.props.editable }
             />
             <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': columnAlert }) }>
               { columnAlert }
@@ -133,6 +137,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               onFocus={ this.setFocusedField }
               onBlur={ this.resetFocus }
               defaultValue={ this.props.value }
+              disabled={ !this.props.editable }
             />
             <Form.Control.Feedback
               type="invalid"

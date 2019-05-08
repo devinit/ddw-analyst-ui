@@ -24,13 +24,15 @@ interface ComponentProps {
   tableName?: string;
   schema?: string;
   columnMapping?: { [key: string]: string };
+  editable?: boolean;
   onUpdate?: (options: string) => void;
 }
 type JoinQueryBuilderProps = ComponentProps & ReduxState & ActionProps;
 
 class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
   static defaultProps: Partial<JoinQueryBuilderProps> = {
-    alerts: {}
+    alerts: {},
+    editable: true
   };
 
   render() {
@@ -54,6 +56,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
               loading={ this.props.isFetchingSources }
               value={ sourceID as string | undefined }
               onChange={ this.onChange }
+              disabled={ !this.props.editable }
             />
             <Form.Control.Feedback
               type="invalid"
@@ -71,7 +74,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
               ? this.renderColumnMappings(columnMapping, primarySource, secondarySource)
               : null
           }
-          <Button variant="danger" size="sm" onClick={ this.addMapping }>
+          <Button variant="danger" size="sm" onClick={ this.addMapping } hidden={ !this.props.editable }>
             <i className="material-icons mr-1">add</i>
             Add Mapping
           </Button>
@@ -93,6 +96,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
     return Object.keys(columnMapping).map(primaryColumn =>
       <JoinColumnsMapper
         key={ primaryColumn }
+        editable={ this.props.editable }
         primaryColumns={ primaryColumns }
         secondaryColumns={ secondaryColumns }
         primaryColumn={ primaryColumn }

@@ -146,6 +146,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           activeSource={ this.props.activeSource }
           activeStep={ activeStep }
           onClickStep={ (step) => this.props.actions.updateActiveStep(step, true) }
+          editable={ editable }
         />
       </OperationForm>
     );

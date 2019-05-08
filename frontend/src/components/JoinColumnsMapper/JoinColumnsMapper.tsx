@@ -11,6 +11,7 @@ interface JoinColumnsMapperProps {
   primaryColumn: string;
   secondaryColumn: string;
   columnMapping: { [key: string]: string };
+  editable?: boolean;
   onUpdate?: (columnMapping: { [key: string]: string }) => void;
   onDelete?: (columnMapping: { [key: string]: string }) => void;
 }
@@ -25,6 +26,7 @@ const StyledCol = styled(Col)`
 `;
 
 export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, JoinColumnsMapperState> {
+  static defaultProps: Partial<JoinColumnsMapperProps> = { editable: true };
   state: JoinColumnsMapperState = { primaryColumn: '', secondaryColumn: '' };
 
   render() {
@@ -42,6 +44,7 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
             options={ this.getSelectOptionsFromColumns(primaryColumns) }
             onChange={ this.onSelectColumn }
             defaultValue={ primaryColumn }
+            disabled={ !this.props.editable }
           />
         </Col>
 
@@ -57,6 +60,7 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
             options={ this.getSelectOptionsFromColumns(secondaryColumns) }
             onChange={ this.onSelectColumn }
             defaultValue={ secondaryColumn }
+            disabled={ !this.props.editable }
           />
         </Col>
 

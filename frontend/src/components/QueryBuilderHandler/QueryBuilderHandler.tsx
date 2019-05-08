@@ -70,6 +70,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
           function={ parsedOptions.agg_func_name }
           column={ parsedOptions.operational_column }
           onUpdate={ onUpdateOptions }
+          editable={ this.props.editable }
         />
       );
     }
@@ -88,6 +89,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
           columns={ parsedOptions.operational_columns }
           multi={ query === 'multi_transform' }
           onUpdate={ onUpdateOptions }
+          editable={ this.props.editable }
         />
       );
     }
@@ -102,6 +104,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
           schema={ parsedOptions.schema_name }
           columnMapping={ parsedOptions.join_on }
           onUpdate={ onUpdateOptions }
+          editable={ this.props.editable }
         />
       );
     }
