@@ -131,6 +131,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
         editable={ editable }
         valid={ steps.count() > 0 }
         onUpdateOperation={ this.onUpdateOperation }
+        onDuplicateOperation={ this.onDuplicateOperation }
         onSuccess={ this.onSaveOperation }
         processing={ this.props.page.get('processing') as boolean }
         onDeleteOperation={ this.onDeleteOperation }
@@ -210,6 +211,11 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
   private onUpdateOperation = (operation: OperationMap) => {
     this.props.actions.setActiveOperation(operation, true);
+  }
+
+  private onDuplicateOperation = (operation: OperationMap) => {
+    this.onUpdateOperation(operation);
+    this.props.history.push('/queries/build');
   }
 
   private onDeleteOperation = (operation: OperationMap) => {

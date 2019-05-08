@@ -16,6 +16,7 @@ interface OperationFormProps {
   processing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
   onDeleteOperation?: (operation: OperationMap) => void;
+  onDuplicateOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
   onReset?: () => void;
 }
@@ -99,6 +100,15 @@ export class OperationForm extends React.Component<OperationFormProps> {
 
               { this.props.children }
 
+              <Button
+                variant="danger"
+                onClick={ this.onDuplicate }
+                size="sm"
+                hidden={ !(!!values.id && !this.props.editable) }
+              >
+                Make a Copy
+              </Button>
+
               <Dropdown hidden={ !!values.id && !this.props.editable }>
                 <Button
                   variant="danger"
@@ -119,8 +129,11 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   <Dropdown.Item eventKey="1" onClick={ this.onSuccess(true) }>
                     { this.props.processing ? 'Saving ...' : 'Save & Preview' }
                   </Dropdown.Item>
+                  <Dropdown.Item eventKey="2" hidden={ !values.id } onClick={ this.onDuplicate }>
+                    Make a Copy
+                  </Dropdown.Item>
                   <Dropdown.Item
-                    eventKey="2"
+                    eventKey="3"
                     onClick={ this.props.onReset }
                     hidden={ !this.props.onReset || !!(values.id && !this.props.editable) }
                   >
@@ -192,6 +205,14 @@ export class OperationForm extends React.Component<OperationFormProps> {
   private onDelete = () => {
     if (this.props.onDeleteOperation && this.props.operation) {
       this.props.onDeleteOperation(this.props.operation);
+    }
+  }
+
+  private onDuplicate = () => {
+    if (this.props.operation && this.props.onDuplicateOperation) {
+      const operation = this.props.operation.withMutations(opn =>
+        opn.delete('id').set('name', `Copy of ${opn.get('name')}`));
+      this.props.onDuplicateOperation(operation);
     }
   }
 }
