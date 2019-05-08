@@ -175,7 +175,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
   private isEditable(operation?: OperationMap) {
     const user = this.props.user.get('username') as string;
     const isSuperUser = this.props.user.get('is_superuser') as boolean;
-    return !operation || user === operation.get('user') || isSuperUser; // TODO: remove when obsolete
+    return !operation || !operation.get('id') || user === operation.get('user') || isSuperUser;
   }
 
   private setActiveOperationByID(id: string) {

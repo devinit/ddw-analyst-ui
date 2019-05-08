@@ -30,6 +30,7 @@ const StyledListItem = styled(ListGroup.Item)`
 `;
 
 class OperationSteps extends React.Component<OperationStepsProps> {
+  static defaultProps: Partial<OperationStepsProps> = { editable: true };
   render() {
     const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = this.props;
 
