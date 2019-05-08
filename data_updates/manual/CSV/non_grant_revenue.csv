@@ -1,4 +1,4 @@
-di_id,iso3,country_name,year,budget_type,l2,value_current_ncu,value_current_usd,value_2016,value_2017
+di_id,iso3,country_name,year,budget_type,l2,value_current_ncu,value_current_usd,value_usd_constant_2016,value_usd_constant_2017
 AE,ARE,United Arab Emirates,2000,actual,revenue,,0,0,0
 AE,ARE,United Arab Emirates,2001,actual,revenue,,0,0,0
 AE,ARE,United Arab Emirates,2002,actual,revenue,,0,0,0
@@ -2999,7 +2999,3 @@ ZW,ZWE,Zimbabwe,2016,actual,revenue,3502000000,3375425742.57426,3502000000,35189
 ZW,ZWE,Zimbabwe,2017,proj,revenue,3713000000,2962226474.23282,3524171526.80007,2962226474.23282
 ZW,ZWE,Zimbabwe,2018,proj,revenue,3981000000,1953232559.01298,3489386519.05228,1692903761.86738
 ZW,ZWE,Zimbabwe,2019,proj,revenue,4303000000,1168669444.74906,3616940158.57542,1124950164.12251
-ZW,ZWE,Zimbabwe,2016,actual,revenue,3502000000,3375425743,3502000000,3518925204
-ZW,ZWE,Zimbabwe,2017,proj,revenue,3713000000,2962226474,3524171527,2962226474
-ZW,ZWE,Zimbabwe,2018,proj,revenue,3981000000,1953232559,3489386519,1692903762
-ZW,ZWE,Zimbabwe,2019,proj,revenue,4303000000,1168669445,3616940159,1124950164
