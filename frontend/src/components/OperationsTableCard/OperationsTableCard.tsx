@@ -56,7 +56,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
                   <Nav.Link eventKey="myQueries">My Queries</Nav.Link>
                 </Nav.Item>
                 <Nav.Item onClick={ () => this.fetchQueries() }>
-                  <Nav.Link eventKey="otherQueries">Others</Nav.Link>
+                  <Nav.Link eventKey="otherQueries">Other Queries</Nav.Link>
                 </Nav.Item>
               </Nav>
               <Tab.Content>
@@ -98,6 +98,7 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
           count={ index + 1 }
           name={ operation.get('name') as string }
           updatedOn={ operation.get('updated_on') as string }
+          isDraft={ operation.get('is_draft') as boolean }
           onClick={ this.onEditOperation(operation) }
         >
           <OperationsTable.Actions>
