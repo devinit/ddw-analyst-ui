@@ -41,6 +41,8 @@ class QueryData extends React.Component<QueryDataProps> {
     const loading = this.props.page.get('loading') as boolean;
     const token = this.props.token;
     const { id } = this.props.match.params;
+    const operation = this.props.activeOperation;
+    const title = operation ? operation.get('name') : 'Query Data';
 
     return (
       <Row>
@@ -51,7 +53,7 @@ class QueryData extends React.Component<QueryDataProps> {
 
           <Card>
             <Card.Header className="card-header-text card-header-danger">
-              <Card.Text>Query Data</Card.Text>
+              <Card.Text>{ title }</Card.Text>
               <Form action={ `${api.routes.EXPORT}${id}/` } method="POST">
                 <Form.Control type="hidden" name="token" value={ token } />
                 <Button type="submit" variant="danger" size="sm">
@@ -69,7 +71,7 @@ class QueryData extends React.Component<QueryDataProps> {
   }
 
   componentDidMount() {
-    const operation = this.props.page.get('operation') as OperationMap | undefined;
+    const operation = this.props.activeOperation;
     const { id } = this.props.match.params;
     if (!operation) {
       this.setOperation(id);
