@@ -123,9 +123,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
     const activeStep = this.props.page.get('activeStep') as OperationStepMap | undefined;
-    const user = this.props.user.get('username') as string;
-    const isSuperUser = this.props.user.get('is_superuser') as boolean;
-    const editable = !operation || user === operation.get('user') || isSuperUser;
+    const editable = this.isEditable(operation);
 
     return (
       <OperationForm
@@ -155,6 +153,8 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
   private renderOperationStepForm(source?: SourceMap, step?: OperationStepMap, editing = false) {
     if (step && source) {
+      const editable = this.isEditable(this.props.activeOperation);
+
       return (
         <OperationStepForm
           source={ source }
@@ -163,11 +163,18 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           onSuccess={ this.onAddOperationStep }
           onDeleteStep={ this.onDeleteOperationStep }
           editing={ editing }
+          editable={ editable }
         />
       );
     }
 
     return null;
+  }
+
+  private isEditable(operation?: OperationMap) {
+    const user = this.props.user.get('username') as string;
+    const isSuperUser = this.props.user.get('is_superuser') as boolean;
+    return !operation || user === operation.get('user') || isSuperUser; // TODO: remove when obsolete
   }
 
   private setActiveOperationByID(id: string) {

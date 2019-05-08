@@ -12,6 +12,7 @@ interface FilterItemProps {
   onUpdate: (filter: ErroredFilterMap) => void;
   onDelete: (filter: ErroredFilterMap) => void;
   errors?: { [P in keyof Filter]?: string };
+  editable?: boolean;
 }
 
 interface FilterItemState {
@@ -19,6 +20,7 @@ interface FilterItemState {
 }
 
 export class FilterItem extends React.Component<FilterItemProps, FilterItemState> {
+  static defaultProps: Partial<FilterItemProps> = { editable: true };
   state: FilterItemState = { hasFocus: '' };
 
   render() {
@@ -37,6 +39,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             onChange={ this.onSelectColumn }
             defaultValue={ filter.get('field') as string }
             error={ !!(errors && errors.get('field')) }
+            disabled={ !this.props.editable }
           />
           <Form.Control.Feedback
             type="invalid"
@@ -56,6 +59,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             onChange={ this.onSelectOperation }
             defaultValue={ this.props.filter.get('func') as string }
             error={ !!(errors && errors.get('func')) }
+            disabled={ !this.props.editable }
           />
           <Form.Control.Feedback
             type="invalid"
@@ -79,6 +83,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
               onFocus={ this.setFocusedField }
               onBlur={ this.resetFocus }
               onChange={ debounce(this.onChangeValue, 1000, { leading: true }) }
+              disabled={ !this.props.editable }
             />
             <Form.Control.Feedback
               type="invalid"
@@ -90,7 +95,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
         </Col>
 
         <Col lg={ 1 }>
-          <Button variant="link" className="btn-just-icon" onClick={ this.onDelete }>
+          <Button variant="link" className="btn-just-icon" onClick={ this.onDelete } hidden={ !this.props.editable }>
             <i className="material-icons">delete</i>
           </Button>
         </Col>

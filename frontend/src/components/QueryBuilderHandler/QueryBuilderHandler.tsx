@@ -13,6 +13,7 @@ interface QueryBuilderHandlerProps {
   alerts?: { [key: string]: string };
   source: SourceMap;
   step: OperationStepMap;
+  editable?: boolean;
   onUpdateOptions: (options: string) => void;
 }
 
@@ -38,14 +39,24 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
       const { filters }: Filters = options ? JSON.parse(options) : { filters: [] };
 
       return (
-        <FilterQueryBuilder source={ source } filters={ fromJS(filters) } onUpdateFilters={ onUpdateOptions } />
+        <FilterQueryBuilder
+          source={ source }
+          filters={ fromJS(filters) }
+          onUpdateFilters={ onUpdateOptions }
+          editable={ this.props.editable }
+        />
       );
     }
     if (query === 'select') {
       const { columns } = options ? JSON.parse(options) : { columns: [] }; // TODO: specify type
 
       return (
-        <SelectQueryBuilder source={ source } columns={ columns } onUpdateColumns={ this.props.onUpdateOptions }/>
+        <SelectQueryBuilder
+          source={ source }
+          columns={ columns }
+          onUpdateColumns={ this.props.onUpdateOptions }
+          editable={ this.props.editable }
+        />
       );
     }
     if (query === 'aggregate') {

@@ -7,10 +7,13 @@ import { formatString } from '../../utils';
 interface SelectQueryBuilderProps {
   source: SourceMap;
   columns?: string[];
+  editable?: boolean;
   onUpdateColumns?: (options: string) => void;
 }
 
 export class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps> {
+  static defaultProps: Partial<SelectQueryBuilderProps> = { editable: true };
+
   render() {
     const columns = this.props.source.get('columns') as ColumnList;
 
@@ -27,14 +30,15 @@ export class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps>
             options={ this.getSelectOptionsFromColumns(columns) }
             value={ this.props.columns }
             onChange={ this.onChange }
+            disabled={ !this.props.editable }
           />
         </Form.Group>
         <Form.Group>
-          <Button variant="danger" size="sm" onClick={ this.onSelectAll }>
+          <Button variant="danger" size="sm" onClick={ this.onSelectAll } hidden={ !this.props.editable }>
             <i className="material-icons mr-1">check_box</i>
             Select All
           </Button>
-          <Button variant="danger" size="sm" onClick={ this.onDeselectAll }>
+          <Button variant="danger" size="sm" onClick={ this.onDeselectAll } hidden={ !this.props.editable }>
             <i className="material-icons mr-1">check_box_outline_blank</i>
             Deselect All
           </Button>
