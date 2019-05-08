@@ -25,6 +25,7 @@ export interface Operation {
   is_draft: boolean;
   created_on: string;
   updated_on: string;
+  user: string;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {

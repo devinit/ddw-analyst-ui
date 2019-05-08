@@ -14,6 +14,7 @@ export interface OperationsAction extends Action {
     link: string;
     id: number | string;
     history: History;
+    mine: boolean;
   }>;
   loading?: boolean;
 }

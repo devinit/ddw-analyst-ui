@@ -10,6 +10,7 @@ import { FilterItem } from '../FilterItem';
 interface FilterQueryBuilderProps {
   source: SourceMap;
   filters?: List<FilterMap>;
+  editable?: boolean;
   onUpdateFilters?: (filters: string) => void;
 }
 
@@ -18,6 +19,7 @@ interface FilterQueryBuilderState {
 }
 
 export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps, FilterQueryBuilderState> {
+  static defaultProps: Partial<FilterQueryBuilderProps> = { editable: true };
   state: FilterQueryBuilderState = { showInfo: false };
   private operations = [
     { key: 'lt', text: 'is Less Than', value: 'lt' },
@@ -33,17 +35,30 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
     return (
       <div>
         { this.renderFilters(this.props.source, this.props.filters) }
-        <Button variant="danger" size="sm" onClick={ this.addFilter }>
+        <Button variant="danger" size="sm" onClick={ this.addFilter } hidden={ !this.props.editable }>
           <i className="material-icons mr-1">add</i>
           Add Filter
         </Button>
-        <Button variant="secondary" size="sm" onClick={ this.toggleInfo }>
+        <Button variant="secondary" size="sm" onClick={ this.toggleInfo } hidden={ !this.props.editable }>
           <i className="material-icons">info</i>
         </Button>
         <Alert variant="info" hidden={ !this.state.showInfo }>
-          Multiple filter options on the same step translate as an OR operation
-          (rows that match one of them are returned), while adding multiple filter steps on an
-          operation translates as an AND (rows that match both are returned).
+          <p>
+            <b>Multiple filter options</b> on the same step translate as an OR operation
+            (rows that match one of them are returned), while adding multiple filter steps on an
+            operation translates as an AND (rows that match both are returned).
+          </p>
+
+          <p>The example below explains how the <b>contains</b> operation works:</p>
+          <p>Consider a <b>contains</b> operation for donor country</p>
+          <p>
+            <ul>
+              <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
+              <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
+              <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
+              <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
+            </ul>
+          </p>
         </Alert>
       </div>
     );
@@ -53,6 +68,7 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
     if (filters) {
       return filters.map((filter, index) =>
         <FilterItem
+          editable={ this.props.editable }
           key={ index }
           columns={ this.getSelectColumnsFromSource(source) }
           operations={ this.operations }

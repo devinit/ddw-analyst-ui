@@ -1,5 +1,5 @@
-import { OperationForm } from '../../components/OperationForm';
 import axios, { AxiosResponse } from 'axios';
+import classNames from 'classnames';
 import { List } from 'immutable';
 import * as React from 'react';
 import { Card, Col, Row, Tab } from 'react-bootstrap';
@@ -9,18 +9,19 @@ import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import { deleteOperation, fetchOperation, setOperation } from '../../actions/operations';
 import * as sourcesActions from '../../actions/sources';
-import classNames from 'classnames';
+import { OperationForm } from '../../components/OperationForm';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
 import { SourcesState } from '../../reducers/sources';
 import { TokenState } from '../../reducers/token';
+import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { Operation, OperationMap, OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
+import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { QueryBuilderState, queryBuilderReducerId } from './reducers';
-import { api, getSourceIDFromOperation } from '../../utils';
 
 interface ActionProps {
   actions: typeof sourcesActions & typeof pageActions & {
@@ -36,6 +37,7 @@ interface ReduxState {
   activeSource?: SourceMap;
   token: TokenState;
   page: QueryBuilderState;
+  user: UserState;
 }
 interface RouterParams {
   id?: string;
@@ -121,12 +123,15 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
     const activeStep = this.props.page.get('activeStep') as OperationStepMap | undefined;
+    const editable = this.isEditable(operation);
 
     return (
       <OperationForm
         operation={ operation }
+        editable={ editable }
         valid={ steps.count() > 0 }
         onUpdateOperation={ this.onUpdateOperation }
+        onDuplicateOperation={ this.onDuplicateOperation }
         onSuccess={ this.onSaveOperation }
         processing={ this.props.page.get('processing') as boolean }
         onDeleteOperation={ this.onDeleteOperation }
@@ -142,6 +147,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           activeSource={ this.props.activeSource }
           activeStep={ activeStep }
           onClickStep={ (step) => this.props.actions.updateActiveStep(step, true) }
+          editable={ editable }
         />
       </OperationForm>
     );
@@ -149,6 +155,8 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
   private renderOperationStepForm(source?: SourceMap, step?: OperationStepMap, editing = false) {
     if (step && source) {
+      const editable = this.isEditable(this.props.activeOperation);
+
       return (
         <OperationStepForm
           source={ source }
@@ -157,11 +165,18 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           onSuccess={ this.onAddOperationStep }
           onDeleteStep={ this.onDeleteOperationStep }
           editing={ editing }
+          editable={ editable }
         />
       );
     }
 
     return null;
+  }
+
+  private isEditable(operation?: OperationMap) {
+    const user = this.props.user.get('username') as string;
+    const isSuperUser = this.props.user.get('is_superuser') as boolean;
+    return !operation || !operation.get('id') || user === operation.get('user') || isSuperUser;
   }
 
   private setActiveOperationByID(id: string) {
@@ -196,6 +211,11 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
 
   private onUpdateOperation = (operation: OperationMap) => {
     this.props.actions.setActiveOperation(operation, true);
+  }
+
+  private onDuplicateOperation = (operation: OperationMap) => {
+    this.onUpdateOperation(operation);
+    this.props.history.push('/queries/build');
   }
 
   private onDeleteOperation = (operation: OperationMap) => {
@@ -264,7 +284,8 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
     operations: reduxStore.getIn([ 'operations', 'operations' ]),
     activeOperation: reduxStore.getIn([ 'operations', 'activeOperation' ]),
     activeSource: reduxStore.getIn([ 'sources', 'activeSource' ]),
-    page: reduxStore.get(`${queryBuilderReducerId}`)
+    page: reduxStore.get(`${queryBuilderReducerId}`),
+    user: reduxStore.get('user') as UserState
   };
 };
 

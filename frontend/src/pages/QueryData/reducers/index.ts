@@ -1,13 +1,12 @@
 import { List, Map, fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
-import { OperationDataAPIResponseMap, OperationMap } from '../../../types/operations';
+import { OperationDataAPIResponseMap } from '../../../types/operations';
 import { SourceMap } from '../../../types/sources';
 
 export interface QueryDataAction extends Action, State {
   payload: { id: number | string };
 }
 interface State {
-  operation?: OperationMap;
   source?: SourceMap;
   loading: boolean;
   data: List<OperationDataAPIResponseMap>;
@@ -19,7 +18,7 @@ export const SET_OPERATION_DATA = `${queryDataReducerId}.SET_DATA`;
 export const FETCH_OPERATION_DATA = `${queryDataReducerId}.FETCH_DATA`;
 export const FETCH_OPERATION_DATA_FAILED = `${queryDataReducerId}.FETCH_DATA_FAILED`;
 
-const defaultState: QueryDataState = fromJS({ operation: undefined, data: [], loading: false });
+const defaultState: QueryDataState = fromJS({ data: [], loading: false });
 
 export const queryDataReducer: Reducer<QueryDataState, QueryDataAction> = (state = defaultState, action) => {
   if (action.type === FETCH_OPERATION_DATA) {

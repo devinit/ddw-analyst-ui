@@ -26,12 +26,16 @@ interface OperationStepFormProps {
   step: OperationStepMap;
   alert?: string;
   editing?: boolean;
+  editable?: boolean;
   onSuccess: (step: OperationStepMap) => void;
   onUpdateStep: (step: OperationStepMap, editingStep?: boolean) => void;
   onDeleteStep: (step: OperationStepMap) => void;
 }
 
 export class OperationStepForm extends React.Component<OperationStepFormProps, OperationStepFormState> {
+  static defaultProps: Partial<OperationStepFormProps> = {
+    editable: true
+  };
   state: OperationStepFormState = {
     alerts: {},
     hasFocus: ''
@@ -92,6 +96,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                       onFocus={ this.setFocusedField }
                       onBlur={ this.resetFocus }
                       defaultValue={ values.name ? values.name.toString() : '' }
+                      disabled={ !this.props.editable }
                     />
                     <Form.Control.Feedback type="invalid">
                       { errors.name ? errors.name : null }
@@ -110,6 +115,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                       onFocus={ this.setFocusedField }
                       onBlur={ this.resetFocus }
                       defaultValue={ values.description ? values.description.toString() : '' }
+                      disabled={ !this.props.editable }
                     />
                     <Form.Control.Feedback type="invalid">
                       { errors.description ? errors.description : null }
@@ -127,8 +133,9 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                       selection
                       defaultValue={ values.query_func }
                       onChange={ (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) =>
-                          this.onSelectQuery(data, setFieldValue)
+                        this.onSelectQuery(data, setFieldValue)
                       }
+                      disabled={ !this.props.editable }
                     />
                     <Form.Control.Feedback
                       type="invalid"
@@ -145,11 +152,12 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                     step={ this.props.step }
                     alerts={ this.state.alerts }
                     onUpdateOptions={ this.onUpdateOptions }
+                    editable={ this.props.editable }
                   />
                 </Col>
 
                 <Col md={ 12 } className="mt-3">
-                  <Button variant="danger" className="float-right" type="submit">
+                  <Button variant="danger" className="float-right" type="submit" hidden={ !this.props.editable }>
                     { this.props.editing ? 'Edit Step' : 'Add Step' }
                   </Button>
                   <Button
@@ -157,6 +165,7 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
                     className={ classNames('float-right', { 'd-none': !this.props.editing }) }
                     type="submit"
                     onClick={ () => this.props.onDeleteStep(this.props.step) }
+                    hidden={ !this.props.editable }
                   >
                     <i className="material-icons">delete</i>
                   </Button>

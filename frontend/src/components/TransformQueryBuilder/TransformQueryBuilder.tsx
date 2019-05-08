@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { Col, Form } from 'react-bootstrap';
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { formatString } from '../../utils';
@@ -15,12 +15,19 @@ interface TransformQueryBuilderProps {
   function?: string;
   column?: string;
   value?: string;
+  editable?: boolean;
   onUpdate?: (options: string) => void;
 }
 
-export class TransformQueryBuilder extends React.Component<TransformQueryBuilderProps, { hasFocus: string }> {
+interface TransformQueryBuilderState {
+  showInfo: boolean;
+  hasFocus: string;
+}
+
+export class TransformQueryBuilder extends React.Component<TransformQueryBuilderProps, TransformQueryBuilderState> {
   static defaultProps: Partial<TransformQueryBuilderProps> = {
-    alerts: {}
+    alerts: {},
+    editable: true
   };
 
   private scalarFunctions = [
@@ -36,7 +43,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
     { key: 'sum', text: 'Add', value: 'sum' },
     { key: 'product', text: 'Multiply', value: 'product' }
   ];
-  state = { hasFocus: '' };
+  state = { hasFocus: '', showInfo: false };
 
   render() {
     const columns = this.props.source.get('columns') as ColumnList;
@@ -49,16 +56,31 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
         <Col md={ 5 } className="mt-2 pl-0">
           <Form.Group>
             <Form.Label className="bmd-label-floating">Transform Function</Form.Label>
-            <Dropdown
-              name="trans_func_name"
-              placeholder="Select Function"
-              fluid
-              search
-              selection
-              options={ this.props.multi ? this.multiFunctions : this.scalarFunctions }
-              value={ this.props.function }
-              onChange={ this.onSelectChange }
-            />
+            <Row>
+              <Col md={ 10 }>
+                <Dropdown
+                  name="trans_func_name"
+                  placeholder="Select Function"
+                  fluid
+                  search
+                  selection
+                  options={ this.props.multi ? this.multiFunctions : this.scalarFunctions }
+                  value={ this.props.function }
+                  onChange={ this.onSelectChange }
+                  disabled={ !this.props.editable }
+                />
+              </Col>
+              <Col md={ 2 }>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  hidden={ this.props.function !== 'text_search' || !this.props.editable }
+                  onClick={ this.toggleInfo }
+                >
+                  <i className="material-icons">info</i>
+                </Button>
+              </Col>
+            </Row>
             <Form.Control.Feedback
               type="invalid"
               className={ classNames({ 'd-block': !!(alerts && alerts.trans_func_name) }) }
@@ -67,6 +89,19 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
+
+        <Alert variant="info" hidden={ !this.state.showInfo }>
+          <p>The example below explains how the <b>text search</b> operation works:</p>
+          <p>Consider a <b>text search</b> operation for donor country</p>
+          <p>
+            <ul>
+              <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
+              <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
+              <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
+              <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
+            </ul>
+          </p>
+        </Alert>
 
         <Col md={ this.props.multi ? 12 : 5 } className={ classNames('mt-2 pl-0', { 'd-none': !this.props.function }) }>
           <Form.Group>
@@ -81,6 +116,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               options={ this.getSelectOptionsFromColumns(columns, this.props.function) }
               value={ this.props.multi ? this.props.columns : this.props.column }
               onChange={ this.onSelectChange }
+              disabled={ !this.props.editable }
             />
             <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': columnAlert }) }>
               { columnAlert }
@@ -101,6 +137,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               onFocus={ this.setFocusedField }
               onBlur={ this.resetFocus }
               defaultValue={ this.props.value }
+              disabled={ !this.props.editable }
             />
             <Form.Control.Feedback
               type="invalid"
@@ -172,5 +209,9 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
 
   private resetFocus = () => {
     this.setState({ hasFocus: '' });
+  }
+
+  private toggleInfo = () => {
+    this.setState({ showInfo: !this.state.showInfo });
   }
 }

@@ -3,18 +3,20 @@ import { Formik, FormikProps } from 'formik';
 import { fromJS } from 'immutable';
 import { debounce } from 'lodash';
 import * as React from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
+import { Alert, Button, Dropdown, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Operation, OperationMap } from '../../types/operations';
 import { CheckBox } from '../CheckBox';
 
 interface OperationFormProps {
   operation?: OperationMap;
+  editable?: boolean;
   alert?: string;
   valid?: boolean;
   processing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
   onDeleteOperation?: (operation: OperationMap) => void;
+  onDuplicateOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
   onReset?: () => void;
 }
@@ -65,6 +67,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   onChange={ debounce(this.onChange(setFieldValue), 1000, { leading: true }) }
                   onFocus={ this.setFocusedField }
                   onBlur={ this.resetFocus }
+                  disabled={ !!values.id && !this.props.editable }
                 />
                 <Form.Control.Feedback type="invalid">
                   { errors.name ? errors.name : null }
@@ -81,44 +84,73 @@ export class OperationForm extends React.Component<OperationFormProps> {
                   onFocus={ this.setFocusedField }
                   onBlur={ this.resetFocus }
                   value={ values.description ? values.description.toString() : '' }
+                  disabled={ !!values.id && !this.props.editable }
                 />
                 <Form.Control.Feedback type="invalid">
                   { errors.description ? errors.description : null }
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <CheckBox defaultChecked={ values.is_draft } onChange={ this.toggleDraft } label="Is Draft"/>
+              <CheckBox
+                defaultChecked={ values.is_draft }
+                onChange={ this.toggleDraft }
+                label="Is Draft"
+                disabled={ !!values.id && !this.props.editable }
+              />
 
               { this.props.children }
 
               <Button
                 variant="danger"
-                disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
-                onClick={ this.onSuccess() }
+                onClick={ this.onDuplicate }
                 size="sm"
+                hidden={ !(!!values.id && !this.props.editable) }
               >
-                { this.props.processing ? 'Saving ...' : 'Save' }
+                Make a Copy
               </Button>
-              <Button
-                variant="danger"
-                disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
-                onClick={ this.onSuccess(true) }
-                size="sm"
-              >
-                { this.props.processing ? 'Saving ...' : 'Save & Preview' }
-              </Button>
-              <Button variant="danger" onClick={ this.props.onReset } size="sm" hidden={ !this.props.onReset }>
-                <i className="material-icons">refresh</i>
-                Reset
-              </Button>
-              <Button
-                variant="secondary"
-                className={ classNames('float-right', { 'd-none': !this.props.operation }) }
-                onClick={ this.onDelete }
-                size="sm"
-              >
-                <i className="material-icons">delete</i>
-              </Button>
+
+              <Dropdown hidden={ !!values.id && !this.props.editable }>
+                <Button
+                  variant="danger"
+                  disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
+                  onClick={ this.onSuccess() }
+                  size="sm"
+                >
+                  { this.props.processing ? 'Saving ...' : 'Save' }
+                </Button>
+                <Dropdown.Toggle
+                  split
+                  variant="danger"
+                  id="operation-form-actions"
+                  size="sm"
+                  disabled={ !this.props.valid || !isValid || isSubmitting || this.props.processing }
+                />
+                <Dropdown.Menu>
+                  <Dropdown.Item eventKey="1" onClick={ this.onSuccess(true) }>
+                    { this.props.processing ? 'Saving ...' : 'Save & Preview' }
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2" hidden={ !values.id } onClick={ this.onDuplicate }>
+                    Make a Copy
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="3"
+                    onClick={ this.props.onReset }
+                    hidden={ !this.props.onReset || !!(values.id && !this.props.editable) }
+                  >
+                    Refresh
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+
+                <Button
+                  variant="secondary"
+                  className={ classNames('float-right', { 'd-none': !this.props.operation }) }
+                  onClick={ this.onDelete }
+                  size="sm"
+                  hidden={ !!values.id && !this.props.editable }
+                >
+                  <i className="material-icons">delete</i>
+                </Button>
+              </Dropdown>
             </Form>
           )
         }
@@ -173,6 +205,14 @@ export class OperationForm extends React.Component<OperationFormProps> {
   private onDelete = () => {
     if (this.props.onDeleteOperation && this.props.operation) {
       this.props.onDeleteOperation(this.props.operation);
+    }
+  }
+
+  private onDuplicate = () => {
+    if (this.props.operation && this.props.onDuplicateOperation) {
+      const operation = this.props.operation.withMutations(opn =>
+        opn.delete('id').set('name', `Copy of ${opn.get('name')}`));
+      this.props.onDuplicateOperation(operation);
     }
   }
 }

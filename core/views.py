@@ -2,6 +2,8 @@
     Django Rest Framework views for handling rest operations
 """
 from django.contrib.auth.models import User
+from django.db.models import Q
+from django.http import Http404
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import exceptions, generics, permissions
@@ -77,8 +79,14 @@ class ViewData(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
+    def get_object(self, pk):
+        try:
+            return Operation.objects.get(pk=pk)
+        except Operation.DoesNotExist:
+            raise Http404
+
     def get(self, request, pk):
-        operation = Operation.objects.get(pk=pk)
+        operation = self.get_object(pk)
         serializer = DataSerializer({
             "request": request,
             "operation_instance": operation
@@ -128,14 +136,40 @@ class ThemeDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class OperationList(generics.ListCreateAPIView):
+    """
+    This view should return a list of all the operations that are not for the currently authenticated user.
+    """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
 
+    def get_queryset(self):
+        """
+        Filters to return the operations that are not for the currently authenticated user.
+        """
+        return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class UserOperationList(generics.ListAPIView):
+    """
+    This view should return a list of all the operations for the currently authenticated user.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    queryset = Operation.objects.all()
+    serializer_class = OperationSerializer
+
+    def get_queryset(self):
+        """
+        Filters to return a list of all the operations for the currently authenticated user.
+        """
+        return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
 
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):

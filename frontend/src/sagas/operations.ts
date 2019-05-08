@@ -21,8 +21,9 @@ import { fetchActiveSource } from '../actions/sources';
 function* fetchOperations({ payload }: OperationsAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    const basePath = payload.mine ? api.routes.MY_OPERATIONS : api.routes.OPERATIONS;
     const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios.request({
-      url: payload.link || `${api.routes.OPERATIONS}?limit=${payload.limit}&offset=${payload.offset}`,
+      url: payload.link || `${basePath}?limit=${payload.limit}&offset=${payload.offset}`,
       method: 'get',
       headers: {
         'Content-Type': 'application/json',

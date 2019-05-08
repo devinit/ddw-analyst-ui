@@ -13,10 +13,12 @@ interface AggregateQueryBuilderProps {
   groupBy?: string[];
   function?: string;
   column?: string;
+  editable?: boolean;
   onUpdate?: (options: string) => void;
 }
 
 export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilderProps> {
+  static defaultProps: Partial<AggregateQueryBuilderProps> = { editable: true };
   private functions = [
     { key: 'Avg', text: 'Average', value: 'Avg' },
     { key: 'Sum', text: 'Sum', value: 'Sum' },
@@ -45,6 +47,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
               options={ this.functions }
               value={ this.props.function }
               onChange={ this.onChange }
+              disabled={ !this.props.editable }
             />
             <Form.Control.Feedback
               type="invalid"
@@ -67,6 +70,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
               options={ this.getSelectOptionsFromColumns(columns, true) }
               value={ this.props.column }
               onChange={ this.onChange }
+              disabled={ !this.props.editable }
             />
             <Form.Control.Feedback
               type="invalid"
@@ -88,6 +92,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
             options={ this.getSelectOptionsFromColumns(columns) }
             value={ this.props.groupBy }
             onChange={ this.onChange }
+            disabled={ !this.props.editable }
           />
           <Form.Control.Feedback
             type="invalid"
