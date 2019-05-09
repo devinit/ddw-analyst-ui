@@ -17,9 +17,9 @@ class DataPaginator(pagination.LimitOffsetPagination):
 
     def get_paginated_response(self, data):
         return Response({
-            'next': self.get_next_link(),
-            'previous': self.get_previous_link(),
-            'count': self.true_count,
+            # 'next': self.get_next_link(),
+            # 'previous': self.get_previous_link(),
+            # 'count': self.true_count,
             'results': data
         })
 
