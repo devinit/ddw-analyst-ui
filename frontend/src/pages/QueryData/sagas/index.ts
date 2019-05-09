@@ -13,7 +13,7 @@ function* fetchOperationData({ payload }: QueryDataAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status, data }: AxiosResponse<Operation> = yield axios.request({
-      url: `${api.routes.OPERATIONS}data/${payload.id}/`,
+      url: `${api.routes.OPERATIONS}data/${payload.id}/?limit=${payload.limit}&offset=${payload.offset}`,
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ function* fetchOperationData({ payload }: QueryDataAction) {
     .catch(error => error.response);
 
     if (status === 200 || status === 201 && data) {
-      yield put(setOperationData(fromJS(data)));
+      yield put(setOperationData(fromJS(data), payload));
     } else if (status === 401) {
       yield put(setToken(''));
       yield put(fetchOperationDataFailed() as QueryDataAction);

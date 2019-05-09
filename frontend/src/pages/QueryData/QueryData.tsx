@@ -8,7 +8,6 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { fetchOperation, setOperation } from '../../actions/operations';
 import { fetchActiveSource, setActiveSource } from '../../actions/sources';
 import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
-import { PaginatedContent } from '../../components/PaginatedContent';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
@@ -82,26 +81,30 @@ class QueryData extends React.Component<QueryDataProps> {
       }
     }
     if (id) {
-      this.props.actions.fetchOperationData(id);
+      this.props.actions.fetchOperationData({ id, limit: 10, offset: 0 });
     }
   }
 
   componentWillUnmount() {
-    this.props.actions.setOperationData(List());
+    this.props.actions.setOperationData(List(), {});
   }
 
   private renderTable() {
     const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
     const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
     const loading = this.props.page.get('loading') as boolean;
+    const { fetchOperationData: fetchData } = this.props.actions;
+    const { id } = this.props.match.params;
 
-    if (data && data.count() !== 0) {
+    if (id && data && data.count() !== 0) {
       return (
-        <PaginatedContent
-          content={ <OperationDataTable list={ data } columns={ columns }/> }
-          list={ data || List() }
-          limit={ 10 }
-          offset={ 0 }
+        <OperationDataTable
+          id={ id }
+          list={ data }
+          columns={ columns }
+          limit={ this.props.page.get('limit') as number }
+          offset={ this.props.page.get('offset') as number }
+          fetchData={ fetchData }
         />
       );
     }
