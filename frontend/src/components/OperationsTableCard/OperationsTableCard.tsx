@@ -25,11 +25,16 @@ interface ComponentProps extends RouteComponentProps {
   links?: LinksMap;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
+interface OperationsTableCardState {
+  showingMyQueries: boolean;
+  searchQuery: string;
+}
 
-class OperationsTableCard extends React.Component<OperationsTableCardProps> {
+class OperationsTableCard extends React.Component<OperationsTableCardProps, OperationsTableCardState> {
   static defaultProps: Partial<OperationsTableCardProps> = {
     offset: 0
   };
+  state = { showingMyQueries: true, searchQuery: '' };
 
   render() {
     const operations = this.props.operations.get('operations') as List<OperationMap>;
@@ -155,6 +160,12 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
     if (!loading) {
       this.props.actions.fetchOperations({ limit: this.props.limit, offset: 0, mine });
     }
+    if (mine && !this.state.showingMyQueries) {
+      this.setState({ showingMyQueries: true });
+    }
+    if (!mine && this.state.showingMyQueries) {
+      this.setState({ showingMyQueries: false });
+    }
   }
 
   private onSearchChange = (event: React.FormEvent<any>) => {
@@ -163,28 +174,28 @@ class OperationsTableCard extends React.Component<OperationsTableCardProps> {
   }
 
   private goToFirst = () => {
-    this.props.actions.fetchOperations({ limit: this.props.limit, offset: 0 });
+    this.props.actions.fetchOperations({ limit: this.props.limit, offset: 0, mine: this.state.showingMyQueries });
   }
 
   private goToLast = () => {
     const count = this.props.operations.get('count') as number;
     const pages = Math.ceil(count / this.props.limit);
     const offset = (pages - 1) * this.props.limit;
-    this.props.actions.fetchOperations({ limit: this.props.limit, offset });
+    this.props.actions.fetchOperations({ limit: this.props.limit, offset, mine: this.state.showingMyQueries });
   }
 
   private goToNext = () => {
     const count = this.props.operations.get('count') as number;
     const offset = this.props.offset + this.props.limit;
     if (offset < count) {
-      this.props.actions.fetchOperations({ limit: this.props.limit, offset });
+      this.props.actions.fetchOperations({ limit: this.props.limit, offset, mine: this.state.showingMyQueries });
     }
   }
 
   private goToPrev = () => {
     if (this.props.offset > 0) {
       const offset = this.props.offset - this.props.limit;
-      this.props.actions.fetchOperations({ limit: this.props.limit, offset });
+      this.props.actions.fetchOperations({ limit: this.props.limit, offset, mine: this.state.showingMyQueries });
     }
   }
 
