@@ -35,6 +35,14 @@ def multi_concat(iterable):
     return reduce(pypika_fn.Concat, iterable)
 
 
+def multi_divide(iterable):
+    return reduce(operator.truediv, iterable)
+
+
+def multi_subtract(iterable):
+    return reduce(operator.sub, iterable)
+
+
 # Won't be needed in Python 3.8 Import from math module instead
 def prod(iterable):
     return reduce(operator.mul, iterable, 1)
@@ -147,7 +155,9 @@ class QueryBuilder:
         multi_transform_mapping = {
             "sum": sum,
             "product": prod,
-            "concat": multi_concat
+            "concat": multi_concat,
+            "divide": multi_divide,
+            "subtract": multi_subtract
         }
         trans_func = multi_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_columns[0], trans_func_name])
