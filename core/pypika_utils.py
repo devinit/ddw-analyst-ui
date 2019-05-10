@@ -11,6 +11,7 @@ from pypika import PostgreSQLQuery as Query
 from pypika import Table
 from pypika import analytics as an
 from pypika import functions as pypika_fn
+from pypika import JoinType
 
 from core.const import DEFAULT_LIMIT_COUNT
 
@@ -189,8 +190,20 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def join(self, table_name, schema_name, join_on, columns_x=None, columns_y=None, suffix_y="2"):
+    def join(self, table_name, schema_name, join_on, join_how="full", columns_x=None, columns_y=None, suffix_y="2"):
         self.current_query = Query.from_(self.current_dataset)
+
+        join_how_mapping = {
+            "inner": JoinType.inner,
+            "left": JoinType.left,
+            "right": JoinType.right,
+            "outer": JoinType.outer,
+            "left_outer": JoinType.left_outer,
+            "right_outer": JoinType.right_outer,
+            "full": JoinType.full_outer,
+            "cross": JoinType.cross
+        }
+        join_how_value = join_how_mapping[join_how]
         table1 = self.current_dataset
         table2 = Table(table_name, schema=schema_name)
         if columns_x and columns_y:
@@ -207,7 +220,7 @@ class QueryBuilder:
         else:
             select_on = [table1.star] + [table2.star]
 
-        self.current_query = self.current_query.join(table2).on(
+        self.current_query = self.current_query.join(table2, how=join_how_value).on(
             reduce(operator.and_, [operator.eq(getattr(table1, k), getattr(table2, v)) for k, v in join_on.items()])
         ).select(
             *select_on
