@@ -24,8 +24,8 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
     { key: 'Sum', text: 'Sum', value: 'Sum' },
     { key: 'Max', text: 'Maximum', value: 'Max' },
     { key: 'Min', text: 'Minimum', value: 'Min' },
-    { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' },
-    { key: 'DistinctOptionFunction', text: 'Distinct', value: 'DistinctOptionFunction' }
+    { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' }
+    // { key: 'DistinctOptionFunction', text: 'Distinct', value: 'DistinctOptionFunction' }
   ];
 
   render() {
