@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 import * as React from 'react';
-import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -108,6 +108,11 @@ class QueryData extends React.Component<QueryDataProps> {
         />
       );
     }
+    const alert = this.props.page.get('alert') as string;
+    if (alert) {
+      return <Alert variant="danger">{ alert }</Alert>;
+    }
+
     return <div>{ loading ? 'Loading ...' : 'No results found' }</div>;
   }
 
