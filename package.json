@@ -6,15 +6,15 @@
   "scripts": {
     "dev": "grunt",
     "build": "grunt release",
-    "test": "jest --coverage && python3 manage.py test core && python3 manage.py test data --settings=ddw_analyst_ui.test_settings",
-    "test:docker": "jest && docker-compose run web python3 manage.py test core && docker-compose run web python3 manage.py test data --settings=ddw_analyst_ui.docker_test_settings",
+    "test": "jest --coverage && python3 manage.py test --settings=ddw_analyst_ui.test_settings",
+    "test:docker": "jest && docker-compose run web python3 manage.py test --settings=ddw_analyst_ui.docker_test_settings",
     "collectstatic": "python3 manage.py collectstatic --no-input",
     "docker:dev": "grunt 'docker dev'",
     "docker:build": "docker-compose up --build",
     "docker:collectstatic": "docker-compose run web python3 manage.py collectstatic --no-input",
     "emit": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'src/**/*.tsx' && tsc --noEmit",
-    "coverage": "NODE_ENV=test jest --coverage && codecov && docker-compose run web python3 -m coverage run manage.py test && docker-compose run web python3 -m coverage xml && python3 -m codecov",
+    "coverage": "NODE_ENV=test jest --coverage && codecov && docker-compose run web python3 -m coverage run manage.py test --settings=ddw_analyst_ui.docker_test_settings && docker-compose run web python3 -m coverage xml && python3 -m codecov",
     "cy:open": "cypress open",
     "cy:run": "cypress run"
   },
