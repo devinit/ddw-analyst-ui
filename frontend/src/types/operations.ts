@@ -54,6 +54,7 @@ export interface JoinOptions {
   table_name: string;
   schema_name: string;
   join_on: { [key: string]: string };
+  join_how: string;
 }
 
 export interface TransformOptions {

@@ -27,6 +27,7 @@ interface ComponentProps {
   columnsX: string[];
   columnsY: string[];
   columnMapping?: { [key: string]: string };
+  joinType: string;
   editable?: boolean;
   onUpdate?: (options: string) => void;
 }
@@ -37,6 +38,16 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
     alerts: {},
     editable: true
   };
+  private joinTypes = [
+    { key: 'inner', text: 'Inner Join', value: 'inner' },
+    { key: 'outer', text: 'Outer Join', value: 'outer' },
+    { key: 'left', text: 'Left Join', value: 'left' },
+    { key: 'right', text: 'Right Join', value: 'right' },
+    { key: 'left_outer', text: 'Left Outer Join', value: 'left_outer' },
+    { key: 'right_outer', text: 'Right Outer Join', value: 'right_outer' },
+    { key: 'full', text: 'Full Join', value: 'full' },
+    { key: 'cross', text: 'Cross Join', value: 'cross' }
+  ];
 
   render() {
     const secondarySource = this.getSourceFromTableName(this.props.sources, this.props.tableName);
@@ -47,6 +58,28 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
     return (
       <React.Fragment>
 
+        <Col md={ 6 } className="mt-2 pl-0">
+          <Form.Group>
+            <Form.Label className="bmd-label-floating">Join Type</Form.Label>
+            <Dropdown
+              name="join_how"
+              placeholder="Join Type"
+              fluid
+              search
+              selection
+              options={ this.joinTypes }
+              value={ this.props.joinType }
+              onChange={ this.onChange }
+              disabled={ !this.props.editable }
+            />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && alerts.join_how) }) }
+            >
+              { alerts && alerts.join_how }
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
         <Col md={ 12 } className="mt-2 pl-0">
           <Form.Group>
             <Form.Label className="bmd-label-floating">
@@ -180,13 +213,14 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
   }
 
   private addMapping = () => {
-    const { columnMapping, columnsX, columnsY, onUpdate, schema, tableName } = this.props;
+    const { columnMapping, columnsX, columnsY, onUpdate, schema, tableName, joinType } = this.props;
     if (onUpdate) {
       const options = {
         table_name: tableName,
         schema_name: schema,
         columns_x: columnsX,
-        columns_y: columnsY
+        columns_y: columnsY,
+        join_how: joinType
       };
       if (columnMapping) {
         onUpdate(JSON.stringify({ ...options, join_on: { ...columnMapping, column1: 'column2' } }));
@@ -211,7 +245,8 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
       columns_y: this.props.columnsY,
       table_name: this.props.tableName,
       schema_name: this.props.schema,
-      join_on: this.props.columnMapping
+      join_on: this.props.columnMapping,
+      join_how: this.props.joinType
     };
     if (data.name === 'source') {
       const selectedSource = this.props.sources.find(source => source.get('id') === data.value);
@@ -231,13 +266,14 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
   }
 
   private onChangeMapping = (columnMapping: { [key: string]: string }) => {
-    const { columnsX, columnsY, onUpdate, schema, tableName } = this.props;
+    const { columnsX, columnsY, onUpdate, schema, tableName, joinType } = this.props;
     if (!onUpdate) { return; }
     const options = {
       table_name: tableName,
       schema_name: schema,
       columns_x: columnsX,
-      columns_y: columnsY
+      columns_y: columnsY,
+      join_how: joinType
     };
     onUpdate(JSON.stringify({ ...options, join_on: columnMapping }));
   }
