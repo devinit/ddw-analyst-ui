@@ -17,4 +17,4 @@ RUN apt-get install -y r-cran-reshape2
 
 ENV DJANGO_SETTINGS_MODULE=ddw_analyst_ui.docker_settings
 
-CMD export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}') && gunicorn -w 2 -b 0.0.0.0:80 ddw_analyst_ui.wsgi
+CMD export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}') && gunicorn -w 2 -b 0.0.0.0:80 -t 600 --keep-alive 600 ddw_analyst_ui.wsgi
