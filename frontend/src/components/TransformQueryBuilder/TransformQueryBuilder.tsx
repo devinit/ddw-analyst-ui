@@ -42,6 +42,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
   private multiFunctions = [
     { key: 'sum', text: 'Add', value: 'sum' },
     { key: 'product', text: 'Multiply', value: 'product' },
+    { key: 'divide', text: 'Divide', value: 'divide' },
     { key: 'concat', text: 'Concatanate', value: 'concat' }
   ];
   state = { hasFocus: '', showInfo: false };
