@@ -87,8 +87,20 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
 
   private onSelectColumn = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     if (data.value && this.props.onUpdate) {
-      const primaryColumn = data.name === 'primaryColumn' ? data.value as string : this.props.primaryColumn;
-      const secondaryColumn = data.name === 'secondaryColumn' ? data.value as string : this.props.secondaryColumn;
+      let primaryColumn = data.name === 'primaryColumn' ? data.value as string : this.props.primaryColumn;
+      let secondaryColumn = data.name === 'secondaryColumn' ? data.value as string : this.props.secondaryColumn;
+      if (data.name === 'primaryColumn') {
+        const matchingColumn = this.props.secondaryColumns.find(column => column.get('name') === data.value);
+        if (matchingColumn) {
+          secondaryColumn = matchingColumn.get('name') as string;
+        }
+      }
+      if (data.name === 'secondaryColumn') {
+        const matchingColumn = this.props.primaryColumns.find(column => column.get('name') === data.value);
+        if (matchingColumn) {
+          primaryColumn = matchingColumn.get('name') as string;
+        }
+      }
       const { columnMapping } = this.props;
       if (columnMapping.hasOwnProperty(this.props.primaryColumn)) {
         delete columnMapping[this.props.primaryColumn];
