@@ -1,5 +1,8 @@
 from django.core.management import call_command
 from django.test import TestCase
+from data.db_manager import fetch_data
+from core.models import Operation, OperationStep
+from django.db import connections
 
 from django.conf import settings
 import os
@@ -7,10 +10,39 @@ import csv
 import glob
 
 
-# IMPORTANT NOTE:
-# We cannot make tests using models in this app.
-# It relies on un-managed models, and the test suite cannot spin up test db
-# without a managed model. I tried some TEST_RUNNER workarounds to no avail.
+class TestFixtureData(TestCase):
+    """Test case class for testing fixture data"""
+    fixtures = ['test_data']
+
+    def setUp(self):
+        self.op = Operation.objects.create(
+            name="Test operation",
+            operation_query="Test query",
+            theme_id=1
+        )
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=1,
+            name="Select",
+            query_func="select",
+            query_kwargs="{}",
+            source_id=1
+        )
+
+    def test_can_generate_select_all(self):
+        self.assertTrue(True)
+
+
+    def test_can_generate_select_by_column(self):
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name="Select",
+            query_func="select",
+            query_kwargs="{ \"columns\": [ \"year\" ] }",
+            source_id=1
+        )
+        self.assertTrue(True)
 
 
 class TestCommands(TestCase):

@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "grunt",
     "build": "grunt release",
-    "test": "jest --coverage && python3 manage.py test",
-    "test:docker": "jest && docker-compose run web python3 manage.py test",
+    "test": "jest --coverage && python3 manage.py test core && python3 manage.py test data --settings=ddw_analyst_ui.test_settings",
+    "test:docker": "jest && docker-compose run web python3 manage.py test core && docker-compose run web python3 manage.py test data --settings=ddw_analyst_ui.docker_test_settings",
     "collectstatic": "python3 manage.py collectstatic --no-input",
     "docker:dev": "grunt 'docker dev'",
     "docker:build": "docker-compose up --build",
