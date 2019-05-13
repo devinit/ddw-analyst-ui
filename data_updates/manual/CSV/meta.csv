@@ -28,7 +28,7 @@ dac1_current_isos.csv,DAC1 ISO codes,,Organisation for Economic Co-operation and
 crs_current_regisos.csv,CRS Region codes,,Organisation for Economic Co-operation and Development,OECD,,,23/04/2019,repo,schema,crs_current_regisos,CRS Region codes,iso
 crs_current_isos.csv,CRS ISO codes,,Organisation for Economic Co-operation and Development,OECD,,,23/04/2019,repo,schema,crs_current_isos,CRS ISO codes,iso
 wdi_isos.csv,WDI ISO codes,,World Bank,WB,,,23/04/2019,repo,schema,wdi_isos,WDI ISO codes,iso
-PovCalNetDist_isos.csv,PovCalNetSmy ISO codes,,World Bank,WB,,,23/04/2019,repo,schema,PovCalNetDist_isos,PovCalNetSmy ISO codes,iso
+PovCalNetDist_isos.csv,PovCalNetDist ISO codes,,World Bank,WB,,,23/04/2019,repo,schema,PovCalNetDist_isos,PovCalNetSmy ISO codes,iso
 PovCalNetSmy_regisos.csv,PovCalNetSmy Region codes,,World Bank,WB,,,23/04/2019,repo,schema,PovCalNetSmy_regisos,PovCalNetSmy Region codes,iso
 PovCalNetSmy_isos.csv,PovCalNetSmy ISO codes,,World Bank,WB,,,23/04/2019,repo,schema,PovCalNetSmy_isos,PovCalNetSmy ISO codes,iso
 PovCalNetP20_regisos.csv,PovCalNetP20 Region codes,,World Bank,WB,,,23/04/2019,repo,schema,PovCalNetP20_regisos,PovCalNetP20 Region codes,iso
