@@ -2,12 +2,12 @@
 insert into core_source
 (indicator,indicator_acronym,source,source_acronym,source_url,download_path,storage_type,schema,active_mirror_name,description,last_updated_on,created_on)
 values
-('Common Reporting Standard','crs','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','crs_current','Data about flows of resources',now(),now()),
-('Official Development Assistance 1','dac1','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','dac1_current','Data about flows of resources',now(),now()),
-('Official Development Assistance2','dac2','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','dac2a_current','Data about flows of resources',now(),now()),
-('Official Development Assistance 2b','dac2b','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','dac2b_current','Data about flows of resources',now(),now()),
-('Official Development Assistance 5','dac5','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','repo','dac5_current','Data about flows of resources',now(),now()),
-('World Bank Indicators','WDI','World Bank Group','WBG','http://wdi.worldbank.org','http://wdi.worldbank.org/tables','schema','repo','wdi','Data about flows of resources',now(),now());
+('Common Reporting Standard','crs','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','public','crs_current','Data about flows of resources',now(),now()),
+('Official Development Assistance 1','dac1','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','public','dac1_current','Data about flows of resources',now(),now()),
+('Official Development Assistance2','dac2','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','public','dac2a_current','Data about flows of resources',now(),now()),
+('Official Development Assistance 2b','dac2b','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','public','dac2b_current','Data about flows of resources',now(),now()),
+('Official Development Assistance 5','dac5','Organization for Economic Corporation and Development','oecd','https://stats.oecd.org','https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS1','table','public','dac5_current','Data about flows of resources',now(),now()),
+('World Bank Indicators','WDI','World Bank Group','WBG','http://wdi.worldbank.org','http://wdi.worldbank.org/tables','schema','public','wdi','Data about flows of resources',now(),now());
 
 
 insert into core_updatehistory (source_id,history_table,released_on,release_description,invalidated_on,invalidation_description,is_major_release,created_on,updated_on)

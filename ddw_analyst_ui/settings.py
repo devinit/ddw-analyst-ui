@@ -169,6 +169,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Default location for manual CSV import
 CSV_FILES_FOLDER = os.path.join(BASE_DIR, 'data_updates', 'manual', 'CSV')
 
+IS_TESTING = False
+
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:

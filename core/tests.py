@@ -106,12 +106,12 @@ class TestPypikaUtils(TestCase):
         )
 
     def test_can_generate_select_all(self):
-        expected = 'SELECT * FROM "repo"."crs_current"'
+        expected = 'SELECT * FROM "public"."crs_current"'
         qb = QueryBuilder(self.op)
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_select_by_column(self):
-        expected = 'SELECT "sq0".* FROM (SELECT "year" FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT "year" FROM "public"."crs_current") "sq0"'
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
@@ -124,7 +124,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_filter(self):
-        expected = 'SELECT "sq0".* FROM (SELECT * FROM "repo"."crs_current" WHERE "year">=1973 OR "short_description" ILIKE \'%sector%\' OR "short_description" ILIKE \'%wheat%\') "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT * FROM "public"."crs_current" WHERE "year">=1973 OR "short_description" ILIKE \'%sector%\' OR "short_description" ILIKE \'%wheat%\') "sq0"'
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
@@ -137,27 +137,27 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_join(self):
-        expected = 'SELECT "sq0".* FROM (SELECT "crs_current".*,"dac1_current".* FROM "repo"."crs_current" JOIN "repo"."dac1_current" ON "crs_current"."donor_code"="dac1_current"."donor_code") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT "crs_current".*,"dac1_current".* FROM "public"."crs_current" JOIN "public"."dac1_current" ON "crs_current"."donor_code"="dac1_current"."donor_code") "sq0"'
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"donor_code":"donor_code"}}',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"donor_code":"donor_code"}}',
             source_id=2
         )
         qb = QueryBuilder(self.op)
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_join_for_specific_columns(self):
-        expected = 'SELECT "sq0".* FROM (SELECT "crs_current"."donor_name","crs_current"."usd_commitment","dac1_current"."part_code","dac1_current"."part_name" FROM "repo"."crs_current" JOIN "repo"."dac1_current" ON "crs_current"."donor_code"="dac1_current"."donor_code" AND "crs_current"."year"="dac1_current"."year") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT "crs_current"."donor_name","crs_current"."usd_commitment","dac1_current"."part_code","dac1_current"."part_name" FROM "public"."crs_current" JOIN "public"."dac1_current" ON "crs_current"."donor_code"="dac1_current"."donor_code" AND "crs_current"."year"="dac1_current"."year") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"donor_code":"donor_code","year":"year"},\
+            query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"donor_code":"donor_code","year":"year"},\
             "columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
             source_id=2
         )
@@ -166,7 +166,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_sum(self):
-        expected = 'SELECT "sq0".* FROM (SELECT "donor_code",SUM("usd_commitment") "usd_commitment_Sum" FROM "repo"."crs_current" GROUP BY "donor_code") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT "donor_code",SUM("usd_commitment") "usd_commitment_Sum" FROM "public"."crs_current" GROUP BY "donor_code") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -181,14 +181,14 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_sum_from_joined_column_fails(self):
-        expected = 'SELECT "donor_code",SUM("usd_commitment") "usd_commitment_Sum" FROM "repo"."crs_current" GROUP BY "donor_code"'
+        expected = 'SELECT "donor_code",SUM("usd_commitment") "usd_commitment_Sum" FROM "public"."crs_current" GROUP BY "donor_code"'
 
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"donor_code":"donor_code"}}',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"donor_code":"donor_code"}}',
             source_id=2
         )
 
@@ -205,14 +205,14 @@ class TestPypikaUtils(TestCase):
         self.assertNotEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_sum_from_joined_column_passes(self):
-        expected = 'SELECT "sq1".* FROM (SELECT "sq0"."donor_name","sq0"."usd_commitment","dac1_current"."part_code","dac1_current"."part_name" FROM (SELECT "part_name",SUM("usd_commitment") "usd_commitment_Sum" FROM "repo"."crs_current" GROUP BY "part_name") "sq0" JOIN "repo"."dac1_current" ON "sq0"."year"="dac1_current"."year") "sq1"'
+        expected = 'SELECT "sq1".* FROM (SELECT "sq0"."donor_name","sq0"."usd_commitment","dac1_current"."part_code","dac1_current"."part_name" FROM (SELECT "part_name",SUM("usd_commitment") "usd_commitment_Sum" FROM "public"."crs_current" GROUP BY "part_name") "sq0" JOIN "public"."dac1_current" ON "sq0"."year"="dac1_current"."year") "sq1"'
 
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
             name='Join',
             query_func='join',
-            query_kwargs='{"table_name":"dac1_current","schema_name":"repo", "join_on":{"year":"year"}\
+            query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"year":"year"}\
             ,"columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
             source_id=2
         )
@@ -230,7 +230,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_perform_ntile(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,NTILE(4) OVER(ORDER BY "usd_commitment") FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,NTILE(4) OVER(ORDER BY "usd_commitment") FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -245,7 +245,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_perform_dense_rank(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,DENSE_RANK() OVER(ORDER BY "usd_commitment") FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,DENSE_RANK() OVER(ORDER BY "usd_commitment") FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -260,7 +260,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_first_value(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,FIRST_VALUE("usd_commitment") OVER(ORDER BY "year") FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,FIRST_VALUE("usd_commitment") OVER(ORDER BY "year") FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -275,7 +275,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_last_value(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,LAST_VALUE("usd_commitment") OVER(ORDER BY "year") FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,LAST_VALUE("usd_commitment") OVER(ORDER BY "year") FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -290,7 +290,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_median(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,MEDIAN("usd_commitment") OVER(PARTITION BY "year") FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,MEDIAN("usd_commitment") OVER(PARTITION BY "year") FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -305,7 +305,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_avg(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,AVG("usd_commitment") OVER(PARTITION BY "year") FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,AVG("usd_commitment") OVER(PARTITION BY "year") FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -320,7 +320,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_stddev(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,STDDEV("usd_commitment") OVER(PARTITION BY "year") FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,STDDEV("usd_commitment") OVER(PARTITION BY "year") FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -335,7 +335,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_avg_aggregate(self):
-        expected = 'SELECT "sq0".* FROM (SELECT "year",AVG("usd_commitment") "usd_commitment_Avg" FROM "repo"."crs_current" GROUP BY "year") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT "year",AVG("usd_commitment") "usd_commitment_Avg" FROM "public"."crs_current" GROUP BY "year") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -350,20 +350,20 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_select_with_default_limit(self):
-        expected = 'SELECT * FROM "repo"."crs_current" LIMIT 10'
+        expected = 'SELECT * FROM "public"."crs_current" LIMIT 10'
         qb = QueryBuilder(self.op)
         self.assertEqual(qb.get_sql(), expected)
 
     def test_can_generate_select_with_defined_limit(self):
-        expected = 'SELECT * FROM "repo"."crs_current" LIMIT 5 OFFSET 10'
+        expected = 'SELECT * FROM "public"."crs_current" LIMIT 5 OFFSET 10'
         self.assertEqual(self.op.build_query(limit=5, offset=10)[1], expected)
 
     def test_can_generate_select_without_limit(self):
-        expected = 'SELECT * FROM "repo"."crs_current"'
+        expected = 'SELECT * FROM "public"."crs_current"'
         self.assertEqual(self.op.build_query(offset=10)[1], expected)
 
     def test_can_perform_scalar_transform(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,"short_description" ILIKE \'%wheat%\' "short_description_text_search" FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,"short_description" ILIKE \'%wheat%\' "short_description_text_search" FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -378,7 +378,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_perform_multi_transform(self):
-        expected = 'SELECT "sq0".* FROM (SELECT *,0+"usd_commitment"+"usd_disbursement" "usd_commitment_sum" FROM "repo"."crs_current") "sq0"'
+        expected = 'SELECT "sq0".* FROM (SELECT *,0+"usd_commitment"+"usd_disbursement" "usd_commitment_sum" FROM "public"."crs_current") "sq0"'
 
         OperationStep.objects.create(
             operation=self.op,

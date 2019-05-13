@@ -12,7 +12,7 @@ import glob
 
 class TestFixtureData(TestCase):
     """Test case class for testing fixture data"""
-    fixtures = ['test_data']
+    fixtures = ['test_data', 'test_datasets']
 
     def setUp(self):
         self.op = Operation.objects.create(
@@ -30,7 +30,9 @@ class TestFixtureData(TestCase):
         )
 
     def test_can_generate_select_all(self):
-        self.assertTrue(True)
+        queries = self.op.build_query(1, 0, True)
+        _, dat = fetch_data(queries, database="default")
+        self.assertEqual(len(dat[0].keys()), 88)
 
 
     def test_can_generate_select_by_column(self):
@@ -42,7 +44,9 @@ class TestFixtureData(TestCase):
             query_kwargs="{ \"columns\": [ \"year\" ] }",
             source_id=1
         )
-        self.assertTrue(True)
+        queries = self.op.build_query(1, 0, True)
+        _, dat = fetch_data(queries, database="default")
+        self.assertTrue(dat[0].keys(), ["year"])
 
 
 class TestCommands(TestCase):
