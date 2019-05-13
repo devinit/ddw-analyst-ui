@@ -1,6 +1,7 @@
 import { OperationDataMap, OperationMap, OperationStepMap } from '../types/operations';
 import { List } from 'immutable';
 import { ColumnList } from '../types/sources';
+import { DropdownItemProps } from 'semantic-ui-react';
 
 export * from './api';
 export * from './localForage';
@@ -35,4 +36,16 @@ export const getCustomColumns = (item: OperationDataMap, columns: ColumnList): s
   }
 
   return customKeys;
+};
+
+export const getSelectOptionsFromColumns = (columns?: ColumnList): DropdownItemProps[] => {
+  if (columns && columns.count()) {
+    return columns.map(column => ({
+      key: column.get('id'),
+      text: formatString(column.get('name') as string),
+      value: column.get('name')
+    })).toJS();
+  }
+
+  return [];
 };

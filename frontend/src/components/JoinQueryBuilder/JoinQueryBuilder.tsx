@@ -10,6 +10,7 @@ import { JoinColumnsMapper } from '../JoinColumnsMapper';
 import { JoinOptions } from '../../types/operations';
 import * as sourcesActions from '../../actions/sources';
 import { bindActionCreators } from 'redux';
+import { getSelectOptionsFromColumns } from '../../utils';
 
 interface ReduxState {
   sources: List<SourceMap>;
@@ -23,6 +24,8 @@ interface ComponentProps {
   source: SourceMap;
   tableName?: string;
   schema?: string;
+  columnsX: string[];
+  columnsY: string[];
   columnMapping?: { [key: string]: string };
   editable?: boolean;
   onUpdate?: (options: string) => void;
@@ -39,13 +42,39 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
     const secondarySource = this.getSourceFromTableName(this.props.sources, this.props.tableName);
     const sourceID = secondarySource && secondarySource.get('id');
     const { columnMapping, source: primarySource, alerts } = this.props;
+    const columnsX = this.props.source.get('columns') as ColumnList;
 
     return (
       <React.Fragment>
 
+        <Col md={ 12 } className="mt-2 pl-0">
+          <Form.Group>
+            <Form.Label className="bmd-label-floating">
+              Columns to return from { this.props.source.get('indicator') }
+            </Form.Label>
+            <Dropdown
+              name="columns_x"
+              placeholder="Select Columns"
+              fluid
+              multiple
+              search
+              selection
+              options={ getSelectOptionsFromColumns(columnsX) }
+              value={ this.props.columnsX }
+              onChange={ this.onChange }
+              disabled={ !this.props.editable }
+            />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && (alerts.table_name || alerts.schema_name)) }) }
+            >
+              { alerts && (alerts.table_name || alerts.schema_name) }
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
         <Col md={ 6 } className="mt-2 pl-0">
           <Form.Group>
-            <Form.Label className="bmd-label-floating">Data Set To Join With</Form.Label>
+            <Form.Label className="bmd-label-floating">Data set to join with</Form.Label>
             <Dropdown
               name="source"
               placeholder="Select Data Set"
@@ -55,6 +84,33 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
               options={ this.getSelectOptionsFromSources(this.props.sources, this.props.source) }
               loading={ this.props.isFetchingSources }
               value={ sourceID as string | undefined }
+              onChange={ this.onChange }
+              disabled={ !this.props.editable }
+            />
+            <Form.Control.Feedback
+              type="invalid"
+              className={ classNames({ 'd-block': !!(alerts && (alerts.table_name || alerts.schema_name)) }) }
+            >
+              { alerts && (alerts.table_name || alerts.schema_name) }
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+        <Col md={ 12 } className={ classNames('mt-2 pl-0', { 'd-none': !secondarySource }) }>
+          <Form.Group>
+            <Form.Label className="bmd-label-floating">
+              Columns to return from { secondarySource && secondarySource.get('indicator') }
+            </Form.Label>
+            <Dropdown
+              name="columns_y"
+              placeholder="Select Columns"
+              fluid
+              multiple
+              search
+              selection
+              options={
+                secondarySource ? getSelectOptionsFromColumns(secondarySource.get('columns') as ColumnList) : []
+              }
+              value={ this.props.columnsY }
               onChange={ this.onChange }
               disabled={ !this.props.editable }
             />
@@ -124,9 +180,14 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
   }
 
   private addMapping = () => {
-    const { columnMapping, onUpdate, schema, tableName } = this.props;
+    const { columnMapping, columnsX, columnsY, onUpdate, schema, tableName } = this.props;
     if (onUpdate) {
-      const options = { table_name: tableName, schema_name: schema };
+      const options = {
+        table_name: tableName,
+        schema_name: schema,
+        columns_x: columnsX,
+        columns_y: columnsY
+      };
       if (columnMapping) {
         onUpdate(JSON.stringify({ ...options, join_on: { ...columnMapping, column1: 'column2' } }));
       } else {
@@ -145,24 +206,39 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
     if (!this.props.onUpdate) {
       return;
     }
+    let options: any = {
+      columns_x: this.props.columnsX,
+      columns_y: this.props.columnsY,
+      table_name: this.props.tableName,
+      schema_name: this.props.schema,
+      join_on: this.props.columnMapping
+    };
     if (data.name === 'source') {
       const selectedSource = this.props.sources.find(source => source.get('id') === data.value);
       if (selectedSource) {
         const { columnMapping } = this.props;
-        const options = { join_on: columnMapping };
-        this.props.onUpdate(JSON.stringify({
+        options = {
           ...options,
           table_name: selectedSource.get('active_mirror_name'),
-          schema_name: selectedSource.get('schema')
-        }));
+          schema_name: selectedSource.get('schema'),
+          join_on: columnMapping
+        };
       }
+    } else {
+      options[data.name] = data.value;
     }
+    this.props.onUpdate(JSON.stringify(options));
   }
 
   private onChangeMapping = (columnMapping: { [key: string]: string }) => {
-    const { onUpdate, schema, tableName } = this.props;
+    const { columnsX, columnsY, onUpdate, schema, tableName } = this.props;
     if (!onUpdate) { return; }
-    const options = { table_name: tableName, schema_name: schema };
+    const options = {
+      table_name: tableName,
+      schema_name: schema,
+      columns_x: columnsX,
+      columns_y: columnsY
+    };
     onUpdate(JSON.stringify({ ...options, join_on: columnMapping }));
   }
 }
