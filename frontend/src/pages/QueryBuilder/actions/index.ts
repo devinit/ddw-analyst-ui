@@ -1,4 +1,3 @@
-import { Set } from 'immutable';
 import { OperationStepMap } from '../../../types/operations';
 import {
   ADD_OPERATION_STEP,
@@ -9,7 +8,6 @@ import {
   SAVING_OPERATION,
   SAVING_OPERATION_FAILED,
   SAVING_OPERATION_SUCCESS,
-  SET_SELECTABLE_COLUMNS,
   UPDATE_ACTIVE_STEP
 } from '../reducers';
 
@@ -25,5 +23,3 @@ export const savingOperation = (): Partial<QueryBuilderAction> => ({ type: SAVIN
 export const operationSaved = (saved: boolean): Partial<QueryBuilderAction> =>
   saved ? ({ type: SAVING_OPERATION_SUCCESS }) : ({ type: SAVING_OPERATION_FAILED });
 export const resetQueryBuilderState = (): Partial<QueryBuilderAction> => ({ type: RESET_STATE });
-export const setSelectableColumns = (selectableColumns: Set<string>) =>
-  ({ type: SET_SELECTABLE_COLUMNS, selectableColumns });

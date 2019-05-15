@@ -1,10 +1,8 @@
 import { List, Set } from 'immutable';
 import * as React from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { MapDispatchToProps, connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
-import { setSelectableColumns } from '../../pages/QueryBuilder/actions';
 import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
 import { ReduxStore } from '../../store';
 import { OperationStepMap } from '../../types/operations';
@@ -23,12 +21,7 @@ interface ReduxState {
   steps: List<OperationStepMap>;
 }
 
-interface ActionProps {
-  actions: {
-    setSelectableColumns: typeof setSelectableColumns;
-  };
-}
-type SelectQueryBuilderProps = ComponentProps & ActionProps & ReduxState;
+type SelectQueryBuilderProps = ComponentProps & ReduxState;
 
 class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { selectableColumns: DropdownItemProps[] }> {
   static defaultProps: Partial<SelectQueryBuilderProps> = { editable: true };
@@ -88,7 +81,6 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
   }
 
   private onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    this.props.actions.setSelectableColumns(Set(data.value as string[]));
     if (this.props.onUpdateColumns) {
       this.props.onUpdateColumns(JSON.stringify({ columns: data.value as string[] }));
     }
@@ -98,7 +90,6 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
     if (this.props.onUpdateColumns) {
       const columns = this.props.source.get('columns') as ColumnList;
       const columnNames = columns.map(column => column.get('name')).toJS();
-      this.props.actions.setSelectableColumns(Set(columnNames));
       this.props.onUpdateColumns(JSON.stringify({ columns: columnNames as string[] }));
     }
   }
@@ -107,17 +98,13 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
     if (this.props.onUpdateColumns) {
       this.props.onUpdateColumns(JSON.stringify({ columns: [] }));
     }
-    this.props.actions.setSelectableColumns(Set(this.state.selectableColumns));
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({ setSelectableColumns }, dispatch)
-});
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
   steps: reduxStore.getIn([ `${queryBuilderReducerId}`, 'steps' ]) as List<OperationStepMap>
 });
 
-const connector = connect(mapStateToProps, mapDispatchToProps)(SelectQueryBuilder);
+const connector = connect(mapStateToProps)(SelectQueryBuilder);
 
 export { connector as default, connector as SelectQueryBuilder };
