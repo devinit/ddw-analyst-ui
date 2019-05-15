@@ -1,4 +1,4 @@
-import { List, Map, fromJS } from 'immutable';
+import { List, Map, Set, fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
 import { OperationMap, OperationStepMap } from '../../../types/operations';
 
@@ -7,12 +7,14 @@ export interface QueryBuilderAction extends Action {
   steps: List<OperationStepMap>;
   operation?: OperationMap;
   editingStep: boolean;
+  selectableColumns: Set<string>;
 }
 interface State {
   steps: List<OperationStepMap>;
   activeStep?: OperationStepMap;
   processing: boolean;
   editingStep: boolean;
+  selectableColumns: Set<string>;
 }
 export type QueryBuilderState = Map<keyof State, State[keyof State]>;
 
@@ -25,13 +27,15 @@ export const SAVING_OPERATION_SUCCESS = `${queryBuilderReducerId}.SAVING_OPERATI
 export const SAVING_OPERATION_FAILED = `${queryBuilderReducerId}.SAVING_OPERATION_FAILED`;
 export const EDIT_OPERATION_STEP = `${queryBuilderReducerId}.EDIT_OPERATION_STEP`;
 export const DELETE_OPERATION_STEP = `${queryBuilderReducerId}.DELETE_OPERATION_STEP`;
+export const SET_SELECTABLE_COLUMNS = `${queryBuilderReducerId}.SET_SELECTABLE_COLUMNS`;
 export const RESET_STATE = `${queryBuilderReducerId}.RESET_STATE`;
 
 const defaultState: QueryBuilderState = fromJS({
   steps: [],
   activeStep: undefined,
   editingStep: false,
-  processing: false
+  processing: false,
+  selectableColumns: Set()
 });
 
 export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction> = (state = defaultState, action) => {
@@ -81,6 +85,9 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
     }
 
     return state;
+  }
+  if (action.type === SET_SELECTABLE_COLUMNS) {
+    return state.set('selectableColumns', action.selectableColumns);
   }
   if (action.type === RESET_STATE) {
     return defaultState;
