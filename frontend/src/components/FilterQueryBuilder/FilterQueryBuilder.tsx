@@ -51,14 +51,12 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
 
           <p>The example below explains how the <b>contains</b> operation works:</p>
           <p>Consider a <b>contains</b> operation for donor country</p>
-          <p>
-            <ul>
-              <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
-              <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
-              <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
-              <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
-            </ul>
-          </p>
+          <ul>
+            <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
+            <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
+            <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
+            <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
+          </ul>
         </Alert>
       </div>
     );
