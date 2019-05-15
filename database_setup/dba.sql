@@ -1,11 +1,11 @@
 
 -- Drop any connections that exist
 
-SELECT 
-    pg_terminate_backend(pid) 
-FROM 
-    pg_stat_activity 
-WHERE 
+SELECT
+    pg_terminate_backend(pid)
+FROM
+    pg_stat_activity
+WHERE
     -- don't kill my own connection!
     pid <> pg_backend_pid()
     -- don't kill the connections to other databases
@@ -33,7 +33,7 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 -- Enable text indexing with gin
-CREATE EXTENSION IF NOT EXISTS  'pg_trgm';
+CREATE EXTENSION IF NOT EXISTS  "pg_trgm" WITH SCHEMA pg_catalog;
 
 --gin_trgm_ops method is required to used gin indexing
 update pg_opclass set opcdefault = true where opcname='gin_trgm_ops';
@@ -302,7 +302,7 @@ create table repo.dac1_current(
 );
 
 
-create index dac1_current_text_search_indx on repo.dac1_current using gin (donor_name,recipient_name);
-create index dac1_donor_code_index on repo.dac1_current (donor_code,recipient_code);
+create index dac1_current_text_search_indx on repo.dac1_current using gin (donor_name);
+create index dac1_donor_code_index on repo.dac1_current (donor_code);
 
 comment on table repo.dac1_current is 'Content of most recent DAC 1 mirror';
