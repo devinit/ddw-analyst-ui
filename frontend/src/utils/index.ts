@@ -1,7 +1,7 @@
-import { OperationDataMap, OperationMap, OperationStepMap } from '../types/operations';
-import { List } from 'immutable';
-import { ColumnList } from '../types/sources';
+import { List, Set } from 'immutable';
 import { DropdownItemProps } from 'semantic-ui-react';
+import { OperationDataMap, OperationMap, OperationStepMap } from '../types/operations';
+import { ColumnList } from '../types/sources';
 
 export * from './api';
 export * from './localForage';
@@ -48,4 +48,25 @@ export const getSelectOptionsFromColumns = (columns?: ColumnList): DropdownItemP
   }
 
   return [];
+};
+
+export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: List<OperationStepMap>) => {
+  const stepId = parseInt(activeStep.get('step_id') as string, 10);
+  const previousSteps = steps.filter(step => parseInt(step.get('step_id') as string, 10) < stepId);
+  if (previousSteps && previousSteps.count()) {
+    return previousSteps.reduce((columns: Set<string>, step) => {
+      if (step.get('query_func') === 'select') {
+        const options = step.get('query_kwargs') as string | undefined;
+        if (options) {
+          const { columns: selectColumns } = JSON.parse(options);
+
+          return Set(selectColumns);
+        }
+      }
+
+      return columns;
+    }, Set([]));
+  }
+
+  return Set([]);
 };

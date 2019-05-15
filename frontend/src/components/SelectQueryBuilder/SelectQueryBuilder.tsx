@@ -1,4 +1,4 @@
-import { Set } from 'immutable';
+import { List, Set } from 'immutable';
 import * as React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
@@ -7,18 +7,20 @@ import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { setSelectableColumns } from '../../pages/QueryBuilder/actions';
 import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
 import { ReduxStore } from '../../store';
+import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString, getSelectOptionsFromColumns } from '../../utils';
+import { formatString, getSelectOptionsFromColumns, getStepSelectableColumns } from '../../utils';
 
 interface ComponentProps {
   source: SourceMap;
   columns?: string[];
   editable?: boolean;
+  step: OperationStepMap;
   onUpdateColumns?: (options: string) => void;
 }
 
 interface ReduxState {
-  selectableColumns: Set<string>;
+  steps: List<OperationStepMap>;
 }
 
 interface ActionProps {
@@ -64,14 +66,13 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
   }
 
   componentDidMount() {
-    if (!this.props.selectableColumns.count()) {
-      const columns = this.props.source.get('columns') as ColumnList;
-      const selectableColumns = columns.map(column => column.get('name')).toArray() as string[];
-      this.props.actions.setSelectableColumns(this.props.selectableColumns.union(selectableColumns));
-      this.setState({ selectableColumns: getSelectOptionsFromColumns(columns) });
-    } else {
-      this.setState({ selectableColumns: this.getSelectOptionsFromColumns(this.props.selectableColumns) });
-    }
+    const columns = this.props.source.get('columns') as ColumnList;
+    const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps);
+    this.setState({
+      selectableColumns: selectableColumns.count()
+        ? this.getSelectOptionsFromColumns(selectableColumns)
+        : getSelectOptionsFromColumns(columns)
+    });
   }
 
   private getSelectOptionsFromColumns(columns: Set<string>): DropdownItemProps[] {
@@ -114,7 +115,7 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): Acti
   actions: bindActionCreators({ setSelectableColumns }, dispatch)
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
-  selectableColumns: reduxStore.getIn([ `${queryBuilderReducerId}`, 'selectableColumns' ]) as Set<string>
+  steps: reduxStore.getIn([ `${queryBuilderReducerId}`, 'steps' ]) as List<OperationStepMap>
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps)(SelectQueryBuilder);

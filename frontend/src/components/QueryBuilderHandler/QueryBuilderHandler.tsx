@@ -54,6 +54,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
         <SelectQueryBuilder
           source={ source }
           columns={ columns }
+          step={ step }
           onUpdateColumns={ this.props.onUpdateOptions }
           editable={ this.props.editable }
         />
