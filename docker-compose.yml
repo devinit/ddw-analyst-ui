@@ -17,6 +17,9 @@ services:
       - "80"
     depends_on:
      - db
+    environment:
+     - FTSUSER
+     - FTSPASS
   nginx:
     image: nginx:latest
     ports:
