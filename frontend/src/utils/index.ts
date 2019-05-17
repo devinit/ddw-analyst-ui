@@ -50,9 +50,22 @@ export const getSelectOptionsFromColumns = (columns?: ColumnList): DropdownItemP
   return [];
 };
 
+export const sortSteps = (stepA: OperationStepMap, stepB: OperationStepMap): number => {
+  const valueA = stepA.get('step_id') as number;
+  const valueB = stepB.get('step_id') as number;
+  if (valueA < valueB) {
+    return -1;
+  }
+  if (valueA > valueB) {
+    return 1;
+  }
+
+  return 0;
+};
+
 export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: List<OperationStepMap>, columnsList: ColumnList) => { //tslint:disable-line
   const stepId = parseInt(activeStep.get('step_id') as string, 10);
-  const previousSteps = steps.filter(step => parseInt(step.get('step_id') as string, 10) < stepId);
+  const previousSteps = steps.filter(step => parseInt(step.get('step_id') as string, 10) < stepId).sort(sortSteps);
   if (previousSteps && previousSteps.count()) {
     return previousSteps.reduce((columns: Set<string>, step) => {
       const options = step.get('query_kwargs') as string | undefined;
@@ -74,6 +87,13 @@ export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: Li
           const { trans_func_name, operational_column } = JSON.parse(options);
 
           return columns.union([ `${operational_column}_${trans_func_name}` ]);
+        }
+        if (queryFunction === 'multi_transform') {
+          const { trans_func_name, operational_columns } = JSON.parse(options);
+
+          return operational_columns && operational_columns.length
+            ? columns.union([ `${operational_columns[0]}_${trans_func_name}` ])
+            : columns;
         }
       }
 

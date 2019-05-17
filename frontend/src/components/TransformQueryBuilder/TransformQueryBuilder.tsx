@@ -5,7 +5,7 @@ import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { OperationStepMap, TransformOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString, getStepSelectableColumns } from '../../utils';
+import { getStepSelectableColumns } from '../../utils';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 type Alerts = { [P in keyof TransformOptions ]: string };
@@ -52,7 +52,6 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
   state = { hasFocus: '', showInfo: false, selectableColumns: [] };
 
   render() {
-    const columns = this.props.source.get('columns') as ColumnList;
     const { alerts, multi } = this.props;
     const columnAlert = alerts && (multi ? alerts.operational_columns : alerts.operational_column);
 
@@ -117,7 +116,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               fluid
               search
               selection
-              options={ this.getSelectOptionsFromColumns(columns, this.props.function) }
+              options={ this.state.selectableColumns }
               value={ this.props.multi ? this.props.columns : this.props.column }
               onChange={ this.onSelectChange }
               disabled={ !this.props.editable }
@@ -170,7 +169,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
     const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps, columns) as Set<string>;
     this.setState({
       selectableColumns: selectableColumns.count()
-        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        ? QueryBuilderHandler.getSelectOptionsFromFilteredColumns(columns, selectableColumns, this.props.function)
         : []
     });
   }
@@ -184,23 +183,6 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
 
   private isNumerical(functn: string) {
     return functn !== 'text_search' && functn !== 'concat';
-  }
-
-  private getSelectOptionsFromColumns(columns: ColumnList, functn?: string): DropdownItemProps[] {
-    if (columns.count()) {
-      if (functn) {
-        const dataType: 'N' | 'C' = this.isNumerical(functn) ? 'N' : 'C';
-        columns = columns.filter(column => column.get('data_type') === dataType);
-      }
-
-      return columns.map(column => ({
-        key: column.get('id'),
-        text: formatString(column.get('name') as string),
-        value: column.get('name')
-      })).toJS();
-    }
-
-    return [];
   }
 
   private onSelectChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
