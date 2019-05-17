@@ -95,6 +95,11 @@ export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: Li
             ? columns.union([ `${operational_columns[0]}_${trans_func_name}` ])
             : columns;
         }
+        if (queryFunction === 'join') {
+          const { columns_x, columns_y } = JSON.parse(options);
+
+          return Set(columns_x || []).union(columns_y || []);
+        }
       }
 
       return columns;
