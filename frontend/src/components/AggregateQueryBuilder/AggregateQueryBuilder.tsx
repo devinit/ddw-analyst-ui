@@ -2,9 +2,11 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
-import { AggregateOptions } from '../../types/operations';
+import { AggregateOptions, OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString } from '../../utils';
+import { getSelectOptionsFromColumns, getStepSelectableColumns } from '../../utils';
+import { List } from 'immutable';
+import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 type Alerts = { [P in keyof AggregateOptions ]: string };
 interface AggregateQueryBuilderProps {
@@ -14,10 +16,17 @@ interface AggregateQueryBuilderProps {
   function?: string;
   column?: string;
   editable?: boolean;
+  step: OperationStepMap;
+  steps: List<OperationStepMap>;
   onUpdate?: (options: string) => void;
 }
 
-export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilderProps> {
+interface AggregateQueryBuilderState {
+  operationalColumns: DropdownItemProps[];
+  groupByColumns: DropdownItemProps[];
+}
+
+export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilderProps, AggregateQueryBuilderState> {
   static defaultProps: Partial<AggregateQueryBuilderProps> = { editable: true };
   private functions = [
     { key: 'Avg', text: 'Average', value: 'Avg' },
@@ -27,9 +36,9 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
     { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' }
     // { key: 'DistinctOptionFunction', text: 'Distinct', value: 'DistinctOptionFunction' }
   ];
+  state = { operationalColumns: [], groupByColumns: [] };
 
   render() {
-    const columns = this.props.source.get('columns') as ColumnList;
     const { alerts } = this.props;
 
     return (
@@ -67,7 +76,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
               fluid
               search
               selection
-              options={ this.getSelectOptionsFromColumns(columns, true) }
+              options={ this.state.operationalColumns }
               value={ this.props.column }
               onChange={ this.onChange }
               disabled={ !this.props.editable }
@@ -89,7 +98,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
             multiple
             search
             selection
-            options={ this.getSelectOptionsFromColumns(columns) }
+            options={ this.state.groupByColumns }
             value={ this.props.groupBy }
             onChange={ this.onChange }
             disabled={ !this.props.editable }
@@ -105,18 +114,27 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
     );
   }
 
-  private getSelectOptionsFromColumns(columns: ColumnList, numerical = false): DropdownItemProps[] {
-    if (columns.count()) {
-      columns = numerical ? columns.filter(column => column.get('data_type') === 'N') : columns;
+  componentDidMount() {
+    this.setSelectableColumns();
+  }
 
-      return columns.map(column => ({
-        key: column.get('id'),
-        text: formatString(column.get('name') as string),
-        value: column.get('name')
-      })).toJS();
+  componentDidUpdate(prevProps: AggregateQueryBuilderProps) {
+    if (prevProps.function !== this.props.function) {
+      this.setSelectableColumns();
     }
+  }
 
-    return [];
+  private setSelectableColumns() {
+    const columns = this.props.source.get('columns') as ColumnList;
+    const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps);
+    this.setState({
+      operationalColumns: selectableColumns.count()
+        ? QueryBuilderHandler.getSelectOptionsFromFilteredColumns(columns, selectableColumns, true)
+        : getSelectOptionsFromColumns(columns),
+      groupByColumns: selectableColumns.count()
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        : getSelectOptionsFromColumns(columns)
+    });
   }
 
   private onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {

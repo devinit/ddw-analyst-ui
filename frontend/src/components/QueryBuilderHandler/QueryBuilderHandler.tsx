@@ -6,7 +6,7 @@ import { DropdownItemProps } from 'semantic-ui-react';
 import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
 import { ReduxStore } from '../../store';
 import { Filters, OperationStepMap } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { ColumnList, SourceMap } from '../../types/sources';
 import { formatString } from '../../utils';
 import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
 import FilterQueryBuilder from '../FilterQueryBuilder';
@@ -35,6 +35,23 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
         text: formatString(column),
         value: column
       }));
+    }
+
+    return [];
+  }
+
+  static getSelectOptionsFromFilteredColumns(columnsList: ColumnList, columns: Set<string>, numerical = false): DropdownItemProps[] { //tslint:disable-line
+    let selectableColumns = columnsList.filter(column => columns.find(col => col === column.get('name')));
+    if (selectableColumns.count()) {
+      selectableColumns = numerical
+        ? selectableColumns.filter(column => column.get('data_type') === 'N')
+        : selectableColumns;
+
+      return selectableColumns.map(column => ({
+        key: column.get('id'),
+        text: formatString(column.get('name') as string),
+        value: column.get('name')
+      })).toJS();
     }
 
     return [];
@@ -93,6 +110,8 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
           groupBy={ parsedOptions.group_by }
           function={ parsedOptions.agg_func_name }
           column={ parsedOptions.operational_column }
+          step={ step }
+          steps={ steps }
           onUpdate={ onUpdateOptions }
           editable={ this.props.editable }
         />
