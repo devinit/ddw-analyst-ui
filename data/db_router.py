@@ -1,3 +1,6 @@
+from django.conf import settings
+
+
 class DataRouter:
     """
     A router to control all database operations on models in the
@@ -32,6 +35,8 @@ class DataRouter:
         Make sure the data app only appears in the 'datasets'
         database.
         """
+        if settings.IS_TESTING:
+            return True
         if app_label == 'data':
             return db == 'datasets'
         return None

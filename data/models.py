@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.conf import settings
 
 
 class CrsCurrent(models.Model):
@@ -98,7 +99,7 @@ class CrsCurrent(models.Model):
     capital_expenditure = models.DecimalField(max_digits=65535, decimal_places=11, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = settings.IS_TESTING
         db_table = 'crs_current'
 
 
@@ -120,7 +121,7 @@ class Dac1Current(models.Model):
     flags = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = settings.IS_TESTING
         db_table = 'dac1_current'
 
 
@@ -142,7 +143,7 @@ class Dac2ACurrent(models.Model):
     flags = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = settings.IS_TESTING
         db_table = 'dac2a_current'
 
 
@@ -164,7 +165,7 @@ class Dac2BCurrent(models.Model):
     flags = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = settings.IS_TESTING
         db_table = 'dac2b_current'
 
 
@@ -184,5 +185,5 @@ class Dac5Current(models.Model):
     flags = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = settings.IS_TESTING
         db_table = 'dac5_current'
