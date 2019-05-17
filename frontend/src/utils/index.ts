@@ -55,12 +55,23 @@ export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: Li
   const previousSteps = steps.filter(step => parseInt(step.get('step_id') as string, 10) < stepId);
   if (previousSteps && previousSteps.count()) {
     return previousSteps.reduce((columns: Set<string>, step) => {
-      if (step.get('query_func') === 'select') {
+      const queryFunction = step.get('query_func');
+      if (queryFunction === 'select') {
         const options = step.get('query_kwargs') as string | undefined;
         if (options) {
           const { columns: selectColumns } = JSON.parse(options);
 
           return Set(selectColumns);
+        }
+      }
+      if (queryFunction === 'aggregate') {
+        const options = step.get('query_kwargs') as string | undefined;
+        if (options) {
+          const { group_by, agg_func_name, operational_column } = JSON.parse(options);
+          const aggregateColumns: string[] = group_by;
+          aggregateColumns.push(`${operational_column}_${agg_func_name}`);
+
+          return Set(aggregateColumns);
         }
       }
 
