@@ -41,20 +41,21 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
   }
 
   static getSelectOptionsFromFilteredColumns(columnsList: ColumnList, columns: Set<string>, numerical = false): DropdownItemProps[] { //tslint:disable-line
-    let selectableColumns = columnsList.filter(column => columns.find(col => col === column.get('name')));
-    if (selectableColumns.count()) {
-      selectableColumns = numerical
-        ? selectableColumns.filter(column => column.get('data_type') === 'N')
-        : selectableColumns;
-
-      return selectableColumns.map(column => ({
-        key: column.get('id'),
-        text: formatString(column.get('name') as string),
-        value: column.get('name')
-      })).toJS();
+    const dataSetColumns = columnsList.filter(column => columns.find(col => col === column.get('name')));
+    const generatedColumns = columns.subtract(Set(dataSetColumns.map(column => column.get('name'))) as Set<string>);
+    let selectableColumns = generatedColumns;
+    if (dataSetColumns.count()) {
+      selectableColumns = selectableColumns.union(numerical
+        ? dataSetColumns.filter(column => column.get('data_type') === 'N').map(column => column.get('name'))
+        : dataSetColumns.map(column => column.get('name'))
+      ) as Set<string>;
     }
 
-    return [];
+    return selectableColumns.map((column, key) => ({
+      key,
+      text: formatString(column),
+      value: column
+    })).toJS();
   }
 
   render() {
@@ -130,6 +131,8 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
           function={ parsedOptions.trans_func_name }
           column={ parsedOptions.operational_column }
           columns={ parsedOptions.operational_columns }
+          step={ step }
+          steps={ steps }
           multi={ query === 'multi_transform' }
           onUpdate={ onUpdateOptions }
           editable={ this.props.editable }

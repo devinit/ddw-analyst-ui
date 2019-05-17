@@ -1,10 +1,12 @@
 import classNames from 'classnames';
+import { List, Set } from 'immutable';
 import * as React from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { OperationStepMap, TransformOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString } from '../../utils';
-import { TransformOptions } from '../../types/operations';
+import { formatString, getStepSelectableColumns } from '../../utils';
+import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 type Alerts = { [P in keyof TransformOptions ]: string };
 interface TransformQueryBuilderProps {
@@ -16,12 +18,15 @@ interface TransformQueryBuilderProps {
   column?: string;
   value?: string;
   editable?: boolean;
+  step: OperationStepMap;
+  steps: List<OperationStepMap>;
   onUpdate?: (options: string) => void;
 }
 
 interface TransformQueryBuilderState {
   showInfo: boolean;
   hasFocus: string;
+  selectableColumns: DropdownItemProps;
 }
 
 export class TransformQueryBuilder extends React.Component<TransformQueryBuilderProps, TransformQueryBuilderState> {
@@ -29,7 +34,6 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
     alerts: {},
     editable: true
   };
-
   private scalarFunctions = [
     { key: 'add', text: 'Add', value: 'add' },
     { key: 'multiply', text: 'Multiply', value: 'multiply' },
@@ -45,7 +49,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
     { key: 'divide', text: 'Divide', value: 'divide' },
     { key: 'concat', text: 'Concatanate', value: 'concat' }
   ];
-  state = { hasFocus: '', showInfo: false };
+  state = { hasFocus: '', showInfo: false, selectableColumns: [] };
 
   render() {
     const columns = this.props.source.get('columns') as ColumnList;
@@ -149,6 +153,26 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
         </Col>
       </React.Fragment>
     );
+  }
+
+  componentDidMount() {
+    this.setSelectableColumns();
+  }
+
+  componentDidUpdate(prevProps: TransformQueryBuilderProps) {
+    if (prevProps.function !== this.props.function) {
+      this.setSelectableColumns();
+    }
+  }
+
+  private setSelectableColumns() {
+    const columns = this.props.source.get('columns') as ColumnList;
+    const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps, columns) as Set<string>;
+    this.setState({
+      selectableColumns: selectableColumns.count()
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        : []
+    });
   }
 
   private getFormGroupClasses(fieldName: string, value: string | number) {

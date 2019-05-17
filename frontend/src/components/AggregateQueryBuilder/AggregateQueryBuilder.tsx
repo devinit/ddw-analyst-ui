@@ -1,11 +1,11 @@
 import classNames from 'classnames';
+import { List, Set } from 'immutable';
 import * as React from 'react';
 import { Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { AggregateOptions, OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { getSelectOptionsFromColumns, getStepSelectableColumns } from '../../utils';
-import { List } from 'immutable';
+import { getStepSelectableColumns } from '../../utils';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 type Alerts = { [P in keyof AggregateOptions ]: string };
@@ -126,14 +126,14 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
 
   private setSelectableColumns() {
     const columns = this.props.source.get('columns') as ColumnList;
-    const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps);
+    const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps, columns) as Set<string>;
     this.setState({
       operationalColumns: selectableColumns.count()
         ? QueryBuilderHandler.getSelectOptionsFromFilteredColumns(columns, selectableColumns, true)
-        : getSelectOptionsFromColumns(columns),
+        : [],
       groupByColumns: selectableColumns.count()
         ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
-        : getSelectOptionsFromColumns(columns)
+        : []
     });
   }
 

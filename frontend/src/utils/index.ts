@@ -50,34 +50,36 @@ export const getSelectOptionsFromColumns = (columns?: ColumnList): DropdownItemP
   return [];
 };
 
-export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: List<OperationStepMap>) => {
+export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: List<OperationStepMap>, columnsList: ColumnList) => { //tslint:disable-line
   const stepId = parseInt(activeStep.get('step_id') as string, 10);
   const previousSteps = steps.filter(step => parseInt(step.get('step_id') as string, 10) < stepId);
   if (previousSteps && previousSteps.count()) {
     return previousSteps.reduce((columns: Set<string>, step) => {
-      const queryFunction = step.get('query_func');
-      if (queryFunction === 'select') {
-        const options = step.get('query_kwargs') as string | undefined;
-        if (options) {
-          const { columns: selectColumns } = JSON.parse(options);
+      const options = step.get('query_kwargs') as string | undefined;
+      if (options) {
+        const queryFunction = step.get('query_func');
+        if (queryFunction === 'select') {
+          const { columns: selectColumns } = JSON.parse(options) as { columns: string[] };
 
           return Set(selectColumns);
         }
-      }
-      if (queryFunction === 'aggregate') {
-        const options = step.get('query_kwargs') as string | undefined;
-        if (options) {
+        if (queryFunction === 'aggregate') {
           const { group_by, agg_func_name, operational_column } = JSON.parse(options);
-          const aggregateColumns: string[] = group_by;
+          const aggregateColumns: string[] = group_by || [];
           aggregateColumns.push(`${operational_column}_${agg_func_name}`);
 
           return Set(aggregateColumns);
         }
+        if (queryFunction === 'scalar_transform') {
+          const { trans_func_name, operational_column } = JSON.parse(options);
+
+          return columns.union([ `${operational_column}_${trans_func_name}` ]);
+        }
       }
 
       return columns;
-    }, Set([]));
+    }, Set(columnsList.map(column => column.get('name'))));
   }
 
-  return Set([]);
+  return Set(columnsList.map(column => column.get('name')));
 };

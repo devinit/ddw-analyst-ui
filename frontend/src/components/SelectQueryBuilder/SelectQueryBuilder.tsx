@@ -1,10 +1,10 @@
-import { List } from 'immutable';
+import { List, Set } from 'immutable';
 import * as React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { getSelectOptionsFromColumns, getStepSelectableColumns } from '../../utils';
+import { getStepSelectableColumns } from '../../utils';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface SelectQueryBuilderProps {
@@ -52,12 +52,13 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
   }
 
   componentDidMount() {
-    const columns = this.props.source.get('columns') as ColumnList;
-    const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps);
+    const { source, step, steps } = this.props;
+    const columns = source.get('columns') as ColumnList;
+    const selectableColumns = getStepSelectableColumns(step, steps, columns) as Set<string>;
     this.setState({
       selectableColumns: selectableColumns.count()
         ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
-        : getSelectOptionsFromColumns(columns)
+        : []
     });
   }
 
