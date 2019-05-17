@@ -92,6 +92,8 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
         <FilterQueryBuilder
           source={ source }
           filters={ fromJS(filters) }
+          step={ step }
+          steps={ steps }
           onUpdateFilters={ onUpdateOptions }
           editable={ this.props.editable }
         />
