@@ -1,4 +1,4 @@
-list.of.packages <- c("data.table","httr","utils","RPostgreSQL","reshape2")
+list.of.packages <- c("data.table","httr","utils","RPostgreSQL","reshape2","here")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-project.org")
 lapply(list.of.packages, require, character.only=T)
@@ -44,7 +44,7 @@ if(res$status_code==200){
   wdi = fread(tmp.csv, header=T)
   wdi[,V64:=NULL]
   names(wdi)[1:4] = tolower(make.sql.names(make.names(names(wdi)[1:4])))
-  
+
   # Append melt
   id.vars=c("country_name","country_code", "indicator_name", "indicator_code")
   variable.name="year"
