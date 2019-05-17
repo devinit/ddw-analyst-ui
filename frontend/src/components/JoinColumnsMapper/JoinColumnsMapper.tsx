@@ -6,7 +6,7 @@ import { ColumnList } from '../../types/sources';
 import { formatString } from '../../utils';
 
 interface JoinColumnsMapperProps {
-  primaryColumns: ColumnList;
+  primaryColumns: DropdownItemProps[];
   secondaryColumns: ColumnList;
   primaryColumn: string;
   secondaryColumn: string;
@@ -41,7 +41,7 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
             fluid
             selection
             search
-            options={ this.getSelectOptionsFromColumns(primaryColumns) }
+            options={ primaryColumns }
             onChange={ this.onSelectColumn }
             defaultValue={ primaryColumn }
             disabled={ !this.props.editable }
@@ -96,9 +96,9 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
         }
       }
       if (data.name === 'secondaryColumn') {
-        const matchingColumn = this.props.primaryColumns.find(column => column.get('name') === data.value);
+        const matchingColumn = this.props.primaryColumns.find(column => column.value === data.value);
         if (matchingColumn) {
-          primaryColumn = matchingColumn.get('name') as string;
+          primaryColumn = matchingColumn.value as string;
         }
       }
       const { columnMapping } = this.props;

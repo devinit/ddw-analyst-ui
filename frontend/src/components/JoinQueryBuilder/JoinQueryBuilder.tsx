@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { List } from 'immutable';
+import { List, Set } from 'immutable';
 import * as React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
 import { MapDispatchToProps, MapStateToProps, connect } from 'react-redux';
@@ -7,9 +7,11 @@ import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { ReduxStore } from '../../store';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { JoinColumnsMapper } from '../JoinColumnsMapper';
-import { JoinOptions } from '../../types/operations';
+import { JoinOptions, OperationStepMap } from '../../types/operations';
 import * as sourcesActions from '../../actions/sources';
 import { bindActionCreators } from 'redux';
+import { getStepSelectableColumns } from '../../utils';
+import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface ReduxState {
   sources: List<SourceMap>;
@@ -28,11 +30,16 @@ interface ComponentProps {
   columnMapping?: { [key: string]: string };
   joinType: string;
   editable?: boolean;
+  step: OperationStepMap;
+  steps: List<OperationStepMap>;
   onUpdate?: (options: string) => void;
 }
 type JoinQueryBuilderProps = ComponentProps & ReduxState & ActionProps;
+interface JoinQueryBuilderState {
+  selectableColumns: DropdownItemProps[];
+}
 
-class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
+class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryBuilderState> {
   static defaultProps: Partial<JoinQueryBuilderProps> = {
     alerts: {},
     editable: true
@@ -47,11 +54,12 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
     { key: 'full', text: 'Full Join', value: 'full' },
     { key: 'cross', text: 'Cross Join', value: 'cross' }
   ];
+  state = { selectableColumns: [] };
 
   render() {
     const secondarySource = this.getSourceFromTableName(this.props.sources, this.props.tableName);
     const sourceID = secondarySource && secondarySource.get('id');
-    const { columnMapping, source: primarySource, alerts } = this.props;
+    const { columnMapping, alerts } = this.props;
 
     return (
       <React.Fragment>
@@ -105,9 +113,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
         <Col md={ 12 } className={ classNames('mt-2 pl-0', { 'd-none': !secondarySource }) }>
           <Alert variant="danger" hidden={ !alerts || !alerts.join_on }>{ alerts && alerts.join_on }</Alert>
           {
-            columnMapping && secondarySource
-              ? this.renderColumnMappings(columnMapping, primarySource, secondarySource)
-              : null
+            columnMapping && secondarySource ? this.renderColumnMappings(columnMapping, secondarySource) : null
           }
           <Button variant="danger" size="sm" onClick={ this.addMapping } hidden={ !this.props.editable }>
             <i className="material-icons mr-1">add</i>
@@ -122,8 +128,12 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
     if (!this.props.isFetchingSources) {
       this.props.fetchSources({ limit: 1000 });
     }
+    const columns = this.props.source.get('columns') as ColumnList;
+    const columnsSet = getStepSelectableColumns(this.props.step, this.props.steps, columns) as Set<string>;
+    const selectableColumns = columnsSet.count() ? QueryBuilderHandler.getSelectOptionsFromColumns(columnsSet) : [];
+    this.setState({ selectableColumns });
     if (this.props.onUpdate && !this.props.columnsX.length) {
-      this.props.onUpdate(JSON.stringify({ columns_x: this.props.columnsX }));
+      this.props.onUpdate(JSON.stringify({ columns_x: columnsSet.toArray() }));
     }
   }
 
@@ -138,15 +148,14 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps> {
     }
   }
 
-  private renderColumnMappings(columnMapping: { [key: string]: string }, primarySource: SourceMap, secondarySource: SourceMap) { //tslint:disable-line
-    const primaryColumns = primarySource.get('columns') as ColumnList;
+  private renderColumnMappings(columnMapping: { [key: string]: string }, secondarySource: SourceMap) { //tslint:disable-line
     const secondaryColumns = secondarySource.get('columns') as ColumnList;
 
     return Object.keys(columnMapping).map(primaryColumn =>
       <JoinColumnsMapper
         key={ primaryColumn }
         editable={ this.props.editable }
-        primaryColumns={ primaryColumns }
+        primaryColumns={ this.state.selectableColumns }
         secondaryColumns={ secondaryColumns }
         primaryColumn={ primaryColumn }
         secondaryColumn={ columnMapping[primaryColumn] }

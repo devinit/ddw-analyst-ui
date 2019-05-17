@@ -165,6 +165,8 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
           columnsX={ parsedOptions.columns_x || columns.map(column => column.get('name')) }
           columnsY={ parsedOptions.columns_y || [] }
           joinType={ parsedOptions.join_how }
+          step={ step }
+          steps={ steps }
           onUpdate={ onUpdateOptions }
           editable={ this.props.editable }
         />
