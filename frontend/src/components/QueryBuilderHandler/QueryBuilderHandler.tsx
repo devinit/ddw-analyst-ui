@@ -40,15 +40,25 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
     return [];
   }
 
-  static getSelectOptionsFromFilteredColumns(columnsList: ColumnList, columns: Set<string>, numerical = false): DropdownItemProps[] { //tslint:disable-line
+  static isNumerical(functn: string) {
+    return functn !== 'text_search' && functn !== 'concat';
+  }
+
+  static getSelectOptionsFromFilteredColumns(columnsList: ColumnList, columns: Set<string>, functn?: string): DropdownItemProps[] { //tslint:disable-line
     const dataSetColumns = columnsList.filter(column => columns.find(col => col === column.get('name')));
     const generatedColumns = columns.subtract(Set(dataSetColumns.map(column => column.get('name'))) as Set<string>);
     let selectableColumns = generatedColumns;
     if (dataSetColumns.count()) {
-      selectableColumns = selectableColumns.union(numerical
-        ? dataSetColumns.filter(column => column.get('data_type') === 'N').map(column => column.get('name'))
-        : dataSetColumns.map(column => column.get('name'))
-      ) as Set<string>;
+      if (functn) {
+        const dataType: 'N' | 'C' = this.isNumerical(functn) ? 'N' : 'C';
+        selectableColumns = selectableColumns.union(
+          dataSetColumns
+            .filter(column => column.get('data_type') === dataType)
+            .map(column => column.get('name')) as List<string>
+        );
+      } else {
+        selectableColumns = selectableColumns.union(dataSetColumns.map(column => column.get('name'))) as Set<string>;
+      }
     }
 
     return selectableColumns.map((column, key) => ({

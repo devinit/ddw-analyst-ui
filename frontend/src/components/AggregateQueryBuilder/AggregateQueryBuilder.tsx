@@ -129,7 +129,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
     const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps, columns) as Set<string>;
     this.setState({
       operationalColumns: selectableColumns.count()
-        ? QueryBuilderHandler.getSelectOptionsFromFilteredColumns(columns, selectableColumns, true)
+        ? QueryBuilderHandler.getSelectOptionsFromFilteredColumns(columns, selectableColumns, this.props.function)
         : [],
       groupByColumns: selectableColumns.count()
         ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
