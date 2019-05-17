@@ -153,6 +153,7 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
       const parsedOptions = options
         ? JSON.parse(options)
         : { table_name: '', schema_name: '', join_on: {}, columns_x: [], columns_y: [], join_how: '' };
+      const columns = source.get('columns') as ColumnList;
 
       return (
         <JoinQueryBuilder
@@ -161,7 +162,7 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
           tableName={ parsedOptions.table_name }
           schema={ parsedOptions.schema_name }
           columnMapping={ parsedOptions.join_on }
-          columnsX={ parsedOptions.columns_x || [] }
+          columnsX={ parsedOptions.columns_x || columns.map(column => column.get('name')) }
           columnsY={ parsedOptions.columns_y || [] }
           joinType={ parsedOptions.join_how }
           onUpdate={ onUpdateOptions }
