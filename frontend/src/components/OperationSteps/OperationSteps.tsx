@@ -9,6 +9,7 @@ import { SourcesAction } from '../../reducers/sources';
 import { FetchOptions } from '../../types/api';
 import { OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
+import { sortSteps } from '../../utils';
 import OperationStep from '../OperationStepView';
 
 interface OperationStepsProps {
@@ -88,7 +89,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
         <Row>
           <ListGroup variant="flush" className="w-100">
             {
-              steps.map((step, index) => {
+              steps.sort(sortSteps).map((step, index) => {
                 const isActiveStep = activeStep && activeStep.get('step_id') === step.get('step_id');
 
                 return (

@@ -27,12 +27,16 @@ function* fetchOperationData({ payload }: QueryDataAction) {
       yield put(setOperationData(fromJS(data), payload));
     } else if (status === 401) {
       yield put(setToken(''));
-      yield put(fetchOperationDataFailed() as QueryDataAction);
+      yield put(fetchOperationDataFailed('') as QueryDataAction);
     } else {
-      yield put(fetchOperationDataFailed() as QueryDataAction);
+      yield put(fetchOperationDataFailed(
+        'An error occurred while executing query. Please contact your system administrator'
+      ) as QueryDataAction);
     }
   } catch (error) {
-    yield put(fetchOperationDataFailed() as QueryDataAction);
+    yield put(fetchOperationDataFailed(
+      'An error occurred while executing query. Please contact your system administrator'
+    ) as QueryDataAction);
   }
 }
 

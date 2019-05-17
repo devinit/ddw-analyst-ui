@@ -1,15 +1,20 @@
-import { fromJS } from 'immutable';
+import { List, Set, fromJS } from 'immutable';
 import * as React from 'react';
+import { Alert } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { DropdownItemProps } from 'semantic-ui-react';
+import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
+import { ReduxStore } from '../../store';
 import { Filters, OperationStepMap } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { ColumnList, SourceMap } from '../../types/sources';
+import { formatString } from '../../utils';
 import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
 import FilterQueryBuilder from '../FilterQueryBuilder';
 import { JoinQueryBuilder } from '../JoinQueryBuilder';
 import { SelectQueryBuilder } from '../SelectQueryBuilder';
 import { TransformQueryBuilder } from '../TransformQueryBuilder';
-import { Alert } from 'react-bootstrap';
 
-interface QueryBuilderHandlerProps {
+interface ComponentProps {
   alerts?: { [key: string]: string };
   source: SourceMap;
   step: OperationStepMap;
@@ -17,7 +22,52 @@ interface QueryBuilderHandlerProps {
   onUpdateOptions: (options: string) => void;
 }
 
-export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
+interface ReduxState {
+  steps: List<OperationStepMap>;
+}
+type QueryBuilderHandlerProps = ComponentProps & ReduxState;
+
+class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
+  static getSelectOptionsFromColumns(columns: Set<string>): DropdownItemProps[] {
+    if (columns.count()) {
+      return columns.toArray().map((column, key) => ({
+        key,
+        text: formatString(column),
+        value: column
+      }));
+    }
+
+    return [];
+  }
+
+  static isNumerical(functn: string) {
+    return functn !== 'text_search' && functn !== 'concat';
+  }
+
+  static getSelectOptionsFromFilteredColumns(columnsList: ColumnList, columns: Set<string>, functn?: string): DropdownItemProps[] { //tslint:disable-line
+    const dataSetColumns = columnsList.filter(column => columns.find(col => col === column.get('name')));
+    const generatedColumns = columns.subtract(Set(dataSetColumns.map(column => column.get('name'))) as Set<string>);
+    let selectableColumns = generatedColumns;
+    if (dataSetColumns.count()) {
+      if (functn) {
+        const dataType: 'N' | 'C' = this.isNumerical(functn) ? 'N' : 'C';
+        selectableColumns = selectableColumns.union(
+          dataSetColumns
+            .filter(column => column.get('data_type') === dataType)
+            .map(column => column.get('name')) as List<string>
+        );
+      } else {
+        selectableColumns = selectableColumns.union(dataSetColumns.map(column => column.get('name'))) as Set<string>;
+      }
+    }
+
+    return selectableColumns.map((column, key) => ({
+      key,
+      text: formatString(column),
+      value: column
+    })).toJS();
+  }
+
   render() {
     try {
       return this.renderQueryBuilder();
@@ -32,7 +82,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
   }
 
   renderQueryBuilder() {
-    const { alerts, onUpdateOptions, step, source } = this.props;
+    const { alerts, onUpdateOptions, step, steps, source } = this.props;
     const query = step.get('query_func');
     const options = step.get('query_kwargs') as string;
     if (query === 'filter') {
@@ -42,6 +92,8 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
         <FilterQueryBuilder
           source={ source }
           filters={ fromJS(filters) }
+          step={ step }
+          steps={ steps }
           onUpdateFilters={ onUpdateOptions }
           editable={ this.props.editable }
         />
@@ -54,6 +106,8 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
         <SelectQueryBuilder
           source={ source }
           columns={ columns }
+          step={ step }
+          steps={ steps }
           onUpdateColumns={ this.props.onUpdateOptions }
           editable={ this.props.editable }
         />
@@ -69,6 +123,8 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
           groupBy={ parsedOptions.group_by }
           function={ parsedOptions.agg_func_name }
           column={ parsedOptions.operational_column }
+          step={ step }
+          steps={ steps }
           onUpdate={ onUpdateOptions }
           editable={ this.props.editable }
         />
@@ -87,6 +143,8 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
           function={ parsedOptions.trans_func_name }
           column={ parsedOptions.operational_column }
           columns={ parsedOptions.operational_columns }
+          step={ step }
+          steps={ steps }
           multi={ query === 'multi_transform' }
           onUpdate={ onUpdateOptions }
           editable={ this.props.editable }
@@ -94,7 +152,10 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
       );
     }
     if (query === 'join') {
-      const parsedOptions = options ? JSON.parse(options) : { table_name: '', schema_name: '', join_on: {} };
+      const parsedOptions = options
+        ? JSON.parse(options)
+        : { table_name: '', schema_name: '', join_on: {}, columns_x: [], columns_y: [], join_how: '' };
+      const columns = source.get('columns') as ColumnList;
 
       return (
         <JoinQueryBuilder
@@ -103,6 +164,11 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
           tableName={ parsedOptions.table_name }
           schema={ parsedOptions.schema_name }
           columnMapping={ parsedOptions.join_on }
+          columnsX={ parsedOptions.columns_x || columns.map(column => column.get('name')) }
+          columnsY={ parsedOptions.columns_y || [] }
+          joinType={ parsedOptions.join_how }
+          step={ step }
+          steps={ steps }
           onUpdate={ onUpdateOptions }
           editable={ this.props.editable }
         />
@@ -112,3 +178,11 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
     return null;
   }
 }
+
+const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
+  steps: reduxStore.getIn([ `${queryBuilderReducerId}`, 'steps' ]) as List<OperationStepMap>
+});
+
+const connector = connect(mapStateToProps)(QueryBuilderHandler);
+
+export { connector as default, connector as QueryBuilderHandler, QueryBuilderHandler as QueryBuilderHandlerStatic };

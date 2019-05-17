@@ -12,6 +12,7 @@ interface State {
   data: List<OperationDataAPIResponseMap>;
   limit: number;
   offset: number;
+  alert: string;
 }
 export type QueryDataState = Map<keyof State, State[keyof State]>;
 
@@ -36,7 +37,7 @@ export const queryDataReducer: Reducer<QueryDataState, QueryDataAction> = (state
     );
   }
   if (action.type === FETCH_OPERATION_DATA_FAILED) {
-    return state.set('loading', false);
+    return state.set('loading', false).set('alert', action.alert);
   }
 
   return state;

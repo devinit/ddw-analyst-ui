@@ -11,6 +11,7 @@ from pypika import PostgreSQLQuery as Query
 from pypika import Table
 from pypika import analytics as an
 from pypika import functions as pypika_fn
+from pypika import JoinType
 
 from core.const import DEFAULT_LIMIT_COUNT
 
@@ -35,6 +36,14 @@ def multi_concat(iterable):
     return reduce(pypika_fn.Concat, iterable)
 
 
+def multi_divide(iterable):
+    return reduce(operator.truediv, iterable)
+
+
+def multi_subtract(iterable):
+    return reduce(operator.sub, iterable)
+
+
 # Won't be needed in Python 3.8 Import from math module instead
 def prod(iterable):
     return reduce(operator.mul, iterable, 1)
@@ -46,7 +55,7 @@ class QueryBuilder:
 
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
 
-        query_steps = operation.operationstep_set
+        query_steps = operation.operationstep_set.order_by('step_id')
         self.initial_table_name = query_steps.first().source.active_mirror_name
         self.initial_schema_name = query_steps.first().source.schema
         self.current_dataset = Table(
@@ -147,7 +156,9 @@ class QueryBuilder:
         multi_transform_mapping = {
             "sum": sum,
             "product": prod,
-            "concat": multi_concat
+            "concat": multi_concat,
+            "divide": multi_divide,
+            "subtract": multi_subtract
         }
         trans_func = multi_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_columns[0], trans_func_name])
@@ -179,21 +190,40 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def join(self, table_name, schema_name, join_on, criterion=None, columns=None):
+    def join(self, table_name, schema_name, join_on, join_how="full", columns_x=None, columns_y=None, suffix_y="2"):
         self.current_query = Query.from_(self.current_dataset)
+
+        join_how_mapping = {
+            "inner": JoinType.inner,
+            "left": JoinType.left,
+            "right": JoinType.right,
+            "outer": JoinType.outer,
+            "left_outer": JoinType.left_outer,
+            "right_outer": JoinType.right_outer,
+            "full": JoinType.full_outer,
+            "cross": JoinType.cross
+        }
+        join_how_value = join_how_mapping[join_how]
         table1 = self.current_dataset
         table2 = Table(table_name, schema=schema_name)
-        table1_columns = [table1.star]
-        table2_columns = [table2.star]
+        if columns_x and columns_y:
+            joined_table1_columns = [join_on_item[0] for join_on_item in join_on.items()]
+            joined_table2_columns = [join_on_item[1] for join_on_item in join_on.items()]
+            unjoined_table1_columns = [col for col in columns_x if col not in joined_table1_columns]
+            unjoined_table2_columns = [col for col in columns_y if col not in joined_table2_columns]
+            common_unjoined_columns = list(set(unjoined_table1_columns) & set(unjoined_table2_columns))
+            uncommon_table2_unjoined_columns = [getattr(table2, col) for col in unjoined_table2_columns if col not in common_unjoined_columns]
 
-        if columns:
-            table1_columns = map(lambda x: getattr(table1, x), columns.get('table1'))
-            table2_columns = map(lambda x: getattr(table2, x), columns.get('table2'))
+            select_on = [table1.star]  # All of the columns from table1
+            select_on += uncommon_table2_unjoined_columns  # And all of the unjoined, unaliased unique columns from Table2
+            select_on += [getattr(table2, col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]  # And all of the unjoined, aliased common columns from 2
+        else:
+            select_on = [table1.star] + [table2.star]
 
-        self.current_query = self.current_query.join(table2).on(
+        self.current_query = self.current_query.join(table2, how=join_how_value).on(
             reduce(operator.and_, [operator.eq(getattr(table1, k), getattr(table2, v)) for k, v in join_on.items()])
         ).select(
-            *table1_columns, *table2_columns
+            *select_on
         )
 
         self.current_dataset = self.current_query

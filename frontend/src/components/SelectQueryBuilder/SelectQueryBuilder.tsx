@@ -1,22 +1,26 @@
+import { List, Set } from 'immutable';
 import * as React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString } from '../../utils';
+import { getStepSelectableColumns } from '../../utils';
+import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface SelectQueryBuilderProps {
   source: SourceMap;
   columns?: string[];
   editable?: boolean;
+  step: OperationStepMap;
+  steps: List<OperationStepMap>;
   onUpdateColumns?: (options: string) => void;
 }
 
-export class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps> {
+class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { selectableColumns: DropdownItemProps[] }> {
   static defaultProps: Partial<SelectQueryBuilderProps> = { editable: true };
+  state = { selectableColumns: [] };
 
   render() {
-    const columns = this.props.source.get('columns') as ColumnList;
-
     return (
       <React.Fragment>
         <Form.Group>
@@ -27,7 +31,7 @@ export class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps>
             multiple
             search
             selection
-            options={ this.getSelectOptionsFromColumns(columns) }
+            options={ this.state.selectableColumns }
             value={ this.props.columns }
             onChange={ this.onChange }
             disabled={ !this.props.editable }
@@ -47,16 +51,15 @@ export class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps>
     );
   }
 
-  private getSelectOptionsFromColumns(columns: ColumnList): DropdownItemProps[] {
-    if (columns.count()) {
-      return columns.map(column => ({
-        key: column.get('id'),
-        text: formatString(column.get('name') as string),
-        value: column.get('name')
-      })).toJS();
-    }
-
-    return [];
+  componentDidMount() {
+    const { source, step, steps } = this.props;
+    const columns = source.get('columns') as ColumnList;
+    const selectableColumns = getStepSelectableColumns(step, steps, columns) as Set<string>;
+    this.setState({
+      selectableColumns: selectableColumns.count()
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        : []
+    });
   }
 
   private onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
@@ -79,3 +82,5 @@ export class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps>
     }
   }
 }
+
+export { SelectQueryBuilder };

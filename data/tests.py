@@ -79,13 +79,13 @@ class TestFixtureData(TestCase):
             name='Join',
             query_func='join',
             query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"year":"year"},\
-            "columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
+            "columns_x":["donor_name","usd_commitment"],"columns_y":["part_code","part_name"]}',
             source_id=2
         )
 
         queries = self.op.build_query(1, 0, True)
         _, dat = fetch_data(queries, database="default")
-        self.assertEqual(len(dat[0].keys()), 4)
+        self.assertEqual(len(dat[0].keys()), 90)
 
     def test_can_sum(self):
         OperationStep.objects.create(
@@ -101,30 +101,29 @@ class TestFixtureData(TestCase):
         _, dat = fetch_data(queries, database="default")
         self.assertTrue('usd_commitment_Sum' in dat[0].keys())
 
-    # TODO: Awaiting changes from #fix/pypika-joins
-    # def test_can_sum_from_joined_column_passes(self):
-    #     OperationStep.objects.create(
-    #         operation=self.op,
-    #         step_id=2,
-    #         name='Join',
-    #         query_func='join',
-    #         query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"year":"year"}\
-    #         ,"columns":{"table1":["donor_name","usd_commitment"],"table2":["part_code","part_name"]}}',
-    #         source_id=2
-    #     )
-    #
-    #     OperationStep.objects.create(
-    #         operation=self.op,
-    #         step_id=3,
-    #         name='Aggregate',
-    #         query_func='aggregate',
-    #         query_kwargs='{"group_by":["part_name"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
-    #         source_id=2
-    #     )
-    #
-    #     queries = self.op.build_query(1, 0, True)
-    #     _, dat = fetch_data(queries, database="default")
-    #     self.assertTrue(dat[0]['usd_commitment_Sum'] > 150)
+    def test_can_sum_from_joined_column_passes(self):
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Join',
+            query_func='join',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"year":"year"}\
+            ,"columns_x":["donor_name","usd_commitment"],"columns_y":["part_code","part_name"]}',
+            source_id=2
+        )
+
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=3,
+            name='Aggregate',
+            query_func='aggregate',
+            query_kwargs='{"group_by":["part_name"],"agg_func_name":"Sum", "operational_column":"usd_commitment"}',
+            source_id=2
+        )
+
+        queries = self.op.build_query(1, 0, True)
+        _, dat = fetch_data(queries, database="default")
+        self.assertTrue(dat[0]['usd_commitment_Sum'] > 150)
 
     def test_can_generate_perform_ntile(self):
         OperationStep.objects.create(

@@ -1,10 +1,12 @@
 import classNames from 'classnames';
+import { List, Set } from 'immutable';
 import * as React from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { OperationStepMap, TransformOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString } from '../../utils';
-import { TransformOptions } from '../../types/operations';
+import { getStepSelectableColumns } from '../../utils';
+import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 type Alerts = { [P in keyof TransformOptions ]: string };
 interface TransformQueryBuilderProps {
@@ -16,12 +18,15 @@ interface TransformQueryBuilderProps {
   column?: string;
   value?: string;
   editable?: boolean;
+  step: OperationStepMap;
+  steps: List<OperationStepMap>;
   onUpdate?: (options: string) => void;
 }
 
 interface TransformQueryBuilderState {
   showInfo: boolean;
   hasFocus: string;
+  selectableColumns: DropdownItemProps;
 }
 
 export class TransformQueryBuilder extends React.Component<TransformQueryBuilderProps, TransformQueryBuilderState> {
@@ -29,7 +34,6 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
     alerts: {},
     editable: true
   };
-
   private scalarFunctions = [
     { key: 'add', text: 'Add', value: 'add' },
     { key: 'multiply', text: 'Multiply', value: 'multiply' },
@@ -42,12 +46,12 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
   private multiFunctions = [
     { key: 'sum', text: 'Add', value: 'sum' },
     { key: 'product', text: 'Multiply', value: 'product' },
+    { key: 'divide', text: 'Divide', value: 'divide' },
     { key: 'concat', text: 'Concatanate', value: 'concat' }
   ];
-  state = { hasFocus: '', showInfo: false };
+  state = { hasFocus: '', showInfo: false, selectableColumns: [] };
 
   render() {
-    const columns = this.props.source.get('columns') as ColumnList;
     const { alerts, multi } = this.props;
     const columnAlert = alerts && (multi ? alerts.operational_columns : alerts.operational_column);
 
@@ -94,14 +98,12 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
         <Alert variant="info" hidden={ !this.state.showInfo }>
           <p>The example below explains how the <b>text search</b> operation works:</p>
           <p>Consider a <b>text search</b> operation for donor country</p>
-          <p>
-            <ul>
-              <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
-              <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
-              <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
-              <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
-            </ul>
-          </p>
+          <ul>
+            <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
+            <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
+            <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
+            <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
+          </ul>
         </Alert>
 
         <Col md={ this.props.multi ? 12 : 5 } className={ classNames('mt-2 pl-0', { 'd-none': !this.props.function }) }>
@@ -114,7 +116,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               fluid
               search
               selection
-              options={ this.getSelectOptionsFromColumns(columns, this.props.function) }
+              options={ this.state.selectableColumns }
               value={ this.props.multi ? this.props.columns : this.props.column }
               onChange={ this.onSelectChange }
               disabled={ !this.props.editable }
@@ -152,6 +154,26 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
     );
   }
 
+  componentDidMount() {
+    this.setSelectableColumns();
+  }
+
+  componentDidUpdate(prevProps: TransformQueryBuilderProps) {
+    if (prevProps.function !== this.props.function) {
+      this.setSelectableColumns();
+    }
+  }
+
+  private setSelectableColumns() {
+    const columns = this.props.source.get('columns') as ColumnList;
+    const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps, columns) as Set<string>;
+    this.setState({
+      selectableColumns: selectableColumns.count()
+        ? QueryBuilderHandler.getSelectOptionsFromFilteredColumns(columns, selectableColumns, this.props.function)
+        : []
+    });
+  }
+
   private getFormGroupClasses(fieldName: string, value: string | number) {
     return classNames('bmd-form-group', {
       'is-focused': this.state.hasFocus === fieldName,
@@ -161,23 +183,6 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
 
   private isNumerical(functn: string) {
     return functn !== 'text_search' && functn !== 'concat';
-  }
-
-  private getSelectOptionsFromColumns(columns: ColumnList, functn?: string): DropdownItemProps[] {
-    if (columns.count()) {
-      if (functn) {
-        const dataType: 'N' | 'C' = this.isNumerical(functn) ? 'N' : 'C';
-        columns = columns.filter(column => column.get('data_type') === dataType);
-      }
-
-      return columns.map(column => ({
-        key: column.get('id'),
-        text: formatString(column.get('name') as string),
-        value: column.get('name')
-      })).toJS();
-    }
-
-    return [];
   }
 
   private onSelectChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {

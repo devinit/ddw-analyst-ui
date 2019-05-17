@@ -1,26 +1,30 @@
-import { List, Map } from 'immutable';
+import { List, Map, Set } from 'immutable';
 import * as React from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import { DropdownItemProps } from 'semantic-ui-react';
-import { FilterMap } from '../../types/operations';
+import { FilterMap, OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString } from '../../utils';
+import { getStepSelectableColumns } from '../../utils';
 import { FilterItem } from '../FilterItem';
+import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface FilterQueryBuilderProps {
   source: SourceMap;
   filters?: List<FilterMap>;
   editable?: boolean;
+  step: OperationStepMap;
+  steps: List<OperationStepMap>;
   onUpdateFilters?: (filters: string) => void;
 }
 
 interface FilterQueryBuilderState {
   showInfo: boolean;
+  selectableColumns: DropdownItemProps[];
 }
 
 export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps, FilterQueryBuilderState> {
   static defaultProps: Partial<FilterQueryBuilderProps> = { editable: true };
-  state: FilterQueryBuilderState = { showInfo: false };
+  state: FilterQueryBuilderState = { showInfo: false, selectableColumns: [] };
   private operations = [
     { key: 'lt', text: 'is Less Than', value: 'lt' },
     { key: 'le', text: 'is Less Than Or Equals', value: 'le' },
@@ -34,7 +38,7 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
   render() {
     return (
       <div>
-        { this.renderFilters(this.props.source, this.props.filters) }
+        { this.renderFilters(this.props.filters) }
         <Button variant="danger" size="sm" onClick={ this.addFilter } hidden={ !this.props.editable }>
           <i className="material-icons mr-1">add</i>
           Add Filter
@@ -51,26 +55,34 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
 
           <p>The example below explains how the <b>contains</b> operation works:</p>
           <p>Consider a <b>contains</b> operation for donor country</p>
-          <p>
-            <ul>
-              <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
-              <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
-              <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
-              <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
-            </ul>
-          </p>
+          <ul>
+            <li><i className="text-danger">united kingdom</i> only returns case insensitive exact matches.</li>
+            <li><i className="text-danger">%united%</i> returns substring case insensitive matches.</li>
+            <li><i className="text-danger">united kingdom|uganda</i> for exact matches joined by OR.</li>
+            <li><i className="text-danger">united kingdom&uganda</i> for exact matches joined by AND.</li>
+          </ul>
         </Alert>
       </div>
     );
   }
 
-  private renderFilters(source: SourceMap, filters?: List<FilterMap>) {
+  componentDidMount() {
+    const columns = this.props.source.get('columns') as ColumnList;
+    const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps, columns) as Set<string>;
+    this.setState({
+      selectableColumns: selectableColumns.count()
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        : []
+    });
+  }
+
+  private renderFilters(filters?: List<FilterMap>) {
     if (filters) {
       return filters.map((filter, index) =>
         <FilterItem
           editable={ this.props.editable }
           key={ index }
-          columns={ this.getSelectColumnsFromSource(source) }
+          columns={ this.state.selectableColumns }
           operations={ this.operations }
           filter={ filter }
           onUpdate={ (filtr: FilterMap) => this.onUpdateItem(filtr, index) }
@@ -80,19 +92,6 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
     }
 
     return null;
-  }
-
-  private getSelectColumnsFromSource(source: SourceMap): DropdownItemProps[] {
-    const columns = source.get('columns') as ColumnList;
-    if (columns && columns.count()) {
-      return columns.map(column => ({
-        key: column.get('id'),
-        text: formatString(column.get('name') as string),
-        value: column.get('name')
-      })).toJS();
-    }
-
-    return [];
   }
 
   private addFilter = () => {
