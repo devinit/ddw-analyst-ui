@@ -1,15 +1,20 @@
-import { fromJS } from 'immutable';
+import { List, Set, fromJS } from 'immutable';
 import * as React from 'react';
+import { Alert } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { DropdownItemProps } from 'semantic-ui-react';
+import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
+import { ReduxStore } from '../../store';
 import { Filters, OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
+import { formatString } from '../../utils';
 import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
 import FilterQueryBuilder from '../FilterQueryBuilder';
 import { JoinQueryBuilder } from '../JoinQueryBuilder';
 import { SelectQueryBuilder } from '../SelectQueryBuilder';
 import { TransformQueryBuilder } from '../TransformQueryBuilder';
-import { Alert } from 'react-bootstrap';
 
-interface QueryBuilderHandlerProps {
+interface ComponentProps {
   alerts?: { [key: string]: string };
   source: SourceMap;
   step: OperationStepMap;
@@ -17,7 +22,24 @@ interface QueryBuilderHandlerProps {
   onUpdateOptions: (options: string) => void;
 }
 
-export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
+interface ReduxState {
+  steps: List<OperationStepMap>;
+}
+type QueryBuilderHandlerProps = ComponentProps & ReduxState;
+
+class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
+  static getSelectOptionsFromColumns(columns: Set<string>): DropdownItemProps[] {
+    if (columns.count()) {
+      return columns.toArray().map((column, key) => ({
+        key,
+        text: formatString(column),
+        value: column
+      }));
+    }
+
+    return [];
+  }
+
   render() {
     try {
       return this.renderQueryBuilder();
@@ -32,7 +54,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
   }
 
   renderQueryBuilder() {
-    const { alerts, onUpdateOptions, step, source } = this.props;
+    const { alerts, onUpdateOptions, step, steps, source } = this.props;
     const query = step.get('query_func');
     const options = step.get('query_kwargs') as string;
     if (query === 'filter') {
@@ -55,6 +77,7 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
           source={ source }
           columns={ columns }
           step={ step }
+          steps={ steps }
           onUpdateColumns={ this.props.onUpdateOptions }
           editable={ this.props.editable }
         />
@@ -118,3 +141,11 @@ export class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProp
     return null;
   }
 }
+
+const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
+  steps: reduxStore.getIn([ `${queryBuilderReducerId}`, 'steps' ]) as List<OperationStepMap>
+});
+
+const connector = connect(mapStateToProps)(QueryBuilderHandler);
+
+export { connector as default, connector as QueryBuilderHandler, QueryBuilderHandler as QueryBuilderHandlerStatic };

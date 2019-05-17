@@ -1,27 +1,20 @@
-import { List, Set } from 'immutable';
+import { List } from 'immutable';
 import * as React from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
-import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
-import { ReduxStore } from '../../store';
 import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString, getSelectOptionsFromColumns, getStepSelectableColumns } from '../../utils';
+import { getSelectOptionsFromColumns, getStepSelectableColumns } from '../../utils';
+import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
-interface ComponentProps {
+interface SelectQueryBuilderProps {
   source: SourceMap;
   columns?: string[];
   editable?: boolean;
   step: OperationStepMap;
+  steps: List<OperationStepMap>;
   onUpdateColumns?: (options: string) => void;
 }
-
-interface ReduxState {
-  steps: List<OperationStepMap>;
-}
-
-type SelectQueryBuilderProps = ComponentProps & ReduxState;
 
 class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { selectableColumns: DropdownItemProps[] }> {
   static defaultProps: Partial<SelectQueryBuilderProps> = { editable: true };
@@ -63,21 +56,9 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
     const selectableColumns = getStepSelectableColumns(this.props.step, this.props.steps);
     this.setState({
       selectableColumns: selectableColumns.count()
-        ? this.getSelectOptionsFromColumns(selectableColumns)
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
         : getSelectOptionsFromColumns(columns)
     });
-  }
-
-  private getSelectOptionsFromColumns(columns: Set<string>): DropdownItemProps[] {
-    if (columns.count()) {
-      return columns.toArray().map((column, key) => ({
-        key,
-        text: formatString(column),
-        value: column
-      }));
-    }
-
-    return [];
   }
 
   private onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
@@ -101,10 +82,4 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
   }
 }
 
-const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
-  steps: reduxStore.getIn([ `${queryBuilderReducerId}`, 'steps' ]) as List<OperationStepMap>
-});
-
-const connector = connect(mapStateToProps)(SelectQueryBuilder);
-
-export { connector as default, connector as SelectQueryBuilder };
+export { SelectQueryBuilder };
