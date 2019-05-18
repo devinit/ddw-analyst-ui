@@ -14,4 +14,5 @@ export interface FetchOptions {
   limit?: number;
   offset?: number;
   link?: string;
+  search?: string;
 }
