@@ -23,7 +23,7 @@ function* fetchOperations({ payload }: OperationsAction) {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const basePath = payload.mine ? api.routes.MY_OPERATIONS : api.routes.OPERATIONS;
     const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios.request({
-      url: payload.link || `${basePath}?limit=${payload.limit}&offset=${payload.offset}`,
+      url: payload.link || `${basePath}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}`,
       method: 'get',
       headers: {
         'Content-Type': 'application/json',

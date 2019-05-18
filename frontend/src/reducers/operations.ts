@@ -12,6 +12,7 @@ export interface OperationsAction extends Action {
     limit: number;
     offset: number;
     link: string;
+    search: string;
     id: number | string;
     history: History;
     mine: boolean;
