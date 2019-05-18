@@ -5,6 +5,7 @@
     Serializers also provide deserialization, allowing parsed data to be converted back into complex
     types, after first validating the incoming data.
 """
+from json.decoder import JSONDecodeError
 from django.contrib.auth.models import Permission, User
 from rest_framework import serializers
 from rest_framework import pagination
@@ -26,12 +27,22 @@ class DataSerializer(serializers.BaseSerializer):
         if limit == 0:
             limit = DEFAULT_LIMIT_COUNT
         operation = instance['operation_instance']
-        count, data = operation.query_table(limit, offset, estimate_count=True)
-
-        return {
-            'count': count,
-            'data': data
-        }
+        try:
+            count, data = operation.query_table(limit, offset, estimate_count=True)
+            return {
+                'count': count,
+                'data': data
+            }
+        except JSONDecodeError as json_error:
+            return {
+                'count': 0,
+                'data': [
+                    {
+                        'error': str(json_error),
+                        'error_type': 'JSONDecodeError'
+                    }
+                ]
+            }
 
 
 class TagSerializer(serializers.ModelSerializer):
