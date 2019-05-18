@@ -267,6 +267,32 @@ class TestFixtureData(TestCase):
         _, dat = fetch_data(queries, database="default")
         self.assertTrue('usd_disbursement_sum' in dat[0].keys())
 
+    def test_can_catch_sql_err(self):
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name="Select",
+            query_func="select",
+            query_kwargs="{ \"columns\": [ \"iso10\" ] }",
+            source_id=1
+        )
+        queries = self.op.build_query(1, 0, True)
+        _, dat = fetch_data(queries, database="default")
+        self.assertTrue("error" in list(dat[0].keys()))
+
+    def test_can_catch_zip_err(self):
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name="Filter",
+            query_func="filter",
+            query_kwargs='{"filters":[{"field":"year", "value":9999, "func":"ge"}]}',
+            source_id=1
+        )
+        queries = self.op.build_query(1, 0, False)
+        _, dat = fetch_data(queries, database="default")
+        self.assertEqual(len(dat), 0)
+
 
 class TestCommands(TestCase):
     def test_load_manual(self):
