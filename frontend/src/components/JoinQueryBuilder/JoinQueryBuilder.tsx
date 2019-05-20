@@ -46,13 +46,9 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
   };
   private joinTypes = [
     { key: 'inner', text: 'Inner Join', value: 'inner' },
-    { key: 'outer', text: 'Outer Join', value: 'outer' },
     { key: 'left', text: 'Left Join', value: 'left' },
     { key: 'right', text: 'Right Join', value: 'right' },
-    { key: 'left_outer', text: 'Left Outer Join', value: 'left_outer' },
-    { key: 'right_outer', text: 'Right Outer Join', value: 'right_outer' },
-    { key: 'full', text: 'Full Join', value: 'full' },
-    { key: 'cross', text: 'Cross Join', value: 'cross' }
+    { key: 'full', text: 'Full Join', value: 'full' }
   ];
   state = { selectableColumns: [] };
 
