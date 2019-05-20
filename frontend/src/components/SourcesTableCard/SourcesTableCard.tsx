@@ -64,7 +64,7 @@ class SourcesTableCard extends React.Component<SourcesTableCardProps, { searchQu
 
   componentDidMount() {
     if (!this.props.loading) {
-      this.props.actions.fetchSources({ limit: this.props.limit, offset: this.props.offset });
+      this.props.actions.fetchSources({ limit: 10, offset: this.props.offset });
     }
   }
 
