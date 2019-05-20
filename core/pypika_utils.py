@@ -12,8 +12,14 @@ from pypika import Table
 from pypika import analytics as an
 from pypika import functions as pypika_fn
 from pypika import JoinType
+from pypika.terms import Function
 
 from core.const import DEFAULT_LIMIT_COUNT
+
+
+class NullIf(Function):
+    def __init__(self, term, condition, **kwargs):
+        super(NullIf, self).__init__('NULLIF', term, condition, **kwargs)
 
 
 def text_search(field, search_ilike):
@@ -37,7 +43,11 @@ def multi_concat(iterable):
 
 
 def multi_divide(iterable):
-    return reduce(operator.truediv, iterable)
+    iterable_nullif = [iterable[0]]
+    if len(iterable) > 1:
+        for iter in iterable[1:]:
+            iterable_nullif.append(NullIf(iter, 0))
+    return reduce(operator.truediv, iterable_nullif)
 
 
 def multi_subtract(iterable):

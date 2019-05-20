@@ -267,6 +267,20 @@ class TestFixtureData(TestCase):
         _, dat = fetch_data(queries, database="default")
         self.assertTrue('usd_disbursement_sum' in dat[0].keys())
 
+    def test_can_perform_multi_transform_divide_by_zero(self):
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Transform',
+            query_func='multi_transform',
+            query_kwargs='{"trans_func_name":"divide", "operational_columns":["usd_disbursement","usd_disbursement_deflated"]}',
+            source_id=2
+        )
+
+        queries = self.op.build_query()
+        _, dat = fetch_data(queries, database="default")
+        self.assertTrue('usd_disbursement_divide' in dat[0].keys())
+
     def test_can_catch_sql_err(self):
         OperationStep.objects.create(
             operation=self.op,
