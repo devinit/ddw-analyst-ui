@@ -7,6 +7,9 @@ lapply(list.of.packages, require, character.only=T)
 script.dir <- here()
 # script.dir = "/src"
 # script.dir = "/home/alex/git/ddw-analyst-ui"
+
+source(paste0(script.dir,"/data_updates/R/constants.R"))
+
 isos = read.csv(paste0(script.dir,"/data_updates/manual/CSV/fts_isos.csv"), na.strings="", as.is=T, fileEncoding="utf8")
 isos$country_name = NULL
 isos$country_code = as.character(isos$country_code)
@@ -32,11 +35,11 @@ merge_isos = function(flow_df){
 
 drv = dbDriver("PostgreSQL")
 con = dbConnect(drv,
-                dbname="analyst_ui"
-                ,user="analyst_ui_user"
-                ,password="analyst_ui_pass"
-                ,host="db"
-                ,port=5432)
+                dbname=db.dbname
+                ,user=db.user
+                ,password=db.password
+                ,host=db.host
+                ,port=db.port)
 # con = dbConnect(drv,
 #                 dbname="analyst_ui"
 #                 ,user="postgres")

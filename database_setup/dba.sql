@@ -1,11 +1,11 @@
 
 -- Drop any connections that exist
 
-SELECT 
-    pg_terminate_backend(pid) 
-FROM 
-    pg_stat_activity 
-WHERE 
+SELECT
+    pg_terminate_backend(pid)
+FROM
+    pg_stat_activity
+WHERE
     -- don't kill my own connection!
     pid <> pg_backend_pid()
     -- don't kill the connections to other databases
@@ -31,6 +31,12 @@ SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+
+-- Enable text indexing with gin
+CREATE EXTENSION IF NOT EXISTS  "pg_trgm" WITH SCHEMA pg_catalog;
+
+--gin_trgm_ops method is required to used gin indexing
+update pg_opclass set opcdefault = true where opcname='gin_trgm_ops';
 
 create schema repo;
 
@@ -157,6 +163,8 @@ WITH (
 
 comment on table repo.crs_current is 'Content of most DAC CRS mirror';
 
+create index crs_current_text_search_indx on repo.crs_current using gin (short_description,long_description,project_title,donor_name,sector_name,channel_name);
+
 drop table if exists repo.dac5_current;
 
 create table repo.dac5_current(
@@ -187,6 +195,8 @@ WITH (
 ) ;
 
 comment on table repo.dac5_current is 'Content of most recent DAC 5 mirror data';
+create index dac5_current_text_search_indx on repo.dac5_current using gin (donor_name,sector_name);
+create index dac5_donor_code_index on repo.dac5_current (donor_code);
 
 drop table if exists repo.dac2b_current;
 
@@ -219,6 +229,9 @@ create table repo.dac2b_current(
 WITH (
 	OIDS=FALSE
 ) ;
+
+create index dac2b_current_text_search_indx on repo.dac2b_current using gin (donor_name,recipient_name);
+create index dac2b_donor_code_index on repo.dac2b_current (donor_code,recipient_code);
 
 comment on table repo.dac2b_current is 'Content of most recent DAC 2B mirror';
 
@@ -254,6 +267,10 @@ WITH (
 	OIDS=FALSE
 ) ;
 
+
+create index dac2a_current_text_search_indx on repo.dac2a_current using gin (donor_name,recipient_name);
+create index dac2a_donor_code_index on repo.dac2a_current (donor_code,recipient_code);
+
 comment on table repo.dac2a_current is 'Content of most recent DAC 2A mirror';
 
 drop table if exists repo.dac1_current;
@@ -283,5 +300,9 @@ create table repo.dac1_current(
 	CONSTRAINT valid_time CHECK ((("time" >= 1960) AND ("time" <= 2018))),
 	CONSTRAINT valid_year CHECK (((year >= 1960) AND (year <= 2018)))
 );
+
+
+create index dac1_current_text_search_indx on repo.dac1_current using gin (donor_name);
+create index dac1_donor_code_index on repo.dac1_current (donor_code);
 
 comment on table repo.dac1_current is 'Content of most recent DAC 1 mirror';

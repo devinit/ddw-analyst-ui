@@ -5,3 +5,7 @@
 /bin/bash data_updates/povcalnet.sh
 /bin/bash data_updates/wdi.sh
 /bin/bash data_updates/weo.sh
+/bin/bash data_updates/fts.sh
+
+#Run db indexing after all data has been loaded
+/bin/bash data_updates/indexing.sh
