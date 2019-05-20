@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does not render invalid children 1`] = `
+<div
+  className="wrapper"
+>
+  <div
+    className="main-panel"
+  >
+    <div
+      className="content pt-0"
+    >
+      <div
+        className="container-fluid"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders AdminLayoutContent when one is added as a child 1`] = `
+<div
+  className="wrapper"
+>
+  <div
+    className="main-panel"
+  >
+    <div
+      className="content pt-0"
+    >
+      <div
+        className="container-fluid"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders a Navbar when one is added as a child 1`] = `
+<div
+  className="wrapper"
+>
+  <div
+    className="main-panel"
+  >
+    <nav
+      className="navbar navbar-expand navbar-light"
+    />
+    <div
+      className="content pt-0"
+    >
+      <div
+        className="container-fluid"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders a Sidebar when one is added as a child 1`] = `
+<div
+  className="wrapper"
+>
+  <div
+    className="sidebar"
+    data-background-color="red"
+    data-color="azure"
+  >
+    <div
+      className="sidebar-wrapper"
+    />
+  </div>
+  <div
+    className="main-panel"
+  >
+    <div
+      className="content pt-0"
+    >
+      <div
+        className="container-fluid"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders a loading indicator with the default props 1`] = `
+<div>
+  Loading ...
+</div>
+`;
+
+exports[`renders the layout when not loading 1`] = `
+<div
+  className="wrapper"
+>
+  <div
+    className="main-panel"
+  >
+    <div
+      className="content pt-0"
+    >
+      <div
+        className="container-fluid"
+      />
+    </div>
+  </div>
+</div>
+`;

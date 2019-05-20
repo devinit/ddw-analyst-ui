@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="navbar-minimize"
+>
+  <button
+    className="btn btn-just-icon btn-white btn-fab btn-round"
+    data-testid="navbar-minimise-button"
+    onClick={[Function]}
+  >
+    <i
+      className="material-icons text_align-center visible-on-sidebar-regular"
+    >
+      more_vert
+    </i>
+    <i
+      className="material-icons design_bullet-list-67 visible-on-sidebar-mini"
+    >
+      view_list
+    </i>
+  </button>
+</div>
+`;

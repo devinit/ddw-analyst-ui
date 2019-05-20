@@ -1,0 +1,31 @@
+country_name,di_id,iso3,cblb
+Afghanistan,AF,AFG,1
+Benin,BJ,BEN,1
+Burundi,BI,BDI,1
+Central African Republic,CF,CAF,1
+Chad,TD,TCD,1
+"Congo, Republic of",CG,COG,1
+Democratic Republic of the Congo,CD,COD,1
+Eritrea,ER,ERI,1
+The Gambia,GM,GMB,1
+Guinea,GN,GIN,1
+Guinea-Bissau,GW,GNB,1
+Haiti,HT,HTI,1
+Lesotho,LS,LSO,1
+Liberia,LR,LBR,1
+Madagascar,MG,MDG,1
+Malawi,MW,MWI,1
+Mali,ML,MLI,1
+Federated States of Micronesia,FM,FSM,1
+Mozambique,MZ,MOZ,1
+Niger,NE,NER,1
+Nigeria,NG,NGA,1
+Papua New Guinea,PG,PNG,1
+Somalia,SO,SOM,1
+South Sudan,SS,SSD,1
+Sudan,SD,SDN,1
+Syria,SY,SYR,1
+Togo,TG,TGO,1
+Uganda,UG,UGA,1
+Yemen,YE,YEM,1
+Zambia,ZM,ZMB,1

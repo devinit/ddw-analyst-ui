@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the loading indicator while loading 1`] = `
+<div
+  className="wrapper wrapper-full-page"
+>
+  <div
+    className="page-header login-page header-filter"
+    data-css-cyv5ek=""
+    filter-color="red"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="ml-auto mr-auto col-lg-4 col-md-6 col-sm-8"
+        >
+          <div
+            data-css-1yv2jt6=""
+          >
+            Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders the login form when loading is false 1`] = `
+<form
+  class="form"
+  data-testid="login-form"
+  novalidate=""
+>
+  <div
+    class="card-login card"
+  >
+    <div
+      class="card-header-rose text-center card-header"
+    >
+      <div
+        class="card-title h5"
+      >
+        Login
+      </div>
+      <div
+        class="social-line"
+      />
+    </div>
+    <div
+      class="card-body"
+    >
+      <p
+        class="card-description text-center d-none"
+      >
+        Or Go With
+      </p>
+      <div
+        class="fade sc-bwzfXH desjYZ alert alert-danger show"
+        hidden=""
+        role="alert"
+      />
+      <span
+        class="bmd-form-group"
+      >
+        <div
+          class="input-group"
+        >
+          <div
+            class="input-group-prepend"
+          >
+            <span
+              class="input-group-text"
+            >
+              <i
+                class="material-icons"
+              >
+                email
+              </i>
+            </span>
+          </div>
+          <input
+            class="form-control"
+            name="username"
+            placeholder="Email..."
+            required=""
+            type="email"
+          />
+          <div
+            class="sc-bdVaJa jLtXnO invalid-feedback"
+          />
+        </div>
+      </span>
+      <span
+        class="bmd-form-group"
+      >
+        <div
+          class="input-group"
+        >
+          <div
+            class="input-group-prepend"
+          >
+            <span
+              class="input-group-text"
+            >
+              <i
+                class="material-icons"
+              >
+                lock_outline
+              </i>
+            </span>
+          </div>
+          <input
+            class="form-control"
+            name="password"
+            placeholder="Password..."
+            type="password"
+          />
+          <div
+            class="sc-bdVaJa jLtXnO invalid-feedback"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      class="justify-content-center card-footer"
+    >
+      <button
+        class="btn-rose btn btn-link btn-lg"
+        type="submit"
+      >
+        Login
+      </button>
+    </div>
+  </div>
+</form>
+`;

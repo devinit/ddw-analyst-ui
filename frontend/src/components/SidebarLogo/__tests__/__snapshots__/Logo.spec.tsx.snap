@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the correct url with the default props 1`] = `
+<a
+  className="simple-text logo-normal"
+  href="/path"
+  onClick={[Function]}
+/>
+`;
+
+exports[`renders the mini variation when specified 1`] = `
+<a
+  className="simple-text logo-mini"
+  href="/link"
+  onClick={[Function]}
+/>
+`;
+
+exports[`renders the normal variation when specified 1`] = `
+<a
+  className="simple-text logo-normal"
+  href="/link"
+  onClick={[Function]}
+/>
+`;

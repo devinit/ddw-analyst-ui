@@ -1,0 +1,134 @@
+country_name,country_code,iso3
+Nordic Development Fund [NDF],104,
+UNEP,807,
+Global Environment Facility [GEF],811,
+International Bank for Reconstruction and Development [IBRD],901,
+International Finance Corporation [IFC],903,
+International Development Association [IDA],905,
+Caribbean Development Bank [CarDB],906,
+Inter-American Development Bank [IDB],909,
+African Development Bank [AfDB],913,
+African Development Fund [AfDF],914,
+Asian Development Bank [AsDB],915,
+EU Institutions,918,
+Arab Fund (AFESD),921,
+UN Peacebuilding Fund [UNPBF],923,
+World Health Organisation [WHO],928,
+Food and Agriculture Organisation [FAO],932,
+International Labour Organisation [ILO],940,
+UNECE,948,
+OPEC Fund for International Development [OFID],951,
+UNDP,959,
+Arab Bank for Economic Development in Africa [BADEA],953,
+IMF (Concessional Trust Funds),958,
+UNICEF,963,
+UNRWA,964,
+UNAIDS,971,
+WFP,966,
+UNHCR,967,
+UNFPA,974,
+Islamic Development Bank [IsDB],976,
+OSCE,978,
+IFAD,988,
+European Bank for Reconstruction and Development [EBRD],990,
+Climate Investment Funds [CIF],1011,
+Adaptation Fund,1012,
+Council of Europe Development Bank [CEB],1013,
+Development Bank of Latin America [CAF],1015,
+Green Climate Fund [GCF],1016,
+IDB Invest,1019,
+Central Emergency Response Fund [CERF],1020,
+World Tourism Organisation [UNWTO],1023,
+Asian Infrastructure Investment Bank [AIIB],1024,
+Center of Excellence in Finance [CEF],1025,
+Global Alliance for Vaccines and Immunization [GAVI],1311,
+Global Fund,1312,
+Global Green Growth Institute [GGGI],1313,
+Bill & Melinda Gates Foundation,1601,
+Dutch Postcode Lottery,1602,
+Swedish Postcode Lottery,1603,
+People's Postcode Lottery,1604,
+MetLife Foundation,1605,
+MasterCard Foundation,1606,
+Grameen Crdit Agricole Foundation,1607,
+Bernard van Leer Foundation,1609,
+MAVA Foundation,1610,
+Oak Foundation,1611,
+H&M Foundation,1612,
+C&A Foundation,1613,
+Conrad N. Hilton Foundation,1617,
+Charity Projects Ltd (Comic Relief),1614,
+Arcus Foundation,1625,
+Children's Investment Fund Foundation,1615,
+Gatsby Charitable Foundation,1616,
+David & Lucile Packard Foundation,1618,
+John D. & Catherine T. MacArthur Foundation,1619,
+Carnegie Corporation of New York,1620,
+Michael & Susan Dell Foundation,1621,
+"Omidyar Network Fund, Inc.",1622,
+William & Flora Hewlett Foundation,1624,
+Gordon and Betty Moore Foundation,1626,
+Ford Foundation,1627,
+Wellcome Trust,1628,
+"DAC Countries, Total",20001,
+"Multilaterals, Total",20002,
+"G7 Countries, Total",20003,
+"DAC EU Members + EC, Total",20004,
+"Official Donors, Total",20005,
+"Non-DAC Countries, Total",20006,
+"DAC EU Members, Total",20011,
+"World Bank Group, Total",20012,
+"International Monetary Fund, Total",20013,
+"Inter-American Development Bank, Total",20014,
+"Asian Development Bank, Total",20015,
+"United Nations, Total",20021,
+"African Development Bank, Total",20016,
+"Regional Development Banks, Total",20022,
+"World Bank, Total",20033,
+"Other Multilateral, Total",20034,
+"United Postcode Lotteries, Total",20035,
+"Private Donors, Total",21600,
+United Arab Emirates,576,ARE
+Australia,801,AUS
+Austria,1,AUT
+Azerbaijan,611,AZE
+Belgium,2,BEL
+Bulgaria,72,BGR
+Canada,301,CAN
+Switzerland,11,CHE
+Czech Republic,68,CZE
+Germany,5,DEU
+Denmark,3,DNK
+Spain,50,ESP
+Estonia,82,EST
+Finland,18,FIN
+France,4,FRA
+United Kingdom,12,GBR
+Greece,40,GRC
+Croatia,62,HRV
+Hungary,75,HUN
+Ireland,21,IRL
+Iceland,20,ISL
+Italy,6,ITA
+Japan,701,JPN
+Kazakhstan,613,KAZ
+Korea,742,KOR
+Kuwait,552,KWT
+Lithuania,84,LTU
+Luxembourg,22,LUX
+Latvia,83,LVA
+Malta,45,MLT
+Netherlands,7,NLD
+Norway,8,NOR
+New Zealand,820,NZL
+Poland,76,POL
+Portugal,9,PRT
+Romania,77,ROU
+Russia,87,RUS
+Saudi Arabia,566,SAU
+Slovak Republic,69,SVK
+Slovenia,61,SVN
+Sweden,10,SWE
+Timor-Leste,765,TLS
+Turkey,55,TUR
+United States,302,USA

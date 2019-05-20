@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile_pg
+    volumes:
+      - metadata:/var/lib/postgresql/data
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/src"
+    expose:
+      - "80"
+    depends_on:
+     - db
+    environment:
+     - FTSUSER
+     - FTSPASS
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./static:/static
+    depends_on:
+      - web
+
+volumes:
+  metadata:
+    external: true

@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders an empty table if no sources are provided 1`] = `
+<div
+  className="table-responsive"
+>
+  <table
+    className="table sources-table table-striped table-hover"
+  >
+    <thead>
+      <tr>
+        <th>
+          Indicator
+        </th>
+        <th>
+          Updated On
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </table>
+</div>
+`;
+
+exports[`renders correctly when the sources are updated 1`] = `
+<div>
+  <div
+    class="table-responsive"
+  >
+    <table
+      class="table sources-table table-striped table-hover"
+    >
+      <thead>
+        <tr>
+          <th>
+            Indicator
+          </th>
+          <th>
+            Updated On
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="table-danger"
+          data-testid="sources-table-row"
+        >
+          <td>
+            Common Reporting Standard
+            <span
+              class="text-uppercase"
+            >
+               (crs)
+            </span>
+          </td>
+          <td>
+            Sun Aug 19 2018
+          </td>
+        </tr>
+        <tr
+          class=""
+          data-testid="sources-table-row"
+        >
+          <td>
+            World Bank Indicators
+            <span
+              class="text-uppercase"
+            >
+               (wdi)
+            </span>
+          </td>
+          <td>
+            Sun Aug 19 2018
+          </td>
+        </tr>
+        <tr
+          class=""
+          data-testid="sources-table-row"
+        >
+          <td>
+            Official Development Assistance
+            <span
+              class="text-uppercase"
+            >
+               (DAC1)
+            </span>
+          </td>
+          <td>
+            Sun Aug 19 2018
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`renders correctly with default props 1`] = `
+<div
+  className="table-responsive"
+>
+  <table
+    className="table sources-table table-striped table-hover"
+  >
+    <thead>
+      <tr>
+        <th>
+          Indicator
+        </th>
+        <th>
+          Updated On
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="table-danger"
+        data-testid="sources-table-row"
+        onClick={[Function]}
+      >
+        <td>
+          Common Reporting Standard
+          <span
+            className="text-uppercase"
+          >
+             (crs)
+          </span>
+        </td>
+        <td>
+          Sun Aug 19 2018
+        </td>
+      </tr>
+      <tr
+        className=""
+        data-testid="sources-table-row"
+        onClick={[Function]}
+      >
+        <td>
+          World Bank Indicators
+          <span
+            className="text-uppercase"
+          >
+             (wdi)
+          </span>
+        </td>
+        <td>
+          Sun Aug 19 2018
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

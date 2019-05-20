@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders with children 1`] = `
+<div
+  className="wrapper"
+>
+  My Child
+</div>
+`;
+
+exports[`renders with no children 1`] = `
+<div
+  className="wrapper"
+/>
+`;
+
+exports[`renders with the wrapper-full-page class when set to fullPage 1`] = `
+<div
+  className="wrapper wrapper-full-page"
+>
+  My Child
+</div>
+`;

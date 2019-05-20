@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does not render the info trigger when no info is provided 1`] = `
+<div>
+  <div>
+    <table
+      class="table table-sm"
+    >
+      <tbody>
+        <tr>
+          <td
+            colspan="2"
+          >
+            Item 1
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`renders all list items 1`] = `
+<div>
+  <div>
+    <table
+      class="table table-sm"
+    >
+      <tbody>
+        <tr>
+          <td
+            colspan="1"
+          >
+            Item 1
+          </td>
+          <td
+            class="text-right"
+          >
+            <i
+              class="material-icons"
+              data-testid="info-trigger"
+            >
+              info
+            </i>
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="1"
+          >
+            Item 2
+          </td>
+          <td
+            class="text-right"
+          >
+            <i
+              class="material-icons"
+              data-testid="info-trigger"
+            >
+              info
+            </i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`renders correctly with the default props 1`] = `
+<div>
+  <div>
+    <table
+      class="table table-sm"
+    >
+      <tbody>
+        <tr>
+          <td
+            colspan="1"
+          >
+            Item 1
+          </td>
+          <td
+            class="text-right"
+          >
+            <i
+              class="material-icons"
+              data-testid="info-trigger"
+            >
+              info
+            </i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`renders the info on hover 1`] = `
+<div
+  class="fade show popover bs-popover-bottom"
+  data-testid="info-list-info"
+  id="popover-basic"
+  role="tooltip"
+  style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+  x-placement="bottom"
+>
+  <div
+    class="arrow"
+  />
+  <div
+    class="popover-body"
+  >
+    My First Item
+  </div>
+</div>
+`;
+
+exports[`updates when the list changes 1`] = `
+<div>
+  <div>
+    <table
+      class="table table-sm"
+    >
+      <tbody>
+        <tr>
+          <td
+            colspan="1"
+          >
+            Item 1
+          </td>
+          <td
+            class="text-right"
+          >
+            <i
+              class="material-icons"
+              data-testid="info-trigger"
+            >
+              info
+            </i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`updates when the list changes 2`] = `
+<div>
+  <div>
+    <table
+      class="table table-sm"
+    >
+      <tbody>
+        <tr>
+          <td
+            colspan="1"
+          >
+            Item 1
+          </td>
+          <td
+            class="text-right"
+          >
+            <i
+              class="material-icons"
+              data-testid="info-trigger"
+            >
+              info
+            </i>
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="1"
+          >
+            Item 2
+          </td>
+          <td
+            class="text-right"
+          >
+            <i
+              class="material-icons"
+              data-testid="info-trigger"
+            >
+              info
+            </i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

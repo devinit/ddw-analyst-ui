@@ -1,0 +1,18 @@
+.ui {
+  &.selection {
+    &.dropdown {
+      .menu {
+        >.item {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  &.dropdown {
+    .menu {
+      >.item {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

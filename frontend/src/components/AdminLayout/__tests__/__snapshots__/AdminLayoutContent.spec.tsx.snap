@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders no content when no children are added 1`] = `null`;
+
+exports[`renders the specified children 1`] = `"My Content"`;

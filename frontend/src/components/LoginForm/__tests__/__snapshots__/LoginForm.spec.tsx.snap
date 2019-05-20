@@ -1,0 +1,345 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a card with the class card-hidden when showForm is set to false 1`] = `
+<form
+  className="form"
+  data-testid="login-form"
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <div
+    className="card-login card-hidden card"
+  >
+    <div
+      className="card-header-rose text-center card-header"
+    >
+      <div
+        className="card-title h5"
+      >
+        Login
+      </div>
+      <div
+        className="social-line"
+      />
+    </div>
+    <div
+      className="card-body"
+    >
+      <p
+        className="card-description text-center d-none"
+      >
+        Or Go With
+      </p>
+      <div
+        className="fade sc-bwzfXH desjYZ alert alert-danger show"
+        hidden={true}
+        role="alert"
+      />
+      <span
+        className="bmd-form-group"
+      >
+        <div
+          className="input-group"
+        >
+          <div
+            className="input-group-prepend"
+          >
+            <span
+              className="input-group-text"
+            >
+              <i
+                className="material-icons"
+              >
+                email
+              </i>
+            </span>
+          </div>
+          <input
+            className="form-control"
+            name="username"
+            onChange={[Function]}
+            placeholder="Email..."
+            required={true}
+            type="email"
+          />
+          <div
+            className="sc-bdVaJa jLtXnO invalid-feedback"
+          />
+        </div>
+      </span>
+      <span
+        className="bmd-form-group"
+      >
+        <div
+          className="input-group"
+        >
+          <div
+            className="input-group-prepend"
+          >
+            <span
+              className="input-group-text"
+            >
+              <i
+                className="material-icons"
+              >
+                lock_outline
+              </i>
+            </span>
+          </div>
+          <input
+            className="form-control"
+            name="password"
+            onChange={[Function]}
+            placeholder="Password..."
+            type="password"
+          />
+          <div
+            className="sc-bdVaJa jLtXnO invalid-feedback"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="justify-content-center card-footer"
+    >
+      <button
+        className="btn-rose btn btn-link btn-lg"
+        disabled={false}
+        type="submit"
+      >
+        Login
+      </button>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`renders an alert 1`] = `
+<form
+  className="form"
+  data-testid="login-form"
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <div
+    className="card-login card"
+  >
+    <div
+      className="card-header-rose text-center card-header"
+    >
+      <div
+        className="card-title h5"
+      >
+        Login
+      </div>
+      <div
+        className="social-line"
+      />
+    </div>
+    <div
+      className="card-body"
+    >
+      <p
+        className="card-description text-center d-none"
+      >
+        Or Go With
+      </p>
+      <div
+        className="fade sc-bwzfXH desjYZ alert alert-danger show"
+        hidden={false}
+        role="alert"
+      >
+        This is an alert message!
+      </div>
+      <span
+        className="bmd-form-group"
+      >
+        <div
+          className="input-group"
+        >
+          <div
+            className="input-group-prepend"
+          >
+            <span
+              className="input-group-text"
+            >
+              <i
+                className="material-icons"
+              >
+                email
+              </i>
+            </span>
+          </div>
+          <input
+            className="form-control"
+            name="username"
+            onChange={[Function]}
+            placeholder="Email..."
+            required={true}
+            type="email"
+          />
+          <div
+            className="sc-bdVaJa jLtXnO invalid-feedback"
+          />
+        </div>
+      </span>
+      <span
+        className="bmd-form-group"
+      >
+        <div
+          className="input-group"
+        >
+          <div
+            className="input-group-prepend"
+          >
+            <span
+              className="input-group-text"
+            >
+              <i
+                className="material-icons"
+              >
+                lock_outline
+              </i>
+            </span>
+          </div>
+          <input
+            className="form-control"
+            name="password"
+            onChange={[Function]}
+            placeholder="Password..."
+            type="password"
+          />
+          <div
+            className="sc-bdVaJa jLtXnO invalid-feedback"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="justify-content-center card-footer"
+    >
+      <button
+        className="btn-rose btn btn-link btn-lg"
+        disabled={false}
+        type="submit"
+      >
+        Login
+      </button>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`renders correctly with the default props 1`] = `
+<form
+  className="form"
+  data-testid="login-form"
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <div
+    className="card-login card"
+  >
+    <div
+      className="card-header-rose text-center card-header"
+    >
+      <div
+        className="card-title h5"
+      >
+        Login
+      </div>
+      <div
+        className="social-line"
+      />
+    </div>
+    <div
+      className="card-body"
+    >
+      <p
+        className="card-description text-center d-none"
+      >
+        Or Go With
+      </p>
+      <div
+        className="fade sc-bwzfXH desjYZ alert alert-danger show"
+        hidden={true}
+        role="alert"
+      />
+      <span
+        className="bmd-form-group"
+      >
+        <div
+          className="input-group"
+        >
+          <div
+            className="input-group-prepend"
+          >
+            <span
+              className="input-group-text"
+            >
+              <i
+                className="material-icons"
+              >
+                email
+              </i>
+            </span>
+          </div>
+          <input
+            className="form-control"
+            name="username"
+            onChange={[Function]}
+            placeholder="Email..."
+            required={true}
+            type="email"
+          />
+          <div
+            className="sc-bdVaJa jLtXnO invalid-feedback"
+          />
+        </div>
+      </span>
+      <span
+        className="bmd-form-group"
+      >
+        <div
+          className="input-group"
+        >
+          <div
+            className="input-group-prepend"
+          >
+            <span
+              className="input-group-text"
+            >
+              <i
+                className="material-icons"
+              >
+                lock_outline
+              </i>
+            </span>
+          </div>
+          <input
+            className="form-control"
+            name="password"
+            onChange={[Function]}
+            placeholder="Password..."
+            type="password"
+          />
+          <div
+            className="sc-bdVaJa jLtXnO invalid-feedback"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="justify-content-center card-footer"
+    >
+      <button
+        className="btn-rose btn btn-link btn-lg"
+        disabled={false}
+        type="submit"
+      >
+        Login
+      </button>
+    </div>
+  </div>
+</form>
+`;
