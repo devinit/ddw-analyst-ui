@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
-import { createLogger } from 'redux-logger';
+// import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { dataSourcesReducer, dataSourcesReducerId } from '../pages/DataSources/reducers';
 import { homeReducer, homeReducerId } from '../pages/Home/reducers';
@@ -13,7 +13,7 @@ import { TokenState, tokenReducer } from '../reducers/token';
 import { UserState, userReducer } from '../reducers/user';
 import rootSaga from '../sagas';
 
-const loggerMiddleware = createLogger();
+// const loggerMiddleware = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
 
 const structuredReducers = {
@@ -31,7 +31,7 @@ const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
 
 export const store = createStore(
   reducers,
-  composeEnhancers(applyMiddleware(sagaMiddleware, loggerMiddleware))
+  composeEnhancers(applyMiddleware(sagaMiddleware/* , loggerMiddleware */))
 );
 
 sagaMiddleware.run(rootSaga);

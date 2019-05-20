@@ -1,5 +1,4 @@
 import { List } from 'immutable';
-import { debounce } from 'lodash';
 import * as React from 'react';
 import { Card, Col, FormControl, Pagination, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
@@ -26,11 +25,12 @@ interface ComponentProps extends RouteComponentProps {
 }
 type SourcesTableCardProps = ComponentProps & ActionProps;
 
-class SourcesTableCard extends React.Component<SourcesTableCardProps> {
+class SourcesTableCard extends React.Component<SourcesTableCardProps, { searchQuery: string }> {
   static defaultProps: Partial<SourcesTableCardProps> = {
     limit: 10,
     offset: 0
   };
+  state = { searchQuery: '' };
 
   render() {
     return (
@@ -40,12 +40,14 @@ class SourcesTableCard extends React.Component<SourcesTableCardProps> {
         </Dimmer>
         <Card>
           <Card.Header className="card-header-text card-header-danger">
-            <FormControl
-              placeholder="Search ..."
-              className="w-25 d-none"
-              onChange={ debounce(this.onSearchChange, 1000, { leading: true }) }
-              data-testid="sources-table-search"
-            />
+            <Card.Title>
+              <FormControl
+                placeholder="Search ..."
+                className="w-50"
+                onKeyDown={ this.onSearchChange }
+                data-testid="sources-table-search"
+              />
+            </Card.Title>
           </Card.Header>
           <Card.Body>
             <SourcesTable
@@ -62,7 +64,7 @@ class SourcesTableCard extends React.Component<SourcesTableCardProps> {
 
   componentDidMount() {
     if (!this.props.loading) {
-      this.props.actions.fetchSources({ limit: this.props.limit, offset: this.props.offset });
+      this.props.actions.fetchSources({ limit: 10, offset: this.props.offset });
     }
   }
 
@@ -95,34 +97,40 @@ class SourcesTableCard extends React.Component<SourcesTableCardProps> {
     );
   }
 
-  private onSearchChange = (event: React.FormEvent<any>) => {
-    const { value } = event.currentTarget as HTMLInputElement;
-    this.setState({ searchQuery: value || '' });
+  private onSearchChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const { value } = event.currentTarget as HTMLInputElement;
+      this.setState({ searchQuery: value || '' });
+      this.props.actions.fetchSources({ limit: this.props.limit, offset: 0, search: value || '' });
+    }
   }
 
   private goToFirst = () => {
-    this.props.actions.fetchSources({ limit: this.props.limit, offset: 0 });
+    this.props.actions.fetchSources({ limit: this.props.limit, offset: 0, search: this.state.searchQuery });
   }
 
   private goToLast = () => {
     const { count } = this.props;
     const pages = Math.ceil(count / this.props.limit);
     const offset = (pages - 1) * this.props.limit;
-    this.props.actions.fetchSources({ limit: this.props.limit, offset });
+    this.props.actions.fetchSources({ limit: this.props.limit, offset, search: this.state.searchQuery });
   }
 
   private goToNext = () => {
     const { count } = this.props;
     const offset = this.props.offset + this.props.limit;
     if (offset < count) {
-      this.props.actions.fetchSources({ limit: this.props.limit, offset });
+      this.props.actions.fetchSources({ limit: this.props.limit, offset, search: this.state.searchQuery });
     }
   }
 
   private goToPrev = () => {
     if (this.props.offset > 0) {
       const offset = this.props.offset - this.props.limit;
-      this.props.actions.fetchSources({ limit: this.props.limit, offset });
+      this.props.actions.fetchSources({ limit: this.props.limit, offset, search: this.state.searchQuery });
     }
   }
 }

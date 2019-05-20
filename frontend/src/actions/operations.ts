@@ -15,8 +15,8 @@ import { OperationMap } from '../types/operations';
 type FetchArgs = FetchOptions & { mine?: boolean };
 
 export const fetchOperations =
-  ({ limit = 10, offset = 0, link , mine = false }: FetchArgs): Partial<OperationsAction> =>
-    ({ type: FETCH_OPERATIONS, payload: { limit, offset, link, mine } });
+  ({ limit = 10, offset = 0, link , mine = false, search = '' }: FetchArgs): Partial<OperationsAction> =>
+    ({ type: FETCH_OPERATIONS, payload: { limit, offset, link, search, mine } });
 export const fetchOperation = (id: string): Partial<OperationsAction> => ({ type: FETCH_OPERATION, payload: { id } });
 export const fetchOperationFailed = (): Partial<OperationsAction> => ({ type: FETCH_OPERATION_FAILED });
 export const setOperation = (activeOperation?: OperationMap, loading = false): Partial<OperationsAction> =>

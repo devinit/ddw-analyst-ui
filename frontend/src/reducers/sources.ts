@@ -11,6 +11,7 @@ export interface SourcesAction extends Action {
     limit: number;
     offset: number;
     link: string;
+    search: string;
     id: number | string;
   }>;
   loading?: boolean;

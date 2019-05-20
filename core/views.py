@@ -1,28 +1,27 @@
 """
     Django Rest Framework views for handling rest operations
 """
+import codecs
+import csv
+
 from django.contrib.auth.models import User
+from django.db import connections
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, StreamingHttpResponse
+from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import exceptions, generics, permissions
+from rest_framework import exceptions, filters, generics, permissions
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.views import APIView
 
 from core.models import (Operation, OperationStep, Review, Sector, Source, Tag, Theme)
+from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.serializers import (
     DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
     SectorSerializer, SourceSerializer, TagSerializer, ThemeSerializer, UserSerializer)
-from core.pagination import DataPaginator
-
-from django.http import StreamingHttpResponse
-from django.db import connections
-import csv
-import codecs
-from django.shortcuts import redirect
-from django.views.decorators.csrf import csrf_exempt
 
 
 class Echo:
@@ -144,6 +143,8 @@ class OperationList(generics.ListCreateAPIView):
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'description')
 
     def get_queryset(self):
         """
@@ -164,6 +165,8 @@ class UserOperationList(generics.ListAPIView):
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'description')
 
     def get_queryset(self):
         """
@@ -259,6 +262,8 @@ class SourceList(generics.ListCreateAPIView):
 
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('indicator', 'indicator_acronym', 'source', 'source_acronym', 'schema', 'description')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
