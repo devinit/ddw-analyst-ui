@@ -20,6 +20,8 @@ services:
     environment:
      - FTSUSER
      - FTSPASS
+     - DJANGO_DEV
+     - DJANGO_SECRET_KEY
   nginx:
     image: nginx:latest
     ports:
