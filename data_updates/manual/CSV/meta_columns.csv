@@ -389,5 +389,5 @@ non_grant_revenue,budget_type,budget_type,Budget type,C
 non_grant_revenue,l2,l2,Budget level 2,C
 non_grant_revenue,value_current_ncu,value_current_ncu,Value (current national currency unit),N
 non_grant_revenue,value_current_usd,value_current_usd,Value (current USD),N
-non_grant_revenue,value_2016,value_2016,Value constant 2016 USD,N
-non_grant_revenue,value_2017,value_2017,Value constant 2017 USD,N
+non_grant_revenue,value_usd_constant_2016,value_usd_constant_2016,Value constant 2016 USD,N
+non_grant_revenue,value_usd_constant_2017,value_usd_constant_2017,Value constant 2017 USD,N

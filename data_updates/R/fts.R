@@ -1,6 +1,6 @@
 list.of.packages <- c("data.table","httr","RPostgreSQL","here")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-project.org")
 lapply(list.of.packages, require, character.only=T)
 
 # Only works while running with `Rscript` from repo root, use commented below if running manually

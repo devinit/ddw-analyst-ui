@@ -25,7 +25,7 @@ SECRET_KEY = '!brp5jw6nf-2f*=6=s$$@2he&!y+x*2gkhb6ate$ne-kt7c#h4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.devinit.org', 'localhost', '127.0.0.1']
 
 
 # Application definition
