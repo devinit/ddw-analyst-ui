@@ -11,6 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         source = Source.objects.get(active_mirror_name=options["active_mirror_name"])
+        source.save()  # Update last_updated_on
         update_history = UpdateHistory(
             source=source,
             release_description=options["release_description"]
