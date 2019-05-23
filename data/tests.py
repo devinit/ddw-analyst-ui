@@ -1,7 +1,7 @@
 from django.core.management import call_command
 from django.test import TestCase
 from data.db_manager import fetch_data
-from core.models import Operation, OperationStep
+from core.models import Operation, OperationStep, UpdateHistory
 
 from django.conf import settings
 import os
@@ -309,11 +309,21 @@ class TestFixtureData(TestCase):
 
 
 class TestCommands(TestCase):
+    fixtures = ['test_data', 'test_datasets']
+
     def test_load_manual(self):
         """Make sure manual load isn't broken"""
         args = list()
         opts = dict()
         call_command('load_manual', *args, **opts)
+
+    def test_update_meta(self):
+        pre_test_update_count = len(UpdateHistory.objects.all())
+        args = ["crs_current", "A test update history"]
+        opts = dict()
+        call_command("update_meta", *args, **opts)
+        post_test_update_count = len(UpdateHistory.objects.all())
+        self.assertEqual(pre_test_update_count + 1, post_test_update_count)
 
 
 class TestMetadataConstruction(TestCase):
