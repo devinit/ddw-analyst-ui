@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/bin/bash data_updates/manual_data.sh
+/bin/bash data_updates/manual_data.sh  # Must always be run first to set up Source objects
 /bin/bash data_updates/oecd.sh
 /bin/bash data_updates/povcalnet.sh
 /bin/bash data_updates/wdi.sh
