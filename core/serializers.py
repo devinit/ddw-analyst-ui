@@ -214,11 +214,8 @@ class UpdateHistorySerializer(serializers.ModelSerializer):
         fields = (
             'source',
             'history_table',
-            'is_major_release',
             'released_on',
-            'release_description',
-            'invalidated_on',
-            'invalidation_description'
+            'release_description'
         )
 
 
