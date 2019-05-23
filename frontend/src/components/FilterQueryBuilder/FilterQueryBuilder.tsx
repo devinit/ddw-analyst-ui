@@ -27,11 +27,11 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
   state: FilterQueryBuilderState = { showInfo: false, selectableColumns: [] };
   private operations = [
     { key: 'lt', text: 'is Less Than', value: 'lt' },
-    { key: 'le', text: 'is Less Than Or Equals', value: 'le' },
-    { key: 'eq', text: 'is Equals', value: 'eq' },
-    { key: 'ne', text: 'is Not Equals', value: 'ne' },
+    { key: 'le', text: 'is Less Than Or Equal', value: 'le' },
+    { key: 'eq', text: 'is Equal', value: 'eq' },
+    { key: 'ne', text: 'is Not Equal', value: 'ne' },
     { key: 'gt', text: 'is Greater Than', value: 'gt' },
-    { key: 'ge', text: 'is Greater Than Or Equals', value: 'ge' },
+    { key: 'ge', text: 'is Greater Than Or Equal', value: 'ge' },
     { key: 'text_search', text: 'Contains', value: 'text_search' }
   ];
 
