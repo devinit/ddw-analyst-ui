@@ -6,6 +6,7 @@ import { MapDispatchToProps, connect } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Segment } from 'semantic-ui-react';
+import styled from 'styled-components';
 import * as TokenActions from '../actions/token';
 import * as UserActions from '../actions/user';
 import { AdminLayout } from '../components/AdminLayout';
@@ -34,6 +35,11 @@ interface MainLayoutState {
   loading: boolean;
   activeRoute: string;
 }
+
+const StyledLogo = styled.img`
+  width: 80%;
+  margin-left: 10%;
+`;
 
 class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   static defaultProps: Partial<MainLayoutProps> = {
@@ -97,6 +103,10 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                 />
               </Sidebar.Item>
             </Sidebar.Content>
+
+            <Sidebar.Footer>
+              <StyledLogo src="/static/frontend/assets/images/logo.png"/>
+            </Sidebar.Footer>
           </Sidebar>
 
           <Navbar expand="lg" variant="dark" className="navbar-transparent navbar-absolute fixed-top">

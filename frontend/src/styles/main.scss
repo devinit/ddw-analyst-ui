@@ -37,3 +37,16 @@ select:-webkit-autofill:focus {
     background-color: inherit;
   }
 }
+
+.sidebar .sidebar-wrapper {
+  height: calc(100vh - 15%);
+}
+
+.sidebar-mini .sidebar .sidebar-footer {
+  overflow: hidden;
+}
+
+.sidebar-mini .sidebar .sidebar-footer img {
+  width: 236px;
+  margin-left: 7px;
+}
