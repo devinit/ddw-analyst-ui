@@ -8,14 +8,15 @@ The new and improved DDW Analyst UI interface
 
 1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata`
 2. Create a persistent dev volume `docker volume create --name=metadata`
-3. Build your app `docker-compose up --build -d`
-4. Migrate the database. `docker-compose exec web python manage.py migrate`
-5. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
-6. Alternatively, load the real data `export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh`
-7. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
-8. Install frontend dependencies `npm install`
-9. Bundle frontend code and collect static files `npm run build`
-10. Restart the app. `docker-compose restart`
+3. Create a self-signed certificate `mkdir ssl` `openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem`
+4. Build your app `docker-compose up --build -d`
+5. Migrate the database. `docker-compose exec web python manage.py migrate`
+6. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
+7. Alternatively, load the real data `export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh`
+8. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
+9. Install frontend dependencies `npm install`
+10. Bundle frontend code and collect static files `npm run build`
+11. Restart the app. `docker-compose restart`
 
 ### Development Database
 
