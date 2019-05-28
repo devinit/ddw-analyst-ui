@@ -88,6 +88,34 @@ class TestRestFramework(TestCase):
         )
         assert response.status_code == 201
 
+    def test_post_password_change(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        response = client.post(
+            '/api/change_password/',
+            {
+                "old_password": TEST_PASS,
+                "new_password1": "a_completely_new_pw",
+                "new_password2": "a_completely_new_pw",
+            },
+            format="json"
+        )
+        assert response.status_code == 202
+
+    def test_post_password_change_fail(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        response = client.post(
+            '/api/change_password/',
+            {
+                "old_password": TEST_PASS,
+                "new_password1": "a_completely_new_pw",
+                "new_password2": "a_completely_new_pw2",
+            },
+            format="json"
+        )
+        assert response.status_code == 400
+
 
 class TestPypikaUtils(TestCase):
     """Test case class for testing query generation by pypika"""
