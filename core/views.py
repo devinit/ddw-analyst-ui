@@ -5,16 +5,19 @@ import codecs
 import csv
 
 from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash
 from django.db import connections
 from django.db.models import Q
 from django.http import Http404, StreamingHttpResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.forms import PasswordChangeForm
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import exceptions, filters, generics, permissions
+from rest_framework import exceptions, filters, generics, permissions, status
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from core.models import (Operation, OperationStep, Review, Sector, Source, Tag, Theme)
 from core.pagination import DataPaginator
@@ -94,6 +97,27 @@ class ViewData(APIView):
         paginator.set_count(serializer.data['count'])
         page_data = paginator.paginate_queryset(serializer.data['data'], request)
         return paginator.get_paginated_response(page_data)
+
+
+class ChangePassword(APIView):
+    """
+    A class to allow an authenticated user to change their password.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        form = PasswordChangeForm(request.user, request.data)  # Expects old_password, new_password1, new_password2
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            content = {"messages": ["Password successfully changed for user {}.".format(user.username)]}
+            post_status = status.HTTP_202_ACCEPTED
+        else:
+            user = request.user
+            content = {"messages": [val[0] for val in form.errors.values()]}
+            post_status = status.HTTP_400_BAD_REQUEST
+        return Response(content, status=post_status)
 
 
 class SectorList(generics.ListCreateAPIView):
