@@ -15,9 +15,13 @@ interface ReduxProps {
   token?: TokenState;
 }
 type AccountModalProps = ActionProps & ReduxProps;
+interface ModalAlert {
+  message: React.ReactNode;
+  type: 'danger' | 'success';
+}
 
 const AccountModal: React.SFC<AccountModalProps> = (props) => {
-  const [ alert, setAlert ] = React.useState<React.ReactNode>('');
+  const [ alert, setAlert ] = React.useState<ModalAlert>({ message: '', type: 'danger' });
   const [ errors, setErrors ] = React.useState<Partial<ChangePasswordFields>>({});
 
   const onSuccess = (values: ChangePasswordFields) => {
@@ -34,9 +38,15 @@ const AccountModal: React.SFC<AccountModalProps> = (props) => {
       })
       .then((response: AxiosResponse<string>) => {
         if (response.status === 204) {
-          setAlert(<p>Your session has expired. <a href="/login/">Login</a></p>);
+          setAlert({
+            message: <p>Your session has expired. <a href="/login/">Login</a></p>,
+            type: 'danger'
+          });
         }
-        props.actions.toggleModal();
+        setAlert({
+          message: <p>Your password has been updated</p>,
+          type: 'success'
+        });
       })
       .catch(error => {
         const { data, status } = error.response;
@@ -61,8 +71,8 @@ const AccountModal: React.SFC<AccountModalProps> = (props) => {
       </Modal.Header>
       <Modal.Body>
         {
-          alert
-            ? <Alert variant="danger">{ alert }</Alert>
+          alert.message
+            ? <Alert variant={ alert.type }>{ alert.message }</Alert>
             : <ChangePasswordForm onSuccess={ onSuccess } errors={ errors }/>
         }
       </Modal.Body>
