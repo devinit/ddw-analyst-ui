@@ -8,7 +8,7 @@ The new and improved DDW Analyst UI interface
 
 1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata`
 2. Create a persistent dev volume `docker volume create --name=metadata`
-3. Create a self-signed certificate `mkdir ssl` `openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem`
+3. Create a self-signed certificate `mkdir -p ssl && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem`
 4. Build your app `docker-compose up --build -d`
 5. Migrate the database. `docker-compose exec web python manage.py migrate`
 6. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
@@ -52,7 +52,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 6. Create a superuser. `python manage.py createsuperuser`
 7. Install frontend dependencies `npm install`
 8. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
-9. Run the app. `python manage.py runserver`
+9. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
 
 ### End-To-End Testing
 

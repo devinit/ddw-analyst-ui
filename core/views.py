@@ -4,6 +4,8 @@
 import codecs
 import csv
 
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.db import connections
 from django.db.models import Q
@@ -12,8 +14,9 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import exceptions, filters, generics, permissions
+from rest_framework import exceptions, filters, generics, permissions, status
 from rest_framework.authentication import BasicAuthentication
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.models import (Operation, OperationStep, Review, Sector, Source, Tag, Theme)
@@ -59,7 +62,7 @@ def streaming_export_view(request, pk):
     if posted_token is not None:
         token_auth = TokenAuthentication()
         try:
-            user, token = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
+            user, _ = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
             if user.is_authenticated:
                 operation = Operation.objects.get(pk=pk)
                 exporter = StreamingExporter(operation)
@@ -94,6 +97,29 @@ class ViewData(APIView):
         paginator.set_count(serializer.data['count'])
         page_data = paginator.paginate_queryset(serializer.data['data'], request)
         return paginator.get_paginated_response(page_data)
+
+
+class ChangePassword(APIView):
+    """
+    A class to allow an authenticated user to change their password.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        """
+        Expects old_password, new_password1, new_password2
+        """
+        form = PasswordChangeForm(request.user, request.data)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            content = {"messages": ["Password successfully changed for user {}.".format(user.username)]}
+            post_status = status.HTTP_202_ACCEPTED
+        else:
+            content = {"validation": form.errors.as_data()}
+            post_status = status.HTTP_400_BAD_REQUEST
+        return Response(content, status=post_status)
 
 
 class SectorList(generics.ListCreateAPIView):
