@@ -5,18 +5,18 @@ import { Alert, Button, Col, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 
 interface ChangePasswordFormState {
-  alerts: { [key: string]: string };
   hasFocus: string;
 }
 
 interface ChangePasswordFormProps {
   alert?: string;
+  errors?: { [key in keyof ChangePasswordFields]?: string };
   editing?: boolean;
   editable?: boolean;
-  onSuccess: () => void;
+  onSuccess: (values: ChangePasswordFields) => void;
 }
 
-interface ChangePasswordFields {
+export interface ChangePasswordFields {
   old_password: string;
   new_password1: string;
   new_password2: string;
@@ -27,7 +27,6 @@ export class ChangePasswordForm extends React.Component<ChangePasswordFormProps,
     editable: true
   };
   state: ChangePasswordFormState = {
-    alerts: {},
     hasFocus: ''
   };
   private schema = Yup.object().shape({
@@ -42,10 +41,10 @@ export class ChangePasswordForm extends React.Component<ChangePasswordFormProps,
     const initialValues: ChangePasswordFields = { old_password: '', new_password1: '', new_password2: '' };
 
     return (
-      <Formik validationSchema={ this.schema } initialValues={ initialValues } onSubmit={ this.onSuccess }>
+      <Formik validationSchema={ this.schema } initialValues={ initialValues } onSubmit={ this.props.onSuccess }>
         {
           ({ errors, handleChange, handleSubmit, values }: FormikProps<ChangePasswordFields>) => {
-            errors = { ...errors, ...this.state.alerts };
+            errors = { ...errors, ...this.props.errors };
 
             return (
               <Form className="form" noValidate onSubmit={ handleSubmit } data-testid="operation-step-form">
@@ -60,6 +59,7 @@ export class ChangePasswordForm extends React.Component<ChangePasswordFormProps,
                       required
                       name="old_password"
                       type="password"
+                      onChange={ handleChange }
                       defaultValue={ values.old_password || '' }
                       isInvalid={ !!errors.old_password }
                       onFocus={ this.setFocusedField }
@@ -143,9 +143,5 @@ export class ChangePasswordForm extends React.Component<ChangePasswordFormProps,
 
   private resetFocus = () => {
     this.setState({ hasFocus: '' });
-  }
-
-  private onSuccess = () => {
-    //
   }
 }
