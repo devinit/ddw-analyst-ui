@@ -1,14 +1,16 @@
 import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
 import * as React from 'react';
-import { Dropdown, Nav, Navbar } from 'react-bootstrap';
+import { Dropdown, Modal, Nav, Navbar } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
+import * as ModalActions from '../actions/modal';
 import * as TokenActions from '../actions/token';
 import * as UserActions from '../actions/user';
+import { AccountModal } from '../components/AccountModal';
 import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
@@ -16,18 +18,20 @@ import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncHome } from '../pages/Home';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
 import { AsyncQueryData } from '../pages/QueryData';
+import { ModalState } from '../reducers/modal';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
 import { api, localForageKeys } from '../utils';
 
-interface ActionProps { actions: typeof UserActions & typeof TokenActions; }
+interface ActionProps { actions: typeof UserActions & typeof TokenActions & typeof ModalActions; }
 interface ComponentProps {
   loading: boolean;
 }
 interface ReduxProps {
   user?: UserState;
   token?: TokenState;
+  modal: ModalState;
 }
 type MainLayoutProps = ComponentProps & RouteComponentProps<{}> & ActionProps & ReduxProps;
 
@@ -59,6 +63,8 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
     const NavbarCollapse: any = Navbar.Collapse; // FIXME: once react-bootstrap types are fixed: pull request #3502
     const DropdownMenu: any = Dropdown.Menu; // FIXME: once react-bootstrap types are fixed
+    const ModalContent = this.props.modal.get('modal') as React.ElementType | undefined;
+    const modalSize = this.props.modal.get('size') as 'sm' | 'lg' | undefined;
 
     return (
       <BrowserRouter>
@@ -136,7 +142,9 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     </p>
                   </Dropdown.Toggle>
                   <DropdownMenu alignRight>
-                    <Dropdown.Item onClick={ this.onLogOut } data-cy="logout">Log out</Dropdown.Item>
+                    <Dropdown.Item data-cy="account" onClick={ this.openAccountModal }>Change Password</Dropdown.Item>
+                    <Dropdown.Divider/>
+                    <Dropdown.Item onClick={ this.onLogOut } data-cy="logout">Log Out</Dropdown.Item>
                   </DropdownMenu>
                 </Dropdown>
               </Nav>
@@ -151,6 +159,9 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/queries/build/:id" exact component={ AsyncQueryBuilder }/>
               <Route path="/queries/data/:id" exact component={ AsyncQueryData }/>
             </Switch>
+            <Modal show={ !!ModalContent } onHide={ this.closeModal } size={ modalSize }>
+              { ModalContent ? <ModalContent/> : null }
+            </Modal>
           </AdminLayout.Content>
         </AdminLayout>
       </BrowserRouter>
@@ -205,6 +216,14 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
       .catch(this.clearStorageAndGoToLogin);
   }
 
+  private openAccountModal = () => {
+    this.props.actions.toggleModal(AccountModal);
+  }
+
+  private closeModal = () => {
+    this.props.actions.toggleModal();
+  }
+
   private validateToken(token: string, user: User) {
     axios.request({
       url: `${api.routes.USERS}${user.id}/`,
@@ -238,10 +257,11 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
 const mapStateToProps = (reduxStore: ReduxStore): ReduxProps => ({
   user: reduxStore.get('user') as UserState,
-  token: reduxStore.get('token') as TokenState
+  token: reduxStore.get('token') as TokenState,
+  modal: reduxStore.get('modal') as ModalState
 });
 const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({ ...UserActions, ...TokenActions }, dispatch)
+  actions: bindActionCreators({ ...UserActions, ...TokenActions, ...ModalActions }, dispatch)
 });
 const ReduxConnector = connect(mapStateToProps, mapDispatchToProps)(MainLayout);
 
