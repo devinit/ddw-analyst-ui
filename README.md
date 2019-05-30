@@ -73,3 +73,29 @@ var jsonData = JSON.parse(responseBody);
 postman.setEnvironmentVariable("token", jsonData.token);
 ```
 4. In the Headers of your subsequent posts, send the Header `Authorization: Token {{token}}`
+
+
+### Letsencrypt certificates generation
+
+1. If certbot has not been installed already, install certbot by following commands
+  ```
+  sudo add-apt-repository ppa:certbot/certbot
+  sudo apt-get install certbot
+  ```
+
+2. Run below script to generate certificates
+`certbot renew --dry-run  --webroot -w /root/ddw-analyst-ui/static/letsencrypt`
+
+3. If the command above is run successfully copy certificates to the ssl folder of ddw app
+  ```
+  cp -f  /etc/letsencrypt/live/ddw.devinit.org/privkey.pem /root/ddw-analyst-ui/ssl/
+  cp -f /etc/letsencrypt/live/ddw.devinit.org/fullchain.pem /root/ddw-analyst-ui/ssl/
+
+  ```
+  From ddw-analyst-ui root folder, reload nginx so that certificates are picked
+  `docker-compose exec ddw-analyst-ui_nginx_1 nginx reload`
+
+4. Check if there is a cron job set to renew certificates. If there is non add the cron task below. This will try to renew the certificate twice a day every day
+
+`0 */12 * * * /root/ddw-analyst-ui/certbot.sh >/dev/null 2>&1`
+
