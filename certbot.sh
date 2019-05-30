@@ -1,6 +1,6 @@
 #!/bin/bash
-working_directory=/root/ddw-analyst-ui/ssl/
-renewal_result="$(command certbot reneww --dry-run  --webroot -w /root/ddw-analyst-ui/static/letsencrypt)"
+working_directory=/root/ddw-analyst-ui/
+renewal_result="$(command certbot renew  --webroot -w /root/ddw-analyst-ui/static/letsencrypt)"
 #Check if successful result is received
 result="$(echo $renewal_result | grep -o Congratulations )"
 
