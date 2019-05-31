@@ -50,7 +50,7 @@ def streaming_script_execute(request):
         token_auth = TokenAuthentication()
         try:
             user, _ = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
-            if user.is_authenticated:
+            if user.is_authenticated and user.is_superuser:
                 executor = ScriptExecutor(script_name)
                 response = StreamingHttpResponse(executor.stream(), content_type="text/plain")
                 return response
