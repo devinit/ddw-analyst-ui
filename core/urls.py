@@ -28,6 +28,8 @@ urlpatterns = [
     path('sources/<int:pk>/', core_views.SourceDetail.as_view()),
     path('export/<int:pk>/', core_views.streaming_export_view, name="export_stream"),
     path('change_password/', core_views.ChangePassword.as_view()),
+    path('list_update_scripts/', core_views.ListUpdateScripts.as_view()),
+    path('execute_update/', core_views.streaming_script_execute),
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'
