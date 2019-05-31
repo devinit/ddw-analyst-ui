@@ -150,12 +150,9 @@ class Review(BaseEntity):
 class UpdateHistory(BaseEntity):
     """Update history model for datasets."""
     source = models.ForeignKey(Source, models.PROTECT)
-    history_table = models.TextField()
-    is_major_release = models.BooleanField(default=False)
-    released_on = models.DateTimeField()
+    history_table = models.TextField(blank=True, null=True)
+    released_on = models.DateTimeField(auto_now_add=True)
     release_description = models.TextField(blank=True, null=True)
-    invalidated_on = models.DateTimeField()
-    invalidation_description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return "Update of {} on {}".format(self.source, self.released_on)

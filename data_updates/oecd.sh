@@ -25,4 +25,10 @@ echo "Using R scripts to cleanup downloaded data and load to postgres DB"
 
 Rscript data_updates/R/load_mirrors.R
 
+python3 manage.py update_meta crs_current
+python3 manage.py update_meta dac1_current
+python3 manage.py update_meta dac2a_current
+python3 manage.py update_meta dac2b_current
+python3 manage.py update_meta dac5_current
+
 echo "=============== Successfully processed OECD mirrors==============="
