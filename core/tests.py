@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.http import StreamingHttpResponse
 from django.test import TestCase, override_settings
 from rest_framework.test import APIClient
 from knox.models import AuthToken
@@ -137,7 +138,7 @@ class TestRestFramework(TestCase):
                 "script_name": "test_stream.sh"
             }
         )
-        assert response.status_code == 200
+        assert isinstance(response, StreamingHttpResponse)
 
 
 class TestPypikaUtils(TestCase):
