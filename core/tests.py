@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
-from django.http import StreamingHttpResponse
 from django.test import TestCase, override_settings
 from rest_framework.test import APIClient
-from knox.models import AuthToken
 
 from core.models import AuditLogEntry, Operation, OperationStep, Tag
 from core.pypika_utils import QueryBuilder
