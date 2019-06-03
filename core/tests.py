@@ -127,19 +127,6 @@ class TestRestFramework(TestCase):
         response = client.get('/api/list_update_scripts/')
         assert response.status_code == 200
 
-    def test_execute_update(self):
-        client = APIClient()
-        token = AuthToken.objects.create(self.superuser)
-        client.force_authenticate(user=self.superuser, token=token)
-        response = client.post(
-            '/api/execute_update/',
-            {
-                "token": str(token),
-                "script_name": "test_stream.sh"
-            }
-        )
-        assert isinstance(response, StreamingHttpResponse)
-
 
 class TestPypikaUtils(TestCase):
     """Test case class for testing query generation by pypika"""
