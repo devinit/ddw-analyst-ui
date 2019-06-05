@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { getStepSelectableColumns } from '../../utils';
+import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface SelectQueryBuilderProps {
@@ -31,7 +31,7 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
             multiple
             search
             selection
-            options={ this.state.selectableColumns }
+            options={ this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort) }
             value={ this.props.columns }
             onChange={ this.onChange }
             disabled={ !this.props.editable }

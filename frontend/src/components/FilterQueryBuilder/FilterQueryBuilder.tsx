@@ -4,7 +4,7 @@ import { Alert, Button } from 'react-bootstrap';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { FilterMap, OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { getStepSelectableColumns } from '../../utils';
+import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { FilterItem } from '../FilterItem';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
@@ -82,7 +82,7 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
         <FilterItem
           editable={ this.props.editable }
           key={ index }
-          columns={ this.state.selectableColumns }
+          columns={ this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort) }
           operations={ this.operations }
           filter={ filter }
           onUpdate={ (filtr: FilterMap) => this.onUpdateItem(filtr, index) }
