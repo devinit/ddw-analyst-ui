@@ -5,7 +5,7 @@ import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { OperationStepMap, TransformOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { getStepSelectableColumns } from '../../utils';
+import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 type Alerts = { [P in keyof TransformOptions ]: string };
@@ -116,7 +116,7 @@ export class TransformQueryBuilder extends React.Component<TransformQueryBuilder
               fluid
               search
               selection
-              options={ this.state.selectableColumns }
+              options={ this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort) }
               value={ this.props.multi ? this.props.columns : this.props.column }
               onChange={ this.onSelectChange }
               disabled={ !this.props.editable }

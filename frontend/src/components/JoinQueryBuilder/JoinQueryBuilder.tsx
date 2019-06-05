@@ -10,7 +10,7 @@ import { JoinColumnsMapper } from '../JoinColumnsMapper';
 import { JoinOptions, OperationStepMap } from '../../types/operations';
 import * as sourcesActions from '../../actions/sources';
 import { bindActionCreators } from 'redux';
-import { getStepSelectableColumns } from '../../utils';
+import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface ReduxState {
@@ -91,7 +91,10 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
               fluid
               search
               selection
-              options={ this.getSelectOptionsFromSources(this.props.sources, this.props.source) }
+              options={
+                this.getSelectOptionsFromSources(this.props.sources, this.props.source)
+                  .sort(sortObjectArrayByProperty('text').sort)
+              }
               loading={ this.props.isFetchingSources }
               value={ sourceID as string | undefined }
               onChange={ this.onChange }

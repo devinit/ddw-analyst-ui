@@ -5,7 +5,7 @@ import { Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { AggregateOptions, OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { getStepSelectableColumns } from '../../utils';
+import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 type Alerts = { [P in keyof AggregateOptions ]: string };
@@ -76,7 +76,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
               fluid
               search
               selection
-              options={ this.state.operationalColumns }
+              options={ this.state.operationalColumns.sort(sortObjectArrayByProperty('text').sort) }
               value={ this.props.column }
               onChange={ this.onChange }
               disabled={ !this.props.editable }
@@ -98,7 +98,7 @@ export class AggregateQueryBuilder extends React.Component<AggregateQueryBuilder
             multiple
             search
             selection
-            options={ this.state.groupByColumns }
+            options={ this.state.groupByColumns.sort(sortObjectArrayByProperty('text').sort) }
             value={ this.props.groupBy }
             onChange={ this.onChange }
             disabled={ !this.props.editable }

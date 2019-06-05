@@ -50,9 +50,7 @@ export const getSelectOptionsFromColumns = (columns?: ColumnList): DropdownItemP
   return [];
 };
 
-export const sortSteps = (stepA: OperationStepMap, stepB: OperationStepMap): number => {
-  const valueA = stepA.get('step_id') as number;
-  const valueB = stepB.get('step_id') as number;
+export const sort = (valueA: number | string, valueB: number | string): number => {
   if (valueA < valueB) {
     return -1;
   }
@@ -61,6 +59,19 @@ export const sortSteps = (stepA: OperationStepMap, stepB: OperationStepMap): num
   }
 
   return 0;
+};
+
+export const sortSteps = (stepA: OperationStepMap, stepB: OperationStepMap): number => {
+  const valueA = stepA.get('step_id') as number;
+  const valueB = stepB.get('step_id') as number;
+  return sort(valueA, valueB);
+};
+
+export const sortObjectArrayByProperty = (property: string) => {
+  return ({
+    sort: (targetA: {[key: string]: any}, targetB: {[key: string]: any}) =>
+      sort(targetA[property], targetB[property])
+  });
 };
 
 export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: List<OperationStepMap>, columnsList: ColumnList) => { //tslint:disable-line
