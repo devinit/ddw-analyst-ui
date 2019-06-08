@@ -51,7 +51,8 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     { key: 'join', icon: 'chain', text: 'Join', value: 'join' },
     { key: 'aggregate', icon: 'rain', text: 'Aggregate', value: 'aggregate' },
     { key: 'scalar_transform', icon: 'magic', text: 'Scalar Transform', value: 'scalar_transform' },
-    { key: 'multi_transform', icon: 'magic', text: 'Multi Transform', value: 'multi_transform' }
+    { key: 'multi_transform', icon: 'magic', text: 'Multi Transform', value: 'multi_transform' },
+    { key: 'window', icon: 'windows', text: 'Window', value: 'window' }
   ];
 
   render() {
