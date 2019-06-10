@@ -11,10 +11,12 @@ import {
   JoinOptions,
   OperationStep,
   OperationStepMap,
-  TransformOptions
+  TransformOptions,
+  WindowOptions
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { QueryBuilderHandler } from '../QueryBuilderHandler';
+import { isPositionalFunction, isTermFunction } from '../WindowQueryBuilder';
 
 interface OperationStepFormState {
   alerts: { [key: string]: string };
@@ -232,6 +234,9 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     if (query === 'aggregate') {
       return this.validateAggregate(step);
     }
+    if (query === 'window') {
+      return this.validateWindow(step);
+    }
     return true;
   }
 
@@ -327,6 +332,21 @@ export class OperationStepForm extends React.Component<OperationStepFormProps, O
     }
     if (!operational_column) {
       alerts.operational_column = 'Aggregate column is required';
+    }
+    this.setState({ alerts });
+
+    return Object.keys(alerts).length === 0;
+  }
+
+  private validateWindow(step: OperationStepMap) {
+    const options = step.get('query_kwargs') as string;
+    const { window_fn, term }: WindowOptions = options ? JSON.parse(options) : {};
+    const alerts: { [ key: string ]: string } = {};
+    if (!window_fn) {
+      alerts.window_fn = 'Window function is required';
+    }
+    if ((isTermFunction(window_fn) || isPositionalFunction(window_fn)) && !term) {
+      alerts.term = 'Term is required';
     }
     this.setState({ alerts });
 
