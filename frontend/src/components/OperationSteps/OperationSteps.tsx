@@ -9,7 +9,7 @@ import { SourcesAction } from '../../reducers/sources';
 import { FetchOptions } from '../../types/api';
 import { OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
-import { sortSteps } from '../../utils';
+import { sortObjectArrayByProperty, sortSteps } from '../../utils';
 import OperationStep from '../OperationStepView';
 
 interface OperationStepsProps {
@@ -119,7 +119,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
         key: source.get('id'),
         text: source.get('indicator'),
         value: source.get('id')
-      })).toJS();
+      })).toJS().sort(sortObjectArrayByProperty('text').sort);
     }
 
     return [];

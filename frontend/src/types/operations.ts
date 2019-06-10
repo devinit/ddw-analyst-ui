@@ -69,3 +69,11 @@ export interface AggregateOptions {
   agg_func_name: string;
   operational_column: string;
 }
+
+export interface WindowOptions {
+  window_fn: string;
+  order_by: string[];
+  over: string[];
+  term: string;
+  columns: string[];
+}

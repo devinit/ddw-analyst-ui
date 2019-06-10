@@ -3,7 +3,7 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { ColumnList } from '../../types/sources';
-import { formatString } from '../../utils';
+import { formatString, sortObjectArrayByProperty } from '../../utils';
 
 interface JoinColumnsMapperProps {
   primaryColumns: DropdownItemProps[];
@@ -41,7 +41,7 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
             fluid
             selection
             search
-            options={ primaryColumns }
+            options={ primaryColumns.sort(sortObjectArrayByProperty('text').sort) }
             onChange={ this.onSelectColumn }
             defaultValue={ primaryColumn }
             disabled={ !this.props.editable }
@@ -57,7 +57,7 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
             fluid
             selection
             search
-            options={ this.getSelectOptionsFromColumns(secondaryColumns) }
+            options={ this.getSelectOptionsFromColumns(secondaryColumns).sort(sortObjectArrayByProperty('text').sort) }
             onChange={ this.onSelectColumn }
             defaultValue={ secondaryColumn }
             disabled={ !this.props.editable }
