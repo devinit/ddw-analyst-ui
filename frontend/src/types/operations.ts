@@ -71,7 +71,7 @@ export interface AggregateOptions {
 }
 
 export interface WindowOptions {
-  window_func: string;
+  window_fn: string;
   order_by: string[];
   over: string[];
   term: string;
