@@ -194,7 +194,7 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
         <WindowQueryBuilder
           alerts={ alerts }
           source={ source }
-          function={ parsedOptions.window_func }
+          function={ parsedOptions.window_fn }
           columns={ parsedOptions.columns }
           orderBy={ parsedOptions.order_by }
           over={ parsedOptions.over }

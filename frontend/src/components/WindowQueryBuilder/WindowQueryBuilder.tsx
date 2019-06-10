@@ -69,7 +69,7 @@ export const isPositionalFunction = (windowFunction?: string): boolean => {
 };
 
 export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = props => {
-    const { alerts, columns, editable, function: func, onUpdate, over, source, step, steps, term } = props;
+    const { alerts, columns, editable, function: func, onUpdate, orderBy, over, source, step, steps, term } = props;
     const [ termOptions, setTermOptions ] = React.useState<DropdownItemProps[]>([]);
     const [ allOptions, setSelectableOptions ] = React.useState<DropdownItemProps[]>([]);
 
@@ -93,7 +93,7 @@ export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = props => {
     const onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
       if (onUpdate) {
         const { name, value } = data;
-        const options = { over, window_func: func, columns, term };
+        const options = { over, window_fn: func, columns, term, order_by: orderBy };
         onUpdate(JSON.stringify({ ...options, [name]: value }));
       }
     };
@@ -105,7 +105,7 @@ export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = props => {
           <Form.Group>
             <Form.Label className="bmd-label-floating">Window Function</Form.Label>
             <Dropdown
-              name="window_func"
+              name="window_fn"
               placeholder="Select Function"
               fluid
               search
@@ -117,9 +117,9 @@ export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = props => {
             />
             <Form.Control.Feedback
               type="invalid"
-              className={ classNames({ 'd-block': !!(alerts && alerts.window_func) }) }
+              className={ classNames({ 'd-block': !!(alerts && alerts.window_fn) }) }
             >
-              { alerts && alerts.window_func }
+              { alerts && alerts.window_fn }
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -141,8 +141,8 @@ export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = props => {
               onChange={ onChange }
               disabled={ !editable }
             />
-            <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.columns) }) }>
-              { alerts && alerts.columns }
+            <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.term) }) }>
+              { alerts && alerts.term }
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -176,12 +176,31 @@ export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = props => {
             search
             selection
             options={ allOptions.sort(sortObjectArrayByProperty('text').sort) }
-            value={ over }
+            value={ orderBy }
             onChange={ onChange }
             disabled={ !editable }
           />
-          <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.over) }) }>
-            { alerts && alerts.over }
+          <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.order_by) }) }>
+            { alerts && alerts.order_by }
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label className="bmd-label-floating">Columns</Form.Label>
+          <Dropdown
+            name="columns"
+            placeholder="Select Columns"
+            fluid
+            multiple
+            search
+            selection
+            options={ allOptions.sort(sortObjectArrayByProperty('text').sort) }
+            value={ columns }
+            onChange={ onChange }
+            disabled={ !editable }
+          />
+          <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.columns) }) }>
+            { alerts && alerts.columns }
           </Form.Control.Feedback>
         </Form.Group>
       </React.Fragment>
