@@ -17,7 +17,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -509,6 +509,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -529,7 +594,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1021,6 +1086,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -1041,7 +1171,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1533,6 +1663,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -1553,7 +1748,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -2045,6 +2240,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -2065,7 +2325,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -2557,6 +2817,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -2577,7 +2902,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -3069,6 +3394,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -3089,7 +3479,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -3581,6 +3971,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -3601,7 +4056,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -4093,6 +4548,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -4113,7 +4633,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -4605,6 +5125,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -4625,7 +5210,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -5117,6 +5702,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -5137,7 +5787,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -5627,6 +6277,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -5647,7 +6362,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -6139,6 +6854,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -6159,7 +6939,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -6597,6 +7377,71 @@ Array [
       aria-expanded={false}
       className="ui disabled fluid multiple search selection dropdown"
       name="order_by"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
       onBlur={[Function]}
       onChange={[Function]}
       onClick={[Function]}
@@ -6669,7 +7514,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -7107,6 +7952,71 @@ Array [
       aria-expanded={false}
       className="ui disabled fluid multiple search selection dropdown"
       name="order_by"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
       onBlur={[Function]}
       onChange={[Function]}
       onClick={[Function]}
@@ -7179,7 +8089,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -7669,6 +8579,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -7689,7 +8664,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -8181,6 +9156,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -8201,7 +9241,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -8693,6 +9733,71 @@ Array [
       className="invalid-feedback"
     />
   </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
 ]
 `;
 
@@ -8713,7 +9818,7 @@ Array [
         aria-disabled={true}
         aria-expanded={false}
         className="ui disabled fluid search selection dropdown"
-        name="window_func"
+        name="window_fn"
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -9153,6 +10258,71 @@ Array [
       aria-expanded={false}
       className="ui disabled fluid multiple search selection dropdown"
       name="order_by"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autoComplete="off"
+        className="search"
+        onChange={[Function]}
+        style={
+          Object {
+            "width": undefined,
+          }
+        }
+        tabIndex={-1}
+        type="text"
+        value=""
+      />
+      <span
+        className="sizer"
+      />
+      <div
+        aria-live="polite"
+        className="default text"
+        role="alert"
+      >
+        Select Columns
+      </div>
+      <i
+        aria-hidden="true"
+        className="dropdown icon"
+        onClick={[Function]}
+      />
+      <div
+        aria-multiselectable={true}
+        className="menu transition"
+        role="listbox"
+      >
+        <div
+          className="message"
+        >
+          No results found.
+        </div>
+      </div>
+    </div>
+    <div
+      className="invalid-feedback"
+    />
+  </div>,
+  <div
+    className="form-group"
+  >
+    <label
+      className="bmd-label-floating form-label"
+    >
+      Columns
+    </label>
+    <div
+      aria-disabled={true}
+      aria-expanded={false}
+      className="ui disabled fluid multiple search selection dropdown"
+      name="columns"
       onBlur={[Function]}
       onChange={[Function]}
       onClick={[Function]}
