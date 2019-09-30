@@ -14,9 +14,10 @@ The new and improved DDW Analyst UI interface
 6. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
 7. Alternatively, load the real data `export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh`
 8. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
-9. Install frontend dependencies `npm install`
-10. Bundle frontend code and collect static files `npm run build`
-11. Restart the app. `docker-compose restart`
+9. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
+10. Install frontend dependencies `npm install`
+11. Bundle frontend code and collect static files `npm run build`
+12. Restart the app. `docker-compose restart`
 
 ### Development Database
 
@@ -50,9 +51,10 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 4. Migrate the database. `python manage.py migrate`
 5. Load test data from a fixture like so `python manage.py loaddata test_data` `python manage.py loaddata --database=datasets test_datasets`
 6. Create a superuser. `python manage.py createsuperuser`
-7. Install frontend dependencies `npm install`
-8. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
-9. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
+7. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
+8. Install frontend dependencies `npm install`
+9. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
+10. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
 
 ### End-To-End Testing
 
@@ -98,4 +100,3 @@ postman.setEnvironmentVariable("token", jsonData.token);
 4. Check if there is a cron job set to renew certificates. If there is non add the cron task below. This will try to renew the certificate twice a day every day
 
 `0 */12 * * * /root/ddw-analyst-ui/certbot.sh >/dev/null 2>&1`
-
