@@ -3,7 +3,7 @@
  */
 import * as React from 'react';
 import * as TestRenderer from 'react-test-renderer';
-import { fireEvent, render } from 'react-testing-library';
+import { fireEvent, render } from '@testing-library/react';
 import { SourcesTableRow, SourcesTableRowProps } from '../SourcesTableRow';
 
 const props: SourcesTableRowProps = {

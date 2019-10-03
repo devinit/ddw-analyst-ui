@@ -3,7 +3,7 @@
  */
 import { List, Map } from 'immutable';
 import * as React from 'react';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 import { ColumnList, SourceMap, UpdateHistoryList } from '../../../types/sources';
 import { SourceDetailsTab } from '../SourceDetailsTab';
 
