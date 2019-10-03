@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import 'jest-dom/extend-expect';
+import '@testing-library/jest-dom/extend-expect';
 import * as React from 'react';
 import { MemoryRouter, withRouter } from 'react-router-dom';
 import * as TestRenderer from 'react-test-renderer';
