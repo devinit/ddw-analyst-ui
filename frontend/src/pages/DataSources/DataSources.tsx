@@ -59,19 +59,23 @@ class DataSources extends React.Component<DataSourcesProps> {
       return <SourceDetailsTab source={activeSource} />;
     }
 
-    return (
-      <Segment>
-        <Placeholder>
-          <Placeholder.Header>
-            <Placeholder.Line length="very short" />
-            <Placeholder.Line length="medium" />
-          </Placeholder.Header>
-          <Placeholder.Paragraph>
-            <Placeholder.Line length="short" />
-          </Placeholder.Paragraph>
-        </Placeholder>
-      </Segment>
-    );
+    if (loading) {
+      return (
+        <Segment>
+          <Placeholder>
+            <Placeholder.Header>
+              <Placeholder.Line length="very short" />
+              <Placeholder.Line length="medium" />
+            </Placeholder.Header>
+            <Placeholder.Paragraph>
+              <Placeholder.Line length="short" />
+            </Placeholder.Paragraph>
+          </Placeholder>
+        </Segment>
+      );
+    }
+
+    return null;
   }
 
   private onRowClick = (activeSource: SourceMap): void => {
