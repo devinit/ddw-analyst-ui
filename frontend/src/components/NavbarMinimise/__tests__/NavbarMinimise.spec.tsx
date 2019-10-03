@@ -3,7 +3,7 @@
  */
 import * as React from 'react';
 import * as TestRenderer from 'react-test-renderer';
-import { cleanup, fireEvent, render } from 'react-testing-library';
+import { cleanup, fireEvent, render } from '@testing-library/react';
 import { NavbarMinimise } from '../NavbarMinimise';
 
 afterEach(cleanup);
