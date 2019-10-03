@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import * as React from 'react';
-import { fireEvent, render, waitForElement } from 'react-testing-library';
+import { fireEvent, render, waitForElement } from '@testing-library/react';
 import { InfoList, InfoListItems, InfoMap } from '../InfoList';
 import { List, Map } from 'immutable';
 
