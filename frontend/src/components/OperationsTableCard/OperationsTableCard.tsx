@@ -265,6 +265,6 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   };
 };
 
-const connector = withRouter<ComponentProps>(connect(mapStateToProps, mapDispatchToProps)(OperationsTableCard));
+const connector = withRouter<ComponentProps, any>(connect(mapStateToProps, mapDispatchToProps)(OperationsTableCard));
 
 export { connector as OperationsTableCard, connector as default };
