@@ -40,6 +40,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -352,6 +353,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -417,6 +419,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -482,6 +485,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -547,6 +551,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -617,6 +622,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -929,6 +935,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -945,9 +952,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -994,6 +1014,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -1011,9 +1032,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -1059,6 +1093,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -1076,9 +1111,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -1124,6 +1172,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -1141,9 +1190,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -1194,6 +1256,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -1506,6 +1569,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -1571,6 +1635,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -1636,6 +1701,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -1701,6 +1767,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -1771,6 +1838,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -2083,6 +2151,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -2148,6 +2217,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -2213,6 +2283,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -2278,6 +2349,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -2348,6 +2420,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -2660,6 +2733,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -2676,9 +2750,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -2725,6 +2812,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -2742,9 +2830,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -2790,6 +2891,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -2807,9 +2909,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -2855,6 +2970,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -2872,9 +2988,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -2925,6 +3054,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -3237,6 +3367,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -3253,9 +3384,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -3302,6 +3446,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -3319,9 +3464,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -3367,6 +3525,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -3384,9 +3543,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -3432,6 +3604,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -3449,9 +3622,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -3502,6 +3688,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -3814,6 +4001,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -3879,6 +4067,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -3944,6 +4133,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -4009,6 +4199,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -4079,6 +4270,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -4391,6 +4583,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -4407,9 +4600,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -4456,6 +4662,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -4473,9 +4680,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -4521,6 +4741,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -4538,9 +4759,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -4586,6 +4820,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -4603,9 +4838,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -4656,6 +4904,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -4968,6 +5217,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -5033,6 +5283,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -5098,6 +5349,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -5163,6 +5415,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -5233,6 +5486,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -5545,6 +5799,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -5561,9 +5816,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -5610,6 +5878,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -5627,9 +5896,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -5675,6 +5957,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -5692,9 +5975,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -5740,6 +6036,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -5757,9 +6054,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -5810,6 +6120,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -6120,6 +6431,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -6185,6 +6497,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -6250,6 +6563,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -6315,6 +6629,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -6385,6 +6700,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -6697,6 +7013,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -6713,9 +7030,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -6762,6 +7092,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -6779,9 +7110,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -6827,6 +7171,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -6844,9 +7189,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -6892,6 +7250,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -6909,9 +7268,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -6962,6 +7334,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -7272,6 +7645,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -7337,6 +7711,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -7402,6 +7777,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -7467,6 +7843,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -7537,6 +7914,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -7847,6 +8225,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -7863,9 +8242,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -7912,6 +8304,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -7929,9 +8322,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -7977,6 +8383,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -7994,9 +8401,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -8042,6 +8462,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -8059,9 +8480,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -8112,6 +8546,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -8422,6 +8857,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -8487,6 +8923,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -8552,6 +8989,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -8617,6 +9055,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -8687,6 +9126,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -8999,6 +9439,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -9015,9 +9456,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -9064,6 +9518,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -9081,9 +9536,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -9129,6 +9597,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -9146,9 +9615,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -9194,6 +9676,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -9211,9 +9694,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -9264,6 +9760,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -9576,6 +10073,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -9641,6 +10139,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -9706,6 +10205,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -9771,6 +10271,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -9841,6 +10342,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="text"
           role="alert"
@@ -10153,6 +10655,7 @@ Array [
           value=""
         />
         <div
+          aria-atomic={true}
           aria-live="polite"
           className="default text"
           role="alert"
@@ -10169,9 +10672,22 @@ Array [
           role="listbox"
         >
           <div
-            className="message"
+            aria-checked={false}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
           >
-            No results found.
+            <span
+              className="text"
+            >
+              Column A
+            </span>
           </div>
         </div>
       </div>
@@ -10218,6 +10734,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -10235,9 +10752,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -10283,6 +10813,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -10300,9 +10831,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
@@ -10348,6 +10892,7 @@ Array [
         className="sizer"
       />
       <div
+        aria-atomic={true}
         aria-live="polite"
         className="default text"
         role="alert"
@@ -10365,9 +10910,22 @@ Array [
         role="listbox"
       >
         <div
-          className="message"
+          aria-checked={false}
+          aria-selected={true}
+          className="selected item"
+          onClick={[Function]}
+          role="option"
+          style={
+            Object {
+              "pointerEvents": "all",
+            }
+          }
         >
-          No results found.
+          <span
+            className="text"
+          >
+            Column A
+          </span>
         </div>
       </div>
     </div>
