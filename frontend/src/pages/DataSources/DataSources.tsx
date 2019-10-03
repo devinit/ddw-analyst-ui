@@ -39,10 +39,10 @@ class DataSources extends React.Component<DataSourcesProps> {
 
           <SourcesTableCard
             sources={ sources }
-            limit={ this.props.sources.get('limit') }
-            offset={ this.props.sources.get('offset') }
+            limit={ this.props.sources.get('limit') as number }
+            offset={ this.props.sources.get('offset') as number }
             activeSource={ activeSource }
-            count={ this.props.sources.get('count') }
+            count={ this.props.sources.get('count') as number }
             onRowClick={ this.onRowClick }
           />
 
