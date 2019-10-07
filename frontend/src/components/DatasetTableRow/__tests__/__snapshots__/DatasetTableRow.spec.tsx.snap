@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the default component correctly 1`] = `
+<tr
+  data-testid="datasets-table-row"
+  onClick={[MockFunction]}
+>
+  <td>
+    Dataset 1
+  </td>
+  <td>
+    My first dataset
+  </td>
+  <td>
+    Mon Oct 07 2019
+  </td>
+  <td>
+    Actions Go Here!
+  </td>
+</tr>
+`;

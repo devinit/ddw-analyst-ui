@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the default component correctly 1`] = `
+Array [
+  <div
+    className="ui inverted dimmer"
+    onClick={[Function]}
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="ui text loader"
+      >
+        Loading...
+      </div>
+    </div>
+  </div>,
+  <div
+    className="card"
+  >
+    <div
+      className="card-header-text card-header-danger card-header"
+    >
+      <div
+        className="card-title h5"
+      >
+        <input
+          className="w-50 form-control"
+          data-testid="dataset-table-search"
+          placeholder="Search ..."
+        />
+      </div>
+    </div>
+    <div
+      className="card-body"
+    >
+      <div
+        className="table-responsive"
+      >
+        <table
+          className="table sources-table table-striped table-hover"
+        >
+          <thead>
+            <tr>
+              <th>
+                Title
+              </th>
+              <th>
+                Publication
+              </th>
+              <th>
+                Release Date
+              </th>
+              <th>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-testid="datasets-table-row"
+              onClick={[Function]}
+            >
+              <td>
+                Dataset 1
+              </td>
+              <td>
+                My first dataset
+              </td>
+              <td>
+                Mon Oct 07 2019
+              </td>
+              <td>
+                Actions Go Here!
+              </td>
+            </tr>
+            <tr
+              data-testid="datasets-table-row"
+              onClick={[Function]}
+            >
+              <td>
+                Dataset 2
+              </td>
+              <td>
+                My second dataset
+              </td>
+              <td>
+                Mon Oct 07 2019
+              </td>
+              <td>
+                Actions Go Here!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+]
+`;

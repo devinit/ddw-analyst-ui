@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the default DataSet page correctly 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col"
+  >
+    <div
+      className="ui active transition visible inverted dimmer"
+      onClick={[Function]}
+    >
+      <div
+        className="content"
+      >
+        <div
+          className="ui text loader"
+        >
+          Loading...
+        </div>
+      </div>
+    </div>
+    <div
+      className="card"
+    >
+      <div
+        className="card-header-text card-header-danger card-header"
+      >
+        <div
+          className="card-title h5"
+        >
+          <input
+            className="w-50 form-control"
+            data-testid="dataset-table-search"
+            placeholder="Search ..."
+          />
+        </div>
+      </div>
+      <div
+        className="card-body"
+      >
+        <div
+          className="table-responsive"
+        >
+          <table
+            className="table sources-table table-striped table-hover"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Title
+                </th>
+                <th>
+                  Publication
+                </th>
+                <th>
+                  Release Date
+                </th>
+                <th>
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
