@@ -6,13 +6,19 @@ interface ComponentProps {
   onClick: () => void;
   dataset: Dataset;
 }
-export const DatasetTableRow: React.SFC<ComponentProps> = ({ classNames, dataset, onClick }) => {
+export const DatasetTableRow: React.SFC<ComponentProps> = ({ children, classNames, dataset, onClick }) => {
+  const renderActions = (): React.ReactNode => React.Children.map(children, child => {
+    if (React.isValidElement(child)) {
+      return child;
+    }
+  });
+
   return (
     <tr className={ classNames } onClick={ onClick } data-testid="datasets-table-row">
       <td>{ dataset.title }</td>
       <td>{ dataset.publication }</td>
       <td>{ new Date(dataset.releasedAt).toDateString() }</td>
-      <td>Actions Go Here!</td>
+      <td className="text-right">{ renderActions() }</td>
     </tr>
   );
 };

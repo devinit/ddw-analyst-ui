@@ -14,8 +14,8 @@ exports[`renders the default component correctly 1`] = `
   <td>
     Mon Oct 07 2019
   </td>
-  <td>
-    Actions Go Here!
-  </td>
+  <td
+    className="text-right"
+  />
 </tr>
 `;
