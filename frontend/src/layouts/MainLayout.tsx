@@ -14,6 +14,7 @@ import { AccountModal } from '../components/AccountModal';
 import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
+import { AsyncDatasets } from '../pages/Datasets';
 import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncDataUpdate } from '../pages/DataUpdate';
 import { AsyncHome } from '../pages/Home';
@@ -99,6 +100,16 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   onClick={this.setActiveRoute}
                 />
               </Sidebar.Item>
+              <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
+                <Sidebar.Link
+                  to="/queries/build/"
+                  single
+                  icon="query_builder"
+                  textNormal="Query Builder"
+                  onClick={this.setActiveRoute}
+                  data-testid="sidebar-link-query-builder"
+                />
+              </Sidebar.Item>
               <Sidebar.Item active={this.state.activeRoute === '/sources/'}>
                 <Sidebar.Link
                   to="/sources/"
@@ -119,14 +130,14 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   data-testid="sidebar-link-update"
                 />
               </Sidebar.Item>
-              <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
+              <Sidebar.Item active={this.state.activeRoute === '/datasets/'}>
                 <Sidebar.Link
-                  to="/queries/build/"
+                  to="/datasets/"
                   single
-                  icon="query_builder"
-                  textNormal="Query Builder"
+                  icon="amp_stories"
+                  textNormal="Data Sets"
                   onClick={this.setActiveRoute}
-                  data-testid="sidebar-link-query-builder"
+                  data-testid="sidebar-link-datasets"
                 />
               </Sidebar.Item>
               <Sidebar.Item active={this.state.activeRoute === '/scheduledevents/'}>
@@ -206,6 +217,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
             <Switch>
               <Route path="/" exact component={AsyncHome} />
               <Route path="/sources" exact component={AsyncDataSources} />
+              <Route path="/datasets" exact component={AsyncDatasets} />
               <Route path="/queries/build" exact component={AsyncQueryBuilder} />
               <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
               <Route path="/update" exact component={AsyncDataUpdate} />
