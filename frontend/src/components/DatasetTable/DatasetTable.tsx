@@ -1,29 +1,14 @@
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { DatasetTableRow } from '../DatasetTableRow';
-import { Dataset, DatasetList, DatasetMap } from '../../types/datasets';
 
-interface ComponentProps {
-  datasets: DatasetList;
-  activeDataset?: DatasetMap;
-  onRowClick: (dataset: DatasetMap) => void;
-}
-
-export const DatasetTable: React.SFC<ComponentProps> = props => {
+export const DatasetTable: React.SFC = props => {
   const renderRows = () => {
-    if (props.datasets && props.datasets.size) {
-      return props.datasets.map((dataset, index) => {
-        return (
-          <DatasetTableRow
-            key={ index }
-            onClick={ () => props.onRowClick(dataset) }
-            dataset={ dataset.toJS() as Dataset }
-          />
-        );
-      });
-    }
-
-    return null;
+    return React.Children.map(props.children, child => {
+      if (React.isValidElement(child) && child.type === DatasetTableRow) {
+        return child;
+      }
+    });
   };
 
   return (
@@ -33,7 +18,7 @@ export const DatasetTable: React.SFC<ComponentProps> = props => {
           <th>Title</th>
           <th>Publication</th>
           <th>Release Date</th>
-          <th>Actions</th>
+          <th className="text-right">Actions</th>
         </tr>
       </thead>
       <tbody>

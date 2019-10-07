@@ -52,7 +52,9 @@ Array [
               <th>
                 Release Date
               </th>
-              <th>
+              <th
+                className="text-right"
+              >
                 Actions
               </th>
             </tr>
@@ -71,8 +73,12 @@ Array [
               <td>
                 Mon Oct 07 2019
               </td>
-              <td>
-                Actions Go Here!
+              <td
+                className="text-right"
+              >
+                <span>
+                  Actions Go Here!
+                </span>
               </td>
             </tr>
             <tr
@@ -88,8 +94,12 @@ Array [
               <td>
                 Mon Oct 07 2019
               </td>
-              <td>
-                Actions Go Here!
+              <td
+                className="text-right"
+              >
+                <span>
+                  Actions Go Here!
+                </span>
               </td>
             </tr>
           </tbody>

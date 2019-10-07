@@ -57,7 +57,9 @@ exports[`renders the default DataSet page correctly 1`] = `
                 <th>
                   Release Date
                 </th>
-                <th>
+                <th
+                  className="text-right"
+                >
                   Actions
                 </th>
               </tr>
