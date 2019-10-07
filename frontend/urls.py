@@ -13,6 +13,7 @@ urlpatterns = [
     path('', views.index),
     path('login/', views.index),
     path('sources/', views.index),
+    path('datasets/', views.index),
     path('queries/build/', views.index),
     path('queries/build/<int:pk>/', views.with_id),
     path('queries/data/<int:pk>/', views.with_id),
