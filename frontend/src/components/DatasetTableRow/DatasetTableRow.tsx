@@ -18,7 +18,7 @@ export const DatasetTableRow: React.SFC<ComponentProps> = ({ children, className
       <td>{ dataset.title }</td>
       <td>{ dataset.publication }</td>
       <td>{ new Date(dataset.releasedAt).toDateString() }</td>
-      <td className="text-right">{ renderActions() }</td>
+      <td className="td-actions text-right">{ renderActions() }</td>
     </tr>
   );
 };

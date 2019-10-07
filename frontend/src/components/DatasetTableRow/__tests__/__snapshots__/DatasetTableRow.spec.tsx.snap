@@ -15,7 +15,7 @@ exports[`renders the default component correctly 1`] = `
     Mon Oct 07 2019
   </td>
   <td
-    className="text-right"
+    className="td-actions text-right"
   />
 </tr>
 `;

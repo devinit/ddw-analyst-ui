@@ -37,7 +37,7 @@ test('renders all component children as actions', () => {
   expect(testElement).toHaveTextContent(actionContent);
   expect(testElement.parentElement).toMatchInlineSnapshot(`
     <td
-      class="text-right"
+      class="td-actions text-right"
     >
       <div
         data-testid="action-element"
@@ -52,7 +52,7 @@ test('responds to click events', () => {
   const onClick = jest.fn();
   const tableBody = document.createElement('tbody');
   const { container } = render(
-    <DatasetTableRow onClick={ onClick } dataset={ defaultDataset as Dataset }/>,
+    <DatasetTableRow onClick={ onClick } dataset={ defaultDataset as Dataset } />,
     { container: document.body.appendChild(tableBody) }
   );
 
