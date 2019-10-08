@@ -3,10 +3,9 @@ import { Dataset } from '../../types/datasets';
 
 interface ComponentProps {
   classNames?: string;
-  onClick: () => void;
   dataset: Dataset;
 }
-export const DatasetTableRow: React.SFC<ComponentProps> = ({ children, classNames, dataset, onClick }) => {
+export const DatasetTableRow: React.SFC<ComponentProps> = ({ children, classNames, dataset }) => {
   const renderActions = (): React.ReactNode => React.Children.map(children, child => {
     if (React.isValidElement(child)) {
       return child;
@@ -14,7 +13,7 @@ export const DatasetTableRow: React.SFC<ComponentProps> = ({ children, className
   });
 
   return (
-    <tr className={ classNames } onClick={ onClick } data-testid="datasets-table-row">
+    <tr className={ classNames } data-testid="datasets-table-row">
       <td>{ dataset.title }</td>
       <td>{ dataset.publication }</td>
       <td>{ new Date(dataset.releasedAt).toDateString() }</td>

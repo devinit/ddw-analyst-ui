@@ -4,7 +4,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import * as React from 'react';
 import * as TestRenderer from 'react-test-renderer';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { DatasetTableRow } from '../DatasetTableRow';
 import { Dataset } from '../../../types/datasets';
 
@@ -16,7 +16,7 @@ const defaultDataset: Partial<Dataset> = {
 
 test('renders the default component correctly', () => {
   const renderer = TestRenderer.create(
-    <DatasetTableRow onClick={ jest.fn() } dataset={ defaultDataset as Dataset } />
+    <DatasetTableRow dataset={ defaultDataset as Dataset } />
   ).toJSON();
 
   expect(renderer).toMatchSnapshot();
@@ -27,7 +27,7 @@ test('renders all component children as actions', () => {
   const actionTestID = 'action-element';
   const tableBody = document.createElement('tbody');
   const { getByTestId } = render(
-    <DatasetTableRow onClick={ jest.fn() } dataset={ defaultDataset as Dataset }>
+    <DatasetTableRow dataset={ defaultDataset as Dataset }>
       <div data-testid={ actionTestID }>{ actionContent }</div>
     </DatasetTableRow>,
     { container: document.body.appendChild(tableBody) }
@@ -46,18 +46,4 @@ test('renders all component children as actions', () => {
       </div>
     </td>
   `);
-});
-
-test('responds to click events', () => {
-  const onClick = jest.fn();
-  const tableBody = document.createElement('tbody');
-  const { container } = render(
-    <DatasetTableRow onClick={ onClick } dataset={ defaultDataset as Dataset } />,
-    { container: document.body.appendChild(tableBody) }
-  );
-
-  if (container.firstChild) {
-    fireEvent.click(container.firstChild as Element);
-    expect(onClick).toHaveBeenCalled();
-  }
 });
