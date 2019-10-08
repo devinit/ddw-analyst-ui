@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders the default component correctly 1`] = `
+exports[`renders the datasets correctly 1`] = `
 Array [
   <div
     className="ui inverted dimmer"
@@ -62,7 +62,6 @@ Array [
           <tbody>
             <tr
               data-testid="datasets-table-row"
-              onClick={[Function]}
             >
               <td>
                 Dataset 1
@@ -71,19 +70,24 @@ Array [
                 My first dataset
               </td>
               <td>
-                Mon Oct 07 2019
+                Tue Oct 08 2019
               </td>
               <td
-                className="text-right"
+                className="td-actions text-right"
               >
-                <span>
-                  Actions Go Here!
-                </span>
+                <button
+                  className="btn-link btn btn-danger btn-sm"
+                  data-testid="details-button-0"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Details
+                </button>
               </td>
             </tr>
             <tr
               data-testid="datasets-table-row"
-              onClick={[Function]}
             >
               <td>
                 Dataset 2
@@ -92,14 +96,20 @@ Array [
                 My second dataset
               </td>
               <td>
-                Mon Oct 07 2019
+                Tue Oct 08 2019
               </td>
               <td
-                className="text-right"
+                className="td-actions text-right"
               >
-                <span>
-                  Actions Go Here!
-                </span>
+                <button
+                  className="btn-link btn btn-danger btn-sm"
+                  data-testid="details-button-1"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Details
+                </button>
               </td>
             </tr>
           </tbody>

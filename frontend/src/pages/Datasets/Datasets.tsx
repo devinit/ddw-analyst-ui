@@ -13,6 +13,7 @@ export const Datasets: React.SFC = () => {
     const newDatasets: DatasetMap[] = [];
     for (let i = 0; i < 10; i++) {
       newDatasets.push(fromJS({
+        id: `${i}`,
         title: lorem.words(),
         publication: lorem.sentence(),
         releasedAt: date.past()

@@ -67,6 +67,11 @@ exports[`renders the default DataSet page correctly 1`] = `
             <tbody />
           </table>
         </div>
+        <div
+          data-testid="datasets-no-data"
+        >
+          No results found
+        </div>
       </div>
     </div>
   </div>
