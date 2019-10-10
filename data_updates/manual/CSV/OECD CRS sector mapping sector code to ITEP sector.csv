@@ -1,0 +1,55 @@
+OECD sector code,OECD sector name,ITEP sector
+100,Social Infrastructure & Services,Other social services
+110,Education,Education
+111,"Education, Level Unspecified",Education
+112,Basic Education,Education
+113,Secondary Education,Education
+114,Post-Secondary Education,Education
+120,Health,Health
+121,"Health, General",Health
+122,Basic Health,Health
+123,Non-communicable diseases (NCDs),Health
+130,Population Policies/Programmes & Reproductive Health,Health
+140,Water Supply & Sanitation,Water & sanitation
+150,Government & Civil Society,Governance & security
+151,Government & Civil Society-general,Governance & security
+152,"Conflict, Peace & Security",Governance & security
+160,Other Social Infrastructure & Services,Other social services
+200,Economic Infrastructure & Services,Infrastructure
+210,Transport & Storage,Infrastructure
+220,Communications,Infrastructure
+230,Energy,Infrastructure
+231,Energy Policy,Infrastructure
+232,"Energy generation, renewable sources",Infrastructure
+233,"Energy generation, non-renewable sources",Infrastructure
+234,Hybrid energy plants,Infrastructure
+235,Nuclear energy plants,Infrastructure
+236,Energy distribution,Infrastructure
+240,Banking & Financial Services,Business & industry
+250,Business & Other Services,Business & industry
+300,Production Sectors,Business & industry
+310,"Agriculture, Forestry, Fishing",Agriculture & food security
+311,Agriculture,Agriculture & food security
+312,Forestry,Agriculture & food security
+313,Fishing,Agriculture & food security
+320,"Industry, Mining, Construction",Business & industry
+321,Industry,Business & industry
+322,Mineral Resources & Mining,Business & industry
+323,Construction,Business & industry
+330,Trade Policies & Regulations,Business & industry
+331,Trade Policies & Regulations,Business & industry
+332,Tourism,Business & industry
+400,Multi-Sector / Cross-Cutting,Other
+410,General Environment Protection,Environment
+430,Other Multisector,Other
+500,Commodity Aid / General Programme Assistance,Other
+510,General Budget Support,General budget support
+520,Development Food Assistance,Agriculture & food security
+530,Other Commodity Assistance,Other
+600,Action Relating to Debt,Debt relief
+720,Emergency Response,Humanitarian
+730,Reconstruction Relief & Rehabilitation,Humanitarian
+740,Disaster Prevention & Preparedness,Humanitarian
+910,Administrative Costs of Donors,Other
+930,Refugees in Donor Countries,Other
+998,Unallocated / Unspecified,Other
