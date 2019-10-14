@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-var BundleTracker = require('webpack-bundle-tracker');
+const BundleTracker = require('webpack-bundle-tracker');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
   mode: 'development',
@@ -33,6 +34,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/bundle.css'
     }),
-    new BundleTracker({filename: './webpack-stats.json'})
+    new BundleTracker({filename: './webpack-stats.json'}),
+    new LiveReloadPlugin()
 ]
 };
