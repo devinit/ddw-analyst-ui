@@ -4,28 +4,12 @@ const webpackConfig = require('./webpack.config');
 
 const webpackConfigProduction = merge(webpackConfig, {
   devtool: false,
-  mode: 'production'
+  mode: 'production',
+  watch: false
 });
 
 module.exports = function(grunt) {
   grunt.initConfig({
-
-    watch: {
-      local: {
-        files: [ './frontend/src/**/*', 'frontend/src/**/*' ],
-        tasks: [ 'webpack:develop', 'exec:collectstatic' ],
-        options: {
-          debounceDelay: 250
-        }
-      },
-      docker: {
-        files: [ './frontend/src/**/*', 'frontend/src/**/*' ],
-        tasks: [ 'webpack:develop', 'exec:dockercollectstatic' ],
-        options: {
-          debounceDelay: 250
-        }
-      }
-    },
 
     webpack: {
       develop: webpackConfig,
@@ -57,12 +41,10 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-check-dependencies');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('default', [ 'clean build', 'exec:collectstatic', 'watch:local' ]);
-  grunt.registerTask('docker dev', [ 'clean build', 'exec:dockercollectstatic', 'watch:docker' ]);
+  grunt.registerTask('default', [ 'clean build', 'exec:collectstatic', 'webpack:develop' ]);
   grunt.registerTask(
     'clean build',
     'Compiles all the frontend assets and copies the files to the frontend/static directory.',

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'social_django',
     'rest_social_auth',
     'knox',
+    'webpack_loader'
 ]
 
 REST_FRAMEWORK = {
@@ -174,6 +175,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CSV_FILES_FOLDER = os.path.join(BASE_DIR, 'data_updates', 'manual', 'CSV')
 
 IS_TESTING = False
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    }
+}
 
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
