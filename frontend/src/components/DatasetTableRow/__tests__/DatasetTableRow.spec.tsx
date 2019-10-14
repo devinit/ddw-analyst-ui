@@ -11,7 +11,7 @@ import { Dataset } from '../../../types/datasets';
 const defaultDataset: Partial<Dataset> = {
   title: 'Dataset 1',
   publication: 'My first dataset',
-  releasedAt: new Date().toDateString()
+  releasedAt: new Date('Tue Oct 08 2019').toDateString()
 };
 
 test('renders the default component correctly', () => {

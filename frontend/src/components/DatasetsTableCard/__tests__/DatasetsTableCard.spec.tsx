@@ -14,13 +14,13 @@ const datasets: DatasetMap[] = [
     id: '1',
     title: 'Dataset 1',
     publication: 'My first dataset',
-    releasedAt: new Date()
+    releasedAt: new Date('Wed Oct 09 2019')
   }),
   fromJS({
     id: '2',
     title: 'Dataset 2',
     publication: 'My second dataset',
-    releasedAt: new Date()
+    releasedAt: new Date('Wed Oct 09 2019')
   })
 ];
 
