@@ -4,6 +4,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { Dataset, DatasetList, DatasetMap } from '../../types/datasets';
 import { DatasetTable } from '../DatasetTable';
 import { DatasetTableRow } from '../DatasetTableRow';
+import { DatasetForm } from '../DatasetForm';
 
 interface ComponentProps {
   loading: boolean;
@@ -32,13 +33,13 @@ export const DatasetsTableCard: React.SFC<ComponentProps> = props => {
       <Modal
         show={ showDetails && activeDataset.get('id') === dataset.get('id') }
         onHide={ () => setShowDetails(false) }
-        dialogClassName="modal-70w"
+        dialogClassName="modal-50w"
         data-testid={ `details-modal-${index}` }
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Dataset New/Edit</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body><DatasetForm/></Modal.Body>
       </Modal>
     </React.Fragment>;
   const renderTableRows = () => {

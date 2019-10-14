@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the form correctly 1`] = `
+<form
+  className="form"
+  data-testid="dataset-form"
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-8"
+    >
+      <div
+        className="bmd-form-group form-group"
+        data-testid="material-form-group"
+      >
+        <label
+          className="bmd-label-floating form-label"
+          htmlFor="title"
+        >
+          Title
+        </label>
+        <input
+          className="form-control"
+          id="title"
+          name="title"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          required={true}
+        />
+        <div
+          className="invalid-feedback"
+          data-testid="material-form-control-feedback"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col"
+    >
+      <div
+        className="bmd-form-group form-group"
+        data-testid="material-form-group"
+      >
+        <label
+          className="bmd-label-floating form-label"
+          htmlFor="description"
+        >
+          Description
+        </label>
+        <textarea
+          className="form-control"
+          id="description"
+          name="description"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          required={true}
+        />
+        <div
+          className="invalid-feedback"
+          data-testid="material-form-control-feedback"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col"
+    >
+      <div
+        className="bmd-form-group form-group"
+        data-testid="material-form-group"
+      >
+        <label
+          className="bmd-label-floating form-label"
+          htmlFor="publication"
+        >
+          Publication
+        </label>
+        <textarea
+          className="form-control"
+          id="publication"
+          name="publication"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          required={true}
+        />
+        <div
+          className="invalid-feedback"
+          data-testid="material-form-control-feedback"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="btn-toolbar"
+    role="toolbar"
+  >
+    <button
+      className="btn-rose btn btn-primary"
+      disabled={false}
+      type="submit"
+    >
+      Save
+    </button>
+  </div>
+</form>
+`;
