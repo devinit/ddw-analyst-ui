@@ -112,6 +112,7 @@ tsc/
 frontend/cypress/videos
 frontend/cypress/screenshots
 coverage/
+webpack-stats.json
 
 .vscode
 

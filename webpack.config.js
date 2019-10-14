@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
   mode: 'development',
@@ -27,9 +28,11 @@ module.exports = {
     ]
   },
   devtool: 'eval-source-map',
+  watch: true,
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/bundle.css'
     }),
+    new BundleTracker({filename: './webpack-stats.json'})
 ]
 };
