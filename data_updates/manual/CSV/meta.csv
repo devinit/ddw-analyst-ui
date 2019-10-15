@@ -39,3 +39,4 @@ oecd_crs_aid_type_ref.csv,OECD CRS aid type reference file,,Development Initiati
 oecd_crs_channel_map.csv,OECD CRS channel mapping,,Development Initiatives,DI,,,10/10/19,repo,schema,oecd_crs_channel_map,OECD CRS channel mapping,classifiers
 oecd_crs_sector_itep_map.csv,OECD CRS sector mapping sector code to ITEP sector,,Development Initiatives,DI,,,10/10/19,repo,schema,oecd_crs_sector_itep_map,OECD CRS sector mapping sector code to ITEP sector,classifiers
 oecd_crs_donor_type_ref.csv,OECD DAC CRS donor type reference file,,Development Initiatives,DI,,,10/10/19,repo,schema,oecd_crs_donor_type_ref,OECD DAC CRS donor type reference file,classifiers
+,International Aid Transparency Initiative Datastore,IATI,International Aid Transparency Initiative,IATI,http://datastore.iatistandard.org/query/,http://datastore.iatistandard.org/query/,30/05/2019,repo,schema,iati_datastore,Flatfile output from the IATI Datastore API.,iati
