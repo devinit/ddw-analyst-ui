@@ -26,6 +26,38 @@ from core.serializers import (
     DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
     SectorSerializer, SourceSerializer, TagSerializer, ThemeSerializer, UserSerializer)
 
+from data_updates.utils import list_update_scripts, ScriptExecutor
+
+
+class ListUpdateScripts(APIView):
+    """
+    A class to allow an superuser to list update scripts
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def get(self, request):
+        content = {"update_scripts": list_update_scripts()}
+        post_status = status.HTTP_200_OK
+        return Response(content, status=post_status)
+
+
+@csrf_exempt
+def streaming_script_execute(request):
+    posted_token = request.POST.get("token", None)
+    script_name = request.POST.get("script_name")
+    if posted_token is not None:
+        token_auth = TokenAuthentication()
+        try:
+            user, _ = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
+            if user.is_authenticated and user.is_superuser:
+                executor = ScriptExecutor(script_name)
+                response = StreamingHttpResponse(executor.stream(), content_type="text/plain")
+                return response
+        except exceptions.AuthenticationFailed:
+            return redirect('/login/')
+    return redirect('/login/')
+
 
 class Echo:
     """An object that implements just the write method of the file-like

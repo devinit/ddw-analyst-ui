@@ -7,6 +7,8 @@ from core.pypika_utils import QueryBuilder
 
 TEST_USER = "test_user"
 TEST_PASS = "test_password"
+TEST_SUPERUSER = "test_superuser"
+TEST_SUPERPASS = "test_superpass"
 
 
 class TestFixtureLoad(TestCase):
@@ -35,6 +37,7 @@ class TestRestFramework(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(TEST_USER, 'test@test.test', TEST_PASS)
+        self.superuser = User.objects.create_superuser(TEST_SUPERUSER, 'test@test.test', TEST_SUPERPASS)
         self.user_tag = Tag.objects.create(name="user_tag", user=self.user)
         self.not_user_tag = Tag.objects.create(name="not_user_tag")
 
@@ -115,6 +118,12 @@ class TestRestFramework(TestCase):
             format="json"
         )
         assert response.status_code == 400
+
+    def test_list_update_scripts(self):
+        client = APIClient()
+        client.force_authenticate(user=self.superuser)
+        response = client.get('/api/list_update_scripts/')
+        assert response.status_code == 200
 
 
 class TestPypikaUtils(TestCase):
