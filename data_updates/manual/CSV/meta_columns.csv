@@ -391,3 +391,26 @@ non_grant_revenue,value_current_ncu,value_current_ncu,Value (current national cu
 non_grant_revenue,value_current_usd,value_current_usd,Value (current USD),N
 non_grant_revenue,value_usd_constant_2016,value_usd_constant_2016,Value constant 2016 USD,N
 non_grant_revenue,value_usd_constant_2017,value_usd_constant_2017,Value constant 2017 USD,N
+oecd_crs_aid_type_ref,Aid type code,Aid type code,Aid type code,C
+oecd_crs_aid_type_ref,Aid type parent code,Aid type parent code,Aid type parent code,C
+oecd_crs_aid_type_ref,Aid type parent name,Aid type parent name,Aid type parent name,C
+oecd_crs_aid_type_ref,Aid type name,Aid type name,Aid type name,C
+oecd_crs_aid_type_ref,Aid type description,Aid type description,Aid type description,C
+oecd_crs_aid_type_ref,Aid type DI name,Aid type DI name,Aid type DI name,C
+oecd_crs_channel_map,Channel Parent Category code,Channel Parent Category code,Channel Parent Category code,N
+oecd_crs_channel_map,Channel ID code,Channel ID code,Channel ID code,N
+oecd_crs_channel_map,Year added,Year added,Year added,N
+oecd_crs_channel_map,Acronym (ENG),Acronym (ENG),Acronym (ENG),C
+oecd_crs_channel_map,OECD channel name,OECD channel name,OECD channel name,C
+oecd_crs_channel_map,OECD channel parent name,OECD channel parent name,OECD channel parent name,C
+oecd_crs_channel_map,OECD aggregated channel,OECD aggregated channel,OECD aggregated channel,C
+oecd_crs_channel_map,Coefficient for core contributions,Coefficient for core contributions,Coefficient for core contributions,C
+oecd_crs_channel_map,General contributions reported as type of aid:,General contributions reported as type of aid:,General contributions reported as type of aid:,C
+oecd_crs_channel_map,MCD (Major Channel of Delivery),MCD (Major Channel of Delivery),MCD (Major Channel of Delivery),C
+oecd_crs_channel_map,References/Notes,References/Notes,References/Notes,C
+oecd_crs_sector_itep_map,OECD sector code,OECD sector code,OECD sector code,N
+oecd_crs_sector_itep_map,OECD sector name,OECD sector name,OECD sector name,C
+oecd_crs_sector_itep_map,ITEP sector,ITEP sector,ITEP sector,C
+oecd_crs_donor_type_ref,Donor code,Donor code,Donor code,N
+oecd_crs_donor_type_ref,Donor name,Donor name,Donor name,C
+oecd_crs_donor_type_ref,Donor type,Donor type,Donor type,C
