@@ -214,7 +214,7 @@ merge_crs_tables = function(file_vec){
     "text",
     "text",
     "text",
-    "integer",
+    "text",
     "integer",
     "integer",
     "integer",
@@ -244,8 +244,8 @@ merge_crs_tables = function(file_vec){
     "float8",
     "integer",
     "float8",
-    "text",
-    "text",
+    "integer",
+    "integer",
     "text",
     "text"
   )
