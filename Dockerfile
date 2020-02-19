@@ -1,5 +1,5 @@
 # start with a base image
-FROM python:3
+FROM python:3.7
 LABEL maintainer="akmiller01 <Alex Miller, alex.miller@devinit.org>"
 
 RUN mkdir /src
