@@ -226,23 +226,28 @@ merge_crs_tables = function(file_vec){
     "integer",
     "integer",
     "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
+    "integer",
     "text",
     "integer",
     "integer",
-    "text",
-    "float8",
-    "text",
-    "text",
-    "float8",
-    "float8",
-    "float8",
-    "float8",
-    "float8",
-    "bool",
-    "bool",
     "integer",
     "integer",
-    "float8"
+    "text",
+    "text",
+    "float8",
+    "float8",
+    "float8",
+    "float8",
+    "integer",
+    "float8",
+    "text",
+    "text",
+    "text",
+    "text"
   )
   names(crs_field_types) = c(
     "year"
@@ -286,7 +291,7 @@ merge_crs_tables = function(file_vec){
     ,"currency_code"
     ,"commitment_national"
     ,"disbursement_national"
-    ,"grant_equivalent" # Guessed column name
+    ,"grant_equivalent"
     ,"usd_grant_equivalent"
     ,"short_description"
     ,"project_title"
@@ -297,15 +302,20 @@ merge_crs_tables = function(file_vec){
     ,"channel_code"
     ,"channel_name"
     ,"channel_reported_name"
-    ,"channel_parent_category" # Guessed column name
+    ,"channel_parent_category"
     ,"geography"
     ,"expected_start_date"
     ,"completion_date"
     ,"long_description"
+    ,"sdg_focus" # New for 2018
     ,"gender"
     ,"environment"
-    ,"trade"
     ,"pdgg"
+    ,"trade"
+    ,"rmnch"
+    ,"drr" # New for 2018
+    ,"nutrition" # New for 2018
+    ,"disability" # New for 2018
     ,"ftc"
     ,"pba"
     ,"investment_project"
@@ -321,16 +331,19 @@ merge_crs_tables = function(file_vec){
     ,"interest_2"
     ,"repay_date_1"
     ,"repay_date_2"
-    ,"grant_element"
     ,"usd_interest"
     ,"usd_outstanding"
     ,"usd_arrears_principal"
     ,"usd_arrears_interest"
-    ,"usd_future_debt_service_principal"
-    ,"usd_future_debt_service_interest"
-    ,"rmnch"
     ,"budget_identifier"
     ,"capital_expenditure"
+    ,"psi_flag" # New for 2018
+    ,"psi_add_type" # New for 2018
+    ,"psi_add_assess" # New for 2018
+    ,"psi_add_dev_obj" # New for 2018
+    # ,"grant_element" # Removed for 2018
+    # ,"usd_future_debt_service_principal" # Removed for 2018
+    # ,"usd_future_debt_service_interest" # Removed for 2018
   )
   overwrite_crs = TRUE
   for(txt in file_vec){

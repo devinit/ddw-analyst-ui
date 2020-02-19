@@ -200,16 +200,21 @@ crs_current,interest_1,interest_1,Interest 1,C
 crs_current,interest_2,interest_2,Interest 2,N
 crs_current,repay_date_1,repay_date_1,Repay Date 1,C
 crs_current,repay_date_2,repay_date_2,Repay Date 2,C
-crs_current,grant_element,grant_element,Grant Element,N
 crs_current,usd_interest,usd_interest,USD Interest,N
 crs_current,usd_outstanding,usd_outstanding,USD Outstanding,N
 crs_current,usd_arrears_principal,usd_arrears_principal,USD Arrears Principal,N
 crs_current,usd_arrears_interest,usd_arrears_interest,USD Arrears Interest,N
-crs_current,usd_future_debt_service_principal,usd_future_debt_service_principal,USD Future Debt Service Principal,C
-crs_current,usd_future_debt_service_interest,usd_future_debt_service_interest,USD Future Debt Service Interest,C
 crs_current,rmnch,rmnch,"Reproductive, Maternal, Newborn and Child Health",N
 crs_current,budget_identifier,budget_identifier,Budget Identifier,N
 crs_current,capital_expenditure,capital_expenditure,Capital Expenditure,N
+crs_current,sdg_focus,sdg_focus,SDG Focus,N
+crs_current,drr,drr,Disaster Risk Reduction,N
+crs_current,nutrition,nutrition,Nutrition,N
+crs_current,disability,disability,Disability,N
+crs_current,psi_flag,psi_flag,Private Sector Instrument (PSI) Flag,C
+crs_current,psi_add_type,psi_add_type,PSI Additionality Type,C
+crs_current,psi_add_assess,psi_add_assess,PSI Additionality Assessment,C
+crs_current,psi_add_dev_obj,psi_add_dev_obj,PSI Additionality Development Objective,C
 dac1_current,donor_code,donor_code,Donor Code,N
 dac1_current,donor_name,donor_name,Donor Name,C
 dac1_current,part_code,part_code,Part Code,N
