@@ -20,12 +20,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!brp5jw6nf-2f*=6=s$$@2he&!y+x*2gkhb6ate$ne-kt7c#h4'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '!brp5jw6nf-2f*=6=s$$@2he&!y+x*2gkhb6ate$ne-kt7c#h4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEV', 'False') == 'True'
 
 ALLOWED_HOSTS = ['.devinit.org', 'localhost', '127.0.0.1']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+SECURE_SSL_REDIRECT = not DEBUG
 
 
 # Application definition
@@ -45,6 +49,7 @@ INSTALLED_APPS = [
     'social_django',
     'rest_social_auth',
     'knox',
+    'webpack_loader'
 ]
 
 REST_FRAMEWORK = {
@@ -170,6 +175,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CSV_FILES_FOLDER = os.path.join(BASE_DIR, 'data_updates', 'manual', 'CSV')
 
 IS_TESTING = False
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    }
+}
 
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY

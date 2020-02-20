@@ -20,10 +20,12 @@ class Command(BaseCommand):
         with open(meta_path) as csv_f:
             reader = csv.DictReader(csv_f)
             for row in reader:
+                filename = row["filename"]
+                last_updated_on = row["last_updated_on"]
                 active_mirror_name = row["active_mirror_name"]
                 tag_strs = row["tags"].split(",")
 
-                for not_modeled_attr in ["tags", "filename"]:
+                for not_modeled_attr in ["tags", "filename", "last_updated_on"]:
                     row.pop(not_modeled_attr)
                 # Get or create without save first, assuming indicator is unique
                 try:
@@ -32,6 +34,9 @@ class Command(BaseCommand):
                         setattr(source, key, value)
                 except Source.DoesNotExist:
                     source = Source(**row)
+
+                if filename != "":  # Only set last_updated_on if it's a static source
+                    setattr(source, "last_updated_on", last_updated_on)
 
                 source.save()
 

@@ -1,11 +1,11 @@
 /**
  * @jest-environment jsdom
  */
-import 'jest-dom/extend-expect';
+import '@testing-library/jest-dom/extend-expect';
 import * as React from 'react';
 import { MemoryRouter, withRouter } from 'react-router-dom';
 import * as TestRenderer from 'react-test-renderer';
-import { cleanup, render, waitForElement } from 'react-testing-library';
+import { cleanup, render, waitForElement } from '@testing-library/react';
 import { Login, LoginActions } from '../Login';
 
 let actions: LoginActions;

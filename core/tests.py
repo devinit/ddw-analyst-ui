@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from rest_framework.test import APIClient
 
 from core.models import AuditLogEntry, Operation, OperationStep, Tag
@@ -7,6 +7,8 @@ from core.pypika_utils import QueryBuilder
 
 TEST_USER = "test_user"
 TEST_PASS = "test_password"
+TEST_SUPERUSER = "test_superuser"
+TEST_SUPERPASS = "test_superpass"
 
 
 class TestFixtureLoad(TestCase):
@@ -35,8 +37,13 @@ class TestRestFramework(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(TEST_USER, 'test@test.test', TEST_PASS)
+        self.superuser = User.objects.create_superuser(TEST_SUPERUSER, 'test@test.test', TEST_SUPERPASS)
         self.user_tag = Tag.objects.create(name="user_tag", user=self.user)
         self.not_user_tag = Tag.objects.create(name="not_user_tag")
+
+        settings_manager = override_settings(SECURE_SSL_REDIRECT=False)
+        settings_manager.enable()
+        self.addCleanup(settings_manager.disable)
 
     def test_get_tags_unauthenticated(self):
         client = APIClient()
@@ -83,6 +90,40 @@ class TestRestFramework(TestCase):
             format="json"
         )
         assert response.status_code == 201
+
+    def test_post_password_change(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        response = client.post(
+            '/api/change_password/',
+            {
+                "old_password": TEST_PASS,
+                "new_password1": "a_completely_new_pw",
+                "new_password2": "a_completely_new_pw",
+            },
+            format="json"
+        )
+        assert response.status_code == 202
+
+    def test_post_password_change_fail(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        response = client.post(
+            '/api/change_password/',
+            {
+                "old_password": TEST_PASS,
+                "new_password1": "a_completely_new_pw",
+                "new_password2": "a_completely_new_pw2",
+            },
+            format="json"
+        )
+        assert response.status_code == 400
+
+    def test_list_update_scripts(self):
+        client = APIClient()
+        client.force_authenticate(user=self.superuser)
+        response = client.get('/api/list_update_scripts/')
+        assert response.status_code == 200
 
 
 class TestPypikaUtils(TestCase):

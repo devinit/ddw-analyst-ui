@@ -10,18 +10,18 @@ values
 ('World Bank Indicators','WDI','World Bank Group','WBG','http://wdi.worldbank.org','http://wdi.worldbank.org/tables','schema','public','wdi','Data about flows of resources',now(),now());
 
 
-insert into core_updatehistory (source_id,history_table,released_on,release_description,invalidated_on,invalidation_description,is_major_release,created_on,updated_on)
+insert into core_updatehistory (source_id,history_table,released_on,release_description,created_on,updated_on)
 values
-(1,'crs_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018',TRUE,now(),now()),
-(1,'crs_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017',TRUE,now(),now()),
-(2,'dac1_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018',TRUE,now(),now()),
-(2,'dac1_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017',TRUE,now(),now()),
-(3,'dac2_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018',TRUE,now(),now()),
-(3,'dac2_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017',TRUE,now(),now()),
-(3,'dac2b_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018',TRUE,now(),now()),
-(3,'dac2b_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017',TRUE,now(),now()),
-(4,'dac2b_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),'New release December 2018',TRUE,now(),now()),
-(4,'dac2b_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now() - interval '2000 hours','New release December 2017',TRUE,now(),now());
+(1,'crs_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),now()),
+(1,'crs_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now(),now()),
+(2,'dac1_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),now()),
+(2,'dac1_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now(),now()),
+(3,'dac2_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),now()),
+(3,'dac2_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now(),now()),
+(3,'dac2b_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),now()),
+(3,'dac2b_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now(),now()),
+(4,'dac2b_2018_09_10',now() - interval '2000 hours','Official release for 2018 April',now(),now()),
+(4,'dac2b_2018_02_10',now() - interval '4000 hours','Official release for 2018 April',now(),now());
 
 
 

@@ -7,6 +7,7 @@ import { dataSourcesReducer, dataSourcesReducerId } from '../pages/DataSources/r
 import { homeReducer, homeReducerId } from '../pages/Home/reducers';
 import { queryBuilderReducer, queryBuilderReducerId } from '../pages/QueryBuilder/reducers';
 import { queryDataReducer, queryDataReducerId } from '../pages/QueryData/reducers';
+import { ModalState, modalReducer } from '../reducers/modal';
 import { OperationsState, operationsReducer } from '../reducers/operations';
 import { SourcesState, sourcesReducer } from '../reducers/sources';
 import { TokenState, tokenReducer } from '../reducers/token';
@@ -19,6 +20,7 @@ export const sagaMiddleware = createSagaMiddleware();
 const structuredReducers = {
   user: userReducer,
   token: tokenReducer,
+  modal: modalReducer,
   sources: sourcesReducer,
   operations: operationsReducer,
   [`${dataSourcesReducerId}`]: dataSourcesReducer,
@@ -39,6 +41,7 @@ sagaMiddleware.run(rootSaga);
 export interface StoreState {
   user: UserState;
   token: TokenState;
+  modal: ModalState;
   sources: SourcesState;
   operations: OperationsState;
   [key: string]: any;

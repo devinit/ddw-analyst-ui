@@ -35,8 +35,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
     hasFocus: ''
   };
   private schema = Yup.object().shape({
-    name: Yup.string().required('Name is required!'),
-    description: Yup.string().required('Description is required!')
+    name: Yup.string().required('Name is required!')
   });
 
   render() {

@@ -4,7 +4,7 @@ import { Alert, Button } from 'react-bootstrap';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { FilterMap, OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { getStepSelectableColumns } from '../../utils';
+import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { FilterItem } from '../FilterItem';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
@@ -27,11 +27,11 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
   state: FilterQueryBuilderState = { showInfo: false, selectableColumns: [] };
   private operations = [
     { key: 'lt', text: 'is Less Than', value: 'lt' },
-    { key: 'le', text: 'is Less Than Or Equals', value: 'le' },
-    { key: 'eq', text: 'is Equals', value: 'eq' },
-    { key: 'ne', text: 'is Not Equals', value: 'ne' },
+    { key: 'le', text: 'is Less Than Or Equal', value: 'le' },
+    { key: 'eq', text: 'is Equal', value: 'eq' },
+    { key: 'ne', text: 'is Not Equal', value: 'ne' },
     { key: 'gt', text: 'is Greater Than', value: 'gt' },
-    { key: 'ge', text: 'is Greater Than Or Equals', value: 'ge' },
+    { key: 'ge', text: 'is Greater Than Or Equal', value: 'ge' },
     { key: 'text_search', text: 'Contains', value: 'text_search' }
   ];
 
@@ -82,7 +82,7 @@ export class FilterQueryBuilder extends React.Component<FilterQueryBuilderProps,
         <FilterItem
           editable={ this.props.editable }
           key={ index }
-          columns={ this.state.selectableColumns }
+          columns={ this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort) }
           operations={ this.operations }
           filter={ filter }
           onUpdate={ (filtr: FilterMap) => this.onUpdateItem(filtr, index) }

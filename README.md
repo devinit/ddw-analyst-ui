@@ -8,14 +8,16 @@ The new and improved DDW Analyst UI interface
 
 1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata`
 2. Create a persistent dev volume `docker volume create --name=metadata`
-3. Build your app `docker-compose up --build -d`
-4. Migrate the database. `docker-compose exec web python manage.py migrate`
-5. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
-6. Alternatively, load the real data `export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh`
-7. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
-8. Install frontend dependencies `npm install`
-9. Bundle frontend code and collect static files `npm run build`
-10. Restart the app. `docker-compose restart`
+3. Create a self-signed certificate `mkdir -p ssl && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem`
+4. Build your app `docker-compose up --build -d`
+5. Migrate the database. `docker-compose exec web python manage.py migrate`
+6. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
+7. Alternatively, load the real data `export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh`
+8. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
+9. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
+10. Install frontend dependencies `npm install`
+11. Bundle frontend code and collect static files `npm run build`
+12. Restart the app. `docker-compose restart`
 
 ### Development Database
 
@@ -49,9 +51,10 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 4. Migrate the database. `python manage.py migrate`
 5. Load test data from a fixture like so `python manage.py loaddata test_data` `python manage.py loaddata --database=datasets test_datasets`
 6. Create a superuser. `python manage.py createsuperuser`
-7. Install frontend dependencies `npm install`
-8. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
-9. Run the app. `python manage.py runserver`
+7. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
+8. Install frontend dependencies `npm install`
+9. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
+10. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
 
 ### End-To-End Testing
 
@@ -72,3 +75,28 @@ var jsonData = JSON.parse(responseBody);
 postman.setEnvironmentVariable("token", jsonData.token);
 ```
 4. In the Headers of your subsequent posts, send the Header `Authorization: Token {{token}}`
+
+
+### Letsencrypt certificates generation
+
+1. If certbot has not been installed already, install certbot by following commands
+  ```
+  sudo add-apt-repository ppa:certbot/certbot
+  sudo apt-get install certbot
+  ```
+
+2. Run below script to generate certificates
+`certbot renew --dry-run  --webroot -w /root/ddw-analyst-ui/static/letsencrypt`
+
+3. If the command above is run successfully copy certificates to the ssl folder of ddw app
+  ```
+  cp -f  /etc/letsencrypt/live/ddw.devinit.org/privkey.pem /root/ddw-analyst-ui/ssl/
+  cp -f /etc/letsencrypt/live/ddw.devinit.org/fullchain.pem /root/ddw-analyst-ui/ssl/
+
+  ```
+  From ddw-analyst-ui root folder, reload nginx so that certificates are picked
+  `docker-compose exec ddw-analyst-ui_nginx_1 nginx reload`
+
+4. Check if there is a cron job set to renew certificates. If there is non add the cron task below. This will try to renew the certificate twice a day every day
+
+`0 */12 * * * /root/ddw-analyst-ui/certbot.sh >/dev/null 2>&1`

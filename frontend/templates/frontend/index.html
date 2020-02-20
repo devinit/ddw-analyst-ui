@@ -1,3 +1,4 @@
+{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
   {% load static %}
   <link rel="stylesheet" href="{% static 'frontend/assets/css/material-dashboard.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'frontend/css/bundle.css' %}" />
+  {% render_bundle 'main' 'css' 'DEFAULT' %}
 </head>
 <body>
     <div id="app" class="app"><!-- React --></div>
@@ -22,5 +23,9 @@
 <script src="{% static 'frontend/assets/js/core/bootstrap-material-design.min.js' %}"></script>
 <script src="{% static 'frontend/assets/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
 <script src="{% static 'frontend/assets/js/material-dashboard.min.js' %}"></script>
-<script src="{% static 'frontend/js/bundle.js' %}"></script>
+{% render_bundle 'main' 'js' 'DEFAULT' %}
+
+{% if DEBUG %}
+  <script src="//localhost:35729/livereload.js"></script>
+{% endif %}
 </html>
