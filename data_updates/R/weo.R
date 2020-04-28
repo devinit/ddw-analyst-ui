@@ -26,10 +26,11 @@ table.quote = c("repo",table.name)
 
 # Load data, removing na strings
 # data_url = "https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls"
-data_url = "https://www.imf.org/external/pubs/ft/weo/2019/01/weodata/WEOApr2019all.xls"
+# data_url = "https://www.imf.org/external/pubs/ft/weo/2019/01/weodata/WEOApr2019all.xls"
+data_url = "https://www.imf.org/external/pubs/ft/weo/2020/01/weodata/WEOApr2020all.xls"
 weo = read.csv(data_url,sep="\t",na.strings=c("","n/a","--"))
 
-value_cols = paste0("X",c(1980:2024))
+value_cols = paste0("X",c(1980:2021))
 id_cols = setdiff(names(weo),value_cols)
 
 # Dataset has commas in numbers, which need to be removed and parsed as numbers
