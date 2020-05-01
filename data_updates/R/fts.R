@@ -230,14 +230,10 @@ if(length(args)==0){
   auth = list("user"=args[1],"pass"=args[2])
 }
 
-pb = txtProgressBar(min=2000, max=2022, style=3)
 new_table = TRUE
-for(i in 2000:2022){
-  setTxtProgressBar(pb, i)
-  b = paste0("year=",i)
-  fts.flow(boundary=b,auth=auth, con, table.quote, new_table)
-  new_table = FALSE
-}
-close(pb)
+years = c(2000:2022)
+b = paste0("year=",paste(years,collapse="%2C"))
+fts.flow(boundary=b, auth=auth, con, table.quote, new_table)
+
 dbDisconnect(con)
 
