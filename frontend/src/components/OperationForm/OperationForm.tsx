@@ -164,7 +164,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
     });
   }
 
-  private setFocusedField = ({ currentTarget }: React.FocusEvent<HTMLInputElement>) => {
+  private setFocusedField = ({ currentTarget }: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     this.setState({ hasFocus: currentTarget.name });
   }
 

@@ -2,6 +2,7 @@ import { List } from 'immutable';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
 import * as sourcesActions from '../../actions/sources';
@@ -22,7 +23,7 @@ interface ReduxState {
   sources: SourcesState;
   page: DataSourcesState;
 }
-type DataSourcesProps = ReduxState & ActionProps;
+type DataSourcesProps = ReduxState & ActionProps & RouteComponentProps;
 
 class DataSources extends React.Component<DataSourcesProps> {
   render() {

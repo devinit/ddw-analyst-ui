@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as operationsActions from '../../actions/operations';
 import { OperationsTableCard } from '../../components/OperationsTableCard';
@@ -16,7 +17,7 @@ interface ReduxState {
   user: UserState;
   page: HomeState;
 }
-type HomeProps = ActionProps & ReduxState;
+type HomeProps = ActionProps & ReduxState & RouteComponentProps;
 
 class Home extends React.Component<HomeProps> {
   render() {

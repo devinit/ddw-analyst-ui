@@ -21,14 +21,14 @@ export class SidebarItem extends React.Component<SidebarItemProps> {
 
   private renderRoot(): React.ReactNode {
     if (React.Children.count(this.props.children) > 1) {
-      const rootLink = React.Children.map(this.props.children, child => {
+      const rootLinks = React.Children.map(this.props.children, child => {
         if (React.isValidElement<SidebarLinkProps>(child) && child.type === SidebarLink && child.props.root) {
           return child;
         }
-      })[0];
+      });
 
-      if (rootLink) {
-        return React.cloneElement(rootLink, { caret: true });
+      if (rootLinks && rootLinks.length) {
+        return React.cloneElement(rootLinks[0], { caret: true });
       }
 
       console.error('A root link is required in a sidebar item with more than one child'); // tslint:disable-line
