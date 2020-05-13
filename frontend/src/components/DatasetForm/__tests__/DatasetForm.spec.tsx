@@ -8,7 +8,7 @@ import * as TestRenderer from 'react-test-renderer';
 import { DatasetForm } from '../DatasetForm';
 
 test('renders the form correctly', () => {
-  const renderer = TestRenderer.create(<DatasetForm/>).toJSON();
+  const renderer = TestRenderer.create(<DatasetForm />).toJSON();
 
   expect(renderer).toMatchSnapshot();
 });

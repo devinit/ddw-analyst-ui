@@ -6,18 +6,19 @@ interface ComponentProps {
   dataset: Dataset;
 }
 export const DatasetTableRow: React.SFC<ComponentProps> = ({ children, classNames, dataset }) => {
-  const renderActions = (): React.ReactNode => React.Children.map(children, child => {
-    if (React.isValidElement(child)) {
-      return child;
-    }
-  });
+  const renderActions = (): React.ReactNode =>
+    React.Children.map(children, (child) => {
+      if (React.isValidElement(child)) {
+        return child;
+      }
+    });
 
   return (
-    <tr className={ classNames } data-testid="datasets-table-row">
-      <td>{ dataset.title }</td>
-      <td>{ dataset.publication }</td>
-      <td>{ new Date(dataset.releasedAt).toDateString() }</td>
-      <td className="td-actions text-right">{ renderActions() }</td>
+    <tr className={classNames} data-testid="datasets-table-row">
+      <td>{dataset.title}</td>
+      <td>{dataset.publication}</td>
+      <td>{new Date(dataset.releasedAt).toDateString()}</td>
+      <td className="td-actions text-right">{renderActions()}</td>
     </tr>
   );
 };

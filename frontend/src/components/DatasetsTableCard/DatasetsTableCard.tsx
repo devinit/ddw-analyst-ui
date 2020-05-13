@@ -11,44 +11,47 @@ interface ComponentProps {
   datasets?: DatasetList;
 }
 
-export const DatasetsTableCard: React.SFC<ComponentProps> = props => {
-  const [ activeDataset, setActiveDataset ] = React.useState();
-  const [ showDetails, setShowDetails ] = React.useState(false);
+export const DatasetsTableCard: React.SFC<ComponentProps> = (props) => {
+  const [activeDataset, setActiveDataset] = React.useState<DatasetMap>();
+  const [showDetails, setShowDetails] = React.useState(false);
 
   const onRowClick = (dataset: DatasetMap) => {
     setShowDetails(true);
     setActiveDataset(dataset);
   };
-  const renderDetailButton = (dataset: DatasetMap, index: number) =>
+  const renderDetailButton = (dataset: DatasetMap, index: number) => (
     <React.Fragment>
       <Button
         variant="danger"
         size="sm"
         className="btn-link"
-        onClick={ () => onRowClick(dataset) }
-        data-testid={ `details-button-${index}` }
+        onClick={() => onRowClick(dataset)}
+        data-testid={`details-button-${index}`}
       >
         Details
       </Button>
       <Modal
-        show={ showDetails && activeDataset.get('id') === dataset.get('id') }
-        onHide={ () => setShowDetails(false) }
+        show={showDetails && activeDataset && activeDataset.get('id') === dataset.get('id')}
+        onHide={() => setShowDetails(false)}
         dialogClassName="modal-50w"
-        data-testid={ `details-modal-${index}` }
+        data-testid={`details-modal-${index}`}
       >
         <Modal.Header closeButton>
           <Modal.Title>Dataset New/Edit</Modal.Title>
         </Modal.Header>
-        <Modal.Body><DatasetForm/></Modal.Body>
+        <Modal.Body>
+          <DatasetForm />
+        </Modal.Body>
       </Modal>
-    </React.Fragment>;
+    </React.Fragment>
+  );
   const renderTableRows = () => {
     if (props.datasets && props.datasets.size) {
-      return props.datasets.map((dataset, index) =>
-        <DatasetTableRow key={ index } dataset={ dataset.toJS() as Dataset }>
-          { renderDetailButton(dataset, index) }
+      return props.datasets.map((dataset, index) => (
+        <DatasetTableRow key={index} dataset={dataset.toJS() as Dataset}>
+          {renderDetailButton(dataset, index)}
         </DatasetTableRow>
-      );
+      ));
     }
 
     return null;
@@ -63,7 +66,7 @@ export const DatasetsTableCard: React.SFC<ComponentProps> = props => {
 
   return (
     <React.Fragment>
-      <Dimmer active={ props.loading } inverted>
+      <Dimmer active={props.loading} inverted>
         <Loader content="Loading..." />
       </Dimmer>
       <Card>
@@ -77,8 +80,8 @@ export const DatasetsTableCard: React.SFC<ComponentProps> = props => {
           </Card.Title>
         </Card.Header>
         <Card.Body>
-          <DatasetTable>{ renderTableRows() }</DatasetTable>
-          { renderPagination() }
+          <DatasetTable>{renderTableRows()}</DatasetTable>
+          {renderPagination()}
         </Card.Body>
       </Card>
     </React.Fragment>

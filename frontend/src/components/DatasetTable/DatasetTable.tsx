@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { DatasetTableRow } from '../DatasetTableRow';
 
-export const DatasetTable: React.SFC = props => {
+export const DatasetTable: React.SFC = (props) => {
   const renderRows = () => {
-    return React.Children.map(props.children, child => {
+    return React.Children.map(props.children, (child) => {
       if (React.isValidElement(child) && child.type === DatasetTableRow) {
         return child;
       }
@@ -21,9 +21,7 @@ export const DatasetTable: React.SFC = props => {
           <th className="text-right">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        { renderRows() }
-      </tbody>
+      <tbody>{renderRows()}</tbody>
     </Table>
   );
 };

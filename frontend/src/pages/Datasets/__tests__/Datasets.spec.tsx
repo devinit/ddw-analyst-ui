@@ -7,9 +7,7 @@ import * as TestRenderer from 'react-test-renderer';
 import { Datasets } from '../Datasets';
 
 test('renders the default DataSet page correctly', () => {
-  const renderer = TestRenderer
-    .create(<Datasets/>)
-    .toJSON();
+  const renderer = TestRenderer.create(<Datasets />).toJSON();
 
   expect(renderer).toMatchSnapshot();
 });
