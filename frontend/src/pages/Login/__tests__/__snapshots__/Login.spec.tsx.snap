@@ -60,7 +60,7 @@ exports[`renders the login form when loading is false 1`] = `
         Or Go With
       </p>
       <div
-        class="fade sc-bwzfXH desjYZ alert alert-danger show"
+        class="fade sc-AxirZ fZRTbk alert alert-danger show"
         hidden=""
         role="alert"
       />
@@ -91,7 +91,7 @@ exports[`renders the login form when loading is false 1`] = `
             type="email"
           />
           <div
-            class="sc-bdVaJa jLtXnO invalid-feedback"
+            class="sc-AxjAm iyPwzz invalid-feedback"
           />
         </div>
       </span>
@@ -121,7 +121,7 @@ exports[`renders the login form when loading is false 1`] = `
             type="password"
           />
           <div
-            class="sc-bdVaJa jLtXnO invalid-feedback"
+            class="sc-AxjAm iyPwzz invalid-feedback"
           />
         </div>
       </span>
