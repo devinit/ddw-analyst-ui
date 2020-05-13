@@ -89,6 +89,7 @@ exports[`renders correctly with default props 1`] = `
             class="font-weight-light"
           >
             <a
+              rel="noreferrer"
               target="_blank"
             >
               <i
@@ -105,6 +106,7 @@ exports[`renders correctly with default props 1`] = `
             class="font-weight-light"
           >
             <a
+              rel="noreferrer"
               target="_blank"
             >
               <i

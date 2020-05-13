@@ -1,3 +1,4 @@
+import 'jest-styled-components';
 import * as React from 'react';
 import * as TestRenderer from 'react-test-renderer';
 import { LoginForm } from '../LoginForm';

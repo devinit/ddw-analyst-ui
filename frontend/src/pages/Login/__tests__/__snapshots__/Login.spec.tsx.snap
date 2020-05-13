@@ -31,6 +31,14 @@ exports[`renders the loading indicator while loading 1`] = `
 `;
 
 exports[`renders the login form when loading is false 1`] = `
+.c1 {
+  margin-left: 55px;
+}
+
+.c0 {
+  margin-left: 15px;
+}
+
 <form
   class="form"
   data-testid="login-form"
@@ -60,7 +68,7 @@ exports[`renders the login form when loading is false 1`] = `
         Or Go With
       </p>
       <div
-        class="fade sc-AxirZ fZRTbk alert alert-danger show"
+        class="fade c0 alert alert-danger show"
         hidden=""
         role="alert"
       />
@@ -91,7 +99,7 @@ exports[`renders the login form when loading is false 1`] = `
             type="email"
           />
           <div
-            class="sc-AxjAm iyPwzz invalid-feedback"
+            class="c1 invalid-feedback"
           />
         </div>
       </span>
@@ -121,7 +129,7 @@ exports[`renders the login form when loading is false 1`] = `
             type="password"
           />
           <div
-            class="sc-AxjAm iyPwzz invalid-feedback"
+            class="c1 invalid-feedback"
           />
         </div>
       </span>
