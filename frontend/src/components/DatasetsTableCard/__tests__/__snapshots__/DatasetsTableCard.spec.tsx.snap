@@ -39,7 +39,7 @@ Array [
         className="table-responsive"
       >
         <table
-          className="table sources-table table-striped table-hover"
+          className="sources-table table table-striped table-hover"
         >
           <thead>
             <tr>
