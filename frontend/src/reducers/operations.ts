@@ -39,18 +39,25 @@ export const DELETE_OPERATION = `${prefix}.DELETE_OPERATION`;
 export const DELETE_OPERATION_SUCCESSFUL = `${prefix}.DELETE_OPERATION_SUCCESSFUL`;
 export const DELETE_OPERATION_FAILED = `${prefix}.DELETE_OPERATION_FAILED`;
 
-export const defaultState: OperationsState = fromJS({ loading: false, operations: [], activeOperationId: 1 });
+export const defaultState: OperationsState = fromJS({
+  loading: false,
+  operations: [],
+  activeOperationId: 1,
+});
 
-export const operationsReducer: Reducer<OperationsState, OperationsAction> = (state = defaultState, action) => {
+export const operationsReducer: Reducer<OperationsState, OperationsAction> = (
+  state = defaultState,
+  action,
+) => {
   if (action.type === FETCH_OPERATIONS || action.type === FETCH_OPERATION) {
     return state.set('loading', true);
   }
   if (action.type === FETCH_OPERATIONS_SUCCESSFUL && action.operations) {
-    return state.withMutations(map =>
+    return state.withMutations((map) =>
       map
         .set('loading', false)
         .set('operations', fromJS(action.operations))
-        .set('count', action.count)
+        .set('count', action.count),
     );
   }
   if (action.type === FETCH_OPERATIONS_FAILED || action.type === FETCH_OPERATION_FAILED) {

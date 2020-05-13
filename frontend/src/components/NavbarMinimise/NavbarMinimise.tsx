@@ -6,7 +6,7 @@ export class NavbarMinimise extends React.Component {
       <div className="navbar-minimize">
         <button
           className="btn btn-just-icon btn-white btn-fab btn-round"
-          onClick={ this.toggleSidebar }
+          onClick={this.toggleSidebar}
           data-testid="navbar-minimise-button"
         >
           <i className="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>

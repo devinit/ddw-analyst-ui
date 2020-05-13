@@ -29,6 +29,7 @@ Array [
     className="font-weight-light"
   >
     <a
+      rel="noreferrer"
       target="_blank"
     >
       <i
@@ -45,6 +46,7 @@ Array [
     className="font-weight-light"
   >
     <a
+      rel="noreferrer"
       target="_blank"
     >
       <i

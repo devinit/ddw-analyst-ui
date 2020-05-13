@@ -26,14 +26,14 @@ const structuredReducers = {
   [`${dataSourcesReducerId}`]: dataSourcesReducer,
   [`${queryBuilderReducerId}`]: queryBuilderReducer,
   [`${homeReducerId}`]: homeReducer,
-  [`${queryDataReducerId}`]: queryDataReducer
+  [`${queryDataReducerId}`]: queryDataReducer,
 };
 const reducers = combineReducers(structuredReducers);
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
   reducers,
-  composeEnhancers(applyMiddleware(sagaMiddleware/* , loggerMiddleware */))
+  composeEnhancers(applyMiddleware(sagaMiddleware /* , loggerMiddleware */)),
 );
 
 sagaMiddleware.run(rootSaga);

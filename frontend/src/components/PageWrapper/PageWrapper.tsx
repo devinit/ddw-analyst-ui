@@ -5,10 +5,10 @@ interface PageWrapperProps {
   fullPage?: boolean;
 }
 
-export const PageWrapper: React.SFC<PageWrapperProps> = props => {
+export const PageWrapper: React.SFC<PageWrapperProps> = (props) => {
   return (
-    <div className={ classNames('wrapper', { 'wrapper-full-page': props.fullPage }) } >
-      { props.children }
+    <div className={classNames('wrapper', { 'wrapper-full-page': props.fullPage })}>
+      {props.children}
     </div>
   );
 };

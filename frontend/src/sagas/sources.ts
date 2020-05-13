@@ -9,7 +9,7 @@ import {
   FETCH_SOURCES,
   FETCH_SOURCES_FAILED,
   FETCH_SOURCES_SUCCESSFUL,
-  SourcesAction
+  SourcesAction,
 } from '../reducers/sources';
 import { APIResponse } from '../types/api';
 import { Source } from '../types/sources';
@@ -21,23 +21,24 @@ function* fetchSources({ payload }: SourcesAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const url = `${api.routes.SOURCES}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}`;
-    const { status, data }: AxiosResponse<APIResponse<Source[]>> = yield axios.request({
-      url: payload.link || url,
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${token}`
-      }
-    })
-    .then((response: AxiosResponse<Source[]>) => response)
-    .catch(error => error.response);
+    const { status, data }: AxiosResponse<APIResponse<Source[]>> = yield axios
+      .request({
+        url: payload.link || url,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+      })
+      .then((response: AxiosResponse<Source[]>) => response)
+      .catch((error) => error.response);
 
     if (status === 200 && data.results) {
       yield put({
         type: FETCH_SOURCES_SUCCESSFUL,
         sources: data.results,
         count: data.count,
-        payload
+        payload,
       });
       if (data.results.length) {
         yield put({ type: SET_ACTIVE_SOURCE, activeSource: fromJS(data.results[0]) });
@@ -60,16 +61,17 @@ function* fetchSource({ payload }: SourcesAction) {
   }
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const { status, data }: AxiosResponse<APIResponse<Source>> = yield axios.request({
-      url: `${api.routes.SOURCES}${sourceId}/`,
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${token}`
-      }
-    })
-    .then((response: AxiosResponse<Source[]>) => response)
-    .catch(error => error.response);
+    const { status, data }: AxiosResponse<APIResponse<Source>> = yield axios
+      .request({
+        url: `${api.routes.SOURCES}${sourceId}/`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+      })
+      .then((response: AxiosResponse<Source[]>) => response)
+      .catch((error) => error.response);
 
     if (status === 200 || status === 201) {
       yield put(setActiveSource(fromJS(data)) as SourcesAction);

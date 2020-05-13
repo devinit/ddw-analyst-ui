@@ -1,5 +1,5 @@
 import { RouteComponentProps } from 'react-router-dom';
-import { FormikActions } from 'formik/dist/types';
+import { FormikHelpers as FormikActions } from 'formik/dist/types';
 import { Base64 } from 'js-base64';
 import * as localForage from 'localforage';
 import * as React from 'react';
@@ -20,28 +20,34 @@ interface LoginState {
   alert?: string;
 }
 export type LoginActions = typeof UserActions & typeof TokenActions;
-interface ActionProps { actions: LoginActions; }
+interface ActionProps {
+  actions: LoginActions;
+}
 type LoginProps = RouteComponentProps<{}> & ActionProps;
 
 export class Login extends React.Component<LoginProps, LoginState> {
   private headerStyles = css({
     backgroundSize: 'cover',
-    backgroundPosition: 'top center'
+    backgroundPosition: 'top center',
   });
   private loadingStyles = css({ textAlign: 'center' });
   state: LoginState = {
     showForm: false,
-    loading: true
+    loading: true,
   };
 
   render() {
     return (
       <PageWrapper fullPage>
-        <div className="page-header login-page header-filter" filter-color="red" { ...this.headerStyles }>
+        <div
+          className="page-header login-page header-filter"
+          filter-color="red"
+          {...this.headerStyles}
+        >
           <div className="container">
             <Row>
-              <Col lg={ 4 } md={ 6 } sm={ 8 } className="ml-auto mr-auto">
-                { this.renderContent() }
+              <Col lg={4} md={6} sm={8} className="ml-auto mr-auto">
+                {this.renderContent()}
               </Col>
             </Row>
           </div>
@@ -52,7 +58,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
   componentDidMount() {
     this.removeNavOpenClass();
-    localForage.getItem<string>(localForageKeys.API_KEY)
+    localForage
+      .getItem<string>(localForageKeys.API_KEY)
       .then((token) => {
         if (token) {
           this.props.history.push('/');
@@ -67,39 +74,45 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
   private renderContent() {
     if (this.state.loading) {
-      return <div { ...this.loadingStyles }>Loading...</div>;
+      return <div {...this.loadingStyles}>Loading...</div>;
     }
 
-    return <LoginForm showForm={ this.state.showForm } onSuccess={ this.onLogin } alert={ this.state.alert }/>;
+    return (
+      <LoginForm showForm={this.state.showForm} onSuccess={this.onLogin} alert={this.state.alert} />
+    );
   }
 
   private onNotAuthenticated = () => {
     setTimeout(() => {
       this.setState({ showForm: true, loading: false });
     }, 700);
-  }
+  };
 
-  private onLogin = ({ username, password }: Credentials, _formikActions: FormikActions<Credentials>) => {
-    window.fetch(api.routes.LOGIN, {
-      method: 'POST',
-      credentials: 'omit',
-      redirect: 'follow',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${Base64.encode(`${username}:${password}`)}`
-      }
-    })
-    .then(response => response.json())
-    .then(({ detail, token, user }: { token?: string, detail?: string, user?: User }) => {
-      if (token && user) {
-        this.storeTokenPlusUser(token, user);
-        this.props.history.push('/');
-      } else if (detail) {
-        this.setState({ alert: detail });
-      }
-    })
-    .catch(console.log); // tslint:disable-line
-  }
+  private onLogin = (
+    { username, password }: Credentials,
+    _formikActions: FormikActions<Credentials>,
+  ) => {
+    window
+      .fetch(api.routes.LOGIN, {
+        method: 'POST',
+        credentials: 'omit',
+        redirect: 'follow',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${Base64.encode(`${username}:${password}`)}`,
+        },
+      })
+      .then((response) => response.json())
+      .then(({ detail, token, user }: { token?: string; detail?: string; user?: User }) => {
+        if (token && user) {
+          this.storeTokenPlusUser(token, user);
+          this.props.history.push('/');
+        } else if (detail) {
+          this.setState({ alert: detail });
+        }
+      })
+      .catch(console.log); // tslint:disable-line
+  };
 
   private storeTokenPlusUser(token: string, { id, username, is_superuser }: User) {
     localForage.setItem(localForageKeys.API_KEY, token);
@@ -109,12 +122,13 @@ export class Login extends React.Component<LoginProps, LoginState> {
   }
 
   private removeNavOpenClass() {
-    Array.from(document.getElementsByClassName('nav-open'))
-      .forEach(element => element.classList.remove('nav-open'));
+    Array.from(document.getElementsByClassName('nav-open')).forEach((element) =>
+      element.classList.remove('nav-open'),
+    );
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({ ...UserActions, ...TokenActions }, dispatch)
+  actions: bindActionCreators({ ...UserActions, ...TokenActions }, dispatch),
 });
 export default connect(null, mapDispatchToProps)(Login);

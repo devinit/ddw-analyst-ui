@@ -25,7 +25,10 @@ const StyledCol = styled(Col)`
   margin: auto;
 `;
 
-export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, JoinColumnsMapperState> {
+export class JoinColumnsMapper extends React.Component<
+  JoinColumnsMapperProps,
+  JoinColumnsMapperState
+> {
   static defaultProps: Partial<JoinColumnsMapperProps> = { editable: true };
   state: JoinColumnsMapperState = { primaryColumn: '', secondaryColumn: '' };
 
@@ -34,38 +37,42 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
 
     return (
       <Row className="mb-1">
-        <Col lg={ 4 } className="my-2">
+        <Col lg={4} className="my-2">
           <Dropdown
             name="primaryColumn"
             placeholder="Select Column"
             fluid
             selection
             search
-            options={ primaryColumns.sort(sortObjectArrayByProperty('text').sort) }
-            onChange={ this.onSelectColumn }
-            defaultValue={ primaryColumn }
-            disabled={ !this.props.editable }
+            options={primaryColumns.sort(sortObjectArrayByProperty('text').sort)}
+            onChange={this.onSelectColumn}
+            defaultValue={primaryColumn}
+            disabled={!this.props.editable}
           />
         </Col>
 
-        <StyledCol md={ 2 }><i className="material-icons">arrow_forward</i></StyledCol>
+        <StyledCol md={2}>
+          <i className="material-icons">arrow_forward</i>
+        </StyledCol>
 
-        <Col lg={ 4 } className="my-2">
+        <Col lg={4} className="my-2">
           <Dropdown
             name="secondaryColumn"
             placeholder="Select Column"
             fluid
             selection
             search
-            options={ this.getSelectOptionsFromColumns(secondaryColumns).sort(sortObjectArrayByProperty('text').sort) }
-            onChange={ this.onSelectColumn }
-            defaultValue={ secondaryColumn }
-            disabled={ !this.props.editable }
+            options={this.getSelectOptionsFromColumns(secondaryColumns).sort(
+              sortObjectArrayByProperty('text').sort,
+            )}
+            onChange={this.onSelectColumn}
+            defaultValue={secondaryColumn}
+            disabled={!this.props.editable}
           />
         </Col>
 
-        <Col lg={ 1 }>
-          <Button variant="link" className="btn-just-icon" onClick={ this.onDelete }>
+        <Col lg={1}>
+          <Button variant="link" className="btn-just-icon" onClick={this.onDelete}>
             <i className="material-icons">delete</i>
           </Button>
         </Col>
@@ -75,28 +82,39 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
 
   private getSelectOptionsFromColumns(columns: ColumnList): DropdownItemProps[] {
     if (columns.count()) {
-      return columns.map(column => ({
-        key: column.get('id'),
-        text: formatString(column.get('name') as string),
-        value: column.get('name')
-      })).toJS();
+      return columns
+        .map((column) => ({
+          key: column.get('id'),
+          text: formatString(column.get('name') as string),
+          value: column.get('name'),
+        }))
+        .toJS();
     }
 
     return [];
   }
 
-  private onSelectColumn = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+  private onSelectColumn = (
+    _event: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps,
+  ) => {
     if (data.value && this.props.onUpdate) {
-      let primaryColumn = data.name === 'primaryColumn' ? data.value as string : this.props.primaryColumn;
-      let secondaryColumn = data.name === 'secondaryColumn' ? data.value as string : this.props.secondaryColumn;
+      let primaryColumn =
+        data.name === 'primaryColumn' ? (data.value as string) : this.props.primaryColumn;
+      let secondaryColumn =
+        data.name === 'secondaryColumn' ? (data.value as string) : this.props.secondaryColumn;
       if (data.name === 'primaryColumn') {
-        const matchingColumn = this.props.secondaryColumns.find(column => column.get('name') === data.value);
+        const matchingColumn = this.props.secondaryColumns.find(
+          (column) => column.get('name') === data.value,
+        );
         if (matchingColumn) {
           secondaryColumn = matchingColumn.get('name') as string;
         }
       }
       if (data.name === 'secondaryColumn') {
-        const matchingColumn = this.props.primaryColumns.find(column => column.value === data.value);
+        const matchingColumn = this.props.primaryColumns.find(
+          (column) => column.value === data.value,
+        );
         if (matchingColumn) {
           primaryColumn = matchingColumn.value as string;
         }
@@ -107,7 +125,7 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
       }
       this.props.onUpdate({ ...columnMapping, [primaryColumn]: secondaryColumn });
     }
-  }
+  };
 
   private onDelete = () => {
     if (this.props.onUpdate) {
@@ -117,7 +135,7 @@ export class JoinColumnsMapper extends React.Component<JoinColumnsMapperProps, J
         this.props.onUpdate(columnMapping);
       }
     }
-  }
+  };
 }
 
 export default JoinColumnsMapper;

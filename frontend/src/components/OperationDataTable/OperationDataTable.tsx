@@ -16,7 +16,9 @@ interface OperationDataTableProps {
   fetchData: typeof fetchOperationData;
 }
 
-const StyledTableHeader = styled.th`border-top: 1px solid #ddd !important;`;
+const StyledTableHeader = styled.th`
+  border-top: 1px solid #ddd !important;
+`;
 const getColumns = (item?: OperationDataMap): string[] => {
   if (item) {
     const columns: string[] = [];
@@ -30,11 +32,15 @@ const getColumns = (item?: OperationDataMap): string[] => {
 
 const renderTableRows = (data: List<OperationDataMap>, columns: (string | number)[]) => {
   if (data && columns.length) {
-    return data.map((item, key) =>
-      <tr key={ key }>
-        { columns.map(column => <td key={ column } className="text-truncate">{ item.get(column) }</td>) }
+    return data.map((item, key) => (
+      <tr key={key}>
+        {columns.map((column) => (
+          <td key={column} className="text-truncate">
+            {item.get(column)}
+          </td>
+        ))}
       </tr>
-    );
+    ));
   }
 };
 
@@ -63,29 +69,29 @@ export const OperationDataTable: React.SFC<OperationDataTableProps> = (props) =>
         <Table bordered responsive hover striped className="operation-data-table">
           <thead>
             <tr>
-              {
-                columns.map(column =>
-                  <StyledTableHeader key={ column } className="text-truncate">
-                    { formatString(column) }
-                  </StyledTableHeader>
-                )
-              }
+              {columns.map((column) => (
+                <StyledTableHeader key={column} className="text-truncate">
+                  {formatString(column)}
+                </StyledTableHeader>
+              ))}
             </tr>
           </thead>
-          <tbody>{ renderTableRows(list, columns) }</tbody>
+          <tbody>{renderTableRows(list, columns)}</tbody>
         </Table>
 
         <Row>
-          <Col md={ 6 }>Showing { offset + 1 } to { list.count() < limit ? offset + list.count() : max }</Col>
-          <Col md={ 6 }>
+          <Col md={6}>
+            Showing {offset + 1} to {list.count() < limit ? offset + list.count() : max}
+          </Col>
+          <Col md={6}>
             <Pagination className="float-right">
-              <Pagination.First onClick={ goToFirst } data-testid="operations-pagination-first">
+              <Pagination.First onClick={goToFirst} data-testid="operations-pagination-first">
                 <i className="material-icons">first_page</i>
               </Pagination.First>
-              <Pagination.Prev onClick={ goToPrev } data-testid="operations-pagination-prev">
+              <Pagination.Prev onClick={goToPrev} data-testid="operations-pagination-prev">
                 <i className="material-icons">chevron_left</i>
               </Pagination.Prev>
-              <Pagination.Next onClick={ goToNext } data-testid="operations-pagination-next">
+              <Pagination.Next onClick={goToNext} data-testid="operations-pagination-next">
                 <i className="material-icons">chevron_right</i>
               </Pagination.Next>
             </Pagination>

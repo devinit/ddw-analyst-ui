@@ -2,7 +2,7 @@ export interface APIResponse<T> {
   count: number;
   next: string;
   previous: string;
-  results: T
+  results: T;
 }
 export interface Links {
   next: string | null;

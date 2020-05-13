@@ -2,6 +2,7 @@ import { List } from 'immutable';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
 import * as sourcesActions from '../../actions/sources';
@@ -22,7 +23,7 @@ interface ReduxState {
   sources: SourcesState;
   page: DataSourcesState;
 }
-type DataSourcesProps = ReduxState & ActionProps;
+type DataSourcesProps = ReduxState & ActionProps & RouteComponentProps;
 
 class DataSources extends React.Component<DataSourcesProps> {
   render() {
@@ -32,32 +33,29 @@ class DataSources extends React.Component<DataSourcesProps> {
 
     return (
       <Row>
-        <Col lg={ 7 }>
-          <Dimmer active={ loading } inverted>
+        <Col lg={7}>
+          <Dimmer active={loading} inverted>
             <Loader content="Loading" />
           </Dimmer>
 
           <SourcesTableCard
-            sources={ sources }
-            limit={ this.props.sources.get('limit') as number }
-            offset={ this.props.sources.get('offset') as number }
-            activeSource={ activeSource }
-            count={ this.props.sources.get('count') as number }
-            onRowClick={ this.onRowClick }
+            sources={sources}
+            limit={this.props.sources.get('limit') as number}
+            offset={this.props.sources.get('offset') as number}
+            activeSource={activeSource}
+            count={this.props.sources.get('count') as number}
+            onRowClick={this.onRowClick}
           />
-
         </Col>
 
-        <Col lg={ 5 }>
-          { this.renderDetailsTab(activeSource, loading) }
-        </Col>
+        <Col lg={5}>{this.renderDetailsTab(activeSource, loading)}</Col>
       </Row>
     );
   }
 
   private renderDetailsTab(activeSource: SourceMap | undefined, loading = false) {
     if (activeSource && !loading) {
-      return <SourceDetailsTab source={ activeSource }/>;
+      return <SourceDetailsTab source={activeSource} />;
     }
 
     return (
@@ -77,17 +75,17 @@ class DataSources extends React.Component<DataSourcesProps> {
 
   private onRowClick = (activeSource: SourceMap) => {
     this.props.actions.setActiveSource(activeSource);
-  }
+  };
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({ ...sourcesActions, ...pageActions }, dispatch)
+  actions: bindActionCreators({ ...sourcesActions, ...pageActions }, dispatch),
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {
     user: reduxStore.get('user') as UserState,
     sources: reduxStore.get('sources') as SourcesState,
-    page: reduxStore.get(`${dataSourcesReducerId}`)
+    page: reduxStore.get(`${dataSourcesReducerId}`),
   };
 };
 

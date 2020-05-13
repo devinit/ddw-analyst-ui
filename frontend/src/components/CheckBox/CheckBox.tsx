@@ -8,15 +8,24 @@ interface CheckBoxProps {
   disabled?: boolean;
 }
 
-export const CheckBox: React.SFC<CheckBoxProps> = ({ defaultChecked, disabled, label, onChange }) => {
+export const CheckBox: React.SFC<CheckBoxProps> = ({
+  defaultChecked,
+  disabled,
+  label,
+  onChange,
+}) => {
   return (
     <Form.Group>
       <Form.Check type="checkbox">
         <Form.Check.Label>
-          <Form.Check.Input onChange={ onChange } defaultChecked={ defaultChecked } disabled={ disabled }/>
-          { label }
+          <Form.Check.Input
+            onChange={onChange}
+            defaultChecked={defaultChecked}
+            disabled={disabled}
+          />
+          {label}
           <span className="form-check-sign">
-            <span className="check"/>
+            <span className="check" />
           </span>
         </Form.Check.Label>
       </Form.Check>

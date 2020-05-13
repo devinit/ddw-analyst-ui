@@ -6,7 +6,7 @@ import {
   OperationMap,
   OperationStepMap,
   TransformOptions,
-  WindowOptions
+  WindowOptions,
 } from '../types/operations';
 import { ColumnList } from '../types/sources';
 
@@ -22,21 +22,27 @@ export const getSourceIDFromOperation = (operation: OperationMap): string | unde
     return;
   }
 
-  return steps.getIn([ 0, 'source' ]);
+  return steps.getIn([0, 'source']);
 };
 
 export const formatString = (name = '') =>
-  name.split('_').map(word => `${word.charAt(0).toUpperCase()}${word.substr(1)}`).join(' ');
+  name
+    .split('_')
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.substr(1)}`)
+    .join(' ');
 
 export const getCustomColumns = (item: OperationDataMap, columns: ColumnList): string[] => {
-  const columnKeys = columns.map(column => column.get('name')).toJS() as string[];
-  const keysToIgnore = [ 'id', 'row_no' ];
+  const columnKeys = columns.map((column) => column.get('name')).toJS() as string[];
+  const keysToIgnore = ['id', 'row_no'];
   const customKeys: string[] = [];
   const iterator = item.keys();
   let key = iterator.next();
   while (!key.done) {
     const { value } = key;
-    if (columnKeys.indexOf(value as string) === -1 && keysToIgnore.indexOf(value as string) === -1) {
+    if (
+      columnKeys.indexOf(value as string) === -1 &&
+      keysToIgnore.indexOf(value as string) === -1
+    ) {
       customKeys.push(value as string);
     }
     key = iterator.next();
@@ -47,11 +53,13 @@ export const getCustomColumns = (item: OperationDataMap, columns: ColumnList): s
 
 export const getSelectOptionsFromColumns = (columns?: ColumnList): DropdownItemProps[] => {
   if (columns && columns.count()) {
-    return columns.map(column => ({
-      key: column.get('id'),
-      text: formatString(column.get('name') as string),
-      value: column.get('name')
-    })).toJS();
+    return columns
+      .map((column) => ({
+        key: column.get('id'),
+        text: formatString(column.get('name') as string),
+        value: column.get('name'),
+      }))
+      .toJS();
   }
 
   return [];
@@ -71,19 +79,27 @@ export const sort = (valueA: number | string, valueB: number | string): number =
 export const sortSteps = (stepA: OperationStepMap, stepB: OperationStepMap): number => {
   const valueA = stepA.get('step_id') as number;
   const valueB = stepB.get('step_id') as number;
+
   return sort(valueA, valueB);
 };
 
 export const sortObjectArrayByProperty = (property: string) => {
-  return ({
-    sort: (targetA: {[key: string]: any}, targetB: {[key: string]: any}) =>
-      sort(targetA[property], targetB[property])
-  });
+  return {
+    sort: (targetA: { [key: string]: any }, targetB: { [key: string]: any }) =>
+      sort(targetA[property], targetB[property]),
+  };
 };
 
-export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: List<OperationStepMap>, columnsList: ColumnList) => { //tslint:disable-line
+export const getStepSelectableColumns = (
+  activeStep: OperationStepMap,
+  steps: List<OperationStepMap>,
+  columnsList: ColumnList,
+) => {
+  //tslint:disable-line
   const stepId = parseInt(activeStep.get('step_id') as string, 10);
-  const previousSteps = steps.filter(step => parseInt(step.get('step_id') as string, 10) < stepId).sort(sortSteps);
+  const previousSteps = steps
+    .filter((step) => parseInt(step.get('step_id') as string, 10) < stepId)
+    .sort(sortSteps);
   if (previousSteps && previousSteps.count()) {
     return previousSteps.reduce((columns: Set<string>, step) => {
       const options = step.get('query_kwargs') as string | undefined;
@@ -95,7 +111,9 @@ export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: Li
           return Set(selectColumns);
         }
         if (queryFunction === 'aggregate') {
-          const { group_by, agg_func_name, operational_column }: AggregateOptions = JSON.parse(options);
+          const { group_by, agg_func_name, operational_column }: AggregateOptions = JSON.parse(
+            options,
+          );
           const aggregateColumns: string[] = group_by || [];
           aggregateColumns.push(`${operational_column}_${agg_func_name}`);
 
@@ -104,13 +122,13 @@ export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: Li
         if (queryFunction === 'scalar_transform') {
           const { trans_func_name, operational_column }: TransformOptions = JSON.parse(options);
 
-          return columns.union([ `${operational_column}_${trans_func_name}` ]);
+          return columns.union([`${operational_column}_${trans_func_name}`]);
         }
         if (queryFunction === 'multi_transform') {
           const { trans_func_name, operational_columns }: TransformOptions = JSON.parse(options);
 
           return operational_columns && operational_columns.length
-            ? columns.union([ `${operational_columns[0]}_${trans_func_name}` ])
+            ? columns.union([`${operational_columns[0]}_${trans_func_name}`])
             : columns;
         }
         if (queryFunction === 'join') {
@@ -122,14 +140,14 @@ export const getStepSelectableColumns = (activeStep: OperationStepMap, steps: Li
           const { columns: windowColumns, window_fn }: WindowOptions = JSON.parse(options);
 
           return windowColumns && windowColumns.length
-            ? Set(windowColumns).union([ window_fn.toLowerCase() ])
-            : columns.union([ window_fn.toLowerCase() ]);
+            ? Set(windowColumns).union([window_fn.toLowerCase()])
+            : columns.union([window_fn.toLowerCase()]);
         }
       }
 
       return columns;
-    }, Set(columnsList.map(column => column.get('name'))));
+    }, Set(columnsList.map((column) => column.get('name'))));
   }
 
-  return Set(columnsList.map(column => column.get('name')));
+  return Set(columnsList.map((column) => column.get('name')));
 };

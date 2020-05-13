@@ -10,6 +10,7 @@ exports[`renders correctly with default props 1`] = `
     >
       <div
         class="nav-pills-danger nav card-header-pills nav-pills"
+        role="tablist"
       >
         <div
           class="nav-item"
@@ -88,6 +89,7 @@ exports[`renders correctly with default props 1`] = `
             class="font-weight-light"
           >
             <a
+              rel="noreferrer"
               target="_blank"
             >
               <i
@@ -104,6 +106,7 @@ exports[`renders correctly with default props 1`] = `
             class="font-weight-light"
           >
             <a
+              rel="noreferrer"
               target="_blank"
             >
               <i
@@ -125,7 +128,7 @@ exports[`renders correctly with default props 1`] = `
           <div>
             <div>
               <table
-                class="table source-columns-table table-sm"
+                class="source-columns-table table table-sm"
               >
                 <tbody>
                   <tr>
@@ -156,7 +159,7 @@ exports[`renders correctly with default props 1`] = `
           <div>
             <div>
               <table
-                class="table source-columns-table table-sm"
+                class="source-columns-table table table-sm"
               >
                 <tbody>
                   <tr>

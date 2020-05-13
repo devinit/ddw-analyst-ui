@@ -5,7 +5,7 @@ test('should create an action to set the user', () => {
   const user: User = {
     id: 2,
     username: 'admin',
-    is_superuser: true
+    is_superuser: true,
   };
   const expectedAction = { type: SET_USER, ...user };
 

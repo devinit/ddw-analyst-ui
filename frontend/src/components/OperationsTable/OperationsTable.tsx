@@ -18,15 +18,13 @@ export class OperationsTable extends React.Component {
             <th className="text-right">Actions</th>
           </tr>
         </thead>
-        <tbody>
-          { this.renderRows() }
-        </tbody>
+        <tbody>{this.renderRows()}</tbody>
       </Table>
     );
   }
 
   private renderRows() {
-    return React.Children.map(this.props.children, child => {
+    return React.Children.map(this.props.children, (child) => {
       if (React.isValidElement(child) && child.type === OperationsTableRow) {
         return child;
       }

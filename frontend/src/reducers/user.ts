@@ -16,11 +16,14 @@ export const SET_USER = `${prefix}.SET`;
 const defaultState: UserState = fromJS({});
 
 export const userReducer: Reducer<UserState, UserAction> = (state = defaultState, action) => {
-    if (action.type === SET_USER) {
-        return state.withMutations(map =>
-          map.set('id', action.id).set('username', action.username).set('is_superuser', action.is_superuser)
-        );
-    }
+  if (action.type === SET_USER) {
+    return state.withMutations((map) =>
+      map
+        .set('id', action.id)
+        .set('username', action.username)
+        .set('is_superuser', action.is_superuser),
+    );
+  }
 
-    return state;
+  return state;
 };

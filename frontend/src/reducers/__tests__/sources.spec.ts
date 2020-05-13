@@ -4,7 +4,7 @@ import {
   FETCH_SOURCES_SUCCESSFUL,
   SourcesAction,
   defaultState,
-  sourcesReducer
+  sourcesReducer,
 } from '../sources';
 import { fromJS } from 'immutable';
 import { Source } from '../../types/sources';
@@ -14,8 +14,9 @@ test('should return the initial state', () => {
 });
 
 test('should handle FETCH_SOURCES', () => {
-  expect(sourcesReducer(undefined, { type: FETCH_SOURCES } as SourcesAction))
-    .toEqual(defaultState.set('loading', true));
+  expect(sourcesReducer(undefined, { type: FETCH_SOURCES } as SourcesAction)).toEqual(
+    defaultState.set('loading', true),
+  );
 });
 
 test('should handle FETCH_SOURCES_SUCCESSFUL', () => {
@@ -28,18 +29,25 @@ test('should handle FETCH_SOURCES_SUCCESSFUL', () => {
     source: 'OECD',
     source_url: 'https://stats.oecd.org',
     download_path: 'https://stats.oecd.org',
-    description: 'Common RS data'
+    description: 'Common RS data',
   } as Source;
 
-  expect(sourcesReducer(undefined, {
-    type: FETCH_SOURCES_SUCCESSFUL,
-    sources: [ source ],
-    count: 1
-  } as SourcesAction))
-  .toEqual(defaultState.set('loading', false).set('sources', fromJS([ source ])).set('count', 1));
+  expect(
+    sourcesReducer(undefined, {
+      type: FETCH_SOURCES_SUCCESSFUL,
+      sources: [source],
+      count: 1,
+    } as SourcesAction),
+  ).toEqual(
+    defaultState
+      .set('loading', false)
+      .set('sources', fromJS([source]))
+      .set('count', 1),
+  );
 });
 
 test('should handle FETCH_SOURCES_FAILED', () => {
-  expect(sourcesReducer(defaultState, { type: FETCH_SOURCES_FAILED } as SourcesAction))
-    .toEqual(defaultState.set('loading', false));
+  expect(sourcesReducer(defaultState, { type: FETCH_SOURCES_FAILED } as SourcesAction)).toEqual(
+    defaultState.set('loading', false),
+  );
 });

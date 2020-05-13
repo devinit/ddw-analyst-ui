@@ -8,10 +8,10 @@ import './styles/main.scss';
 localForage.config({
   driver: localForage.LOCALSTORAGE,
   name: 'ddw-analyst-ui',
-  storeName: 'ddw-store'
+  storeName: 'ddw-store',
 });
 
 const wrapper = document.getElementById('app');
 if (wrapper) {
-    render(<Routes/>, wrapper);
+  render(<Routes />, wrapper);
 }

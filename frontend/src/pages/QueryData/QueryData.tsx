@@ -46,23 +46,21 @@ class QueryData extends React.Component<QueryDataProps> {
     return (
       <Row>
         <Col>
-          <Dimmer active={ loading } inverted>
+          <Dimmer active={loading} inverted>
             <Loader content="Loading" />
           </Dimmer>
 
           <Card>
             <Card.Header className="card-header-text card-header-danger">
-              <Card.Text>{ title }</Card.Text>
-              <Form action={ `${api.routes.EXPORT}${id}/` } method="POST">
-                <Form.Control type="hidden" name="token" value={ token } />
+              <Card.Text>{title}</Card.Text>
+              <Form action={`${api.routes.EXPORT}${id}/`} method="POST">
+                <Form.Control type="hidden" name="token" value={token} />
                 <Button type="submit" variant="danger" size="sm">
                   Export to CSV
                 </Button>
               </Form>
             </Card.Header>
-            <Card.Body>
-              { this.renderTable() }
-            </Card.Body>
+            <Card.Body>{this.renderTable()}</Card.Body>
           </Card>
         </Col>
       </Row>
@@ -90,8 +88,9 @@ class QueryData extends React.Component<QueryDataProps> {
   }
 
   private renderTable() {
-    const data = this.props.page.getIn([ 'data', 'results' ]) as List<OperationDataMap>;
-    const columns = this.props.source && this.props.source.get('columns') as ColumnList | undefined;
+    const data = this.props.page.getIn(['data', 'results']) as List<OperationDataMap>;
+    const columns =
+      this.props.source && (this.props.source.get('columns') as ColumnList | undefined);
     const loading = this.props.page.get('loading') as boolean;
     const { fetchOperationData: fetchData } = this.props.actions;
     const { id } = this.props.match.params;
@@ -99,28 +98,28 @@ class QueryData extends React.Component<QueryDataProps> {
     if (id && data && data.count() !== 0) {
       return (
         <OperationDataTable
-          id={ id }
-          list={ data }
-          columns={ columns }
-          limit={ this.props.page.get('limit') as number }
-          offset={ this.props.page.get('offset') as number }
-          fetchData={ fetchData }
+          id={id}
+          list={data}
+          columns={columns}
+          limit={this.props.page.get('limit') as number}
+          offset={this.props.page.get('offset') as number}
+          fetchData={fetchData}
         />
       );
     }
     const alert = this.props.page.get('alert') as string;
     if (alert) {
-      return <Alert variant="danger">{ alert }</Alert>;
+      return <Alert variant="danger">{alert}</Alert>;
     }
 
-    return <div>{ loading ? 'Loading ...' : 'No results found' }</div>;
+    return <div>{loading ? 'Loading ...' : 'No results found'}</div>;
   }
 
   private setOperation(id?: string) {
     if (!id) {
       return;
     }
-    const operation = this.props.operations.find(ope => ope.get('id') === parseInt(id, 10));
+    const operation = this.props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
     if (operation) {
       this.props.actions.setOperation(operation);
       const sourceID = getSourceIDFromOperation(operation);
@@ -134,20 +133,23 @@ class QueryData extends React.Component<QueryDataProps> {
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({
-    ...pageActions,
-    fetchActiveSource,
-    setActiveSource,
-    fetchOperation,
-    setOperation
-  }, dispatch)
+  actions: bindActionCreators(
+    {
+      ...pageActions,
+      fetchActiveSource,
+      setActiveSource,
+      fetchOperation,
+      setOperation,
+    },
+    dispatch,
+  ),
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
   page: reduxStore.get(`${queryDataReducerId}`),
-  operations: reduxStore.getIn([ 'operations', 'operations' ]),
-  activeOperation: reduxStore.getIn([ 'operations', 'activeOperation' ]),
-  source: reduxStore.getIn([ 'sources', 'activeSource' ]),
-  token: reduxStore.get('token')
+  operations: reduxStore.getIn(['operations', 'operations']),
+  activeOperation: reduxStore.getIn(['operations', 'activeOperation']),
+  source: reduxStore.getIn(['sources', 'activeSource']),
+  token: reduxStore.get('token'),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps)(QueryData);
