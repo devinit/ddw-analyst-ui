@@ -1,5 +1,5 @@
 import { RouteComponentProps } from 'react-router-dom';
-import { FormikActions } from 'formik/dist/types';
+import { FormikHelpers as FormikActions } from 'formik/dist/types';
 import { Base64 } from 'js-base64';
 import * as localForage from 'localforage';
 import * as React from 'react';

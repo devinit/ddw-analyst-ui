@@ -46,7 +46,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
         validationSchema={ this.schema }
         initialValues={ values }
         onSubmit={ this.onSuccess() }
-        isInitialValid={ this.schema.isValidSync(values) }
+        validateOnMount
       >
         {
           ({ errors, isSubmitting, isValid, setFieldValue }: FormikProps<Operation>) => (

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Formik, FormikActions, FormikProps } from 'formik';
+import { Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
 import * as React from 'react';
 import { Alert, Button, Card, Form, InputGroup } from 'react-bootstrap';
 import styled from 'styled-components';
