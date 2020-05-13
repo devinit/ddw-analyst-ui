@@ -41,7 +41,6 @@ export class InfoList extends React.Component<InfoListProps> {
       return (
         <td className="text-right">
           <OverlayTrigger
-            trigger="hover"
             placement="bottom"
             overlay={ this.renderPopOver(info) }
           >
