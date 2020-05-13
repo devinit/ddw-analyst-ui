@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import * as React from 'react';
 import { MemoryRouter, withRouter } from 'react-router-dom';
 import * as TestRenderer from 'react-test-renderer';
-import { cleanup, render, waitForElement } from '@testing-library/react';
+import { cleanup, render, waitFor } from '@testing-library/react';
 import { Login, LoginActions } from '../Login';
 
 let actions: LoginActions;
@@ -29,7 +29,7 @@ test('renders the loading indicator while loading', () => {
 test('renders the login form when loading is false', async () => {
   const RouterContainer = withRouter(Login);
   const { getByTestId } = render(<MemoryRouter><RouterContainer actions={ actions }/></MemoryRouter>);
-  const Form = await waitForElement(() => getByTestId('login-form'));
+  const Form = await waitFor(() => getByTestId('login-form'));
 
   expect(Form).toMatchSnapshot();
 });
