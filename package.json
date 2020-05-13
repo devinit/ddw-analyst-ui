@@ -51,7 +51,7 @@
     "@types/localforage": "0.0.34",
     "@types/lodash": "^4.14.150",
     "@types/react": "^16.9.35",
-    "@types/react-bootstrap": "^0.32.20",
+    "@types/react-bootstrap": "^1.0.1",
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.8",
     "@types/react-router-dom": "^5.1.5",
