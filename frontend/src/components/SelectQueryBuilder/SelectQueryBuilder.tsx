@@ -16,7 +16,10 @@ interface SelectQueryBuilderProps {
   onUpdateColumns?: (options: string) => void;
 }
 
-class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { selectableColumns: DropdownItemProps[] }> {
+class SelectQueryBuilder extends React.Component<
+  SelectQueryBuilderProps,
+  { selectableColumns: DropdownItemProps[] }
+> {
   static defaultProps: Partial<SelectQueryBuilderProps> = { editable: true };
   state = { selectableColumns: [] };
 
@@ -31,18 +34,28 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
             multiple
             search
             selection
-            options={ this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort) }
-            value={ this.props.columns }
-            onChange={ this.onChange }
-            disabled={ !this.props.editable }
+            options={this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
+            value={this.props.columns}
+            onChange={this.onChange}
+            disabled={!this.props.editable}
           />
         </Form.Group>
         <Form.Group>
-          <Button variant="danger" size="sm" onClick={ this.onSelectAll } hidden={ !this.props.editable }>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={this.onSelectAll}
+            hidden={!this.props.editable}
+          >
             <i className="material-icons mr-1">check_box</i>
             Select All
           </Button>
-          <Button variant="danger" size="sm" onClick={ this.onDeselectAll } hidden={ !this.props.editable }>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={this.onDeselectAll}
+            hidden={!this.props.editable}
+          >
             <i className="material-icons mr-1">check_box_outline_blank</i>
             Deselect All
           </Button>
@@ -58,7 +71,7 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
     this.setState({
       selectableColumns: selectableColumns.count()
         ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
-        : []
+        : [],
     });
   }
 
@@ -66,21 +79,21 @@ class SelectQueryBuilder extends React.Component<SelectQueryBuilderProps, { sele
     if (this.props.onUpdateColumns) {
       this.props.onUpdateColumns(JSON.stringify({ columns: data.value as string[] }));
     }
-  }
+  };
 
   private onSelectAll = () => {
     if (this.props.onUpdateColumns) {
       const columns = this.props.source.get('columns') as ColumnList;
-      const columnNames = columns.map(column => column.get('name')).toJS();
+      const columnNames = columns.map((column) => column.get('name')).toJS();
       this.props.onUpdateColumns(JSON.stringify({ columns: columnNames as string[] }));
     }
-  }
+  };
 
   private onDeselectAll = () => {
     if (this.props.onUpdateColumns) {
       this.props.onUpdateColumns(JSON.stringify({ columns: [] }));
     }
-  }
+  };
 }
 
 export { SelectQueryBuilder };

@@ -25,8 +25,8 @@ class Home extends React.Component<HomeProps> {
       <Row>
         <Col>
           <OperationsTableCard
-            limit={ this.props.page.getIn([ 'operations', 'limit' ]) }
-            offset={ this.props.page.getIn([ 'operations', 'offset' ]) }
+            limit={this.props.page.getIn(['operations', 'limit'])}
+            offset={this.props.page.getIn(['operations', 'offset'])}
           />
         </Col>
       </Row>
@@ -35,12 +35,12 @@ class Home extends React.Component<HomeProps> {
 }
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({ ...operationsActions, ...pageActions }, dispatch)
+  actions: bindActionCreators({ ...operationsActions, ...pageActions }, dispatch),
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {
     user: reduxStore.get('user') as UserState,
-    page: reduxStore.get(`${homeReducerId}`)
+    page: reduxStore.get(`${homeReducerId}`),
   };
 };
 

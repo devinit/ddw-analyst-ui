@@ -1,5 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
-import { DELETE_OPERATION, FETCH_OPERATION, FETCH_OPERATIONS, OperationsAction } from '../reducers/operations';
+import {
+  DELETE_OPERATION,
+  FETCH_OPERATION,
+  FETCH_OPERATIONS,
+  OperationsAction,
+} from '../reducers/operations';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
 import { setToken } from '../actions/token';
@@ -14,7 +19,7 @@ import {
   deleteOperationFailed,
   deleteOperationSuccess,
   fetchOperationFailed,
-  setOperation
+  setOperation,
 } from '../actions/operations';
 import { fetchActiveSource } from '../actions/sources';
 
@@ -22,16 +27,19 @@ function* fetchOperations({ payload }: OperationsAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const basePath = payload.mine ? api.routes.MY_OPERATIONS : api.routes.OPERATIONS;
-    const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios.request({
-      url: payload.link || `${basePath}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}`,
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${token}`
-      }
-    })
-    .then((response: AxiosResponse<Operation[]>) => response)
-    .catch(error => error.response);
+    const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios
+      .request({
+        url:
+          payload.link ||
+          `${basePath}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+      })
+      .then((response: AxiosResponse<Operation[]>) => response)
+      .catch((error) => error.response);
 
     if (status === 200 && data.results) {
       yield put(onFetchOperationsSuccessful(data.results, data.count));
@@ -50,18 +58,19 @@ function* fetchOperations({ payload }: OperationsAction) {
 function* fetchOperation({ payload }: OperationsAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const { status, data }: AxiosResponse<Operation> = yield axios.request({
-      url: `${api.routes.OPERATIONS}${payload.id}/`,
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${token}`
-      }
-    })
-    .then((response: AxiosResponse<Operation>) => response)
-    .catch(error => error.response);
+    const { status, data }: AxiosResponse<Operation> = yield axios
+      .request({
+        url: `${api.routes.OPERATIONS}${payload.id}/`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+      })
+      .then((response: AxiosResponse<Operation>) => response)
+      .catch((error) => error.response);
 
-    if (status === 200 || status === 201 && data) {
+    if (status === 200 || (status === 201 && data)) {
       const operation = fromJS(data);
       yield put(setOperation(operation, true) as OperationsAction);
       const sourceID = getSourceIDFromOperation(operation);
@@ -82,16 +91,17 @@ function* fetchOperation({ payload }: OperationsAction) {
 function* deleteOperation({ payload }: OperationsAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const { status }: AxiosResponse<Operation> = yield axios.request({
-      url: `${api.routes.OPERATIONS}${payload.id}/`,
-      method: 'delete',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${token}`
-      }
-    })
-    .then((response: AxiosResponse<Operation>) => response)
-    .catch(error => error.response);
+    const { status }: AxiosResponse<Operation> = yield axios
+      .request({
+        url: `${api.routes.OPERATIONS}${payload.id}/`,
+        method: 'delete',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+      })
+      .then((response: AxiosResponse<Operation>) => response)
+      .catch((error) => error.response);
 
     if (status === 200 || status === 201 || status === 204) {
       yield put(deleteOperationSuccess() as OperationsAction);

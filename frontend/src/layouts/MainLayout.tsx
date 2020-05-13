@@ -24,7 +24,9 @@ import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
 import { api, localForageKeys } from '../utils';
 
-interface ActionProps { actions: typeof UserActions & typeof TokenActions & typeof ModalActions; }
+interface ActionProps {
+  actions: typeof UserActions & typeof TokenActions & typeof ModalActions;
+}
 interface ComponentProps {
   loading: boolean;
 }
@@ -47,18 +49,16 @@ const StyledLogo = styled.img`
 
 class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   static defaultProps: Partial<MainLayoutProps> = {
-    loading: true
+    loading: true,
   };
   state: MainLayoutState = {
     loading: this.props.loading,
-    activeRoute: this.props.location.pathname
+    activeRoute: this.props.location.pathname,
   };
 
   render() {
     if (this.state.loading) {
-      return (
-        <Segment loading className="layout-loading"/>
-      );
+      return <Segment loading className="layout-loading" />;
     }
 
     const NavbarCollapse: any = Navbar.Collapse; // FIXME: once react-bootstrap types are fixed: pull request #3502
@@ -68,83 +68,97 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
     return (
       <BrowserRouter>
-        <AdminLayout loading={ this.state.loading }>
+        <AdminLayout loading={this.state.loading}>
           <Sidebar dataColour="danger" backgroundColour="red">
             <Sidebar.Logo>
-              <Sidebar.Logo.Item url="/" variation="mini">AI</Sidebar.Logo.Item>
+              <Sidebar.Logo.Item url="/" variation="mini">
+                AI
+              </Sidebar.Logo.Item>
               <Sidebar.Logo.Item url="/">Analyst UI</Sidebar.Logo.Item>
             </Sidebar.Logo>
 
             <Sidebar.Content mobile>
               <Sidebar.Item collapseId="account">
-                <Sidebar.Link to="#account" root icon="person" textNormal="Account"/>
+                <Sidebar.Link to="#account" root icon="person" textNormal="Account" />
                 <Sidebar.Item>
-                  <Sidebar.Link to="#" textMini="LO" textNormal="Log out" onClick={ this.onLogOut }/>
+                  <Sidebar.Link to="#" textMini="LO" textNormal="Log out" onClick={this.onLogOut} />
                 </Sidebar.Item>
               </Sidebar.Item>
             </Sidebar.Content>
 
             <Sidebar.Content>
-              <Sidebar.Item active={ this.state.activeRoute === '/' }>
-                <Sidebar.Link to="/" single icon="home" textNormal="Home" onClick={ this.setActiveRoute }/>
+              <Sidebar.Item active={this.state.activeRoute === '/'}>
+                <Sidebar.Link
+                  to="/"
+                  single
+                  icon="home"
+                  textNormal="Home"
+                  onClick={this.setActiveRoute}
+                />
               </Sidebar.Item>
-              <Sidebar.Item active={ this.state.activeRoute === '/sources/' }>
+              <Sidebar.Item active={this.state.activeRoute === '/sources/'}>
                 <Sidebar.Link
                   to="/sources/"
                   single
                   icon="storage"
                   textNormal="Data Sources"
-                  onClick={ this.setActiveRoute }
+                  onClick={this.setActiveRoute}
                   data-testid="sidebar-link-sources"
                 />
               </Sidebar.Item>
-              <Sidebar.Item active={ this.state.activeRoute === '/queries/build/' }>
+              <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
                 <Sidebar.Link
                   to="/queries/build/"
                   single
                   icon="query_builder"
                   textNormal="Query Builder"
-                  onClick={ this.setActiveRoute }
+                  onClick={this.setActiveRoute}
                   data-testid="sidebar-link-query-builder"
                 />
               </Sidebar.Item>
             </Sidebar.Content>
 
             <Sidebar.Footer>
-              <StyledLogo src="/static/frontend/assets/images/logo.png"/>
+              <StyledLogo src="/static/frontend/assets/images/logo.png" />
             </Sidebar.Footer>
           </Sidebar>
 
-          <Navbar expand="lg" variant="dark" className="navbar-transparent navbar-absolute fixed-top">
+          <Navbar
+            expand="lg"
+            variant="dark"
+            className="navbar-transparent navbar-absolute fixed-top"
+          >
             <div className="navbar-wrapper">
-              <NavbarMinimise/>
+              <NavbarMinimise />
               <Navbar.Brand href="/">
-                <Route path="/" exact component={ () => <span>Home</span> }/>
-                <Route path="/sources" exact component={ () => <span>Data Sources</span> }/>
-                <Route path="/queries/build" component={ () => <span>Query Builder</span> }/>
+                <Route path="/" exact component={() => <span>Home</span>} />
+                <Route path="/sources" exact component={() => <span>Data Sources</span>} />
+                <Route path="/queries/build" component={() => <span>Query Builder</span>} />
               </Navbar.Brand>
             </div>
 
             <Navbar.Toggle aria-controls="navigation-index" aria-expanded="false">
               <span className="sr-only">Toggle navigation</span>
-              <span className="navbar-toggler-icon icon-bar"/>
-              <span className="navbar-toggler-icon icon-bar"/>
-              <span className="navbar-toggler-icon icon-bar"/>
+              <span className="navbar-toggler-icon icon-bar" />
+              <span className="navbar-toggler-icon icon-bar" />
+              <span className="navbar-toggler-icon icon-bar" />
             </Navbar.Toggle>
 
             <NavbarCollapse className="justify-content-end">
               <Nav>
-                <Dropdown as={ Nav.Item } aria-labelledby="navbarDropdownProfile">
-                  <Dropdown.Toggle as={ Nav.Link } id="nav-dropdown" data-cy="user-options">
+                <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownProfile">
+                  <Dropdown.Toggle as={Nav.Link} id="nav-dropdown" data-cy="user-options">
                     <i className="material-icons">person</i>
-                    <p className="d-lg-none d-md-block">
-                      Account
-                    </p>
+                    <p className="d-lg-none d-md-block">Account</p>
                   </Dropdown.Toggle>
                   <DropdownMenu alignRight>
-                    <Dropdown.Item data-cy="account" onClick={ this.openAccountModal }>Change Password</Dropdown.Item>
-                    <Dropdown.Divider/>
-                    <Dropdown.Item onClick={ this.onLogOut } data-cy="logout">Log Out</Dropdown.Item>
+                    <Dropdown.Item data-cy="account" onClick={this.openAccountModal}>
+                      Change Password
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item onClick={this.onLogOut} data-cy="logout">
+                      Log Out
+                    </Dropdown.Item>
                   </DropdownMenu>
                 </Dropdown>
               </Nav>
@@ -153,14 +167,14 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
           <AdminLayout.Content>
             <Switch>
-              <Route path="/" exact component={ AsyncHome }/>
-              <Route path="/sources" exact component={ AsyncDataSources }/>
-              <Route path="/queries/build" exact component={ AsyncQueryBuilder }/>
-              <Route path="/queries/build/:id" exact component={ AsyncQueryBuilder }/>
-              <Route path="/queries/data/:id" exact component={ AsyncQueryData }/>
+              <Route path="/" exact component={AsyncHome} />
+              <Route path="/sources" exact component={AsyncDataSources} />
+              <Route path="/queries/build" exact component={AsyncQueryBuilder} />
+              <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
+              <Route path="/queries/data/:id" exact component={AsyncQueryData} />
             </Switch>
-            <Modal show={ !!ModalContent } onHide={ this.closeModal } size={ modalSize }>
-              { ModalContent ? <ModalContent/> : null }
+            <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
+              {ModalContent ? <ModalContent /> : null}
             </Modal>
           </AdminLayout.Content>
         </AdminLayout>
@@ -171,9 +185,9 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   componentDidMount() {
     Promise.all([
       localForage.getItem<string>(localForageKeys.API_KEY),
-      localForage.getItem<User>(localForageKeys.USER)
+      localForage.getItem<User>(localForageKeys.USER),
     ])
-      .then(([ token, user ]) => {
+      .then(([token, user]) => {
         if (token && user) {
           this.validateToken(token, user);
         } else {
@@ -192,76 +206,85 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   }
 
   private onLogOut = () => {
-    localForage.getItem<string>(localForageKeys.API_KEY)
-      .then(token => {
+    localForage
+      .getItem<string>(localForageKeys.API_KEY)
+      .then((token) => {
         if (token) {
-          axios.request({
-            url: api.routes.LOGOUT,
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `token ${token}`
-            }
-          })
-          .then((response: AxiosResponse<string>) => {
-            if (response.status === 204) {
-              this.clearStorageAndGoToLogin();
-            }
-          })
-          .catch(this.clearStorageAndGoToLogin);
+          axios
+            .request({
+              url: api.routes.LOGOUT,
+              method: 'post',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `token ${token}`,
+              },
+            })
+            .then((response: AxiosResponse<string>) => {
+              if (response.status === 204) {
+                this.clearStorageAndGoToLogin();
+              }
+            })
+            .catch(this.clearStorageAndGoToLogin);
         } else {
           this.clearStorageAndGoToLogin();
         }
       })
       .catch(this.clearStorageAndGoToLogin);
-  }
+  };
 
   private openAccountModal = () => {
     this.props.actions.toggleModal(AccountModal);
-  }
+  };
 
   private closeModal = () => {
     this.props.actions.toggleModal();
-  }
+  };
 
   private validateToken(token: string, user: User) {
-    axios.request({
-      url: `${api.routes.USERS}${user.id}/`,
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${token}`
-      }
-    })
-    .then(({ status, data }: AxiosResponse<User>) => {
-      if (status === 200 && data) {
-        this.props.actions.setToken(token);
-        this.props.actions.setUser({ id: data.id, username: data.username, is_superuser: data.is_superuser });
-        this.setState({ loading: false });
-      } else {
-        this.clearStorageAndGoToLogin();
-      }
-    })
-    .catch(this.clearStorageAndGoToLogin); //tslint:disable-line
+    axios
+      .request({
+        url: `${api.routes.USERS}${user.id}/`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+      })
+      .then(({ status, data }: AxiosResponse<User>) => {
+        if (status === 200 && data) {
+          this.props.actions.setToken(token);
+          this.props.actions.setUser({
+            id: data.id,
+            username: data.username,
+            is_superuser: data.is_superuser,
+          });
+          this.setState({ loading: false });
+        } else {
+          this.clearStorageAndGoToLogin();
+        }
+      })
+      .catch(this.clearStorageAndGoToLogin); //tslint:disable-line
   }
 
   private clearStorageAndGoToLogin = () => {
     localForage.clear();
     this.props.history.push('/login');
-  }
+  };
 
   private setActiveRoute = (activeRoute: string) => {
     this.setState({ activeRoute });
-  }
+  };
 }
 
 const mapStateToProps = (reduxStore: ReduxStore): ReduxProps => ({
   user: reduxStore.get('user') as UserState,
   token: reduxStore.get('token') as TokenState,
-  modal: reduxStore.get('modal') as ModalState
+  modal: reduxStore.get('modal') as ModalState,
 });
-const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dispatch): ActionProps => ({
-  actions: bindActionCreators({ ...UserActions, ...TokenActions, ...ModalActions }, dispatch)
+const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (
+  dispatch,
+): ActionProps => ({
+  actions: bindActionCreators({ ...UserActions, ...TokenActions, ...ModalActions }, dispatch),
 });
 const ReduxConnector = connect(mapStateToProps, mapDispatchToProps)(MainLayout);
 

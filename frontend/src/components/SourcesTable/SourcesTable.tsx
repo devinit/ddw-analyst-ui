@@ -21,9 +21,7 @@ export class SourcesTable extends React.Component<SourcesTableProps> {
             <th>Updated On</th>
           </tr>
         </thead>
-        <tbody>
-          { this.renderRows(this.props.sources, this.props.activeSource) }
-        </tbody>
+        <tbody>{this.renderRows(this.props.sources, this.props.activeSource)}</tbody>
       </Table>
     );
   }
@@ -32,12 +30,12 @@ export class SourcesTable extends React.Component<SourcesTableProps> {
     if (sources && sources.size && activeSource) {
       return sources.map((source, index) => (
         <SourcesTableRow
-          key={ index }
-          classNames={ classNames({ 'table-danger':  activeSource.get('id') === source.get('id') }) }
-          onClick={ () => this.props.onRowClick(source) }
-          indicator={ source.get('indicator') as string }
-          indicatorAcronym={ source.get('indicator_acronym') as string }
-          updatedOn={ source.get('last_updated_on') as string }
+          key={index}
+          classNames={classNames({ 'table-danger': activeSource.get('id') === source.get('id') })}
+          onClick={() => this.props.onRowClick(source)}
+          indicator={source.get('indicator') as string}
+          indicatorAcronym={source.get('indicator_acronym') as string}
+          updatedOn={source.get('last_updated_on') as string}
         />
       ));
     }

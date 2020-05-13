@@ -4,25 +4,27 @@ import { SidebarContent } from '../SidebarContent';
 import { SidebarItem } from '../../SidebarItem';
 
 test('renders correctly with the default props', () => {
-  const renderer = TestRenderer
-    .create(<SidebarContent/>)
-    .toJSON();
+  const renderer = TestRenderer.create(<SidebarContent />).toJSON();
 
   expect(renderer).toMatchSnapshot();
 });
 
 test('renders SidebarItem components', () => {
-  const renderer = TestRenderer
-    .create(<SidebarContent><SidebarItem/></SidebarContent>)
-    .toJSON();
+  const renderer = TestRenderer.create(
+    <SidebarContent>
+      <SidebarItem />
+    </SidebarContent>,
+  ).toJSON();
 
   expect(renderer).toMatchSnapshot();
 });
 
 test('renders only SidebarItem components', () => {
-  const renderer = TestRenderer
-    .create(<SidebarContent><div>Awesome</div></SidebarContent>)
-    .toJSON();
+  const renderer = TestRenderer.create(
+    <SidebarContent>
+      <div>Awesome</div>
+    </SidebarContent>,
+  ).toJSON();
 
   expect(renderer).toMatchSnapshot();
 });

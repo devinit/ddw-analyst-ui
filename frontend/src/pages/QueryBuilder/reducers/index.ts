@@ -31,12 +31,17 @@ const defaultState: QueryBuilderState = fromJS({
   steps: [],
   activeStep: undefined,
   editingStep: false,
-  processing: false
+  processing: false,
 });
 
-export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction> = (state = defaultState, action) => {
+export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction> = (
+  state = defaultState,
+  action,
+) => {
   if (action.type === UPDATE_ACTIVE_STEP) {
-    return state.withMutations(stet => stet.set('activeStep', action.step).set('editingStep', action.editingStep));
+    return state.withMutations((stet) =>
+      stet.set('activeStep', action.step).set('editingStep', action.editingStep),
+    );
   }
   if (action.type === ADD_OPERATION_STEP) {
     const steps = state.get('steps') as List<OperationStepMap>;
@@ -50,12 +55,9 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
     return state.set('processing', true);
   }
   if (action.type === SAVING_OPERATION_SUCCESS) {
-    return state.withMutations(stet =>
-      stet
-        .set('processing', false)
-        .set('activeStep', undefined)
-        .set('steps', List())
-      );
+    return state.withMutations((stet) =>
+      stet.set('processing', false).set('activeStep', undefined).set('steps', List()),
+    );
   }
   if (action.type === SAVING_OPERATION_FAILED) {
     return state.set('processing', false);
@@ -63,10 +65,13 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
   if (action.type === EDIT_OPERATION_STEP) {
     const steps = state.get('steps') as List<OperationStepMap>;
     if (steps) {
-      const stepIndex = steps.findIndex(step => step.get('step_id') === action.step.get('step_id'));
+      const stepIndex = steps.findIndex(
+        (step) => step.get('step_id') === action.step.get('step_id'),
+      );
 
-      return state.withMutations(stet =>
-        stet.set('steps', steps.set(stepIndex, action.step)).set('editingStep', false));
+      return state.withMutations((stet) =>
+        stet.set('steps', steps.set(stepIndex, action.step)).set('editingStep', false),
+      );
     }
 
     return state;
@@ -74,7 +79,9 @@ export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction>
   if (action.type === DELETE_OPERATION_STEP) {
     const steps = state.get('steps') as List<OperationStepMap>;
     if (steps) {
-      const stepIndex = steps.findIndex(step => step.get('step_id') === action.step.get('step_id'));
+      const stepIndex = steps.findIndex(
+        (step) => step.get('step_id') === action.step.get('step_id'),
+      );
       const updatedSteps = steps.delete(stepIndex).map((step, key) => step.set('step_id', key + 1));
 
       return state.set('steps', updatedSteps);

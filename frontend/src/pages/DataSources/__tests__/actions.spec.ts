@@ -13,7 +13,7 @@ test('should create an action to set the active source', () => {
     source: 'OECD',
     source_url: 'https://stats.oecd.org',
     download_path: 'https://stats.oecd.org',
-    description: 'Common RS data'
+    description: 'Common RS data',
   }) as SourceMap;
   const expectedAction = { type: SET_ACTIVE_SOURCE, activeSource };
 

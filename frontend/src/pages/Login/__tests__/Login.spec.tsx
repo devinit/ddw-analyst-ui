@@ -13,22 +13,28 @@ afterEach(cleanup);
 beforeEach(() => {
   actions = {
     setUser: jest.fn(),
-    setToken: jest.fn()
+    setToken: jest.fn(),
   };
 });
 
 test('renders the loading indicator while loading', () => {
   const RouterContainer = withRouter(Login);
-  const renderer = TestRenderer
-    .create(<MemoryRouter><RouterContainer actions={ actions }/></MemoryRouter>)
-    .toJSON();
+  const renderer = TestRenderer.create(
+    <MemoryRouter>
+      <RouterContainer actions={actions} />
+    </MemoryRouter>,
+  ).toJSON();
 
   expect(renderer).toMatchSnapshot();
 });
 
 test('renders the login form when loading is false', async () => {
   const RouterContainer = withRouter(Login);
-  const { getByTestId } = render(<MemoryRouter><RouterContainer actions={ actions }/></MemoryRouter>);
+  const { getByTestId } = render(
+    <MemoryRouter>
+      <RouterContainer actions={actions} />
+    </MemoryRouter>,
+  );
   const Form = await waitFor(() => getByTestId('login-form'));
 
   expect(Form).toMatchSnapshot();

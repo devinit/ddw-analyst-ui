@@ -9,7 +9,7 @@ interface AdminLayoutProps {
 
 export class AdminLayout extends React.Component<AdminLayoutProps> {
   static defaultProps: Partial<AdminLayoutProps> = {
-    loading: true
+    loading: true,
   };
   static Content = AdminLayoutContent;
 
@@ -20,13 +20,11 @@ export class AdminLayout extends React.Component<AdminLayoutProps> {
 
     return (
       <div className="wrapper">
-        { this.renderContent(Sidebar) }
+        {this.renderContent(Sidebar)}
         <div className="main-panel">
-          { this.renderContent(Navbar) }
+          {this.renderContent(Navbar)}
           <div className="content pt-0">
-            <div className="container-fluid">
-              { this.renderContent(AdminLayoutContent) }
-            </div>
+            <div className="container-fluid">{this.renderContent(AdminLayoutContent)}</div>
           </div>
         </div>
       </div>
@@ -34,7 +32,7 @@ export class AdminLayout extends React.Component<AdminLayoutProps> {
   }
 
   private renderContent(type: typeof Sidebar | typeof Navbar | typeof AdminLayoutContent) {
-    return React.Children.map(this.props.children, child => {
+    return React.Children.map(this.props.children, (child) => {
       if (React.isValidElement(child) && child.type === type) {
         return child;
       }

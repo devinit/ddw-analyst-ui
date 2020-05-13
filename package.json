@@ -13,7 +13,7 @@
     "docker:build": "docker-compose up --build",
     "docker:collectstatic": "docker-compose run web python3 manage.py collectstatic --no-input",
     "emit": "tsc",
-    "lint": "eslint 'src/**/*.{ts,tsx}' && tsc --noEmit",
+    "lint": "eslint 'frontend/src/**/*.{ts,tsx}' --quiet && tsc --noEmit",
     "coverage": "NODE_ENV=test jest --coverage && codecov && docker-compose run web python3 -m coverage run manage.py test --settings=ddw_analyst_ui.docker_test_settings && docker-compose run web python3 -m coverage xml && python3 -m codecov",
     "cy:open": "cypress open",
     "cy:run": "cypress run"

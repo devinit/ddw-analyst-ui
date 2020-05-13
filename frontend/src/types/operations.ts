@@ -46,9 +46,14 @@ export interface OperationDataAPIResponse {
   next: string | null;
   results: List<OperationDataMap>;
 }
-export interface OperationData { [key: string]: string | number | null; }
+export interface OperationData {
+  [key: string]: string | number | null;
+}
 export type OperationDataMap = Map<keyof OperationData, OperationData[keyof OperationData]>;
-export type OperationDataAPIResponseMap = Map<keyof OperationDataAPIResponse, OperationDataAPIResponse[keyof OperationDataAPIResponse]> //tslint:disable-line
+export type OperationDataAPIResponseMap = Map<
+  keyof OperationDataAPIResponse,
+  OperationDataAPIResponse[keyof OperationDataAPIResponse]
+>; //tslint:disable-line
 
 export interface JoinOptions {
   table_name: string;

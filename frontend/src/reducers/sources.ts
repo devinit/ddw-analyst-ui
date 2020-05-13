@@ -39,21 +39,24 @@ export const defaultState: SourcesState = fromJS({
   sources: [],
   activeSourceId: 1,
   limit: 10,
-  offset: 0
+  offset: 0,
 });
 
-export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (state = defaultState, action) => {
+export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (
+  state = defaultState,
+  action,
+) => {
   if (action.type === FETCH_SOURCES || action.type === FETCH_SOURCE) {
     return state.set('loading', true);
   }
   if (action.type === FETCH_SOURCES_SUCCESSFUL && action.sources) {
-    return state.withMutations(map =>
+    return state.withMutations((map) =>
       map
         .set('loading', false)
         .set('sources', fromJS(action.sources))
         .set('count', action.count)
         .set('limit', action.payload ? action.payload.limit : state.get('limit'))
-        .set('offset', action.payload ? action.payload.offset : state.get('offset'))
+        .set('offset', action.payload ? action.payload.offset : state.get('offset')),
     );
   }
   if (action.type === FETCH_SOURCES_FAILED) {

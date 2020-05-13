@@ -11,7 +11,7 @@ const activeSource = Map({
   source: 'OECD',
   source_url: 'https://stats.oecd.org',
   download_path: 'https://stats.oecd.org',
-  description: 'Common RS data'
+  description: 'Common RS data',
 }) as SourceMap;
 const defaultState = fromJS({ activeSource: undefined });
 
@@ -20,6 +20,7 @@ test('should return the initial state', () => {
 });
 
 test('should handle SET_ACTIVE_SOURCE', () => {
-  expect(dataSourcesReducer(defaultState, { type: SET_ACTIVE_SOURCE, activeSource }))
-    .toEqual(Map({ activeSource }));
+  expect(dataSourcesReducer(defaultState, { type: SET_ACTIVE_SOURCE, activeSource })).toEqual(
+    Map({ activeSource }),
+  );
 });

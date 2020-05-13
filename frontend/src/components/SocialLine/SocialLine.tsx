@@ -11,22 +11,22 @@ interface SocialLineProps {
   onTwitter?: () => void;
 }
 
-export const SocialLine: React.SFC<SocialLineProps> = props => {
+export const SocialLine: React.SFC<SocialLineProps> = (props) => {
   return (
     <div className="social-line">
-      <ConditionalRender render={ !!props.google }>
-        <Button variant="link" className="btn-white" onClick={ props.onGoogle }>
-          <i className="fa fa-google"/>
+      <ConditionalRender render={!!props.google}>
+        <Button variant="link" className="btn-white" onClick={props.onGoogle}>
+          <i className="fa fa-google" />
         </Button>
       </ConditionalRender>
-      <ConditionalRender render={ !!props.facebook }>
-        <Button variant="link" className="btn-white" onClick={ props.onFacebook }>
-          <i className="fa fa-facebook"/>
+      <ConditionalRender render={!!props.facebook}>
+        <Button variant="link" className="btn-white" onClick={props.onFacebook}>
+          <i className="fa fa-facebook" />
         </Button>
       </ConditionalRender>
-      <ConditionalRender render={ !!props.twitter }>
-        <Button variant="link" className="btn-white" onClick={ props.onTwitter }>
-          <i className="fa fa-twitter"/>
+      <ConditionalRender render={!!props.twitter}>
+        <Button variant="link" className="btn-white" onClick={props.onTwitter}>
+          <i className="fa fa-twitter" />
         </Button>
       </ConditionalRender>
     </div>

@@ -8,7 +8,7 @@ import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
-type Alerts = { [P in keyof WindowOptions ]: string };
+type Alerts = { [P in keyof WindowOptions]: string };
 interface WindowQueryBuilderProps {
   alerts?: Partial<Alerts>;
   source: SourceMap;
@@ -37,7 +37,7 @@ const functions: DropdownItemProps[] = [
   { key: 'DenseRank', text: 'Dense Rank', value: 'DenseRank' },
   { key: 'RowNumber', text: 'Row Number', value: 'RowNumber' },
   { key: 'FirstValue', text: 'First Value', value: 'FirstValue' },
-  { key: 'LastValue', text: 'Last Value', value: 'LastValue' }
+  { key: 'LastValue', text: 'Last Value', value: 'LastValue' },
 ];
 export const termFunctions = [
   'NTile',
@@ -52,159 +52,192 @@ export const termFunctions = [
   'Count',
   'Sum',
   'Max',
-  'Min'
+  'Min',
 ];
-export const positionalFunction = [ 'FirstValue', 'LastValue' ];
+export const positionalFunction = ['FirstValue', 'LastValue'];
 
 export const isTermFunction = (windowFunction?: string): boolean => {
-  if (!windowFunction) { return false; }
+  if (!windowFunction) {
+    return false;
+  }
 
   return termFunctions.includes(windowFunction);
 };
 
 export const isPositionalFunction = (windowFunction?: string): boolean => {
-  if (!windowFunction) { return false; }
+  if (!windowFunction) {
+    return false;
+  }
 
   return positionalFunction.includes(windowFunction);
 };
 
-export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = props => {
-    const { alerts, columns, editable, function: func, onUpdate, orderBy, over, source, step, steps, term } = props;
-    const [ termOptions, setTermOptions ] = React.useState<DropdownItemProps[]>([]);
-    const [ allOptions, setSelectableOptions ] = React.useState<DropdownItemProps[]>([]);
+export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = (props) => {
+  const {
+    alerts,
+    columns,
+    editable,
+    function: func,
+    onUpdate,
+    orderBy,
+    over,
+    source,
+    step,
+    steps,
+    term,
+  } = props;
+  const [termOptions, setTermOptions] = React.useState<DropdownItemProps[]>([]);
+  const [allOptions, setSelectableOptions] = React.useState<DropdownItemProps[]>([]);
 
-    React.useEffect(() => {
-      const columnList = source.get('columns') as ColumnList;
-      const selectableColumns = getStepSelectableColumns(step, steps, columnList) as Set<string>;
+  React.useEffect(() => {
+    const columnList = source.get('columns') as ColumnList;
+    const selectableColumns = getStepSelectableColumns(step, steps, columnList) as Set<string>;
 
-      const filterFunc = isTermFunction(func) ? func : undefined;
-      setTermOptions(
-        selectableColumns.count()
-          ? QueryBuilderHandler.getSelectOptionsFromFilteredColumns(columnList, selectableColumns, filterFunc)
-          : []
-      );
-      setSelectableOptions(
-        selectableColumns.count()
-          ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
-          : []
-      );
-    }, [ func ]);
-
-    const onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-      if (onUpdate) {
-        const { name, value } = data;
-        const options = { over, window_fn: func, columns, term, order_by: orderBy };
-        onUpdate(JSON.stringify({ ...options, [name]: value }));
-      }
-    };
-
-    return (
-      <React.Fragment>
-
-        <Col md={ 6 } className="mt-2 pl-0">
-          <Form.Group>
-            <Form.Label className="bmd-label-floating">Window Function</Form.Label>
-            <Dropdown
-              name="window_fn"
-              placeholder="Select Function"
-              fluid
-              search
-              selection
-              options={ functions }
-              value={ func }
-              onChange={ onChange }
-              disabled={ !editable }
-            />
-            <Form.Control.Feedback
-              type="invalid"
-              className={ classNames({ 'd-block': !!(alerts && alerts.window_fn) }) }
-            >
-              { alerts && alerts.window_fn }
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Col>
-
-        <Col
-          md={ 7 }
-          className={ classNames('mt-2 pl-0', { 'd-none': !isTermFunction(func) && !isPositionalFunction(func) }) }
-        >
-          <Form.Group>
-            <Form.Label className="bmd-label-floating">Of</Form.Label>
-            <Dropdown
-              name="term"
-              placeholder="Select Column"
-              fluid
-              search
-              selection
-              options={ termOptions.sort(sortObjectArrayByProperty('text').sort) }
-              value={ term }
-              onChange={ onChange }
-              disabled={ !editable }
-            />
-            <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.term) }) }>
-              { alerts && alerts.term }
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Col>
-
-        <Form.Group className={ classNames({ 'd-none': !isTermFunction(func) }) }>
-          <Form.Label className="bmd-label-floating">Partition By</Form.Label>
-          <Dropdown
-            name="over"
-            placeholder="Select Columns"
-            fluid
-            multiple
-            search
-            selection
-            options={ allOptions.sort(sortObjectArrayByProperty('text').sort) }
-            value={ over }
-            onChange={ onChange }
-            disabled={ !editable }
-          />
-          <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.over) }) }>
-            { alerts && alerts.over }
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label className="bmd-label-floating">Order By</Form.Label>
-          <Dropdown
-            name="order_by"
-            placeholder="Select Columns"
-            fluid
-            multiple
-            search
-            selection
-            options={ allOptions.sort(sortObjectArrayByProperty('text').sort) }
-            value={ orderBy }
-            onChange={ onChange }
-            disabled={ !editable }
-          />
-          <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.order_by) }) }>
-            { alerts && alerts.order_by }
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label className="bmd-label-floating">Columns</Form.Label>
-          <Dropdown
-            name="columns"
-            placeholder="Select Columns"
-            fluid
-            multiple
-            search
-            selection
-            options={ allOptions.sort(sortObjectArrayByProperty('text').sort) }
-            value={ columns }
-            onChange={ onChange }
-            disabled={ !editable }
-          />
-          <Form.Control.Feedback type="invalid" className={ classNames({ 'd-block': !!(alerts && alerts.columns) }) }>
-            { alerts && alerts.columns }
-          </Form.Control.Feedback>
-        </Form.Group>
-      </React.Fragment>
+    const filterFunc = isTermFunction(func) ? func : undefined;
+    setTermOptions(
+      selectableColumns.count()
+        ? QueryBuilderHandler.getSelectOptionsFromFilteredColumns(
+            columnList,
+            selectableColumns,
+            filterFunc,
+          )
+        : [],
     );
+    setSelectableOptions(
+      selectableColumns.count()
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        : [],
+    );
+  }, [func]);
+
+  const onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    if (onUpdate) {
+      const { name, value } = data;
+      const options = { over, window_fn: func, columns, term, order_by: orderBy };
+      onUpdate(JSON.stringify({ ...options, [name]: value }));
+    }
+  };
+
+  return (
+    <React.Fragment>
+      <Col md={6} className="mt-2 pl-0">
+        <Form.Group>
+          <Form.Label className="bmd-label-floating">Window Function</Form.Label>
+          <Dropdown
+            name="window_fn"
+            placeholder="Select Function"
+            fluid
+            search
+            selection
+            options={functions}
+            value={func}
+            onChange={onChange}
+            disabled={!editable}
+          />
+          <Form.Control.Feedback
+            type="invalid"
+            className={classNames({ 'd-block': !!(alerts && alerts.window_fn) })}
+          >
+            {alerts && alerts.window_fn}
+          </Form.Control.Feedback>
+        </Form.Group>
+      </Col>
+
+      <Col
+        md={7}
+        className={classNames('mt-2 pl-0', {
+          'd-none': !isTermFunction(func) && !isPositionalFunction(func),
+        })}
+      >
+        <Form.Group>
+          <Form.Label className="bmd-label-floating">Of</Form.Label>
+          <Dropdown
+            name="term"
+            placeholder="Select Column"
+            fluid
+            search
+            selection
+            options={termOptions.sort(sortObjectArrayByProperty('text').sort)}
+            value={term}
+            onChange={onChange}
+            disabled={!editable}
+          />
+          <Form.Control.Feedback
+            type="invalid"
+            className={classNames({ 'd-block': !!(alerts && alerts.term) })}
+          >
+            {alerts && alerts.term}
+          </Form.Control.Feedback>
+        </Form.Group>
+      </Col>
+
+      <Form.Group className={classNames({ 'd-none': !isTermFunction(func) })}>
+        <Form.Label className="bmd-label-floating">Partition By</Form.Label>
+        <Dropdown
+          name="over"
+          placeholder="Select Columns"
+          fluid
+          multiple
+          search
+          selection
+          options={allOptions.sort(sortObjectArrayByProperty('text').sort)}
+          value={over}
+          onChange={onChange}
+          disabled={!editable}
+        />
+        <Form.Control.Feedback
+          type="invalid"
+          className={classNames({ 'd-block': !!(alerts && alerts.over) })}
+        >
+          {alerts && alerts.over}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label className="bmd-label-floating">Order By</Form.Label>
+        <Dropdown
+          name="order_by"
+          placeholder="Select Columns"
+          fluid
+          multiple
+          search
+          selection
+          options={allOptions.sort(sortObjectArrayByProperty('text').sort)}
+          value={orderBy}
+          onChange={onChange}
+          disabled={!editable}
+        />
+        <Form.Control.Feedback
+          type="invalid"
+          className={classNames({ 'd-block': !!(alerts && alerts.order_by) })}
+        >
+          {alerts && alerts.order_by}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label className="bmd-label-floating">Columns</Form.Label>
+        <Dropdown
+          name="columns"
+          placeholder="Select Columns"
+          fluid
+          multiple
+          search
+          selection
+          options={allOptions.sort(sortObjectArrayByProperty('text').sort)}
+          value={columns}
+          onChange={onChange}
+          disabled={!editable}
+        />
+        <Form.Control.Feedback
+          type="invalid"
+          className={classNames({ 'd-block': !!(alerts && alerts.columns) })}
+        >
+          {alerts && alerts.columns}
+        </Form.Control.Feedback>
+      </Form.Group>
+    </React.Fragment>
+  );
 };
 
 WindowQueryBuilder.defaultProps = {
@@ -212,5 +245,5 @@ WindowQueryBuilder.defaultProps = {
   orderBy: [],
   term: '',
   over: [],
-  columns: []
+  columns: [],
 };

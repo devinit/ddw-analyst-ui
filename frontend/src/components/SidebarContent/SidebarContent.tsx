@@ -11,14 +11,12 @@ export class SidebarContent extends React.Component<SidebarContentProps> {
 
   render() {
     return (
-      <ul className={ classNames('nav', { 'navbar-nav nav-mobile-menu': this.props.mobile }) }>
-        {
-          React.Children.map(this.props.children, child => {
-            if (React.isValidElement<SidebarItemProps>(child) && child.type === SidebarItem) {
-              return child;
-            }
-          })
-        }
+      <ul className={classNames('nav', { 'navbar-nav nav-mobile-menu': this.props.mobile })}>
+        {React.Children.map(this.props.children, (child) => {
+          if (React.isValidElement<SidebarItemProps>(child) && child.type === SidebarItem) {
+            return child;
+          }
+        })}
       </ul>
     );
   }

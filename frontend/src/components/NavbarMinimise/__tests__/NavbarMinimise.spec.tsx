@@ -9,9 +9,7 @@ import { NavbarMinimise } from '../NavbarMinimise';
 afterEach(cleanup);
 
 test('renders correctly', () => {
-  const renderer = TestRenderer
-    .create(<NavbarMinimise/>)
-    .toJSON();
+  const renderer = TestRenderer.create(<NavbarMinimise />).toJSON();
 
   expect(renderer).toMatchSnapshot();
 });
@@ -20,7 +18,7 @@ test('toggles the sidebar-mini', () => {
   const { add, remove } = document.body.classList;
   document.body.classList.add = jest.fn(add);
   document.body.classList.remove = jest.fn(remove);
-  const { getByTestId } = render(<NavbarMinimise/>);
+  const { getByTestId } = render(<NavbarMinimise />);
   const button = getByTestId('navbar-minimise-button');
 
   fireEvent.click(button);

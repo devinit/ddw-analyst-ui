@@ -6,11 +6,11 @@ import { AsyncLogin } from './pages/Login';
 import { store } from './store';
 
 export const Routes = () => (
-  <Provider store={ store }>
+  <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <Route exact path="/login" component={ AsyncLogin } />
-        <Route path="/" component={ AsyncMainLayout } />
+        <Route exact path="/login" component={AsyncLogin} />
+        <Route path="/" component={AsyncMainLayout} />
       </Switch>
     </BrowserRouter>
   </Provider>

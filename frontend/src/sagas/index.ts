@@ -5,10 +5,5 @@ import { queryDataSagas } from '../pages/QueryData/sagas';
 import { queryBuilderSagas } from '../pages/QueryBuilder/sagas';
 
 export default function* rootSaga() {
-  yield all([
-    sourcesSaga(),
-    operationsSaga(),
-    queryDataSagas(),
-    queryBuilderSagas()
-  ]);
+  yield all([sourcesSaga(), operationsSaga(), queryDataSagas(), queryBuilderSagas()]);
 }

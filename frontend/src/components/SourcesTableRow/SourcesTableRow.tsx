@@ -9,16 +9,16 @@ export interface SourcesTableRowProps {
   updatedOn: string;
 }
 
-export const SourcesTableRow: React.SFC<SourcesTableRowProps> = props => {
+export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
   return (
-    <tr className={ props.classNames } onClick={ props.onClick } data-testid="sources-table-row">
+    <tr className={props.classNames} onClick={props.onClick} data-testid="sources-table-row">
       <td>
-        { props.indicator }
-        <span className={ classNames('text-uppercase', { 'd-none': !props.indicatorAcronym }) }>
-          { ` (${props.indicatorAcronym})` }
+        {props.indicator}
+        <span className={classNames('text-uppercase', { 'd-none': !props.indicatorAcronym })}>
+          {` (${props.indicatorAcronym})`}
         </span>
       </td>
-      <td>{ new Date(props.updatedOn).toDateString() }</td>
+      <td>{new Date(props.updatedOn).toDateString()}</td>
     </tr>
   );
 };

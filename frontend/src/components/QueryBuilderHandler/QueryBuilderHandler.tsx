@@ -34,7 +34,7 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
       return columns.toArray().map((column, key) => ({
         key,
         text: formatString(column),
-        value: column
+        value: column,
       }));
     }
 
@@ -49,33 +49,47 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
       'LastValue',
       'Rank',
       'DenseRank',
-      'RowNumber'
+      'RowNumber',
     ];
+
     return !nonNumericalFunctions.includes(functn);
   }
 
-  static getSelectOptionsFromFilteredColumns(columnsList: ColumnList, columns: Set<string>, functn?: string): DropdownItemProps[] { //tslint:disable-line
-    const dataSetColumns = columnsList.filter(column => columns.find(col => col === column.get('name')));
-    const generatedColumns = columns.subtract(Set(dataSetColumns.map(column => column.get('name'))) as Set<string>);
+  static getSelectOptionsFromFilteredColumns(
+    columnsList: ColumnList,
+    columns: Set<string>,
+    functn?: string,
+  ): DropdownItemProps[] {
+    //tslint:disable-line
+    const dataSetColumns = columnsList.filter((column) =>
+      columns.find((col) => col === column.get('name')),
+    );
+    const generatedColumns = columns.subtract(
+      Set(dataSetColumns.map((column) => column.get('name'))) as Set<string>,
+    );
     let selectableColumns = generatedColumns;
     if (dataSetColumns.count()) {
       if (functn) {
         const dataType: 'N' | 'C' = this.isNumerical(functn) ? 'N' : 'C';
         selectableColumns = selectableColumns.union(
           dataSetColumns
-            .filter(column => column.get('data_type') === dataType)
-            .map(column => column.get('name')) as List<string>
+            .filter((column) => column.get('data_type') === dataType)
+            .map((column) => column.get('name')) as List<string>,
         );
       } else {
-        selectableColumns = selectableColumns.union(dataSetColumns.map(column => column.get('name'))) as Set<string>;
+        selectableColumns = selectableColumns.union(
+          dataSetColumns.map((column) => column.get('name')),
+        ) as Set<string>;
       }
     }
 
-    return selectableColumns.map((column, key) => ({
-      key,
-      text: formatString(column),
-      value: column
-    })).toJS();
+    return selectableColumns
+      .map((column, key) => ({
+        key,
+        text: formatString(column),
+        value: column,
+      }))
+      .toJS();
   }
 
   render() {
@@ -83,11 +97,19 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
       return this.renderQueryBuilder();
     } catch (error) {
       if (error.message && error.message.indexOf('JSON')) {
-        return <Alert variant="warning">Invalid JSON in step options. Delete and recreate the step.</Alert>;
+        return (
+          <Alert variant="warning">
+            Invalid JSON in step options. Delete and recreate the step.
+          </Alert>
+        );
       }
       console.log(error); //tslint:disable-line
 
-      return <Alert variant="warning">Failed to process step options. Delete and recreate the step.</Alert>;
+      return (
+        <Alert variant="warning">
+          Failed to process step options. Delete and recreate the step.
+        </Alert>
+      );
     }
   }
 
@@ -100,12 +122,12 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
 
       return (
         <FilterQueryBuilder
-          source={ source }
-          filters={ fromJS(filters) }
-          step={ step }
-          steps={ steps }
-          onUpdateFilters={ onUpdateOptions }
-          editable={ this.props.editable }
+          source={source}
+          filters={fromJS(filters)}
+          step={step}
+          steps={steps}
+          onUpdateFilters={onUpdateOptions}
+          editable={this.props.editable}
         />
       );
     }
@@ -114,73 +136,87 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
 
       return (
         <SelectQueryBuilder
-          source={ source }
-          columns={ columns }
-          step={ step }
-          steps={ steps }
-          onUpdateColumns={ this.props.onUpdateOptions }
-          editable={ this.props.editable }
+          source={source}
+          columns={columns}
+          step={step}
+          steps={steps}
+          onUpdateColumns={this.props.onUpdateOptions}
+          editable={this.props.editable}
         />
       );
     }
     if (query === 'aggregate') {
-      const parsedOptions = options ? JSON.parse(options) : { group_by: [], agg_func_name: '', operational_column: '' };
+      const parsedOptions = options
+        ? JSON.parse(options)
+        : { group_by: [], agg_func_name: '', operational_column: '' };
 
       return (
         <AggregateQueryBuilder
-          alerts={ alerts }
-          source={ source }
-          groupBy={ parsedOptions.group_by }
-          function={ parsedOptions.agg_func_name }
-          column={ parsedOptions.operational_column }
-          step={ step }
-          steps={ steps }
-          onUpdate={ onUpdateOptions }
-          editable={ this.props.editable }
+          alerts={alerts}
+          source={source}
+          groupBy={parsedOptions.group_by}
+          function={parsedOptions.agg_func_name}
+          column={parsedOptions.operational_column}
+          step={step}
+          steps={steps}
+          onUpdate={onUpdateOptions}
+          editable={this.props.editable}
         />
       );
     }
     if (query === 'scalar_transform' || query === 'multi_transform') {
       const parsedOptions = options
         ? JSON.parse(options)
-        : { operational_value: '', trans_func_name: '', operational_column: '', operational_columns: [] };
+        : {
+            operational_value: '',
+            trans_func_name: '',
+            operational_column: '',
+            operational_columns: [],
+          };
 
       return (
         <TransformQueryBuilder
-          alerts={ alerts }
-          source={ source }
-          value={ parsedOptions.operational_value }
-          function={ parsedOptions.trans_func_name }
-          column={ parsedOptions.operational_column }
-          columns={ parsedOptions.operational_columns }
-          step={ step }
-          steps={ steps }
-          multi={ query === 'multi_transform' }
-          onUpdate={ onUpdateOptions }
-          editable={ this.props.editable }
+          alerts={alerts}
+          source={source}
+          value={parsedOptions.operational_value}
+          function={parsedOptions.trans_func_name}
+          column={parsedOptions.operational_column}
+          columns={parsedOptions.operational_columns}
+          step={step}
+          steps={steps}
+          multi={query === 'multi_transform'}
+          onUpdate={onUpdateOptions}
+          editable={this.props.editable}
         />
       );
     }
     if (query === 'join') {
       const parsedOptions = options
         ? JSON.parse(options)
-        : { table_name: '', schema_name: '', join_on: {}, columns_x: [], columns_y: [], join_how: '' };
+        : {
+            table_name: '',
+            schema_name: '',
+            join_on: {},
+            columns_x: [],
+            columns_y: [],
+            join_how: '',
+          };
       const columns = source.get('columns') as ColumnList;
 
       return (
         <JoinQueryBuilder
-          alerts={ alerts }
-          source={ source }
-          tableName={ parsedOptions.table_name }
-          schema={ parsedOptions.schema_name }
-          columnMapping={ parsedOptions.join_on }
-          columnsX={ parsedOptions.columns_x || columns.map(column => column.get('name')) }
-          columnsY={ parsedOptions.columns_y || [] }
-          joinType={ parsedOptions.join_how }
-          step={ step }
-          steps={ steps }
-          onUpdate={ onUpdateOptions }
-          editable={ this.props.editable }
+          alerts={alerts}
+          source={source}
+          tableName={parsedOptions.table_name}
+          schema={parsedOptions.schema_name}
+          columnMapping={parsedOptions.join_on}
+          columnsX={parsedOptions.columns_x || columns.map((column) => column.get('name'))}
+          columnsY={parsedOptions.columns_y || []}
+          joinType={parsedOptions.join_how}
+          step={step}
+          steps={steps}
+          onUpdate={onUpdateOptions}
+          editable={this.props.editable}
         />
       );
     }
@@ -192,17 +228,17 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
 
       return (
         <WindowQueryBuilder
-          alerts={ alerts }
-          source={ source }
-          function={ parsedOptions.window_fn }
-          columns={ parsedOptions.columns }
-          orderBy={ parsedOptions.order_by }
-          over={ parsedOptions.over }
-          term={ parsedOptions.term }
-          step={ step }
-          steps={ steps }
-          onUpdate={ onUpdateOptions }
-          editable={ this.props.editable }
+          alerts={alerts}
+          source={source}
+          function={parsedOptions.window_fn}
+          columns={parsedOptions.columns}
+          orderBy={parsedOptions.order_by}
+          over={parsedOptions.over}
+          term={parsedOptions.term}
+          step={step}
+          steps={steps}
+          onUpdate={onUpdateOptions}
+          editable={this.props.editable}
         />
       );
     }
@@ -212,9 +248,13 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
 }
 
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
-  steps: reduxStore.getIn([ `${queryBuilderReducerId}`, 'steps' ]) as List<OperationStepMap>
+  steps: reduxStore.getIn([`${queryBuilderReducerId}`, 'steps']) as List<OperationStepMap>,
 });
 
 const connector = connect(mapStateToProps)(QueryBuilderHandler);
 
-export { connector as default, connector as QueryBuilderHandler, QueryBuilderHandler as QueryBuilderHandlerStatic };
+export {
+  connector as default,
+  connector as QueryBuilderHandler,
+  QueryBuilderHandler as QueryBuilderHandlerStatic,
+};

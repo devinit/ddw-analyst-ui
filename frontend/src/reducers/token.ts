@@ -8,9 +8,9 @@ export const SET_TOKEN = `${prefix}.SET`;
 const defaultState = '';
 
 export const tokenReducer: Reducer<string, TokenAction> = (state = defaultState, action) => {
-    if (action.type === SET_TOKEN) {
-        return action.token;
-    }
+  if (action.type === SET_TOKEN) {
+    return action.token;
+  }
 
-    return state;
+  return state;
 };

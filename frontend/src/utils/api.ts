@@ -7,6 +7,6 @@ export const api = {
     OPERATIONS: '/api/operations/',
     MY_OPERATIONS: '/api/operations/mine/',
     EXPORT: '/api/export/',
-    CHANGE_PASSWORD: '/api/change_password/'
-  }
+    CHANGE_PASSWORD: '/api/change_password/',
+  },
 };

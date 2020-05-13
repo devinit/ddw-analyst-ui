@@ -15,20 +15,20 @@ export interface SidebarLinkProps extends RouteComponentProps<{}> {
 
 class SidebarLink extends React.Component<SidebarLinkProps> {
   static defaultProps: Partial<SidebarLinkProps> = {
-    caret: false
+    caret: false,
   };
 
   render() {
     return (
       <a
         className="nav-link"
-        data-toggle={ this.props.root && !this.props.single ? 'collapse' : '' }
-        href={ this.props.to }
-        onClick={ this.onClick }
-        data-testid={ this.props['data-testid'] }
+        data-toggle={this.props.root && !this.props.single ? 'collapse' : ''}
+        href={this.props.to}
+        onClick={this.onClick}
+        data-testid={this.props['data-testid']}
       >
-        { this.props.icon ? <i className="material-icons">{ this.props.icon }</i> : null }
-        { this.renderContent() }
+        {this.props.icon ? <i className="material-icons">{this.props.icon}</i> : null}
+        {this.renderContent()}
       </a>
     );
   }
@@ -36,16 +36,18 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
   private renderContent() {
     if (this.props.root || this.props.single) {
       return (
-        <p> { this.props.textNormal || this.props.textMini }
-          { this.props.caret ? <b className="caret"/> : null }
+        <p>
+          {' '}
+          {this.props.textNormal || this.props.textMini}
+          {this.props.caret ? <b className="caret" /> : null}
         </p>
       );
     }
 
     return (
       <React.Fragment>
-        <span className="sidebar-mini"> { this.props.textMini } </span>
-        <span className="sidebar-normal"> { this.props.textNormal } </span>
+        <span className="sidebar-mini"> {this.props.textMini} </span>
+        <span className="sidebar-normal"> {this.props.textNormal} </span>
       </React.Fragment>
     );
   }
@@ -58,7 +60,7 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
     if (this.props.to.indexOf('#') === -1) {
       this.props.history.push(this.props.to);
     }
-  }
+  };
 }
 
 const RouteContainer = withRouter(SidebarLink);

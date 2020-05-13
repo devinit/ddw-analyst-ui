@@ -17,7 +17,6 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
       <Tab.Container defaultActiveKey="metadata">
         <Card className="source-details">
           <Card.Body>
-
             <Nav variant="pills" className="nav-pills-danger" role="tablist">
               <Nav.Item>
                 <Nav.Link eventKey="metadata">Metadata</Nav.Link>
@@ -31,26 +30,25 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
             </Nav>
             <Tab.Content>
               <Tab.Pane eventKey="metadata">
-                <SourceMetadata source={ this.props.source }/>
+                <SourceMetadata source={this.props.source} />
               </Tab.Pane>
               <Tab.Pane eventKey="columns">
                 <PaginatedContent
-                  content={ <InfoList list={ List() } className="source-columns-table" /> }
-                  list={ this.getColumns() }
-                  limit={ 10 }
-                  offset={ 0 }
+                  content={<InfoList list={List()} className="source-columns-table" />}
+                  list={this.getColumns()}
+                  limit={10}
+                  offset={0}
                 />
               </Tab.Pane>
               <Tab.Pane eventKey="history">
                 <PaginatedContent
-                  content={ <InfoList list={ List() } className="source-columns-table" /> }
-                  list={ this.getUpdateHistory() }
-                  limit={ 10 }
-                  offset={ 0 }
+                  content={<InfoList list={List()} className="source-columns-table" />}
+                  list={this.getUpdateHistory()}
+                  limit={10}
+                  offset={0}
                 />
               </Tab.Pane>
             </Tab.Content>
-
           </Card.Body>
         </Card>
       </Tab.Container>
@@ -58,16 +56,18 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
   }
 
   private getColumns(): InfoListItems {
-    return (this.props.source.get('columns') as ColumnList).map(column =>
+    return (this.props.source.get('columns') as ColumnList).map((column) =>
       Map()
         .set('caption', formatString(column.get('name') as string))
-        .set('info', column.get('description') as string)) as InfoListItems;
+        .set('info', column.get('description') as string),
+    ) as InfoListItems;
   }
 
   private getUpdateHistory(): InfoListItems {
-    return (this.props.source.get('update_history') as UpdateHistoryList).map(history =>
+    return (this.props.source.get('update_history') as UpdateHistoryList).map((history) =>
       Map()
         .set('caption', new Date(history.get('released_on') as string).toString())
-        .set('info', history.get('release_description') as string)) as InfoListItems;
+        .set('info', history.get('release_description') as string),
+    ) as InfoListItems;
   }
 }

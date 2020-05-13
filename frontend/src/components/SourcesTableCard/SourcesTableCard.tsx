@@ -28,14 +28,14 @@ type SourcesTableCardProps = ComponentProps & ActionProps;
 class SourcesTableCard extends React.Component<SourcesTableCardProps, { searchQuery: string }> {
   static defaultProps: Partial<SourcesTableCardProps> = {
     limit: 10,
-    offset: 0
+    offset: 0,
   };
   state = { searchQuery: '' };
 
   render() {
     return (
       <React.Fragment>
-        <Dimmer active={ this.props.loading } inverted>
+        <Dimmer active={this.props.loading} inverted>
           <Loader content="Loading" />
         </Dimmer>
         <Card>
@@ -44,18 +44,18 @@ class SourcesTableCard extends React.Component<SourcesTableCardProps, { searchQu
               <FormControl
                 placeholder="Search ..."
                 className="w-50"
-                onKeyDown={ this.onSearchChange }
+                onKeyDown={this.onSearchChange}
                 data-testid="sources-table-search"
               />
             </Card.Title>
           </Card.Header>
           <Card.Body>
             <SourcesTable
-              sources={ this.props.sources }
-              onRowClick={ this.props.onRowClick }
-              activeSource={ this.props.activeSource }
+              sources={this.props.sources}
+              onRowClick={this.props.onRowClick}
+              activeSource={this.props.activeSource}
             />
-            { this.renderPagination() }
+            {this.renderPagination()}
           </Card.Body>
         </Card>
       </React.Fragment>
@@ -74,21 +74,21 @@ class SourcesTableCard extends React.Component<SourcesTableCardProps, { searchQu
 
     return (
       <Row>
-        <Col md={ 6 }>
-          Showing { offset + 1 } to { max > count ? count : max } of { count }
+        <Col md={6}>
+          Showing {offset + 1} to {max > count ? count : max} of {count}
         </Col>
-        <Col md={ 6 }>
+        <Col md={6}>
           <Pagination className="float-right">
-            <Pagination.First onClick={ this.goToFirst } data-testid="operations-pagination-first">
+            <Pagination.First onClick={this.goToFirst} data-testid="operations-pagination-first">
               <i className="material-icons">first_page</i>
             </Pagination.First>
-            <Pagination.Prev onClick={ this.goToPrev } data-testid="operations-pagination-prev">
+            <Pagination.Prev onClick={this.goToPrev} data-testid="operations-pagination-prev">
               <i className="material-icons">chevron_left</i>
             </Pagination.Prev>
-            <Pagination.Next onClick={ this.goToNext } data-testid="operations-pagination-next">
+            <Pagination.Next onClick={this.goToNext} data-testid="operations-pagination-next">
               <i className="material-icons">chevron_right</i>
             </Pagination.Next>
-            <Pagination.Last onClick={ this.goToLast } data-testid="operations-pagination-last">
+            <Pagination.Last onClick={this.goToLast} data-testid="operations-pagination-last">
               <i className="material-icons">last_page</i>
             </Pagination.Last>
           </Pagination>
@@ -106,37 +106,55 @@ class SourcesTableCard extends React.Component<SourcesTableCardProps, { searchQu
       this.setState({ searchQuery: value || '' });
       this.props.actions.fetchSources({ limit: this.props.limit, offset: 0, search: value || '' });
     }
-  }
+  };
 
   private goToFirst = () => {
-    this.props.actions.fetchSources({ limit: this.props.limit, offset: 0, search: this.state.searchQuery });
-  }
+    this.props.actions.fetchSources({
+      limit: this.props.limit,
+      offset: 0,
+      search: this.state.searchQuery,
+    });
+  };
 
   private goToLast = () => {
     const { count } = this.props;
     const pages = Math.ceil(count / this.props.limit);
     const offset = (pages - 1) * this.props.limit;
-    this.props.actions.fetchSources({ limit: this.props.limit, offset, search: this.state.searchQuery });
-  }
+    this.props.actions.fetchSources({
+      limit: this.props.limit,
+      offset,
+      search: this.state.searchQuery,
+    });
+  };
 
   private goToNext = () => {
     const { count } = this.props;
     const offset = this.props.offset + this.props.limit;
     if (offset < count) {
-      this.props.actions.fetchSources({ limit: this.props.limit, offset, search: this.state.searchQuery });
+      this.props.actions.fetchSources({
+        limit: this.props.limit,
+        offset,
+        search: this.state.searchQuery,
+      });
     }
-  }
+  };
 
   private goToPrev = () => {
     if (this.props.offset > 0) {
       const offset = this.props.offset - this.props.limit;
-      this.props.actions.fetchSources({ limit: this.props.limit, offset, search: this.state.searchQuery });
+      this.props.actions.fetchSources({
+        limit: this.props.limit,
+        offset,
+        search: this.state.searchQuery,
+      });
     }
-  }
+  };
 }
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (dispatch): ActionProps => ({
-  actions: bindActionCreators(sourcesActions, dispatch)
+const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (
+  dispatch,
+): ActionProps => ({
+  actions: bindActionCreators(sourcesActions, dispatch),
 });
 
 const connector = connect(null, mapDispatchToProps)(SourcesTableCard);

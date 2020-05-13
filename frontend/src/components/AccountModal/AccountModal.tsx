@@ -21,46 +21,51 @@ interface ModalAlert {
 }
 
 const AccountModal: React.SFC<AccountModalProps> = (props) => {
-  const [ alert, setAlert ] = React.useState<ModalAlert>({ message: '', type: 'danger' });
-  const [ errors, setErrors ] = React.useState<Partial<ChangePasswordFields>>({});
+  const [alert, setAlert] = React.useState<ModalAlert>({ message: '', type: 'danger' });
+  const [errors, setErrors] = React.useState<Partial<ChangePasswordFields>>({});
 
   const onSuccess = (values: ChangePasswordFields) => {
     const { token } = props;
     if (token) {
-      axios.request({
-        url: api.routes.CHANGE_PASSWORD,
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `token ${token}`
-        },
-        data: values
-      })
-      .then((response: AxiosResponse<string>) => {
-        if (response.status === 204) {
+      axios
+        .request({
+          url: api.routes.CHANGE_PASSWORD,
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${token}`,
+          },
+          data: values,
+        })
+        .then((response: AxiosResponse<string>) => {
+          if (response.status === 204) {
+            setAlert({
+              message: (
+                <p>
+                  Your session has expired. <a href="/login/">Login</a>
+                </p>
+              ),
+              type: 'danger',
+            });
+          }
           setAlert({
-            message: <p>Your session has expired. <a href="/login/">Login</a></p>,
-            type: 'danger'
+            message: <p>Your password has been updated</p>,
+            type: 'success',
           });
-        }
-        setAlert({
-          message: <p>Your password has been updated</p>,
-          type: 'success'
+        })
+        .catch((error) => {
+          const { data, status } = error.response;
+          if (status === 400 && data.validation) {
+            const { old_password, new_password1, new_password2 } = data.validation;
+            const validationErrors = {
+              old_password,
+              new_password1,
+              new_password2,
+            };
+            setErrors(validationErrors);
+          }
+          console.log(error); //tslint:disable-line
         });
-      })
-      .catch(error => {
-        const { data, status } = error.response;
-        if (status === 400 && data.validation) {
-          const { old_password, new_password1, new_password2 } = data.validation;
-          const validationErrors = {
-            old_password,
-            new_password1,
-            new_password2
-          };
-          setErrors(validationErrors);
-        }
-        console.log(error); //tslint:disable-line
-      });
     }
   };
 
@@ -70,21 +75,21 @@ const AccountModal: React.SFC<AccountModalProps> = (props) => {
         <Modal.Title>Change Password</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {
-          alert.message
-            ? <Alert variant={ alert.type }>{ alert.message }</Alert>
-            : <ChangePasswordForm onSuccess={ onSuccess } errors={ errors }/>
-        }
+        {alert.message ? (
+          <Alert variant={alert.type}>{alert.message}</Alert>
+        ) : (
+          <ChangePasswordForm onSuccess={onSuccess} errors={errors} />
+        )}
       </Modal.Body>
     </React.Fragment>
   );
 };
 
 const mapStateToProps = (reduxStore: ReduxStore): ReduxProps => ({
-  token: reduxStore.get('token') as TokenState
+  token: reduxStore.get('token') as TokenState,
 });
 const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
-  actions: bindActionCreators(ModalActions, dispatch)
+  actions: bindActionCreators(ModalActions, dispatch),
 });
 const ReduxConnector = connect(mapStateToProps, mapDispatchToProps)(AccountModal);
 
