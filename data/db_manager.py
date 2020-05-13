@@ -29,4 +29,4 @@ def fetch_data(queries, database="datasets"):
                     "error": str(sql_err)
                 }
             ]
-        return (count_results[0][0], results)
+        return (count_results[0][0], results) if count_results else (0, results)
