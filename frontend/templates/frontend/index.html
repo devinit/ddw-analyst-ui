@@ -27,6 +27,8 @@
 <script src="{% static 'frontend/assets/js/material-dashboard.min.js' %}"></script>
 {% render_bundle 'main' 'js' 'DEFAULT' %}
 
+{% block extra-js %}{% endblock extra-js %}
+
 {% if DEBUG %}
   <script src="//localhost:35729/livereload.js"></script>
 {% endif %}

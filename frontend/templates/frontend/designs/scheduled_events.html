@@ -23,4 +23,31 @@
       {% comment %} Footer Goes Here {% endcomment %}
     </div>
   </div>
+
+  {% block extra-js %}
+    <script>
+      if (window.$) {
+        $(document).ready(() => {
+          $().ready(() => {
+            const scheduledEventRows = document.querySelectorAll('#scheduled-event-table tbody tr');
+            if (scheduledEventRows.length) {
+              scheduledEventRows.forEach(row => {
+                row.addEventListener('click', () => {
+                  if (!row.classList.contains('table-danger')) {
+                    const activeRow = document.querySelector('#scheduled-event-table tbody tr.table-danger')
+                    if (activeRow) {
+                      activeRow.classList.remove('table-danger');
+                    }
+                    row.classList.add('table-danger');
+                  } else {
+                    row.classList.remove('table-danger');
+                  }
+                })
+              })
+            }
+          });
+        });
+      }
+    </script>
+  {% endblock extra-js %}
 {% endblock content %}
