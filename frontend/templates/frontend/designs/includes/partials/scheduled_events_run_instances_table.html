@@ -1,0 +1,27 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header card-header-rose card-header-icon">
+      <h4 class="card-title">Update FTS Run History</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive table-striped">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Started</th>
+              <th>Ended</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% include 'frontend/designs/includes/partials/scheduled_events_run_instances_table_row.html' with status='running' %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_run_instances_table_row.html' with status='completed' %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_run_instances_table_row.html' with status='errored' %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_run_instances_table_row.html' with status='completed' %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_run_instances_table_row.html' with status='completed' %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

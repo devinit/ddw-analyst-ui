@@ -1,0 +1,33 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header card-header-rose card-header-icon">
+      <div class="card-icon">
+        <i class="material-icons">schedule</i>
+      </div>
+      <h4 class="card-title">Scheduled Events</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive table-striped">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Enabled</th>
+              <th>Interval</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% include 'frontend/designs/includes/partials/scheduled_events_table_row.html' with count=1 %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_table_row.html' with count=2 checked=False name='Update FTS Metadata' %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_table_row.html' with count=3 %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_table_row.html' with count=4 %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_table_row.html' with count=5 %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

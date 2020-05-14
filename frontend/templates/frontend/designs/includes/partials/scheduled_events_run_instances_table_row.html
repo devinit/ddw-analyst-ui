@@ -1,0 +1,15 @@
+<tr>
+  <td>
+    {% if status == 'completed' %}
+      <span class="badge badge-success">{{status|default:'Completed'}}</span>
+    {% elif status == 'running' %}
+      <span class="badge badge-warning">{{status|default:'Completed'}}</span>
+    {% elif status == 'errored' %}
+      <span class="badge badge-danger">{{status|default:'Completed'}}</span>
+    {% else %}
+      <span class="badge badge-info">{{status|default:'None'}}</span>
+    {% endif %}
+  </td>
+  <td>{{started|default:'21st Apr 2020 - 08:00'}}</td>
+  <td>{{ended|default:'21st Apr 2020 - 08:00'}}</td>
+</tr>

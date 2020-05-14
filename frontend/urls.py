@@ -16,4 +16,5 @@ urlpatterns = [
     path('queries/build/', views.index),
     path('queries/build/<int:pk>/', views.with_id),
     path('queries/data/<int:pk>/', views.with_id),
+    path('designs/scheduled-events/', views.scheduled_events)
 ]
