@@ -1,0 +1,28 @@
+{% extends 'frontend/index.html' %}
+{% load static %}
+
+
+{% block content %}
+  <div class="wrapper ">
+    {% include 'frontend/designs/includes/sidebar.html' with active='update-data-source' %}
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      {% with title='Update Table'  %}
+        {% include 'frontend/designs/includes/navbar.html' %}
+      {% endwith %}
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            Content Goes Here
+          </div>
+        </div>
+      </div>
+      {% comment %} Footer Goes Here {% endcomment %}
+    </div>
+  </div>
+
+  {% block extra-js %}
+  {% endblock extra-js %}
+{% endblock content %}
