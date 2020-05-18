@@ -214,7 +214,7 @@ class ScheduledEvent(BaseEntity):
     start_date = models.DateTimeField(null=False, blank=False)
     repeat = models.BooleanField(default=False)
     interval = models.BigIntegerField(blank=True, null=True)
-    interval_type = models.CharField(choices=interval_type_choices, null=True, blank=True)
+    interval_type = models.CharField(max_length=3, choices=interval_type_choices, null=True, blank=True)
 
     def __str__(self):
         return self.name
