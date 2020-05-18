@@ -33,6 +33,8 @@
   {% block extra-js %}
     <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
     <script src={% static '/frontend/assets/js/plugins/jquery.bootstrap-wizard.js' %}></script>
+    <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+    <script src={% static '/frontend/assets/js/plugins/jasny-bootstrap.min.js' %}></script>
     <script>
       $(document).ready(function() {
 
@@ -163,6 +165,14 @@
         setTimeout(function() {
           $('.card.card-wizard').addClass('active');
         }, 600);
+      });
+    </script>
+    <script>
+
+      $(document).ready(function() {
+        $('.fileinput').fileinput().on('change.bs.fileinput', function() {
+          $('#wizard-step-one-table').removeClass('d-none');
+        });
       });
     </script>
   {% endblock extra-js %}
