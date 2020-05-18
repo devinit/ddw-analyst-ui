@@ -194,3 +194,41 @@ class AuditLogEntry(models.Model):
 
     class Meta:
         verbose_name_plural = "Audit log entries"
+
+
+class ScheduledEvent(BaseEntity):
+    """Scheduled Event Class."""
+    interval_type_choices = (
+        ('min', 'Minutes'),
+        ('sec', 'Seconds'),
+        ('hrs', 'Hours'),
+        ('dys', 'Days'),
+        ('wks', 'Weeks'),
+        ('mnt', 'Months'),
+        ('yrs', 'Years'),
+    )
+    name = models.TextField(null=False, blank=False)
+    description = models.TextField(null=False, blank=True)
+    script_name = models.TextField(null=False, blank=False)
+    enabled = models.BooleanField()
+    start_date = models.DateTimeField(null=False, blank=False)
+    repeat = models.BooleanField()
+    interval = models.BigIntegerField(blank=True, null=True)
+    interval_type = models.CharField(max_length=1, choices=interval_type_choices, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ScheduledEventRunInstance(BaseEntity):
+    """Scheduled Event Run Instances."""
+    status_choices = (
+        ('p', 'Pending'),
+        ('r', 'Running'),
+        ('c', 'Completed'),
+        ('e', 'Erroed'),
+    )
+    scheduled_event = models.ForeignKey(ScheduledEvent, on_delete=models.CASCADE)
+    start_at = models.DateTimeField(null=False, blank=False)
+    ended_at = models.DateTimeField(null=False, blank=False)
+    status = models.CharField(max_length=1, choices=status_choices, default='p')
