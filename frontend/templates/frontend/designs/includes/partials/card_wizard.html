@@ -12,17 +12,12 @@
         <ul class="nav nav-pills">
           <li class="nav-item">
             <a class="nav-link active" href="#source" data-toggle="tab" role="tab">
-              Select Data Source
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#csv" data-toggle="tab" role="tab">
-              Upload CSV
+              Select Data Source and CSV
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#validate" data-toggle="tab" role="tab">
-              Map & Validate
+              Map and Validate
             </a>
           </li>
           <li class="nav-item">
@@ -35,24 +30,11 @@
       <div class="card-body">
         <div class="tab-content">
           <div class="tab-pane active" id="source">
-            <h5 class="info-text"> Let's start with the basic information (with validation)</h5>
-            <div class="row justify-content-center">
+            {% include 'frontend/designs/includes/partials/wizard_alert_info_step_one.html' %}
+
+            <div class="row">
               <div class="col-sm-4">
-                Sub Header Goes Here
-              </div>
-              <div class="col-sm-6">
-                Other Content Goes Here
-              </div>
-              <div class="col-lg-10 mt-3">
-                And Here
-              </div>
-            </div>
-          </div>
-          <div class="tab-pane" id="csv">
-            <h5 class="info-text"> What are you doing? (checkboxes) </h5>
-            <div class="row justify-content-center">
-              <div class="col-lg-10">
-                Content Goes Here
+                {% include 'frontend/designs/includes/partials/wizard_step_one_select_button.html' %}
               </div>
             </div>
           </div>

@@ -44,10 +44,7 @@
             'previousSelector': '.btn-previous',
 
             onNext: function(tab, navigation, index) {
-              var $valid = $('.card-wizard form').valid();
-              if (!$valid) {
-                return false;
-              }
+              // validate form
             },
 
             onInit: function(tab, navigation, index) {
@@ -89,63 +86,21 @@
                 $('.moving-tab').text(button_text);
               }, 150);
 
-              var checkbox = $('.footer-checkbox');
-
-              if (!index == 0) {
-                $(checkbox).css({
-                  'opacity': '0',
-                  'visibility': 'hidden',
-                  'position': 'absolute'
+              $($wizard).find('.dropdown-menu li').each(function() {
+                $selectItem = $(this);
+                $selectItem.click(function() {
+                  const selection = $(this).find('.text').html();
+                  $($wizard).find('.dropdown-menu li a.selected').removeClass('selected active');
+                  $(this).find('a').addClass('selected active');
+                  $($wizard).find('.filter-option-inner-inner').html(selection);
                 });
-              } else {
-                $(checkbox).css({
-                  'opacity': '1',
-                  'visibility': 'visible'
-                });
-              }
+              });
 
               refreshAnimation($wizard, index);
             }
           });
 
-
-          // Prepare the preview for profile picture
-          $("#wizard-picture").change(function() {
-            readURL(this);
-          });
-
-          $('[data-toggle="wizard-radio"]').click(function() {
-            wizard = $(this).closest('.card-wizard');
-            wizard.find('[data-toggle="wizard-radio"]').removeClass('active');
-            $(this).addClass('active');
-            $(wizard).find('[type="radio"]').removeAttr('checked');
-            $(this).find('[type="radio"]').attr('checked', 'true');
-          });
-
-          $('[data-toggle="wizard-checkbox"]').click(function() {
-            if ($(this).hasClass('active')) {
-              $(this).removeClass('active');
-              $(this).find('[type="checkbox"]').removeAttr('checked');
-            } else {
-              $(this).addClass('active');
-              $(this).find('[type="checkbox"]').attr('checked', 'true');
-            }
-          });
-
           $('.set-full-height').css('height', 'auto');
-
-          //Function to show image before upload
-
-          function readURL(input) {
-            if (input.files && input.files[0]) {
-              var reader = new FileReader();
-
-              reader.onload = function(e) {
-                $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
-              }
-              reader.readAsDataURL(input.files[0]);
-            }
-          }
 
           $(window).resize(function() {
             $('.card-wizard').each(function() {
