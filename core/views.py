@@ -3,6 +3,7 @@
 """
 import codecs
 import csv
+import json
 
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -44,8 +45,11 @@ class ListUpdateScripts(APIView):
 
 @csrf_exempt
 def streaming_script_execute(request):
-    posted_token = request.POST.get("token", None)
-    script_name = request.POST.get("script_name")
+    form_data = json.loads(request.body.decode())
+
+    posted_token = form_data.get('token')
+    script_name = form_data.get('script_name')
+
     if posted_token is not None:
         token_auth = TokenAuthentication()
         try:
