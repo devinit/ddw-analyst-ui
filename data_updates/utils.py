@@ -17,7 +17,7 @@ class ScriptExecutor:
         if script_name in list_update_scripts():
             dir_path = os.path.dirname(os.path.realpath(__file__))
             script_path = os.path.join(dir_path, script_name)
-            self.process = subprocess.Popen([script_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            self.process = subprocess.Popen([script_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         else:
             raise FileNotFoundError
 
