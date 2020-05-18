@@ -13,6 +13,7 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'frontend/assets/css/material-dashboard.min.css' %}" />
   {% render_bundle 'main' 'css' 'DEFAULT' %}
+  {% block extra-css %}{% endblock extra-css %}
 </head>
 <body>
     {% block content %}
