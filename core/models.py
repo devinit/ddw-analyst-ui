@@ -208,13 +208,13 @@ class ScheduledEvent(BaseEntity):
         ('yrs', 'Years'),
     )
     name = models.TextField(null=False, blank=False)
-    description = models.TextField(null=False, blank=True)
+    description = models.TextField(null=True, blank=True)
     script_name = models.TextField(null=False, blank=False)
-    enabled = models.BooleanField()
+    enabled = models.BooleanField(default=True)
     start_date = models.DateTimeField(null=False, blank=False)
-    repeat = models.BooleanField()
+    repeat = models.BooleanField(default=False)
     interval = models.BigIntegerField(blank=True, null=True)
-    interval_type = models.CharField(max_length=1, choices=interval_type_choices, null=True, blank=True)
+    interval_type = models.CharField(choices=interval_type_choices, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -230,5 +230,5 @@ class ScheduledEventRunInstance(BaseEntity):
     )
     scheduled_event = models.ForeignKey(ScheduledEvent, on_delete=models.CASCADE)
     start_at = models.DateTimeField(null=False, blank=False)
-    ended_at = models.DateTimeField(null=False, blank=False)
+    ended_at = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=1, choices=status_choices, default='p')
