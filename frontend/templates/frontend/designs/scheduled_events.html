@@ -1,0 +1,60 @@
+{% extends 'frontend/index.html' %}
+{% load static %}
+
+
+{% block content %}
+  <div class="wrapper ">
+    {% include 'frontend/designs/includes/sidebar.html' with active='scheduled-events' %}
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      {% with title='Scheduled Events'  %}
+        {% include 'frontend/designs/includes/navbar.html' %}
+      {% endwith %}
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            {% include 'frontend/designs/includes/partials/scheduled_events_table.html' %}
+            {% include 'frontend/designs/includes/partials/scheduled_events_run_instances_table.html' %}
+          </div>
+        </div>
+      </div>
+      {% comment %} Footer Goes Here {% endcomment %}
+    </div>
+  </div>
+
+  {% block extra-js %}
+    <script>
+      if (window.$) {
+        $(document).ready(() => {
+          $().ready(() => {
+            const scheduledEventRows = document.querySelectorAll('#scheduled-event-table tbody tr');
+            if (scheduledEventRows.length) {
+              scheduledEventRows.forEach(row => {
+                row.addEventListener('click', () => {
+                  const runInstanceTable = document.querySelector('#scheduled-event-run-instance-table')
+                  if (!row.classList.contains('table-danger')) {
+                    const activeRow = document.querySelector('#scheduled-event-table tbody tr.table-danger')
+                    if (activeRow) {
+                      activeRow.classList.remove('table-danger');
+                    }
+                    row.classList.add('table-danger');
+                    if (runInstanceTable) {
+                      runInstanceTable.classList.remove('d-none');
+                    }
+                  } else {
+                    row.classList.remove('table-danger');
+                    if (runInstanceTable) {
+                      runInstanceTable.classList.add('d-none');
+                    }
+                  }
+                })
+              })
+            }
+          });
+        });
+      }
+    </script>
+  {% endblock extra-js %}
+{% endblock content %}

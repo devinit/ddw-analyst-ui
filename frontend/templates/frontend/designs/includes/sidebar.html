@@ -1,0 +1,47 @@
+{% load static %}
+<div class="sidebar" data-color="danger" data-background-color="red">
+  <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+        Tip 2: you can also add an image using data-image tag
+    -->
+  <div class="logo">
+    <a href="/" class="simple-text logo-mini">
+      AP
+    </a>
+    <a href="/" class="simple-text logo-normal">
+      Analyst Portal
+    </a>
+  </div>
+  <div class="sidebar-wrapper">
+    <ul class="nav">
+      <li class="nav-item ">
+        <a class="nav-link" href="#">
+          <i class="material-icons">home</i>
+          <p> Home </p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="#">
+          <i class="material-icons">storage</i>
+          <p> Data Sources </p>
+        </a>
+      </li>
+
+      <li class="nav-item {% if active == 'query-builder' %}active{% endif %}">
+        <a class="nav-link" href="#">
+          <i class="material-icons">query_builder</i>
+          <p> Query Builder </p>
+        </a>
+      </li>
+
+      <li class="nav-item {% if active == 'scheduled-events' %}active{% endif %}">
+        <a class="nav-link" href="#">
+          <i class="material-icons">alarm</i>
+          <p> Scheduled Events </p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

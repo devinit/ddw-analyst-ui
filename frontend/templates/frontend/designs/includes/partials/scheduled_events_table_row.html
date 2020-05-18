@@ -1,0 +1,24 @@
+<tr>
+  <td class="text-center">{{count}}</td>
+  <td>{{name|default:'Update FTS'}}</td>
+  <td>{{description|default:'Fetch updates from FTS API into the DDW'}}</td>
+  <td>
+    <div class="togglebutton">
+      <label class="disabled">
+        {% if checked == False %}
+          <input type="checkbox">
+        {% else %}
+          <input type="checkbox" checked="">
+        {% endif %}
+        <span class="toggle"></span>
+      </label>
+    </div>
+  </td>
+  <td>{{interval|default:'Everyday at 2AM'}}</td>
+  <td class="td-actions text-right">
+    <button type="button" rel="tooltip" class="btn btn-info">
+      <i class="material-icons">play_circle_filled</i>
+      Run Now
+    </button>
+  </td>
+</tr>
