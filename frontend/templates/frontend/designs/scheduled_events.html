@@ -23,38 +23,39 @@
       {% comment %} Footer Goes Here {% endcomment %}
     </div>
   </div>
-
-  {% block extra-js %}
-    <script>
-      if (window.$) {
-        $(document).ready(() => {
-          $().ready(() => {
-            const scheduledEventRows = document.querySelectorAll('#scheduled-event-table tbody tr');
-            if (scheduledEventRows.length) {
-              scheduledEventRows.forEach(row => {
-                row.addEventListener('click', () => {
-                  const runInstanceTable = document.querySelector('#scheduled-event-run-instance-table')
-                  if (!row.classList.contains('table-danger')) {
-                    const activeRow = document.querySelector('#scheduled-event-table tbody tr.table-danger')
-                    if (activeRow) {
-                      activeRow.classList.remove('table-danger');
-                    }
-                    row.classList.add('table-danger');
-                    if (runInstanceTable) {
-                      runInstanceTable.classList.remove('d-none');
-                    }
-                  } else {
-                    row.classList.remove('table-danger');
-                    if (runInstanceTable) {
-                      runInstanceTable.classList.add('d-none');
-                    }
-                  }
-                })
-              })
-            }
-          });
-        });
-      }
-    </script>
-  {% endblock extra-js %}
 {% endblock content %}
+
+{% block footer-assets %}
+  {{ block.super }}
+  <script>
+    if (window.$) {
+      $(document).ready(() => {
+        $().ready(() => {
+          const scheduledEventRows = document.querySelectorAll('#scheduled-event-table tbody tr');
+          if (scheduledEventRows.length) {
+            scheduledEventRows.forEach(row => {
+              row.addEventListener('click', () => {
+                const runInstanceTable = document.querySelector('#scheduled-event-run-instance-table')
+                if (!row.classList.contains('table-danger')) {
+                  const activeRow = document.querySelector('#scheduled-event-table tbody tr.table-danger')
+                  if (activeRow) {
+                    activeRow.classList.remove('table-danger');
+                  }
+                  row.classList.add('table-danger');
+                  if (runInstanceTable) {
+                    runInstanceTable.classList.remove('d-none');
+                  }
+                } else {
+                  row.classList.remove('table-danger');
+                  if (runInstanceTable) {
+                    runInstanceTable.classList.add('d-none');
+                  }
+                }
+              })
+            })
+          }
+        });
+      });
+    }
+  </script>
+{% endblock footer-assets %}
