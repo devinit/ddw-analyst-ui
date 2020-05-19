@@ -116,6 +116,15 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   data-testid="sidebar-link-query-builder"
                 />
               </Sidebar.Item>
+              <Sidebar.Item active={this.state.activeRoute === '/scheduledevents/'}>
+                <Sidebar.Link
+                  to="/scheduledevents/"
+                  single
+                  icon="schedule"
+                  textNormal="Scheduled Events"
+                  onClick={this.setActiveRoute}
+                />
+              </Sidebar.Item>
             </Sidebar.Content>
 
             <Sidebar.Footer>
@@ -134,6 +143,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                 <Route path="/" exact component={() => <span>Home</span>} />
                 <Route path="/sources" exact component={() => <span>Data Sources</span>} />
                 <Route path="/queries/build" component={() => <span>Query Builder</span>} />
+                <Route path="/scheduledevents/" component={() => <span>Scheduled Events</span>} />
               </Navbar.Brand>
             </div>
 
