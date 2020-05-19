@@ -11,3 +11,7 @@
   color: #1b1e21;
   background-color: #d6d8d9;
 }
+
+.dropdown-menu .disabled {
+  display: block;
+}
