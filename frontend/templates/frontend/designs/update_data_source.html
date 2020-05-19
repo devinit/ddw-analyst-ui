@@ -173,9 +173,14 @@
   <script>
 
     $(document).ready(function() {
-      $('.fileinput').fileinput().on('change.bs.fileinput', function() {
-        $('#wizard-step-one-table').removeClass('d-none');
-      });
+      $('.fileinput')
+        .fileinput()
+        .on('change.bs.fileinput', function() {
+          $('#wizard-step-one-table').removeClass('d-none');
+        })
+        .on('clear.bs.fileinput', function() {
+          $('#wizard-step-one-table').addClass('d-none');
+        });
     });
   </script>
 {% endblock footer-assets %}
