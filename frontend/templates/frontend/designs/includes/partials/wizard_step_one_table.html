@@ -1,4 +1,6 @@
+
 <div class="card card-plain mt-0 mb-0 d-none" id="wizard-step-one-table">
+    {% include 'frontend/designs/includes/partials/wizard_alert_warning_step_one.html' %}
     <div class="card-header card-header-rose card-header-icon">
       <h4 class="card-title">Preview</h4>
     </div>
@@ -8,8 +10,8 @@
         <thead>
           <tr>
             <th class="text-center">#</th>
-            <th>Donor Name</th>
-            <th>Code Name</th>
+            <th><i class="text-warning material-icons" data-notify="icon">warning</i> Donor Name <span class="text-muted">(text)</span></th>
+            <th><i class="text-success material-icons" data-notify="icon">done</i> Code Name <span class="text-muted">(number)</span></th>
           </tr>
         </thead>
         <tbody>
@@ -30,7 +32,7 @@
           </tr>
           <tr>
             <td class="text-center">4</td>
-            <td>Big Shot</td>
+            <td class="table-warning">322</td>
             <td>$$$</td>
           </tr>
         </tbody>

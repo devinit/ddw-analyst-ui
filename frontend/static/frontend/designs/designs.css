@@ -15,3 +15,18 @@
 .dropdown-menu .disabled {
   display: block;
 }
+
+.bordered-text {
+  background-color: white;
+  padding: 0 3px;
+  border: 1px solid #cccccc;
+}
+
+th .material-icons {
+  position: relative;
+  top: 5px;
+}
+
+.bg-warning {
+  background-color: #ff9800!important;
+}
