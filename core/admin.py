@@ -1,5 +1,19 @@
 from django.contrib import admin
-from core.models import Sector, Theme, Tag, Operation, OperationStep, Review, Source, SourceColumnMap, UpdateHistory, AuditLogEntry
+
+from core.models import (
+    AuditLogEntry,
+    Operation,
+    OperationStep,
+    Review,
+    ScheduledEvent,
+    ScheduledEventRunInstance,
+    Sector,
+    Source,
+    SourceColumnMap,
+    Tag,
+    Theme,
+    UpdateHistory
+)
 
 
 class AuditLogEntryAdmin(admin.ModelAdmin):
@@ -16,3 +30,5 @@ admin.site.register(Source)
 admin.site.register(SourceColumnMap)
 admin.site.register(UpdateHistory)
 admin.site.register(AuditLogEntry, AuditLogEntryAdmin)
+admin.site.register(ScheduledEvent)
+admin.site.register(ScheduledEventRunInstance)
