@@ -15,7 +15,7 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import (exceptions, filters, generics, mixins, permissions,
+from rest_framework import (exceptions, filters, generics, permissions,
                             status)
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
@@ -357,7 +357,7 @@ class ScheduledEventList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = SnippetSerializer(data=request.data)
+        serializer = ScheduledEventSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
