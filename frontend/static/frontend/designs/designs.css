@@ -30,3 +30,20 @@ th .material-icons {
 .bg-warning {
   background-color: #ff9800!important;
 }
+
+.table>tbody>tr>td .material-icons,
+.table>tbody>tr>th .material-icons,
+.table>tfoot>tr>td .material-icons,
+.table>tfoot>tr>th .material-icons,
+.table>thead>tr>td .material-icons,
+.table>thead>tr>th .material-icons {
+  vertical-align: middle;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.filter-option {
+  text-transform: capitalize;
+}
