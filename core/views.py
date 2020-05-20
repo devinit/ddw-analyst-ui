@@ -15,19 +15,23 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import exceptions, filters, generics, permissions, status
+from rest_framework import (exceptions, filters, generics, permissions,
+                            status)
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.models import (Operation, OperationStep, Review, Sector, Source, Tag, Theme)
+from core.models import (Operation, OperationStep, Review, ScheduledEvent,
+                         ScheduledEventRunInstance, Sector, Source, Tag, Theme)
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
-from core.serializers import (
-    DataSerializer, OperationSerializer, OperationStepSerializer, ReviewSerializer,
-    SectorSerializer, SourceSerializer, TagSerializer, ThemeSerializer, UserSerializer)
-
-from data_updates.utils import list_update_scripts, ScriptExecutor
+from core.serializers import (DataSerializer, OperationSerializer,
+                              OperationStepSerializer, ReviewSerializer,
+                              ScheduledEventRunInstanceSerializer,
+                              ScheduledEventSerializer, SectorSerializer,
+                              SourceSerializer, TagSerializer, ThemeSerializer,
+                              UserSerializer)
+from data_updates.utils import ScriptExecutor, list_update_scripts
 
 
 class ListUpdateScripts(APIView):
@@ -341,3 +345,70 @@ class SourceDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class LoginView(KnoxLoginView):
     authentication_classes = [BasicAuthentication]
+
+
+class ScheduledEventList(APIView):
+    """
+    List all Scheduled Events, or create a new Scheduled Event.
+    """
+    def get(self, request, format=None):
+        scheduled_events = ScheduledEvent.objects.all()
+        serializer = ScheduledEventSerializer(scheduled_events, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ScheduledEventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ScheduledEventRunInstanceHistory(APIView):
+    """
+    Get all ScheduledEventRunInstances related to the provided schedule_event_id
+
+    Create ScheduledEventRunInstances
+    """
+    def get_object(self, pk):
+        try:
+            return ScheduledEventRunInstance.objects.filter(scheduled_event=pk)
+        except ScheduledEventRunInstance.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        scheduled_event_run_instance = self.get_object(pk)
+        serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, pk, format=None):
+        request.data['scheduled_event'] = pk
+        serializer = ScheduledEventRunInstanceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ScheduledEventRunInstanceDetail(APIView):
+    """
+    Get and update ScheduledEventRunInstances using the primary key
+    """
+    def get_object(self, pk):
+        try:
+            return ScheduledEventRunInstance.objects.get(pk=pk)
+        except ScheduledEventRunInstance.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        scheduled_event_run_instance = self.get_object(pk)
+        serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        scheduled_event_run_instance = self.get_object(pk)
+        serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

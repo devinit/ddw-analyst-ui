@@ -13,7 +13,11 @@ from rest_framework.utils import model_meta
 from core.const import DEFAULT_LIMIT_COUNT
 
 from core.models import (
-    Operation, OperationStep, Review, Sector, Source, SourceColumnMap, Tag, Theme, UpdateHistory)
+    Operation, OperationStep, Review,
+    ScheduledEvent, ScheduledEventRunInstance, Sector,
+    Source, SourceColumnMap, Tag,
+    Theme, UpdateHistory
+)
 
 
 class DataSerializer(serializers.BaseSerializer):
@@ -246,4 +250,30 @@ class SourceSerializer(serializers.ModelSerializer):
             'columns',
             'update_history',
             'tags'
+        )
+
+
+class ScheduledEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScheduledEvent
+        fields = (
+            'name',
+            'description',
+            'script_name',
+            'enabled',
+            'start_date',
+            'repeat',
+            'interval',
+            'interval_type'
+        )
+
+
+class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScheduledEventRunInstance
+        fields = (
+            'scheduled_event',
+            'start_at',
+            'ended_at',
+            'status'
         )
