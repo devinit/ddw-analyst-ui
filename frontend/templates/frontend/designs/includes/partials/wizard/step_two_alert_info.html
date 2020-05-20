@@ -1,10 +1,5 @@
-<div class="alert alert-dark alert-with-icon" data-notify="container">
-  <i class="text-info material-icons" data-notify="icon">info</i>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <i class="material-icons">close</i>
-  </button>
-  <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
-  <span data-notify="message">
-    <p>Upload a CSV or Excel file from your computer. The file must include the header row</p>
-  </span>
-</div>
+{% extends 'frontend/designs/includes/partials/alert.html' %}
+
+{% block message %}
+  <p>Upload a CSV or Excel file from your computer. The file must include the header row</p>
+{% endblock message %}
