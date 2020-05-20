@@ -16,6 +16,11 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="#csv" data-toggle="tab" role="tab">
+              Select XLS/CSV
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#validate" data-toggle="tab" role="tab">
               Map and Validate
             </a>
@@ -31,8 +36,12 @@
         <div class="tab-content">
           <div class="tab-pane active" id="source">
             {% include 'frontend/designs/includes/partials/wizard/step_one.html' %}
-
           </div>
+
+          <div class="tab-pane" id="csv">
+            {% include 'frontend/designs/includes/partials/wizard/step_two.html' %}
+          </div>
+
           <div class="tab-pane" id="validate">
             <div class="row justify-content-center">
               <div class="col-sm-12">

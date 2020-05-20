@@ -1,0 +1,16 @@
+{% include 'frontend/designs/includes/partials/wizard/step_two_alert_info.html' %}
+
+<div class="fileinput fileinput-new" data-provides="fileinput">
+  <div>
+    <span class="btn btn-danger btn-file">
+      <span class="fileinput-new">Select XLS/CSV</span>
+      <span class="fileinput-exists">Change File</span>
+      <input type="hidden"><input type="file" name="...">
+    </span>
+    <a href="#remove-file" class="btn btn-dark fileinput-exists" data-dismiss="fileinput">
+      <i class="fa fa-times"></i> Remove File
+    </a>
+  </div>
+</div>
+
+{% include 'frontend/designs/includes/partials/wizard/step_two_table.html' %}
