@@ -3,6 +3,8 @@ import { Card } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { LinksMap } from '../../types/api';
+import { List } from 'immutable';
+import { ScheduledEventMap } from '../../types/scheduledEvents';
 import { ScheduledEventsTable } from '../ScheduledEventsTable/ScheduledEventsTable';
 
 interface ComponentProps extends RouteComponentProps {
@@ -11,18 +13,17 @@ interface ComponentProps extends RouteComponentProps {
   offset: number;
   links?: LinksMap;
   count: number;
+  scheduledEvents: List<ScheduledEventMap>;
+  activeScheduledEvent: ScheduledEventMap;
+  onRowClick: (scheduledEvent: ScheduledEventMap) => void;
 }
 type ScheduledEventsTableCardProps = ComponentProps;
 
-export class ScheduledEventsTableCard extends React.Component<
-  ScheduledEventsTableCardProps,
-  { searchQuery: string }
-> {
+export class ScheduledEventsTableCard extends React.Component<ScheduledEventsTableCardProps> {
   static defaultProps: Partial<ScheduledEventsTableCardProps> = {
     limit: 10,
     offset: 0,
   };
-  state = { searchQuery: '' };
 
   render() {
     return (
@@ -35,7 +36,11 @@ export class ScheduledEventsTableCard extends React.Component<
             <Card.Title>Scheduled Events</Card.Title>
           </Card.Header>
           <Card.Body>
-            <ScheduledEventsTable />
+            <ScheduledEventsTable
+              scheduledEvents={this.props.scheduledEvents}
+              onRowClick={this.props.onRowClick}
+              activeScheduledEvent={this.props.activeScheduledEvent}
+            />
           </Card.Body>
         </Card>
       </React.Fragment>
