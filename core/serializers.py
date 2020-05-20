@@ -13,17 +13,10 @@ from rest_framework.utils import model_meta
 from core.const import DEFAULT_LIMIT_COUNT
 
 from core.models import (
-    Operation,
-    OperationStep,
-    Review,
-    ScheduledEvent,
-    ScheduledEventRunInstance,
-    Sector,
-    Source,
-    SourceColumnMap,
-    Tag,
-    Theme,
-    UpdateHistory
+    Operation, OperationStep, Review,
+    ScheduledEvent, ScheduledEventRunInstance, Sector,
+    Source, SourceColumnMap, Tag,
+    Theme, UpdateHistory
 )
 
 

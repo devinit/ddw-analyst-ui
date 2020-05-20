@@ -364,16 +364,25 @@ class ScheduledEventList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ScheduledEventRunInstanceList(APIView):
+class ScheduledEventRunInstanceHistory(APIView):
     """
-    List all ScheduledEventRunInstances, or create a new ScheduledEventRunInstance.
+    Get all ScheduledEventRunInstances related to the provided schedule_event_id
+
+    Create ScheduledEventRunInstances
     """
-    def get(self, request, format=None):
-        scheduled_event_run_instance = ScheduledEventRunInstance.objects.all()
+    def get_object(self, pk):
+        try:
+            return ScheduledEventRunInstance.objects.filter(scheduled_event=pk)
+        except ScheduledEventRunInstance.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        scheduled_event_run_instance = self.get_object(pk)
         serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
+    def post(self, request, pk, format=None):
+        request.data['scheduled_event'] = pk
         serializer = ScheduledEventRunInstanceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -383,7 +392,7 @@ class ScheduledEventRunInstanceList(APIView):
 
 class ScheduledEventRunInstanceDetail(APIView):
     """
-    Get, update or delete ScheduledEventRunInstances using the primary key
+    Get and update ScheduledEventRunInstances using the primary key
     """
     def get_object(self, pk):
         try:
@@ -403,24 +412,3 @@ class ScheduledEventRunInstanceDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, format=None):
-        scheduled_event_run_instance = self.get_object(pk)
-        scheduled_event_run_instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class ScheduledEventRunInstanceHistory(APIView):
-    """
-    Get all ScheduledEventRunInstances related to the provided schedule_event_id
-    """
-    def get_object(self, schedule_event_id):
-        try:
-            return ScheduledEventRunInstance.objects.filter(scheduled_event=schedule_event_id)
-        except ScheduledEventRunInstance.DoesNotExist:
-            raise Http404
-
-    def get(self, request, schedule_event_id, format=None):
-        scheduled_event_run_instance = self.get_object(schedule_event_id)
-        serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
-        return Response(serializer.data)
