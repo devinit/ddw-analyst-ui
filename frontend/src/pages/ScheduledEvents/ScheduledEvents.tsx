@@ -1,19 +1,24 @@
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import { ScheduledEventsTableCard } from '../../components/ScheduledEventsTableCard';
 
 type ScheduledEventsProps = RouteComponentProps;
 
-class ScheduledEvents extends React.Component<ScheduledEventsProps> {
-  render() {
-    return (
-      <Row>
-        <Col lg={7}>
-          <ScheduledEventsTableCard limit={4} offset={1} count={1} />
-        </Col>
-      </Row>
-    );
-  }
-}
+const ScheduledEvents: React.FC<ScheduledEventsProps> = (props) => {
+  console.log(props);
+
+  return (
+    <Row>
+      <Col lg={7}>
+        <Dimmer inverted>
+          <Loader content="Loading" />
+        </Dimmer>
+        <ScheduledEventsTableCard />
+      </Col>
+    </Row>
+  );
+};
+
 export default ScheduledEvents;
