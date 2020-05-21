@@ -1,11 +1,9 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, ReactNode } from 'react';
-import ReactPaginate from 'react-paginate';
+import ReactPaginate, { ReactPaginateProps } from 'react-paginate';
 
-interface PaginationProps {
-  pageCount?: number;
-  pageRangeDisplayed?: number;
-  marginPagesDisplayed?: number;
-  onPageChange?: (selected: { selected: number }) => void;
+export interface PaginationProps extends Partial<ReactPaginateProps> {
+  className?: string;
 }
 const renderLabel = (caption: string): ReactNode => (
   <>
@@ -18,7 +16,7 @@ const renderLabel = (caption: string): ReactNode => (
 const Pagination: FunctionComponent<PaginationProps> = (props) => {
   return (
     <ReactPaginate
-      containerClassName="pagination"
+      containerClassName={classNames('pagination', props.className)}
       pageClassName="page-item"
       pageLinkClassName="page-link"
       activeClassName="active"
