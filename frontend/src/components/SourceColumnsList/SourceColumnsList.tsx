@@ -1,9 +1,10 @@
 import { Map } from 'immutable';
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { ColumnList } from '../../types/sources';
 import { formatString } from '../../utils';
 import { InfoList, InfoListItems } from '../InfoList';
-import { PaginationRow } from '../PaginationRow';
+import { Pagination } from '../Pagination';
+import { Row, Col } from 'react-bootstrap';
 
 interface ComponentProps {
   columns: ColumnList;
@@ -40,13 +41,11 @@ const SourceColumnsList: FunctionComponent<ComponentProps> = ({ columns }) => {
     <div>
       <InfoList list={infoList} className="source-columns-table" />
       {pageCount ? (
-        <PaginationRow
-          pageRangeDisplayed={2}
-          limit={10}
-          count={columns.count()}
-          pageCount={pageCount}
-          onPageChange={onPageChange}
-        />
+        <Row>
+          <Col>
+            <Pagination pageRangeDisplayed={2} pageCount={pageCount} onPageChange={onPageChange} />
+          </Col>
+        </Row>
       ) : null}
     </div>
   );
