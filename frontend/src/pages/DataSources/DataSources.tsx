@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import * as React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
@@ -26,7 +26,7 @@ interface ReduxState {
 type DataSourcesProps = ReduxState & ActionProps & RouteComponentProps;
 
 class DataSources extends React.Component<DataSourcesProps> {
-  render() {
+  render(): ReactElement {
     const sources = this.props.sources.get('sources') as List<SourceMap>;
     const loading = this.props.sources.get('loading') as boolean;
     const activeSource = this.props.page.get('activeSource') as SourceMap | undefined;
@@ -39,6 +39,7 @@ class DataSources extends React.Component<DataSourcesProps> {
           </Dimmer>
 
           <SourcesTableCard
+            loading={loading}
             sources={sources}
             limit={this.props.sources.get('limit') as number}
             offset={this.props.sources.get('offset') as number}
@@ -53,7 +54,7 @@ class DataSources extends React.Component<DataSourcesProps> {
     );
   }
 
-  private renderDetailsTab(activeSource: SourceMap | undefined, loading = false) {
+  private renderDetailsTab(activeSource: SourceMap | undefined, loading = false): ReactNode {
     if (activeSource && !loading) {
       return <SourceDetailsTab source={activeSource} />;
     }
@@ -73,7 +74,7 @@ class DataSources extends React.Component<DataSourcesProps> {
     );
   }
 
-  private onRowClick = (activeSource: SourceMap) => {
+  private onRowClick = (activeSource: SourceMap): void => {
     this.props.actions.setActiveSource(activeSource);
   };
 }
