@@ -82,7 +82,7 @@ object_field_cols = c("type","id","name")
 
 other_multi_fields = c("keywords") # TODO: implement if necessary
 
-full.fts.types = c(
+raw.fts.types = c(
   "id"="integer",
   "amountUSD"="integer",
   "budgetYear"="integer",
@@ -145,6 +145,51 @@ full.fts.types = c(
   "source_Cluster_name"="text"
 )
 
+name.remapping = c(
+  "source_Organization_name"="Donor",
+  "destination_Organization_name"="Recipient.Organization",
+  "destination_Location_name"="Destination.Country"
+)
+
+keep.columns = c(
+  "id",
+  "amountUSD",
+  "budgetYear",
+  "description",
+  "flowType",
+  "newMoney",
+  "originalAmount",
+  "originalCurrency",
+  "method",
+  "status",
+  "boundary",
+  "onBoundary",
+  "source_Organization_name",
+  "source_Location_name",
+  "source_iso3",
+  "source_UsageYear_name",
+  "destination_Organization_name",
+  "destination_GlobalCluster_name",
+  "destination_Location_name",
+  "destination_iso3",
+  "destination_UsageYear_name",
+  "destination_Plan_name",
+  "destination_Project_name",
+  "parentFlowId",
+  "grandBargainEarmarkingType",
+  "source_Plan_id",
+  "source_Plan_name",
+  "destination_Cluster_name",
+  "destination_Emergency_name",
+  "exchangeRate",
+  "source_Emergency_name",
+  "source_GlobalCluster_name"
+)
+
+keep.fts.types = raw.fts.types[keep.columns]
+names(keep.fts.types)[which(names(keep.fts.types) %in% names(name.remapping))] = name.remapping[names(keep.fts.types)[which(names(keep.fts.types) %in% names(name.remapping))]]
+
+
 flatten_flow = function(single_flow){
   flat_flow = data.frame(t(unlist(single_flow[single_or_empty_fields])),stringsAsFactors=F)
   
@@ -188,11 +233,13 @@ fts.flow = function(boundary=NULL,auth=NULL, con, table.quote, new_table){
     flows = dat$data$flows
     flow_df = rbindlist(lapply(flows,flatten_flow),fill=T)
     flow_df = merge_isos(flow_df)
-    flow_df_name_diff = setdiff(names(full.fts.types), names(flow_df))
+    flow_df_name_diff = setdiff(names(raw.fts.types), names(flow_df))
     for(name_diff in flow_df_name_diff){
       flow_df[,name_diff]=NA
     }
-    dbWriteTable(con, name = table.quote, value = flow_df, row.names = F, overwrite = new_table, append = !new_table, field.types=full.fts.types)
+    flow_df = flow_df[,keep.columns,with=F]
+    names(flow_df)[which(names(flow_df) %in% names(name.remapping))] = name.remapping[names(flow_df)[which(names(flow_df) %in% names(name.remapping))]]
+    dbWriteTable(con, name = table.quote, value = flow_df, row.names = F, overwrite = new_table, append = !new_table, field.types=keep.fts.types)
     while("nextLink" %in% names(dat$meta)){
       page = page + 1
       if(!is.null(auth)){
@@ -209,11 +256,13 @@ fts.flow = function(boundary=NULL,auth=NULL, con, table.quote, new_table){
         flows = dat$data$flows
         flow_df = rbindlist(lapply(flows,flatten_flow),fill=T)
         flow_df = merge_isos(flow_df)
-        flow_df_name_diff = setdiff(names(full.fts.types), names(flow_df))
+        flow_df_name_diff = setdiff(names(raw.fts.types), names(flow_df))
         for(name_diff in flow_df_name_diff){
           flow_df[,name_diff]=NA
         }
-        dbWriteTable(con, name = table.quote, value = flow_df, row.names = F, overwrite = FALSE, append = TRUE, field.types=full.fts.types)
+        flow_df = flow_df[,keep.columns,with=F]
+        names(flow_df)[which(names(flow_df) %in% names(name.remapping))] = name.remapping[names(flow_df)[which(names(flow_df) %in% names(name.remapping))]]
+        dbWriteTable(con, name = table.quote, value = flow_df, row.names = F, overwrite = FALSE, append = TRUE, field.types=keep.fts.types)
       }
     }
     return(TRUE)
