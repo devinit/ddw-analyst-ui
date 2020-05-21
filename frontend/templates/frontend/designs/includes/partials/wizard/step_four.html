@@ -1,0 +1,12 @@
+
+{% with message="Uploading... please wait" icon="info" %}
+  {% include 'frontend/designs/includes/partials/wizard/step_four_alert.html' %}
+{% endwith %}
+
+{% with message="Upload Successful!" icon="check" variant="success" %}
+  {% include 'frontend/designs/includes/partials/wizard/step_four_alert.html' %}
+{% endwith %}
+
+{% with message="Upload Failed - An error occured for this and that reason" icon="error" variant="danger" %}
+  {% include 'frontend/designs/includes/partials/wizard/step_four_alert.html' %}
+{% endwith %}
