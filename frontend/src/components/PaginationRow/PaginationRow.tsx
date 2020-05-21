@@ -15,12 +15,15 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
     } else {
       setOffset(page.selected * limit);
     }
+    if (props.onPageChange) {
+      props.onPageChange(page);
+    }
   };
   const max = offset + limit;
 
   return (
     <Row>
-      <Col lg={4} className="align-middle" style={{ top: '2px' }}>
+      <Col lg={4} className="align-middle d-none d-sm-none d-md-block" style={{ top: '2px' }}>
         Showing {offset + 1} to {max > count ? count : max} of {count}
       </Col>
       <Col lg={8} className="align-middle">
