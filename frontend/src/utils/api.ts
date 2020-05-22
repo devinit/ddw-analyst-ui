@@ -8,5 +8,6 @@ export const api = {
     MY_OPERATIONS: '/api/operations/mine/',
     EXPORT: '/api/export/',
     CHANGE_PASSWORD: '/api/change_password/',
+    VIEW_SCHEDULED_EVENTS: '/api/scheduled_event/',
   },
 };
