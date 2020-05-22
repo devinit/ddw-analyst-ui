@@ -1,0 +1,11 @@
+{% extends 'frontend/designs/includes/partials/alert.html' %}
+
+{% block icon %}
+  <i class="text-warning material-icons" data-notify="icon">warning</i>
+{% endblock icon %}
+
+
+{% block message %}
+  <p>Please make sure that your data has been interpreted correctly.</p>
+  <p>A <b class="text-warning">warning</b> icon indicates that a column has cells that may have missing or invalid data. Such cells are highlighted</p>
+{% endblock message %}

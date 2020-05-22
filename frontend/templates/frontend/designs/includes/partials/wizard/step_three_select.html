@@ -1,0 +1,61 @@
+<div class="dropdown bootstrap-select">
+  <select class="" data-size="7" data-style="btn btn-primary" title="Single Select" tabindex="-98">
+    <option class="bs-title-option" value=""></option>
+    <option disabled="" selected="">Select Property</option>
+    <option value="2">Donor Names</option>
+    <option value="3">Destination Project Name</option>
+    <option value="4">Budget Year</option>
+    <option value="5">Description</option>
+    <option value="6">Flow Type</option>
+  </select>
+
+  <button type="button" class="dropdown-toggle btn select-with-transition" data-toggle="dropdown" role="button" title="Single Option" aria-expanded="false">
+    <div class="filter-option">
+      <div class="filter-option-inner">
+        <div class="filter-option-inner-inner">Select Property</div>
+      </div>
+    </div>
+    <div class="ripple-container"></div>
+  </button>
+
+  <div class="dropdown-menu" role="combobox" x-placement="bottom-start"
+    style="overflow: hidden; position: absolute; top: 46px; left: 1px; will-change: top, left;">
+    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="overflow-y: auto;">
+      <ul class="dropdown-menu inner show">
+        {% comment %} Dropdown Header {% endcomment %}
+        <li class="disabled">
+          <a role="option" class="dropdown-item disabled selected active" aria-disabled="true" tabindex="-1"
+            aria-selected="true">
+            <span class=" bs-ok-default check-mark"></span>
+            <span class="text">Select Data Source</span></a>
+        </li>
+        {% comment %} Options Start Here {% endcomment %}
+        <li class="disabled">
+          <a role="option" class="dropdown-item disabled" aria-disabled="false" tabindex="0" aria-selected="false">
+          <span class=" bs-ok-default check-mark"></span>
+          <span class="text">Donor Name</span></a>
+        </li>
+        <li>
+          <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
+          <span class=" bs-ok-default check-mark"></span>
+          <span class="text">Destination Project Name</span></a>
+        </li>
+        <li>
+          <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
+          <span class=" bs-ok-default check-mark"></span>
+          <span class="text">Budget Year</span></a>
+        </li>
+        <li>
+          <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
+          <span class=" bs-ok-default check-mark"></span>
+          <span class="text">Description</span></a>
+        </li>
+        <li>
+          <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
+          <span class=" bs-ok-default check-mark"></span>
+          <span class="text">Flow Type</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

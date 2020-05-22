@@ -1,0 +1,11 @@
+{% extends 'frontend/designs/includes/partials/alert.html' %}
+
+{% block variant %}{{variant|default:"dark"}}{% endblock variant %}
+
+{% block icon %}
+  <i class="text-{{icon}} material-icons" data-notify="icon">{{icon}}</i>
+{% endblock icon %}
+
+{% block message %}
+  <p>{{message}}</p>
+{% endblock message %}

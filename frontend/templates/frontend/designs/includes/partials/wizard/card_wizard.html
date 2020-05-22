@@ -1,0 +1,68 @@
+<div class="wizard-container">
+  <div class="card card-wizard" data-color="red" id="wizardProfile">
+    <form action="" method="">
+      <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
+      <div class="card-header text-center">
+        <h3 class="card-title">
+          Update Table
+        </h3>
+        <h5 class="card-description">Upload the contents of an XLS/CSV to a data table</h5>
+      </div>
+      <div class="wizard-navigation">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" href="#source" data-toggle="tab" role="tab">
+              Select Data Source
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#csv" data-toggle="tab" role="tab">
+              Select XLS/CSV
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#validate" data-toggle="tab" role="tab">
+              Map
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#upload" data-toggle="tab" role="tab">
+              Upload
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body">
+        <div class="tab-content">
+          <div class="tab-pane active" id="source">
+            {% include 'frontend/designs/includes/partials/wizard/step_one.html' %}
+          </div>
+
+          <div class="tab-pane" id="csv">
+            {% include 'frontend/designs/includes/partials/wizard/step_two.html' %}
+          </div>
+
+          <div class="tab-pane" id="validate">
+            {% include 'frontend/designs/includes/partials/wizard/step_three.html' %}
+          </div>
+
+          <div class="tab-pane" id="upload">
+            {% include 'frontend/designs/includes/partials/wizard/step_four.html' %}
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="mr-auto">
+          <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous"
+            value="Previous">
+        </div>
+        <div class="ml-auto">
+          <input type="button" class="btn btn-next btn-fill btn-danger btn-wd" name="next" value="Next">
+          <input type="button" class="btn btn-finish btn-fill btn-danger btn-wd" name="finish" value="Finish"
+            style="display: none;">
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </form>
+  </div>
+</div>

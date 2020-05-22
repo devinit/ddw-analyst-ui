@@ -1,0 +1,186 @@
+{% extends 'frontend/index.html' %}
+{% load static %}
+
+
+{% block header-assets %}
+  {{block.super}}
+  <link rel="stylesheet" href="{% static 'frontend/designs/designs.css' %}" />
+{% endblock header-assets %}
+
+
+
+{% block content %}
+  <div class="wrapper ">
+    {% include 'frontend/designs/includes/sidebar.html' with active='update-data-source' %}
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      {% with title=''  %}
+        {% include 'frontend/designs/includes/navbar.html' %}
+      {% endwith %}
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="col-md-10 ml-auto mr-auto">
+            {% include 'frontend/designs/includes/partials/wizard/card_wizard.html' %}
+          </div>
+        </div>
+      </div>
+      </div>
+      {% comment %} Footer Goes Here {% endcomment %}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block footer-assets %}
+  {{block.super}}
+  <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+  <script src={% static '/frontend/assets/js/plugins/jquery.bootstrap-wizard.js' %}></script>
+  <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+  <script src={% static '/frontend/assets/js/plugins/jasny-bootstrap.min.js' %}></script>
+  <script>
+    $(document).ready(function() {
+
+      const initMaterialWizard = function() {
+        // Wizard Initialization
+        $('.card-wizard').bootstrapWizard({
+          'tabClass': 'nav nav-pills',
+          'nextSelector': '.btn-next',
+          'previousSelector': '.btn-previous',
+
+          onNext: function(tab, navigation, index) {
+            // validate form
+          },
+
+          onInit: function(tab, navigation, index) {
+            //check number of tabs and fill the entire row
+            var $total = navigation.find('li').length;
+            var $wizard = navigation.closest('.card-wizard');
+
+            $first_li = navigation.find('li:first-child a').html();
+            $moving_div = $('<div class="moving-tab">' + $first_li + '</div>');
+            $('.card-wizard .wizard-navigation').append($moving_div);
+
+            refreshAnimation($wizard, index);
+
+            $('.moving-tab').css('transition', 'transform 0s');
+          },
+
+          onTabClick: function(tab, navigation, index) {
+            //validate form
+          },
+
+          onTabShow: function(tab, navigation, index) {
+            var $total = navigation.find('li').length;
+            var $current = index + 1;
+
+            var $wizard = navigation.closest('.card-wizard');
+
+            // If it's the last tab then hide the last button and show the finish instead
+            if ($current >= $total) {
+              $($wizard).find('.btn-next').hide();
+              $($wizard).find('.btn-finish').show();
+            } else {
+              $($wizard).find('.btn-next').show();
+              $($wizard).find('.btn-finish').hide();
+            }
+
+            button_text = navigation.find('li:nth-child(' + $current + ') a').html();
+
+            setTimeout(function() {
+              $('.moving-tab').text(button_text);
+            }, 150);
+
+            $($wizard).find('.dropdown-menu li').each(function() {
+              $selectItem = $(this);
+              $selectItem.click(function() {
+                const selection = $(this).find('.text').html();
+                $($wizard).find('.dropdown-menu li a.selected').removeClass('selected active');
+                $(this).find('a').addClass('selected active');
+                $($wizard).find('.filter-option-inner-inner').html(selection);
+              });
+            });
+
+            refreshAnimation($wizard, index);
+          }
+        });
+
+        $('.set-full-height').css('height', 'auto');
+
+        $(window).resize(function() {
+          $('.card-wizard').each(function() {
+            $wizard = $(this);
+
+            index = $wizard.bootstrapWizard('currentIndex');
+            refreshAnimation($wizard, index);
+
+            $('.moving-tab').css({
+              'transition': 'transform 0s'
+            });
+          });
+        });
+
+        function refreshAnimation($wizard, index) {
+          $total = $wizard.find('.nav li').length;
+          $li_width = 100 / $total;
+
+          total_steps = $wizard.find('.nav li').length;
+          move_distance = $wizard.width() / total_steps;
+          index_temp = index;
+          vertical_level = 0;
+
+          mobile_device = $(document).width() < 600 && $total > 3;
+
+          if (mobile_device) {
+            move_distance = $wizard.width() / 2;
+            index_temp = index % 2;
+            $li_width = 50;
+          }
+
+          $wizard.find('.nav li').css('width', $li_width + '%');
+
+          step_width = move_distance;
+          move_distance = move_distance * index_temp;
+
+          $current = index + 1;
+
+          if ($current == 1 || (mobile_device == true && (index % 2 == 0))) {
+            move_distance -= 8;
+          } else if ($current == total_steps || (mobile_device == true && (index % 2 == 1))) {
+            move_distance += 8;
+          }
+
+          if (mobile_device) {
+            vertical_level = parseInt(index / 2);
+            vertical_level = vertical_level * 38;
+          }
+
+          $wizard.find('.moving-tab').css('width', step_width);
+          $('.moving-tab').css({
+            'transform': 'translate3d(' + move_distance + 'px, ' + vertical_level + 'px, 0)',
+            'transition': 'all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)'
+
+          });
+        }
+      }
+      // Initialise the wizard
+      initMaterialWizard();
+      setTimeout(function() {
+        $('.card.card-wizard').addClass('active');
+      }, 600);
+    });
+  </script>
+  <script>
+
+    $(document).ready(function() {
+      $('.fileinput')
+        .fileinput()
+        .on('change.bs.fileinput', function() {
+          $('#wizard-step-two-table').removeClass('d-none');
+        })
+        .on('clear.bs.fileinput', function() {
+          $('#wizard-step-two-table').addClass('d-none');
+        });
+    });
+  </script>
+{% endblock footer-assets %}

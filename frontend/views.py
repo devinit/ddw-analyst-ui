@@ -9,3 +9,6 @@ def with_id(request, pk):
 
 def scheduled_events(request):
     return render(request, 'frontend/designs/scheduled_events.html')
+
+def update_data_source(request):
+    return render(request, 'frontend/designs/update_data_source.html')

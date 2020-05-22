@@ -13,6 +13,7 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'frontend/assets/css/material-dashboard.min.css' %}" />
   {% render_bundle 'main' 'css' 'DEFAULT' %}
+  {% block header-assets %}{% endblock header-assets %}
 </head>
 <body>
     {% block content %}
@@ -20,14 +21,15 @@
     {% endblock content %}
 </body>
 {% load static %}
-<script src="{% static 'frontend/assets/js/core/jquery.min.js' %}"></script>
-<script src="{% static 'frontend/assets/js/core/popper.min.js' %}"></script>
-<script src="{% static 'frontend/assets/js/core/bootstrap-material-design.min.js' %}"></script>
-<script src="{% static 'frontend/assets/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
-<script src="{% static 'frontend/assets/js/material-dashboard.min.js' %}"></script>
-{% render_bundle 'main' 'js' 'DEFAULT' %}
 
-{% block extra-js %}{% endblock extra-js %}
+{% block footer-assets %}
+  <script src="{% static 'frontend/assets/js/core/jquery.min.js' %}"></script>
+  <script src="{% static 'frontend/assets/js/core/popper.min.js' %}"></script>
+  <script src="{% static 'frontend/assets/js/core/bootstrap-material-design.min.js' %}"></script>
+  <script src="{% static 'frontend/assets/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
+  <script src="{% static 'frontend/assets/js/material-dashboard.min.js' %}"></script>
+{% endblock footer-assets %}
+{% render_bundle 'main' 'js' 'DEFAULT' %}
 
 {% if DEBUG %}
   <script src="//localhost:35729/livereload.js"></script>
