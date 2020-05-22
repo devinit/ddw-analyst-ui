@@ -2,9 +2,9 @@ import { List, Map } from 'immutable';
 import * as React from 'react';
 import { Card, Nav, Tab } from 'react-bootstrap';
 import { ColumnList, SourceMap, UpdateHistoryList } from '../../types/sources';
-import { formatString } from '../../utils';
 import { InfoList, InfoListItems } from '../InfoList';
 import { PaginatedContent } from '../PaginatedContent';
+import { SourceColumnsList } from '../SourceColumnsList';
 import { SourceMetadata } from '../SourceMetadata';
 
 interface SourceDetailsProps {
@@ -12,7 +12,7 @@ interface SourceDetailsProps {
 }
 
 export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
-  render() {
+  render(): React.ReactElement {
     return (
       <Tab.Container defaultActiveKey="metadata">
         <Card className="source-details">
@@ -33,12 +33,7 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
                 <SourceMetadata source={this.props.source} />
               </Tab.Pane>
               <Tab.Pane eventKey="columns">
-                <PaginatedContent
-                  content={<InfoList list={List()} className="source-columns-table" />}
-                  list={this.getColumns()}
-                  limit={10}
-                  offset={0}
-                />
+                <SourceColumnsList columns={this.props.source.get('columns') as ColumnList} />
               </Tab.Pane>
               <Tab.Pane eventKey="history">
                 <PaginatedContent
@@ -53,14 +48,6 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
         </Card>
       </Tab.Container>
     );
-  }
-
-  private getColumns(): InfoListItems {
-    return (this.props.source.get('columns') as ColumnList).map((column) =>
-      Map()
-        .set('caption', formatString(column.get('name') as string))
-        .set('info', column.get('description') as string),
-    ) as InfoListItems;
   }
 
   private getUpdateHistory(): InfoListItems {

@@ -29,7 +29,7 @@ test('renders the loading indicator while loading', () => {
   expect(renderer).toMatchSnapshot();
 });
 
-test('renders the login form when loading is false', async () => {
+xtest('renders the login form when loading is false', async () => {
   const RouterContainer = withRouter(Login);
   const { getByTestId } = render(
     <MemoryRouter>

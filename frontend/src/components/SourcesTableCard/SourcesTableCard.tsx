@@ -1,21 +1,17 @@
 import { List } from 'immutable';
-import * as React from 'react';
-import { Card, Col, FormControl, Pagination, Row } from 'react-bootstrap';
-import { MapDispatchToProps, connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
+import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
+import { Card, FormControl } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import * as sourcesActions from '../../actions/sources';
 import { LinksMap } from '../../types/api';
 import { SourceMap } from '../../types/sources';
+import { PaginationRow } from '../PaginationRow';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
+import { fetchSources } from '../../actions/sources';
 
-interface ActionProps {
-  actions: typeof sourcesActions;
-}
-interface ComponentProps extends RouteComponentProps {
+interface ComponentProps {
   sources: List<SourceMap>;
-  activeSource: SourceMap;
+  activeSource?: SourceMap;
   loading: boolean;
   limit: number;
   offset: number;
@@ -23,140 +19,80 @@ interface ComponentProps extends RouteComponentProps {
   count: number;
   onRowClick: (source: SourceMap) => void;
 }
-type SourcesTableCardProps = ComponentProps & ActionProps;
+type SourcesTableCardProps = ComponentProps;
 
-class SourcesTableCard extends React.Component<SourcesTableCardProps, { searchQuery: string }> {
-  static defaultProps: Partial<SourcesTableCardProps> = {
-    limit: 10,
-    offset: 0,
-  };
-  state = { searchQuery: '' };
-
-  render() {
-    return (
-      <React.Fragment>
-        <Dimmer active={this.props.loading} inverted>
-          <Loader content="Loading" />
-        </Dimmer>
-        <Card>
-          <Card.Header className="card-header-text card-header-danger">
-            <Card.Title>
-              <FormControl
-                placeholder="Search ..."
-                className="w-50"
-                onKeyDown={this.onSearchChange}
-                data-testid="sources-table-search"
-              />
-            </Card.Title>
-          </Card.Header>
-          <Card.Body>
-            <SourcesTable
-              sources={this.props.sources}
-              onRowClick={this.props.onRowClick}
-              activeSource={this.props.activeSource}
-            />
-            {this.renderPagination()}
-          </Card.Body>
-        </Card>
-      </React.Fragment>
-    );
-  }
-
-  componentDidMount() {
-    if (!this.props.loading) {
-      this.props.actions.fetchSources({ limit: 10, offset: this.props.offset });
+export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props) => {
+  const dispatch = useDispatch();
+  const [searchQuery, setSearchQuery] = useState('');
+  useEffect(() => {
+    if (!props.loading) {
+      dispatch(fetchSources({ limit: 10, offset: props.offset }));
     }
-  }
+  }, []);
 
-  private renderPagination() {
-    const { count, offset, limit } = this.props;
-    const max = offset + limit;
-
-    return (
-      <Row>
-        <Col md={6}>
-          Showing {offset + 1} to {max > count ? count : max} of {count}
-        </Col>
-        <Col md={6}>
-          <Pagination className="float-right">
-            <Pagination.First onClick={this.goToFirst} data-testid="operations-pagination-first">
-              <i className="material-icons">first_page</i>
-            </Pagination.First>
-            <Pagination.Prev onClick={this.goToPrev} data-testid="operations-pagination-prev">
-              <i className="material-icons">chevron_left</i>
-            </Pagination.Prev>
-            <Pagination.Next onClick={this.goToNext} data-testid="operations-pagination-next">
-              <i className="material-icons">chevron_right</i>
-            </Pagination.Next>
-            <Pagination.Last onClick={this.goToLast} data-testid="operations-pagination-last">
-              <i className="material-icons">last_page</i>
-            </Pagination.Last>
-          </Pagination>
-        </Col>
-      </Row>
-    );
-  }
-
-  private onSearchChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onSearchChange = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
 
       const { value } = event.currentTarget as HTMLInputElement;
-      this.setState({ searchQuery: value || '' });
-      this.props.actions.fetchSources({ limit: this.props.limit, offset: 0, search: value || '' });
+      setSearchQuery(value || '');
+      dispatch(fetchSources({ limit: props.limit, offset: 0, search: value || '' }));
     }
   };
 
-  private goToFirst = () => {
-    this.props.actions.fetchSources({
-      limit: this.props.limit,
-      offset: 0,
-      search: this.state.searchQuery,
-    });
+  const onPageChange = (page: { selected: number }): void => {
+    dispatch(
+      fetchSources({
+        limit: props.limit,
+        offset: page.selected * props.limit,
+        search: searchQuery,
+      }),
+    );
   };
 
-  private goToLast = () => {
-    const { count } = this.props;
-    const pages = Math.ceil(count / this.props.limit);
-    const offset = (pages - 1) * this.props.limit;
-    this.props.actions.fetchSources({
-      limit: this.props.limit,
-      offset,
-      search: this.state.searchQuery,
-    });
+  const renderPagination = (): ReactNode => {
+    return (
+      <PaginationRow
+        pageRangeDisplayed={2}
+        limit={props.limit}
+        count={props.count}
+        pageCount={Math.ceil(props.count / props.limit)}
+        onPageChange={onPageChange}
+      />
+    );
   };
 
-  private goToNext = () => {
-    const { count } = this.props;
-    const offset = this.props.offset + this.props.limit;
-    if (offset < count) {
-      this.props.actions.fetchSources({
-        limit: this.props.limit,
-        offset,
-        search: this.state.searchQuery,
-      });
-    }
-  };
+  return (
+    <React.Fragment>
+      <Dimmer active={props.loading} inverted>
+        <Loader content="Loading" />
+      </Dimmer>
+      <Card>
+        <Card.Header className="card-header-text card-header-danger">
+          <Card.Title>
+            <FormControl
+              placeholder="Search ..."
+              className="w-50"
+              onKeyDown={onSearchChange}
+              data-testid="sources-table-search"
+            />
+          </Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <SourcesTable
+            sources={props.sources}
+            onRowClick={props.onRowClick}
+            activeSource={props.activeSource}
+          />
+          {renderPagination()}
+        </Card.Body>
+      </Card>
+    </React.Fragment>
+  );
+};
 
-  private goToPrev = () => {
-    if (this.props.offset > 0) {
-      const offset = this.props.offset - this.props.limit;
-      this.props.actions.fetchSources({
-        limit: this.props.limit,
-        offset,
-        search: this.state.searchQuery,
-      });
-    }
-  };
-}
-
-const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (
-  dispatch,
-): ActionProps => ({
-  actions: bindActionCreators(sourcesActions, dispatch),
-});
-
-const connector = connect(null, mapDispatchToProps)(SourcesTableCard);
-
-export { connector as SourcesTableCard };
+SourcesTableCard.defaultProps = {
+  limit: 10,
+  offset: 0,
+};

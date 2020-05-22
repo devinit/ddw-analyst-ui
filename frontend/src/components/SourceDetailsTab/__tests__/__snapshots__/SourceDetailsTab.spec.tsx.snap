@@ -149,6 +149,79 @@ exports[`renders correctly with default props 1`] = `
                 </tbody>
               </table>
             </div>
+            <div
+              class="row"
+            >
+              <div
+                class="col"
+              >
+                <ul
+                  class="pagination"
+                >
+                  <li
+                    class="page-item disabled"
+                  >
+                    <a
+                      aria-disabled="true"
+                      class="page-link"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <span
+                        aria-hidden="true"
+                      >
+                        Previous
+                      </span>
+                      <span
+                        class="sr-only"
+                      >
+                        Previous
+                      </span>
+                      <div
+                        class="ripple-container"
+                      />
+                    </a>
+                  </li>
+                  <li
+                    class="page-item active"
+                  >
+                    <a
+                      aria-current="page"
+                      aria-label="Page 1 is your current page"
+                      class="page-link"
+                      role="button"
+                      tabindex="0"
+                    >
+                      1
+                    </a>
+                  </li>
+                  <li
+                    class="page-item disabled"
+                  >
+                    <a
+                      aria-disabled="true"
+                      class="page-link"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <span
+                        aria-hidden="true"
+                      >
+                        Next
+                      </span>
+                      <span
+                        class="sr-only"
+                      >
+                        Next
+                      </span>
+                      <div
+                        class="ripple-container"
+                      />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
         <div
