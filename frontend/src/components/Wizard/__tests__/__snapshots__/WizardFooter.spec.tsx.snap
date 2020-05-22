@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WizardFooter renders the default structure correctly 1`] = `
+<div
+  className="card-footer"
+/>
+`;
+
+exports[`WizardFooter renders with children 1`] = `
+<div
+  className="card-footer"
+>
+  <div>
+    My Child
+  </div>
+</div>
+`;

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WizardBody renders the default structure correctly 1`] = `
+<div
+  className="card-body"
+>
+  <div
+    className="tab-content"
+  />
+</div>
+`;
+
+exports[`WizardBody renders with children 1`] = `
+<div
+  className="card-body"
+>
+  <div
+    className="tab-content"
+  >
+    <div>
+      My Child
+    </div>
+  </div>
+</div>
+`;

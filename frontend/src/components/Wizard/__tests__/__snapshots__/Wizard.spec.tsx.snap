@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Wizard renders the default structure correctly 1`] = `
+<div
+  className="wizard-container"
+>
+  <div
+    className="card-wizard card"
+    data-color="red"
+  />
+</div>
+`;
+
+exports[`Wizard renders with children 1`] = `
+<div
+  className="wizard-container"
+>
+  <div
+    className="card-wizard card"
+    data-color="red"
+  >
+    <div>
+      My Child
+    </div>
+  </div>
+</div>
+`;

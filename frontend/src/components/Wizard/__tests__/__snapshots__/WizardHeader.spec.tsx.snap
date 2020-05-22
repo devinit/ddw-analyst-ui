@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WizardHeader renders the default structure correctly 1`] = `
+<div
+  className="card-header"
+>
+  <div
+    className="nav nav-pills"
+    onKeyDown={[Function]}
+  />
+</div>
+`;
+
+exports[`WizardHeader renders with children 1`] = `
+<div
+  className="card-header"
+>
+  <div
+    className="nav nav-pills"
+    onKeyDown={[Function]}
+  >
+    <div>
+      My Child
+    </div>
+  </div>
+</div>
+`;
