@@ -22,37 +22,53 @@ class Command(BaseCommand):
             minutes = divmod(duration_in_s, 60)[0]
             print('duration in mins')
             print(minutes)
+            if int(minutes) >= int(interval):
+                return True
         elif interval_type and interval_type in 'sec':
             print('duration in secs')
             print(duration_in_s)
+            if int(duration_in_s) >= int(interval):
+                return True
         elif interval_type and interval_type in 'hrs':
             duration_in_hours = divmod(duration_in_s, 3600)[0]
             print('duration in hours')
             print(duration_in_hours)
+            if int(duration_in_hours) >= int(interval):
+                return True
         elif interval_type and interval_type in 'dys':
             days  = divmod(duration_in_s, 86400)[0]
             print('duration in days')
             print(days)
+            print(interval)
+            if int(days) >= int(interval):
+                print('true days')
+                return True
         elif interval_type and interval_type in 'wks':
             days  = divmod(duration_in_s, 86400)[0]
             weeks = days/7
             print('duration in weeks')
             print(weeks)
+            if int(weeks) >= int(interval):
+                return True
         elif interval_type and interval_type in 'mnt':
             months  = divmod(duration_in_s, 2629746)[0]
             print('duration in months')
             print(months)
+            if int(months) >= int(interval):
+                return True
         elif interval_type and interval_type in 'yrs':
             years  = divmod(duration_in_s, 31536000)[0]
             print('duration in years')
             print(years)
+            if int(years) >= int(interval):
+                return True
         else:
             return False
 
     def manage_repeated_schedules(self, schedule, run_instances):
         if schedule.repeat:
             latest_run_instance = ScheduledEventRunInstance.objects.filter(scheduled_event=schedule.id).latest('start_at')
-            self.check_if_repeat_is_due(latest_run_instance.start_at, schedule.interval, schedule.interval_type)
+            return self.check_if_repeat_is_due(latest_run_instance.start_at, schedule.interval, schedule.interval_type)
         else:
             return False
 
@@ -78,5 +94,6 @@ class Command(BaseCommand):
         for schedule in schedules:
             run_instances = ScheduledEventRunInstance.objects.filter(scheduled_event=schedule.id)
             if self.check_if_schedule_is_due(schedule, run_instances):
+                print('running')
                 update_response = requestHelper.execute_update(schedule.script_name)
-                self.stdout.write('Update Status Code for ' + ' ' + schedule.script_name + ' is ' + update_response)
+                self.stdout.write('Update Status Code for ' + schedule.script_name + ' is ' + str(update_response))
