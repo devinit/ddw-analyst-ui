@@ -6,9 +6,7 @@ import { ScheduledEventsTableCard } from '../../components/ScheduledEventsTableC
 
 type ScheduledEventsProps = RouteComponentProps;
 
-const ScheduledEvents: React.FC<ScheduledEventsProps> = (props) => {
-  console.log(props);
-
+const ScheduledEvents: React.FC<ScheduledEventsProps> = () => {
   return (
     <Row>
       <Col lg={7}>
