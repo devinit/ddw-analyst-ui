@@ -23,5 +23,6 @@ class RequestHelper:
             'script_name': script_name,
             'token': self.token
         }
-        response =  requests.post(self.update_url, headers=self.headers, json=data)
+        headers = {'Content-Type': 'application/json'}
+        response =  requests.post(self.update_url, headers=headers, json=data)
         return response.status_code
