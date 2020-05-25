@@ -36,9 +36,6 @@ exports[`Wizard renders with children 1`] = `
         onKeyDown={[Function]}
       />
     </div>
-    <div>
-      My Child
-    </div>
   </div>
 </div>
 `;
