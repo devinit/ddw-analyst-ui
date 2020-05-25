@@ -121,7 +121,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                 <Sidebar.Link
                   to="/scheduledevents/"
                   single
-                  icon="schedule"
+                  icon="alarm"
                   textNormal="Scheduled Events"
                   onClick={this.setActiveRoute}
                 />
