@@ -8,8 +8,10 @@ import React, {
   useState,
 } from 'react';
 import { Card } from 'react-bootstrap';
+import ReactResizeDetector from 'react-resize-detector';
 import styled from 'styled-components';
 import { WizardBody, WizardHeader, WizardNavigation, WizardNavigationItem } from '.';
+import { WizardMovingTab } from './WizardMovingTab';
 
 interface WizardProps {
   steps?: WizardStep[];
@@ -28,6 +30,7 @@ const StyledCard = styled(Card)`
 
 const Wizard: FunctionComponent<WizardProps> = ({ children, steps }) => {
   const [activeStep, setActiveStep] = useState(steps?.find((step) => step.active));
+  const [width, setWidth] = useState(0);
   const wizardNode = useRef<null | HTMLDivElement>(null);
   const onSelect = (activeKey: string): void =>
     setActiveStep(steps?.find((item) => activeKey.includes(item.key)));
@@ -52,17 +55,29 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps }) => {
     return null;
   };
 
+  const onResize = (width: number): void => setWidth(width);
+
   return (
     <div className="wizard-container" ref={wizardNode}>
       <StyledCard className="card-wizard" data-color="red">
         {Children.map(children, (child) =>
           isValidElement(child) && child.type === WizardHeader ? child : null,
         )}
-        <WizardNavigation>{renderWizardNavigation()}</WizardNavigation>
+        <WizardNavigation>
+          {renderWizardNavigation()}
+          {steps && steps.length && width && activeStep ? (
+            <WizardMovingTab steps={steps} wizardWidth={width} activeKey={activeStep.key}>
+              {activeStep.caption}
+            </WizardMovingTab>
+          ) : null}
+        </WizardNavigation>
         {Children.map(children, (child) =>
           isValidElement(child) && child.type === WizardBody ? child : null,
         )}
       </StyledCard>
+      {wizardNode.current ? (
+        <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
+      ) : null}
     </div>
   );
 };
