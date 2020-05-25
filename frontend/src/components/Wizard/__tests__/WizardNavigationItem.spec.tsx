@@ -4,20 +4,20 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import * as TestRenderer from 'react-test-renderer';
-import { WizardHeaderItem } from '../WizardHeaderItem';
+import { WizardNavigationItem } from '../WizardNavigationtem';
 
-describe('WizardHeaderItem', () => {
+describe('WizardNavigationItem', () => {
   test('renders the default structure correctly', () => {
-    const renderer = TestRenderer.create(<WizardHeaderItem />).toJSON();
+    const renderer = TestRenderer.create(<WizardNavigationItem />).toJSON();
 
     expect(renderer).toMatchSnapshot();
   });
 
   test('renders with children', () => {
     const renderer = TestRenderer.create(
-      <WizardHeaderItem>
+      <WizardNavigationItem>
         <div>My Child</div>
-      </WizardHeaderItem>,
+      </WizardNavigationItem>,
     ).toJSON();
 
     expect(renderer).toMatchSnapshot();
