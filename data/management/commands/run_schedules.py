@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from datetime import date, datetime
 from core.models import ScheduledEvent, ScheduledEventRunInstance
-from .utils import RequestHelper
+from core.tasks import execute_script
 
 class Command(BaseCommand):
     help = 'Executes scheduled events at their appointed time'
@@ -88,12 +88,13 @@ class Command(BaseCommand):
                 return False
 
     def handle(self, *args, **kwargs):
+        print('running')
+        execute_script.delay('fts.sh')
         update_response = ''
-        requestHelper = RequestHelper()
         schedules = ScheduledEvent.objects.filter(enabled=True)
         for schedule in schedules:
             run_instances = ScheduledEventRunInstance.objects.filter(scheduled_event=schedule.id)
             if self.check_if_schedule_is_due(schedule, run_instances):
                 print('running')
-                update_response = requestHelper.execute_update(schedule.script_name)
+                execute_script.delay(schedule.script_name)
                 self.stdout.write('Update Status Code for ' + schedule.script_name + ' is ' + str(update_response))
