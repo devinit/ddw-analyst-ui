@@ -17,8 +17,8 @@ export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = 
       <td>{props.description}</td>
       <td>
         <div className="togglebutton">
-          <label className="disabled">
-            <input type="checkbox" defaultChecked />
+          <label className="enabled">
+            <input type="checkbox" defaultChecked={props.enabled} />
             <span className="toggle"></span>
           </label>
         </div>

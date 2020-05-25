@@ -8,6 +8,7 @@ import * as localForage from 'localforage';
 
 export const ScheduledEventsTableCard = () => {
   const [scheduledEvents, setScheduledEvents] = React.useState({ data: [] });
+  const [loading, setLoading] = React.useState(true);
   const basePath = api.routes.VIEW_SCHEDULED_EVENTS;
   React.useEffect(() => {
     const fetchData = async () => {
@@ -18,13 +19,14 @@ export const ScheduledEventsTableCard = () => {
       };
       const result = await axios(`${basePath}`, { headers });
       setScheduledEvents({ data: result.data });
+      setLoading(false);
     };
     fetchData();
   }, []);
 
   return (
     <React.Fragment>
-      <Dimmer inverted>
+      <Dimmer active={loading} inverted>
         <Loader content="Loading" />
       </Dimmer>
       <Card>
