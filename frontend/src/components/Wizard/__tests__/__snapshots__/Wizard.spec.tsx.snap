@@ -5,9 +5,18 @@ exports[`Wizard renders the default structure correctly 1`] = `
   className="wizard-container"
 >
   <div
-    className="card-wizard card"
+    className="sc-AxirZ bnnSKj card-wizard card"
     data-color="red"
-  />
+  >
+    <div
+      className="wizard-navigation"
+    >
+      <div
+        className="sc-AxjAm duBvmv nav card-header-pills nav-pills"
+        onKeyDown={[Function]}
+      />
+    </div>
+  </div>
 </div>
 `;
 
@@ -16,9 +25,17 @@ exports[`Wizard renders with children 1`] = `
   className="wizard-container"
 >
   <div
-    className="card-wizard card"
+    className="sc-AxirZ bnnSKj card-wizard card"
     data-color="red"
   >
+    <div
+      className="wizard-navigation"
+    >
+      <div
+        className="sc-AxjAm duBvmv nav card-header-pills nav-pills"
+        onKeyDown={[Function]}
+      />
+    </div>
     <div>
       My Child
     </div>
