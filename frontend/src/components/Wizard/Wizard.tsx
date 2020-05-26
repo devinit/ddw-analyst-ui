@@ -76,9 +76,7 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
             isValidElement(child) && child.type === WizardBody ? child : null,
           )}
         </StyledCard>
-        {wizardNode.current ? (
-          <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
-        ) : null}
+        <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
       </Tab.Container>
     </div>
   );

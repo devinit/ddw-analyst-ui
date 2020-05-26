@@ -18,6 +18,7 @@ exports[`Wizard renders the default structure correctly 1`] = `
       />
     </div>
   </div>
+  <div />
 </div>
 `;
 
@@ -39,5 +40,6 @@ exports[`Wizard renders with children 1`] = `
       />
     </div>
   </div>
+  <div />
 </div>
 `;
