@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React, { SuspenseProps, Suspense, ReactElement } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
 const MainLayout = React.lazy(() => import('./MainLayout'));
-export const AsyncMainLayout = (props: RouteComponentProps) => (
-  <React.Suspense
+export const AsyncMainLayout = (props: RouteComponentProps): ReactElement<SuspenseProps> => (
+  <Suspense
     fallback={
       <Dimmer active={true} inverted>
         <Loader content="Loading" />
@@ -12,5 +12,5 @@ export const AsyncMainLayout = (props: RouteComponentProps) => (
     }
   >
     <MainLayout {...props} />
-  </React.Suspense>
+  </Suspense>
 );

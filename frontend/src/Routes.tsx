@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { AsyncMainLayout } from './layouts';
 import { AsyncLogin } from './pages/Login';
 import { store } from './store';
 
-export const Routes = () => (
+export const Routes = (): ReactElement => (
   <Provider store={store}>
     <BrowserRouter>
       <Switch>

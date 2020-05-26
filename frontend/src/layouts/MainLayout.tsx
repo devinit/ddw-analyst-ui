@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
-import * as React from 'react';
+import React, { ReactElement } from 'react';
 import { Dropdown, Modal, Nav, Navbar } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
@@ -57,13 +57,11 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
     activeRoute: this.props.location.pathname,
   };
 
-  render() {
+  render(): ReactElement {
     if (this.state.loading) {
       return <Segment loading className="layout-loading" />;
     }
 
-    const NavbarCollapse: any = Navbar.Collapse; // FIXME: once react-bootstrap types are fixed: pull request #3502
-    const DropdownMenu: any = Dropdown.Menu; // FIXME: once react-bootstrap types are fixed
     const ModalContent = this.props.modal.get('modal') as React.ElementType | undefined;
     const modalSize = this.props.modal.get('size') as 'sm' | 'lg' | undefined;
 
@@ -141,10 +139,20 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
             <div className="navbar-wrapper">
               <NavbarMinimise />
               <Navbar.Brand href="/">
-                <Route path="/" exact component={() => <span>Home</span>} />
-                <Route path="/sources" exact component={() => <span>Data Sources</span>} />
-                <Route path="/queries/build" component={() => <span>Query Builder</span>} />
-                <Route path="/scheduledevents/" component={() => <span>Scheduled Events</span>} />
+                <Route path="/" exact component={(): ReactElement => <span>Home</span>} />
+                <Route
+                  path="/sources"
+                  exact
+                  component={(): ReactElement => <span>Data Sources</span>}
+                />
+                <Route
+                  path="/queries/build"
+                  component={(): ReactElement => <span>Query Builder</span>}
+                />
+                <Route
+                  path="/scheduledevents/"
+                  component={(): ReactElement => <span>Scheduled Events</span>}
+                />
               </Navbar.Brand>
             </div>
 
@@ -155,14 +163,14 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <span className="navbar-toggler-icon icon-bar" />
             </Navbar.Toggle>
 
-            <NavbarCollapse className="justify-content-end">
+            <Navbar.Collapse className="justify-content-end">
               <Nav>
                 <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownProfile">
                   <Dropdown.Toggle as={Nav.Link} id="nav-dropdown" data-cy="user-options">
                     <i className="material-icons">person</i>
                     <p className="d-lg-none d-md-block">Account</p>
                   </Dropdown.Toggle>
-                  <DropdownMenu alignRight>
+                  <Dropdown.Menu alignRight>
                     <Dropdown.Item data-cy="account" onClick={this.openAccountModal}>
                       Change Password
                     </Dropdown.Item>
@@ -170,10 +178,10 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     <Dropdown.Item onClick={this.onLogOut} data-cy="logout">
                       Log Out
                     </Dropdown.Item>
-                  </DropdownMenu>
+                  </Dropdown.Menu>
                 </Dropdown>
               </Nav>
-            </NavbarCollapse>
+            </Navbar.Collapse>
           </Navbar>
 
           <AdminLayout.Content>
@@ -194,7 +202,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
     );
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     Promise.all([
       localForage.getItem<string>(localForageKeys.API_KEY),
       localForage.getItem<User>(localForageKeys.USER),
@@ -211,13 +219,13 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
       });
   }
 
-  componentDidUpdate(prevProps: MainLayoutProps) {
+  componentDidUpdate(prevProps: MainLayoutProps): void {
     if (prevProps.token && !this.props.token) {
       this.clearStorageAndGoToLogin();
     }
   }
 
-  private onLogOut = () => {
+  private onLogOut = (): void => {
     localForage
       .getItem<string>(localForageKeys.API_KEY)
       .then((token) => {
@@ -244,15 +252,15 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
       .catch(this.clearStorageAndGoToLogin);
   };
 
-  private openAccountModal = () => {
+  private openAccountModal = (): void => {
     this.props.actions.toggleModal(AccountModal);
   };
 
-  private closeModal = () => {
+  private closeModal = (): void => {
     this.props.actions.toggleModal();
   };
 
-  private validateToken(token: string, user: User) {
+  private validateToken(token: string, user: User): void {
     axios
       .request({
         url: `${api.routes.USERS}${user.id}/`,
@@ -268,7 +276,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
           this.props.actions.setUser({
             id: data.id,
             username: data.username,
-            is_superuser: data.is_superuser,
+            is_superuser: data.is_superuser, // eslint-disable-line @typescript-eslint/camelcase
           });
           this.setState({ loading: false });
         } else {
@@ -278,12 +286,12 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
       .catch(this.clearStorageAndGoToLogin); //tslint:disable-line
   }
 
-  private clearStorageAndGoToLogin = () => {
+  private clearStorageAndGoToLogin = (): void => {
     localForage.clear();
     this.props.history.push('/login');
   };
 
-  private setActiveRoute = (activeRoute: string) => {
+  private setActiveRoute = (activeRoute: string): void => {
     this.setState({ activeRoute });
   };
 }
