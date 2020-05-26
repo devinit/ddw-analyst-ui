@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WizardBodyContent renders the default structure correctly 1`] = `
+<div
+  aria-hidden={true}
+  className="tab-pane"
+  role="tabpanel"
+/>
+`;
+
+exports[`WizardBodyContent renders with children 1`] = `
+<div
+  aria-hidden={true}
+  className="tab-pane"
+  role="tabpanel"
+>
+  <div>
+    My Child
+  </div>
+</div>
+`;

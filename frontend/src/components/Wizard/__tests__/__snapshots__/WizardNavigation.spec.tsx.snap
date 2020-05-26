@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WizardNavigation renders the default structure correctly 1`] = `
+<div
+  className="wizard-navigation"
+>
+  <div
+    className="sc-AxjAm duBvmv nav nav-pills"
+    onKeyDown={[Function]}
+  />
+</div>
+`;
+
+exports[`WizardNavigation renders with children 1`] = `
+<div
+  className="wizard-navigation"
+>
+  <div
+    className="sc-AxjAm duBvmv nav nav-pills"
+    onKeyDown={[Function]}
+  >
+    <div>
+      My Child
+    </div>
+  </div>
+</div>
+`;
