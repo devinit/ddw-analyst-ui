@@ -5,10 +5,13 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { ScheduledEventsTable } from '../ScheduledEventsTable/ScheduledEventsTable';
 import { api, localForageKeys } from '../../utils';
 import * as localForage from 'localforage';
+import { PaginationRow } from '../PaginationRow';
 
 export const ScheduledEventsTableCard = () => {
   const [scheduledEvents, setScheduledEvents] = React.useState({ data: [] });
   const [loading, setLoading] = React.useState(true);
+  const [count, setCount] = React.useState(0);
+  const [pageCount, setPageCount] = React.useState(0);
   const basePath = api.routes.VIEW_SCHEDULED_EVENTS;
   React.useEffect(() => {
     const fetchData = async () => {
@@ -20,16 +23,25 @@ export const ScheduledEventsTableCard = () => {
       const result = await axios(`${basePath}`, { headers });
       setScheduledEvents({ data: result.data });
       setLoading(false);
+      setCount(result.data.length);
+      setPageCount(Math.ceil(result.data.length / 5));
     };
     fetchData();
   }, []);
+  const renderPagination = (): React.ReactNode => {
+    return count === 0 ? (
+      'No Data'
+    ) : (
+      <PaginationRow pageCount={pageCount} limit={5} count={count} />
+    );
+  };
 
   return (
     <React.Fragment>
       <Dimmer active={loading} inverted>
         <Loader content="Loading" />
       </Dimmer>
-      <Card>
+      <Card style={{ width: '76vw' }}>
         <Card.Header className="card-header-rose card-header-icon">
           <Card.Header className="card-icon">
             <i className="material-icons">schedule</i>
@@ -38,8 +50,14 @@ export const ScheduledEventsTableCard = () => {
         </Card.Header>
         <Card.Body>
           <ScheduledEventsTable events={scheduledEvents} />
+          {renderPagination()}
         </Card.Body>
       </Card>
     </React.Fragment>
   );
+};
+
+ScheduledEventsTableCard.defaultProps = {
+  limit: 10,
+  offset: 0,
 };

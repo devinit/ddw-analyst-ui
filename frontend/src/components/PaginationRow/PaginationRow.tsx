@@ -26,7 +26,7 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
       <Col lg={4} className="align-middle d-none d-sm-none d-md-block" style={{ top: '2px' }}>
         {count === 0
           ? 'No Data'
-          : `Showing ${offset + 1} to ${max > count ? count : max} of ${count}`}
+          : `Showing ${offset + 1} to ${max > count ? count : max} of ${count} entries`}
       </Col>
       <Col lg={8} className="align-middle">
         <Pagination className="float-right" {...props} onPageChange={onPageSelected} />
