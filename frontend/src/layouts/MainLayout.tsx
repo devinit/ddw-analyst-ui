@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
 import React, { ReactElement } from 'react';
 import { Dropdown, Modal, Nav, Navbar } from 'react-bootstrap';
-import { MapDispatchToProps, connect } from 'react-redux';
+import { connect, MapDispatchToProps } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Segment } from 'semantic-ui-react';
@@ -15,6 +15,7 @@ import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { AsyncDataSources } from '../pages/DataSources';
+import { AsyncDataUpdate } from '../pages/DataUpdate';
 import { AsyncHome } from '../pages/Home';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
 import { AsyncQueryData } from '../pages/QueryData';
@@ -105,6 +106,16 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   data-testid="sidebar-link-sources"
                 />
               </Sidebar.Item>
+              <Sidebar.Item active={this.state.activeRoute === '/update/'}>
+                <Sidebar.Link
+                  to="/update/"
+                  single
+                  icon="library_add"
+                  textNormal="Update Data Source"
+                  onClick={this.setActiveRoute}
+                  data-testid="sidebar-link-update"
+                />
+              </Sidebar.Item>
               <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
                 <Sidebar.Link
                   to="/queries/build/"
@@ -150,6 +161,10 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   component={(): ReactElement => <span>Query Builder</span>}
                 />
                 <Route
+                  path="/update"
+                  component={(): ReactElement => <span>Update Data Source</span>}
+                />
+                <Route
                   path="/scheduledevents/"
                   component={(): ReactElement => <span>Scheduled Events</span>}
                 />
@@ -190,6 +205,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/sources" exact component={AsyncDataSources} />
               <Route path="/queries/build" exact component={AsyncQueryBuilder} />
               <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
+              <Route path="/update" exact component={AsyncDataUpdate} />
               <Route path="/queries/data/:id" exact component={AsyncQueryData} />
               <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
             </Switch>
