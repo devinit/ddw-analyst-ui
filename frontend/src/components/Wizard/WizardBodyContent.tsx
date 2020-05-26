@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { Tab } from 'react-bootstrap';
+import { Tab, TabPaneProps } from 'react-bootstrap';
 
-const WizardBodyContent: FunctionComponent = ({ children, ...props }) => {
+const WizardBodyContent: FunctionComponent<TabPaneProps> = ({ children, ...props }) => {
   return <Tab.Pane {...props}>{children}</Tab.Pane>;
 };
 

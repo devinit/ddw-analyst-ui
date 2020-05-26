@@ -14,6 +14,7 @@ exports[`Wizard renders the default structure correctly 1`] = `
       <div
         className="sc-AxjAm duBvmv nav card-header-pills nav-pills"
         onKeyDown={[Function]}
+        role="tablist"
       />
     </div>
   </div>
@@ -34,6 +35,7 @@ exports[`Wizard renders with children 1`] = `
       <div
         className="sc-AxjAm duBvmv nav card-header-pills nav-pills"
         onKeyDown={[Function]}
+        role="tablist"
       />
     </div>
   </div>
