@@ -51,6 +51,10 @@ select:-webkit-autofill:focus {
   margin-left: 7px;
 }
 
+.card-wizard {
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,.14);
+}
+
 .card-wizard .nav-pills > li {
   padding: 0;
 }
@@ -71,4 +75,50 @@ select:-webkit-autofill:focus {
   color: #fff;
   cursor: pointer;
   font-weight: 500;
+}
+
+.alert.alert-secondary {
+  color: #383d41;
+  background-color: #e2e3e5;
+}
+
+.alert.alert-dark {
+  color: #1b1e21;
+  background-color: #d6d8d9;
+}
+
+.dropdown-menu .disabled {
+  display: block;
+}
+
+.bordered-text {
+  background-color: white;
+  padding: 0 3px;
+  border: 1px solid #cccccc;
+}
+
+th .material-icons {
+  position: relative;
+  top: -2px;
+}
+
+.bg-warning {
+  background-color: #ff9800!important;
+}
+
+.table>tbody>tr>td .material-icons,
+.table>tbody>tr>th .material-icons,
+.table>tfoot>tr>td .material-icons,
+.table>tfoot>tr>th .material-icons,
+.table>thead>tr>td .material-icons,
+.table>thead>tr>th .material-icons {
+  vertical-align: middle;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.filter-option {
+  text-transform: capitalize;
 }
