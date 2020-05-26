@@ -5,8 +5,9 @@ export interface ScheduledEvent {
   name: string;
   description: string | null;
   enabled: boolean;
-  interval: string | null;
-  actions: string;
+  interval: number;
+  interval_type: string;
+  repeat: string;
 }
 
 export type ScheduledEventMap = Map<keyof ScheduledEvent, ScheduledEvent[keyof ScheduledEvent]>;

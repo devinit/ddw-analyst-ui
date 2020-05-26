@@ -15,6 +15,7 @@ export const ScheduledEventsTableCard = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [selectedPage, setSelectedPage] = React.useState(0);
   const basePath = api.routes.VIEW_SCHEDULED_EVENTS;
+  const limit = 5;
   React.useEffect(() => {
     const fetchData = async () => {
       const token = await localForage.getItem<string>(localForageKeys.API_KEY);
@@ -53,7 +54,7 @@ export const ScheduledEventsTableCard = () => {
       'No Data'
     ) : (
       <PaginationRow
-        limit={5}
+        limit={limit}
         count={count}
         pageCount={pageCount}
         onPageChange={handlePageChange}
@@ -74,7 +75,11 @@ export const ScheduledEventsTableCard = () => {
           <h4 className="card-title">Scheduled Events</h4>
         </Card.Header>
         <Card.Body>
-          <ScheduledEventsTable events={handleScheduledEvents()} />
+          <ScheduledEventsTable
+            currentPage={currentPage}
+            pageLimit={limit}
+            events={handleScheduledEvents()}
+          />
           {renderPagination()}
         </Card.Body>
       </Card>
@@ -83,6 +88,6 @@ export const ScheduledEventsTableCard = () => {
 };
 
 ScheduledEventsTableCard.defaultProps = {
-  limit: 10,
+  limit: 5,
   offset: 0,
 };

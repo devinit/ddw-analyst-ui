@@ -5,8 +5,9 @@ export interface ScheduledEventsTableRowProps {
   name: string;
   description: string;
   enabled: boolean;
-  interval: string;
-  actions: string;
+  interval: number;
+  repeat: string;
+  interval_type: string;
 }
 
 export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = (props) => {
@@ -23,13 +24,9 @@ export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = 
           </label>
         </div>
       </td>
-      <td>Everyday at {props.interval}AM</td>
-      <td className="td-actions text-right">
-        <button type="button" className="btn btn-info" data-original-title>
-          <i className="material-icons">play_circle_filled</i>
-          Run Now
-          <div className="ripple-container"></div>
-        </button>
+      <td>
+        {props.repeat} {props.interval}
+        {props.interval_type}
       </td>
     </tr>
   );

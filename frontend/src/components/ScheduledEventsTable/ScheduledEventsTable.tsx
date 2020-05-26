@@ -4,21 +4,23 @@ import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow/ScheduledEve
 import { ScheduledEvent } from '../../types/scheduledEvents';
 
 export const ScheduledEventsTable = (props: any) => {
-  const renderRows = () => {
-    return props.events.map((event: ScheduledEvent, index: number) => {
+  const offset = (props.currentPage - 1) * props.pageLimit;
+
+  const renderRows = () =>
+    props.events.map((event: ScheduledEvent, index: number) => {
       return (
         <ScheduledEventsTableRow
           key={index}
-          id={event.id}
+          id={offset + index + 1}
           name={event.name}
           description={event.description || ''}
           enabled={event.enabled}
-          interval={event.interval || ''}
-          actions={event.actions}
+          interval={event.interval}
+          interval_type={event.interval_type}
+          repeat={event.repeat}
         />
       );
     });
-  };
 
   return (
     <Table responsive striped>
@@ -29,7 +31,6 @@ export const ScheduledEventsTable = (props: any) => {
           <th>Description</th>
           <th>Enabled</th>
           <th>Interval</th>
-          <th className="text-right">Actions</th>
         </tr>
       </thead>
       <tbody>{renderRows()}</tbody>
