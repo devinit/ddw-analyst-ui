@@ -5,17 +5,19 @@ import { ScheduledEvent } from '../../types/scheduledEvents';
 
 export const ScheduledEventsTable = (props: any) => {
   const renderRows = () => {
-    return props.events.data.map((event: ScheduledEvent, index: number) => (
-      <ScheduledEventsTableRow
-        key={index}
-        id={index + 1}
-        name={event.name}
-        description={event.description || ''}
-        enabled={event.enabled}
-        interval={event.interval || ''}
-        actions={event.actions}
-      />
-    ));
+    return props.events.map((event: ScheduledEvent, index: number) => {
+      return (
+        <ScheduledEventsTableRow
+          key={index}
+          id={event.id}
+          name={event.name}
+          description={event.description || ''}
+          enabled={event.enabled}
+          interval={event.interval || ''}
+          actions={event.actions}
+        />
+      );
+    });
   };
 
   return (

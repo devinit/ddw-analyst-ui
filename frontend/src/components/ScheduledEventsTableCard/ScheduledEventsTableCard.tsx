@@ -12,6 +12,8 @@ export const ScheduledEventsTableCard = () => {
   const [loading, setLoading] = React.useState(true);
   const [count, setCount] = React.useState(0);
   const [pageCount, setPageCount] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [selectedPage, setSelectedPage] = React.useState(0);
   const basePath = api.routes.VIEW_SCHEDULED_EVENTS;
   React.useEffect(() => {
     const fetchData = async () => {
@@ -28,11 +30,34 @@ export const ScheduledEventsTableCard = () => {
     };
     fetchData();
   }, []);
+
+  const handleScheduledEvents = () => {
+    const begin = (currentPage - 1) * 5;
+    const end = begin + 5;
+
+    return scheduledEvents.data.slice(begin, end);
+  };
+
+  const handlePageChange = (page: any) => {
+    setSelectedPage(page.selected);
+    if (page.selected === selectedPage + 1) {
+      setCurrentPage((currentPage) => currentPage + 1);
+    } else if (page.selected === selectedPage - 1) {
+      setCurrentPage((currentPage) => currentPage - 1);
+    } else {
+      setCurrentPage(() => page.selected + 1);
+    }
+  };
   const renderPagination = (): React.ReactNode => {
     return count === 0 ? (
       'No Data'
     ) : (
-      <PaginationRow pageCount={pageCount} limit={5} count={count} />
+      <PaginationRow
+        limit={5}
+        count={count}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+      />
     );
   };
 
@@ -49,7 +74,7 @@ export const ScheduledEventsTableCard = () => {
           <h4 className="card-title">Scheduled Events</h4>
         </Card.Header>
         <Card.Body>
-          <ScheduledEventsTable events={scheduledEvents} />
+          <ScheduledEventsTable events={handleScheduledEvents()} />
           {renderPagination()}
         </Card.Body>
       </Card>
