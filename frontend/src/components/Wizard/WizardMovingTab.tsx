@@ -58,7 +58,7 @@ const WizardMovingTab: FunctionComponent<ComponentProps> = ({ children, steps, .
   };
 
   return (
-    <div className="moving-tab d-none d-lg-block d-xl-none" style={style}>
+    <div className="moving-tab d-none d-lg-block d-xl-block" style={style}>
       {children}
     </div>
   );

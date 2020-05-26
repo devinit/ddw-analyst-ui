@@ -14,7 +14,7 @@ const WizardNavigationItem: FunctionComponent<ComponentProps> = ({
   return (
     <Nav.Item as="li" className={classNames(className)}>
       <Nav.Link {...props}>{children}</Nav.Link>
-      {props.active ? <div className="nav-tab-active d-lg-none d-xl-block">{children}</div> : null}
+      {props.active ? <div className="nav-tab-active d-lg-none d-xl-none">{children}</div> : null}
     </Nav.Item>
   );
 };
