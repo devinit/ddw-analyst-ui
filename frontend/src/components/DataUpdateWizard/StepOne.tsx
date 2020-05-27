@@ -1,13 +1,24 @@
 import React, { FunctionComponent } from 'react';
 import { Alert, Row, Col } from 'react-bootstrap';
-import { Dropdown, DropdownItemProps } from 'semantic-ui-react';
+import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+
+interface ComponentProps {
+  onComplete?: (dataSource: string) => void;
+}
 
 const options: DropdownItemProps[] = [
   { key: 'fts-donor-codes', text: 'FTS Donor Codes', value: 'fts-donor-codes' },
   { key: 'fts-deflators', text: 'FTS Deflators', value: 'fts-deflators' },
 ];
 
-const StepOne: FunctionComponent = () => {
+const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
+  const onChange = (
+    _event: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps,
+  ): void => {
+    if (onComplete) onComplete(data.value as string);
+  };
+
   return (
     <>
       <h5 className="info-text">Select the data source you wish to update</h5>
@@ -26,6 +37,7 @@ const StepOne: FunctionComponent = () => {
             fluid
             selection
             options={options}
+            onChange={onChange}
           />
         </Col>
       </Row>

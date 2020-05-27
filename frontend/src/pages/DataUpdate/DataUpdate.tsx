@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, createContext } from 'react';
 import { Card, Col } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { StepOne, StepTwo } from '../../components/DataUpdateWizard';
@@ -9,6 +9,10 @@ import {
   WizardHeader,
   WizardStep,
 } from '../../components/Wizard';
+
+interface WizardData {
+  dataSource?: string;
+}
 
 const steps: WizardStep[] = [
   {
@@ -21,36 +25,44 @@ const steps: WizardStep[] = [
     caption: 'Select XLS/CSV',
   },
 ];
+export const WizardContext = createContext<WizardData>({});
 
 const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
   const [showNext, setShowNext] = useState(false);
-  const onNext = (step: WizardStep): void => {
-    console.log(step.caption);
+  const [dataSource, setDataSource] = useState('');
+  const onNext = (_step: WizardStep): void => {
+    setShowNext(true);
+  };
+
+  const onStepOneComplete = (_dataSource: string): void => {
+    setDataSource(_dataSource);
     setShowNext(true);
   };
 
   return (
     <Col md={10} className="ml-auto mr-auto">
-      <Wizard
-        steps={steps}
-        id="data-update"
-        defaultActiveKey="one"
-        onNext={onNext}
-        showNext={showNext}
-      >
-        <WizardHeader>
-          <Card.Title>Update Table</Card.Title>
-          <h5 className="card-description">Upload the contents of an XLS/CSV to a data table</h5>
-        </WizardHeader>
-        <WizardBody>
-          <WizardBodyContent eventKey="one">
-            <StepOne />
-          </WizardBodyContent>
-          <WizardBodyContent eventKey="two">
-            <StepTwo />
-          </WizardBodyContent>
-        </WizardBody>
-      </Wizard>
+      <WizardContext.Provider value={{ dataSource }}>
+        <Wizard
+          steps={steps}
+          id="data-update"
+          defaultActiveKey="one"
+          onNext={onNext}
+          showNext={showNext}
+        >
+          <WizardHeader>
+            <Card.Title>Update Table</Card.Title>
+            <h5 className="card-description">Upload the contents of an XLS/CSV to a data table</h5>
+          </WizardHeader>
+          <WizardBody>
+            <WizardBodyContent eventKey="one">
+              <StepOne onComplete={onStepOneComplete} />
+            </WizardBodyContent>
+            <WizardBodyContent eventKey="two">
+              <StepTwo />
+            </WizardBodyContent>
+          </WizardBody>
+        </Wizard>
+      </WizardContext.Provider>
     </Col>
   );
 };
