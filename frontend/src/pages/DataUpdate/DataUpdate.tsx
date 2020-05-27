@@ -14,7 +14,7 @@ interface WizardData {
   dataSource?: string;
 }
 
-const steps: WizardStep[] = [
+const defaultSteps: WizardStep[] = [
   {
     key: 'one',
     caption: 'Select Data Source',
@@ -28,12 +28,31 @@ const steps: WizardStep[] = [
   },
 ];
 export const WizardContext = createContext<WizardData>({});
+const updateSteps = (steps: WizardStep[], activeIndex: number): WizardStep[] => {
+  const nextIndex = activeIndex + 1;
+
+  if (nextIndex >= steps.length) {
+    return steps;
+  }
+
+  steps[activeIndex].active = false;
+  steps[nextIndex].active = true;
+
+  return steps.slice();
+};
 
 const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
+  const [steps, setSteps] = useState<WizardStep[]>(defaultSteps);
   const [showNext, setShowNext] = useState(false);
   const [dataSource, setDataSource] = useState('');
-  const onNext = (_step: WizardStep): void => {
-    setShowNext(true);
+  const onNext = (step: WizardStep): void => {
+    setSteps(
+      updateSteps(
+        steps,
+        steps.findIndex((_step) => _step.key === step.key),
+      ),
+    );
+    setShowNext(false);
   };
 
   const onStepOneComplete = (_dataSource: string): void => {
