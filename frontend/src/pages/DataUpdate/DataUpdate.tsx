@@ -19,10 +19,12 @@ const steps: WizardStep[] = [
     key: 'one',
     caption: 'Select Data Source',
     active: true,
+    disabled: true,
   },
   {
     key: 'two',
     caption: 'Select XLS/CSV',
+    disabled: true,
   },
 ];
 export const WizardContext = createContext<WizardData>({});

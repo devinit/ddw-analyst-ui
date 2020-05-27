@@ -27,6 +27,7 @@ export interface WizardStep {
   key: string;
   caption?: string;
   active?: boolean;
+  disabled?: boolean;
   onLoad?: () => void;
   beforeNext?: () => void;
 }
@@ -63,13 +64,14 @@ const Wizard: FunctionComponent<WizardProps> = ({
     if (steps && steps?.length) {
       const col = Math.ceil(12 / steps.length);
 
-      return steps.map(({ caption, key }) => (
+      return steps.map(({ caption, key, disabled }) => (
         <WizardNavigationItem
           key={key}
           active={activeStep?.key === key}
           eventKey={key}
           className={classNames(`col-sm-6 col-lg-${col}`)}
           onSelect={onSelect}
+          disabled={disabled}
         >
           {caption}
         </WizardNavigationItem>

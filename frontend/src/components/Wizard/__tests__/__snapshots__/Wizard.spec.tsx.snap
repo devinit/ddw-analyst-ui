@@ -1,18 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Wizard renders the default structure correctly 1`] = `
+.c1.nav {
+  border-radius: inherit !important;
+  margin: inherit !important;
+  padding: inherit !important;
+}
+
+.c0 {
+  opacity: 1;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+}
+
 <div
   className="wizard-container"
 >
   <div
-    className="sc-AxirZ bnnSKj card-wizard card"
+    className="c0 card-wizard card"
     data-color="red"
   >
     <div
       className="wizard-navigation"
     >
       <div
-        className="sc-AxjAm duBvmv nav card-header-pills nav-pills"
+        className="c1 nav card-header-pills nav-pills"
         onKeyDown={[Function]}
         role="tablist"
       />
@@ -63,18 +74,29 @@ exports[`Wizard renders the default structure correctly 1`] = `
 `;
 
 exports[`Wizard renders with children 1`] = `
+.c1.nav {
+  border-radius: inherit !important;
+  margin: inherit !important;
+  padding: inherit !important;
+}
+
+.c0 {
+  opacity: 1;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+}
+
 <div
   className="wizard-container"
 >
   <div
-    className="sc-AxirZ bnnSKj card-wizard card"
+    className="c0 card-wizard card"
     data-color="red"
   >
     <div
       className="wizard-navigation"
     >
       <div
-        className="sc-AxjAm duBvmv nav card-header-pills nav-pills"
+        className="c1 nav card-header-pills nav-pills"
         onKeyDown={[Function]}
         role="tablist"
       />
