@@ -6,6 +6,7 @@ import React, {
   ReactNode,
   useRef,
   useState,
+  useEffect,
 } from 'react';
 import { Card, Tab, TabContainerProps, Button } from 'react-bootstrap';
 import ReactResizeDetector from 'react-resize-detector';
@@ -16,6 +17,10 @@ import { showPreviousButton, showNextButton, showFinishButton } from './utils';
 
 interface WizardProps extends TabContainerProps {
   steps?: WizardStep[];
+  onPrevious?: (step: WizardStep) => void;
+  onNext?: (step: WizardStep) => void;
+  onFinish?: (step: WizardStep) => void;
+  showNext?: boolean;
 }
 
 export interface WizardStep {
@@ -31,10 +36,26 @@ const StyledCard = styled(Card)`
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
 `;
 
-const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) => {
+const Wizard: FunctionComponent<WizardProps> = ({
+  children,
+  steps,
+  onPrevious,
+  onNext,
+  onFinish,
+  showNext,
+  ...props
+}) => {
   const [activeStep, setActiveStep] = useState(steps?.find((step) => step.active));
   const [width, setWidth] = useState(0);
   const wizardNode = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    const currentActiveStep = steps?.find((step) => step.active);
+    if (currentActiveStep && currentActiveStep.key !== activeStep?.key) {
+      setActiveStep(currentActiveStep);
+    }
+  }, [steps]);
+
   const onSelect = (activeKey: string): void =>
     setActiveStep(steps?.find((item) => activeKey.includes(item.key)));
 
@@ -59,6 +80,15 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
   };
 
   const onResize = (width: number): void => setWidth(width);
+  const onBack = (): void => {
+    if (onPrevious && activeStep) onPrevious(activeStep);
+  };
+  const onForward = (): void => {
+    if (onNext && activeStep) onNext(activeStep);
+  };
+  const onComplete = (): void => {
+    if (onFinish && activeStep) onFinish(activeStep);
+  };
 
   return (
     <div className="wizard-container" ref={wizardNode}>
@@ -86,6 +116,7 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
                 className={classNames('btn-previous btn-fill btn-wd btn-default', {
                   disabled: !showPreviousButton(steps, activeStep),
                 })}
+                onClick={onBack}
               >
                 Previous
               </Button>
@@ -94,8 +125,9 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
               <Button
                 variant="danger"
                 className={classNames('btn btn-next btn-fill btn-wd', {
-                  disabled: !showNextButton(steps, activeStep),
+                  disabled: !showNext || !showNextButton(steps, activeStep),
                 })}
+                onClick={onForward}
               >
                 Next
               </Button>
@@ -105,6 +137,7 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
                   disabled: !showFinishButton(steps, activeStep),
                 })}
                 name="finish"
+                onClick={onComplete}
               >
                 Finish
               </Button>

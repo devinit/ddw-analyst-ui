@@ -26,6 +26,7 @@ exports[`Wizard renders the default structure correctly 1`] = `
         <button
           className="btn-previous btn-fill btn-wd btn-default disabled btn btn-primary"
           disabled={false}
+          onClick={[Function]}
           type="button"
         >
           Previous
@@ -37,6 +38,7 @@ exports[`Wizard renders the default structure correctly 1`] = `
         <button
           className="btn btn-next btn-fill btn-wd disabled btn btn-danger"
           disabled={false}
+          onClick={[Function]}
           type="button"
         >
           Next
@@ -45,6 +47,7 @@ exports[`Wizard renders the default structure correctly 1`] = `
           className="btn btn-fill btn-wd disabled btn btn-danger"
           disabled={false}
           name="finish"
+          onClick={[Function]}
           type="button"
         >
           Finish
@@ -85,6 +88,7 @@ exports[`Wizard renders with children 1`] = `
         <button
           className="btn-previous btn-fill btn-wd btn-default disabled btn btn-primary"
           disabled={false}
+          onClick={[Function]}
           type="button"
         >
           Previous
@@ -96,6 +100,7 @@ exports[`Wizard renders with children 1`] = `
         <button
           className="btn btn-next btn-fill btn-wd disabled btn btn-danger"
           disabled={false}
+          onClick={[Function]}
           type="button"
         >
           Next
@@ -104,6 +109,7 @@ exports[`Wizard renders with children 1`] = `
           className="btn btn-fill btn-wd disabled btn btn-danger"
           disabled={false}
           name="finish"
+          onClick={[Function]}
           type="button"
         >
           Finish
