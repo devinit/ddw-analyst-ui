@@ -7,11 +7,12 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Card, Tab, TabContainerProps } from 'react-bootstrap';
+import { Card, Tab, TabContainerProps, Button } from 'react-bootstrap';
 import ReactResizeDetector from 'react-resize-detector';
 import styled from 'styled-components';
-import { WizardBody, WizardHeader, WizardNavigation, WizardNavigationItem } from '.';
+import { WizardBody, WizardHeader, WizardNavigation, WizardNavigationItem, WizardFooter } from '.';
 import { WizardMovingTab } from './WizardMovingTab';
+import { showPreviousButton, showNextButton, showFinishButton } from './utils';
 
 interface WizardProps extends TabContainerProps {
   steps?: WizardStep[];
@@ -21,6 +22,8 @@ export interface WizardStep {
   key: string;
   caption?: string;
   active?: boolean;
+  onLoad?: () => void;
+  beforeNext?: () => void;
 }
 
 const StyledCard = styled(Card)`
@@ -73,8 +76,41 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
             ) : null}
           </WizardNavigation>
           {Children.map(children, (child) =>
-            isValidElement(child) && child.type === WizardBody ? child : null,
+            isValidElement(child) && (child.type === WizardBody || child.type === WizardFooter)
+              ? child
+              : null,
           )}
+          <WizardFooter>
+            <div className="mr-auto">
+              <Button
+                className={classNames('btn-previous btn-fill btn-wd btn-default', {
+                  disabled: !showPreviousButton(steps, activeStep),
+                })}
+              >
+                Previous
+              </Button>
+            </div>
+            <div className="ml-auto">
+              <Button
+                variant="danger"
+                className={classNames('btn btn-next btn-fill btn-wd', {
+                  disabled: !showNextButton(steps, activeStep),
+                })}
+              >
+                Next
+              </Button>
+              <Button
+                variant="danger"
+                className={classNames('btn btn-fill btn-wd', {
+                  disabled: !showFinishButton(steps, activeStep),
+                })}
+                name="finish"
+              >
+                Finish
+              </Button>
+            </div>
+            <div className="clearfix"></div>
+          </WizardFooter>
         </StyledCard>
         <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
       </Tab.Container>

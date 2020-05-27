@@ -17,6 +17,43 @@ exports[`Wizard renders the default structure correctly 1`] = `
         role="tablist"
       />
     </div>
+    <div
+      className="card-footer"
+    >
+      <div
+        className="mr-auto"
+      >
+        <button
+          className="btn-previous btn-fill btn-wd btn-default disabled btn btn-primary"
+          disabled={false}
+          type="button"
+        >
+          Previous
+        </button>
+      </div>
+      <div
+        className="ml-auto"
+      >
+        <button
+          className="btn btn-next btn-fill btn-wd disabled btn btn-danger"
+          disabled={false}
+          type="button"
+        >
+          Next
+        </button>
+        <button
+          className="btn btn-fill btn-wd disabled btn btn-danger"
+          disabled={false}
+          name="finish"
+          type="button"
+        >
+          Finish
+        </button>
+      </div>
+      <div
+        className="clearfix"
+      />
+    </div>
   </div>
   <div />
 </div>
@@ -37,6 +74,43 @@ exports[`Wizard renders with children 1`] = `
         className="sc-AxjAm duBvmv nav card-header-pills nav-pills"
         onKeyDown={[Function]}
         role="tablist"
+      />
+    </div>
+    <div
+      className="card-footer"
+    >
+      <div
+        className="mr-auto"
+      >
+        <button
+          className="btn-previous btn-fill btn-wd btn-default disabled btn btn-primary"
+          disabled={false}
+          type="button"
+        >
+          Previous
+        </button>
+      </div>
+      <div
+        className="ml-auto"
+      >
+        <button
+          className="btn btn-next btn-fill btn-wd disabled btn btn-danger"
+          disabled={false}
+          type="button"
+        >
+          Next
+        </button>
+        <button
+          className="btn btn-fill btn-wd disabled btn btn-danger"
+          disabled={false}
+          name="finish"
+          type="button"
+        >
+          Finish
+        </button>
+      </div>
+      <div
+        className="clearfix"
       />
     </div>
   </div>
