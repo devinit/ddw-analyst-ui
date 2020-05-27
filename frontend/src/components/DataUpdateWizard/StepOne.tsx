@@ -1,5 +1,11 @@
 import React, { FunctionComponent } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, Row, Col } from 'react-bootstrap';
+import { Dropdown, DropdownItemProps } from 'semantic-ui-react';
+
+const options: DropdownItemProps[] = [
+  { key: 'fts-donor-codes', text: 'FTS Donor Codes', value: 'fts-donor-codes' },
+  { key: 'fts-deflators', text: 'FTS Deflators', value: 'fts-deflators' },
+];
 
 const StepOne: FunctionComponent = () => {
   return (
@@ -12,6 +18,17 @@ const StepOne: FunctionComponent = () => {
         These are predetermined as not all data sources are open to being updated via this
         interface.
       </Alert>
+      <Row>
+        <Col sm={4}>
+          <Dropdown
+            className="btn btn-danger text-capitalize"
+            placeholder="Select Data Source"
+            fluid
+            selection
+            options={options}
+          />
+        </Col>
+      </Row>
     </>
   );
 };

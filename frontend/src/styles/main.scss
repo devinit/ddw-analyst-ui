@@ -122,3 +122,70 @@ th .material-icons {
 .filter-option {
   text-transform: capitalize;
 }
+
+/*==== SEMANTIC UI =====*/
+.ui {
+  &.selection {
+    &.dropdown {
+      .menu {
+        >.item {
+          font-size: .8125rem;
+        }
+      }
+
+      &.btn {
+        padding: 12px 30px;
+        line-height: 1.428571;
+        &.btn-danger {
+          color: #fff;
+          background-color: #f44336;
+          border-color: #f44336;
+          box-shadow: 0 2px 2px 0 rgba(244,67,54,.14), 0 3px 1px -2px rgba(244,67,54,.2), 0 1px 5px 0 rgba(244,67,54,.12);
+        }
+
+        &.dropdown {
+          >.dropdown {
+            &.icon {
+              top: inherit;
+              margin-right: 2px;
+            }
+          }
+        }
+
+        &:not(.button) {
+          >.default.text {
+            color: #fff;
+          }
+        }
+
+        &.visible {
+          &.dropdown {
+            >.text:not(.default) {
+              color: #fff;
+            }
+          }
+        }
+
+        &.active {
+          &.dropdown {
+            .menu {
+              box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+              border: 0;
+              min-width: 100%;
+              width: 100%;
+              margin: auto;
+              margin-top: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+  &.dropdown {
+    .menu {
+      >.item {
+        font-size: .8125rem;
+      }
+    }
+  }
+}

@@ -1,14 +1,14 @@
 import React, { FunctionComponent } from 'react';
-import { Col, Card } from 'react-bootstrap';
+import { Card, Col } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
+import { StepOne } from '../../components/DataUpdateWizard';
 import {
-  WizardStep,
   Wizard,
-  WizardHeader,
   WizardBody,
   WizardBodyContent,
+  WizardHeader,
+  WizardStep,
 } from '../../components/Wizard';
-import { StepOne } from '../../components/DataUpdateWizard';
 
 const steps: WizardStep[] = [
   {
