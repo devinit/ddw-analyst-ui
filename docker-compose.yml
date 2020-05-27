@@ -17,7 +17,6 @@ services:
       - "80"
     depends_on:
      - db
-     - rabbitmq
     environment:
      - FTSUSER
      - FTSPASS
@@ -36,9 +35,6 @@ services:
       - ./ssl:/etc/ssl/
     depends_on:
       - web
-  # rabbit message queue
-  rabbitmq:
-    image: rabbitmq:3.7-alpine
 
 volumes:
   metadata:
