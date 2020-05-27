@@ -18,6 +18,7 @@ export const ScheduledEventsTable = (props: any) => {
           interval={event.interval}
           interval_type={event.interval_type}
           repeat={event.repeat}
+          start_date={event.start_date}
         />
       );
     });

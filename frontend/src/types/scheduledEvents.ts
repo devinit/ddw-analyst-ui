@@ -8,6 +8,7 @@ export interface ScheduledEvent {
   interval: number;
   interval_type: string;
   repeat: string;
+  start_date: string;
 }
 
 export type ScheduledEventMap = Map<keyof ScheduledEvent, ScheduledEvent[keyof ScheduledEvent]>;

@@ -8,9 +8,22 @@ export interface ScheduledEventsTableRowProps {
   interval: number;
   repeat: string;
   interval_type: string;
+  start_date: string;
 }
 
 export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = (props) => {
+  const convertDate = () => {
+    const dt = new Date();
+    dt.setTime(Date.parse(props.start_date));
+    let hours = dt.getUTCHours();
+    const AmOrPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const minutes = dt.getUTCMinutes();
+    const finalTime = hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ' ' + AmOrPm;
+
+    return finalTime;
+  };
+
   return (
     <tr>
       <td className="text-center">{props.id}</td>
@@ -25,8 +38,7 @@ export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = 
         </div>
       </td>
       <td>
-        {props.repeat} {props.interval}
-        {props.interval_type}
+        Every {props.interval} {props.interval_type} at {convertDate()}
       </td>
     </tr>
   );
