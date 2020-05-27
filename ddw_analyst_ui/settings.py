@@ -132,8 +132,6 @@ DATABASES = {
 
 DATABASE_ROUTERS = ['data.db_router.DataRouter', 'core.db_router.CoreRouter']
 
-CELERY_BROKER_URL = 'amqp://localhost'
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
