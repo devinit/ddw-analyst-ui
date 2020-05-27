@@ -27,4 +27,7 @@ class ScriptExecutor:
             yield self.process.stdout.readline()
 
         yield self.process.communicate()[0]
-        yield self.process.communicate()[1]
+        if self.process.returncode > 0 or self.process.returncode < 0:
+            yield self.process.returncode
+        else:
+            yield self.process.communicate()[1]
