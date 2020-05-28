@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'frontend',
     'core',
     'data',
@@ -183,6 +184,10 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }
+
+CRONJOBS = [
+    ('*/1 * * * *', 'data.cron.schedules_cron_job')
+]
 
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
