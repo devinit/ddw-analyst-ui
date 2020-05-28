@@ -284,63 +284,35 @@ weo,year,year,Year,N
 fts,id,id,ID,N
 fts,amountUSD,amountUSD,Amount USD,N
 fts,budgetYear,budgetYear,Budget Year,N
-fts,createdAt,createdAt,Record creation date,C
-fts,date,date,Date,C
-fts,decisionDate,decisionDate,Decision date,C
 fts,description,description,Description,C
-fts,firstReportedDate,firstReportedDate,First reported data,C
 fts,flowType,flowType,Flow type,C
 fts,newMoney,newMoney,New money,C
+fts,originalAmount,originalAmount,Original amount,N
 fts,originalCurrency,originalCurrency,Original currency,C
 fts,method,method,Method,C
-fts,parentFlowId,parentFlowId,Parent flow ID,N
 fts,status,status,Status,C
-fts,updatedAt,updatedAt,Updated at,C
-fts,versionId,versionId,Verion ID,N
 fts,boundary,boundary,Boundary,C
 fts,onBoundary,onBoundary,On boundary,C
-fts,source_Organization_id,source_Organization_id,Source organisation ID,N
-fts,source_UsageYear_id,source_UsageYear_id,Source usage year ID,C
-fts,source_Organization_name,source_Organization_name,Source organisation name,C
-fts,source_UsageYear_name,source_UsageYear_name,Source usage year,C
-fts,destination_Plan_id,destination_Plan_id,Destination plan ID,C
-fts,destination_Organization_id,destination_Organization_id,Destination organisation ID,C
-fts,destination_GlobalCluster_id,destination_GlobalCluster_id,Destination global cluster ID,C
-fts,destination_Location_id,destination_Location_id,Destination location ID,C
-fts,destination_iso3,destination_iso3,Destination ISO Alpha 3,C
-fts,destination_Project_id,destination_Project_id,Destination project ID,N
-fts,destination_UsageYear_id,destination_UsageYear_id,Destination usage year ID,C
-fts,destination_Plan_name,destination_Plan_name,Destination plan name,C
-fts,destination_Organization_name,destination_Organization_name,Destination organisation name,C
-fts,destination_GlobalCluster_name,destination_GlobalCluster_name,Destination global cluster name,C
-fts,destination_Location_name,destination_Location_name,Destination location name,C
-fts,destination_Project_name,destination_Project_name,Destination project name,C
-fts,destination_UsageYear_name,destination_UsageYear_name,Destination usage year,C
-fts,report_type,report_type,Reporting type,C
-fts,report_organisation,report_organisation,Reporting organisation,C
-fts,report_channel,report_channel,Reporting channel,C
-fts,report_date,report_date,Reporting date,C
-fts,originalAmount,originalAmount,Original amount,N
-fts,source_Location_id,source_Location_id,Source location ID,C
-fts,source_iso3,source_iso3,Source ISO Alpha 3,C
+fts,Donor,Donor,Donor (Source organisation name),C
 fts,source_Location_name,source_Location_name,Source location name,C
-fts,destination_Emergency_id,destination_Emergency_id,Destination emergency ID,N
-fts,destination_Emergency_name,destination_Emergency_name,Destination emergency name,C
-fts,refCode,refCode,Reference code,C
-fts,source_GlobalCluster_id,source_GlobalCluster_id,Source global cluster ID,C
-fts,source_GlobalCluster_name,source_GlobalCluster_name,Source global cluster name,C
-fts,exchangeRate,exchangeRate,Exchange rate,N
+fts,source_iso3,source_iso3,Source ISO Alpha 3,C
+fts,source_UsageYear_name,source_UsageYear_name,Source usage year,C
+fts,Recipient.Organization,Recipient.Organization,Recipient Organization (Destination organisation name),C
+fts,destination_GlobalCluster_name,destination_GlobalCluster_name,Destination global cluster name,C
+fts,Destination.Country,Destination.Country,Destination Country (Destination location name),C
+fts,destination_iso3,destination_iso3,Destination ISO Alpha 3,C
+fts,destination_UsageYear_name,destination_UsageYear_name,Destination usage year,C
+fts,destination_Plan_name,destination_Plan_name,Destination plan name,C
+fts,destination_Project_name,destination_Project_name,Destination project name,C
+fts,parentFlowId,parentFlowId,Parent flow ID,N
+fts,grandBargainEarmarkingType,grandBargainEarmarkingType,Grand Bargain earmarking type,C
 fts,source_Plan_id,source_Plan_id,Source plan ID,C
 fts,source_Plan_name,source_Plan_name,Source plan name,C
-fts,grandBargainEarmarkingType,grandBargainEarmarkingType,Grand Bargain earmarking type,C
-fts,source_Emergency_id,source_Emergency_id,Source emergency ID,N
-fts,source_Emergency_name,source_Emergency_name,Source emergency name,C
-fts,source_Project_id,source_Project_id,Source project ID,N
-fts,source_Project_name,source_Project_name,Source project name,C
-fts,destination_Cluster_id,destination_Cluster_id,Destination cluster ID,C
 fts,destination_Cluster_name,destination_Cluster_name,Destination cluster name,C
-fts,source_Cluster_id,source_Cluster_id,Source cluster ID,C
-fts,source_Cluster_name,source_Cluster_name,Source cluster name,C
+fts,destination_Emergency_name,destination_Emergency_name,Destination emergency name,C
+fts,exchangeRate,exchangeRate,Exchange rate,N
+fts,source_Emergency_name,source_Emergency_name,Source emergency name,C
+fts,source_GlobalCluster_name,source_GlobalCluster_name,Source global cluster name,C
 all_resource_flows,id,id,Row ID,C
 all_resource_flows,year,year,Year,N
 all_resource_flows,country_name,country_name,Country name,C
