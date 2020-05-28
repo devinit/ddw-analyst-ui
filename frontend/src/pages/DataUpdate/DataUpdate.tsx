@@ -60,6 +60,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
     setDataSource(_dataSource);
     setNextButtonStatus('enabled');
   };
+  const activeStep = steps.find((step) => step.active);
 
   return (
     <Col md={10} className="ml-auto mr-auto">
@@ -76,10 +77,10 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
             <h5 className="card-description">Upload the contents of an XLS/CSV to a data table</h5>
           </WizardHeader>
           <WizardBody>
-            <WizardBodyContent eventKey="one">
+            <WizardBodyContent eventKey="one" active={activeStep && activeStep.key === 'one'}>
               <StepOne onComplete={onStepOneComplete} />
             </WizardBodyContent>
-            <WizardBodyContent eventKey="two">
+            <WizardBodyContent eventKey="two" active={activeStep && activeStep.key === 'two'}>
               <StepTwo />
             </WizardBodyContent>
           </WizardBody>
