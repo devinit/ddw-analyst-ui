@@ -12,7 +12,7 @@ export interface ScheduledEventsTableRowProps {
 }
 
 export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = (props) => {
-  const convertDate = () => {
+  const derivedTime = () => {
     const dt = new Date();
     dt.setTime(Date.parse(props.start_date));
     let hours = dt.getUTCHours();
@@ -22,6 +22,17 @@ export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = 
     const finalTime = hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ' ' + AmOrPm;
 
     return finalTime;
+  };
+
+  const derivedDate = () => {
+    const day = new Date();
+    day.setTime(Date.parse(props.start_date));
+    const dd = String(day.getDate()).padStart(2, '0');
+    const mm = String(day.getMonth() + 1).padStart(2, '0');
+    const yyyy = day.getFullYear();
+    const newDate = dd + '-' + mm + '-' + yyyy;
+
+    return newDate;
   };
 
   return (
@@ -38,8 +49,11 @@ export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = 
         </div>
       </td>
       <td>
-        Every {props.interval} {props.interval_type} at {convertDate()}
+        {derivedDate()} at {derivedTime()}
       </td>
+      <td>{props.repeat ? 'Every ' + props.interval + ' ' + props.interval_type : 'None'}</td>
     </tr>
   );
 };
+
+//({props.interval props.interval_type at {convertDate()})

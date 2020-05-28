@@ -31,6 +31,7 @@ export const ScheduledEventsTable = (props: any) => {
           <th>Name</th>
           <th>Description</th>
           <th>Enabled</th>
+          <th>Start Date</th>
           <th>Interval</th>
         </tr>
       </thead>

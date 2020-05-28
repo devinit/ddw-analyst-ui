@@ -67,7 +67,7 @@ export const ScheduledEventsTableCard = () => {
       <Dimmer active={loading} inverted>
         <Loader content="Loading" />
       </Dimmer>
-      <Card style={{ width: '76vw' }}>
+      <Card style={{ width: '70vw' }}>
         <Card.Header className="card-header-rose card-header-icon">
           <Card.Header className="card-icon">
             <i className="material-icons">schedule</i>
