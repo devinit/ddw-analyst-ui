@@ -1,80 +1,101 @@
 import json
+from datetime import date, datetime, timedelta
+
 from django.core.management.base import BaseCommand
-from datetime import date, datetime
+from django.http import HttpResponse, StreamingHttpResponse
+from django.utils.timezone import make_aware
+from rest_framework import status
+
 from core.models import ScheduledEvent, ScheduledEventRunInstance
 from data_updates.utils import ScriptExecutor
-from django.http import StreamingHttpResponse
-from rest_framework import status
-from django.http import HttpResponse
-from django.utils.timezone import make_aware
 
 
 class Command(BaseCommand):
     help = 'Executes scheduled events at their appointed time'
 
-    def check_if_repeat_is_due(self, instance_start_date, interval, interval_type):
-        year = int(instance_start_date.strftime('%Y'))
-        month = int(instance_start_date.strftime('%m'))
-        day = int(instance_start_date.strftime('%d'))
-        hour = int(instance_start_date.strftime('%H'))
-        minute = int(instance_start_date.strftime('%M'))
-        instance_start_date_str = datetime(year, month, day, hour, minute)
+    def calculate_interval_counts(self, run_instances, interval, interval_type):
+        counts = {}
+        counts['daily_count'] = 0
+        counts['minute_count'] = 0
+        counts['second_count'] = 0
+        counts['hour_count'] = 0
+        counts['weekly_count'] = 0
+        counts['monthly_count'] = 0
+        counts['annual_count'] = 0
 
-        now  = datetime.now()
-        duration = now - instance_start_date_str
-        duration_in_s = duration.total_seconds()
+        now = make_aware(datetime.now())
+        for run_instance in run_instances:
+            set_date = run_instance.start_at
+            if interval_type and interval_type in 'min':
+                if now-timedelta(seconds=60) <= set_date <= now:
+                    counts['minute_count'] = counts['minute_count'] + 1
+                    print('duration in minutes - minute_count')
+                    print(counts['minute_count'])
+            elif interval_type and interval_type in 'sec':
+                if now-timedelta(seconds=1) <= set_date <= now:
+                    counts['second_count'] = counts['second_count'] + 1
+                    print('duration in seconds - second_count')
+                    print(counts['second_count'])
+            elif interval_type and interval_type in 'hrs':
+                if now-timedelta(hours=1) <= set_date <= now:
+                    counts['hour_count'] = counts['hour_count'] + 1
+                    print('duration in hours - hour_count')
+                    print(counts['hour_count'])
+            elif interval_type and interval_type in 'dys':
+                if now-timedelta(hours=24) <= set_date <= now:
+                    counts['daily_count'] = counts['daily_count'] + 1
+                    print('duration in days - daily_count')
+                    print(counts['daily_count'])
+            elif interval_type and interval_type in 'wks':
+                if now-timedelta(weeks=1) <= set_date <= now:
+                    counts['weekly_count'] = counts['weekly_count'] + 1
+                    print('duration in weeks - weekly_count')
+                    print(counts['weekly_count'])
+            elif interval_type and interval_type in 'mnt':
+                if now-timedelta(weeks=4) <= set_date <= now:
+                    counts['monthly_count'] = counts['monthly_count'] + 1
+                    print('duration in months - monthly_count')
+                    print(counts['monthly_count'])
+            elif interval_type and interval_type in 'yrs':
+                set_date_year = int(set_date.strftime('%Y'))
+                current_year = int(now.strftime('%Y'))
 
-        if interval_type and interval_type in 'min':
-            minutes = divmod(duration_in_s, 60)[0]
-            print('duration in mins')
-            print(minutes)
-            if int(minutes) >= int(interval):
-                return True
-        elif interval_type and interval_type in 'sec':
-            print('duration in secs')
-            print(duration_in_s)
-            if int(duration_in_s) >= int(interval):
-                return True
-        elif interval_type and interval_type in 'hrs':
-            duration_in_hours = divmod(duration_in_s, 3600)[0]
-            print('duration in hours')
-            print(duration_in_hours)
-            if int(duration_in_hours) >= int(interval):
-                return True
-        elif interval_type and interval_type in 'dys':
-            days  = divmod(duration_in_s, 86400)[0]
-            print('duration in days')
-            print(days)
-            print(interval)
-            if int(days) >= int(interval):
-                print('true days')
-                return True
-        elif interval_type and interval_type in 'wks':
-            days  = divmod(duration_in_s, 86400)[0]
-            weeks = days/7
-            print('duration in weeks')
-            print(weeks)
-            if int(weeks) >= int(interval):
+                if set_date_year == current_year:
+                    counts['annual_count'] = counts['annual_count'] + 1
+                    print('duration in years - annual_count')
+                    print(counts['annual_count'])
+        return counts
+
+    def check_if_repeat_is_due(self, interval, interval_type, run_instances):
+        counts = self.calculate_interval_counts(run_instances, interval, interval_type)
+
+        if interval_type and interval_type in 'yrs':
+            if counts['annual_count'] < int(interval):
                 return True
         elif interval_type and interval_type in 'mnt':
-            months  = divmod(duration_in_s, 2629746)[0]
-            print('duration in months')
-            print(months)
-            if int(months) >= int(interval):
+            if counts['monthly_count'] < int(interval):
                 return True
-        elif interval_type and interval_type in 'yrs':
-            years  = divmod(duration_in_s, 31536000)[0]
-            print('duration in years')
-            print(years)
-            if int(years) >= int(interval):
+        elif interval_type and interval_type in 'wks':
+            if counts['weekly_count'] < int(interval):
+                return True
+        elif interval_type and interval_type in 'dys':
+            if counts['daily_count'] < int(interval):
+                return True
+        elif interval_type and interval_type in 'hrs':
+            if counts['hourly_count'] < int(interval):
+                return True
+        elif interval_type and interval_type in 'min':
+            if counts['minute_count'] < int(interval):
+                return True
+        elif interval_type and interval_type in 'sec':
+            if counts['second_count'] < int(interval):
                 return True
         else:
             return False
 
     def manage_repeated_schedules(self, schedule, run_instances):
         if schedule.repeat:
-            latest_run_instance = ScheduledEventRunInstance.objects.filter(scheduled_event=schedule.id).latest('start_at')
-            return self.check_if_repeat_is_due(latest_run_instance.start_at, schedule.interval, schedule.interval_type)
+            return self.check_if_repeat_is_due(schedule.interval, schedule.interval_type, run_instances)
         else:
             return False
 
@@ -125,6 +146,7 @@ class Command(BaseCommand):
                     status = 'r'
                 )
                 runInstance.save()
+                self.stdout.write('Run instance created')
 
                 #Run the script
                 update_response = self.execute_script(schedule.script_name)
