@@ -447,3 +447,50 @@ iati_datastore,total_IncomingFunds,total_IncomingFunds,total IncomingFunds,N
 iati_datastore,total_InterestRepayment,total_InterestRepayment,total InterestRepayment,N
 iati_datastore,total_LoanRepayment,total_LoanRepayment,total LoanRepayment,N
 iati_datastore,total_Reimbursement,total_Reimbursement,total Reimbursement,N
+fts_precoded,id,id,ID,N
+fts_precoded,amountUSD,amountUSD,Amount USD,N
+fts_precoded,budgetYear,budgetYear,Budget Year,N
+fts_precoded,description,description,Description,C
+fts_precoded,flowType,flowType,Flow type,C
+fts_precoded,newMoney,newMoney,New money,C
+fts_precoded,originalAmount,originalAmount,Original amount,N
+fts_precoded,originalCurrency,originalCurrency,Original currency,C
+fts_precoded,method,method,Method,C
+fts_precoded,status,status,Status,C
+fts_precoded,boundary,boundary,Boundary,C
+fts_precoded,onBoundary,onBoundary,On boundary,C
+fts_precoded,Donor,Donor,Donor (Source organisation name),C
+fts_precoded,source_Location_name,source_Location_name,Source location name,C
+fts_precoded,source_iso3,source_iso3,Source ISO Alpha 3,C
+fts_precoded,source_UsageYear_name,source_UsageYear_name,Source usage year,C
+fts_precoded,Recipient.Organization,Recipient.Organization,Recipient Organization (Destination organisation name),C
+fts_precoded,destination_GlobalCluster_name,destination_GlobalCluster_name,Destination global cluster name,C
+fts_precoded,Destination.Country,Destination.Country,Destination Country (Destination location name),C
+fts_precoded,destination_iso3,destination_iso3,Destination ISO Alpha 3,C
+fts_precoded,destination_UsageYear_name,destination_UsageYear_name,Destination usage year,C
+fts_precoded,destination_Plan_name,destination_Plan_name,Destination plan name,C
+fts_precoded,destination_Project_name,destination_Project_name,Destination project name,C
+fts_precoded,parentFlowId,parentFlowId,Parent flow ID,N
+fts_precoded,grandBargainEarmarkingType,grandBargainEarmarkingType,Grand Bargain earmarking type,C
+fts_precoded,source_Plan_id,source_Plan_id,Source plan ID,C
+fts_precoded,source_Plan_name,source_Plan_name,Source plan name,C
+fts_precoded,destination_Cluster_name,destination_Cluster_name,Destination cluster name,C
+fts_precoded,destination_Emergency_name,destination_Emergency_name,Destination emergency name,C
+fts_precoded,exchangeRate,exchangeRate,Exchange rate,N
+fts_precoded,source_Emergency_name,source_Emergency_name,Source emergency name,C
+fts_precoded,source_GlobalCluster_name,source_GlobalCluster_name,Source global cluster name,C
+fts_precoded,codename,codename,Codename,C
+fts_precoded,privatemoney,privatemoney,Private money,C
+fts_precoded,Region,Region,Region,C
+fts_precoded,donorcountryid,donorcountryid,Donor country ID,C
+fts_precoded,recipientcodename,recipientcodename,Recipient codename,C
+fts_precoded,ngotype,ngotype,NGO type,C
+fts_precoded,deliverychannels,deliverychannels,Delivery channels,C
+fts_precoded,recipientcountryid,recipientcountryid,Recipient country ID,C
+fts_precoded,odaeligible,odaeligible,ODA eligible,C
+fts_precoded,destinationcountryid,destinationcountryid,Destination country ID,C
+fts_precoded,incomegroups,incomegroups,Income groups,C
+fts_precoded,domesticresponse,domesticresponse,Domestic response,C
+fts_precoded,Deflators,Deflators,Deflators,N
+fts_precoded,amountDeflated,amountDeflated,Amount deflated,N
+fts_precoded,amountDeflatedMillions,amountDeflatedMillions,Amount deflated millions,N
