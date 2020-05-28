@@ -29,41 +29,26 @@ class Command(BaseCommand):
             if interval_type and interval_type in 'min':
                 if now-timedelta(seconds=60) <= set_date <= now:
                     counts['minute_count'] = counts['minute_count'] + 1
-                    print('duration in minutes - minute_count')
-                    print(counts['minute_count'])
             elif interval_type and interval_type in 'sec':
                 if now-timedelta(seconds=1) <= set_date <= now:
                     counts['second_count'] = counts['second_count'] + 1
-                    print('duration in seconds - second_count')
-                    print(counts['second_count'])
             elif interval_type and interval_type in 'hrs':
                 if now-timedelta(hours=1) <= set_date <= now:
                     counts['hour_count'] = counts['hour_count'] + 1
-                    print('duration in hours - hour_count')
-                    print(counts['hour_count'])
             elif interval_type and interval_type in 'dys':
                 if now-timedelta(hours=24) <= set_date <= now:
                     counts['daily_count'] = counts['daily_count'] + 1
-                    print('duration in days - daily_count')
-                    print(counts['daily_count'])
             elif interval_type and interval_type in 'wks':
                 if now-timedelta(weeks=1) <= set_date <= now:
                     counts['weekly_count'] = counts['weekly_count'] + 1
-                    print('duration in weeks - weekly_count')
-                    print(counts['weekly_count'])
             elif interval_type and interval_type in 'mnt':
                 if now-timedelta(weeks=4) <= set_date <= now:
                     counts['monthly_count'] = counts['monthly_count'] + 1
-                    print('duration in months - monthly_count')
-                    print(counts['monthly_count'])
             elif interval_type and interval_type in 'yrs':
                 set_date_year = int(set_date.strftime('%Y'))
                 current_year = int(now.strftime('%Y'))
-
                 if set_date_year == current_year:
                     counts['annual_count'] = counts['annual_count'] + 1
-                    print('duration in years - annual_count')
-                    print(counts['annual_count'])
         return counts
 
     def check_if_repeat_is_due(self, interval, interval_type, run_instances):
@@ -82,7 +67,7 @@ class Command(BaseCommand):
             if counts['daily_count'] < int(interval):
                 return True
         elif interval_type and interval_type in 'hrs':
-            if counts['hourly_count'] < int(interval):
+            if counts['hour_count'] < int(interval):
                 return True
         elif interval_type and interval_type in 'min':
             if counts['minute_count'] < int(interval):
