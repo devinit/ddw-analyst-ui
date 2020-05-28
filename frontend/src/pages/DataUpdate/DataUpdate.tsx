@@ -8,6 +8,7 @@ import {
   WizardBodyContent,
   WizardHeader,
   WizardStep,
+  StepButtonStatus,
 } from '../../components/Wizard';
 
 interface WizardData {
@@ -43,7 +44,7 @@ const updateSteps = (steps: WizardStep[], activeIndex: number): WizardStep[] => 
 
 const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
   const [steps, setSteps] = useState<WizardStep[]>(defaultSteps);
-  const [showNext, setShowNext] = useState(false);
+  const [nextButtonStatus, setNextButtonStatus] = useState<StepButtonStatus>('disabled');
   const [dataSource, setDataSource] = useState('');
   const onNext = (step: WizardStep): void => {
     setSteps(
@@ -52,12 +53,12 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
         steps.findIndex((_step) => _step.key === step.key),
       ),
     );
-    setShowNext(false);
+    setNextButtonStatus('disabled');
   };
 
   const onStepOneComplete = (_dataSource: string): void => {
     setDataSource(_dataSource);
-    setShowNext(true);
+    setNextButtonStatus('enabled');
   };
 
   return (
@@ -68,7 +69,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
           id="data-update"
           defaultActiveKey="one"
           onNext={onNext}
-          showNext={showNext}
+          nextButtonStatus={nextButtonStatus}
         >
           <WizardHeader>
             <Card.Title>Update Table</Card.Title>

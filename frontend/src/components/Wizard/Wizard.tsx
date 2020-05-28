@@ -20,8 +20,10 @@ interface WizardProps extends TabContainerProps {
   onPrevious?: (step: WizardStep) => void;
   onNext?: (step: WizardStep) => void;
   onFinish?: (step: WizardStep) => void;
-  showNext?: boolean;
+  nextButtonStatus?: StepButtonStatus;
 }
+
+export type StepButtonStatus = 'enabled' | 'disabled' | 'hidden';
 
 export interface WizardStep {
   key: string;
@@ -43,7 +45,7 @@ const Wizard: FunctionComponent<WizardProps> = ({
   onPrevious,
   onNext,
   onFinish,
-  showNext,
+  nextButtonStatus,
   ...props
 }) => {
   const [activeStep, setActiveStep] = useState(steps?.find((step) => step.active));
@@ -116,7 +118,7 @@ const Wizard: FunctionComponent<WizardProps> = ({
             <div className="mr-auto">
               <Button
                 className={classNames('btn-previous btn-fill btn-wd btn-default', {
-                  disabled: !showPreviousButton(steps, activeStep),
+                  'd-none': !showPreviousButton(steps, activeStep),
                 })}
                 onClick={onBack}
               >
@@ -127,7 +129,8 @@ const Wizard: FunctionComponent<WizardProps> = ({
               <Button
                 variant="danger"
                 className={classNames('btn btn-next btn-fill btn-wd', {
-                  disabled: !showNext || !showNextButton(steps, activeStep),
+                  'd-none': nextButtonStatus === 'hidden' || !showNextButton(steps, activeStep),
+                  disabled: nextButtonStatus === 'disabled' && showNextButton(steps, activeStep),
                 })}
                 onClick={onForward}
               >
@@ -136,7 +139,8 @@ const Wizard: FunctionComponent<WizardProps> = ({
               <Button
                 variant="danger"
                 className={classNames('btn btn-fill btn-wd', {
-                  disabled: !showFinishButton(steps, activeStep),
+                  'd-none': !showFinishButton(steps, activeStep),
+                  disabled: nextButtonStatus === 'disabled' && showFinishButton(steps, activeStep),
                 })}
                 name="finish"
                 onClick={onComplete}

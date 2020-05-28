@@ -77,6 +77,10 @@ select:-webkit-autofill:focus {
   font-weight: 500;
 }
 
+.card-wizard .disabled {
+  display: block;
+}
+
 .alert.alert-secondary {
   color: #383d41;
   background-color: #e2e3e5;
