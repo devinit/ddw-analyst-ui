@@ -21,9 +21,6 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
-
 from django.http import HttpResponse
 
 from core.models import (Operation, OperationStep, Review, ScheduledEvent,
@@ -53,7 +50,6 @@ class ListUpdateScripts(APIView):
 
 
 @csrf_exempt
-@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
 def streaming_script_execute(request):
     form_data = json.loads(request.body.decode())
 
@@ -79,7 +75,7 @@ def streaming_script_execute(request):
                     post_status = status.HTTP_500_INTERNAL_SERVER_ERROR
                     response_data['result'] = 'error'
                     response_data['message'] = 'Failed to execute the script update'
-                    response_data['subprocess return code'] = item
+                    response_data['returncode'] = item
 
                 return HttpResponse(json.dumps(response_data), content_type='application/json', status=post_status)
         except exceptions.AuthenticationFailed:
