@@ -29,8 +29,12 @@ const defaultSteps: WizardStep[] = [
   },
 ];
 export const WizardContext = createContext<WizardData>({});
-const updateSteps = (steps: WizardStep[], activeIndex: number): WizardStep[] => {
-  const nextIndex = activeIndex + 1;
+const updateSteps = (
+  steps: WizardStep[],
+  activeIndex: number,
+  direction: 'next' | 'prev' = 'next',
+): WizardStep[] => {
+  const nextIndex = direction === 'next' ? activeIndex + 1 : activeIndex - 1;
 
   if (nextIndex >= steps.length) {
     return steps;
@@ -55,6 +59,16 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
     );
     setNextButtonStatus('disabled');
   };
+  const onPrevious = (step: WizardStep): void => {
+    setSteps(
+      updateSteps(
+        steps,
+        steps.findIndex((_step) => _step.key === step.key),
+        'prev',
+      ),
+    );
+    setNextButtonStatus('enabled');
+  };
 
   const onStepOneComplete = (_dataSource: string): void => {
     setDataSource(_dataSource);
@@ -70,6 +84,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
           id="data-update"
           defaultActiveKey="one"
           onNext={onNext}
+          onPrevious={onPrevious}
           nextButtonStatus={nextButtonStatus}
         >
           <WizardHeader>
