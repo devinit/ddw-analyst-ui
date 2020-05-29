@@ -14,6 +14,7 @@ const StepTwo: FunctionComponent = () => {
       convertCSVFileToJSON(currentTarget.files[0]).then((data) => setData(data));
     }
   };
+  const onRemove = (): void => setData(undefined);
 
   return (
     <>
@@ -26,7 +27,7 @@ const StepTwo: FunctionComponent = () => {
       </Alert>
       <Row>
         <Col sm={4}>
-          <FileInput accept=".csv" onChange={onChange} />
+          <FileInput accept=".csv" onChange={onChange} onReset={onRemove} />
         </Col>
       </Row>
 
