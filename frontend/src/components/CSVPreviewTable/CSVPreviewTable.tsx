@@ -1,11 +1,17 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import { Card, Alert, Table } from 'react-bootstrap';
 import { Column } from '../FileInput';
+import styled from 'styled-components';
 
 interface ComponentProps {
   columns: Column[];
   data: (string | number)[][];
 }
+
+const StyledCardBody = styled(Card.Body)`
+  overflow-y: scroll;
+  max-height: 400px;
+`;
 
 const renderTableHeads = (columns: Column[]): ReactNode =>
   [
@@ -52,14 +58,14 @@ const CSVPreviewTable: FunctionComponent<ComponentProps> = ({ columns, data }) =
         <Card.Title>Preview</Card.Title>
       </Card.Header>
 
-      <Card.Body>
+      <StyledCardBody>
         <Table responsive striped>
           <thead>
             <tr>{renderTableHeads(columns)}</tr>
           </thead>
           <tbody>{renderTableRows(data)}</tbody>
         </Table>
-      </Card.Body>
+      </StyledCardBody>
     </Card>
   );
 };
