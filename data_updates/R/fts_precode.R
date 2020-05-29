@@ -33,6 +33,9 @@ destination.table.quote = c("repo",destination.table.name)
 
 data = dbReadTable(con,source.table.quote)
 
+#removing FTS flow status pledge
+data <- subset(data, data$status %in% c('paid','commitment'))
+
 # Remove government of
 data$Donor <- gsub(", Government of","",data$Donor)
 data$Recipient.Organization <- gsub(", Government of","",data$Recipient.Organization)

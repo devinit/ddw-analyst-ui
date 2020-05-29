@@ -30,6 +30,9 @@ source.table.quote = c("repo",source.table.name)
 
 data = dbReadTable(con,source.table.quote)
 
+#removing FTS flow status pledge
+data <- subset(data, data$status %in% c('paid','commitment'))
+
 # Remove government of
 data$Donor <- gsub(", Government of","",data$Donor)
 data$Recipient.Organization <- gsub(", Government of","",data$Recipient.Organization)
@@ -76,18 +79,18 @@ for(character_replacement in character_replacements){
 }
 
 data$lower.Donor <- lowerConv(data$Donor)
-lower.Donor = unique(data[,c("lower.Donor"),drop=F])
+lower.Donor = unique(data[,c("Donor","lower.Donor"),drop=F])
 
 data$lower.Recipient.Organization <- lowerConv(data$Recipient.Organization)
-lower.Recipient.Organization = unique(data[,c("lower.Recipient.Organization"),drop=F])
+lower.Recipient.Organization = unique(data[,c("Recipient.Organization","lower.Recipient.Organization"),drop=F])
 
 data$lower.Destination.Country <- lowerConv(data$Destination.Country)
-lower.Destination.Country = unique(data[,c("lower.Destination.Country"),drop=F])
+lower.Destination.Country = unique(data[,c("Destination.Country","lower.Destination.Country"),drop=F])
 
 data$destinationcountrytype <- paste(data$destinationcountryid,data$source_UsageYear_name)
 data$destinationcountrytype[is.na(data$destinationcountrytype)] <- FALSE
 data$lower.destinationcountrytype <- lowerConv(data$destinationcountrytype)
-lower.destinationcountrytype = unique(data[,c("lower.destinationcountrytype"),drop=F])
+lower.destinationcountrytype = unique(data[,c("destinationcountrytype","lower.destinationcountrytype"),drop=F])
 
 data$deflatortype <- paste(data$donorcountryid,data$source_UsageYear_name)
 data$deflatortype[is.na(data$deflatortype)] <- FALSE
