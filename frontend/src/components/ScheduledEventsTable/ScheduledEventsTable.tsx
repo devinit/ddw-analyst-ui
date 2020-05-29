@@ -1,12 +1,17 @@
-import * as React from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import { Table } from 'react-bootstrap';
-import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow/ScheduledEventsTableRow';
 import { ScheduledEvent } from '../../types/scheduledEvents';
+import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow';
 
-export const ScheduledEventsTable = (props: any) => {
+export interface ScheduledEventTableProps {
+  currentPage: number;
+  pageLimit: number;
+  events: Array<{}>;
+}
+export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
   const offset = (props.currentPage - 1) * props.pageLimit;
 
-  const renderRows = () =>
+  const renderRows = (): ReactNode =>
     props.events.map((event: ScheduledEvent, index: number) => {
       return (
         <ScheduledEventsTableRow

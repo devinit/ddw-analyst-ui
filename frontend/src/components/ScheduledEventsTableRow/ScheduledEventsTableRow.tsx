@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 
 export interface ScheduledEventsTableRowProps {
   id: number;
@@ -11,8 +11,8 @@ export interface ScheduledEventsTableRowProps {
   start_date: string;
 }
 
-export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = (props) => {
-  const derivedTime = () => {
+export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
+  const derivedTime = (): string => {
     const dt = new Date();
     dt.setTime(Date.parse(props.start_date));
     let hours = dt.getUTCHours();
@@ -24,7 +24,7 @@ export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = 
     return finalTime;
   };
 
-  const derivedDate = () => {
+  const derivedDate = (): string => {
     const day = new Date();
     day.setTime(Date.parse(props.start_date));
     const dd = String(day.getDate()).padStart(2, '0');
@@ -55,5 +55,3 @@ export const ScheduledEventsTableRow: React.SFC<ScheduledEventsTableRowProps> = 
     </tr>
   );
 };
-
-//({props.interval props.interval_type at {convertDate()})
