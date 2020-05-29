@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WizardNavigationItem renders the default structure correctly 1`] = `
+<li
+  className="nav-item"
+>
+  <a
+    className="nav-link"
+    href="#"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+  />
+</li>
+`;
+
+exports[`WizardNavigationItem renders with children 1`] = `
+<li
+  className="nav-item"
+>
+  <a
+    className="nav-link"
+    href="#"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+  >
+    <div>
+      My Child
+    </div>
+  </a>
+</li>
+`;
