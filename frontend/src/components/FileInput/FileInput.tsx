@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 interface FileInputProps extends FormFileProps, InputHTMLAttributes<HTMLInputElement> {
   onReset?: () => void;
+  label?: string;
 }
 
 const StyledFormFile = styled(Form.File)`
@@ -24,7 +25,7 @@ const StyledFormFile = styled(Form.File)`
   direction: ltr;
 `;
 
-const FileInput: FunctionComponent<FileInputProps> = ({ onReset, ...props }) => {
+const FileInput: FunctionComponent<FileInputProps> = ({ onReset, label, ...props }) => {
   const inputNode = useRef<HTMLInputElement | undefined>(undefined);
   const [hasFile, setHasFile] = useState(false);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -43,7 +44,7 @@ const FileInput: FunctionComponent<FileInputProps> = ({ onReset, ...props }) => 
     <div className="fileinput fileinput-new" data-provides="fileinput">
       <div>
         <span className="btn btn-danger btn-file">
-          <span className={classNames({ 'd-none': hasFile })}>Select XLS/CSV</span>
+          <span className={classNames({ 'd-none': hasFile })}>{label || 'Select File'}</span>
           <span className={classNames({ 'd-none': !hasFile })}>Change File</span>
           <Form.Control type="hidden" />
           <StyledFormFile name="..." {...props} onChange={onChange} ref={inputNode} />

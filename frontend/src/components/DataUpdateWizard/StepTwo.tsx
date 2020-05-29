@@ -18,7 +18,7 @@ const StepTwo: FunctionComponent = () => {
 
   return (
     <>
-      <h5 className="info-text">Upload a CSV or Excel file from your computer</h5>
+      <h5 className="info-text">Upload a CSV file from your computer</h5>
       <Alert variant="dark" className="alert-with-icon">
         <i className="text-info material-icons" data-notify="icon">
           info
@@ -27,7 +27,7 @@ const StepTwo: FunctionComponent = () => {
       </Alert>
       <Row>
         <Col sm={4}>
-          <FileInput accept=".csv" onChange={onChange} onReset={onRemove} />
+          <FileInput accept=".csv" onChange={onChange} onReset={onRemove} label="Select CSV" />
         </Col>
       </Row>
 

@@ -24,7 +24,7 @@ const defaultSteps: WizardStep[] = [
   },
   {
     key: 'two',
-    caption: 'Select XLS/CSV',
+    caption: 'Select CSV',
     disabled: true,
   },
 ];
