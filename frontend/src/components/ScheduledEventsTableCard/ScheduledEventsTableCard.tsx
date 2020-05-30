@@ -1,13 +1,10 @@
-import axios from 'axios';
-import * as localForage from 'localforage';
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { api, localForageKeys } from '../../utils';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
+import { fetchData } from '.';
 
-const BasePath = api.routes.VIEW_SCHEDULED_EVENTS;
 const Limit = 5;
 
 export const ScheduledEventsTableCard: FunctionComponent = () => {
@@ -19,29 +16,24 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
   const [selectedPage, setSelectedPage] = useState(0);
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `token ${token}`,
-      };
-      const result = await axios(`${BasePath}`, { headers });
+    const fetchDataAsync = async (): Promise<void> => {
+      const result = await fetchData();
       setScheduledEvents({ data: result.data });
       setLoading(false);
       setCount(result.data.length);
       setPageCount(Math.ceil(result.data.length / 5));
     };
-    fetchData();
+    fetchDataAsync();
   }, []);
 
-  const handleScheduledEvents = (): Array<[]> => {
+  const getScheduledEventsByPage = (): Array<[]> => {
     const begin = (currentPage - 1) * 5;
     const end = begin + 5;
 
     return scheduledEvents.data.slice(begin, end);
   };
 
-  const handlePageChange = (page: any): void => {
+  const handlePageChange = (page: { selected: number }): void => {
     setSelectedPage(page.selected);
     if (page.selected === selectedPage + 1) {
       setCurrentPage((currentPage) => currentPage + 1);
@@ -80,7 +72,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
           <ScheduledEventsTable
             currentPage={currentPage}
             pageLimit={Limit}
-            events={handleScheduledEvents()}
+            events={getScheduledEventsByPage()}
           />
           {renderPagination()}
         </Card.Body>

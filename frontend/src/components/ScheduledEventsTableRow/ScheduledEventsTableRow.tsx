@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { deriveTimeFromStartDate, deriveDateFromStartDate } from './index';
+import { deriveTimeFromStartDate, deriveDateFromStartDate } from '.';
 
 export interface ScheduledEventsTableRowProps {
   id: number;

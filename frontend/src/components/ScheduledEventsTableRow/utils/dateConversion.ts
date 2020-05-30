@@ -7,9 +7,9 @@ export const deriveTimeFromStartDate = (props: ScheduledEventsTableRowProps): st
   const AmOrPm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12 || 12;
   const minutes = dt.getUTCMinutes();
-  const finalTime = hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ' ' + AmOrPm;
+  const derivedTime = hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ' ' + AmOrPm;
 
-  return finalTime;
+  return derivedTime;
 };
 
 export const deriveDateFromStartDate = (props: ScheduledEventsTableRowProps): string => {
@@ -18,7 +18,7 @@ export const deriveDateFromStartDate = (props: ScheduledEventsTableRowProps): st
   const dd = String(day.getDate()).padStart(2, '0');
   const mm = String(day.getMonth() + 1).padStart(2, '0');
   const yyyy = day.getFullYear();
-  const newDate = dd + '-' + mm + '-' + yyyy;
+  const derivedDate = dd + '-' + mm + '-' + yyyy;
 
-  return newDate;
+  return derivedDate;
 };
