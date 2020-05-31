@@ -1,5 +1,7 @@
 import json
 from datetime import date, datetime, timedelta
+import calendar
+import datetime as dtime
 
 from django.core.management.base import BaseCommand
 from django.http import HttpResponse, StreamingHttpResponse
@@ -9,94 +11,42 @@ from rest_framework import status
 from core.models import ScheduledEvent, ScheduledEventRunInstance
 from data_updates.utils import ScriptExecutor
 
+from dateutil.relativedelta import *
+
 
 class Command(BaseCommand):
     help = 'Executes scheduled events at their appointed time'
 
-    def calculate_interval_counts(self, run_instances, interval, interval_type):
-        counts = {}
-        counts['daily_count'] = 0
-        counts['minute_count'] = 0
-        counts['second_count'] = 0
-        counts['hour_count'] = 0
-        counts['weekly_count'] = 0
-        counts['monthly_count'] = 0
-        counts['annual_count'] = 0
-
-        now = make_aware(datetime.now())
-        for run_instance in run_instances:
-            set_date = run_instance.start_at
-            if interval_type and interval_type in 'min':
-                if now-timedelta(seconds=60) <= set_date <= now:
-                    counts['minute_count'] = counts['minute_count'] + 1
-            elif interval_type and interval_type in 'sec':
-                if now-timedelta(seconds=1) <= set_date <= now:
-                    counts['second_count'] = counts['second_count'] + 1
-            elif interval_type and interval_type in 'hrs':
-                if now-timedelta(hours=1) <= set_date <= now:
-                    counts['hour_count'] = counts['hour_count'] + 1
-            elif interval_type and interval_type in 'dys':
-                if now-timedelta(hours=24) <= set_date <= now:
-                    counts['daily_count'] = counts['daily_count'] + 1
-            elif interval_type and interval_type in 'wks':
-                if now-timedelta(weeks=1) <= set_date <= now:
-                    counts['weekly_count'] = counts['weekly_count'] + 1
-            elif interval_type and interval_type in 'mnt':
-                if now-timedelta(weeks=4) <= set_date <= now:
-                    counts['monthly_count'] = counts['monthly_count'] + 1
-            elif interval_type and interval_type in 'yrs':
-                set_date_year = int(set_date.strftime('%Y'))
-                current_year = int(now.strftime('%Y'))
-                if set_date_year == current_year:
-                    counts['annual_count'] = counts['annual_count'] + 1
-        return counts
-
-    def check_if_repeat_is_due(self, interval, interval_type, run_instances):
-        counts = self.calculate_interval_counts(run_instances, interval, interval_type)
-
-        if interval_type and interval_type in 'yrs':
-            if counts['annual_count'] < int(interval):
-                return True
-        elif interval_type and interval_type in 'mnt':
-            if counts['monthly_count'] < int(interval):
-                return True
-        elif interval_type and interval_type in 'wks':
-            if counts['weekly_count'] < int(interval):
-                return True
-        elif interval_type and interval_type in 'dys':
-            if counts['daily_count'] < int(interval):
-                return True
-        elif interval_type and interval_type in 'hrs':
-            if counts['hour_count'] < int(interval):
-                return True
-        elif interval_type and interval_type in 'min':
-            if counts['minute_count'] < int(interval):
-                return True
+    def calculate_next_runtime(self, last_rundate, interval, interval_type):
+        if interval_type and interval_type in 'min':
+            return last_rundate + relativedelta(minutes=+interval)
         elif interval_type and interval_type in 'sec':
-            if counts['second_count'] < int(interval):
-                return True
-        else:
-            return False
+            return last_rundate + relativedelta(seconds=+interval)
+        elif interval_type and interval_type in 'hrs':
+            return last_rundate + relativedelta(hours=+interval)
+        elif interval_type and interval_type in 'dys':
+            return last_rundate + relativedelta(days=+interval)
+        elif interval_type and interval_type in 'wks':
+            return last_rundate + relativedelta(weeks=+interval)
+        elif interval_type and interval_type in 'mnt':
+            return last_rundate + relativedelta(months=+interval)
+        elif interval_type and interval_type in 'yrs':
+            return last_rundate + relativedelta(years=+interval)
 
-    def manage_repeated_schedules(self, schedule, run_instances):
+    def create_next_run_instance(self, schedule, last_rundate):
         if schedule.repeat:
-            return self.check_if_repeat_is_due(schedule.interval, schedule.interval_type, run_instances)
-        else:
-            return False
-
-    def check_if_schedule_is_due(self, schedule, run_instances):
-        if run_instances.count() <= 0:
-            # If the count of run instances is zero, return true because the schedule has never been run
-            return True
-        elif run_instances.count() > 0:
-            for run_instance in run_instances:
-                if run_instance.ended_at is None:
-                    # If ended_at is null return false because there's a run instance in progress
-                    return False
-            if self.manage_repeated_schedules(schedule, run_instances):
-                return True
-            else:
-                return False
+            #Create future run instance if schedule has been repeated
+            nextRunInstance = ScheduledEventRunInstance(
+                scheduled_event = schedule,
+                start_at = self.calculate_next_runtime(
+                    last_rundate,
+                    schedule.interval,
+                    schedule.interval_type
+                ),
+                status = 'p'
+            )
+            nextRunInstance.save()
+            self.stdout.write('Pending run instance created')
 
     def execute_script(self, script_name):
         post_status = status.HTTP_200_OK
@@ -118,34 +68,43 @@ class Command(BaseCommand):
 
         return response_data
 
+    def run_and_update_schedule(self, schedule, runInstance):
+        #Run the script
+        print('running script')
+        print(schedule.script_name)
+        update_response = self.execute_script(schedule.script_name)
+
+        #Check if script run was a success/fail and update run instance
+        if update_response['return_code'] > 0 or update_response['return_code'] < 0:
+            ScheduledEventRunInstance.objects.filter(pk=runInstance.id).update(
+                ended_at=make_aware(datetime.now()),
+                status = 'e'
+            )
+            self.stdout.write('Update failed for ' + schedule.script_name)
+        else:
+            ScheduledEventRunInstance.objects.filter(pk=runInstance.id).update(
+                ended_at=make_aware(datetime.now()),
+                status = 'c'
+            )
+            self.stdout.write('Update successful for ' + schedule.script_name)
+
+        self.create_next_run_instance(schedule, runInstance.start_at)
+
+    def check_if_schedule_is_already_running(self, run_instances):
+        for run_instance in run_instances:
+            if run_instance.status == 'r':
+                return True
+        return False
+
+    def run_schedule_if_due(self, schedule, run_instances):
+        for run_instance in run_instances:
+            if run_instance.status == 'p' and run_instance.start_at <= make_aware(datetime.now()):
+                self.run_and_update_schedule(schedule, run_instance)
+
     def handle(self, *args, **kwargs):
         schedules = ScheduledEvent.objects.filter(enabled=True)
         for schedule in schedules:
+            self.calculate_next_runtime(schedule.start_date, schedule.interval, schedule.interval_type)
             run_instances = ScheduledEventRunInstance.objects.filter(scheduled_event=schedule.id)
-            if self.check_if_schedule_is_due(schedule, run_instances):
-
-                #Create run instance
-                runInstance = ScheduledEventRunInstance(
-                    scheduled_event = schedule,
-                    start_at = make_aware(datetime.now()),
-                    status = 'r'
-                )
-                runInstance.save()
-                self.stdout.write('Run instance created')
-
-                #Run the script
-                update_response = self.execute_script(schedule.script_name)
-
-                #Check if script run was a success/fail and update run instance
-                if update_response['return_code'] > 0 or update_response['return_code'] < 0:
-                    ScheduledEventRunInstance.objects.filter(pk=runInstance.id).update(
-                        ended_at=make_aware(datetime.now()),
-                        status = 'e'
-                    )
-                    self.stdout.write('Update failed for ' + schedule.script_name)
-                else:
-                    ScheduledEventRunInstance.objects.filter(pk=runInstance.id).update(
-                        ended_at=make_aware(datetime.now()),
-                        status = 'c'
-                    )
-                    self.stdout.write('Update successful for ' + schedule.script_name)
+            if not self.check_if_schedule_is_already_running(run_instances):
+                self.run_schedule_if_due(schedule, run_instances)
