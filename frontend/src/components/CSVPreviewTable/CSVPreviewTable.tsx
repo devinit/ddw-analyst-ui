@@ -1,7 +1,8 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, ReactNode } from 'react';
-import { Card, Alert, Table } from 'react-bootstrap';
-import { Column } from '../FileInput';
+import { Alert, Card, Table } from 'react-bootstrap';
 import styled from 'styled-components';
+import { Column, getDataType } from '../FileInput';
 
 interface ComponentProps {
   columns: Column[];
@@ -19,24 +20,37 @@ const renderTableHeads = (columns: Column[]): ReactNode =>
       #
     </th>,
   ].concat(
-    columns.map(({ name, dataType }) => (
+    columns.map(({ name, dataType, hasError }) => (
       <th key={name.split(' ').join('').toLowerCase()}>
-        <i className="text-warning material-icons" data-notify="icon">
-          warning
+        <i className={`material-icons text-${hasError ? 'warning' : 'success'}`} data-notify="icon">
+          {hasError ? 'warning' : 'done'}
         </i>{' '}
         {name} <span className="text-muted">({dataType})</span>
       </th>
     )),
   );
 
-const renderTableRows = (data: (string | number)[][]): ReactNode =>
+const renderTableRows = (data: (string | number)[][], columns: Column[]): ReactNode =>
   data.map((row, index) => (
     <tr key={`${index}`}>
       {[
         <td className="text-center" key="counter">
           {index + 1}
         </td>,
-      ].concat(row.map((item, key) => <td key={`${key}`}>{item}</td>))}
+      ].concat(
+        row.map((item, columnIndex) => {
+          const columnDataType = columns[columnIndex].dataType;
+
+          return (
+            <td
+              key={`${columnIndex}`}
+              className={classNames({ 'table-warning': getDataType(item) !== columnDataType })}
+            >
+              {item}
+            </td>
+          );
+        }),
+      )}
     </tr>
   ));
 
@@ -63,7 +77,7 @@ const CSVPreviewTable: FunctionComponent<ComponentProps> = ({ columns, data }) =
           <thead>
             <tr>{renderTableHeads(columns)}</tr>
           </thead>
-          <tbody>{renderTableRows(data)}</tbody>
+          <tbody>{renderTableRows(data, columns)}</tbody>
         </Table>
       </StyledCardBody>
     </Card>

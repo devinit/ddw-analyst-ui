@@ -6,33 +6,54 @@ import { parse, ParseConfig } from 'papaparse';
 export interface Column {
   name: string;
   dataType: DataType;
+  hasError?: boolean;
 }
 
 type DataType = 'text' | 'number'; // TODO: add support for more data types
 
 export interface CSVData {
   columns: Column[];
-  data: (string | number)[][];
+  data: CSVDataOnly;
 }
 
-const getDataType = (data: string): DataType => {
+export type CSVDataOnly = (string | number)[][];
+
+export const getDataType = (data: string | number): DataType => {
+  if (typeof data === 'number') return 'number';
+
   const convertedData = parseFloat(data);
 
   return isNaN(convertedData) ? 'text' : 'number';
 };
 
+const validateColumnByDataType = (
+  data: string[][],
+  columnIndex: number,
+  dataType: string,
+): boolean => {
+  const value = data.find((_data) => getDataType(_data[columnIndex]) !== dataType);
+  if (value && columnIndex === 1) console.log(value, dataType);
+
+  return !value;
+};
+
+const removeBlankRows = (data: string[][]): string[][] =>
+  data.filter((row) => !!row.join().replace(' ', ''));
+
 const getColumnsFromData = (data: string[][]): Column[] => {
   const titleRow = data[0];
+  const dataOnly = removeBlankRows(data.slice(1));
 
   if (data.length === 1) {
     return titleRow.map((title) => ({ name: title, dataType: 'text' }));
   }
 
   return titleRow.map((title, index) => {
-    const columnData = data[1][index];
+    const columnData = dataOnly[0][index];
     const dataType = getDataType(columnData);
+    const isValid = validateColumnByDataType(dataOnly, index, dataType);
 
-    return { name: title, dataType };
+    return { name: title, dataType, hasError: !isValid };
   });
 };
 
