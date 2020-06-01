@@ -8,7 +8,7 @@ type ScheduledEventsProps = RouteComponentProps;
 const ScheduledEvents: FunctionComponent<ScheduledEventsProps> = () => {
   return (
     <Row>
-      <Col lg={7}>
+      <Col>
         <ScheduledEventsTableCard />
       </Col>
     </Row>

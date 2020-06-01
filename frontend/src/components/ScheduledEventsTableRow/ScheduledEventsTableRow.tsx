@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { deriveTimeFromStartDate, deriveDateFromStartDate } from '.';
+import moment from 'moment';
 
 export interface ScheduledEventsTableRowProps {
   id: number;
@@ -27,9 +27,9 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
         </div>
       </td>
       <td>
-        {deriveDateFromStartDate(props)} at {deriveTimeFromStartDate(props)}
+        {moment(props.start_date).format('LL')} at {moment.utc(props.start_date).format('LT')}
       </td>
-      <td>{props.repeat ? 'Every ' + props.interval + ' ' + props.interval_type : 'None'}</td>
+      <td>{props.repeat ? `Every ${props.interval} ${props.interval_type}` : 'None'}</td>
     </tr>
   );
 };

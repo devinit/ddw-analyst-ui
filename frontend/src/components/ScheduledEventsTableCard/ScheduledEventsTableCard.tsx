@@ -5,7 +5,7 @@ import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
 import { fetchData } from '.';
 
-const Limit = 5;
+const LIMIT = 5;
 
 export const ScheduledEventsTableCard: FunctionComponent = () => {
   const [scheduledEvents, setScheduledEvents] = useState({ data: [] });
@@ -16,14 +16,12 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
   const [selectedPage, setSelectedPage] = useState(0);
 
   useEffect(() => {
-    const fetchDataAsync = async (): Promise<void> => {
-      const result = await fetchData();
+    fetchData().then((result) => {
       setScheduledEvents({ data: result.data });
       setLoading(false);
       setCount(result.data.length);
       setPageCount(Math.ceil(result.data.length / 5));
-    };
-    fetchDataAsync();
+    });
   }, []);
 
   const getScheduledEventsByPage = (): Array<[]> => {
@@ -48,7 +46,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
       'No Data'
     ) : (
       <PaginationRow
-        limit={Limit}
+        limit={LIMIT}
         count={count}
         pageCount={pageCount}
         onPageChange={handlePageChange}
@@ -61,7 +59,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
       <Dimmer active={loading} inverted>
         <Loader content="Loading" />
       </Dimmer>
-      <Card style={{ width: '70vw' }}>
+      <Card className="col-md-12">
         <Card.Header className="card-header-rose card-header-icon">
           <Card.Header className="card-icon">
             <i className="material-icons">schedule</i>
@@ -71,7 +69,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
         <Card.Body>
           <ScheduledEventsTable
             currentPage={currentPage}
-            pageLimit={Limit}
+            pageLimit={LIMIT}
             events={getScheduledEventsByPage()}
           />
           {renderPagination()}
