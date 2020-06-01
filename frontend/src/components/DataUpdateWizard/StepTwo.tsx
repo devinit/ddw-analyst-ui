@@ -1,12 +1,9 @@
-import React, { FunctionComponent, useContext, ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FunctionComponent, useState } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
-import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
-import { FileInput, convertCSVFileToJSON, CSVData } from '../FileInput';
 import { CSVPreviewTable } from '../CSVPreviewTable';
+import { convertCSVFileToJSON, CSVData, FileInput } from '../FileInput';
 
 const StepTwo: FunctionComponent = () => {
-  const wizardData = useContext(WizardContext);
-  console.log(wizardData); // TODO: remove this when done
   const [data, setData] = useState<CSVData | undefined>();
 
   const onChange = ({ currentTarget }: ChangeEvent<HTMLInputElement>): void => {
