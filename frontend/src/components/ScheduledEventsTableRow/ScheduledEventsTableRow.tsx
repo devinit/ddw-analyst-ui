@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { deriveTimeFromStartDate, deriveDateFromStartDate } from '.';
 
 export interface ScheduledEventsTableRowProps {
@@ -13,8 +13,21 @@ export interface ScheduledEventsTableRowProps {
 }
 
 export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
+  const [activeRow, setActiveRow] = useState(0);
+  const toggleActive = (i: number): void => {
+    setActiveRow(i);
+    if (activeRow === i) {
+      setActiveRow(0);
+    } else {
+      setActiveRow(i);
+    }
+  };
+
   return (
-    <tr>
+    <tr
+      onClick={(): void => toggleActive(props.id)}
+      style={activeRow === props.id ? { background: '#fccac7' } : { background: '' }}
+    >
       <td className="text-center">{props.id}</td>
       <td>{props.name}</td>
       <td>{props.description}</td>
