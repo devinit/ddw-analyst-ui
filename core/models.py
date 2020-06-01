@@ -227,6 +227,7 @@ class ScheduledEventRunInstance(BaseEntity):
         ('r', 'Running'),
         ('c', 'Completed'),
         ('e', 'Erroed'),
+        ('s', 'Skipped'),
     )
     scheduled_event = models.ForeignKey(ScheduledEvent, on_delete=models.CASCADE)
     start_at = models.DateTimeField(null=False, blank=False)

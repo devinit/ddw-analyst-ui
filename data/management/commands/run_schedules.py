@@ -70,22 +70,14 @@ class Command(BaseCommand):
 
     def run_and_update_schedule(self, schedule, runInstance):
         #Run the script
-        print('running script')
-        print(schedule.script_name)
         update_response = self.execute_script(schedule.script_name)
 
         #Check if script run was a success/fail and update run instance
         if update_response['return_code'] > 0 or update_response['return_code'] < 0:
-            ScheduledEventRunInstance.objects.filter(pk=runInstance.id).update(
-                ended_at=make_aware(datetime.now()),
-                status = 'e'
-            )
+            self.update_run_instance(runInstance, 'e')
             self.stdout.write('Update failed for ' + schedule.script_name)
         else:
-            ScheduledEventRunInstance.objects.filter(pk=runInstance.id).update(
-                ended_at=make_aware(datetime.now()),
-                status = 'c'
-            )
+            self.update_run_instance(runInstance, 'c')
             self.stdout.write('Update successful for ' + schedule.script_name)
 
         self.create_next_run_instance(schedule, runInstance.start_at)
@@ -96,15 +88,22 @@ class Command(BaseCommand):
                 return True
         return False
 
-    def run_schedule_if_due(self, schedule, run_instances):
+    def update_run_instance(self, runInstance, updated_status):
+        ScheduledEventRunInstance.objects.filter(pk=runInstance.id).update(
+            ended_at = make_aware(datetime.now()),
+            status = updated_status
+        )
+
+    def run_schedule_when_due(self, schedule, run_instances):
         for run_instance in run_instances:
             if run_instance.status == 'p' and run_instance.start_at <= make_aware(datetime.now()):
-                self.run_and_update_schedule(schedule, run_instance)
+                if self.check_if_schedule_is_already_running(run_instances):
+                    self.update_run_instance(run_instance, 's')
+                else:
+                    self.run_and_update_schedule(schedule, run_instance)
 
     def handle(self, *args, **kwargs):
         schedules = ScheduledEvent.objects.filter(enabled=True)
         for schedule in schedules:
-            self.calculate_next_runtime(schedule.start_date, schedule.interval, schedule.interval_type)
             run_instances = ScheduledEventRunInstance.objects.filter(scheduled_event=schedule.id)
-            if not self.check_if_schedule_is_already_running(run_instances):
-                self.run_schedule_if_due(schedule, run_instances)
+            self.run_schedule_when_due(schedule, run_instances)
