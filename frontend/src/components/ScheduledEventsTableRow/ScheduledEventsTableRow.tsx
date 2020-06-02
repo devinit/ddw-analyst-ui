@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as localForage from 'localforage';
 import moment, { Moment } from 'moment';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { api, localForageKeys } from '../../utils';
@@ -24,7 +24,7 @@ const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
 const createRunInstance = async (
   scheduleId: number | undefined,
   data: RunInstancePayload,
-): Promise<any> => {
+): Promise<boolean> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
 
   return await axios.request({
@@ -39,23 +39,17 @@ const createRunInstance = async (
 };
 
 export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
-  const [isLoading, setLoading] = useState(false);
-  const [scheduleId, setScheduleId] = useState<number>();
-
-  useEffect(() => {
-    setScheduleId(props.event.id);
-  }, []);
+  const [isRunning, setLoading] = useState(false);
 
   const handleClick = () => {
     setLoading(true);
-    createRunInstance(scheduleId, {
+    createRunInstance(props.event.id, {
       start_at: moment(),
       status: 'p',
     })
-      .then(() => {
-        setLoading(false);
-      })
-      .catch(() => {
+      .then(() => setLoading(false))
+      .catch((error) => {
+        console.log(JSON.stringify(error));
         setLoading(false);
       });
   };
@@ -86,8 +80,14 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
           : 'None'}
       </td>
       <td>
-        <Button variant="outline-danger" size="sm" onClick={handleClick} data-id={props.event.id}>
-          {isLoading ? 'Loading…' : 'Run'}
+        <Button
+          variant="outline-danger"
+          size="sm"
+          onClick={handleClick}
+          data-id={props.event.id}
+          disabled={isRunning}
+        >
+          {isRunning ? 'Running...' : 'Run Now'}
         </Button>
       </td>
     </tr>
