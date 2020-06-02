@@ -39,7 +39,7 @@ const createRunInstance = async (
 };
 
 export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
-  const [isRunning, setLoading] = useState(false);
+  const [isCreatingInstance, setLoading] = useState(false);
 
   const handleClick = () => {
     setLoading(true);
@@ -85,9 +85,9 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
           size="sm"
           onClick={handleClick}
           data-id={props.event.id}
-          disabled={isRunning}
+          disabled={isCreatingInstance}
         >
-          {isRunning ? 'Running...' : 'Run Now'}
+          {isCreatingInstance ? 'Creating instance...' : 'Run Now'}
         </Button>
       </td>
     </tr>
