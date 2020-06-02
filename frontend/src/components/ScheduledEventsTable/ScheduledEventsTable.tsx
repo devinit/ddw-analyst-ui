@@ -21,10 +21,11 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
   };
 
   const renderRows = (): ReactNode =>
-    props.events.map((event: ScheduledEvent) => {
+    props.events.map((event: ScheduledEvent, index: number) => {
       return (
         <ScheduledEventsTableRow
           key={event.id}
+          rowId={index}
           event={event}
           onClick={handleClick}
           classNames={classNames({ 'table-danger': activeRow === event.id })}
