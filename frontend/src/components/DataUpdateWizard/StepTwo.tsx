@@ -1,17 +1,30 @@
-import React, { ChangeEvent, FunctionComponent, useState } from 'react';
+import React, { ChangeEvent, FunctionComponent, useState, useEffect } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
 import { CSVPreviewTable } from '../CSVPreviewTable';
 import { convertCSVFileToJSON, CSVData, FileInput } from '../FileInput';
 
-const StepTwo: FunctionComponent = () => {
+interface ComponentProps {
+  onComplete: (data: CSVData) => void;
+  onRemove: () => void;
+}
+
+const StepTwo: FunctionComponent<ComponentProps> = ({ onComplete, onRemove }) => {
   const [data, setData] = useState<CSVData | undefined>();
+
+  useEffect(() => {
+    if (data) {
+      onComplete(data);
+    } else {
+      onRemove();
+    }
+  }, [data]);
 
   const onChange = ({ currentTarget }: ChangeEvent<HTMLInputElement>): void => {
     if (currentTarget.files && currentTarget.files.length) {
       convertCSVFileToJSON(currentTarget.files[0]).then((data) => setData(data));
     }
   };
-  const onRemove = (): void => setData(undefined);
+  const onRemoveFile = (): void => setData(undefined);
 
   return (
     <>
@@ -24,7 +37,7 @@ const StepTwo: FunctionComponent = () => {
       </Alert>
       <Row>
         <Col sm={4}>
-          <FileInput accept=".csv" onChange={onChange} onReset={onRemove} label="Select CSV" />
+          <FileInput accept=".csv" onChange={onChange} onReset={onRemoveFile} label="Select CSV" />
         </Col>
       </Row>
 

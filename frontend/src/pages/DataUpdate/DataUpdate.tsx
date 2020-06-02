@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, createContext } from 'react';
 import { Card, Col } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
-import { StepOne, StepTwo } from '../../components/DataUpdateWizard';
+import { StepOne, StepTwo, StepThree } from '../../components/DataUpdateWizard';
 import {
   Wizard,
   WizardBody,
@@ -10,9 +10,11 @@ import {
   WizardStep,
   StepButtonStatus,
 } from '../../components/Wizard';
+import { CSVData } from '../../components/FileInput';
 
 interface WizardData {
   dataSource?: string;
+  data?: CSVData;
 }
 
 const defaultSteps: WizardStep[] = [
@@ -25,6 +27,11 @@ const defaultSteps: WizardStep[] = [
   {
     key: 'two',
     caption: 'Select CSV',
+    disabled: true,
+  },
+  {
+    key: 'three',
+    caption: 'Map',
     disabled: true,
   },
 ];
@@ -50,6 +57,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
   const [steps, setSteps] = useState<WizardStep[]>(defaultSteps);
   const [nextButtonStatus, setNextButtonStatus] = useState<StepButtonStatus>('disabled');
   const [dataSource, setDataSource] = useState('');
+  const [data, setData] = useState<undefined | CSVData>(undefined);
   const onNext = (step: WizardStep): void => {
     setSteps(
       updateSteps(
@@ -74,11 +82,19 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
     setDataSource(_dataSource);
     setNextButtonStatus('enabled');
   };
+  const onStepTwoComplete = (_data: CSVData): void => {
+    setData(_data);
+    setNextButtonStatus('enabled');
+  };
+  const onStepTwoReset = (): void => {
+    setData(undefined);
+    setNextButtonStatus('disabled');
+  };
   const activeStep = steps.find((step) => step.active);
 
   return (
     <Col md={10} className="ml-auto mr-auto">
-      <WizardContext.Provider value={{ dataSource }}>
+      <WizardContext.Provider value={{ dataSource, data }}>
         <Wizard
           steps={steps}
           id="data-update"
@@ -96,7 +112,10 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
               <StepOne onComplete={onStepOneComplete} />
             </WizardBodyContent>
             <WizardBodyContent eventKey="two" active={activeStep && activeStep.key === 'two'}>
-              <StepTwo />
+              <StepTwo onComplete={onStepTwoComplete} onRemove={onStepTwoReset} />
+            </WizardBodyContent>
+            <WizardBodyContent eventKey="three" active={activeStep && activeStep.key === 'three'}>
+              <StepThree />
             </WizardBodyContent>
           </WizardBody>
         </Wizard>
