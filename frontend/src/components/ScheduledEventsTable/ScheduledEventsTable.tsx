@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, ReactNode, useState } from 'react';
+import classNames from 'classnames';
 import { Table } from 'react-bootstrap';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow';
@@ -10,6 +11,12 @@ export interface ScheduledEventTableProps {
 }
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
   const offset = (props.currentPage - 1) * props.pageLimit;
+  const [activeRow, setActiveRow] = useState(0);
+  const handleClick = (id: number) => (): void => {
+    if (id !== activeRow) {
+      setActiveRow(id);
+    }
+  };
 
   const renderRows = (): ReactNode =>
     props.events.map((event: ScheduledEvent, index: number) => {
@@ -24,6 +31,8 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
           interval_type={event.interval_type}
           repeat={event.repeat}
           start_date={event.start_date}
+          onClick={handleClick(offset + index + 1)}
+          classNames={classNames({ 'table-danger': activeRow === offset + index + 1 })}
         />
       );
     });
