@@ -29,7 +29,11 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
       <td>
         {moment(props.start_date).format('LL')} at {moment.utc(props.start_date).format('LT')}
       </td>
-      <td>{props.repeat ? `Every ${props.interval} ${props.interval_type}` : 'None'}</td>
+      <td>
+        {props.repeat && props.interval && props.interval_type
+          ? `Every ${props.interval} ${props.interval_type}`
+          : 'None'}
+      </td>
     </tr>
   );
 };
