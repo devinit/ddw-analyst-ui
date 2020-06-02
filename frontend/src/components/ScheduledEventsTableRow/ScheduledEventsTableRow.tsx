@@ -35,6 +35,11 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
           ? `Every ${props.event.interval} ${convertIntervalType(props.event.interval_type)}`
           : 'None'}
       </td>
+      <td>
+        <button type="submit" className="float-right btn btn-danger">
+          Run
+        </button>
+      </td>
     </tr>
   );
 };

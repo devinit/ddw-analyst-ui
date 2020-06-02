@@ -42,6 +42,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
           <th>Enabled</th>
           <th>Start Date</th>
           <th>Interval</th>
+          <th>Run Schedule</th>
         </tr>
       </thead>
       <tbody>{renderRows()}</tbody>
