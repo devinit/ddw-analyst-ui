@@ -18,6 +18,7 @@ import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncHome } from '../pages/Home';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
 import { AsyncQueryData } from '../pages/QueryData';
+import { AsyncScheduledEvents } from '../pages/ScheduledEvents';
 import { ModalState } from '../reducers/modal';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
@@ -116,6 +117,15 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   data-testid="sidebar-link-query-builder"
                 />
               </Sidebar.Item>
+              <Sidebar.Item active={this.state.activeRoute === '/scheduledevents/'}>
+                <Sidebar.Link
+                  to="/scheduledevents/"
+                  single
+                  icon="alarm"
+                  textNormal="Scheduled Events"
+                  onClick={this.setActiveRoute}
+                />
+              </Sidebar.Item>
             </Sidebar.Content>
 
             <Sidebar.Footer>
@@ -134,6 +144,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                 <Route path="/" exact component={() => <span>Home</span>} />
                 <Route path="/sources" exact component={() => <span>Data Sources</span>} />
                 <Route path="/queries/build" component={() => <span>Query Builder</span>} />
+                <Route path="/scheduledevents/" component={() => <span>Scheduled Events</span>} />
               </Navbar.Brand>
             </div>
 
@@ -172,6 +183,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/queries/build" exact component={AsyncQueryBuilder} />
               <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
               <Route path="/queries/data/:id" exact component={AsyncQueryData} />
+              <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
             </Switch>
             <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
               {ModalContent ? <ModalContent /> : null}

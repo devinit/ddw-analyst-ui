@@ -111,6 +111,7 @@
     "js-base64": "^2.5.2",
     "localforage": "^1.7.3",
     "lodash": "^4.17.15",
+    "moment": "^2.26.0",
     "npm-check": "^5.9.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
