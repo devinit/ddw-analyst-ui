@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { List, Set } from 'immutable';
 import { DropdownItemProps } from 'semantic-ui-react';
 import {
@@ -8,7 +9,7 @@ import {
   TransformOptions,
   WindowOptions,
 } from '../types/operations';
-import { ColumnList } from '../types/sources';
+import { ColumnList, Source } from '../types/sources';
 
 export * from './api';
 export * from './localForage';
@@ -151,3 +152,10 @@ export const getStepSelectableColumns = (
 
   return Set(columnsList.map((column) => column.get('name')));
 };
+
+export const getSelectOptionsFromSources = (sources: Source[]): DropdownItemProps[] =>
+  sources.map((source) => ({
+    key: source.id,
+    text: source.indicator,
+    value: source.id,
+  }));

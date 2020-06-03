@@ -1,22 +1,26 @@
 import React, { FunctionComponent } from 'react';
-import { Alert, Row, Col } from 'react-bootstrap';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { Alert, Col, Row } from 'react-bootstrap';
+import { Dropdown, DropdownProps } from 'semantic-ui-react';
+import { useSources } from '../../hooks';
+import { Source } from '../../types/sources';
+import { getSelectOptionsFromSources } from '../../utils';
 
 interface ComponentProps {
-  onComplete?: (dataSource: string) => void;
+  onComplete?: (dataSource: Source) => void;
 }
 
-const options: DropdownItemProps[] = [
-  { key: 'fts-donor-codes', text: 'FTS Donor Codes', value: 'fts-donor-codes' },
-  { key: 'fts-deflators', text: 'FTS Deflators', value: 'fts-deflators' },
-];
-
 const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
+  const sources = useSources();
   const onChange = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ): void => {
-    if (onComplete) onComplete(data.value as string);
+    if (onComplete && sources) {
+      const selectedSource = sources.find((source) => source.id === (data.value as number));
+      if (selectedSource) {
+        onComplete(selectedSource);
+      }
+    }
   };
 
   return (
@@ -36,7 +40,7 @@ const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
             placeholder="Select Data Source"
             fluid
             selection
-            options={options}
+            options={getSelectOptionsFromSources(sources)}
             onChange={onChange}
           />
         </Col>

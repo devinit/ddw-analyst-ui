@@ -11,9 +11,10 @@ import {
   WizardHeader,
   WizardStep,
 } from '../../components/Wizard';
+import { Source } from '../../types/sources';
 
 interface WizardData {
-  dataSource?: string;
+  dataSource?: Source;
   data?: CSVData;
 }
 
@@ -78,7 +79,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
     setNextButtonStatus('enabled');
   };
 
-  const onStepOneComplete = (_dataSource: string): void => {
+  const onStepOneComplete = (_dataSource: Source): void => {
     setDataSource(_dataSource);
     setNextButtonStatus('enabled');
   };
