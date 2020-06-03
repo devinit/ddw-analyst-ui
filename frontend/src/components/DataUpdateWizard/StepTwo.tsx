@@ -1,5 +1,6 @@
-import React, { ChangeEvent, FunctionComponent, useState, useEffect } from 'react';
+import React, { ChangeEvent, FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
+import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
 import { CSVPreviewTable } from '../CSVPreviewTable';
 import { convertCSVFileToJSON, CSVData, FileInput } from '../FileInput';
 
@@ -9,7 +10,8 @@ interface ComponentProps {
 }
 
 const StepTwo: FunctionComponent<ComponentProps> = ({ onComplete, onRemove }) => {
-  const [data, setData] = useState<CSVData | undefined>();
+  const { data: _data } = useContext(WizardContext);
+  const [data, setData] = useState<CSVData | undefined>(_data);
 
   useEffect(() => {
     if (data) {

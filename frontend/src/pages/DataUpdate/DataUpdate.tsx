@@ -1,16 +1,16 @@
-import React, { FunctionComponent, useState, createContext } from 'react';
+import React, { createContext, FunctionComponent, useContext, useState } from 'react';
 import { Card, Col } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
-import { StepOne, StepTwo, StepThree } from '../../components/DataUpdateWizard';
+import { StepOne, StepThree, StepTwo } from '../../components/DataUpdateWizard';
+import { CSVData } from '../../components/FileInput';
 import {
+  StepButtonStatus,
   Wizard,
   WizardBody,
   WizardBodyContent,
   WizardHeader,
   WizardStep,
-  StepButtonStatus,
 } from '../../components/Wizard';
-import { CSVData } from '../../components/FileInput';
 
 interface WizardData {
   dataSource?: string;
@@ -54,18 +54,18 @@ const updateSteps = (
 };
 
 const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
+  const wizardContext = useContext(WizardContext);
   const [steps, setSteps] = useState<WizardStep[]>(defaultSteps);
   const [nextButtonStatus, setNextButtonStatus] = useState<StepButtonStatus>('disabled');
-  const [dataSource, setDataSource] = useState('');
-  const [data, setData] = useState<undefined | CSVData>(undefined);
+  const [dataSource, setDataSource] = useState(wizardContext.dataSource);
+  const [data, setData] = useState<undefined | CSVData>(wizardContext.data);
   const onNext = (step: WizardStep): void => {
-    setSteps(
-      updateSteps(
-        steps,
-        steps.findIndex((_step) => _step.key === step.key),
-      ),
-    );
-    setNextButtonStatus('disabled');
+    const activeIndex = steps.findIndex((_step) => _step.key === step.key);
+    setSteps(updateSteps(steps, activeIndex));
+    // only set step 2 button to 'disabled' if there's no data
+    if (activeIndex === 0 && !data) {
+      setNextButtonStatus('disabled');
+    }
   };
   const onPrevious = (step: WizardStep): void => {
     setSteps(
