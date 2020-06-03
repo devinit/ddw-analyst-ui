@@ -12,6 +12,7 @@ interface ComponentProps {
 const StepTwo: FunctionComponent<ComponentProps> = ({ onComplete, onRemove }) => {
   const { data: _data } = useContext(WizardContext);
   const [data, setData] = useState<CSVData | undefined>(_data);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -23,7 +24,11 @@ const StepTwo: FunctionComponent<ComponentProps> = ({ onComplete, onRemove }) =>
 
   const onChange = ({ currentTarget }: ChangeEvent<HTMLInputElement>): void => {
     if (currentTarget.files && currentTarget.files.length) {
-      convertCSVFileToJSON(currentTarget.files[0]).then((data) => setData(data));
+      setIsProcessing(true);
+      convertCSVFileToJSON(currentTarget.files[0]).then((data) => {
+        setData(data);
+        setIsProcessing(false);
+      });
     }
   };
   const onRemoveFile = (): void => setData(undefined);
@@ -39,7 +44,13 @@ const StepTwo: FunctionComponent<ComponentProps> = ({ onComplete, onRemove }) =>
       </Alert>
       <Row>
         <Col sm={4}>
-          <FileInput accept=".csv" onChange={onChange} onReset={onRemoveFile} label="Select CSV" />
+          <FileInput
+            isProcessing={isProcessing}
+            accept=".csv"
+            onChange={onChange}
+            onReset={onRemoveFile}
+            label="Select CSV"
+          />
         </Col>
       </Row>
 

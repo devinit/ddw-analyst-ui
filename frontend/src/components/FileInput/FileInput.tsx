@@ -2,13 +2,14 @@
  * Material Dashboard Pro File Input - https://demos.creative-tim.com/material-dashboard-pro/examples/forms/extended.html
  */
 import classNames from 'classnames';
-import React, { FunctionComponent, InputHTMLAttributes, useState, useRef } from 'react';
+import React, { FunctionComponent, InputHTMLAttributes, useRef, useState } from 'react';
 import { Button, Form, FormFileProps } from 'react-bootstrap';
 import styled from 'styled-components';
 
 interface FileInputProps extends FormFileProps, InputHTMLAttributes<HTMLInputElement> {
   onReset?: () => void;
   label?: string;
+  isProcessing?: boolean;
 }
 
 const StyledFormFile = styled(Form.File)`
@@ -25,7 +26,12 @@ const StyledFormFile = styled(Form.File)`
   direction: ltr;
 `;
 
-const FileInput: FunctionComponent<FileInputProps> = ({ onReset, label, ...props }) => {
+const FileInput: FunctionComponent<FileInputProps> = ({
+  onReset,
+  label,
+  isProcessing,
+  ...props
+}) => {
   const inputNode = useRef<HTMLInputElement | undefined>(undefined);
   const [hasFile, setHasFile] = useState(false);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -43,13 +49,18 @@ const FileInput: FunctionComponent<FileInputProps> = ({ onReset, label, ...props
   return (
     <div className="fileinput fileinput-new" data-provides="fileinput">
       <div>
-        <span className="btn btn-danger btn-file">
+        <span className={classNames('h4', { 'd-none': !isProcessing })}>Processing ...</span>
+        <span className={classNames('btn btn-danger btn-file', { 'd-none': isProcessing })}>
           <span className={classNames({ 'd-none': hasFile })}>{label || 'Select File'}</span>
           <span className={classNames({ 'd-none': !hasFile })}>Change File</span>
           <Form.Control type="hidden" />
           <StyledFormFile name="..." {...props} onChange={onChange} ref={inputNode} />
         </span>
-        <Button variant="dark" className={classNames({ 'd-none': !hasFile })} onClick={onRemove}>
+        <Button
+          variant="dark"
+          className={classNames({ 'd-none': !hasFile || isProcessing })}
+          onClick={onRemove}
+        >
           <i className="fa fa-times"></i> Remove File
         </Button>
       </div>
