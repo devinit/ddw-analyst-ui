@@ -1,18 +1,15 @@
 import React, { FunctionComponent } from 'react';
+import { Dropdown } from 'semantic-ui-react';
+import { ColumnList } from '../../types/sources';
+import { getSelectOptionsFromColumns } from '../../utils';
 import { Column } from '../FileInput';
-import { Dropdown, DropdownItemProps } from 'semantic-ui-react';
 
-// TODO: Generate options from actual data source columns
-const options: DropdownItemProps[] = [
-  { key: 'donor-name', text: 'Donor Nane', value: 'donor-name' },
-  {
-    key: 'destination-project-name',
-    text: 'Destination Project Name',
-    value: 'destination-project-name',
-  },
-];
+interface ComponentProps {
+  column: Column;
+  dataSourceColumns: ColumnList;
+}
 
-const CSVMappingTableRow: FunctionComponent<{ column: Column }> = ({ column }) => {
+const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, dataSourceColumns }) => {
   return (
     <tr>
       <td>
@@ -32,7 +29,8 @@ const CSVMappingTableRow: FunctionComponent<{ column: Column }> = ({ column }) =
           placeholder="Select Data Source"
           fluid
           selection
-          options={options}
+          options={getSelectOptionsFromColumns(dataSourceColumns)}
+          defaultValue="donor-name"
         />
       </td>
     </tr>

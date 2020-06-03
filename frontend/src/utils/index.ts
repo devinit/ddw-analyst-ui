@@ -9,7 +9,7 @@ import {
   TransformOptions,
   WindowOptions,
 } from '../types/operations';
-import { ColumnList, Source } from '../types/sources';
+import { ColumnList, SourceMap } from '../types/sources';
 
 export * from './api';
 export * from './localForage';
@@ -153,9 +153,11 @@ export const getStepSelectableColumns = (
   return Set(columnsList.map((column) => column.get('name')));
 };
 
-export const getSelectOptionsFromSources = (sources: Source[]): DropdownItemProps[] =>
-  sources.map((source) => ({
-    key: source.id,
-    text: source.indicator,
-    value: source.id,
-  }));
+export const getSelectOptionsFromSources = (sources: List<SourceMap>): DropdownItemProps[] =>
+  sources
+    .map((source) => ({
+      key: source.get('id'),
+      text: source.get('indicator'),
+      value: source.get('id'),
+    }))
+    .toJS();

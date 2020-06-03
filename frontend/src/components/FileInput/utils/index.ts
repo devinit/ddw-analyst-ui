@@ -2,13 +2,13 @@
  * https://www.papaparse.com/docs
  */
 import { parse, ParseConfig } from 'papaparse';
-import { Column as DataSourceColumn } from '../../../types/sources';
+import { ColumnMap } from '../../../types/sources';
 
 export interface Column {
   name: string;
   dataType: DataType;
   hasError?: boolean;
-  dataSourceProperty?: DataSourceColumn;
+  dataSourceProperty?: ColumnMap;
 }
 
 type DataType = 'text' | 'number'; // TODO: add support for more data types

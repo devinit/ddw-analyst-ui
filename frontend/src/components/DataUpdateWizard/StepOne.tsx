@@ -2,11 +2,11 @@ import React, { FunctionComponent } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import { useSources } from '../../hooks';
-import { Source } from '../../types/sources';
+import { SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
 
 interface ComponentProps {
-  onComplete?: (dataSource: Source) => void;
+  onComplete?: (dataSource: SourceMap) => void;
 }
 
 const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
@@ -16,7 +16,7 @@ const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
     data: DropdownProps,
   ): void => {
     if (onComplete && sources) {
-      const selectedSource = sources.find((source) => source.id === (data.value as number));
+      const selectedSource = sources.find((source) => source.get('id') === (data.value as number));
       if (selectedSource) {
         onComplete(selectedSource);
       }

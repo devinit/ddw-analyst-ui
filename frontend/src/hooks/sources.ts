@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
+import { fromJS, List } from 'immutable';
 import * as localForage from 'localforage';
 import { useEffect, useState } from 'react';
-import { Source } from '../types/sources';
-import { api, localForageKeys } from '../utils';
 import { APIResponse } from '../types/api';
+import { Source, SourceMap } from '../types/sources';
+import { api, localForageKeys } from '../utils';
 
 interface Options {
   limit: number;
@@ -20,9 +21,9 @@ const defaultOptions: Options = {
   search: '',
 };
 
-export const useSources = (options: Options = defaultOptions): Source[] => {
+export const useSources = (options: Options = defaultOptions): List<SourceMap> => {
   const [token, setToken] = useState('');
-  const [sources, setSources] = useState<Source[]>([]);
+  const [sources, setSources] = useState<List<SourceMap>>(fromJS([]));
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((_token) => setToken(_token));
   }, []);
@@ -39,15 +40,15 @@ export const useSources = (options: Options = defaultOptions): Source[] => {
       })
       .then(({ status, data, statusText }: AxiosResponse<APIResponse<Source[]>>) => {
         if (status === 200 && data.results) {
-          setSources(data.results);
+          setSources(fromJS(data.results));
         } else if (status === 401) {
           console.log('Failed to fetch sources: ', statusText);
-          setSources([]);
+          setSources(fromJS([]));
         }
       })
       .catch((error) => {
         console.log(error.response);
-        setSources([]);
+        setSources(fromJS([]));
       });
   }, [token, options]);
 

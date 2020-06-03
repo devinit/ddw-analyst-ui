@@ -1,23 +1,25 @@
 import React, { FunctionComponent } from 'react';
 import { Card, Table } from 'react-bootstrap';
+import { ColumnList } from '../../types/sources';
 import { Column } from '../FileInput';
 import { CSVMappingTableRow } from './CSVMappingTableRow';
+import { getDefaultColumnMapping } from './utils';
 
 interface ComponentProps {
   columns: Column[];
+  dataSourceColumns: ColumnList;
 }
 
-const CSVMappingTable: FunctionComponent<ComponentProps> = ({ columns }) => {
+const CSVMappingTable: FunctionComponent<ComponentProps> = ({ columns, dataSourceColumns }) => {
   const unmatchedCount = columns.filter((column) => !column.dataSourceProperty).length;
+  console.log(getDefaultColumnMapping(columns, dataSourceColumns));
 
   return (
     <Card className="card-plain mt-0 mb-0">
       <Card.Header className="pl-2">
         {unmatchedCount ? (
-          <Card.Text>
-            <h6 className="text-capitalize">
-              You have <span className="text-danger">{unmatchedCount}</span> unmatched columns
-            </h6>
+          <Card.Text className="text-capitalize h6">
+            You have <span className="text-danger">{unmatchedCount}</span> unmatched columns
           </Card.Text>
         ) : null}
       </Card.Header>
@@ -33,7 +35,11 @@ const CSVMappingTable: FunctionComponent<ComponentProps> = ({ columns }) => {
 
           <tbody>
             {columns.map((column) => (
-              <CSVMappingTableRow key={column.name} column={column} />
+              <CSVMappingTableRow
+                key={column.name}
+                column={column}
+                dataSourceColumns={dataSourceColumns}
+              />
             ))}
           </tbody>
         </Table>
