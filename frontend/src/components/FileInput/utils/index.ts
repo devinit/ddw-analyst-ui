@@ -7,6 +7,7 @@ export interface Column {
   name: string;
   dataType: DataType;
   hasError?: boolean;
+  dataSourceProperty?: string;
 }
 
 type DataType = 'text' | 'number'; // TODO: add support for more data types

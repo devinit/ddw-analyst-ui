@@ -1,7 +1,11 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { Alert } from 'react-bootstrap';
+import { CSVMappingTable } from '../CSVMappingTable';
+import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
 
 const StepThree: FunctionComponent = () => {
+  const { data } = useContext(WizardContext);
+
   return (
     <>
       <h5 className="info-text"> Map columns on the XLS/CSV to data source properties</h5>
@@ -15,6 +19,7 @@ const StepThree: FunctionComponent = () => {
           manually mapped to a property with the dropdown menu.
         </p>
       </Alert>
+      {data ? <CSVMappingTable columns={data.columns} /> : null}
     </>
   );
 };
