@@ -1,17 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`WizardBodyContent renders the default structure correctly 1`] = `
+exports[`WizardBodyContent renders no children when inactive by default 1`] = `
 <div
   aria-hidden={true}
   className="tab-pane"
+  data-testid="wizard-tab-pane"
   role="tabpanel"
 />
 `;
 
-exports[`WizardBodyContent renders with children 1`] = `
+exports[`WizardBodyContent renders the default structure correctly 1`] = `
 <div
   aria-hidden={true}
   className="tab-pane"
+  data-testid="wizard-tab-pane"
+  role="tabpanel"
+/>
+`;
+
+exports[`WizardBodyContent renders with children when active 1`] = `
+<div
+  aria-hidden={false}
+  className="tab-pane active"
+  data-testid="wizard-tab-pane"
   role="tabpanel"
 >
   <div>
