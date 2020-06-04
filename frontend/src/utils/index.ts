@@ -26,7 +26,7 @@ export const getSourceIDFromOperation = (operation: OperationMap): string | unde
   return steps.getIn([0, 'source']);
 };
 
-export const formatString = (name = '') =>
+export const formatString = (name = ''): string =>
   name
     .split('_')
     .map((word) => `${word.charAt(0).toUpperCase()}${word.substr(1)}`)
@@ -95,14 +95,14 @@ export const getStepSelectableColumns = (
   activeStep: OperationStepMap,
   steps: List<OperationStepMap>,
   columnsList: ColumnList,
-) => {
+): Set<string> => {
   //tslint:disable-line
   const stepId = parseInt(activeStep.get('step_id') as string, 10);
   const previousSteps = steps
     .filter((step) => parseInt(step.get('step_id') as string, 10) < stepId)
     .sort(sortSteps);
   if (previousSteps && previousSteps.count()) {
-    return previousSteps.reduce((columns: Set<string>, step) => {
+    return previousSteps.reduce<Set<string>>((columns: Set<string>, step): Set<string> => {
       const options = step.get('query_kwargs') as string | undefined;
       if (options) {
         const queryFunction = step.get('query_func');
@@ -135,7 +135,7 @@ export const getStepSelectableColumns = (
         if (queryFunction === 'join') {
           const { columns_x, columns_y } = JSON.parse(options);
 
-          return Set(columns_x || []).union(columns_y || []);
+          return Set(columns_x || []).union(columns_y || []) as Set<string>;
         }
         if (queryFunction === 'window') {
           const { columns: windowColumns, window_fn }: WindowOptions = JSON.parse(options);
@@ -147,10 +147,10 @@ export const getStepSelectableColumns = (
       }
 
       return columns;
-    }, Set(columnsList.map((column) => column.get('name'))));
+    }, Set(columnsList.map((column) => column.get('name') as string)));
   }
 
-  return Set(columnsList.map((column) => column.get('name')));
+  return Set(columnsList.map((column) => column.get('name') as string));
 };
 
 export const getSelectOptionsFromSources = (sources: List<SourceMap>): DropdownItemProps[] =>
