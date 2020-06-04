@@ -1,2 +1,2 @@
 export * from './ScheduledEventsTableCard';
-export * from './utils/fetchData';
+export * from './utils';

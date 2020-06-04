@@ -19,7 +19,8 @@ module.exports = {
     'react/prop-types': [ 0 ],
     '@typescript-eslint/camelcase':[ 1 ],
     'newline-before-return': 'error',
-    'eqeqeq': [ 'error', 'always' ]
+    'eqeqeq': [ 'error', 'always' ],
+    'prefer-template': 'error'
   },
   settings: {
     react: {
