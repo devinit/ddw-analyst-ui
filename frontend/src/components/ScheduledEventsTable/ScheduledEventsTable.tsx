@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Table } from 'react-bootstrap';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow';
+import { fetchRunHistory } from './utils';
 
 export interface ScheduledEventTableProps {
   currentPage: number;
@@ -12,9 +13,14 @@ export interface ScheduledEventTableProps {
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
   const offset = (props.currentPage - 1) * props.pageLimit;
   const [activeRow, setActiveRow] = useState(0);
+  const [runHistory, setRunHistory] = useState({});
+
   const handleClick = (id: number) => (): void => {
     if (id !== activeRow) {
       setActiveRow(id);
+      fetchRunHistory(id).then((result) => {
+        result.data && result.data.length ? setRunHistory(result.data) : null;
+      });
     }
   };
 
