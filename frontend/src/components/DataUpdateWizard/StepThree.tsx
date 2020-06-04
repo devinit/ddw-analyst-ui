@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { Alert } from 'react-bootstrap';
 import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
-import { ColumnList } from '../../types/sources';
 import { CSVMappingTable } from '../CSVMappingTable';
 
 const StepThree: FunctionComponent = () => {
@@ -20,12 +19,7 @@ const StepThree: FunctionComponent = () => {
           manually mapped to a property with the dropdown menu.
         </p>
       </Alert>
-      {data && dataSource ? (
-        <CSVMappingTable
-          columns={data.columns}
-          dataSourceColumns={dataSource.get('columns') as ColumnList}
-        />
-      ) : null}
+      {data && dataSource ? <CSVMappingTable /> : null}
     </>
   );
 };

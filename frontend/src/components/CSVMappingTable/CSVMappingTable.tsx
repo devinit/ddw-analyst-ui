@@ -1,18 +1,32 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { Card, Table } from 'react-bootstrap';
+import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
 import { ColumnList } from '../../types/sources';
-import { Column } from '../FileInput';
 import { CSVMappingTableRow } from './CSVMappingTableRow';
 import { getDefaultColumnMapping } from './utils';
 
-interface ComponentProps {
-  columns: Column[];
-  dataSourceColumns: ColumnList;
-}
+const CSVMappingTable: FunctionComponent = () => {
+  const { data, dataSource, updateData } = useContext(WizardContext);
+  useEffect(() => {
+    if (data?.columns && dataSource && updateData) {
+      const updatedColumns = getDefaultColumnMapping(
+        data.columns,
+        dataSource.get('columns') as ColumnList,
+      );
+      const updatedData = { ...data };
+      updatedData.columns = updatedColumns;
+      updateData(updatedData);
+    }
+  }, []);
 
-const CSVMappingTable: FunctionComponent<ComponentProps> = ({ columns, dataSourceColumns }) => {
+  if (!data?.columns || !dataSource?.get('columns')) {
+    return <div>Missing vital data</div>;
+  }
+
+  const { columns } = data;
+  const dataSourceColumns = dataSource.get('columns') as ColumnList;
+
   const unmatchedCount = columns.filter((column) => !column.dataSourceProperty).length;
-  console.log(getDefaultColumnMapping(columns, dataSourceColumns));
 
   return (
     <Card className="card-plain mt-0 mb-0">

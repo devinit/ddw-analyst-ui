@@ -16,6 +16,7 @@ import { SourceMap } from '../../types/sources';
 interface WizardData {
   dataSource?: SourceMap;
   data?: CSVData;
+  updateData?: (data: CSVData) => void;
 }
 
 const defaultSteps: WizardStep[] = [
@@ -60,6 +61,8 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
   const [nextButtonStatus, setNextButtonStatus] = useState<StepButtonStatus>('disabled');
   const [dataSource, setDataSource] = useState(wizardContext.dataSource);
   const [data, setData] = useState<undefined | CSVData>(wizardContext.data);
+
+  const onUpdateData = (_data: CSVData): void => setData(_data);
   const onNext = (step: WizardStep): void => {
     const activeIndex = steps.findIndex((_step) => _step.key === step.key);
     setSteps(updateSteps(steps, activeIndex));
@@ -95,7 +98,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
 
   return (
     <Col md={10} className="ml-auto mr-auto">
-      <WizardContext.Provider value={{ dataSource, data }}>
+      <WizardContext.Provider value={{ dataSource, data, updateData: onUpdateData }}>
         <Wizard
           steps={steps}
           id="data-update"

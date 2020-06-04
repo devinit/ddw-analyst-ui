@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useContext } from 'react';
-import { Dropdown } from 'semantic-ui-react';
+import React, { FunctionComponent, SyntheticEvent, useContext } from 'react';
+import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
 import { ColumnList } from '../../types/sources';
 import { getSelectOptionsFromColumns } from '../../utils';
@@ -11,8 +11,23 @@ interface ComponentProps {
   dataSourceColumns: ColumnList;
 }
 
-const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, dataSourceColumns }) => {
-  const { data } = useContext(WizardContext);
+const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, ...props }) => {
+  const { data, updateData } = useContext(WizardContext);
+
+  const onChange = (_event: SyntheticEvent<HTMLElement, Event>, selected: DropdownProps): void => {
+    if (data && updateData) {
+      const property = props.dataSourceColumns.find(
+        (column) => column.get('name') === selected.value,
+      );
+      if (property) {
+        const csvColumn = data.columns.find((_column) => _column.name === column.name);
+        if (csvColumn) {
+          csvColumn.dataSourceProperty = property;
+          updateData({ ...data });
+        }
+      }
+    }
+  };
 
   return (
     <tr>
@@ -35,12 +50,11 @@ const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, dataSou
             fluid
             selection
             options={disableSelectedColumns(
-              getSelectOptionsFromColumns(dataSourceColumns),
+              getSelectOptionsFromColumns(props.dataSourceColumns),
               data.columns,
             )}
-            defaultValue={
-              column.dataSourceProperty && (column.dataSourceProperty.get('name') as string)
-            }
+            value={column.dataSourceProperty && (column.dataSourceProperty.get('name') as string)}
+            onChange={onChange}
           />
         ) : null}
       </td>
