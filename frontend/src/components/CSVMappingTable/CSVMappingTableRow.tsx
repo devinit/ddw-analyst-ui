@@ -1,8 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { Dropdown } from 'semantic-ui-react';
+import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
 import { ColumnList } from '../../types/sources';
 import { getSelectOptionsFromColumns } from '../../utils';
 import { Column } from '../FileInput';
+import { disableSelectedColumns } from './utils';
 
 interface ComponentProps {
   column: Column;
@@ -10,6 +12,8 @@ interface ComponentProps {
 }
 
 const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, dataSourceColumns }) => {
+  const { data } = useContext(WizardContext);
+
   return (
     <tr>
       <td>
@@ -24,14 +28,21 @@ const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, dataSou
       <td>{column.name}</td>
 
       <td>
-        <Dropdown
-          className="text-capitalize"
-          placeholder="Select Data Source"
-          fluid
-          selection
-          options={getSelectOptionsFromColumns(dataSourceColumns)}
-          defaultValue="donor-name"
-        />
+        {data ? (
+          <Dropdown
+            className="text-capitalize"
+            placeholder="Select Data Source"
+            fluid
+            selection
+            options={disableSelectedColumns(
+              getSelectOptionsFromColumns(dataSourceColumns),
+              data.columns,
+            )}
+            defaultValue={
+              column.dataSourceProperty && (column.dataSourceProperty.get('name') as string)
+            }
+          />
+        ) : null}
       </td>
     </tr>
   );
