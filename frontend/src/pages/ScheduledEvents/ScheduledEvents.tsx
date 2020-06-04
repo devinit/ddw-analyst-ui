@@ -1,16 +1,16 @@
 import React, { FunctionComponent } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { ScheduledEventsTableCard } from '../../components/ScheduledEventsTableCard';
+import { ScheduledEventsRunHistoryTableCard } from '../../components/ScheduledEventsRunHistoryTableCard';
 
 type ScheduledEventsProps = RouteComponentProps;
 
 const ScheduledEvents: FunctionComponent<ScheduledEventsProps> = () => {
   return (
     <Row>
-      <Col>
-        <ScheduledEventsTableCard />
-      </Col>
+      <ScheduledEventsTableCard />
+      <ScheduledEventsRunHistoryTableCard />
     </Row>
   );
 };

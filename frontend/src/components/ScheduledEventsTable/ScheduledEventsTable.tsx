@@ -19,6 +19,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
     if (id !== activeRow) {
       setActiveRow(id);
       fetchRunHistory(id).then((result) => {
+        console.log(runHistory);
         result.data && result.data.length ? setRunHistory(result.data) : null;
       });
     }
