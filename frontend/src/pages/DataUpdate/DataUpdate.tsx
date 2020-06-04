@@ -1,7 +1,7 @@
 import React, { createContext, FunctionComponent, useContext, useState } from 'react';
 import { Card, Col } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
-import { StepOne, StepThree, StepTwo } from '../../components/DataUpdateWizard';
+import { StepFour, StepOne, StepThree, StepTwo } from '../../components/DataUpdateWizard';
 import { CSVData } from '../../components/FileInput';
 import {
   StepButtonStatus,
@@ -34,6 +34,11 @@ const defaultSteps: WizardStep[] = [
   {
     key: 'three',
     caption: 'Map',
+    disabled: true,
+  },
+  {
+    key: 'four',
+    caption: 'Upload',
     disabled: true,
   },
 ];
@@ -120,6 +125,9 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
             </WizardBodyContent>
             <WizardBodyContent eventKey="three" active={activeStep && activeStep.key === 'three'}>
               <StepThree />
+            </WizardBodyContent>
+            <WizardBodyContent eventKey="four" active={activeStep && activeStep.key === 'four'}>
+              <StepFour />
             </WizardBodyContent>
           </WizardBody>
         </Wizard>
