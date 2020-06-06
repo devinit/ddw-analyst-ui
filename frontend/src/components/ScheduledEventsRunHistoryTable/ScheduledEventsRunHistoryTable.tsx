@@ -2,10 +2,24 @@ import React, { FunctionComponent, ReactNode } from 'react';
 import { Table } from 'react-bootstrap';
 import { ScheduledEventsRunHistoryTableRow } from '../ScheduledEventsRunHistoryTableRow';
 
-export const ScheduledEventsRunHistoryTable: FunctionComponent = () => {
-  const renderRows = (): ReactNode => {
-    return <ScheduledEventsRunHistoryTableRow />;
-  };
+interface ScheduledEventsRunHistoryTableProps {
+  data: object;
+}
+export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventsRunHistoryTableProps> = (
+  props,
+) => {
+  const renderRows = (): ReactNode =>
+    props.data.data ? props.data.data.map((history, index: number) => {
+          return (
+            <ScheduledEventsRunHistoryTableRow
+              key={index}
+              status={history.status}
+              started={history.start_at}
+              ended={history.ended_at}
+            />
+          );
+        })
+      : null;
 
   return (
     <Table responsive striped>
