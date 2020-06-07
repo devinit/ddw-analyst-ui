@@ -13,3 +13,12 @@ export const fetchRunHistory = async (eventId: number): Promise<any> => {
 
   return await axios(`${BASEPATH}${eventId}/run_instances/`, { headers });
 };
+
+export interface RunHistory {
+  status: string;
+  start_at: string;
+  ended_at: string;
+}
+export interface HistoryData {
+  data?: object;
+}

@@ -1,14 +1,14 @@
-import React, { ReactElement, useEffect, useState, ReactNode } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
+import { getScheduledEventsByPage, LIMIT } from '.././ScheduledEventsTableCard';
+import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
 import { fetchRunHistory } from './utils';
-import { PaginationRow } from '../PaginationRow';
-import { LIMIT, getScheduledEventsByPage } from '.././ScheduledEventsTableCard';
 
 export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
   const location = useLocation();
-  const [historyData, setHistoryData] = useState({});
+  const [historyData, setHistoryData] = useState([]);
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +17,7 @@ export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
   useEffect(() => {
     if (location.state) {
       fetchRunHistory(location.state.rowId).then((result) => {
-        setHistoryData(result);
+        setHistoryData(result.data);
         setCount(result.data.length);
         setPageCount(Math.ceil(result.data.length / 5));
       });
@@ -49,7 +49,7 @@ export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
 
   return (
     <div className="col-md-12">
-      {historyData.data && historyData.data.length > 0 ? (
+      {historyData && historyData.length > 0 ? (
         <React.Fragment>
           <Card className="col-md-12">
             <Card.Header className="card-header-rose card-header-icon">
@@ -59,7 +59,7 @@ export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
               <ScheduledEventsRunHistoryTable
                 data={getScheduledEventsByPage(currentPage, historyData)}
               />
-              ;{renderPagination()}
+              {renderPagination()}
             </Card.Body>
           </Card>
         </React.Fragment>

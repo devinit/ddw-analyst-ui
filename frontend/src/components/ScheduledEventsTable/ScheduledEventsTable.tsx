@@ -1,9 +1,9 @@
-import React, { FunctionComponent, ReactNode, useState } from 'react';
 import classNames from 'classnames';
+import React, { FunctionComponent, ReactNode, useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow';
-import { useHistory } from 'react-router-dom';
 export interface ScheduledEventTableProps {
   currentPage: number;
   pageLimit: number;

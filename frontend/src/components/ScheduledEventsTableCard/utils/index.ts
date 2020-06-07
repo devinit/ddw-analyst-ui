@@ -15,9 +15,9 @@ export const fetchData = async (): Promise<any> => {
   return await axios(`${BASEPATH}`, { headers });
 };
 
-export const getScheduledEventsByPage = (currentPage: number, data: object): Array<[]> => {
+export const getScheduledEventsByPage = (currentPage: number, data: {}[]): Array<{}> => {
   const begin = (currentPage - 1) * 5;
   const end = begin + 5;
 
-  return data.data.slice(begin, end);
+  return data.slice(begin, end);
 };

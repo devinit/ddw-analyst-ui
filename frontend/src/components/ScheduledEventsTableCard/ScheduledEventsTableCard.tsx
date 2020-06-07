@@ -1,14 +1,14 @@
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import { fetchData, getScheduledEventsByPage } from '.';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
-import { fetchData, getScheduledEventsByPage } from '.';
 
 const LIMIT = 5;
 
 export const ScheduledEventsTableCard: FunctionComponent = () => {
-  const [scheduledEvents, setScheduledEvents] = useState({ data: [] });
+  const [scheduledEvents, setScheduledEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -17,7 +17,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
 
   useEffect(() => {
     fetchData().then((result) => {
-      setScheduledEvents({ data: result.data });
+      setScheduledEvents(result.data);
       setLoading(false);
       setCount(result.data.length);
       setPageCount(Math.ceil(result.data.length / 5));

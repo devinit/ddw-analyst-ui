@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from 'react';
 import classNames from 'classnames';
-import { convertStatus, getStatusClasses } from './utils';
 import moment from 'moment';
+import React, { FunctionComponent } from 'react';
+import { convertStatus, getStatusClasses } from './utils';
 
 interface ScheduledEventsRunHistoryTableRowProps {
   status: string;

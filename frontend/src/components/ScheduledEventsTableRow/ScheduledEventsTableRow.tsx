@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
 import moment from 'moment';
+import React, { FunctionComponent } from 'react';
 
 export interface ScheduledEventsTableRowProps {
   id: number;
