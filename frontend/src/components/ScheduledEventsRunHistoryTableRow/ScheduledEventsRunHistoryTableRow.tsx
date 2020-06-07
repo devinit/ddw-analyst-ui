@@ -18,8 +18,8 @@ export const ScheduledEventsRunHistoryTableRow: FunctionComponent<ScheduledEvent
       <td>
         <span className={classNames('badge', badgeClass)}>{convertStatus(props.status)}</span>
       </td>
-      <td>{props.started}</td>
-      <td>{props.ended}</td>
+      <td>{props.started ? moment.utc(props.started).format('LLL') : 'None'}</td>
+      <td>{props.ended ? moment.utc(props.ended).format('LLL') : 'None'}</td>
     </tr>
   );
 };
