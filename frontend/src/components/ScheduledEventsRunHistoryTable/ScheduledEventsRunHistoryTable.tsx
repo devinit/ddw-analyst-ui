@@ -9,7 +9,7 @@ export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventsRu
   props,
 ) => {
   const renderRows = (): ReactNode =>
-    props.data.data ? props.data.data.map((history, index: number) => {
+    props.data ? props.data.map((history, index: number) => {
           return (
             <ScheduledEventsRunHistoryTableRow
               key={index}

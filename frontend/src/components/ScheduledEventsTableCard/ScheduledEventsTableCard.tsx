@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
-import { fetchData } from '.';
+import { fetchData, getScheduledEventsByPage } from '.';
 
 const LIMIT = 5;
 
@@ -24,13 +24,6 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
     });
   }, []);
 
-  const getScheduledEventsByPage = (): Array<[]> => {
-    const begin = (currentPage - 1) * 5;
-    const end = begin + 5;
-
-    return scheduledEvents.data.slice(begin, end);
-  };
-
   const handlePageChange = (page: { selected: number }): void => {
     setSelectedPage(page.selected);
     if (page.selected === selectedPage + 1) {
@@ -41,6 +34,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
       setCurrentPage(() => page.selected + 1);
     }
   };
+
   const renderPagination = (): ReactNode => {
     return count === 0 ? (
       'No Data'
@@ -70,7 +64,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
           <ScheduledEventsTable
             currentPage={currentPage}
             pageLimit={LIMIT}
-            events={getScheduledEventsByPage()}
+            events={getScheduledEventsByPage(currentPage, scheduledEvents)}
           />
           {renderPagination()}
         </Card.Body>
