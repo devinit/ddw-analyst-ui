@@ -48,22 +48,20 @@ export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
   };
 
   return (
-    <div className="col-md-12">
-      {historyData && historyData.length > 0 ? (
-        <React.Fragment>
-          <Card className="col-md-12">
-            <Card.Header className="card-header-rose card-header-icon">
-              <h4 className="card-title">Update FTS Run History</h4>
-            </Card.Header>
-            <Card.Body>
-              <ScheduledEventsRunHistoryTable
-                data={getScheduledEventsByPage(currentPage, historyData)}
-              />
-              {renderPagination()}
-            </Card.Body>
-          </Card>
-        </React.Fragment>
+    <>
+      {historyData && historyData.length ? (
+        <Card className="col-md-12">
+          <Card.Header className="card-header-rose card-header-icon">
+            <h4 className="card-title">Update FTS Run History</h4>
+          </Card.Header>
+          <Card.Body>
+            <ScheduledEventsRunHistoryTable
+              data={getScheduledEventsByPage(currentPage, historyData)}
+            />
+            {renderPagination()}
+          </Card.Body>
+        </Card>
       ) : null}
-    </div>
+    </>
   );
 };
