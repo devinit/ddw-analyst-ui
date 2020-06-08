@@ -23,7 +23,7 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
       <td>
         <div className="togglebutton">
           <label className="enabled">
-            <input type="checkbox" defaultChecked={props.enabled} />
+            <input type="checkbox" defaultChecked={props.enabled} disabled />
             <span className="toggle"></span>
           </label>
         </div>
