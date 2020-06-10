@@ -1,11 +1,8 @@
-import axios from 'axios';
-import * as localForage from 'localforage';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import React, { FunctionComponent, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ScheduledEvent } from '../../types/scheduledEvents';
-import { api, localForageKeys } from '../../utils';
-import { convertIntervalType } from './utils';
+import { convertIntervalType, createRunInstance } from './utils';
 
 export interface ScheduledEventsTableRowProps {
   rowId: number;
@@ -14,40 +11,23 @@ export interface ScheduledEventsTableRowProps {
   classNames?: string;
 }
 
-interface RunInstancePayload {
-  start_at: Moment;
-  status: string;
-}
-
-const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
-
-const createRunInstance = async (
-  scheduleId: number | undefined,
-  data: RunInstancePayload,
-): Promise<boolean> => {
-  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-
-  return await axios.request({
-    url: `${BASEPATH}${scheduleId}${api.routes.CREATE_SCHEDULED_INSTANCE}`,
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `token ${token}`,
-    },
-    data,
-  });
-};
-
 export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
   const [isCreatingInstance, setLoading] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    event.stopPropagation();
     setLoading(true);
     createRunInstance(props.event.id, {
       start_at: moment(),
       status: 'p',
     })
-      .then(() => setLoading(false))
+      .then((response) => {
+        if (response.status === 201 || response.status === 200) {
+          setLoading(false);
+        } else {
+          console.log(JSON.stringify(response));
+        }
+      })
       .catch((error) => {
         console.log(JSON.stringify(error));
         setLoading(false);
@@ -84,7 +64,6 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
           variant="outline-danger"
           size="sm"
           onClick={handleClick}
-          data-id={props.event.id}
           disabled={isCreatingInstance}
         >
           {isCreatingInstance ? 'Creating instance...' : 'Run Now'}
