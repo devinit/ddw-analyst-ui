@@ -334,6 +334,7 @@ class TestCommands(TestCase):
             status = 'p'
         )
         runInstance.save()
+        self.run_instance_id = runInstance.id
 
     def test_load_manual(self):
         """Make sure manual load isn't broken"""
@@ -352,6 +353,8 @@ class TestCommands(TestCase):
     def test_run_schedules(self):
         """Test run schedules"""
         call_command('run_schedules')
+        updated_runinstance = ScheduledEventRunInstance.objects.get(pk=self.run_instance_id)
+        self.assertEqual(updated_runinstance.status, "c")
 
 
 class TestMetadataConstruction(TestCase):

@@ -91,10 +91,10 @@ class Command(BaseCommand):
         return False
 
     def update_run_instance(self, runInstance, updated_status):
-        ScheduledEventRunInstance.objects.filter(pk=runInstance.id).update(
-            ended_at = make_aware(datetime.now()),
-            status = updated_status
-        )
+        updatedRunInstance = ScheduledEventRunInstance.objects.get(pk=runInstance.id)
+        updatedRunInstance.ended_at = make_aware(datetime.now())
+        updatedRunInstance.status = updated_status
+        updatedRunInstance.save()
 
     def run_schedule_when_due(self, schedule, run_instances):
         for run_instance in run_instances:
