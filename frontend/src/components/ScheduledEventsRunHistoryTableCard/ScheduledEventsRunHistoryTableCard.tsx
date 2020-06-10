@@ -10,7 +10,6 @@ import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
   const location = useLocation();
   const [historyData, setHistoryData] = useState<ScheduledEventRunHistory[]>([]);
-  console.log(historyData);
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);

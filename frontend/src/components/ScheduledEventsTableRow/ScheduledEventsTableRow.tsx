@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React, { FunctionComponent } from 'react';
+import { convertIntervalType } from './utils';
 
 export interface ScheduledEventsTableRowProps {
   id: number;
@@ -33,7 +34,7 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
       </td>
       <td>
         {props.repeat && props.interval && props.interval_type
-          ? `Every ${props.interval} ${props.interval_type}`
+          ? `Every ${props.interval} ${convertIntervalType(props.interval_type)}`
           : 'None'}
       </td>
     </tr>
