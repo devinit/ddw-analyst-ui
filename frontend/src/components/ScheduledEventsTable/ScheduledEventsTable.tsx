@@ -1,25 +1,21 @@
 import classNames from 'classnames';
 import React, { FunctionComponent, ReactNode, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow';
 export interface ScheduledEventTableProps {
   currentPage: number;
   pageLimit: number;
   events: Array<{}>;
+  handleRunHistory: (id: number, name: string) => void;
 }
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
   const [activeRow, setActiveRow] = useState(0);
-  const history = useHistory();
 
-  const handleClick = (id: number) => (): void => {
+  const handleClick = (id: number, name: string) => (): void => {
     if (id !== activeRow) {
       setActiveRow(id);
-      history.push({
-        pathname: '/scheduledevents/',
-        state: { rowId: id },
-      });
+      props.handleRunHistory(id, name);
     }
   };
 
@@ -36,7 +32,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
           interval_type={event.interval_type}
           repeat={event.repeat}
           start_date={event.start_date}
-          onClick={handleClick(event.id)}
+          onClick={handleClick(event.id, event.name)}
           classNames={classNames({ 'table-danger': activeRow === event.id })}
         />
       );

@@ -1,14 +1,18 @@
-import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useState, FunctionComponent } from 'react';
 import { Card } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
 import { LIMIT } from '.././ScheduledEventsTableCard';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
 import { fetchRunHistory, getScheduledEventsByPage } from './utils';
 import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 
-export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
-  const location = useLocation();
+interface ScheduledEventsRunHistoryTableCardProps {
+  rowId: number;
+  eventName: string;
+}
+export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEventsRunHistoryTableCardProps> = (
+  props,
+): ReactElement => {
   const [historyData, setHistoryData] = useState<ScheduledEventRunHistory[]>([]);
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -16,14 +20,12 @@ export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
   const [selectedPage, setSelectedPage] = useState(0);
 
   useEffect(() => {
-    if (location.state) {
-      fetchRunHistory(location.state.rowId).then((result) => {
-        setHistoryData(result.data);
-        setCount(result.data.length);
-        setPageCount(Math.ceil(result.data.length / 5));
-      });
-    }
-  }, [location]);
+    fetchRunHistory(props.rowId).then((result) => {
+      setHistoryData(result.data);
+      setCount(result.data.length);
+      setPageCount(Math.ceil(result.data.length / 5));
+    });
+  }, [props.rowId]);
 
   const handlePageChange = (page: { selected: number }): void => {
     setSelectedPage(page.selected);
@@ -53,7 +55,7 @@ export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
       {historyData && historyData.length ? (
         <Card className="col-md-12">
           <Card.Header className="card-header-rose card-header-icon">
-            <h4 className="card-title">Update FTS Run History</h4>
+            <h4 className="card-title">{props.eventName}</h4>
           </Card.Header>
           <Card.Body>
             <ScheduledEventsRunHistoryTable

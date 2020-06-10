@@ -6,8 +6,12 @@ import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
 
 const LIMIT = 5;
-
-export const ScheduledEventsTableCard: FunctionComponent = () => {
+interface ScheduledEventsTableCardProps {
+  handleRunHistory: (id: number, name: string) => void;
+}
+export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCardProps> = (
+  props,
+) => {
   const [scheduledEvents, setScheduledEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
@@ -65,6 +69,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
             currentPage={currentPage}
             pageLimit={LIMIT}
             events={getScheduledEventsByPage(currentPage, scheduledEvents)}
+            handleRunHistory={props.handleRunHistory}
           />
           {renderPagination()}
         </Card.Body>
