@@ -1,6 +1,7 @@
-import * as localForage from 'localforage';
-import { api, localForageKeys } from '../../../utils';
 import axios from 'axios';
+import * as localForage from 'localforage';
+import { ScheduledEvent } from '../../../types/scheduledEvents';
+import { api, localForageKeys } from '../../../utils';
 
 const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
 export const LIMIT = 5;
@@ -15,7 +16,10 @@ export const fetchData = async (): Promise<any> => {
   return await axios(`${BASEPATH}`, { headers });
 };
 
-export const getScheduledEventsByPage = (currentPage: number, data: {}[]): Array<{}> => {
+export const getScheduledEventsByPage = (
+  currentPage: number,
+  data: ScheduledEvent[],
+): ScheduledEvent[] => {
   const begin = (currentPage - 1) * 5;
   const end = begin + 5;
 

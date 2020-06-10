@@ -1,5 +1,3 @@
-import { Map } from 'immutable';
-
 export interface ScheduledEvent {
   id: number;
   name: string;
@@ -11,4 +9,9 @@ export interface ScheduledEvent {
   start_date: string;
 }
 
-export type ScheduledEventMap = Map<keyof ScheduledEvent, ScheduledEvent[keyof ScheduledEvent]>;
+export interface ScheduledEventRunHistory {
+  scheduled_event: number;
+  start_at: string;
+  ended_at?: string;
+  status: string;
+}

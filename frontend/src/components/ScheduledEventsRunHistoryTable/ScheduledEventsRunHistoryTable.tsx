@@ -1,23 +1,22 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import { Table } from 'react-bootstrap';
-import { RunHistory } from '../ScheduledEventsRunHistoryTableCard';
 import { ScheduledEventsRunHistoryTableRow } from '../ScheduledEventsRunHistoryTableRow';
+import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 
-interface ScheduledEventsRunHistoryTableProps {
-  data: object[];
+interface ScheduledEventRunHistoryTableProps {
+  data: ScheduledEventRunHistory[];
 }
-
-export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventsRunHistoryTableProps> = (
+export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRunHistoryTableProps> = (
   props,
-) => {
+): React.ReactElement => {
   const renderRows = (): ReactNode =>
     props.data
-      ? props.data.map((history: RunHistory, index: number) => (
+      ? props.data.map((history: ScheduledEventRunHistory, index: number) => (
           <ScheduledEventsRunHistoryTableRow
             key={index}
             status={history.status}
             started={history.start_at}
-            ended={history.ended_at}
+            ended={history.ended_at || ''}
           />
         ))
       : null;

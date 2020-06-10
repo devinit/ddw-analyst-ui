@@ -1,6 +1,7 @@
 import * as localForage from 'localforage';
 import { api, localForageKeys } from '../../../utils';
 import axios from 'axios';
+import { ScheduledEventRunHistory } from '../../../types/scheduledEvents';
 
 const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
 
@@ -14,11 +15,12 @@ export const fetchRunHistory = async (eventId: number): Promise<any> => {
   return await axios(`${BASEPATH}${eventId}/run_instances/`, { headers });
 };
 
-export interface RunHistory {
-  status: string;
-  start_at: string;
-  ended_at: string;
-}
-export interface HistoryData {
-  data?: object;
-}
+export const getScheduledEventsByPage = (
+  currentPage: number,
+  data: ScheduledEventRunHistory[],
+): ScheduledEventRunHistory[] => {
+  const begin = (currentPage - 1) * 5;
+  const end = begin + 5;
+
+  return data.slice(begin, end);
+};

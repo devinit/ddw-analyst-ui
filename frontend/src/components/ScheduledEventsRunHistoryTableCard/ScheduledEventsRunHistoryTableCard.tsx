@@ -1,14 +1,16 @@
 import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import { getScheduledEventsByPage, LIMIT } from '.././ScheduledEventsTableCard';
+import { LIMIT } from '.././ScheduledEventsTableCard';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
-import { fetchRunHistory } from './utils';
+import { fetchRunHistory, getScheduledEventsByPage } from './utils';
+import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 
 export const ScheduledEventsRunHistoryTableCard = (): ReactElement => {
   const location = useLocation();
-  const [historyData, setHistoryData] = useState([]);
+  const [historyData, setHistoryData] = useState<ScheduledEventRunHistory[]>([]);
+  console.log(historyData);
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
