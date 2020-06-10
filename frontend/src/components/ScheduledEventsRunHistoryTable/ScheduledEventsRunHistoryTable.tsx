@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import { Table } from 'react-bootstrap';
-import { ScheduledEventsRunHistoryTableRow } from '../ScheduledEventsRunHistoryTableRow';
 import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
+import { ScheduledEventsRunHistoryTableRow } from '../ScheduledEventsRunHistoryTableRow';
 
 interface ScheduledEventRunHistoryTableProps {
   data: ScheduledEventRunHistory[];

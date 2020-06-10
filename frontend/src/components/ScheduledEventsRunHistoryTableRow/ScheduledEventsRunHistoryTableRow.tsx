@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import React, { FunctionComponent } from 'react';
-import { convertStatus, getStatusClasses } from './utils';
 import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
+import { convertStatus, getStatusClasses } from './utils';
 
 interface ScheduledEventsRunHistoryTableRowProps {
   history: ScheduledEventRunHistory;
 }
+
 export const ScheduledEventsRunHistoryTableRow: FunctionComponent<ScheduledEventsRunHistoryTableRowProps> = (
   props,
 ) => {

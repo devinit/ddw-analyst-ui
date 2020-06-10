@@ -11,6 +11,7 @@ const statusClasses: { [char: string]: string } = {
   c: 'badge-success',
   e: 'badge-danger',
 };
+
 export const convertStatus = (statusValue: string): string | undefined => {
   for (const key in status) {
     if (key === statusValue) {

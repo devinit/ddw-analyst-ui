@@ -1,7 +1,7 @@
-import * as localForage from 'localforage';
-import { api, localForageKeys } from '../../../utils';
 import axios from 'axios';
+import * as localForage from 'localforage';
 import { ScheduledEventRunHistory } from '../../../types/scheduledEvents';
+import { api, localForageKeys } from '../../../utils';
 
 const BASEPATH = api.routes.FETCH_RUN_INSTANCES;
 

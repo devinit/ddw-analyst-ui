@@ -1,15 +1,16 @@
-import React, { ReactElement, ReactNode, useEffect, useState, FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
+import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 import { LIMIT } from '.././ScheduledEventsTableCard';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
 import { fetchRunHistory, getScheduledEventsByPage } from './utils';
-import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 
 interface ScheduledEventsRunHistoryTableCardProps {
   rowId: number;
   eventName: string;
 }
+
 export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEventsRunHistoryTableCardProps> = (
   props,
 ): ReactElement => {
@@ -37,6 +38,7 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEven
       setCurrentPage(() => page.selected + 1);
     }
   };
+
   const renderPagination = (): ReactNode => {
     return count === 0 ? (
       'No Data'
@@ -55,7 +57,7 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEven
       {historyData && historyData.length ? (
         <Card className="col-md-12">
           <Card.Header className="card-header-rose card-header-icon">
-            <h4 className="card-title">{props.eventName}</h4>
+            <h4 className="card-title">{props.eventName} Run History</h4>
           </Card.Header>
           <Card.Body>
             <ScheduledEventsRunHistoryTable

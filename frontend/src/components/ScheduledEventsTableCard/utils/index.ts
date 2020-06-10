@@ -4,6 +4,7 @@ import { ScheduledEvent } from '../../../types/scheduledEvents';
 import { api, localForageKeys } from '../../../utils';
 
 const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
+
 export const LIMIT = 5;
 
 export const fetchData = async (): Promise<any> => {
