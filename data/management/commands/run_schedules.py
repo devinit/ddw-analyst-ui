@@ -55,6 +55,7 @@ class Command(BaseCommand):
         response_data = {}
         response_data['result'] = 'success'
         response_data['message'] = 'Script update success'
+        response_data['return_code'] = 0
 
         for item in stream:
             pass

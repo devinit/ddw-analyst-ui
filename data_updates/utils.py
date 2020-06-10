@@ -26,8 +26,5 @@ class ScriptExecutor:
         while self.process.poll() is not None:
             yield self.process.stdout.readline()
 
-        yield self.process.communicate()[0]
-        if self.process.returncode > 0 or self.process.returncode < 0:
-            yield self.process.returncode
-        else:
-            yield self.process.communicate()[1]
+        yield self.process.communicate()
+        yield self.process.returncode

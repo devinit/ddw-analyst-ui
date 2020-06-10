@@ -1,12 +1,16 @@
-from django.core.management import call_command
-from django.test import TestCase
-from data.db_manager import fetch_data
-from core.models import Operation, OperationStep, UpdateHistory
-
-from django.conf import settings
-import os
 import csv
 import glob
+import os
+from datetime import datetime
+
+from django.conf import settings
+from django.core.management import call_command
+from django.test import TestCase
+from django.utils.timezone import make_aware
+
+from core.models import (Operation, OperationStep, ScheduledEvent,
+                         ScheduledEventRunInstance, UpdateHistory)
+from data.db_manager import fetch_data
 
 
 class TestFixtureData(TestCase):
@@ -311,6 +315,26 @@ class TestFixtureData(TestCase):
 class TestCommands(TestCase):
     fixtures = ['test_data', 'test_datasets']
 
+    def setUp(self):
+        scheduledEvent = ScheduledEvent(
+            name = 'Run test_stream',
+            description = 'Test case for test_stream.sh',
+            script_name = 'test_stream.sh',
+            enabled = True,
+            start_date = make_aware(datetime.now()),
+            repeat = True,
+            interval = 5,
+            interval_type = 'dys'
+        )
+        scheduledEvent.save()
+
+        runInstance = ScheduledEventRunInstance(
+            scheduled_event = scheduledEvent,
+            start_at = make_aware(datetime.now()),
+            status = 'p'
+        )
+        runInstance.save()
+
     def test_load_manual(self):
         """Make sure manual load isn't broken"""
         args = list()
@@ -324,6 +348,10 @@ class TestCommands(TestCase):
         call_command("update_meta", *args, **opts)
         post_test_update_count = len(UpdateHistory.objects.all())
         self.assertEqual(pre_test_update_count + 1, post_test_update_count)
+
+    def test_run_schedules(self):
+        """Test run schedules"""
+        call_command('run_schedules')
 
 
 class TestMetadataConstruction(TestCase):
