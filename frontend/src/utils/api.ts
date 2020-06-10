@@ -9,5 +9,6 @@ export const api = {
     EXPORT: '/api/export/',
     CHANGE_PASSWORD: '/api/change_password/',
     VIEW_SCHEDULED_EVENTS: '/api/scheduled_event/',
+    FETCH_RUN_INSTANCES: '/api/scheduled_event/id/run_instances/',
   },
 };

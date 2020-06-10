@@ -3,7 +3,7 @@ import { api, localForageKeys } from '../../../utils';
 import axios from 'axios';
 import { ScheduledEventRunHistory } from '../../../types/scheduledEvents';
 
-const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
+const BASEPATH = api.routes.FETCH_RUN_INSTANCES;
 
 export const fetchRunHistory = async (eventId: number): Promise<any> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
@@ -12,7 +12,7 @@ export const fetchRunHistory = async (eventId: number): Promise<any> => {
     Authorization: `token ${token}`,
   };
 
-  return await axios(`${BASEPATH}${eventId}/run_instances/`, { headers });
+  return await axios(`${BASEPATH.replace('id', eventId.toString())}`, { headers });
 };
 
 export const getScheduledEventsByPage = (
