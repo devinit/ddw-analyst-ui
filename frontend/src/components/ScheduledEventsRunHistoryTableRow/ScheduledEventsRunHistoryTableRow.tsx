@@ -2,24 +2,25 @@ import classNames from 'classnames';
 import moment from 'moment';
 import React, { FunctionComponent } from 'react';
 import { convertStatus, getStatusClasses } from './utils';
+import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 
 interface ScheduledEventsRunHistoryTableRowProps {
-  status: string;
-  started: string;
-  ended: string;
+  history: ScheduledEventRunHistory;
 }
 export const ScheduledEventsRunHistoryTableRow: FunctionComponent<ScheduledEventsRunHistoryTableRowProps> = (
   props,
 ) => {
-  const badgeClass = getStatusClasses(props.status);
+  const badgeClass = getStatusClasses(props.history.status);
 
   return (
     <tr>
       <td>
-        <span className={classNames('badge', badgeClass)}>{convertStatus(props.status)}</span>
+        <span className={classNames('badge', badgeClass)}>
+          {convertStatus(props.history.status)}
+        </span>
       </td>
-      <td>{props.started ? moment.utc(props.started).format('LLL') : 'None'}</td>
-      <td>{props.ended ? moment.utc(props.ended).format('LLL') : 'None'}</td>
+      <td>{moment.utc(props.history.start_at).format('LLL')}</td>
+      <td>{props.history.ended_at ? moment.utc(props.history.ended_at).format('LLL') : 'None'}</td>
     </tr>
   );
 };
