@@ -257,6 +257,7 @@ class ScheduledEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScheduledEvent
         fields = (
+            'id',
             'name',
             'description',
             'script_name',

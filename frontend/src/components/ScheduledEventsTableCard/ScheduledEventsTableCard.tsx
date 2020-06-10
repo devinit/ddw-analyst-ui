@@ -14,6 +14,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPage, setSelectedPage] = useState(0);
+  console.log(scheduledEvents);
 
   useEffect(() => {
     fetchData().then((result) => {

@@ -10,7 +10,6 @@ export interface ScheduledEventTableProps {
   events: Array<{}>;
 }
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
-  const offset = (props.currentPage - 1) * props.pageLimit;
   const [activeRow, setActiveRow] = useState(0);
   const history = useHistory();
 
@@ -29,7 +28,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
       return (
         <ScheduledEventsTableRow
           key={index}
-          id={offset + index + 1}
+          id={event.id}
           name={event.name}
           description={event.description || ''}
           enabled={event.enabled}
@@ -37,8 +36,8 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
           interval_type={event.interval_type}
           repeat={event.repeat}
           start_date={event.start_date}
-          onClick={handleClick(offset + index + 1)}
-          classNames={classNames({ 'table-danger': activeRow === offset + index + 1 })}
+          onClick={handleClick(event.id)}
+          classNames={classNames({ 'table-danger': activeRow === event.id })}
         />
       );
     });
