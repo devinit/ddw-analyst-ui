@@ -6,6 +6,7 @@ import datetime as dtime
 from django.core.management.base import BaseCommand
 from django.http import HttpResponse, StreamingHttpResponse
 from django.utils.timezone import make_aware
+from django.utils import timezone
 from rest_framework import status
 
 from core.models import ScheduledEvent, ScheduledEventRunInstance
@@ -97,7 +98,7 @@ class Command(BaseCommand):
 
     def run_schedule_when_due(self, schedule, run_instances):
         for run_instance in run_instances:
-            if run_instance.status == 'p' and run_instance.start_at <= make_aware(datetime.now()):
+            if run_instance.status == 'p' and run_instance.start_at <= timezone.now():
                 if self.check_if_schedule_is_already_running(run_instances):
                     self.update_run_instance(run_instance, 's')
                 else:
