@@ -21,6 +21,8 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.http import HttpResponse
+
 from core.models import (Operation, OperationStep, Review, ScheduledEvent,
                          ScheduledEventRunInstance, Sector, Source, Tag, Theme)
 from core.pagination import DataPaginator
@@ -59,9 +61,23 @@ def streaming_script_execute(request):
         try:
             user, _ = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
             if user.is_authenticated and user.is_superuser:
+                post_status = status.HTTP_200_OK
                 executor = ScriptExecutor(script_name)
-                response = StreamingHttpResponse(executor.stream(), content_type="text/plain")
-                return response
+                stream = executor.stream()
+                response_data = {}
+                response_data['result'] = 'success'
+                response_data['message'] = 'Script update success'
+
+                for item in stream:
+                    pass
+                # Check if the last item in generator is an integer
+                if item > 0 or item < 0:
+                    post_status = status.HTTP_500_INTERNAL_SERVER_ERROR
+                    response_data['result'] = 'error'
+                    response_data['message'] = 'Failed to execute the script update'
+                    response_data['returncode'] = item
+
+                return HttpResponse(json.dumps(response_data), content_type='application/json', status=post_status)
         except exceptions.AuthenticationFailed:
             return redirect('/login/')
     return redirect('/login/')
