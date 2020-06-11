@@ -20,7 +20,7 @@ export const getScheduledEventsByPage = (
   currentPage: number,
   data: ScheduledEventRunHistory[],
 ): ScheduledEventRunHistory[] => {
-  const begin = (currentPage - 1) * 5;
+  const begin = (currentPage - 1) * LIMIT;
   const end = begin + LIMIT;
 
   return data.slice(begin, end);

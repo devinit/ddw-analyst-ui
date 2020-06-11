@@ -6,9 +6,10 @@ import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow';
 export interface ScheduledEventTableProps {
   currentPage: number;
   pageLimit: number;
-  events: Array<{}>;
+  events: ScheduledEvent[];
   onRowClick: (id: number, name: string) => void;
 }
+
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
   const [activeRow, setActiveRow] = useState(0);
 
@@ -24,14 +25,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
       return (
         <ScheduledEventsTableRow
           key={event.id}
-          id={event.id}
-          name={event.name}
-          description={event.description || ''}
-          enabled={event.enabled}
-          interval={event.interval}
-          interval_type={event.interval_type}
-          repeat={event.repeat}
-          start_date={event.start_date}
+          event={event}
           onClick={handleClick(event.id, event.name)}
           classNames={classNames({ 'table-danger': activeRow === event.id })}
         />

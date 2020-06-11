@@ -1,0 +1,398 @@
+Destination.Country,destinationcountryid
+"Korea, Democratic People's Republic of",KP
+Sudan,SD
+Angola,AO
+South Sudan,SS
+Bosnia and Herzegovina,BA
+Ethiopia,ET
+Syrian Arab Republic,SY
+Mali,ML
+Liberia,LR
+Mauritania,MR
+Iraq,IQ
+Djibouti,DJ
+Zimbabwe,ZW
+occupied Palestinian territory,PS
+Niger,NE
+Kenya,KE
+Eritrea,ER
+Burkina Faso,BF
+Mozambique,MZ
+Haiti,HT
+Pakistan,PK
+Chad,TD
+Lebanon,LB
+Turkey,TR
+Jordan,JO
+Yemen,YE
+China,CN
+Serbia and Montenegro (until 2006-2009),RS
+Sierra Leone,SL
+Somalia,SO
+Afghanistan,AF
+Central African Republic,CF
+Sri Lanka,LK
+Cuba,CU
+"Congo, The Democratic Republic of the",CD
+Bangladesh,BD
+Guinea,GN
+Philippines,PH
+Lao People's Democratic Republic,LA
+Myanmar,MM
+Ukraine,UA
+Côte d'Ivoire,CI
+South Africa,ZA
+Guatemala,GT
+"Bolivia, Plurinational State of",BO
+Lesotho,LS
+Malawi,MW
+Burundi,BI
+Colombia,CO
+Gambia,GM
+Senegal,SN
+Nigeria,NG
+Cameroon,CM
+Uganda,UG
+"Moldova, Republic of",MD
+Madagascar,MG
+Dominican Republic,DO
+Tajikistan,TJ
+India,IN
+Uzbekistan,UZ
+"North Macedonia, Republic of",MK
+Nepal,NP
+Georgia,GE
+Togo,TG
+Libya,LY
+Tunisia,TN
+Honduras,HN
+"Tanzania, United Republic of",TZ
+Egypt,EG
+Eswatini,SZ
+Morocco,MA
+Zambia,ZM
+Palau,PW
+Samoa,WS
+Congo,CG
+Benin,BJ
+Indonesia,ID
+Malaysia,MY
+Fiji,FJ
+Rwanda,RW
+Namibia,NA
+Mauritius,MU
+Guinea-Bissau,GW
+Ghana,GH
+Cape Verde,CV
+Viet Nam,VN
+Thailand,TH
+Chile,CL
+Serbia,RS
+Peru,PE
+Paraguay,PY
+Comoros,KM
+Gabon,GA
+Oman,OM
+Mongolia,MN
+Kyrgyzstan,KG
+Albania,AL
+Argentina,AR
+Jamaica,JM
+Nicaragua,NI
+Russian Federation,RU
+Panama,PA
+United States,US
+Cambodia,KH
+"Iran, Islamic Republic of",IR
+El Salvador,SV
+Czech Republic,CZ
+Armenia,AM
+Algeria,DZ
+Kazakhstan,KZ
+Maldives,MV
+Papua New Guinea,PG
+Bhutan,BT
+Solomon Islands,SB
+Israel,IL
+Equatorial Guinea,GQ
+Bulgaria,BG
+Belarus,BY
+Cyprus,CY
+Timor-Leste,TL
+Brazil,BR
+Costa Rica,CR
+Mexico,MX
+Romania,RO
+Croatia,HR
+Mozambique | Malawi | Zambia | Zimbabwe | Lesotho | South Africa | Eswatini,multi-country
+Ecuador,EC
+Cook Islands,CK
+"Venezuela, Bolivarian Republic of",VE
+Dominica,DM
+Azerbaijan,AZ
+Marshall Islands,MH
+"Korea, Republic of",KR
+Germany,DE
+Slovakia,SK
+Tonga,TO
+Austria,AT
+Turkey | Egypt | Jordan | Lebanon | Iraq | Syrian Arab Republic,multi-country
+Syrian Arab Republic | Egypt | Turkey | Jordan | Lebanon | Iraq,multi-country
+Saint Lucia,LC
+Saint Vincent and the Grenadines,VC
+Seychelles,SC
+Antigua and Barbuda,AG
+Spain,ES
+Singapore,SG
+Kuwait,KW
+Iraq | Syrian Arab Republic | Turkey | Egypt | Jordan | Lebanon,multi-country
+Iraq | Turkey | Egypt | Jordan | Lebanon | Syrian Arab Republic,multi-country
+Slovenia,SI
+Vanuatu,VU
+Guam,GU
+Australia,AU
+United Arab Emirates,AE
+Hungary,HU
+Tuvalu,TV
+Honduras | Guatemala,multi-country
+Barbados,BB
+"Micronesia, Federated States of",FM
+Kiribati,KI
+Guatemala | Honduras,multi-country
+Uruguay,UY
+Western Sahara,EH
+Italy,IT
+New Caledonia,NC
+New Zealand,NZ
+Greece,GR
+Bahamas,BS
+Switzerland,CH
+"Taiwan, Province of China",TW
+South Sudan | Kenya | Sudan | Ethiopia,multi-country
+Japan,JP
+Saudi Arabia,SA
+Montenegro,ME
+Jordan | Lebanon,multi-country
+Canada,CA
+Netherlands,NL
+Belize,BZ
+Portugal,PT
+Malta,MT
+Denmark,DK
+Belgium,BE
+Turkey | Lebanon | Jordan | Iraq | Egypt,multi-country
+Sweden,SE
+Lebanon | Egypt | Turkey | Syrian Arab Republic | Iraq | Jordan,multi-country
+Turkey | Lebanon | Jordan | Egypt | Iraq,multi-country
+United Kingdom,GB
+Cuba | Jamaica | Bahamas | Haiti,multi-country
+Jordan | Iraq | Turkey | Egypt | Lebanon,multi-country
+Lebanon | Jordan | Turkey | Egypt | Iraq,multi-country
+Lebanon | Egypt | Turkey | Iraq | Jordan,multi-country
+Egypt | Turkey | Jordan | Iraq | Lebanon,multi-country
+Egypt | Iraq | Jordan | Lebanon | Turkey,multi-country
+Jordan | Egypt | Turkey | Iraq | Lebanon,multi-country
+Egypt | Turkey | Iraq | Jordan | Lebanon,multi-country
+Egypt | Turkey | Iraq | Lebanon | Jordan,multi-country
+Egypt | Iraq | Jordan | Lebanon | Syrian Arab Republic | Turkey,multi-country
+Syrian Arab Republic | Lebanon | Jordan,multi-country
+Qatar,QA
+Jordan | Lebanon | Iraq | Syrian Arab Republic | Turkey | Egypt,multi-country
+Egypt | Iraq | Jordan | Turkey | Lebanon,multi-country
+West Bank | Gaza Strip | occupied Palestinian territory,multi-country
+Iraq | Lebanon | Jordan | Turkey | Egypt,multi-country
+Ireland,IE
+Lebanon | Jordan | Iraq | Turkey | Egypt,multi-country
+Iraq | Jordan | Turkey | Egypt | Lebanon,multi-country
+Lebanon | Egypt | Turkey | Jordan | Iraq,multi-country
+Lebanon | Jordan,multi-country
+West Bank | occupied Palestinian territory | Gaza Strip,multi-country
+Lebanon | Iraq | Turkey | Jordan | Egypt,multi-country
+Jordan | Turkey | Lebanon,multi-country
+Lebanon | Egypt | Iraq | Jordan | Turkey,multi-country
+Lebanon | Turkey | Jordan | Iraq | Egypt,multi-country
+Lebanon | Jordan | Iraq | Egypt | Turkey,multi-country
+Saint Barthélemy (France) | Anguilla (United Kingdom) | Antigua and Barbuda,multi-country
+South Sudan | Uganda | Ethiopia,multi-country
+Niger | Nigeria,multi-country
+Chad | Cameroon,multi-country
+Sint Maarten (Dutch part),SX
+Antigua and Barbuda | Bahamas | Sint Maarten (Dutch part),multi-country
+Saint Martin (France),MF
+Saint Kitts and Nevis,KN
+Sint Maarten (Dutch part) | Bahamas | Antigua and Barbuda | Saint Kitts and Nevis,multi-country
+"Virgin Islands, British | Saint Kitts and Nevis | Turks and Caicos Islands | Sint Maarten (Dutch part) | Saint Martin (France) | Bahamas | Antigua and Barbuda | Anguilla (United Kingdom) | Saint Barthélemy (France)",multi-country
+"Anguilla (United Kingdom) | Antigua and Barbuda | Bahamas | Saint Barthélemy (France) | Saint Kitts and Nevis | Saint Martin (France) | Sint Maarten (Dutch part) | Turks and Caicos Islands | Virgin Islands, British",multi-country
+Iraq | Sweden,multi-country
+Saint Kitts and Nevis | Antigua and Barbuda,multi-country
+Chad | Cameroon | Niger | Nigeria,multi-country
+Uganda | Sweden,multi-country
+Antigua and Barbuda | Saint Kitts and Nevis,multi-country
+Sudan | Eritrea,multi-country
+Botswana,BW
+Jordan | Iraq | Syrian Arab Republic | Turkey | Egypt | Lebanon,multi-country
+"Sint Maarten (Dutch part) | Saint Kitts and Nevis | Saint Barthélemy (France) | Virgin Islands, British | Turks and Caicos Islands | Anguilla (United Kingdom) | Bahamas | Antigua and Barbuda | Saint Martin (France)",multi-country
+"Sint Maarten (Dutch part) | Saint Kitts and Nevis | Saint Barthélemy (France) | Virgin Islands, British | Turks and Caicos Islands | Anguilla (United Kingdom) | Bahamas | Saint Martin (France) | Antigua and Barbuda",multi-country
+"Antigua and Barbuda | Saint Martin (France) | Bahamas | Anguilla (United Kingdom) | Turks and Caicos Islands | Virgin Islands, British | Saint Barthélemy (France) | Saint Kitts and Nevis | Sint Maarten (Dutch part)",multi-country
+"Barbados | Turks and Caicos Islands | Saint Vincent and the Grenadines | Sint Maarten (Dutch part) | Saint Martin (France) | Saint Lucia | Saint Kitts and Nevis | Anguilla (United Kingdom) | Antigua and Barbuda | Bahamas | Bonaire, Saint Eustatius and Saba (The Netherlands) | Virgin Islands, British | Cuba | Dominica | Dominican Republic | Guadeloupe (France) | Haiti | Martinique (France) | Montserrat | Puerto Rico (United States) | Saint Barthélemy (France)",multi-country
+Mali | Senegal | Gambia | Guinea | Guinea-Bissau,multi-country
+occupied Palestinian territory | Gaza Strip | West Bank,multi-country
+Chad | Cameroon | Nigeria | Niger,multi-country
+Estonia,EE
+Yemen | Somalia | South Sudan | Nigeria,multi-country
+Somalia | South Sudan | Nigeria,multi-country
+Nigeria | South Sudan | Somalia,multi-country
+Jordan | Lebanon | Iraq | Turkey | Egypt,multi-country
+"Anguilla (United Kingdom) | Antigua and Barbuda | Bahamas | Bonaire, Saint Eustatius and Saba (The Netherlands) | Virgin Islands, British | Cuba | Dominica | Dominican Republic | Guadeloupe (France) | Haiti | Martinique (France) | Montserrat | Puerto Rico (United States) | Saint Barthélemy (France) | Saint Kitts and Nevis | Saint Lucia | Saint Martin (France) | Sint Maarten (Dutch part) | Saint Vincent and the Grenadines | Turks and Caicos Islands | Barbados",multi-country
+"Barbados | Turks and Caicos Islands | Saint Vincent and the Grenadines | Sint Maarten (Dutch part) | Saint Martin (France) | Saint Lucia | Saint Kitts and Nevis | Saint Barthélemy (France) | Puerto Rico (United States) | Montserrat | Martinique (France) | Haiti | Guadeloupe (France) | Dominican Republic | Dominica | Cuba | Virgin Islands, British | Bonaire, Saint Eustatius and Saba (The Netherlands) | Bahamas | Antigua and Barbuda | Anguilla (United Kingdom)",multi-country
+Angola | Zambia,multi-country
+Cuba | Dominica,multi-country
+"Iran, Islamic Republic of | Uganda",multi-country
+Morocco | Panama,multi-country
+Uganda | Kenya,multi-country
+Puerto Rico (United States),PR
+Poland,PL
+"Bonaire, Saint Eustatius and Saba (The Netherlands) | Bahamas | Antigua and Barbuda | Anguilla (United Kingdom) | Barbados | Turks and Caicos Islands | Saint Vincent and the Grenadines | Sint Maarten (Dutch part) | Saint Martin (France) | Saint Lucia | Saint Kitts and Nevis | Saint Barthélemy (France) | Puerto Rico (United States) | Montserrat | Martinique (France) | Haiti | Guadeloupe (France) | Dominican Republic | Dominica | Cuba | Virgin Islands, British",multi-country
+Libya | Tunisia,multi-country
+Kyrgyzstan | Tajikistan,multi-country
+South Sudan | Italy,multi-country
+"Congo, The Democratic Republic of the | Sweden",multi-country
+Jordan | Lebanon | Turkey,multi-country
+Chad | Sweden,multi-country
+Turkey | Lebanon | Jordan,multi-country
+Chile | Dominican Republic | Trinidad and Tobago | Argentina | Costa Rica | Mexico | Paraguay | Aruba | Curaçao | Panama | Brazil | Ecuador | Peru | Colombia | Guyana | Uruguay,multi-country
+Trinidad and Tobago | Peru | Guyana | Ecuador | Colombia | Brazil,multi-country
+Lesotho | Namibia | Eswatini | South Africa | Zambia | Zimbabwe,multi-country
+Trinidad and Tobago,TT
+Niue,NU
+Lebanon | Jordan | Turkey | Iraq | Egypt | Syrian Arab Republic,multi-country
+Anguilla (United Kingdom),AI
+Lebanon | Turkey | Jordan,multi-country
+Turkey | Jordan | Lebanon,multi-country
+"Congo, The Democratic Republic of the | Rwanda",multi-country
+Djibouti | Ethiopia | Yemen,multi-country
+Guyana,GY
+Chile | Dominican Republic | Trinidad and Tobago | Brazil | Ecuador | Peru | Colombia | Guyana | Uruguay | Aruba | Curaçao | Panama | Argentina | Costa Rica | Mexico | Paraguay,multi-country
+Lebanon | Jordan | Turkey | Iraq | Egypt,multi-country
+Zambia | Angola,multi-country
+Iraq | Turkey | Egypt | Lebanon | Jordan,multi-country
+Sweden | Iraq,multi-country
+"Colombia | Brazil | Venezuela, Bolivarian Republic of",multi-country
+"Colombia | Venezuela, Bolivarian Republic of | Ecuador",multi-country
+Lebanon | Jordan | Turkey,multi-country
+Jordan | Lebanon | Syrian Arab Republic,multi-country
+Turkey | Jordan | Lebanon | Syrian Arab Republic,multi-country
+Lebanon | Sudan | occupied Palestinian territory,multi-country
+Guatemala | Mexico | Honduras,multi-country
+Uruguay | Peru | Panama | Guyana | Paraguay | Dominican Republic | Curaçao | Costa Rica | Colombia | Chile | Brazil | Aruba | Argentina | Trinidad and Tobago | Mexico | Ecuador,multi-country
+Paraguay | Ecuador | Uruguay | Mexico | Trinidad and Tobago | Peru | Panama | Guyana | Dominican Republic | Curaçao | Costa Rica | Colombia | Chile | Brazil | Aruba | Argentina,multi-country
+Colombia | Mexico | Uruguay | Argentina | Costa Rica | Ecuador | Peru | Aruba | Chile | Curaçao | Brazil | Guyana | Trinidad and Tobago | Dominican Republic | Paraguay | Panama,multi-country
+Falkland Islands (Malvinas),FK
+Curaçao | Chile | Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru | Trinidad and Tobago | Uruguay | Argentina | Brazil | Colombia | Costa Rica | Aruba,multi-country
+Panama | Paraguay | Uruguay | Peru | Mexico | Ecuador | Dominican Republic | Curaçao | Costa Rica | Colombia | Chile | Brazil | Aruba | Argentina | Trinidad and Tobago | Guyana,multi-country
+Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru | Trinidad and Tobago | Uruguay | Aruba | Curaçao | Argentina | Brazil | Chile | Colombia | Costa Rica,multi-country
+"Colombia | Venezuela, Bolivarian Republic of",multi-country
+Aruba,AW
+Curaçao,CW
+Kenya | Ethiopia | Sudan,multi-country
+Sweden | Afghanistan,multi-country
+Jordan | Iraq | Turkey,multi-country
+Egypt | Jordan | Turkey | Lebanon | Syrian Arab Republic | Iraq,multi-country
+"Kenya | Uganda | Tanzania, United Republic of",multi-country
+Chile | Ecuador | Peru | Aruba | Curaçao | Panama | Colombia | Guyana | Trinidad and Tobago | Brazil | Dominican Republic | Paraguay | Argentina | Costa Rica | Mexico | Uruguay,multi-country
+Uruguay | Costa Rica | Argentina | Trinidad and Tobago | Guyana | Peru | Ecuador | Chile | Paraguay | Brazil | Panama | Mexico | Colombia | Dominican Republic | Curaçao | Aruba,multi-country
+Brazil | Dominican Republic | Paraguay | Argentina | Costa Rica | Mexico | Uruguay | Colombia | Guyana | Trinidad and Tobago | Aruba | Chile | Curaçao | Ecuador | Panama | Peru,multi-country
+Uruguay | Trinidad and Tobago | Peru | Paraguay | Panama | Mexico | Guyana | Ecuador | Dominican Republic | Curaçao | Costa Rica | Colombia | Chile | Brazil | Aruba | Argentina,multi-country
+Brazil | Curaçao | Mexico | Trinidad and Tobago | Argentina | Colombia | Ecuador | Paraguay | Aruba | Chile | Costa Rica | Dominican Republic | Guyana | Panama | Peru | Uruguay,multi-country
+Mexico | Costa Rica | Argentina | Uruguay | Paraguay | Dominican Republic | Brazil | Trinidad and Tobago | Guyana | Colombia | Peru | Panama | Ecuador | Curaçao | Chile | Aruba,multi-country
+"Congo, The Democratic Republic of the | Rwanda | Tanzania, United Republic of | Uganda",multi-country
+Malawi | Mozambique | Zimbabwe,multi-country
+Mozambique | Malawi | Zimbabwe,multi-country
+Malawi | Zimbabwe | Mozambique,multi-country
+Zimbabwe | Mozambique | Malawi,multi-country
+Mozambique | Zimbabwe | Malawi,multi-country
+Argentina | Costa Rica | Aruba | Curaçao | Brazil | Dominican Republic | Chile | Ecuador | Colombia | Guyana | Mexico | Panama | Paraguay | Peru | Trinidad and Tobago | Uruguay,multi-country
+Brazil | Dominican Republic | Paraguay | Chile | Ecuador | Peru | Colombia | Guyana | Trinidad and Tobago | Argentina | Costa Rica | Mexico | Uruguay | Aruba | Curaçao | Panama,multi-country
+Egypt | Jordan | Lebanon | Iraq | Syrian Arab Republic | Turkey,multi-country
+Syrian Arab Republic | Turkey,multi-country
+Paraguay | Uruguay | Chile | Argentina | Panama | Mexico | Costa Rica | Trinidad and Tobago | Guyana | Dominican Republic | Curaçao | Peru | Aruba | Ecuador | Colombia | Brazil,multi-country
+Argentina | Aruba | Brazil | Chile | Colombia | Costa Rica | Curaçao | Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru | Trinidad and Tobago | Uruguay,multi-country
+Argentina | Brazil | Colombia | Curaçao | Ecuador | Mexico | Paraguay | Trinidad and Tobago | Aruba | Chile | Costa Rica | Dominican Republic | Guyana | Panama | Peru | Uruguay,multi-country
+Iraq | Jordan | Syrian Arab Republic | Turkey | Lebanon,multi-country
+Brazil | Colombia | Ecuador | Peru | Aruba | Curaçao | Dominican Republic | Guyana | Trinidad and Tobago | Costa Rica | Mexico | Panama | Argentina | Chile | Uruguay | Paraguay,multi-country
+Latvia,LV
+Sweden | Mozambique,multi-country
+Ecuador | Guyana | Argentina | Peru | Trinidad and Tobago | Chile | Aruba | Costa Rica | Uruguay | Brazil | Curaçao | Mexico | Paraguay | Colombia | Dominican Republic | Panama,multi-country
+Panama | Dominican Republic | Mexico | Curaçao | Brazil | Aruba | Chile | Trinidad and Tobago | Guyana | Ecuador | Colombia | Uruguay | Peru | Paraguay | Costa Rica | Argentina,multi-country
+Turkey | Egypt | Iraq | Jordan | Lebanon,multi-country
+Burkina Faso | Mali | Chad | Central African Republic,multi-country
+Syrian Arab Republic | Jordan | Lebanon | Iraq | Egypt | Turkey,multi-country
+American Samoa,AS
+Turkey | Lebanon | Iraq | Egypt | Jordan,multi-country
+Kenya | Somalia,multi-country
+Nicaragua | Guatemala,multi-country
+"Colombia | Bolivia, Plurinational State of",multi-country
+Chile | Trinidad and Tobago | Peru | Argentina | Guyana | Ecuador | Panama | Dominican Republic | Colombia | Paraguay | Mexico | Curaçao | Brazil | Uruguay | Costa Rica | Aruba,multi-country
+Aruba | Costa Rica | Uruguay | Brazil | Curaçao | Mexico | Paraguay | Colombia | Dominican Republic | Panama | Ecuador | Guyana | Argentina | Peru | Trinidad and Tobago | Chile,multi-country
+Brazil | Aruba | Costa Rica | Uruguay | Colombia | Dominican Republic | Panama | Ecuador | Guyana | Argentina | Peru | Trinidad and Tobago | Chile | Curaçao | Mexico | Paraguay,multi-country
+Mozambique | Zimbabwe | Malawi | Comoros,multi-country
+"Venezuela, Bolivarian Republic of | Colombia",multi-country
+Vanuatu | Tonga | Fiji | Solomon Islands | Samoa,multi-country
+Trinidad and Tobago | Peru | Ecuador | Colombia,multi-country
+"Venezuela, Bolivarian Republic of | Colombia | Ecuador",multi-country
+Ecuador | Peru | Colombia,multi-country
+Turkey | Jordan | Lebanon | Iraq | Egypt,multi-country
+Argentina | Aruba | Brazil | Colombia | Mexico | Costa Rica | Dominican Republic | Paraguay | Peru | Ecuador | Panama | Guyana,multi-country
+Argentina | Aruba | Brazil | Colombia | Costa Rica | Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru,multi-country
+Cook Islands | Fiji,multi-country
+"Venezuela, Bolivarian Republic of | Brazil | Ecuador | Colombia",multi-country
+Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru | Argentina | Trinidad and Tobago | Brazil | Uruguay | Chile | Aruba | Colombia | Curaçao | Costa Rica,multi-country
+Costa Rica | Colombia | Chile | Brazil | Argentina | Curaçao | Aruba | Uruguay | Trinidad and Tobago | Peru | Paraguay | Panama | Mexico | Guyana | Ecuador | Dominican Republic,multi-country
+Guyana | Mexico | Panama | Trinidad and Tobago | Uruguay | Aruba | Brazil | Chile | Colombia | Dominican Republic | Ecuador | Paraguay | Peru | Curaçao | Argentina | Costa Rica,multi-country
+Paraguay | Uruguay | Trinidad and Tobago | Peru | Panama | Mexico | Guyana | Dominican Republic | Ecuador | Curaçao | Costa Rica | Colombia | Chile | Brazil | Aruba | Argentina,multi-country
+Argentina | Aruba | Brazil | Chile | Colombia | Costa Rica | Curaçao | Ecuador | Dominican Republic | Guyana | Mexico | Panama | Peru | Trinidad and Tobago | Uruguay | Paraguay,multi-country
+Lebanon | Jordan | Iraq,multi-country
+Lebanon | Syrian Arab Republic,multi-country
+Syrian Arab Republic | Lebanon | Jordan | occupied Palestinian territory,multi-country
+Trinidad and Tobago | Guyana | Dominican Republic | Curaçao | Aruba,multi-country
+Iraq | Lebanon,multi-country
+Paraguay | Dominican Republic | Brazil | Uruguay | Mexico | Costa Rica | Argentina | Panama | Curaçao | Aruba | Peru | Ecuador | Chile | Trinidad and Tobago | Guyana | Colombia,multi-country
+Brazil | Curaçao | Mexico | Trinidad and Tobago | Chile | Dominican Republic | Panama | Uruguay | Aruba | Costa Rica | Guyana | Peru | Argentina | Colombia | Ecuador | Paraguay,multi-country
+Trinidad and Tobago | Guyana | Colombia | Peru | Ecuador | Chile | Panama | Curaçao | Aruba | Paraguay | Dominican Republic | Brazil | Uruguay | Mexico | Costa Rica | Argentina,multi-country
+Uruguay | Peru | Panama | Guyana | Paraguay | Dominican Republic | Curaçao | Brazil | Ecuador | Costa Rica | Argentina | Colombia | Trinidad and Tobago | Chile | Mexico | Aruba,multi-country
+Turkey | Syrian Arab Republic | Lebanon | Jordan,multi-country
+Lebanon | Jordan | Iraq | Syrian Arab Republic,multi-country
+Syrian Arab Republic | Iraq | Jordan | Lebanon,multi-country
+Jordan | Lebanon | Iraq | Syrian Arab Republic,multi-country
+Syrian Arab Republic | Iraq | Lebanon | Jordan,multi-country
+Brazil | Colombia | Ecuador | Aruba | Peru | Curaçao | Dominican Republic | Guyana | Trinidad and Tobago | Costa Rica | Mexico | Panama | Argentina | Chile | Uruguay | Paraguay,multi-country
+Turkey | Jordan | Iraq | Syrian Arab Republic | Egypt | Lebanon,multi-country
+Comoros | Malawi | Zimbabwe | Mozambique,multi-country
+Peru | Ecuador,multi-country
+Argentina | Aruba | Brazil | Chile | Colombia | Costa Rica | Curaçao | Panama | Ecuador | Peru | Dominican Republic | Trinidad and Tobago | Guyana | Uruguay | Mexico | Paraguay,multi-country
+Syrian Arab Republic | Lebanon,multi-country
+Lebanon | Turkey | Jordan | Egypt,multi-country
+Somalia | Kenya | Ethiopia,multi-country
+"Ecuador | Colombia | Venezuela, Bolivarian Republic of",multi-country
+Italy | occupied Palestinian territory,multi-country
+"Bolivia, Plurinational State of | Argentina | Aruba | Brazil | Chile | Colombia | Costa Rica | Curaçao | Dominican Republic | Ecuador | Guyana | Mexico | Panama | Paraguay | Peru | Trinidad and Tobago | Uruguay",multi-country
+"Uruguay | Trinidad and Tobago | Peru | Paraguay | Panama | Mexico | Guyana | Ecuador | Dominican Republic | Curaçao | Costa Rica | Colombia | Chile | Brazil | Aruba | Argentina | Bolivia, Plurinational State of",multi-country
+"Uruguay | Trinidad and Tobago | Peru | Paraguay | Panama | Mexico | Guyana | Ecuador | Dominican Republic | Curaçao | Costa Rica | Colombia | Chile | Brazil | Bolivia, Plurinational State of | Aruba | Argentina",multi-country
+"Yemen | Uganda | Tanzania, United Republic of | South Sudan | Somalia | Kenya | Ethiopia | Eritrea | Djibouti",multi-country
+Ethiopia | Somalia | Kenya,multi-country
+Eritrea | South Sudan | Djibouti | Uganda | Ethiopia | Somalia | Kenya,multi-country
+Kenya | Somalia | Ethiopia | Uganda | South Sudan | Eritrea,multi-country
+Ethiopia | Somalia | Kenya | Djibouti | South Sudan | Eritrea,multi-country
+Eritrea | South Sudan | Djibouti | Ethiopia | Somalia | Kenya,multi-country
+Uganda | Eritrea | South Sudan | Djibouti | Somalia | Ethiopia | Kenya,multi-country
+Turkey | Syrian Arab Republic,multi-country
+Grenada,GD
+Cayman Islands,KY
+Turkmenistan,TM
+São Tomé and Príncipe,ST
+Suriname,SR
+Montserrat,MS
+"Saint Helena, Ascension and Tristan da Cunha",multi-country
+Norway,NO
+Turks and Caicos Islands,TC
+French Polynesia,PF

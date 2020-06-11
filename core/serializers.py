@@ -273,6 +273,7 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScheduledEventRunInstance
         fields = (
+            'id',
             'scheduled_event',
             'start_at',
             'ended_at',

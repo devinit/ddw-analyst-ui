@@ -24,7 +24,7 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEven
     fetchRunHistory(props.rowId).then((result) => {
       setHistoryData(result.data);
       setCount(result.data.length);
-      setPageCount(Math.ceil(result.data.length / 5));
+      setPageCount(Math.ceil(result.data.length / LIMIT));
     });
   }, [props.rowId]);
 

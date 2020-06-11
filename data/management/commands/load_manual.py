@@ -39,6 +39,7 @@ class Command(BaseCommand):
                     setattr(source, "last_updated_on", last_updated_on)
 
                 source.save()
+                SourceColumnMap.objects.filter(source=source).delete()  # Erase all previous mappings
 
                 for tag_str in tag_strs:
                     tag, _ = Tag.objects.get_or_create(name=tag_str)
