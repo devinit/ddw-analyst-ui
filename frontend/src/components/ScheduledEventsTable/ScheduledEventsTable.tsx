@@ -13,7 +13,7 @@ export interface ScheduledEventTableProps {
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
   const [activeRow, setActiveRow] = useState(0);
 
-  const handleClick = (id: number, name: string) => (): void => {
+  const handleClick = (id: number, name: string): void => {
     if (id !== activeRow) {
       setActiveRow(id);
       props.onRowClick(id, name);
@@ -26,7 +26,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
         <ScheduledEventsTableRow
           key={event.id}
           event={event}
-          onClick={handleClick(event.id, event.name)}
+          onClick={handleClick}
           classNames={classNames({ 'table-danger': activeRow === event.id })}
         />
       );

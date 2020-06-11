@@ -5,13 +5,16 @@ import { convertIntervalType } from './utils';
 
 export interface ScheduledEventsTableRowProps {
   event: ScheduledEvent;
-  onClick?: () => void;
+  onClick: (id: number, name: string) => void;
   classNames?: string;
 }
 
 export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
   return (
-    <tr onClick={props.onClick} className={props.classNames}>
+    <tr
+      onClick={(): void => props.onClick(props.event.id, props.event.name)}
+      className={props.classNames}
+    >
       <td className="text-center">{props.event.id}</td>
       <td>{props.event.name}</td>
       <td>{props.event.description}</td>
