@@ -1,4 +1,4 @@
-donor_code,donor_name,donor_type
+Donor code,Donor name,Donor type
 1,Austria,DAC
 2,Belgium,DAC
 3,Denmark,DAC
@@ -125,7 +125,7 @@ donor_code,donor_name,donor_type
 1604,People's Postcode Lottery,Private
 1605,MetLife Foundation,Private
 1606,MasterCard Foundation,Private
-1607,Grameen Crédit Agricole Foundation,Private
+1607,Grameen Credit Agricole Foundation,Private
 1608,IKEA Foundation,Private
 1609,Bernard van Leer Foundation,Private
 1610,MAVA Foundation,Private
