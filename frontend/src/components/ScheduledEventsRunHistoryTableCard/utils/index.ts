@@ -6,7 +6,9 @@ import { LIMIT } from '../../ScheduledEventsTableCard';
 
 const BASEPATH = api.routes.FETCH_RUN_INSTANCES;
 
-export const fetchRunHistory = async (eventId: number): Promise<any> => {
+export const fetchRunHistory = async (
+  eventId: number,
+): Promise<{ data: ScheduledEventRunHistory[] }> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   const headers = {
     'Content-Type': 'application/json',

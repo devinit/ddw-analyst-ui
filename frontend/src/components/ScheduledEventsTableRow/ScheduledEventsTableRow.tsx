@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { FunctionComponent } from 'react';
-import { convertIntervalType } from './utils';
 import { ScheduledEvent } from '../../types/scheduledEvents';
+import { convertIntervalType } from './utils';
 
 export interface ScheduledEventsTableRowProps {
   event: ScheduledEvent;

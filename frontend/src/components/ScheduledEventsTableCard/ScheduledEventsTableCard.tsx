@@ -1,18 +1,19 @@
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { fetchData, getScheduledEventsByPage } from '.';
+import { fetchData, getScheduledEventsByPage, LIMIT } from '.';
+import { ScheduledEvent } from '../../types/scheduledEvents';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
-import { LIMIT } from '.';
 
 interface ScheduledEventsTableCardProps {
   onRowClick: (id: number, name: string) => void;
 }
+
 export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCardProps> = (
   props,
 ) => {
-  const [scheduledEvents, setScheduledEvents] = useState([]);
+  const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);

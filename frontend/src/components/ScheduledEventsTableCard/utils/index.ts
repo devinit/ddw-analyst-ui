@@ -7,7 +7,7 @@ const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
 
 export const LIMIT = 5;
 
-export const fetchData = async (): Promise<any> => {
+export const fetchData = async (): Promise<{ data: ScheduledEvent[] }> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   const headers = {
     'Content-Type': 'application/json',
