@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from core.models import Source, UpdateHistory
 
 
@@ -10,7 +10,10 @@ class Command(BaseCommand):
         parser.add_argument('release_description', nargs='?', type=str, default="Automated update.")
 
     def handle(self, *args, **options):
-        source = Source.objects.get(active_mirror_name=options["active_mirror_name"])
+        try:
+            source = Source.objects.get(active_mirror_name=options["active_mirror_name"])
+        except Source.DoesNotExist:
+            raise CommandError("Mirror '" + options["active_mirror_name"] + "' does not Exist")
         source.save()  # Update last_updated_on
         update_history = UpdateHistory(
             source=source,
