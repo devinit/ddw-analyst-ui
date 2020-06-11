@@ -8,7 +8,7 @@ interface ScheduledEventRunHistoryTableProps {
 }
 export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRunHistoryTableProps> = (
   props,
-): React.ReactElement => {
+) => {
   const renderRows = (): ReactNode =>
     props.data
       ? props.data.map((history: ScheduledEventRunHistory, index: number) => (

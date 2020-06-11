@@ -7,7 +7,7 @@ export interface ScheduledEventTableProps {
   currentPage: number;
   pageLimit: number;
   events: Array<{}>;
-  handleRunHistory: (id: number, name: string) => void;
+  onRowClick: (id: number, name: string) => void;
 }
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
   const [activeRow, setActiveRow] = useState(0);
@@ -15,7 +15,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
   const handleClick = (id: number, name: string) => (): void => {
     if (id !== activeRow) {
       setActiveRow(id);
-      props.handleRunHistory(id, name);
+      props.onRowClick(id, name);
     }
   };
 

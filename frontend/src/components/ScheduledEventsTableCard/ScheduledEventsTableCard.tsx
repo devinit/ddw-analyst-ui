@@ -4,10 +4,10 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { fetchData, getScheduledEventsByPage } from '.';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
+import { LIMIT } from '.';
 
-const LIMIT = 5;
 interface ScheduledEventsTableCardProps {
-  handleRunHistory: (id: number, name: string) => void;
+  onRowClick: (id: number, name: string) => void;
 }
 export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCardProps> = (
   props,
@@ -24,7 +24,7 @@ export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCar
       setScheduledEvents(result.data);
       setLoading(false);
       setCount(result.data.length);
-      setPageCount(Math.ceil(result.data.length / 5));
+      setPageCount(Math.ceil(result.data.length / LIMIT));
     });
   }, []);
 
@@ -69,7 +69,7 @@ export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCar
             currentPage={currentPage}
             pageLimit={LIMIT}
             events={getScheduledEventsByPage(currentPage, scheduledEvents)}
-            handleRunHistory={props.handleRunHistory}
+            onRowClick={props.onRowClick}
           />
           {renderPagination()}
         </Card.Body>

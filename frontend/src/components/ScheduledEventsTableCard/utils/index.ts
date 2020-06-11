@@ -21,8 +21,8 @@ export const getScheduledEventsByPage = (
   currentPage: number,
   data: ScheduledEvent[],
 ): ScheduledEvent[] => {
-  const begin = (currentPage - 1) * 5;
-  const end = begin + 5;
+  const begin = (currentPage - 1) * LIMIT;
+  const end = begin + LIMIT;
 
   return data.slice(begin, end);
 };

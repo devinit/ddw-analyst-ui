@@ -10,14 +10,14 @@ const ScheduledEvents: FunctionComponent<ScheduledEventsProps> = () => {
   const [rowId, setRowId] = useState(0);
   const [eventName, setEventName] = useState('');
 
-  const handleRunHistory = (id: number, name: string): void => {
+  const handleRowClick = (id: number, name: string): void => {
     setRowId(id);
     setEventName(name);
   };
 
   return (
     <Row>
-      <ScheduledEventsTableCard handleRunHistory={handleRunHistory} />
+      <ScheduledEventsTableCard onRowClick={handleRowClick} />
       <ScheduledEventsRunHistoryTableCard rowId={rowId} eventName={eventName} />
     </Row>
   );
