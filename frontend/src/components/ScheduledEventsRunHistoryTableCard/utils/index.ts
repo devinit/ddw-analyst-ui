@@ -2,8 +2,8 @@ import axios from 'axios';
 import * as localForage from 'localforage';
 import { ScheduledEventRunHistory } from '../../../types/scheduledEvents';
 import { api, localForageKeys } from '../../../utils';
-import { LIMIT } from '../../ScheduledEventsTableCard';
 
+export const LIMIT = 10;
 const BASEPATH = api.routes.FETCH_RUN_INSTANCES;
 
 export const fetchRunHistory = async (
@@ -18,7 +18,7 @@ export const fetchRunHistory = async (
   return await axios(`${BASEPATH.replace('{id}', eventId.toString())}`, { headers });
 };
 
-export const getScheduledEventsByPage = (
+export const getScheduledEventRunHistoryByPage = (
   currentPage: number,
   data: ScheduledEventRunHistory[],
 ): ScheduledEventRunHistory[] => {

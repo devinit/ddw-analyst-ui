@@ -1,10 +1,9 @@
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
-import { LIMIT } from '.././ScheduledEventsTableCard';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
-import { fetchRunHistory, getScheduledEventsByPage } from './utils';
+import { fetchRunHistory, getScheduledEventRunHistoryByPage, LIMIT } from './utils';
 
 interface ScheduledEventsRunHistoryTableCardProps {
   rowId: number;
@@ -58,7 +57,9 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEven
         <h4 className="card-title">{props.eventName} Run History</h4>
       </Card.Header>
       <Card.Body>
-        <ScheduledEventsRunHistoryTable data={getScheduledEventsByPage(currentPage, historyData)} />
+        <ScheduledEventsRunHistoryTable
+          data={getScheduledEventRunHistoryByPage(currentPage, historyData)}
+        />
         {renderPagination()}
       </Card.Body>
     </Card>
