@@ -3,6 +3,7 @@ import { Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { ScheduledEventsRunHistoryTableCard } from '../../components/ScheduledEventsRunHistoryTableCard';
 import { ScheduledEventsTableCard } from '../../components/ScheduledEventsTableCard';
+import { ScheduledEvent } from '../../types/scheduledEvents';
 
 type ScheduledEventsProps = RouteComponentProps;
 
@@ -10,8 +11,8 @@ const ScheduledEvents: FunctionComponent<ScheduledEventsProps> = () => {
   const [rowId, setRowId] = useState(0);
   const [eventName, setEventName] = useState('');
 
-  const handleRowClick = (id: number, name: string): void => {
-    setRowId(id);
+  const handleRowClick = (event: ScheduledEvent): void => {
+    setRowId(event.id);
     setEventName(name);
   };
 

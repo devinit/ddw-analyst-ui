@@ -7,7 +7,7 @@ import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
 
 interface ScheduledEventsTableCardProps {
-  onRowClick: (id: number, name: string) => void;
+  onRowClick: (event: ScheduledEvent) => void;
 }
 
 export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCardProps> = (

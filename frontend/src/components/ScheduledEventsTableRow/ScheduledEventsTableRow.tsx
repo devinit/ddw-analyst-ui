@@ -7,7 +7,7 @@ import { convertIntervalType, createRunInstance } from './utils';
 export interface ScheduledEventsTableRowProps {
   rowId: number;
   event: ScheduledEvent;
-  onClick: (id: number, name: string) => void;
+  onClick: (event: ScheduledEvent) => void;
   classNames?: string;
 }
 
@@ -33,7 +33,7 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
         setIsCreatingInstance(false);
       });
   };
-  const onRowClick = (): void => props.onClick(props.event.id, props.event.name);
+  const onRowClick = (): void => props.onClick(props.event);
 
   return (
     <tr onClick={onRowClick} className={props.classNames}>
