@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Donor code,Donor name,Donor type
 1,Austria,DAC
 2,Belgium,DAC
@@ -147,3 +148,154 @@ Donor code,Donor name,Donor type
 1626,Gordon and Betty Moore Foundation,Private
 1627,Ford Foundation,Private
 1628,Wellcome Trust,Private
+=======
+donor_code,donor_name,donor_type
+1,Austria,DAC
+2,Belgium,DAC
+3,Denmark,DAC
+4,France,DAC
+5,Germany,DAC
+6,Italy,DAC
+7,Netherlands,DAC
+8,Norway,DAC
+9,Portugal,DAC
+10,Sweden,DAC
+11,Switzerland,DAC
+12,United Kingdom,DAC
+18,Finland,DAC
+20,Iceland,DAC
+21,Ireland,DAC
+22,Luxembourg,DAC
+40,Greece,DAC
+50,Spain,DAC
+61,Slovenia,DAC
+68,Czech Republic,DAC
+69,Slovak Republic,DAC
+75,Hungary,DAC
+76,Poland,DAC
+301,Canada,DAC
+302,United States,DAC
+701,Japan,DAC
+742,Korea,DAC
+801,Australia,DAC
+820,New Zealand,DAC
+918,EU Institutions,DAC
+104,Nordic Development Fund,Multilateral
+807,UNEP,Multilateral
+811,Global Environment Facility,Multilateral
+812,Montreal Protocol,Multilateral
+901,International Bank for Reconstruction and Development,Multilateral
+902,Multilateral Investment Guarantee Agency,Multilateral
+903,International Finance Corporation,Multilateral
+905,International Development Association,Multilateral
+906,Caribbean Development Bank,Multilateral
+907,International Monetary Fund,Multilateral
+909,Inter-American Development Bank,Multilateral
+912,IDB Special Fund,Multilateral
+913,African Development Bank,Multilateral
+914,African Development Fund,Multilateral
+915,Asian Development Bank,Multilateral
+916,AsDB Special Funds,Multilateral
+921,Arab Fund (AFESD),Multilateral
+923,UN Peacebuilding Fund,Multilateral
+926,Council of Europe,Multilateral
+928,World Health Organisation,Multilateral
+932,Food and Agriculture Organisation,Multilateral
+940,International Labour Organisation,Multilateral
+944,International Atomic Energy Agency,Multilateral
+948,UNECE,Multilateral
+951,OPEC Fund for International Development,Multilateral
+952,OAPEC,Multilateral
+953,Arab Bank for Economic Development in Africa,Multilateral
+954,Special Arab Aid Fund for Africa,Multilateral
+956,IMF Trust Fund,Multilateral
+958,IMF (Concessional Trust Funds),Multilateral
+959,UNDP,Multilateral
+960,UNTA,Multilateral
+963,UNICEF,Multilateral
+964,UNRWA,Multilateral
+966,WFP,Multilateral
+967,UNHCR,Multilateral
+971,UNAIDS,Multilateral
+974,UNFPA,Multilateral
+976,Islamic Development Bank,Multilateral
+978,OSCE,Multilateral
+979,Islamic Monetary Fund,Multilateral
+980,Arab Fund for Technical Assistance to African and Arab Countries,Multilateral
+981,Black Sea Trade & Development Bank,Multilateral
+982,GODE,Multilateral
+983,Other Arab Agencies,Multilateral
+988,IFAD,Multilateral
+990,European Bank for Reconstruction and Development,Multilateral
+992,UN AGENCIES,Multilateral
+997,Global Partnership for Education,Multilateral
+1011,Climate Investment Funds,Multilateral
+1012,Adaptation Fund,Multilateral
+1013,Council of Europe Development Bank,Multilateral
+1014,Private Infrastructure Development Group,Multilateral
+1015,Development Bank of Latin America,Multilateral
+1016,Green Climate Fund,Multilateral
+1017,Credit Guarantee and Investment Facility,Multilateral
+1018,Global Energy Efficiency and Renewable Energy Fund,Multilateral
+1019,IDB Invest,Multilateral
+1020,Central Emergency Response Fund,Multilateral
+1023,World Tourism Organisation,Multilateral
+1024,Asian Infrastructure Investment Bank,Multilateral
+1025,Center of Excellence in Finance,Multilateral
+1311,Global Alliance for Vaccines and Immunization,Multilateral
+1312,Global Fund,Multilateral
+1313,Global Green Growth Institute,Multilateral
+30,Cyprus,Non-DAC
+45,Malta,Non-DAC
+55,Turkey,Non-DAC
+62,Croatia,Non-DAC
+70,Liechtenstein,Non-DAC
+72,Bulgaria,Non-DAC
+77,Romania,Non-DAC
+82,Estonia,Non-DAC
+83,Latvia,Non-DAC
+84,Lithuania,Non-DAC
+87,Russia,Non-DAC
+130,Algeria,Non-DAC
+133,Libya,Non-DAC
+358,Mexico,Non-DAC
+543,Iraq,Non-DAC
+546,Israel,Non-DAC
+552,Kuwait,Non-DAC
+561,Qatar,Non-DAC
+566,Saudi Arabia,Non-DAC
+576,United Arab Emirates,Non-DAC
+611,Azerbaijan,Non-DAC
+613,Kazakhstan,Non-DAC
+732,Chinese Taipei,Non-DAC
+764,Thailand,Non-DAC
+765,Timor-Leste,Non-DAC
+1601,Bill & Melinda Gates Foundation,Private
+1602,Dutch Postcode Lottery,Private
+1603,Swedish Postcode Lottery,Private
+1604,People's Postcode Lottery,Private
+1605,MetLife Foundation,Private
+1606,MasterCard Foundation,Private
+1607,Grameen Crédit Agricole Foundation,Private
+1608,IKEA Foundation,Private
+1609,Bernard van Leer Foundation,Private
+1610,MAVA Foundation,Private
+1611,Oak Foundation,Private
+1612,H&M Foundation,Private
+1613,C&A Foundation,Private
+1614,Charity Projects Ltd (Comic Relief),Private
+1615,Children's Investment Fund Foundation,Private
+1616,Gatsby Charitable Foundation,Private
+1617,Conrad N. Hilton Foundation,Private
+1618,David & Lucile Packard Foundation,Private
+1619,John D. & Catherine T. MacArthur Foundation,Private
+1620,Carnegie Corporation of New York,Private
+1621,Michael & Susan Dell Foundation,Private
+1622,"Omidyar Network Fund, Inc.",Private
+1623,Rockefeller Foundation,Private
+1624,William & Flora Hewlett Foundation,Private
+1625,Arcus Foundation,Private
+1626,Gordon and Betty Moore Foundation,Private
+1627,Ford Foundation,Private
+1628,Wellcome Trust,Private
+>>>>>>> Clean OECD fix plus minor FTS typos
