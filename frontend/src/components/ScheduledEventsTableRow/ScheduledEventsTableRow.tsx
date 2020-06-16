@@ -25,6 +25,9 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
       .then((response) => {
         if (response.status === 201 || response.status === 200) {
           setIsCreatingInstance(false);
+          if (setActiveEvent) {
+            setActiveEvent({ ...props.event });
+          }
         } else {
           console.log(JSON.stringify(response));
         }
