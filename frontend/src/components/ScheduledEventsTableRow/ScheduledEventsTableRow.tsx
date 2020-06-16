@@ -1,17 +1,18 @@
 import moment from 'moment';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { ScheduledEventContext } from '../../pages/ScheduledEvents';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { convertIntervalType, createRunInstance } from './utils';
 
 export interface ScheduledEventsTableRowProps {
-  rowId: number;
+  id: number;
   event: ScheduledEvent;
-  onClick: (event: ScheduledEvent) => void;
   classNames?: string;
 }
 
 export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
+  const { setActiveEvent } = useContext(ScheduledEventContext);
   const [isCreatingInstance, setIsCreatingInstance] = useState(false);
 
   const onRunNow = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
@@ -33,11 +34,13 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
         setIsCreatingInstance(false);
       });
   };
-  const onRowClick = (): void => props.onClick(props.event);
+  const onRowClick = (): void => {
+    if (setActiveEvent) setActiveEvent(props.event);
+  };
 
   return (
     <tr onClick={onRowClick} className={props.classNames}>
-      <td className="text-center">{props.rowId}</td>
+      <td className="text-center">{props.id}</td>
       <td>{props.event.name}</td>
       <td>{props.event.description}</td>
       <td>

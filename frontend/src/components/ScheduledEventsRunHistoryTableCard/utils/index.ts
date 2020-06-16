@@ -6,7 +6,7 @@ import { api, localForageKeys } from '../../../utils';
 export const LIMIT = 10;
 const BASEPATH = api.routes.FETCH_RUN_INSTANCES;
 
-export const fetchRunHistory = async (
+export const fetchScheduledEventRunHistory = async (
   eventId: number,
 ): Promise<{ data: ScheduledEventRunHistory[] }> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);

@@ -1,18 +1,17 @@
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
-import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
+import { ScheduledEventRunHistory, ScheduledEvent } from '../../types/scheduledEvents';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
-import { fetchRunHistory, getScheduledEventRunHistoryByPage, LIMIT } from './utils';
+import { fetchScheduledEventRunHistory, getScheduledEventRunHistoryByPage, LIMIT } from './utils';
 
-interface ScheduledEventsRunHistoryTableCardProps {
-  rowId: number;
-  eventName: string;
+interface ComponentProps {
+  event?: ScheduledEvent;
 }
 
-export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEventsRunHistoryTableCardProps> = (
-  props,
-) => {
+export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProps> = ({
+  event,
+}) => {
   const [historyData, setHistoryData] = useState<ScheduledEventRunHistory[]>([]);
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -20,12 +19,14 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEven
   const [selectedPage, setSelectedPage] = useState(0);
 
   useEffect(() => {
-    fetchRunHistory(props.rowId).then((result) => {
-      setHistoryData(result.data);
-      setCount(result.data.length);
-      setPageCount(Math.ceil(result.data.length / LIMIT));
-    });
-  }, [props.rowId]);
+    if (event) {
+      fetchScheduledEventRunHistory(event.id).then((result) => {
+        setHistoryData(result.data);
+        setCount(result.data.length);
+        setPageCount(Math.ceil(result.data.length / LIMIT));
+      });
+    }
+  }, [event]);
 
   const handlePageChange = (page: { selected: number }): void => {
     setSelectedPage(page.selected);
@@ -51,10 +52,10 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ScheduledEven
     );
   };
 
-  return historyData && historyData.length ? (
+  return event && historyData && historyData.length ? (
     <Card className="col-md-12">
       <Card.Header className="card-header-rose card-header-icon">
-        <h4 className="card-title">{props.eventName} Run History</h4>
+        <h4 className="card-title">{event.name} Run History</h4>
       </Card.Header>
       <Card.Body>
         <ScheduledEventsRunHistoryTable
