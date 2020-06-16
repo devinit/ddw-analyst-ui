@@ -1,4 +1,4 @@
-Channel Parent Category code,Channel ID code,Year added,Acronym (ENG),OECD channel name,OECD channel parent name,OECD aggregated channel,Coefficient for core contributions,General contributions reported as type of aid:,MCD (Major Channel of Delivery),References/Notes
+channel_parent_category_code,channel_id_code,year_added,acronym_eng,oecd_channel_name,oecd_channel_parent_name,oecd_aggregated_channel,coefficient_for_core_contributions,general_contributions_reported_as_type_of_aid,mcd_major_channel_of_delivery,references_notes
 10000,10000,,,Public sector institutions,Public sector institutions,Public sector institutions,,,,
 11000,11000,,,Donor Government,Donor Government,Public sector institutions,,,,
 11000,11001,2018,,Central Government,Donor Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1

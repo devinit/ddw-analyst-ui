@@ -1,4 +1,4 @@
-OECD sector code,OECD sector name,ITEP sector
+oecd_sector_code,oecd_sector_name,itep_sector
 100,Social Infrastructure & Services,Other social services
 110,Education,Education
 111,"Education, Level Unspecified",Education

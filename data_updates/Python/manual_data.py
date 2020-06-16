@@ -15,7 +15,10 @@ def main():
         basename = os.path.basename(abs_csv_path)
         table_name = os.path.splitext(basename)[0]
         if table_name not in ["meta", "meta_columns"]:
-            csv_dat = pd.read_csv(abs_csv_path, keep_default_na=False, na_values=[''])
+            try:
+                csv_dat = pd.read_csv(abs_csv_path, keep_default_na=False, na_values=[''])
+            except UnicodeDecodeError:
+                csv_dat = pd.read_csv(abs_csv_path, keep_default_na=False, na_values=[''], encoding='latin1')
             csv_dat.to_sql(name=table_name, con=engine, schema="repo", index=False, if_exists="replace")
 
 
