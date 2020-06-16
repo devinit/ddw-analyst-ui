@@ -25,7 +25,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
       return (
         <ScheduledEventsTableRow
           key={event.id}
-          rowId={index}
+          rowId={index + 1}
           event={event}
           onClick={handleClick}
           classNames={classNames({ 'table-danger': activeRow === event.id })}
