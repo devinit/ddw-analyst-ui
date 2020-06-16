@@ -189,6 +189,14 @@ CRONJOBS = [
     ('*/1 * * * *', 'data.cron.schedules_cron_job')
 ]
 
+FTS_EXEC_PATHS = {
+    'MANUAL_DATA_FTS': os.path.join(BASE_DIR, 'data_updates/manual_data_fts.sh'),
+    'FTS': os.path.join(BASE_DIR, 'data_updates/fts.sh'),
+    'MANUAL_DATA': os.path.join(BASE_DIR, 'data_updates/manual_data.sh'),
+    'FTS_PRECODE': os.path.join(BASE_DIR, 'data_updates/fts_precode.sh'),
+    'FTS_DIFF': os.path.join(BASE_DIR, 'data_updates/fts_diff.sh'),
+}
+
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:

@@ -32,8 +32,10 @@ from core.serializers import (DataSerializer, OperationSerializer,
                               ScheduledEventRunInstanceSerializer,
                               ScheduledEventSerializer, SectorSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
-                              UserSerializer)
+                              UserSerializer, UpdateResultSerializer, UpdatesResultSerializer)
 from data_updates.utils import ScriptExecutor, list_update_scripts
+from django.conf import settings
+from core.utils import run_command
 
 
 class ListUpdateScripts(APIView):
@@ -428,3 +430,39 @@ class ScheduledEventRunInstanceDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FTSUpdater(APIView):
+    """
+    Run FTS updates to pull latest data, then join dependency tables
+    """
+    def put(self):
+        return_dict = run_command(['bash', settings.FTS_EXEC_PATHS['FTS']])
+
+        return_object = UpdateResultSerializer("FTS_Update", return_dict['message'], return_dict['status'])
+        serializer = UpdatesResultSerializer(return_object, many=True)
+        return Response(serializer.data)
+
+
+class FTSDiff(APIView):
+    """
+    Run FTS updates to pull latest data, then join dependency tables
+    """
+    def put(self):
+        return_dict = run_command(['bash', settings.FTS_EXEC_PATHS['FTS_DIFF']])
+
+        return_object = UpdateResultSerializer("FTS_DIFF", return_dict['message'], return_dict['status'])
+        serializer = UpdatesResultSerializer(return_object, many=True)
+        return Response(serializer.data)
+
+
+class FTSPrecode(APIView):
+    """
+    Run FTS updates to pull latest data, then join dependency tables
+    """
+    def put(self):
+        return_dict = run_command(['bash', settings.FTS_EXEC_PATHS['FTS_PRECODE']])
+
+        return_object = UpdateResultSerializer("FTS_Precode", return_dict['message'], return_dict['status'])
+        serializer = UpdatesResultSerializer(return_object, many=True)
+        return Response(serializer.data)
