@@ -12,33 +12,31 @@ export interface ScheduledEventsTableRowProps {
 }
 
 export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
-  const [isCreatingInstance, setLoading] = useState(false);
+  const [isCreatingInstance, setIsCreatingInstance] = useState(false);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+  const onRunNow = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     event.stopPropagation();
-    setLoading(true);
+    setIsCreatingInstance(true);
     createRunInstance(props.event.id, {
-      start_at: moment(),
+      start_at: moment(), // eslint-disable-line @typescript-eslint/camelcase
       status: 'p',
     })
       .then((response) => {
         if (response.status === 201 || response.status === 200) {
-          setLoading(false);
+          setIsCreatingInstance(false);
         } else {
           console.log(JSON.stringify(response));
         }
       })
       .catch((error) => {
         console.log(JSON.stringify(error));
-        setLoading(false);
+        setIsCreatingInstance(false);
       });
   };
+  const onRowClick = (): void => props.onClick(props.event.id, props.event.name);
 
   return (
-    <tr
-      onClick={(): void => props.onClick(props.event.id, props.event.name)}
-      className={props.classNames}
-    >
+    <tr onClick={onRowClick} className={props.classNames}>
       <td className="text-center">{props.rowId}</td>
       <td>{props.event.name}</td>
       <td>{props.event.description}</td>
@@ -60,12 +58,7 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
           : 'None'}
       </td>
       <td>
-        <Button
-          variant="outline-danger"
-          size="sm"
-          onClick={handleClick}
-          disabled={isCreatingInstance}
-        >
+        <Button variant="outline-danger" size="sm" onClick={onRunNow} disabled={isCreatingInstance}>
           {isCreatingInstance ? 'Creating instance...' : 'Run Now'}
         </Button>
       </td>
