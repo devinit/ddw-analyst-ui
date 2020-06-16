@@ -388,7 +388,7 @@ class ScheduledEventRunInstanceHistory(APIView):
     """
     def get_object(self, pk):
         try:
-            return ScheduledEventRunInstance.objects.filter(scheduled_event=pk)
+            return ScheduledEventRunInstance.objects.filter(scheduled_event=pk).order_by('-start_at')
         except ScheduledEventRunInstance.DoesNotExist:
             raise Http404
 

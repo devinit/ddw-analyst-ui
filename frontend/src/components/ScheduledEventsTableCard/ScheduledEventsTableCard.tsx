@@ -6,13 +6,7 @@ import { ScheduledEvent } from '../../types/scheduledEvents';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
 
-interface ScheduledEventsTableCardProps {
-  onRowClick: (id: number, name: string) => void;
-}
-
-export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCardProps> = (
-  props,
-) => {
+export const ScheduledEventsTableCard: FunctionComponent = () => {
   const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
@@ -70,7 +64,6 @@ export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCar
             currentPage={currentPage}
             pageLimit={LIMIT}
             events={getScheduledEventsByPage(currentPage, scheduledEvents)}
-            onRowClick={props.onRowClick}
           />
           {renderPagination()}
         </Card.Body>

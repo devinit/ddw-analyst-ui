@@ -1,24 +1,29 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, createContext } from 'react';
 import { Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { ScheduledEventsRunHistoryTableCard } from '../../components/ScheduledEventsRunHistoryTableCard';
 import { ScheduledEventsTableCard } from '../../components/ScheduledEventsTableCard';
+import { ScheduledEvent } from '../../types/scheduledEvents';
 
 type ScheduledEventsProps = RouteComponentProps;
+interface ScheduledEventContext {
+  activeEvent?: ScheduledEvent;
+  setActiveEvent?: (event: ScheduledEvent) => void;
+}
+
+export const ScheduledEventContext = createContext<ScheduledEventContext>({});
 
 const ScheduledEvents: FunctionComponent<ScheduledEventsProps> = () => {
-  const [rowId, setRowId] = useState(0);
-  const [eventName, setEventName] = useState('');
+  const [activeEvent, setActiveEvent] = useState<ScheduledEvent | undefined>(undefined);
 
-  const handleRowClick = (id: number, name: string): void => {
-    setRowId(id);
-    setEventName(name);
-  };
+  const onSetActiveEvent = (event: ScheduledEvent): void => setActiveEvent(event);
 
   return (
     <Row>
-      <ScheduledEventsTableCard onRowClick={handleRowClick} />
-      <ScheduledEventsRunHistoryTableCard rowId={rowId} eventName={eventName} />
+      <ScheduledEventContext.Provider value={{ setActiveEvent: onSetActiveEvent, activeEvent }}>
+        <ScheduledEventsTableCard />
+        <ScheduledEventsRunHistoryTableCard event={activeEvent} />
+      </ScheduledEventContext.Provider>
     </Row>
   );
 };
