@@ -4,7 +4,7 @@ if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-
 lapply(list.of.packages, require, character.only=T)
 
 # Only works while running with `Rscript` from repo root, use commented below if running manually
-script.dir <- here()
+script.dir <- here::here()
 # script.dir = "/src"
 # script.dir = "/home/alex/git/ddw-analyst-ui"
 
