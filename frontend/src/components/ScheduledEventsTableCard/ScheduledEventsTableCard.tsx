@@ -1,14 +1,19 @@
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import { fetchData, getScheduledEventsByPage, LIMIT } from '.';
+import { ScheduledEvent } from '../../types/scheduledEvents';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
-import { fetchData } from '.';
 
-const LIMIT = 5;
+interface ScheduledEventsTableCardProps {
+  onRowClick: (id: number, name: string) => void;
+}
 
-export const ScheduledEventsTableCard: FunctionComponent = () => {
-  const [scheduledEvents, setScheduledEvents] = useState({ data: [] });
+export const ScheduledEventsTableCard: FunctionComponent<ScheduledEventsTableCardProps> = (
+  props,
+) => {
+  const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -17,19 +22,12 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
 
   useEffect(() => {
     fetchData().then((result) => {
-      setScheduledEvents({ data: result.data });
+      setScheduledEvents(result.data);
       setLoading(false);
       setCount(result.data.length);
-      setPageCount(Math.ceil(result.data.length / 5));
+      setPageCount(Math.ceil(result.data.length / LIMIT));
     });
   }, []);
-
-  const getScheduledEventsByPage = (): Array<[]> => {
-    const begin = (currentPage - 1) * 5;
-    const end = begin + 5;
-
-    return scheduledEvents.data.slice(begin, end);
-  };
 
   const handlePageChange = (page: { selected: number }): void => {
     setSelectedPage(page.selected);
@@ -41,6 +39,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
       setCurrentPage(() => page.selected + 1);
     }
   };
+
   const renderPagination = (): ReactNode => {
     return count === 0 ? (
       'No Data'
@@ -70,7 +69,8 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
           <ScheduledEventsTable
             currentPage={currentPage}
             pageLimit={LIMIT}
-            events={getScheduledEventsByPage()}
+            events={getScheduledEventsByPage(currentPage, scheduledEvents)}
+            onRowClick={props.onRowClick}
           />
           {renderPagination()}
         </Card.Body>

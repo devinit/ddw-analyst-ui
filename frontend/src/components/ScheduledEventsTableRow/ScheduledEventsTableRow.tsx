@@ -1,37 +1,38 @@
-import React, { FunctionComponent } from 'react';
 import moment from 'moment';
+import React, { FunctionComponent } from 'react';
+import { ScheduledEvent } from '../../types/scheduledEvents';
+import { convertIntervalType } from './utils';
 
 export interface ScheduledEventsTableRowProps {
-  id: number;
-  name: string;
-  description: string;
-  enabled: boolean;
-  interval: number;
-  repeat: string;
-  interval_type: string;
-  start_date: string;
+  event: ScheduledEvent;
+  onClick: (id: number, name: string) => void;
+  classNames?: string;
 }
 
 export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowProps> = (props) => {
   return (
-    <tr>
-      <td className="text-center">{props.id}</td>
-      <td>{props.name}</td>
-      <td>{props.description}</td>
+    <tr
+      onClick={(): void => props.onClick(props.event.id, props.event.name)}
+      className={props.classNames}
+    >
+      <td className="text-center">{props.event.id}</td>
+      <td>{props.event.name}</td>
+      <td>{props.event.description}</td>
       <td>
         <div className="togglebutton">
           <label className="enabled">
-            <input type="checkbox" defaultChecked={props.enabled} />
+            <input type="checkbox" defaultChecked={props.event.enabled} disabled />
             <span className="toggle"></span>
           </label>
         </div>
       </td>
       <td>
-        {moment(props.start_date).format('LL')} at {moment.utc(props.start_date).format('LT')}
+        {moment(props.event.start_date).format('LL')} at{' '}
+        {moment.utc(props.event.start_date).format('LT')}
       </td>
       <td>
-        {props.repeat && props.interval && props.interval_type
-          ? `Every ${props.interval} ${props.interval_type}`
+        {props.event.repeat && props.event.interval && props.event.interval_type
+          ? `Every ${props.event.interval} ${convertIntervalType(props.event.interval_type)}`
           : 'None'}
       </td>
     </tr>

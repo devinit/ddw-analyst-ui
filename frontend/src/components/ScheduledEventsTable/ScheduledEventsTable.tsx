@@ -1,29 +1,33 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import classNames from 'classnames';
+import React, { FunctionComponent, ReactNode, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow';
-
 export interface ScheduledEventTableProps {
   currentPage: number;
   pageLimit: number;
-  events: Array<{}>;
+  events: ScheduledEvent[];
+  onRowClick: (id: number, name: string) => void;
 }
+
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
-  const offset = (props.currentPage - 1) * props.pageLimit;
+  const [activeRow, setActiveRow] = useState(0);
+
+  const handleClick = (id: number, name: string): void => {
+    if (id !== activeRow) {
+      setActiveRow(id);
+      props.onRowClick(id, name);
+    }
+  };
 
   const renderRows = (): ReactNode =>
-    props.events.map((event: ScheduledEvent, index: number) => {
+    props.events.map((event: ScheduledEvent) => {
       return (
         <ScheduledEventsTableRow
-          key={index}
-          id={offset + index + 1}
-          name={event.name}
-          description={event.description || ''}
-          enabled={event.enabled}
-          interval={event.interval}
-          interval_type={event.interval_type}
-          repeat={event.repeat}
-          start_date={event.start_date}
+          key={event.id}
+          event={event}
+          onClick={handleClick}
+          classNames={classNames({ 'table-danger': activeRow === event.id })}
         />
       );
     });
