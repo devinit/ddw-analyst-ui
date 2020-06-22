@@ -32,7 +32,7 @@ from core.serializers import (DataSerializer, OperationSerializer,
                               ScheduledEventRunInstanceSerializer,
                               ScheduledEventSerializer, SectorSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
-                              UserSerializer, UpdateResultSerializer, UpdatesResultSerializer)
+                              UserSerializer)
 from data_updates.utils import ScriptExecutor, list_update_scripts
 from django.conf import settings
 from core.pypika_fts_utils import TableQueryBuilder
@@ -114,6 +114,7 @@ class StreamingExporter:
             while next_row is not None:
                 yield writer.writerow(next_row)
                 next_row = main_cursor.fetchone()
+
 
 @csrf_exempt
 def streaming_export_view(request, pk):
@@ -433,97 +434,46 @@ class ScheduledEventRunInstanceDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class FTSUpdater(APIView):
-    """
-    Run FTS updates to pull latest data, then join dependency tables
-    """
-    def put(self):
-        return_dict = run_command(['bash', settings.FTS_EXEC_PATHS['FTS']])
-
-        return_object = UpdateResultSerializer("FTS_Update", return_dict['message'], return_dict['status'])
-        serializer = UpdatesResultSerializer(return_object, many=True)
-        return Response(serializer.data)
-
-
-class FTSDiff(APIView):
-    """
-    Run FTS updates to pull latest data, then join dependency tables
-    """
-    def put(self):
-        return_dict = run_command(['bash', settings.FTS_EXEC_PATHS['FTS_DIFF']])
-
-        return_object = UpdateResultSerializer("FTS_DIFF", return_dict['message'], return_dict['status'])
-        serializer = UpdatesResultSerializer(return_object, many=True)
-        return Response(serializer.data)
-
-
-class FTSPrecode(APIView):
-    """
-    Run FTS updates to pull latest data, then join dependency tables
-    """
-    def put(self):
-        return_dict = run_command(['bash', settings.FTS_EXEC_PATHS['FTS_PRECODE']])
-
-        return_object = UpdateResultSerializer("FTS_Precode", return_dict['message'], return_dict['status'])
-        serializer = UpdatesResultSerializer(return_object, many=True)
-        return Response(serializer.data)
-
-
 class TableStreamingExporter(StreamingExporter):
     """Sets up generator for streaming PSQL content"""
     def __init__(self, main_query):
         self.main_query = main_query
 
 
-#@api_view
 @csrf_exempt
-def streaming_tables_export_view(request, table_name="fts_none"):
+def streaming_tables_export_view(request, table_name):
 
     if table_name not in settings.QUERY_TABLES:
         return_result = [
-                            {
-                                "result": "error",
-                                "message": "Invalid code list table " + table_name,
-                            }
-                        ]
+            {
+                "result": "error",
+                "message": "Invalid code list table " + table_name,
+            }
+        ]
         return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
-    
-    form_data = json.loads(request.body.decode())
-    # posted_token = request.POST.get("token", None)
-    posted_token = form_data.get('token')
-    if posted_token is not None:
-        token_auth = TokenAuthentication()
-        try:
-            user, _ = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
-            if user.is_authenticated:
-                table_query_builder = TableQueryBuilder(table_name, "repo")
-                exporter = TableStreamingExporter(table_query_builder.select().get_sql_without_limit())
-                response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
-                response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(table_name)
-                return response
-        except exceptions.AuthenticationFailed:
-            # return redirect('/login/')
-            return HttpResponse(json.dumps({"return_result": "Tried " + table_name}), content_type='application/json', status=status.HTTP_200_OK)
-    # return redirect('/login/')
-    return HttpResponse(json.dumps({"return_result": "Failed " + table_name}), content_type='application/json', status=status.HTTP_200_OK)
+
+    table_query_builder = TableQueryBuilder(table_name, "repo")
+    exporter = TableStreamingExporter(table_query_builder.select().get_sql_without_limit())
+    response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(table_name)
+    return response
 
 
 class UpdateTableAPI(APIView):
 
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-    
+
     def put(self, request, table_name):
 
         if table_name not in settings.QUERY_TABLES:
             return_result = [
-                                {
-                                    "result": "error",
-                                    "message": "Invalid code list table",
-                                }
-                            ]
+                {
+                    "result": "error",
+                    "message": "Invalid code list table",
+                }
+            ]
             return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_400_BAD_REQUEST)
-        print(request.data)
         raw_data = request.data['data']
         data = []
         for obj in raw_data:
@@ -538,4 +488,3 @@ class UpdateTableAPI(APIView):
         return_status_code = status.HTTP_500_INTERNAL_SERVER_ERROR if return_result[0]['result'] == 'error' else status.HTTP_200_OK
 
         return HttpResponse(json.dumps(return_result), content_type='application/json', status=return_status_code)
-

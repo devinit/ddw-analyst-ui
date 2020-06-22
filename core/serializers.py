@@ -279,16 +279,3 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
             'ended_at',
             'status'
         )
-
-
-class UpdateResultSerializer(object):
-    def __init__(self, update, message, status):
-        self.update = update
-        self.message = message
-        self.status = status
-
-
-class UpdatesResultSerializer(serializers.Serializer):
-    update = serializers.CharField()
-    message = serializers.CharField()
-    status = serializers.CharField()
