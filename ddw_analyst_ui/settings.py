@@ -197,6 +197,11 @@ FTS_EXEC_PATHS = {
     'FTS_DIFF': os.path.join(BASE_DIR, 'data_updates/fts_diff.sh'),
 }
 
+FTS_CODE_LIST_TABLES = [
+    'fts_codenames', 'fts_privatemoney', 'fts_dacregion', 'fts_donorscountryid', 'fts_recipientcodename', 'fts_ngotype', 'fts_deliverychannels',
+    'fts_recipientcountryid', 'fts_odaeligible', 'fts_destinationcountryid', 'fts_incomegroups', 'fts_deflators', 'fts_isos', 'fts_privatemoney',
+]
+
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:

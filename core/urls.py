@@ -33,9 +33,8 @@ urlpatterns = [
     path('change_password/', core_views.ChangePassword.as_view()),
     path('list_update_scripts/', core_views.ListUpdateScripts.as_view()),
     path('execute_update/', core_views.streaming_script_execute),
-    path('fts_update/update/', core_views.FTSUpdater.as_view()),
-    path('fts_update/diff/', core_views.FTSDiff.as_view()),
-    path('fts_update/precode/', core_views.FTSPrecode.as_view()),
+    path('fts_update/update/<str:code_list_table>/', core_views.FTSUpdateAPI.as_view()),
+    path('fts_update/download/<str:code_list_table>/', core_views.streaming_fts_codelists_export_view),
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'
