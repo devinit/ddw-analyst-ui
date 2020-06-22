@@ -35,8 +35,8 @@ from core.serializers import (DataSerializer, OperationSerializer,
                               UserSerializer, UpdateResultSerializer, UpdatesResultSerializer)
 from data_updates.utils import ScriptExecutor, list_update_scripts
 from django.conf import settings
-from core.pypika_fts_utils import FTSQueryBuilder
-from data.db_manager import update_fts_from_list
+from core.pypika_fts_utils import TableQueryBuilder
+from data.db_manager import update_table_from_tuple
 
 
 class ListUpdateScripts(APIView):
@@ -469,7 +469,7 @@ class FTSPrecode(APIView):
         return Response(serializer.data)
 
 
-class FTSStreamingExporter(StreamingExporter):
+class TableStreamingExporter(StreamingExporter):
     """Sets up generator for streaming PSQL content"""
     def __init__(self, main_query):
         self.main_query = main_query
@@ -477,13 +477,13 @@ class FTSStreamingExporter(StreamingExporter):
 
 #@api_view
 @csrf_exempt
-def streaming_fts_codelists_export_view(request, code_list_table="fts_none"):
+def streaming_tables_export_view(request, table_name="fts_none"):
 
-    if code_list_table not in settings.FTS_CODE_LIST_TABLES:
+    if table_name not in settings.QUERY_TABLES:
         return_result = [
                             {
                                 "result": "error",
-                                "message": "Invalid code list table " + code_list_table,
+                                "message": "Invalid code list table " + table_name,
                             }
                         ]
         return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
@@ -496,26 +496,26 @@ def streaming_fts_codelists_export_view(request, code_list_table="fts_none"):
         try:
             user, _ = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
             if user.is_authenticated:
-                fts_query_builder = FTSQueryBuilder(code_list_table, "repo")
-                exporter = FTSStreamingExporter(fts_query_builder.select().get_sql_without_limit())
+                table_query_builder = TableQueryBuilder(table_name, "repo")
+                exporter = TableStreamingExporter(table_query_builder.select().get_sql_without_limit())
                 response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
-                response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(code_list_table)
+                response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(table_name)
                 return response
         except exceptions.AuthenticationFailed:
             # return redirect('/login/')
-            return HttpResponse(json.dumps({"return_result": "Tried " + code_list_table}), content_type='application/json', status=status.HTTP_200_OK)
+            return HttpResponse(json.dumps({"return_result": "Tried " + table_name}), content_type='application/json', status=status.HTTP_200_OK)
     # return redirect('/login/')
-    return HttpResponse(json.dumps({"return_result": "Failed " + code_list_table}), content_type='application/json', status=status.HTTP_200_OK)
+    return HttpResponse(json.dumps({"return_result": "Failed " + table_name}), content_type='application/json', status=status.HTTP_200_OK)
 
 
-class FTSUpdateAPI(APIView):
+class UpdateTableAPI(APIView):
 
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
     
-    def put(self, request, code_list_table):
+    def put(self, request, table_name):
 
-        if code_list_table not in settings.FTS_CODE_LIST_TABLES:
+        if table_name not in settings.QUERY_TABLES:
             return_result = [
                                 {
                                     "result": "error",
@@ -530,11 +530,11 @@ class FTSUpdateAPI(APIView):
             data.append(tuple(obj.values()))
         params = tuple(data)
 
-        fts_query_builder = FTSQueryBuilder(code_list_table, "repo")
-        delete_query = fts_query_builder.delete()
-        insert_query = fts_query_builder.insert(params)
+        table_query_builder = TableQueryBuilder(table_name, "repo")
+        delete_query = table_query_builder.delete()
+        insert_query = table_query_builder.insert(params)
 
-        return_result = update_fts_from_list([delete_query, insert_query])
+        return_result = update_table_from_tuple([delete_query, insert_query])
         return_status_code = status.HTTP_500_INTERNAL_SERVER_ERROR if return_result[0]['result'] == 'error' else status.HTTP_200_OK
 
         return HttpResponse(json.dumps(return_result), content_type='application/json', status=return_status_code)

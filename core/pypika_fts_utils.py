@@ -1,7 +1,7 @@
 from core import pypika_utils
 
 
-class FTSQueryBuilder(pypika_utils.QueryBuilder):
+class TableQueryBuilder(pypika_utils.QueryBuilder):
 
     def __init__(self, initial_table_name, initial_schema_name):
 

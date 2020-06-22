@@ -32,14 +32,13 @@ def fetch_data(queries, database="datasets"):
         return (count_results[0][0], results) if count_results else (0, results)
 
 
-def update_fts_from_list(queries, database="datasets"):
+def update_table_from_tuple(queries, database="datasets"):
 
     # We shall need to remove the delete bit if we decide to only add the "differences" instead of the whole lost as currenty implemented
     with connections[database].cursor() as delete_cursor:
         try:
             delete_cursor.execute(queries[0])
         except ProgrammingError as sql_e:
-            count_results = [[1]]
             results = [
                 {
                     "result": "error" ,
