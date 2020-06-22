@@ -15,7 +15,7 @@ class TableQueryBuilder(pypika_utils.QueryBuilder):
 
         self.current_query = pypika_utils.Query.from_(self.current_dataset)
 
-    
+
     def delete(self, condition=None):
 
         return pypika_utils.Query.from_(self.current_dataset).delete().get_sql()

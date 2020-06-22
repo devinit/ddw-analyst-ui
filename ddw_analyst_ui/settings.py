@@ -189,14 +189,6 @@ CRONJOBS = [
     ('*/1 * * * *', 'data.cron.schedules_cron_job')
 ]
 
-FTS_EXEC_PATHS = {
-    'MANUAL_DATA_FTS': os.path.join(BASE_DIR, 'data_updates/manual_data_fts.sh'),
-    'FTS': os.path.join(BASE_DIR, 'data_updates/fts.sh'),
-    'MANUAL_DATA': os.path.join(BASE_DIR, 'data_updates/manual_data.sh'),
-    'FTS_PRECODE': os.path.join(BASE_DIR, 'data_updates/fts_precode.sh'),
-    'FTS_DIFF': os.path.join(BASE_DIR, 'data_updates/fts_diff.sh'),
-}
-
 QUERY_TABLES = [
     'fts_codenames', 'fts_privatemoney', 'fts_dacregion', 'fts_donorscountryid', 'fts_recipientcodename', 'fts_ngotype', 'fts_deliverychannels',
     'fts_recipientcountryid', 'fts_odaeligible', 'fts_destinationcountryid', 'fts_incomegroups', 'fts_deflators', 'fts_isos', 'fts_privatemoney',
