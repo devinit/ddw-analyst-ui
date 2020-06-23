@@ -11,6 +11,7 @@ export interface UpdateTableColumn {
   caption: string;
   type: 'number' | 'string' | 'boolean';
   values?: (string | number)[];
+  required?: boolean;
 }
 
 export const UPDATABLE_TABLES: UpdateTable[] = [
@@ -18,55 +19,75 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
     name: 'fts_codenames',
     caption: 'FTS Code Names',
     columns: [
-      { name: 'Donor', caption: 'Donor', type: 'string' },
-      { name: 'codename', caption: 'Code Name', type: 'string' },
+      { name: 'Donor', caption: 'Donor', type: 'string', required: true },
+      { name: 'codename', caption: 'Code Name', type: 'string', required: true },
     ],
   },
   {
     name: 'fts_dacregion',
     caption: 'FTS Dac Regions',
     columns: [
-      { name: 'Donor', caption: 'Donor', type: 'string' },
-      { name: 'Region', caption: 'Region', type: 'string' },
+      { name: 'Donor', caption: 'Donor', type: 'string', required: true },
+      { name: 'Region', caption: 'Region', type: 'string', required: true },
     ],
   },
   {
     name: 'fts_deflators',
     caption: 'FTS Deflators',
     columns: [
-      { name: 'deflatortype', caption: 'Deflator Type', type: 'string' },
-      { name: 'Deflators', caption: 'Deflators', type: 'number' },
+      { name: 'deflatortype', caption: 'Deflator Type', type: 'string', required: true },
+      { name: 'Deflators', caption: 'Deflators', type: 'number', required: true },
     ],
   },
   {
     name: 'fts_deliverychannels',
     caption: 'FTS Delivery Channels',
     columns: [
-      { name: 'Recipient.Organization', caption: 'Recipient Organisation', type: 'string' },
-      { name: 'deliverychannels', caption: 'Delivery Channels', type: 'string' },
+      {
+        name: 'Recipient.Organization',
+        caption: 'Recipient Organisation',
+        type: 'string',
+        required: true,
+      },
+      { name: 'deliverychannels', caption: 'Delivery Channels', type: 'string', required: true },
     ],
   },
   {
     name: 'fts_destinationcountryid',
     caption: 'FTS Destination Country IDs',
     columns: [
-      { name: 'Destination.Country', caption: 'Destination Country', type: 'string' },
-      { name: 'destinationcountryid', caption: 'Destination Country ID', type: 'string' },
+      {
+        name: 'Destination.Country',
+        caption: 'Destination Country',
+        type: 'string',
+        required: true,
+      },
+      {
+        name: 'destinationcountryid',
+        caption: 'Destination Country ID',
+        type: 'string',
+        required: true,
+      },
     ],
   },
   {
     name: 'fts_donorscountryid',
     caption: 'FTS Donors Country IDs',
     columns: [
-      { name: 'Donor', caption: 'Donor', type: 'string' },
-      { name: 'donorcountryid', caption: 'Donor Country ID', type: 'string' },
+      { name: 'Donor', caption: 'Donor', type: 'string', required: true },
+      { name: 'donorcountryid', caption: 'Donor Country ID', type: 'string', required: true },
     ],
   },
   {
     name: 'fts_incomegroups',
     caption: 'FTS Income Groups',
     columns: [
-      { name: 'destinationcountrytype', caption: 'Destination Country Type', type: 'string' },
+      {
+        name: 'destinationcountrytype',
+        caption: 'Destination Country Type',
+        type: 'string',
+        required: true,
+      },
       { name: 'incomegroups', caption: 'Income Groups', type: 'string' },
     ],
   },
@@ -74,29 +95,40 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
     name: 'fts_isos',
     caption: 'FTS ISOs',
     columns: [
-      { name: 'country_name', caption: 'Country Name', type: 'string' },
-      { name: 'country_code', caption: 'Country Code', type: 'string' },
-      { name: 'iso3', caption: 'ISO3', type: 'string' },
+      { name: 'country_name', caption: 'Country Name', type: 'string', required: true },
+      { name: 'country_code', caption: 'Country Code', type: 'string', required: true },
+      { name: 'iso3', caption: 'ISO3', type: 'string', required: true },
     ],
   },
   {
     name: 'fts_ngotype',
     caption: 'FTS NGO Type',
     columns: [
-      { name: 'Recipient.Organization', caption: 'Recipient Organisation', type: 'string' },
-      { name: 'ngotype', caption: 'NGO Type', type: 'string' },
+      {
+        name: 'Recipient.Organization',
+        caption: 'Recipient Organisation',
+        type: 'string',
+        required: true,
+      },
+      { name: 'ngotype', caption: 'NGO Type', type: 'string', required: true },
     ],
   },
   {
     name: 'fts_odaeligible',
     caption: 'FTS ODA Eligible',
     columns: [
-      { name: 'Destination.Country', caption: 'Destination Country', type: 'string' },
+      {
+        name: 'Destination.Country',
+        caption: 'Destination Country',
+        type: 'string',
+        required: true,
+      },
       {
         name: 'odaeligible',
         caption: 'ODA Eligible',
         type: 'string',
         values: ['ODA-eligible', 'Non-ODA eligible'],
+        required: true,
       },
     ],
   },
@@ -104,24 +136,45 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
     name: 'fts_privatemoney',
     caption: 'FTS Private Money',
     columns: [
-      { name: 'Donor', caption: 'Donor', type: 'string' },
-      { name: 'privatemoney', caption: 'Private Money', type: 'string', values: ['no', 'private'] },
+      { name: 'Donor', caption: 'Donor', type: 'string', required: true },
+      {
+        name: 'privatemoney',
+        caption: 'Private Money',
+        type: 'string',
+        values: ['no', 'private'],
+        required: true,
+      },
     ],
   },
   {
     name: 'fts_recipientcodename',
     caption: 'FTS Recipient Code Name',
     columns: [
-      { name: 'Recipient.Organization', caption: 'Recipient Organisation', type: 'string' },
-      { name: 'recipientcodename', caption: 'Recipient Code Name', type: 'string' },
+      {
+        name: 'Recipient.Organization',
+        caption: 'Recipient Organisation',
+        type: 'string',
+        required: true,
+      },
+      { name: 'recipientcodename', caption: 'Recipient Code Name', type: 'string', required: true },
     ],
   },
   {
     name: 'fts_recipientcountryid',
     caption: 'FTS Recipient Country ID',
     columns: [
-      { name: 'Recipient.Organization', caption: 'Recipient Organisation', type: 'string' },
-      { name: 'recipientcountryid', caption: 'Recipient Country ID', type: 'string' },
+      {
+        name: 'Recipient.Organization',
+        caption: 'Recipient Organisation',
+        type: 'string',
+        required: true,
+      },
+      {
+        name: 'recipientcountryid',
+        caption: 'Recipient Country ID',
+        type: 'string',
+        required: true,
+      },
     ],
   },
 ];
