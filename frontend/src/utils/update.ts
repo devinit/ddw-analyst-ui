@@ -8,6 +8,7 @@ interface TableColumn {
   name: string;
   caption: string;
   type: 'number' | 'string' | 'boolean';
+  values?: (string | number)[];
 }
 
 export const UPDATABLE_TABLES: Table[] = [
@@ -32,7 +33,7 @@ export const UPDATABLE_TABLES: Table[] = [
     caption: 'FTS Deflators',
     columns: [
       { name: 'deflatortype', caption: 'Deflator Type', type: 'string' },
-      { name: 'Deflators', caption: 'Deflators', type: 'string' },
+      { name: 'Deflators', caption: 'Deflators', type: 'number' },
     ],
   },
   {
@@ -89,7 +90,12 @@ export const UPDATABLE_TABLES: Table[] = [
     caption: 'FTS ODA Eligible',
     columns: [
       { name: 'Destination.Country', caption: 'Destination Country', type: 'string' },
-      { name: 'odaeligible', caption: 'ODA Eligible', type: 'boolean' },
+      {
+        name: 'odaeligible',
+        caption: 'ODA Eligible',
+        type: 'string',
+        values: ['ODA-eligible', 'Non-ODA eligible'],
+      },
     ],
   },
   {
@@ -97,7 +103,7 @@ export const UPDATABLE_TABLES: Table[] = [
     caption: 'FTS Private Money',
     columns: [
       { name: 'Donor', caption: 'Donor', type: 'string' },
-      { name: 'privatemoney', caption: 'Private Money', type: 'boolean' },
+      { name: 'privatemoney', caption: 'Private Money', type: 'string', values: ['no', 'private'] },
     ],
   },
   {
