@@ -1,14 +1,13 @@
 import React, { FunctionComponent, SyntheticEvent, useContext } from 'react';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
-import { ColumnList } from '../../types/sources';
-import { getSelectOptionsFromColumns } from '../../utils';
+import { UpdateTableColumn } from '../../utils';
 import { Column } from '../FileInput';
 import { disableSelectedColumns } from './utils';
 
 interface ComponentProps {
   column: Column;
-  dataSourceColumns: ColumnList;
+  tableColumns: UpdateTableColumn[];
 }
 
 const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, ...props }) => {
@@ -16,13 +15,11 @@ const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, ...prop
 
   const onChange = (_event: SyntheticEvent<HTMLElement, Event>, selected: DropdownProps): void => {
     if (data && updateData) {
-      const property = props.dataSourceColumns.find(
-        (column) => column.get('name') === selected.value,
-      );
+      const property = props.tableColumns.find((column) => column.name === selected.value);
       if (property) {
         const csvColumn = data.columns.find((_column) => _column.name === column.name);
         if (csvColumn) {
-          csvColumn.dataSourceProperty = property;
+          csvColumn.tableProperty = property;
           updateData({ ...data });
         }
       }
@@ -33,10 +30,10 @@ const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, ...prop
     <tr>
       <td>
         <i
-          className={`text-${column.dataSourceProperty ? 'success' : 'danger'} material-icons`}
+          className={`text-${column.tableProperty ? 'success' : 'danger'} material-icons`}
           data-notify="icon"
         >
-          {column.dataSourceProperty ? 'check_circle' : 'clear'}
+          {column.tableProperty ? 'check_circle' : 'clear'}
         </i>
       </td>
 
@@ -50,10 +47,10 @@ const CSVMappingTableRow: FunctionComponent<ComponentProps> = ({ column, ...prop
             fluid
             selection
             options={disableSelectedColumns(
-              getSelectOptionsFromColumns(props.dataSourceColumns),
+              props.tableColumns.map(({ name, caption }) => ({ text: caption, value: name })),
               data.columns,
             )}
-            value={column.dataSourceProperty && (column.dataSourceProperty.get('name') as string)}
+            value={column.tableProperty && column.tableProperty.name}
             onChange={onChange}
           />
         ) : null}

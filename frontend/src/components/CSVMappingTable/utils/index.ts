@@ -1,19 +1,19 @@
-import { findBestMatch } from 'string-similarity';
-import { ColumnList } from '../../../types/sources';
-import { Column } from '../../FileInput';
 import { DropdownItemProps } from 'semantic-ui-react';
+import { findBestMatch } from 'string-similarity';
+import { UpdateTableColumn } from '../../../utils';
+import { Column } from '../../FileInput';
 
 export const getDefaultColumnMapping = (
   columns: Column[],
-  dataSourceColumns: ColumnList,
+  tableColumns: UpdateTableColumn[],
 ): Column[] => {
-  const dataSourceColumnNames = dataSourceColumns.map((column) => column.get('name') as string);
+  const dataSourceColumnNames = tableColumns.map((column) => column.name);
 
   return columns.map((column) => {
-    const results = findBestMatch(column.name, dataSourceColumnNames.toJS());
+    const results = findBestMatch(column.name, dataSourceColumnNames);
     if (results.bestMatch.rating >= 0.5) {
-      column.dataSourceProperty = dataSourceColumns.find(
-        (column) => column.get('name') === results.bestMatch.target,
+      column.tableProperty = tableColumns.find(
+        (column) => column.name === results.bestMatch.target,
       );
     }
 
@@ -27,8 +27,7 @@ export const disableSelectedColumns = (
 ): DropdownItemProps[] => {
   return options.map((option) => {
     const mappedColumn = columns.find(
-      (column) =>
-        column.dataSourceProperty && column.dataSourceProperty.get('name') === option.value,
+      (column) => column.tableProperty && column.tableProperty.name === option.value,
     );
     if (mappedColumn) {
       option.disabled = true;

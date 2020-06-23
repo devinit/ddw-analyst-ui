@@ -11,10 +11,10 @@ import {
   WizardHeader,
   WizardStep,
 } from '../../components/Wizard';
-import { SourceMap } from '../../types/sources';
+import { UpdateTable } from '../../utils';
 
 interface WizardData {
-  dataSource?: SourceMap;
+  updateTable?: UpdateTable;
   data?: CSVData;
   updateData?: (data: CSVData) => void;
 }
@@ -64,7 +64,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
   const wizardContext = useContext(WizardContext);
   const [steps, setSteps] = useState<WizardStep[]>(defaultSteps);
   const [nextButtonStatus, setNextButtonStatus] = useState<StepButtonStatus>('disabled');
-  const [dataSource, setDataSource] = useState(wizardContext.dataSource);
+  const [updateTable, setUpdateTable] = useState(wizardContext.updateTable);
   const [data, setData] = useState<undefined | CSVData>(wizardContext.data);
 
   const onUpdateData = (_data: CSVData): void => setData(_data);
@@ -87,8 +87,8 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
     setNextButtonStatus('enabled');
   };
 
-  const onStepOneComplete = (_dataSource: SourceMap): void => {
-    setDataSource(_dataSource);
+  const onStepOneComplete = (table: UpdateTable): void => {
+    setUpdateTable(table);
     setNextButtonStatus('enabled');
   };
   const onStepTwoComplete = (_data: CSVData): void => {
@@ -103,7 +103,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
 
   return (
     <Col md={10} className="ml-auto mr-auto">
-      <WizardContext.Provider value={{ dataSource, data, updateData: onUpdateData }}>
+      <WizardContext.Provider value={{ updateTable, data, updateData: onUpdateData }}>
         <Wizard
           steps={steps}
           id="data-update"

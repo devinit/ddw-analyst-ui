@@ -1,24 +1,21 @@
 import React, { FunctionComponent } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
-import { useSources } from '../../hooks';
-import { SourceMap } from '../../types/sources';
-import { getSelectOptionsFromSources } from '../../utils';
+import { getUpdatableTableSelectOptions, UpdateTable, UPDATABLE_TABLES } from '../../utils';
 
 interface ComponentProps {
-  onComplete?: (dataSource: SourceMap) => void;
+  onComplete?: (table: UpdateTable) => void;
 }
 
 const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
-  const sources = useSources();
   const onChange = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ): void => {
-    if (onComplete && sources) {
-      const selectedSource = sources.find((source) => source.get('id') === (data.value as number));
-      if (selectedSource) {
-        onComplete(selectedSource);
+    if (onComplete) {
+      const selectedTable = UPDATABLE_TABLES.find((table) => table.name === (data.value as string));
+      if (selectedTable) {
+        onComplete(selectedTable);
       }
     }
   };
@@ -39,8 +36,9 @@ const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
             className="btn btn-danger text-capitalize"
             placeholder="Select Data Source"
             fluid
+            search
             selection
-            options={getSelectOptionsFromSources(sources)}
+            options={getUpdatableTableSelectOptions()}
             onChange={onChange}
           />
         </Col>

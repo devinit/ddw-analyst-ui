@@ -145,6 +145,23 @@ th .material-icons {
           background-color: #f44336;
           border-color: #f44336;
           box-shadow: 0 2px 2px 0 rgba(244,67,54,.14), 0 3px 1px -2px rgba(244,67,54,.2), 0 1px 5px 0 rgba(244,67,54,.12);
+
+          >input.search {
+            color: #fff;
+            height: 100%;
+          }
+          &.active {
+            &.search {
+              &.dropdown {
+                input {
+                  &.search:focus+.text {
+                    color: #fff !important;
+                    opacity: 0.6;
+                  }
+                }
+              }
+            }
+          }
         }
 
         &.dropdown {

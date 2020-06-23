@@ -1,32 +1,28 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { Card, Table } from 'react-bootstrap';
 import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
-import { ColumnList } from '../../types/sources';
 import { CSVMappingTableRow } from './CSVMappingTableRow';
 import { getDefaultColumnMapping } from './utils';
 
 const CSVMappingTable: FunctionComponent = () => {
-  const { data, dataSource, updateData } = useContext(WizardContext);
+  const { data, updateTable, updateData } = useContext(WizardContext);
   useEffect(() => {
-    if (data?.columns && dataSource && updateData) {
-      const updatedColumns = getDefaultColumnMapping(
-        data.columns,
-        dataSource.get('columns') as ColumnList,
-      );
+    if (data?.columns && updateTable && updateData) {
+      const updatedColumns = getDefaultColumnMapping(data.columns, updateTable.columns);
       const updatedData = { ...data };
       updatedData.columns = updatedColumns;
       updateData(updatedData);
     }
   }, []);
 
-  if (!data?.columns || !dataSource?.get('columns')) {
+  if (!data?.columns || !updateTable?.columns) {
     return <div>Missing vital data</div>;
   }
 
   const { columns } = data;
-  const dataSourceColumns = dataSource.get('columns') as ColumnList;
+  const tableColumns = updateTable.columns;
 
-  const unmatchedCount = columns.filter((column) => !column.dataSourceProperty).length;
+  const unmatchedCount = columns.filter((column) => !column.tableProperty).length;
 
   return (
     <Card className="card-plain mt-0 mb-0">
@@ -49,11 +45,7 @@ const CSVMappingTable: FunctionComponent = () => {
 
           <tbody>
             {columns.map((column) => (
-              <CSVMappingTableRow
-                key={column.name}
-                column={column}
-                dataSourceColumns={dataSourceColumns}
-              />
+              <CSVMappingTableRow key={column.name} column={column} tableColumns={tableColumns} />
             ))}
           </tbody>
         </Table>

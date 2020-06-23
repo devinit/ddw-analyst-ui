@@ -1,17 +1,19 @@
-interface Table {
+import { DropdownItemProps } from 'semantic-ui-react';
+
+export interface UpdateTable {
   name: string;
   caption: string; // readable alternative to the name
-  columns: TableColumn[]; // in order as they appear in the DB
+  columns: UpdateTableColumn[]; // in order as they appear in the DB
 }
 
-interface TableColumn {
+export interface UpdateTableColumn {
   name: string;
   caption: string;
   type: 'number' | 'string' | 'boolean';
   values?: (string | number)[];
 }
 
-export const UPDATABLE_TABLES: Table[] = [
+export const UPDATABLE_TABLES: UpdateTable[] = [
   {
     name: 'fts_codenames',
     caption: 'FTS Code Names',
@@ -123,3 +125,9 @@ export const UPDATABLE_TABLES: Table[] = [
     ],
   },
 ];
+
+export const getUpdatableTableSelectOptions = (): DropdownItemProps[] =>
+  UPDATABLE_TABLES.map((table) => ({
+    text: table.caption,
+    value: table.name,
+  }));

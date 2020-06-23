@@ -4,7 +4,7 @@ import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
 import { CSVMappingTable } from '../CSVMappingTable';
 
 const StepThree: FunctionComponent = () => {
-  const { data, dataSource } = useContext(WizardContext);
+  const { data, updateTable } = useContext(WizardContext);
 
   return (
     <>
@@ -19,7 +19,7 @@ const StepThree: FunctionComponent = () => {
           manually mapped to a property with the dropdown menu.
         </p>
       </Alert>
-      {data && dataSource ? <CSVMappingTable /> : null}
+      {data && updateTable ? <CSVMappingTable /> : null}
     </>
   );
 };
