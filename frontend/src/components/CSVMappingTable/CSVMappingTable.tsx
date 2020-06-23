@@ -5,22 +5,22 @@ import { CSVMappingTableRow } from './CSVMappingTableRow';
 import { getDefaultColumnMapping } from './utils';
 
 const CSVMappingTable: FunctionComponent = () => {
-  const { data, updateTable, updateData } = useContext(WizardContext);
+  const { data, table, updateData } = useContext(WizardContext);
   useEffect(() => {
-    if (data?.columns && updateTable && updateData) {
-      const updatedColumns = getDefaultColumnMapping(data.columns, updateTable.columns);
+    if (data?.columns && table && updateData) {
+      const updatedColumns = getDefaultColumnMapping(data.columns, table.columns);
       const updatedData = { ...data };
       updatedData.columns = updatedColumns;
       updateData(updatedData);
     }
   }, []);
 
-  if (!data?.columns || !updateTable?.columns) {
+  if (!data?.columns || !table?.columns) {
     return <div>Missing vital data</div>;
   }
 
   const { columns } = data;
-  const tableColumns = updateTable.columns;
+  const tableColumns = table.columns;
 
   const unmatchedCount = columns.filter((column) => !column.tableProperty).length;
 
