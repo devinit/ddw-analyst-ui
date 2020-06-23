@@ -47,7 +47,9 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
         }
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log(
+          `Failed to fetch sources: ${error.response.status} ${error.response.statusText}: ${error.response.data.detail}`,
+        );
         setSources(fromJS([]));
       });
   }, [token, options]);
