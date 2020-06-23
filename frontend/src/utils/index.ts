@@ -13,6 +13,7 @@ import { ColumnList, SourceMap } from '../types/sources';
 
 export * from './api';
 export * from './localForage';
+export * from './update';
 
 export const getSourceIDFromOperation = (operation: OperationMap): string | undefined => {
   if (!operation) {
