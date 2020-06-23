@@ -34,7 +34,6 @@ const validateColumnByDataType = (
   dataType: string,
 ): boolean => {
   const value = data.find((_data) => getDataType(_data[columnIndex]) !== dataType);
-  if (value && columnIndex === 1) console.log(value, dataType);
 
   return !value;
 };
