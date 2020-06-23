@@ -30,3 +30,44 @@ def fetch_data(queries, database="datasets"):
                 }
             ]
         return (count_results[0][0], results) if count_results else (0, results)
+
+
+def update_table_from_tuple(queries, database="datasets"):
+
+    # We shall need to remove the delete bit if we decide to only add the "differences" instead of the whole lost as currenty implemented
+    with connections[database].cursor() as delete_cursor:
+        try:
+            delete_cursor.execute(queries[0])
+        except ProgrammingError as sql_e:
+            results = [
+                {
+                    "result": "error" ,
+                    "message": str(sql_e),
+                }
+            ] 
+            return results
+    with connections[database].cursor() as update_cursor:
+        try:
+            update_cursor.execute(queries[1])
+            connections[database].commit()
+            results = [
+                {
+                    "result": "success",
+                    "message": "Successfully updated",
+                }
+            ]
+        except ProgrammingError as sql_error:
+            results = [
+                {
+                    "result": "error",
+                    "message": str(sql_error) + " " + queries[1],
+                }
+            ] 
+        except Exception as e:
+            results = [
+                {
+                    "result": "error",
+                    "message": str(e),
+                }
+            ]
+        return results

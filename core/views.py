@@ -34,6 +34,9 @@ from core.serializers import (DataSerializer, OperationSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
                               UserSerializer)
 from data_updates.utils import ScriptExecutor, list_update_scripts
+from django.conf import settings
+from core.pypika_fts_utils import TableQueryBuilder
+from data.db_manager import update_table_from_tuple
 
 
 class ListUpdateScripts(APIView):
@@ -111,6 +114,7 @@ class StreamingExporter:
             while next_row is not None:
                 yield writer.writerow(next_row)
                 next_row = main_cursor.fetchone()
+
 
 @csrf_exempt
 def streaming_export_view(request, pk):
@@ -428,3 +432,59 @@ class ScheduledEventRunInstanceDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TableStreamingExporter(StreamingExporter):
+    """Sets up generator for streaming PSQL content"""
+    def __init__(self, main_query):
+        self.main_query = main_query
+
+
+@csrf_exempt
+def streaming_tables_export_view(request, table_name):
+
+    if table_name not in settings.QUERY_TABLES:
+        return_result = [
+            {
+                "result": "error",
+                "message": "Invalid code list table " + table_name,
+            }
+        ]
+        return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
+
+    table_query_builder = TableQueryBuilder(table_name, "repo")
+    exporter = TableStreamingExporter(table_query_builder.select().get_sql_without_limit())
+    response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(table_name)
+    return response
+
+
+class UpdateTableAPI(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    def put(self, request, table_name):
+
+        if table_name not in settings.QUERY_TABLES:
+            return_result = [
+                {
+                    "result": "error",
+                    "message": "Invalid code list table",
+                }
+            ]
+            return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_400_BAD_REQUEST)
+        raw_data = request.data['data']
+        data = []
+        for obj in raw_data:
+            data.append(tuple(obj.values()))
+        params = tuple(data)
+
+        table_query_builder = TableQueryBuilder(table_name, "repo")
+        delete_query = table_query_builder.delete()
+        insert_query = table_query_builder.insert(params)
+
+        return_result = update_table_from_tuple([delete_query, insert_query])
+        return_status_code = status.HTTP_500_INTERNAL_SERVER_ERROR if return_result[0]['result'] == 'error' else status.HTTP_200_OK
+
+        return HttpResponse(json.dumps(return_result), content_type='application/json', status=return_status_code)

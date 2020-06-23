@@ -33,6 +33,8 @@ urlpatterns = [
     path('change_password/', core_views.ChangePassword.as_view()),
     path('list_update_scripts/', core_views.ListUpdateScripts.as_view()),
     path('execute_update/', core_views.streaming_script_execute),
+    path('tables/update/<str:table_name>/', core_views.UpdateTableAPI.as_view()),
+    path('tables/download/<str:table_name>/', core_views.streaming_tables_export_view),
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'
