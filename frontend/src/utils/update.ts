@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import * as localForage from 'localforage';
 import { DropdownItemProps } from 'semantic-ui-react';
-import { CSVData } from '../components/FileInput';
+import { CSVData, CSVDataOnly } from '../components/FileInput';
 import { api } from './api';
 import { localForageKeys } from './localForage';
 
@@ -194,22 +194,34 @@ interface UpdateReponse {
   error?: AxiosError;
 }
 
+const organiseData = (table: UpdateTable, data: CSVData): CSVDataOnly => {
+  const numberOfColumns = table.columns.length;
+  const filtered = data.data.filter((_data) => _data.length === numberOfColumns);
+
+  return filtered;
+};
+
 export const updateTable = async (table: UpdateTable, data: CSVData): Promise<UpdateReponse> => {
   const url = `${api.routes.UPDATE_TABLE}${table.name}/`;
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const response = await axios.request<string>({
-    url,
-    method: 'put',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `token ${token}`,
-    },
-    data: { data: data.data },
-  });
+  try {
+    const response = await axios.request<string>({
+      url,
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `token ${token}`,
+      },
+      data: { data: organiseData(table, data) },
+    });
+    console.log(response);
 
-  if (response.status === 200) {
-    return {};
+    if (response.status === 200) {
+      return {};
+    }
+
+    return { error: response as any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+  } catch (error) {
+    return { error: error };
   }
-
-  return { error: response as any }; // eslint-disable-line @typescript-eslint/no-explicit-any
 };
