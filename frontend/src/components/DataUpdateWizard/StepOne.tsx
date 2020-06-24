@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import { Alert, Col, Row, Table } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
-import { getUpdatableTableSelectOptions, UpdateTable, UPDATABLE_TABLES } from '../../utils';
+import { getUpdatableTableSelectOptions, UpdateTable, UPDATABLE_TABLES, api } from '../../utils';
 
 interface ComponentProps {
   onComplete?: (table: UpdateTable) => void;
@@ -46,7 +46,15 @@ const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
         </Col>
       </Row>
       {selectedTable ? (
-        <>
+        <div>
+          <a
+            className="btn btn-default btn-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${api.routes.DOWNLOAD_TABLE}${selectedTable.name}/`}
+          >
+            Download Current Data
+          </a>
           <Alert variant="dark" className="alert-with-icon">
             <i className="text-warning material-icons" data-notify="icon">
               warning
@@ -80,7 +88,7 @@ const StepOne: FunctionComponent<ComponentProps> = ({ onComplete }) => {
               </Table>
             </Col>
           </Row>
-        </>
+        </div>
       ) : null}
     </>
   );
