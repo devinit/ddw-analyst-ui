@@ -1,12 +1,26 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useContext } from 'react';
 import { Alert } from 'react-bootstrap';
+import { WizardContext } from '../../pages/DataUpdate';
+import { updateTable } from '../../utils';
 
 type Status = 'uploading' | 'successful' | 'failed';
 const StepFour: FunctionComponent = () => {
+  const { table, data } = useContext(WizardContext);
   const [status, setStatus] = useState<Status>('uploading');
+  const [alertMessage, setAlertMessage] = useState('');
   useEffect(() => {
     if (status !== 'uploading') {
       setStatus('uploading');
+    }
+    if (table && data) {
+      updateTable(table, data).then((response) => {
+        if (response.error) {
+          setStatus('failed');
+          setAlertMessage(response.error.message);
+        } else {
+          setStatus('successful');
+        }
+      });
     }
   }, []);
 
@@ -27,7 +41,7 @@ const StepFour: FunctionComponent = () => {
         <i className="text-error material-icons" data-notify="icon">
           error
         </i>
-        Upload failed - [Insert Reason Here]
+        Upload failed - {alertMessage}
       </Alert>
     );
   }

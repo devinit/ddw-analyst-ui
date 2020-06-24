@@ -1,4 +1,9 @@
+import axios, { AxiosError } from 'axios';
+import * as localForage from 'localforage';
 import { DropdownItemProps } from 'semantic-ui-react';
+import { CSVData } from '../components/FileInput';
+import { api } from './api';
+import { localForageKeys } from './localForage';
 
 export interface UpdateTable {
   name: string;
@@ -184,3 +189,27 @@ export const getUpdatableTableSelectOptions = (): DropdownItemProps[] =>
     text: table.caption,
     value: table.name,
   }));
+
+interface UpdateReponse {
+  error?: AxiosError;
+}
+
+export const updateTable = async (table: UpdateTable, data: CSVData): Promise<UpdateReponse> => {
+  const url = `${api.routes.UPDATE_TABLE}${table.name}/`;
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const response = await axios.request<string>({
+    url,
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `token ${token}`,
+    },
+    data: { data: data.data },
+  });
+
+  if (response.status === 200) {
+    return {};
+  }
+
+  return { error: response as any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+};
