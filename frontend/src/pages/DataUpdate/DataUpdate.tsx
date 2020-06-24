@@ -99,6 +99,12 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
     setData(undefined);
     setNextButtonStatus('disabled');
   };
+  const onFinish = (): void => {
+    setData(undefined);
+    setUpdateTable(undefined);
+    setSteps(updateSteps(steps, 1, 'prev'));
+    setNextButtonStatus('disabled');
+  };
   const activeStep = steps.find((step) => step.active);
 
   return (
@@ -111,6 +117,7 @@ const DataUpdate: FunctionComponent<RouteComponentProps> = () => {
           onNext={onNext}
           onPrevious={onPrevious}
           nextButtonStatus={nextButtonStatus}
+          onFinish={onFinish}
         >
           <WizardHeader>
             <Card.Title>Update Table</Card.Title>
