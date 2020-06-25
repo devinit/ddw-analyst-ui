@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile_pg
+    volumes:
+      - metadata:/var/lib/postgresql/data
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/src"
+    expose:
+      - "80"
+    depends_on:
+      - db
+    environment:
+      - FTSUSER
+      - FTSPASS
+      - DJANGO_DEV
+      - DJANGO_SECRET_KEY
+    command: bash -c "export DJANGO_DEV='True' && python manage.py runserver 0.0.0.0:80"
+    ports:
+      - "80:80"
+
+volumes:
+  metadata:
+    external: true
