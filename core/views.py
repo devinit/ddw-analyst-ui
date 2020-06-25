@@ -474,10 +474,7 @@ class UpdateTableAPI(APIView):
                 }
             ]
             return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_400_BAD_REQUEST)
-        raw_data = request.data['data']
-        data = []
-        for obj in raw_data:
-            data.append(tuple(obj.values()))
+        data = request.data['data']
         params = tuple(data)
 
         table_query_builder = TableQueryBuilder(table_name, "repo")

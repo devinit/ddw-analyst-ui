@@ -51,6 +51,10 @@ select:-webkit-autofill:focus {
   margin-left: 7px;
 }
 
+.card-wizard {
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,.14);
+}
+
 .card-wizard .nav-pills > li {
   padding: 0;
 }
@@ -71,4 +75,138 @@ select:-webkit-autofill:focus {
   color: #fff;
   cursor: pointer;
   font-weight: 500;
+}
+
+.card-wizard .disabled {
+  display: inline-block;
+}
+
+.alert.alert-secondary {
+  color: #383d41;
+  background-color: #e2e3e5;
+}
+
+.alert.alert-dark {
+  color: #1b1e21;
+  background-color: #d6d8d9;
+}
+
+.dropdown-menu .disabled {
+  display: block;
+}
+
+.bordered-text {
+  background-color: white;
+  padding: 0 3px;
+  border: 1px solid #cccccc;
+}
+
+th .material-icons {
+  position: relative;
+  top: -2px;
+}
+
+.bg-warning {
+  background-color: #ff9800!important;
+}
+
+.table>tbody>tr>td .material-icons,
+.table>tbody>tr>th .material-icons,
+.table>tfoot>tr>td .material-icons,
+.table>tfoot>tr>th .material-icons,
+.table>thead>tr>td .material-icons,
+.table>thead>tr>th .material-icons {
+  vertical-align: middle;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.filter-option {
+  text-transform: capitalize;
+}
+
+/*==== SEMANTIC UI =====*/
+.ui {
+  &.selection {
+    &.dropdown {
+      .menu {
+        >.item {
+          font-size: .8125rem;
+        }
+      }
+
+      &.btn {
+        padding: 12px 30px;
+        line-height: 1.428571;
+        &.btn-danger {
+          color: #fff;
+          background-color: #f44336;
+          border-color: #f44336;
+          box-shadow: 0 2px 2px 0 rgba(244,67,54,.14), 0 3px 1px -2px rgba(244,67,54,.2), 0 1px 5px 0 rgba(244,67,54,.12);
+
+          >input.search {
+            color: #fff;
+            height: 100%;
+          }
+          &.active {
+            &.search {
+              &.dropdown {
+                input {
+                  &.search:focus+.text {
+                    color: #fff !important;
+                    opacity: 0.6;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        &.dropdown {
+          >.dropdown {
+            &.icon {
+              top: inherit;
+              margin-right: 2px;
+            }
+          }
+        }
+
+        &:not(.button) {
+          >.default.text {
+            color: #fff;
+          }
+        }
+
+        &.visible {
+          &.dropdown {
+            >.text:not(.default) {
+              color: #fff;
+            }
+          }
+        }
+
+        &.active {
+          &.dropdown {
+            .menu {
+              box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+              border: 0;
+              min-width: 100%;
+              width: 100%;
+              margin: auto;
+              margin-top: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+  &.dropdown {
+    .menu {
+      >.item {
+        font-size: .8125rem;
+      }
+    }
+  }
 }

@@ -6,21 +6,32 @@ import React, {
   ReactNode,
   useRef,
   useState,
+  useEffect,
 } from 'react';
-import { Card, Tab, TabContainerProps } from 'react-bootstrap';
+import { Card, Tab, TabContainerProps, Button } from 'react-bootstrap';
 import ReactResizeDetector from 'react-resize-detector';
 import styled from 'styled-components';
-import { WizardBody, WizardHeader, WizardNavigation, WizardNavigationItem } from '.';
+import { WizardBody, WizardHeader, WizardNavigation, WizardNavigationItem, WizardFooter } from '.';
 import { WizardMovingTab } from './WizardMovingTab';
+import { showPreviousButton, showNextButton, showFinishButton } from './utils';
 
 interface WizardProps extends TabContainerProps {
   steps?: WizardStep[];
+  onPrevious?: (step: WizardStep) => void;
+  onNext?: (step: WizardStep) => void;
+  onFinish?: (step: WizardStep) => void;
+  nextButtonStatus?: StepButtonStatus;
 }
+
+export type StepButtonStatus = 'enabled' | 'disabled' | 'hidden';
 
 export interface WizardStep {
   key: string;
   caption?: string;
   active?: boolean;
+  disabled?: boolean;
+  onLoad?: () => void;
+  beforeNext?: () => void;
 }
 
 const StyledCard = styled(Card)`
@@ -28,10 +39,26 @@ const StyledCard = styled(Card)`
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
 `;
 
-const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) => {
+const Wizard: FunctionComponent<WizardProps> = ({
+  children,
+  steps,
+  onPrevious,
+  onNext,
+  onFinish,
+  nextButtonStatus,
+  ...props
+}) => {
   const [activeStep, setActiveStep] = useState(steps?.find((step) => step.active));
   const [width, setWidth] = useState(0);
   const wizardNode = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    const currentActiveStep = steps?.find((step) => step.active);
+    if (currentActiveStep && currentActiveStep.key !== activeStep?.key) {
+      setActiveStep(currentActiveStep);
+    }
+  }, [steps]);
+
   const onSelect = (activeKey: string): void =>
     setActiveStep(steps?.find((item) => activeKey.includes(item.key)));
 
@@ -39,13 +66,14 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
     if (steps && steps?.length) {
       const col = Math.ceil(12 / steps.length);
 
-      return steps.map(({ caption, key }) => (
+      return steps.map(({ caption, key, disabled }) => (
         <WizardNavigationItem
           key={key}
           active={activeStep?.key === key}
           eventKey={key}
           className={classNames(`col-sm-6 col-lg-${col}`)}
           onSelect={onSelect}
+          disabled={disabled}
         >
           {caption}
         </WizardNavigationItem>
@@ -56,6 +84,15 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
   };
 
   const onResize = (width: number): void => setWidth(width);
+  const onBack = (): void => {
+    if (onPrevious && activeStep) onPrevious(activeStep);
+  };
+  const onForward = (): void => {
+    if (onNext && activeStep) onNext(activeStep);
+  };
+  const onComplete = (): void => {
+    if (onFinish && activeStep) onFinish(activeStep);
+  };
 
   return (
     <div className="wizard-container" ref={wizardNode}>
@@ -73,12 +110,48 @@ const Wizard: FunctionComponent<WizardProps> = ({ children, steps, ...props }) =
             ) : null}
           </WizardNavigation>
           {Children.map(children, (child) =>
-            isValidElement(child) && child.type === WizardBody ? child : null,
+            isValidElement(child) && (child.type === WizardBody || child.type === WizardFooter)
+              ? child
+              : null,
           )}
+          <WizardFooter>
+            <div className="mr-auto">
+              <Button
+                className={classNames('btn-previous btn-fill btn-wd btn-default', {
+                  'd-none': !showPreviousButton(steps, activeStep),
+                })}
+                onClick={onBack}
+              >
+                Previous
+              </Button>
+            </div>
+            <div className="ml-auto">
+              <Button
+                variant="danger"
+                className={classNames('btn btn-next btn-fill btn-wd', {
+                  'd-none': nextButtonStatus === 'hidden' || !showNextButton(steps, activeStep),
+                  disabled: nextButtonStatus === 'disabled' && showNextButton(steps, activeStep),
+                })}
+                onClick={onForward}
+              >
+                Next
+              </Button>
+              <Button
+                variant="danger"
+                className={classNames('btn btn-fill btn-wd', {
+                  'd-none': !showFinishButton(steps, activeStep),
+                  disabled: nextButtonStatus === 'disabled' && showFinishButton(steps, activeStep),
+                })}
+                name="finish"
+                onClick={onComplete}
+              >
+                Finish
+              </Button>
+            </div>
+            <div className="clearfix"></div>
+          </WizardFooter>
         </StyledCard>
-        {wizardNode.current ? (
-          <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
-        ) : null}
+        <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
       </Tab.Container>
     </div>
   );

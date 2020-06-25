@@ -11,5 +11,7 @@ export const api = {
     VIEW_SCHEDULED_EVENTS: '/api/scheduled_event/',
     FETCH_RUN_INSTANCES: '/api/scheduled_event/{id}/run_instances/',
     CREATE_SCHEDULED_INSTANCE: '/api/scheduled_event/{scheduleId}/run_instances/',
+    UPDATE_TABLE: '/api/tables/update/',
+    DOWNLOAD_TABLE: '/api/tables/download/',
   },
 };

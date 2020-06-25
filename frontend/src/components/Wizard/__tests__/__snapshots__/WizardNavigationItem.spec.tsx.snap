@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WizardNavigationItem renders the default structure correctly 1`] = `
+.c0.nav-link {
+  display: block;
+}
+
 <li
   className="nav-item"
 >
   <a
-    className="nav-link"
+    className="c0 nav-link"
     href="#"
     onClick={[Function]}
     onKeyDown={[Function]}
@@ -15,11 +19,15 @@ exports[`WizardNavigationItem renders the default structure correctly 1`] = `
 `;
 
 exports[`WizardNavigationItem renders with children 1`] = `
+.c0.nav-link {
+  display: block;
+}
+
 <li
   className="nav-item"
 >
   <a
-    className="nav-link"
+    className="c0 nav-link"
     href="#"
     onClick={[Function]}
     onKeyDown={[Function]}
