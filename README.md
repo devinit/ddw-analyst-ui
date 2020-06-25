@@ -4,7 +4,7 @@ The new and improved DDW Analyst UI interface
 ## Setup
 
 
-### Docker deployment
+### Docker Deployment
 
 1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata`
 2. Create a persistent dev volume `docker volume create --name=metadata`
@@ -55,6 +55,59 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 8. Install frontend dependencies `npm install`
 9. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
 10. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
+
+### Docker Development
+
+1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User:
+
+        docker-compose down
+
+        docker volume rm metadata
+2. Create a persistent dev volume:
+
+        docker volume create --name=metadata
+
+3. Create a self-signed certificate:
+
+        mkdir -p ssl && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem
+
+4. Build & run your app with the dev docker config:
+
+        docker-compose -f docker-compose-dev.yml up --build
+
+5. Migrate the database:
+
+        docker-compose exec web python manage.py migrate
+
+6. Load test data:
+
+        docker-compose exec web python manage.py loaddata test_data
+
+        docker-compose exec web python manage.py loaddata --database=datasets test_datasets
+
+7. Alternatively, you can acquire a db dump of the live data (binary) and import it into your database:
+
+        docker-compose exec db psql -U analyst_ui_user -d analyst_ui -c 'drop schema public CASCADE;'
+        docker-compose exec db psql -U analyst_ui_user -d analyst_ui -c 'create schema public;'
+        docker cp [DB BUMP FILE NAME].backup ddw-analyst-ui_db_1:/var/lib/postgresql/data
+        docker exec ddw-analyst-ui_db_1 pg_restore -U analyst_ui_user -d analyst_ui /var/lib/postgresql/data/[DB BUMP FILE NAME].backup
+        docker-compose exec web python3 manage.py migrate
+
+8. Create a superuser:
+
+        docker-compose exec web python manage.py createsuperuser
+
+9. Add the bit registry to npm config to install bit dependencies:
+
+        npm config set @bit:registry https://node.bitsrc.io
+
+10. Install frontend dependencies:
+
+        npm install
+
+11. Start frontend dev environment which watches and collects static files:
+
+        npm run dev
 
 ### End-To-End Testing
 

@@ -22,19 +22,9 @@ services:
       - FTSPASS
       - DJANGO_DEV
       - DJANGO_SECRET_KEY
-  nginx:
-    image: nginx:latest
+    command: bash -c "export DJANGO_DEV='True' && python manage.py runserver 0.0.0.0:80"
     ports:
       - "80:80"
-      - "443:443"
-    environment:
-      - VIRTUAL_HOST=ddw.devinit.org
-    volumes:
-      - ./config/nginx:/etc/nginx/conf.d
-      - ./static:/static
-      - ./ssl:/etc/ssl/
-    depends_on:
-      - web
 
 volumes:
   metadata:
