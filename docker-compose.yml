@@ -16,12 +16,12 @@ services:
     expose:
       - "80"
     depends_on:
-     - db
+      - db
     environment:
-     - FTSUSER
-     - FTSPASS
-     - DJANGO_DEV
-     - DJANGO_SECRET_KEY
+      - FTSUSER
+      - FTSPASS
+      - DJANGO_DEV
+      - DJANGO_SECRET_KEY
   nginx:
     image: nginx:latest
     ports:
