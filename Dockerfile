@@ -9,7 +9,7 @@ WORKDIR /src
 # install dependencies
 RUN apt-get update
 RUN apt-get install -y net-tools
-# Uncomment the line below on dev environments to log cron
+# Uncomment the line below on dev environments to log cron output at /var/log/syslog
 # RUN apt-get install -y rsyslog
 RUN apt-get install -y cron
 RUN pip install -r requirements.txt
