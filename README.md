@@ -109,6 +109,15 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
         npm run dev
 
+### Django-crontab setup
+This is used to run cron jobs that run automated scripts that are added from the UI. You need to make sure cron is installed on the web docker container. If not, run `apt-get install cron`. This has been added to the Dockerfile so it should install this automatically for new deployments (container rebuilds)
+
+After, run `python3 manage.py crontab add` from the docker container or `docker-compose exec web python3 manage.py crontab add` from the host. This command should be run everytime there is a new cron entry added under settings file. Make sure to run this everytime a new entry is added to the CRONJOBS entry in settings.
+
+You may confirm if the cron job has finally been added by running `docker-compose exec web python3 manage.py crontab show`. Running `docker-compose exec web python3 manage.py crontab remove` deletes all cron entries listed in settings.
+
+You may want to run `apt-get install nano` to install an editor to list all cron entries in case you want to inspect them from the container. This may be useful especially on staging or during development. It's not a requirement for the production environment.
+
 ### End-To-End Testing
 
 This is set up to run with [Cypress](https://www.cypress.io/), and only locally at the moment.
