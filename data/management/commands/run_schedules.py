@@ -4,6 +4,7 @@ import calendar
 import datetime as dtime
 
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 from django.http import HttpResponse, StreamingHttpResponse
 from django.utils.timezone import make_aware
 from django.utils import timezone
@@ -62,7 +63,7 @@ class Command(BaseCommand):
             pass
         # Check if the last item in generator is an integer
         # The integer is a return code showing 0 for success or anything else for a file execute error
-        if item > 0 or item < 0:
+        if item is not 0:
             post_status = status.HTTP_500_INTERNAL_SERVER_ERROR
             response_data['result'] = 'error'
             response_data['message'] = 'Failed to execute the script update'
@@ -75,7 +76,7 @@ class Command(BaseCommand):
         update_response = self.execute_script(schedule.script_name)
 
         #Check if script run was a success/fail and update run instance
-        if update_response['return_code'] > 0 or update_response['return_code'] < 0:
+        if update_response['return_code'] is not 0:
             self.update_run_instance(runInstance, 'e')
             self.stdout.write('Update failed for ' + schedule.script_name)
         else:
@@ -107,5 +108,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         schedules = ScheduledEvent.objects.filter(enabled=True)
         for schedule in schedules:
-            run_instances = ScheduledEventRunInstance.objects.filter(scheduled_event=schedule.id)
+            run_instances = ScheduledEventRunInstance.objects.filter(
+                Q(scheduled_event=schedule.id) &
+                (Q(status='p') | Q(status='r'))
+            )
             self.run_schedule_when_due(schedule, run_instances)
