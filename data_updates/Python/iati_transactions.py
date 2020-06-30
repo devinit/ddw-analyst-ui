@@ -143,11 +143,21 @@ def requests_retry_session(
 
 
 def fetch_urls_since_last_run():
+    results = []
     last_run = read_last_run()
-    api_url = "https://iatiregistry.org/api/3/action/package_search?fq=metadata_modified:%5B{}%20TO%20NOW%5D&rows=1000000".format(last_run)
+    api_url = "https://iatiregistry.org/api/3/action/package_search?fq=metadata_modified:%5B{}%20TO%20NOW%5D&rows=1000".format(last_run)
     response = requests_retry_session().get(url=api_url, timeout=30).content
     json_response = json.loads(response)
-    return [resource["url"] for result in json_response["result"]["results"] for resource in result["resources"]]
+    full_count = json_response["result"]["count"]
+    current_count = len(json_response["result"]["results"])
+    results += [resource["url"] for result in json_response["result"]["results"] for resource in result["resources"]]
+    while current_count < full_count:
+        next_api_url = "{}&start={}".format(api_url, current_count)
+        response = requests_retry_session().get(url=next_api_url, timeout=30).content
+        json_response = json.loads(response)
+        current_count += len(json_response["result"]["results"])
+        results += [resource["url"] for result in json_response["result"]["results"] for resource in result["resources"]]
+    return results
 
 
 def main():
