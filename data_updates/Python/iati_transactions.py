@@ -164,8 +164,8 @@ def main():
     iatiflat = IatiFlat()
     header = iatiflat.header
 
-    # engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
-    engine = create_engine('postgresql://postgres@:5432/analyst_ui')
+    engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
+    # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
     conn = engine.connect()
     meta = MetaData(engine)
     meta.reflect()
@@ -178,7 +178,10 @@ def main():
     download_urls = fetch_urls_since_last_run()
     bar = progressbar.ProgressBar()
     for download_url in bar(download_urls):
-        download_data = requests_retry_session().get(url=download_url, timeout=30).content
+        try:
+            download_data = requests_retry_session(retries=3).get(url=download_url, timeout=5).content
+        except requests.exceptions.ConnectionError:
+            continue
         try:
             root = etree.fromstring(download_data)
         except etree.XMLSyntaxError:
