@@ -7,6 +7,7 @@
 """
 from json.decoder import JSONDecodeError
 from django.contrib.auth.models import Permission, User
+from django.db.models import Q
 from rest_framework import serializers
 from rest_framework import pagination
 from rest_framework.utils import model_meta
@@ -279,3 +280,12 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
             'ended_at',
             'status'
         )
+
+    def create(self, validated_data):
+        scheduled_event = validated_data.get('scheduled_event')
+        if ScheduledEventRunInstance.objects.filter(Q(scheduled_event=scheduled_event.id) & Q(status='p')).exists():
+            return ScheduledEventRunInstance.objects.filter(
+                    Q(scheduled_event=scheduled_event.id) & Q(status='p')
+                ).latest('id')
+
+        return ScheduledEventRunInstance.objects.create(**validated_data)
