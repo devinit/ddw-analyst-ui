@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# comment out below line if running outside of docker container
+cd /src
+
 /bin/bash data_updates/manual_data.sh  # Must always be run first to set up Source objects
 /bin/bash data_updates/oecd.sh
 /bin/bash data_updates/povcalnet.sh

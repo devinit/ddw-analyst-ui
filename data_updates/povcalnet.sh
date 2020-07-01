@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# comment out below line if running outside of docker container
+cd /src
 python3 data_updates/Python/povcal_agg.py  # "repo"."PovCalNetAgg"
 python3 manage.py update_meta PovCalNetAgg
 python3 data_updates/Python/povcal_smy.py  # "repo"."PovCalNetSmy"
