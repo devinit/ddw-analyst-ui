@@ -63,7 +63,7 @@ class Command(BaseCommand):
             pass
         # Check if the last item in generator is an integer
         # The integer is a return code showing 0 for success or anything else for a file execute error
-        if item is not 0:
+        if item != 0:
             post_status = status.HTTP_500_INTERNAL_SERVER_ERROR
             response_data['result'] = 'error'
             response_data['message'] = 'Failed to execute the script update'
@@ -76,7 +76,7 @@ class Command(BaseCommand):
         update_response = self.execute_script(schedule.script_name)
 
         #Check if script run was a success/fail and update run instance
-        if update_response['return_code'] is not 0:
+        if update_response['return_code'] != 0:
             self.update_run_instance(runInstance, 'e')
             self.stdout.write('Update failed for ' + schedule.script_name)
         else:
