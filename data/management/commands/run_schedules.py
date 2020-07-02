@@ -84,7 +84,7 @@ class Command(BaseCommand):
             self.stdout.write('Update successful for ' + schedule.script_name)
 
         # This makes sure the next runtime is calculated from the time the last one was run i.e current time
-        current_date_time = datetime.now()
+        current_date_time = make_aware(datetime.now())
         self.create_next_run_instance(schedule, current_date_time)
 
     def check_if_schedule_is_already_running(self, run_instances):

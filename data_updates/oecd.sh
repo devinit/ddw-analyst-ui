@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# comment out below line if running outside of docker container
+cd /src
+
 echo "Initializing download process"
 
 # Fetching enviroment variables to use in operation
