@@ -79,7 +79,9 @@ class DataSources extends React.Component<DataSourcesProps> {
   };
 }
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
+const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
+  dispatch,
+): ActionProps => ({
   actions: bindActionCreators({ ...sourcesActions, ...pageActions }, dispatch),
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {

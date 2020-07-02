@@ -19,7 +19,7 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
     event.stopPropagation();
     setIsCreatingInstance(true);
     createRunInstance(props.event.id, {
-      start_at: moment(), // eslint-disable-line @typescript-eslint/camelcase
+      start_at: moment(), // eslint-disable-line @typescript-eslint/naming-convention
       status: 'p',
     })
       .then((response) => {

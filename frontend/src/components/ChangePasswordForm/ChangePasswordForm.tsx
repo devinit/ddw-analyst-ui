@@ -37,7 +37,7 @@ export class ChangePasswordForm extends React.Component<
     new_password1: Yup.string().required('New password is required'),
     new_password2: Yup.string()
       .required('New password confirmation is required!')
-      .oneOf([Yup.ref('new_password1'), null], 'Passwords do not match'),
+      .oneOf([Yup.ref('new_password1'), ''], 'Passwords do not match'),
   });
 
   render() {

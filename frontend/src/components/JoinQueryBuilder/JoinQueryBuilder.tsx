@@ -258,8 +258,9 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
   };
 }
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps =>
-  bindActionCreators(sourcesActions, dispatch);
+const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (
+  dispatch,
+): ActionProps => bindActionCreators(sourcesActions, dispatch);
 
 const mapStateToProps: MapStateToProps<ReduxState, ComponentProps, ReduxStore> = (
   reduxStore: ReduxStore,

@@ -23,7 +23,7 @@ export type LoginActions = typeof UserActions & typeof TokenActions;
 interface ActionProps {
   actions: LoginActions;
 }
-type LoginProps = RouteComponentProps<{}> & ActionProps;
+type LoginProps = RouteComponentProps<{ [x: string]: string | undefined }> & ActionProps;
 
 export class Login extends React.Component<LoginProps, LoginState> {
   private headerStyles = css({
@@ -128,7 +128,9 @@ export class Login extends React.Component<LoginProps, LoginState> {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
+const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
+  dispatch,
+): ActionProps => ({
   actions: bindActionCreators({ ...UserActions, ...TokenActions }, dispatch),
 });
 export default connect(null, mapDispatchToProps)(Login);

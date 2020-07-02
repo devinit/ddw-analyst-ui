@@ -271,7 +271,9 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
   };
 }
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
+const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
+  dispatch,
+): ActionProps => ({
   actions: bindActionCreators(
     {
       ...sourcesActions,

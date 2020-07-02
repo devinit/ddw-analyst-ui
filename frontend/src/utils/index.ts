@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { List, Set } from 'immutable';
 import { DropdownItemProps } from 'semantic-ui-react';
 import {

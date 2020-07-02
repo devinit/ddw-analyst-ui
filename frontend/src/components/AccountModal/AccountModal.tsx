@@ -88,7 +88,9 @@ const AccountModal: React.SFC<AccountModalProps> = (props) => {
 const mapStateToProps = (reduxStore: ReduxStore): ReduxProps => ({
   token: reduxStore.get('token') as TokenState,
 });
-const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
+const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
+  dispatch,
+): ActionProps => ({
   actions: bindActionCreators(ModalActions, dispatch),
 });
 const ReduxConnector = connect(mapStateToProps, mapDispatchToProps)(AccountModal);
