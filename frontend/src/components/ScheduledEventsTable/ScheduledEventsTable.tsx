@@ -13,12 +13,20 @@ export interface ScheduledEventTableProps {
 export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> = (props) => {
   const { activeEvent } = useContext(ScheduledEventContext);
 
+  const getRowNumber = (index: number): number => {
+    if (props.currentPage === 1) {
+      return index + 1;
+    } else {
+      return (props.currentPage - 1) * props.pageLimit + 1;
+    }
+  };
+
   const renderRows = (): ReactNode =>
     props.events.map((event: ScheduledEvent, index: number) => {
       return (
         <ScheduledEventsTableRow
           key={event.id}
-          id={index + 1}
+          id={getRowNumber(index)}
           event={event}
           classNames={classNames({ 'table-danger': activeEvent && activeEvent.id === event.id })}
         />
