@@ -376,12 +376,27 @@ class ScheduledEventList(APIView):
         serializer = ScheduledEventSerializer(scheduled_events, many=True)
         return Response(serializer.data)
 
+    #get limit number of items up to the currentpage
     def post(self, request, format=None):
-        serializer = ScheduledEventSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if 'limit' in request.data and 'currentpage' in request.data:
+            scheduled_events = ScheduledEvent.objects.all().values()
+
+            stop_index = request.data.get('currentpage') * request.data.get('limit')
+            start_index = stop_index - request.data.get('limit')
+            current_page_scheduled_events = []
+
+            for index, scheduled_event in enumerate(scheduled_events):
+                if index >= start_index and index < stop_index:
+                    current_page_scheduled_events.append(scheduled_event)
+
+            serializer = ScheduledEventSerializer(current_page_scheduled_events, many=True)
+            return Response(serializer.data)
+        else:
+            serializer = ScheduledEventSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ScheduledEventRunInstanceHistory(APIView):
