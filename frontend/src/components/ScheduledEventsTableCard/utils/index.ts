@@ -17,12 +17,22 @@ export const fetchData = async (): Promise<{ data: ScheduledEvent[] }> => {
   return await axios(`${BASEPATH}`, { headers });
 };
 
-export const getScheduledEventsByPage = (
+export const fetchDataPerPage = async (
+  limit: number,
   currentPage: number,
-  data: ScheduledEvent[],
-): ScheduledEvent[] => {
-  const begin = (currentPage - 1) * LIMIT;
-  const end = begin + LIMIT;
+): Promise<{
+  data: {
+    scheduled_events: ScheduledEvent[];
+    count_scheduled_events: number;
+  };
+}> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const options = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `token ${token}`,
+    },
+  };
 
-  return data.slice(begin, end);
+  return await axios.post(`${BASEPATH}`, { limit, currentPage }, options);
 };
