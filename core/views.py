@@ -20,6 +20,7 @@ from rest_framework import (exceptions, filters, generics, permissions,
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.settings import api_settings
 
 from django.http import HttpResponse
 
@@ -373,32 +374,22 @@ class ScheduledEventList(APIView):
     """
     def get(self, request, format=None):
         scheduled_events = ScheduledEvent.objects.all()
+        if request.query_params.get('limit', None) is not None or request.query_params.get('offset', None) is not None:
+            pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+            paginator = pagination_class()
+            page = paginator.paginate_queryset(scheduled_events, request)
+            serializer = ScheduledEventSerializer(page, many=True)
+
+            return paginator.get_paginated_response(serializer.data)
         serializer = ScheduledEventSerializer(scheduled_events, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        #Get limited number (limit) of scheduled events for current page(currentPage)
-        if 'limit' in request.data and 'currentPage' in request.data:
-            scheduled_events = ScheduledEvent.objects.all().values()
-
-            stop_index = request.data.get('currentPage') * request.data.get('limit')
-            start_index = stop_index - request.data.get('limit')
-            current_page_scheduled_events = {
-                'scheduled_events': [],
-                'count_scheduled_events': len(scheduled_events)
-            }
-
-            for index, scheduled_event in enumerate(scheduled_events):
-                if index >= start_index and index < stop_index:
-                    current_page_scheduled_events['scheduled_events'].append(scheduled_event)
-
-            return Response(current_page_scheduled_events)
-        else:
-            serializer = ScheduledEventSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ScheduledEventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ScheduledEventRunInstanceHistory(APIView):
