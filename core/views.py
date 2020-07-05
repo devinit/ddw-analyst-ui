@@ -406,8 +406,16 @@ class ScheduledEventRunInstanceHistory(APIView):
 
     def get(self, request, pk, format=None):
         scheduled_event_run_instance = self.get_object(pk)
-        serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
-        return Response(serializer.data)
+        if self.request.query_params.get('limit', None) is not None or self.request.query_params.get('offset', None) is not None:
+            pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+            paginator = pagination_class()
+            page = paginator.paginate_queryset(scheduled_event_run_instance, request)
+            serializer = ScheduledEventRunInstanceSerializer(page, many=True)
+
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
+            return Response(serializer.data)
 
     def post(self, request, pk, format=None):
         request.data['scheduled_event'] = pk
