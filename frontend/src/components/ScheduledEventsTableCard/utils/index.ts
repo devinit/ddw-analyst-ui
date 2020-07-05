@@ -22,17 +22,16 @@ export const fetchDataPerPage = async (
   currentPage: number,
 ): Promise<{
   data: {
-    scheduled_events: ScheduledEvent[];
-    count_scheduled_events: number;
+    results: ScheduledEvent[];
+    count: number;
   };
 }> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const options = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `token ${token}`,
-    },
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `token ${token}`,
   };
+  const offset = currentPage === 1 ? 0 : (currentPage - 1) * limit;
 
-  return await axios.post(`${BASEPATH}`, { limit, currentPage }, options);
+  return await axios(`${BASEPATH}?limit=${limit}&offset=${offset}`, { headers });
 };

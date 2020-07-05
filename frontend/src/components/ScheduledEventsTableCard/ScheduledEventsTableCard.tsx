@@ -16,10 +16,10 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
 
   useEffect(() => {
     fetchDataPerPage(LIMIT, currentPage).then((result) => {
-      setScheduledEvents(result.data.scheduled_events);
+      setScheduledEvents(result.data.results);
       setLoading(false);
-      setCount(result.data.count_scheduled_events);
-      setPageCount(Math.ceil(result.data.count_scheduled_events / LIMIT));
+      setCount(result.data.count);
+      setPageCount(Math.ceil(result.data.count / LIMIT));
     });
   }, [currentPage]);
 
