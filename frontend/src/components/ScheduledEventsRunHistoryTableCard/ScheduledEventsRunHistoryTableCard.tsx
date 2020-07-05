@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 import { ScheduledEventRunHistory, ScheduledEvent } from '../../types/scheduledEvents';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
-import { fetchScheduledEventRunHistory, getScheduledEventRunHistoryByPage, LIMIT } from './utils';
+import { fetchDataPerPage, LIMIT } from './utils';
 
 interface ComponentProps {
   event?: ScheduledEvent;
@@ -20,13 +20,14 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
 
   useEffect(() => {
     if (event) {
-      fetchScheduledEventRunHistory(event.id).then((result) => {
-        setHistoryData(result.data);
-        setCount(result.data.length);
-        setPageCount(Math.ceil(result.data.length / LIMIT));
+      fetchDataPerPage(event.id, LIMIT, currentPage).then((result) => {
+        setHistoryData(result.data.results);
+        setCount(result.data.count);
+        setPageCount(Math.ceil(result.data.count / LIMIT));
+        console.log(`Page count is ${pageCount}`);
       });
     }
-  }, [event]);
+  }, [event, currentPage]);
 
   const handlePageChange = (page: { selected: number }): void => {
     setSelectedPage(page.selected);
@@ -58,9 +59,7 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
         <h4 className="card-title">{event.name} Run History</h4>
       </Card.Header>
       <Card.Body>
-        <ScheduledEventsRunHistoryTable
-          data={getScheduledEventRunHistoryByPage(currentPage, historyData)}
-        />
+        <ScheduledEventsRunHistoryTable data={historyData} />
         {renderPagination()}
       </Card.Body>
     </Card>
