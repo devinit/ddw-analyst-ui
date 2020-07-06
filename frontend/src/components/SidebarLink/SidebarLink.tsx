@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-export interface SidebarLinkProps extends RouteComponentProps<{}> {
+export interface SidebarLinkProps extends RouteComponentProps<{ [x: string]: string | undefined }> {
   icon?: string;
   to: string;
   root?: boolean;

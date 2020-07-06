@@ -37,7 +37,10 @@ interface ReduxProps {
   token?: TokenState;
   modal: ModalState;
 }
-type MainLayoutProps = ComponentProps & RouteComponentProps<{}> & ActionProps & ReduxProps;
+type MainLayoutProps = ComponentProps &
+  RouteComponentProps<{ [x: string]: string | undefined }> &
+  ActionProps &
+  ReduxProps;
 
 interface MainLayoutState {
   loading: boolean;
@@ -292,7 +295,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
           this.props.actions.setUser({
             id: data.id,
             username: data.username,
-            is_superuser: data.is_superuser, // eslint-disable-line @typescript-eslint/camelcase
+            is_superuser: data.is_superuser, // eslint-disable-line @typescript-eslint/naming-convention
           });
           this.setState({ loading: false });
         } else {

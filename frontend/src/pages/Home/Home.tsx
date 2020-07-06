@@ -34,7 +34,9 @@ class Home extends React.Component<HomeProps> {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
+const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
+  dispatch,
+): ActionProps => ({
   actions: bindActionCreators({ ...operationsActions, ...pageActions }, dispatch),
 });
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {

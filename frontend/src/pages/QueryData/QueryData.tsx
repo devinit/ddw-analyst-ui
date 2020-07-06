@@ -132,7 +132,9 @@ class QueryData extends React.Component<QueryDataProps> {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, {}> = (dispatch): ActionProps => ({
+const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
+  dispatch,
+): ActionProps => ({
   actions: bindActionCreators(
     {
       ...pageActions,
