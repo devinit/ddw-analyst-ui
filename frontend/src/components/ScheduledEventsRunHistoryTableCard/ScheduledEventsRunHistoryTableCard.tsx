@@ -56,7 +56,7 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
     );
   };
 
-  const filterHistoryData = (eventKey: string, _selectEvent: {}): void => {
+  const filterHistoryData = (eventKey: string): void => {
     if (event) {
       fetchDataPerPage(event.id, LIMIT, 1, eventKey).then((result) => {
         setHistoryData(result.data.results);
