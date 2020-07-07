@@ -373,7 +373,7 @@ class ScheduledEventList(APIView):
     List all Scheduled Events, or create a new Scheduled Event.
     """
     def get(self, request, format=None):
-        scheduled_events = ScheduledEvent.objects.all()
+        scheduled_events = ScheduledEvent.objects.all().order_by('-start_date')
         if request.query_params.get('limit', None) is not None or request.query_params.get('offset', None) is not None:
             pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
             paginator = pagination_class()

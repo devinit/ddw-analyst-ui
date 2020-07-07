@@ -14,11 +14,7 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
   const { activeEvent } = useContext(ScheduledEventContext);
 
   const getRowNumber = (index: number): number => {
-    if (props.currentPage === 1) {
-      return index + 1;
-    } else {
-      return (props.currentPage - 1) * props.pageLimit + 1;
-    }
+    return props.currentPage === 1 ? index + 1 : (props.currentPage - 1) * props.pageLimit + 1;
   };
 
   const renderRows = (): ReactNode =>

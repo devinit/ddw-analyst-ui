@@ -24,7 +24,6 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
         setHistoryData(result.data.results);
         setCount(result.data.count);
         setPageCount(Math.ceil(result.data.count / LIMIT));
-        console.log(`Page count is ${pageCount}`);
       });
     }
   }, [event, currentPage]);
