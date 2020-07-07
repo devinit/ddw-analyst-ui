@@ -487,7 +487,7 @@ class FtsIsos(models.Model):
     iso3 = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = settings.IS_TESTING
+        managed = False
         db_table = 'fts_isos'
 
 
