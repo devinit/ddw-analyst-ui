@@ -24,6 +24,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
   }, [currentPage]);
 
   const handlePageChange = (page: { selected: number }): void => {
+    setLoading(true);
     setSelectedPage(page.selected);
     if (page.selected === selectedPage + 1) {
       setCurrentPage((currentPage) => currentPage + 1);
