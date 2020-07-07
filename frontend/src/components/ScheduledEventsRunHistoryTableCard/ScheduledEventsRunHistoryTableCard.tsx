@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { ScheduledEventRunHistory, ScheduledEvent } from '../../types/scheduledEvents';
 import { PaginationRow } from '../PaginationRow';
@@ -56,6 +56,16 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
     );
   };
 
+  const filterHistoryData = (eventKey: string, _selectEvent: {}): void => {
+    if (event) {
+      fetchDataPerPage(event.id, LIMIT, 1, eventKey).then((result) => {
+        setHistoryData(result.data.results);
+        setCount(result.data.count);
+        setPageCount(Math.ceil(result.data.count / LIMIT));
+      });
+    }
+  };
+
   return event && historyData && historyData.length ? (
     <>
       <Dimmer active={loading} inverted>
@@ -66,6 +76,25 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
           <h4 className="card-title">{event.name} Run History</h4>
         </Card.Header>
         <Card.Body>
+          <div className="float-right">
+            <DropdownButton id="dropdown-basic-button" title="Filter" variant="danger">
+              <Dropdown.Item onSelect={filterHistoryData} eventKey="">
+                All
+              </Dropdown.Item>
+              <Dropdown.Item onSelect={filterHistoryData} eventKey="e">
+                Errored
+              </Dropdown.Item>
+              <Dropdown.Item onSelect={filterHistoryData} eventKey="p">
+                Pending
+              </Dropdown.Item>
+              <Dropdown.Item onSelect={filterHistoryData} eventKey="c">
+                Complete
+              </Dropdown.Item>
+              <Dropdown.Item onSelect={filterHistoryData} eventKey="s">
+                Skipped
+              </Dropdown.Item>
+            </DropdownButton>
+          </div>
           <ScheduledEventsRunHistoryTable data={historyData} />
           {renderPagination()}
         </Card.Body>
