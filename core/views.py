@@ -400,7 +400,7 @@ class ScheduledEventRunInstanceHistory(APIView):
     """
     def get_object(self, pk, request):
         try:
-            if request.query_params.get('status') is not None:
+            if request.query_params.get('status', None) is not None and request.query_params.get('status', None) != '':
                 return ScheduledEventRunInstance.objects.filter(Q(scheduled_event=pk) & Q(status = request.query_params.get('status'))).order_by('-start_at')
             else:
                 return ScheduledEventRunInstance.objects.filter(scheduled_event=pk).order_by('-start_at')
