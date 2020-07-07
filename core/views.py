@@ -398,14 +398,17 @@ class ScheduledEventRunInstanceHistory(APIView):
 
     Create ScheduledEventRunInstances
     """
-    def get_object(self, pk):
+    def get_object(self, pk, request):
         try:
-            return ScheduledEventRunInstance.objects.filter(scheduled_event=pk).order_by('-start_at')
+            if request.query_params.get('status') is not None:
+                return ScheduledEventRunInstance.objects.filter(Q(scheduled_event=pk) & Q(status = request.query_params.get('status'))).order_by('-start_at')
+            else:
+                return ScheduledEventRunInstance.objects.filter(scheduled_event=pk).order_by('-start_at')
         except ScheduledEventRunInstance.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
-        scheduled_event_run_instance = self.get_object(pk)
+        scheduled_event_run_instance = self.get_object(pk, request)
         if self.request.query_params.get('limit', None) is not None or self.request.query_params.get('offset', None) is not None:
             pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
             paginator = pagination_class()
