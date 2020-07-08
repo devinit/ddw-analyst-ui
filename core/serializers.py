@@ -5,6 +5,10 @@
     Serializers also provide deserialization, allowing parsed data to be converted back into complex
     types, after first validating the incoming data.
 """
+from datetime import datetime
+from dateutil.relativedelta import *
+from django.utils import timezone
+from django.utils.timezone import make_aware
 from json.decoder import JSONDecodeError
 from django.contrib.auth.models import Permission, User
 from django.db.models import Q
@@ -281,9 +285,20 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
             'status'
         )
 
+    def isRunInstanceRunningOrDueToRunIn5Minutes(self, scheduled_event):
+        time_threshold = timezone.now() + relativedelta(minutes=5)
+        queryset = ScheduledEventRunInstance.objects.filter(
+            (Q(scheduled_event=scheduled_event.id) & Q(status='r')) |
+            (Q(scheduled_event=scheduled_event.id) & Q(start_at__lt=time_threshold) & Q(status='p'))
+        )
+        if queryset.exists():
+            return True
+        else:
+            return False
+
     def create(self, validated_data):
         scheduled_event = validated_data.get('scheduled_event')
-        if ScheduledEventRunInstance.objects.filter(Q(scheduled_event=scheduled_event.id) & Q(status='p')).exists():
+        if self.isRunInstanceRunningOrDueToRunIn5Minutes(scheduled_event):
             return ScheduledEventRunInstance.objects.filter(
                     Q(scheduled_event=scheduled_event.id) & Q(status='p')
                 ).latest('id')
