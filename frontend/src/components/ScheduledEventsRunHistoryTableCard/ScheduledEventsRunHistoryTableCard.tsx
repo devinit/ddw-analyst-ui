@@ -19,10 +19,11 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPage, setSelectedPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [runInstanceStatus, setRunInstanceStatus] = useState('');
 
   useEffect(() => {
     if (event) {
-      fetchDataPerPage(event.id, LIMIT, currentPage).then((result) => {
+      fetchDataPerPage(event.id, LIMIT, currentPage, runInstanceStatus).then((result) => {
         setHistoryData(result.data.results);
         setCount(result.data.count);
         setPageCount(Math.ceil(result.data.count / LIMIT));
@@ -58,6 +59,7 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
 
   const filterHistoryData = (eventKey: string): void => {
     if (event) {
+      setRunInstanceStatus(eventKey);
       fetchDataPerPage(event.id, LIMIT, 1, eventKey).then((result) => {
         setHistoryData(result.data.results);
         setCount(result.data.count);
