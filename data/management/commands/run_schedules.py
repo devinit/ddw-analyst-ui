@@ -87,31 +87,39 @@ class Command(BaseCommand):
         current_date_time = make_aware(datetime.now())
         self.create_next_run_instance(schedule, current_date_time)
 
-    def check_if_schedule_is_already_running(self, run_instances):
-        for run_instance in run_instances:
-            if run_instance.status == 'r':
-                return True
+    def check_if_schedule_is_already_running(self, run_instance):
+        running_instances = ScheduledEventRunInstance.objects.filter(
+            Q(scheduled_event=run_instance.scheduled_event) & Q(status='r')
+        ).count()
+        if running_instances > 0:
+            return True
+        return False
+
+    def check_current_status_of_instance(self, run_instance, status):
+        run_instance = ScheduledEventRunInstance.objects.get(pk=run_instance.id)
+        if run_instance.status == status:
+            return True
         return False
 
     def update_run_instance(self, runInstance, updated_status):
-        updatedRunInstance = ScheduledEventRunInstance.objects.get(pk=runInstance.id)
-        updatedRunInstance.ended_at = make_aware(datetime.now())
-        updatedRunInstance.status = updated_status
-        updatedRunInstance.save()
+        runInstance.ended_at = make_aware(datetime.now())
+        runInstance.status = updated_status
+        runInstance.save()
 
     def run_schedule_when_due(self, schedule, run_instances):
         for run_instance in run_instances:
-            if run_instance.status == 'p' and run_instance.start_at <= timezone.now():
-                if self.check_if_schedule_is_already_running(run_instances):
+            if self.check_current_status_of_instance(run_instance, 'p') and run_instance.start_at <= timezone.now():
+                if self.check_if_schedule_is_already_running(run_instance):
                     self.update_run_instance(run_instance, 's')
                 else:
+                    # First update instance to "r" then run
+                    self.update_run_instance(run_instance, 'r')
                     self.run_and_update_schedule(schedule, run_instance)
 
     def handle(self, *args, **kwargs):
         schedules = ScheduledEvent.objects.filter(enabled=True)
         for schedule in schedules:
             run_instances = ScheduledEventRunInstance.objects.filter(
-                Q(scheduled_event=schedule.id) &
-                (Q(status='p') | Q(status='r'))
+                Q(scheduled_event=schedule.id) & Q(status='p')
             )
             self.run_schedule_when_due(schedule, run_instances)
