@@ -186,7 +186,7 @@ WEBPACK_LOADER = {
 }
 
 CRONJOBS = [
-    ('*/5 * * * *', 'django.core.management.call_command', ['run_schedules'])
+    ('* * * * *', 'django.core.management.call_command', ['run_schedules'])
 ]
 
 QUERY_TABLES = [
