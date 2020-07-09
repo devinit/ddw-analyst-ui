@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 
 interface ModalProps {
   heading: string;
-  subtitle: string;
+  subtitle?: string;
   description: string;
   show: boolean;
   onHide: () => void;
