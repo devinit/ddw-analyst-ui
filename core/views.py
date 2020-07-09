@@ -5,39 +5,36 @@ import codecs
 import csv
 import json
 
+from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.db import connections
 from django.db.models import Q
-from django.http import Http404, StreamingHttpResponse
+from django.http import Http404, HttpResponse, StreamingHttpResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import (exceptions, filters, generics, permissions,
-                            status)
+from rest_framework import exceptions, filters, generics, permissions, status
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.settings import api_settings
-
-from django.http import HttpResponse
+from rest_framework.views import APIView
 
 from core.models import (Operation, OperationStep, Review, ScheduledEvent,
                          ScheduledEventRunInstance, Sector, Source, Tag, Theme)
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
+from core.pypika_fts_utils import TableQueryBuilder
 from core.serializers import (DataSerializer, OperationSerializer,
                               OperationStepSerializer, ReviewSerializer,
                               ScheduledEventRunInstanceSerializer,
                               ScheduledEventSerializer, SectorSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
                               UserSerializer)
-from data_updates.utils import ScriptExecutor, list_update_scripts
-from django.conf import settings
-from core.pypika_fts_utils import TableQueryBuilder
 from data.db_manager import update_table_from_tuple
+from data_updates.utils import ScriptExecutor, list_update_scripts
 
 
 class ListUpdateScripts(APIView):
@@ -398,14 +395,18 @@ class ScheduledEventRunInstanceHistory(APIView):
 
     Create ScheduledEventRunInstances
     """
-    def get_object(self, pk):
+    def get_object(self, pk, request):
         try:
-            return ScheduledEventRunInstance.objects.filter(scheduled_event=pk).order_by('-start_at')
+            status = request.query_params.get('status', None)
+            if status:
+                return ScheduledEventRunInstance.objects.filter(Q(scheduled_event=pk) & Q(status = status)).order_by('-start_at')
+            else:
+                return ScheduledEventRunInstance.objects.filter(scheduled_event=pk).order_by('-start_at')
         except ScheduledEventRunInstance.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
-        scheduled_event_run_instance = self.get_object(pk)
+        scheduled_event_run_instance = self.get_object(pk, request)
         if self.request.query_params.get('limit', None) is not None or self.request.query_params.get('offset', None) is not None:
             pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
             paginator = pagination_class()

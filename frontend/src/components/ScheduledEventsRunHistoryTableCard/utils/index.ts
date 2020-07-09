@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as localForage from 'localforage';
+import { RunInstanceStatus } from '../../../pages/ScheduledEvents';
 import { ScheduledEventRunHistory } from '../../../types/scheduledEvents';
 import { api, localForageKeys } from '../../../utils';
 
@@ -21,7 +22,8 @@ export const fetchScheduledEventRunHistory = async (
 export const fetchDataPerPage = async (
   eventId: number,
   limit: number,
-  currentPage: number,
+  currentPage = 1,
+  status: RunInstanceStatus | '' = '',
 ): Promise<{
   data: {
     results: ScheduledEventRunHistory[];
@@ -36,7 +38,10 @@ export const fetchDataPerPage = async (
   const offset = currentPage === 1 ? 0 : (currentPage - 1) * limit;
 
   return await axios(
-    `${BASEPATH.replace('{id}', eventId.toString())}?limit=${limit}&offset=${offset}`,
+    `${BASEPATH.replace(
+      '{id}',
+      eventId.toString(),
+    )}?limit=${limit}&offset=${offset}&status=${status}`,
     { headers },
   );
 };

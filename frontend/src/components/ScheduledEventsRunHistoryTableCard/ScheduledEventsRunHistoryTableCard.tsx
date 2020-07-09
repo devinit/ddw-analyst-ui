@@ -1,7 +1,8 @@
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { ScheduledEventRunHistory, ScheduledEvent } from '../../types/scheduledEvents';
+import { RunInstanceStatus, statusMapping } from '../../pages/ScheduledEvents';
+import { ScheduledEvent, ScheduledEventRunHistory } from '../../types/scheduledEvents';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
 import { fetchDataPerPage, LIMIT } from './utils';
@@ -19,10 +20,11 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPage, setSelectedPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState<RunInstanceStatus | ''>('');
 
   useEffect(() => {
     if (event) {
-      fetchDataPerPage(event.id, LIMIT, currentPage).then((result) => {
+      fetchDataPerPage(event.id, LIMIT, currentPage, status).then((result) => {
         setHistoryData(result.data.results);
         setCount(result.data.count);
         setPageCount(Math.ceil(result.data.count / LIMIT));
@@ -56,7 +58,18 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
     );
   };
 
-  return event && historyData && historyData.length ? (
+  const onFilter = (selectedStatus: RunInstanceStatus | ''): void => {
+    if (event) {
+      setStatus(selectedStatus);
+      fetchDataPerPage(event.id, LIMIT, 1, selectedStatus).then((result) => {
+        setHistoryData(result.data.results);
+        setCount(result.data.count);
+        setPageCount(Math.ceil(result.data.count / LIMIT));
+      });
+    }
+  };
+
+  return event && historyData ? (
     <>
       <Dimmer active={loading} inverted>
         <Loader content="Loading" />
@@ -66,6 +79,21 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
           <h4 className="card-title">{event.name} Run History</h4>
         </Card.Header>
         <Card.Body>
+          <DropdownButton
+            id="status-filter"
+            title={`Filter By Status = ${status ? statusMapping[status] : 'All'}`}
+            variant="danger"
+            size="sm"
+          >
+            <Dropdown.Item onSelect={onFilter} eventKey="">
+              All
+            </Dropdown.Item>
+            {Object.keys(statusMapping).map((status: RunInstanceStatus) => (
+              <Dropdown.Item key={status} onSelect={onFilter} eventKey={status}>
+                {statusMapping[status]}
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
           <ScheduledEventsRunHistoryTable data={historyData} />
           {renderPagination()}
         </Card.Body>
