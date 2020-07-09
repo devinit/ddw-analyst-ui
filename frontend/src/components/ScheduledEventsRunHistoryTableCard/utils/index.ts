@@ -18,12 +18,25 @@ export const fetchScheduledEventRunHistory = async (
   return await axios(`${BASEPATH.replace('{id}', eventId.toString())}`, { headers });
 };
 
-export const getScheduledEventRunHistoryByPage = (
+export const fetchDataPerPage = async (
+  eventId: number,
+  limit: number,
   currentPage: number,
-  data: ScheduledEventRunHistory[],
-): ScheduledEventRunHistory[] => {
-  const begin = (currentPage - 1) * LIMIT;
-  const end = begin + LIMIT;
+): Promise<{
+  data: {
+    results: ScheduledEventRunHistory[];
+    count: number;
+  };
+}> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `token ${token}`,
+  };
+  const offset = currentPage === 1 ? 0 : (currentPage - 1) * limit;
 
-  return data.slice(begin, end);
+  return await axios(
+    `${BASEPATH.replace('{id}', eventId.toString())}?limit=${limit}&offset=${offset}`,
+    { headers },
+  );
 };

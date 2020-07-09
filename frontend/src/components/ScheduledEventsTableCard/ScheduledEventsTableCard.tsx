@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { fetchData, getScheduledEventsByPage, LIMIT } from '.';
+import { fetchDataPerPage, LIMIT } from '.';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
@@ -15,15 +15,16 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
   const [selectedPage, setSelectedPage] = useState(0);
 
   useEffect(() => {
-    fetchData().then((result) => {
-      setScheduledEvents(result.data);
+    fetchDataPerPage(LIMIT, currentPage).then((result) => {
+      setScheduledEvents(result.data.results);
       setLoading(false);
-      setCount(result.data.length);
-      setPageCount(Math.ceil(result.data.length / LIMIT));
+      setCount(result.data.count);
+      setPageCount(Math.ceil(result.data.count / LIMIT));
     });
-  }, []);
+  }, [currentPage]);
 
   const handlePageChange = (page: { selected: number }): void => {
+    setLoading(true);
     setSelectedPage(page.selected);
     if (page.selected === selectedPage + 1) {
       setCurrentPage((currentPage) => currentPage + 1);
@@ -63,7 +64,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
           <ScheduledEventsTable
             currentPage={currentPage}
             pageLimit={LIMIT}
-            events={getScheduledEventsByPage(currentPage, scheduledEvents)}
+            events={scheduledEvents}
           />
           {renderPagination()}
         </Card.Body>

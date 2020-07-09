@@ -19,7 +19,10 @@ module.exports = {
     'react/prop-types': [0],
     '@typescript-eslint/naming-convention': [
       1,
-      { selector: 'variableLike', format: ['camelCase'] },
+      { selector: 'function', format: ['camelCase', 'PascalCase'] },
+      { selector: 'variable', format: ['camelCase', 'PascalCase'] },
+      { selector: 'parameter', format: ['camelCase'] },
+      { selector: 'typeLike', format: ['StrictPascalCase'] },
     ],
     'newline-before-return': 'error',
     eqeqeq: ['error', 'always'],
