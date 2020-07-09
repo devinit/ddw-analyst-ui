@@ -6,6 +6,7 @@ import csv
 import json
 
 from django.conf import settings
+import dateutil.parser
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
@@ -418,12 +419,35 @@ class ScheduledEventRunInstanceHistory(APIView):
             serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
             return Response(serializer.data)
 
+    def getPostResponse(self, serializer, request):
+        error_message = ''
+        serialized_date = dateutil.parser.parse(serializer.data['start_at'])
+        post_date = dateutil.parser.parse(request.data['start_at'])
+        if(post_date == serialized_date):
+            return {
+                'success': 'Instance was created',
+                'result': serializer.data
+            }
+        elif(serializer.data['status'] == 'r'):
+            error_message = 'We cannot create a run instance at the moment because there is one running'
+            return {
+                'error': error_message,
+                'result': serializer.data
+            }
+        elif(serializer.data['status'] == 'p'):
+            error_message = 'We cannot create a run instance at the moment because there is one pending in the next 5 minutes'
+            return {
+                'error': error_message,
+                'result': serializer.data
+            }
+
     def post(self, request, pk, format=None):
         request.data['scheduled_event'] = pk
         serializer = ScheduledEventRunInstanceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            return Response(self.getPostResponse(serializer, request), status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

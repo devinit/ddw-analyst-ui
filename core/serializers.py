@@ -285,22 +285,27 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
             'status'
         )
 
-    def isRunInstanceRunningOrDueToRunIn5Minutes(self, scheduled_event):
+    def isInstanceRunning(self, scheduled_event):
+        queryset = ScheduledEventRunInstance.objects.filter(
+            (Q(scheduled_event=scheduled_event.id) & Q(status='r'))
+        )
+        if queryset.exists():
+            return queryset.earliest('id')
+
+    def isDueToRunIn5Minutes(self, scheduled_event):
         time_threshold = timezone.now() + relativedelta(minutes=5)
         queryset = ScheduledEventRunInstance.objects.filter(
-            (Q(scheduled_event=scheduled_event.id) & Q(status='r')) |
             (Q(scheduled_event=scheduled_event.id) & Q(start_at__lt=time_threshold) & Q(status='p'))
         )
         if queryset.exists():
-            return True
-        else:
-            return False
+            return queryset.earliest('id')
 
     def create(self, validated_data):
         scheduled_event = validated_data.get('scheduled_event')
-        if self.isRunInstanceRunningOrDueToRunIn5Minutes(scheduled_event):
-            return ScheduledEventRunInstance.objects.filter(
-                    Q(scheduled_event=scheduled_event.id) & Q(status='p')
-                ).latest('id')
-
+        running_instance = self.isInstanceRunning(scheduled_event)
+        if(running_instance):
+            return running_instance
+        due_instance = self.isDueToRunIn5Minutes(scheduled_event)
+        if(due_instance):
+            return due_instance
         return ScheduledEventRunInstance.objects.create(**validated_data)
