@@ -9,7 +9,7 @@ interface ModalProps {
   onHide: () => void;
 }
 
-export const BootstrapModal: React.SFC<AccountModalProps> = (props: ModalProps) => {
+export const BootstrapModal: React.SFC<ModalProps> = (props: ModalProps) => {
   return (
     <Modal
       show={props.show}
