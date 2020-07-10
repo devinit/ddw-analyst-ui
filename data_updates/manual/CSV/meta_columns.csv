@@ -524,3 +524,10 @@ iati_transactions,participating_org_ref,participating_org_ref,Participating Orga
 iati_transactions,tag_narrative,tag_narrative,Tag Narrative,C
 iati_transactions,tag_vocabulary,tag_vocabulary,Tag Vocabulary,C
 iati_transactions,tag_code,tag_code,Tag Code,C
+iati_transactions,x_reporting_org_type,x_reporting_org_type,Reporting Organisation Type,C
+iati_transactions,x_transaction_type,x_transaction_type,Transaction Type,C
+iati_transactions,x_country,x_country,Country,C
+iati_transactions,x_finance_type,x_finance_type,Finance Type,C
+iati_transactions,x_aid_type,x_aid_type,Aid Type,C
+iati_transactions,x_dac3_sector,x_dac3_sector,DAC3 Sector Name,C
+iati_transactions,x_di_sector,x_di_sector,DI Sector Name,C
