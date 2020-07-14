@@ -158,14 +158,14 @@ def main(args):
         if_exists = "replace"
 
     if args.errors:
-        dataset_filter = datasets.c.error == 1
+        dataset_filter = datasets.c.error == True
     else:
         dataset_filter = and_(
             or_(
-                datasets.c.new == 1,
-                datasets.c.modified == 1
+                datasets.c.new == True,
+                datasets.c.modified == True
             ),
-            datasets.c.error == 0
+            datasets.c.error == False
         )
 
     bar = progressbar.ProgressBar()
@@ -204,7 +204,7 @@ def main(args):
             transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
             if_exists = "append"
 
-    stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == 1)).fetchall()
+    stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
     for dataset in stale_datasets:
         conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
         conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
