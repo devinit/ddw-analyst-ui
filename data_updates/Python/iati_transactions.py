@@ -116,6 +116,7 @@ DTYPES = {
     'x_di_sector': 'object',
     'package_id': 'object'
 }
+NUMERIC_DTYPES = [column_name for column_name, dtype in DTYPES.items() if dtype != "object"]
 
 
 def requests_retry_session(
@@ -192,11 +193,9 @@ def main(args):
         flat_data.columns = header
         flat_data = flat_data.replace(r'^\s*$', np.nan, regex=True)
         flat_data["package_id"] = dataset["id"]
-        try:
-            flat_data = flat_data.astype(dtype=DTYPES)
-        except ValueError:
-            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
-            continue
+        for numeric_column in NUMERIC_DTYPES:
+            flat_data[numeric_column] = pd.to_numeric(flat_data[numeric_column], errors='coerce')
+        flat_data = flat_data.astype(dtype=DTYPES)
 
         if if_exists == "append":
             repeat_ids = flat_data.iati_identifier.unique().tolist()
