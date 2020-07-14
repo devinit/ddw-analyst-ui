@@ -9,7 +9,6 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-import numpy as np
 
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -22,7 +21,7 @@ DATA_TABLENAME = "iati_transactions"
 
 DTYPES = {
     'iati_identifier': 'object',
-    'x_transaction_number': 'int64',
+    'x_transaction_number': 'float64',
     'reporting_org_ref': 'object',
     'reporting_org_narrative': 'object',
     'reporting_org_secondary_reporter': 'object',
@@ -55,7 +54,7 @@ DTYPES = {
     'transaction_date_iso_date': 'object',
     'transaction_value_date': 'object',
     'x_transaction_date': 'object',
-    'x_transaction_year': 'int64',
+    'x_transaction_year': 'float64',
     'default_currency': 'object',
     'transaction_value_currency': 'object',
     'x_currency': 'object',
@@ -192,7 +191,6 @@ def main(args):
         flat_data = pd.DataFrame(flat_output)
         flat_data.columns = header
         flat_data["package_id"] = dataset["id"]
-        flat_data = flat_data.replace([np.inf, -np.inf], np.nan)
         for numeric_column in NUMERIC_DTYPES:
             flat_data[numeric_column] = pd.to_numeric(flat_data[numeric_column], errors='coerce')
         flat_data = flat_data.astype(dtype=DTYPES)
