@@ -2,4 +2,4 @@
 
 cd /src
 
-python3 data_updates/Python/iati_registry_refresh.py
+python3 data_updates/Python/iati_refresh.py
