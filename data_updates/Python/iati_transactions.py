@@ -1,18 +1,22 @@
-import requests
-import json
+import argparse
 import progressbar
 import pandas as pd
-from datetime import datetime
 import sqlalchemy
-from sqlalchemy import create_engine, MetaData, Table
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from sqlalchemy import and_, create_engine, MetaData, or_, Table
 from lxml import etree
 import numpy as np
 from iati_transaction_spec import IatiFlat
+import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-LAST_RUN_FILENAME = "/tmp/iati_registry_last_run.txt"
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+
+METADATA_SCHEMA = "repo"
+METADATA_TABLENAME = "iati_registry_metadata"
 DATA_SCHEMA = "repo"
 DATA_TABLENAME = "iati_transactions"
 
@@ -109,22 +113,9 @@ DTYPES = {
     'x_finance_type': 'object',
     'x_aid_type': 'object',
     'x_dac3_sector': 'object',
-    'x_di_sector': 'object'
+    'x_di_sector': 'object',
+    'package_id': 'object'
 }
-
-
-def read_last_run():
-    try:
-        with open(LAST_RUN_FILENAME, "r") as lrf:
-            return lrf.readline().strip()
-    except FileNotFoundError:
-        return "0000-01-01T00:00:00Z"
-
-
-def write_last_run():
-    with open(LAST_RUN_FILENAME, "w") as lrf:
-        last_run = datetime.now().strftime('%Y-%m-%d')+"T00:00:00Z"
-        lrf.write(last_run)
 
 
 def requests_retry_session(
@@ -147,25 +138,7 @@ def requests_retry_session(
     return session
 
 
-def fetch_urls_since_last_run():
-    results = []
-    last_run = read_last_run()
-    api_url = "https://iatiregistry.org/api/3/action/package_search?fq=metadata_modified:%5B{}%20TO%20NOW%5D&rows=1000".format(last_run)
-    response = requests_retry_session().get(url=api_url, timeout=30).content
-    json_response = json.loads(response)
-    full_count = json_response["result"]["count"]
-    current_count = len(json_response["result"]["results"])
-    results += [resource["url"] for result in json_response["result"]["results"] for resource in result["resources"]]
-    while current_count < full_count:
-        next_api_url = "{}&start={}".format(api_url, current_count)
-        response = requests_retry_session().get(url=next_api_url, timeout=30).content
-        json_response = json.loads(response)
-        current_count += len(json_response["result"]["results"])
-        results += [resource["url"] for result in json_response["result"]["results"] for resource in result["resources"]]
-    return results
-
-
-def main():
+def main(args):
     iatiflat = IatiFlat()
     header = iatiflat.header
 
@@ -175,20 +148,38 @@ def main():
     meta = MetaData(engine)
     meta.reflect()
     try:
+        datasets = Table(METADATA_TABLENAME, meta, schema=METADATA_SCHEMA, autoload=True)
+    except sqlalchemy.exc.NoSuchTableError:
+        raise ValueError("No database found. Try running `iati_refresh.py` first.")
+    try:
         transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
         if_exists = "append"
     except sqlalchemy.exc.NoSuchTableError:
         if_exists = "replace"
 
-    download_urls = fetch_urls_since_last_run()
+    if args.errors:
+        dataset_filter = datasets.c.error == 1
+    else:
+        dataset_filter = and_(
+            or_(
+                datasets.c.new == 1,
+                datasets.c.modified == 1
+            ),
+            datasets.c.error == 0
+        )
+
     bar = progressbar.ProgressBar()
-    for download_url in bar(download_urls):
+    new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
+    for dataset in bar(new_datasets):
+        download_xml = ""
         try:
-            download_data = requests_retry_session(retries=3).get(url=download_url, timeout=5).content
-        except requests.exceptions.ConnectionError:
-            continue
+            download_xml = requests_retry_session(retries=3).get(url=dataset["url"], timeout=5).content
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=0, modified=0, stale=0, error=0, xml=download_xml))
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=1))
+
         try:
-            root = etree.fromstring(download_data)
+            root = etree.fromstring(download_xml)
         except etree.XMLSyntaxError:
             continue
 
@@ -199,11 +190,12 @@ def main():
         flat_data = pd.DataFrame(flat_output)
         flat_data.columns = header
         flat_data = flat_data.replace(r'^\s*$', np.nan, regex=True)
+        flat_data["package_id"] = dataset["id"]
         flat_data = flat_data.astype(dtype=DTYPES)
 
         if if_exists == "append":
             repeat_ids = flat_data.iati_identifier.unique().tolist()
-            del_st = transaction_table.delete().where(transaction_table.c.iati_identifier in repeat_ids)
+            del_st = transaction_table.delete().where(transaction_table.c.iati_identifier.in_(repeat_ids))
             conn.execute(del_st)
 
         flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
@@ -212,9 +204,16 @@ def main():
             transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
             if_exists = "append"
 
+    stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == 1)).fetchall()
+    for dataset in stale_datasets:
+        conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
+        conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
+
     engine.dispose()
-    write_last_run()
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Load IATI Registry packages.')
+    parser.add_argument('-e', '--errors', dest='errors', action='store_true', default=False, help="Attempt to download previous errors")
+    args = parser.parse_args()
+    main(args)

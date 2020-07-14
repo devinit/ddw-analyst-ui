@@ -531,3 +531,4 @@ iati_transactions,x_finance_type,x_finance_type,Finance Type,C
 iati_transactions,x_aid_type,x_aid_type,Aid Type,C
 iati_transactions,x_dac3_sector,x_dac3_sector,DAC3 Sector Name,C
 iati_transactions,x_di_sector,x_di_sector,DI Sector Name,C
+iati_transactions,package_id,package_id,IATI Registry Package ID,C
