@@ -177,6 +177,7 @@ def main(args):
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False, xml=download_xml))
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
+            continue
 
         try:
             root = etree.fromstring(download_xml)
@@ -191,7 +192,11 @@ def main(args):
         flat_data.columns = header
         flat_data = flat_data.replace(r'^\s*$', np.nan, regex=True)
         flat_data["package_id"] = dataset["id"]
-        flat_data = flat_data.astype(dtype=DTYPES)
+        try:
+            flat_data = flat_data.astype(dtype=DTYPES)
+        except ValueError:
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
+            continue
 
         if if_exists == "append":
             repeat_ids = flat_data.iati_identifier.unique().tolist()
