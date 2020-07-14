@@ -419,7 +419,7 @@ class ScheduledEventRunInstanceHistory(APIView):
             serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
             return Response(serializer.data)
 
-    def getPostResponse(self, serializer, request):
+    def get_post_response(self, serializer, request):
         error_message = ''
         serialized_date = dateutil.parser.parse(serializer.data['start_at'])
         post_date = dateutil.parser.parse(request.data['start_at'])
@@ -447,7 +447,7 @@ class ScheduledEventRunInstanceHistory(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            return Response(self.getPostResponse(serializer, request), status=status.HTTP_201_CREATED)
+            return Response(self.get_post_response(serializer, request), status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
