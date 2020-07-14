@@ -174,9 +174,9 @@ def main(args):
         download_xml = ""
         try:
             download_xml = requests_retry_session(retries=3).get(url=dataset["url"], timeout=5).content
-            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=0, modified=0, stale=0, error=0, xml=download_xml))
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False, xml=download_xml))
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
-            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=1))
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
 
         try:
             root = etree.fromstring(download_xml)

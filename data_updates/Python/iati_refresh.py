@@ -83,17 +83,17 @@ def main():
     cached_datasets = conn.execute(datasets.select()).fetchall()
     cached_dataset_ids = [dataset["id"] for dataset in cached_datasets]
     stale_dataset_ids = list(set(cached_dataset_ids) - set(all_dataset_ids))
-    conn.execute(datasets.update().where(datasets.c.id.in_(stale_dataset_ids)).values(new=0, modified=0, stale=1, error=0))
+    conn.execute(datasets.update().where(datasets.c.id.in_(stale_dataset_ids)).values(new=False, modified=False, stale=True, error=False))
 
     stale_count = len(stale_dataset_ids)
     modified_count = 0
     bar = progressbar.ProgressBar()
     for dataset in bar(all_datasets):
         try:  # Try to insert new dataset
-            dataset["new"] = 1
-            dataset["modified"] = 0
-            dataset["stale"] = 0
-            dataset["error"] = 0
+            dataset["new"] = True
+            dataset["modified"] = False
+            dataset["stale"] = False
+            dataset["error"] = False
             conn.execute(datasets.insert(dataset))
             new_count += 1
         except sqlalchemy.exc.IntegrityError:  # Dataset ID already exists
@@ -101,10 +101,10 @@ def main():
             if cached_dataset["hash"] == dataset["hash"]:  # If the hashes match, carry on
                 continue
             else:  # Otherwise, mark it modified and update the metadata
-                dataset["new"] = 0
-                dataset["modified"] = 1
-                dataset["stale"] = 0  # If for some reason, we pick up a previously stale dataset
-                dataset["error"] = 0
+                dataset["new"] = False
+                dataset["modified"] = True
+                dataset["stale"] = False  # If for some reason, we pick up a previously stale dataset
+                dataset["error"] = False
                 conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(dataset))
                 modified_count += 1
 
