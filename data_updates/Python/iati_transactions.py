@@ -4,7 +4,6 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy import and_, create_engine, MetaData, or_, Table
 from lxml import etree
-import numpy as np
 from iati_transaction_spec import IatiFlat
 import requests
 from requests.adapters import HTTPAdapter
@@ -191,7 +190,6 @@ def main(args):
 
         flat_data = pd.DataFrame(flat_output)
         flat_data.columns = header
-        flat_data = flat_data.replace(r'^\s*$', np.nan, regex=True)
         flat_data["package_id"] = dataset["id"]
         for numeric_column in NUMERIC_DTYPES:
             flat_data[numeric_column] = pd.to_numeric(flat_data[numeric_column], errors='coerce')
