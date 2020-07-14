@@ -72,7 +72,8 @@ def main():
             Column('new', Boolean, unique=False, default=True),  # Marks whether a dataset is brand new
             Column('modified', Boolean, unique=False, default=False),  # Marks whether a dataset is old but modified
             Column('stale', Boolean, unique=False, default=False),  # Marks whether a dataset is scheduled for deletion
-            Column('error', Boolean, unique=False, default=False)
+            Column('error', Boolean, unique=False, default=False),
+            schema=DATA_SCHEMA
         )
         meta.create_all(engine)
         new_count += len(all_datasets)
