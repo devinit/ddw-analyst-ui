@@ -59,7 +59,7 @@ DTYPES = {
     'default_currency': 'object',
     'transaction_value_currency': 'object',
     'x_currency': 'object',
-    'transaction_value': 'object',
+    'transaction_value': 'float64',
     'x_transaction_value': 'float64',
     'x_transaction_value_usd': 'float64',
     'default_flow_type_code': 'object',

@@ -770,7 +770,7 @@ class IatiFlat(object):
 
                     transaction_value = default_first(transaction.xpath("value/text()"))
                     try:
-                        transaction_value = float(transaction_value.replace(" ", "")) if transaction_value is not None else None
+                        transaction_value = float(transaction_value.replace(" ", "").replace(",", "")) if transaction_value is not None else None
                         transaction_convertable = True
                     except ValueError:
                         transaction_convertable = False
