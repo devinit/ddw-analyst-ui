@@ -14,6 +14,7 @@ before_install:
 - npm i -g npm
 - npm config set '@bit:registry' https://node.bit.dev
 - docker volume create --name=metadata
+- docker volume create --name=iati_data
 - docker-compose up -d --build
 install:
 - npm install --ignore-scripts
