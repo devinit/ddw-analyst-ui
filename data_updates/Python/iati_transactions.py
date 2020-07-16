@@ -178,7 +178,7 @@ def main(args):
         try:
             download_xml = requests_retry_session(retries=3).get(url=dataset["url"], timeout=5).content
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False))
-            with open(download_filepath, 'w') as xml_file:
+            with open(download_filepath, 'wb') as xml_file:
                 xml_file.write(download_xml)
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
