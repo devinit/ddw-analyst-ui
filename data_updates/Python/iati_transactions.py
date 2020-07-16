@@ -1,3 +1,4 @@
+import os
 import argparse
 import progressbar
 import pandas as pd
@@ -9,15 +10,34 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import boto3
 
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+s3_key = os.environ.get('S3_KEY', None)
+s3_secret = os.environ.get('S3_SECRET', None)
+s3_host = os.environ.get('S3_HOST', None)
+s3_region = os.environ.get('S3_REGION', None)
+
+if s3_key and s3_secret and s3_host and s3_region:
+    s3_session = boto3.session.Session()
+    s3_client = s3_session.client(
+        's3',
+        region_name=s3_region,
+        endpoint_url=s3_host,
+        aws_access_key_id=s3_key,
+        aws_secret_access_key=s3_secret
+    )
+else:
+    s3_client = None
 
 
 METADATA_SCHEMA = "repo"
 METADATA_TABLENAME = "iati_registry_metadata"
 DATA_SCHEMA = "repo"
 DATA_TABLENAME = "iati_transactions"
+IATI_BUCKET_NAME = "iati_registry"
 
 DTYPES = {
     'iati_identifier': 'object',
@@ -174,10 +194,13 @@ def main(args):
         download_xml = ""
         try:
             download_xml = requests_retry_session(retries=3).get(url=dataset["url"], timeout=5).content
-            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False, xml=download_xml))
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False))
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
             continue
+
+        if s3_client:
+            s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=dataset['id'])
 
         try:
             root = etree.fromstring(download_xml)
@@ -210,6 +233,8 @@ def main(args):
     for dataset in stale_datasets:
         conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
         conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
+        if s3_client:
+            s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=dataset['id'])
 
     engine.dispose()
 
