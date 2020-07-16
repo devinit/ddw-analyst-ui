@@ -3,6 +3,7 @@ FROM python:3.7
 LABEL maintainer="akmiller01 <Alex Miller, alex.miller@devinit.org>"
 
 RUN mkdir /src
+RUN mkdir /iati_data
 ADD ./ /src
 
 WORKDIR /src

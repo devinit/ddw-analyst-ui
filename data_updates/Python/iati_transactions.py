@@ -1,3 +1,4 @@
+import os
 import argparse
 import progressbar
 import pandas as pd
@@ -18,6 +19,7 @@ METADATA_SCHEMA = "repo"
 METADATA_TABLENAME = "iati_registry_metadata"
 DATA_SCHEMA = "repo"
 DATA_TABLENAME = "iati_transactions"
+DATA_WRITE_LOCATION = "/iati_data"
 
 DTYPES = {
     'iati_identifier': 'object',
@@ -172,9 +174,12 @@ def main(args):
     new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
     for dataset in bar(new_datasets):
         download_xml = ""
+        download_filepath = os.path.join(DATA_WRITE_LOCATION, dataset['id'])
         try:
             download_xml = requests_retry_session(retries=3).get(url=dataset["url"], timeout=5).content
-            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False, xml=download_xml))
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False))
+            with open(download_filepath, 'w') as xml_file:
+                xml_file.write(download_xml)
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
             continue
@@ -208,8 +213,10 @@ def main(args):
 
     stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
     for dataset in stale_datasets:
+        download_filepath = os.path.join(DATA_WRITE_LOCATION, dataset['id'])
         conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
         conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
+        os.remove(download_filepath)
 
     engine.dispose()
 

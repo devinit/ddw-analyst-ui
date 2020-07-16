@@ -68,7 +68,6 @@ def main():
             Column('id', String, primary_key=True),
             Column('hash', String),
             Column('url', String),
-            Column('xml', String),
             Column('new', Boolean, unique=False, default=True),  # Marks whether a dataset is brand new
             Column('modified', Boolean, unique=False, default=False),  # Marks whether a dataset is old but modified
             Column('stale', Boolean, unique=False, default=False),  # Marks whether a dataset is scheduled for deletion

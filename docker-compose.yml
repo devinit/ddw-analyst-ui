@@ -13,6 +13,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ".:/src"
+      - iati_data:/iati_data
     expose:
       - "80"
     depends_on:
@@ -38,4 +39,6 @@ services:
 
 volumes:
   metadata:
+    external: true
+  iati_data:
     external: true
