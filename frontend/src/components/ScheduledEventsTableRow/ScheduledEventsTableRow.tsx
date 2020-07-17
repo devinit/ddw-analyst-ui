@@ -50,12 +50,9 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
 
   return (
     <>
-      <BootstrapModal
-        heading={'Info'}
-        description={modalDescription}
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
+      <BootstrapModal show={modalShow} onHide={() => setModalShow(false)}>
+        <p>{modalDescription}</p>
+      </BootstrapModal>
       <tr onClick={onRowClick} className={props.classNames}>
         <td className="text-center">{props.id}</td>
         <td>{props.event.name}</td>

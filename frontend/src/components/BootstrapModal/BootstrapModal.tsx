@@ -1,15 +1,14 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 interface ModalProps {
-  heading: string;
-  subtitle?: string;
-  description: string;
+  title?: string;
   show: boolean;
   onHide: () => void;
+  onOkay?: () => void;
 }
 
-export const BootstrapModal: React.SFC<ModalProps> = (props: ModalProps) => {
+export const BootstrapModal: FunctionComponent<ModalProps> = (props) => {
   return (
     <Modal
       show={props.show}
@@ -19,14 +18,18 @@ export const BootstrapModal: React.SFC<ModalProps> = (props: ModalProps) => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">{props.heading}</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">{props.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <h4>{props.subtitle}</h4>
-        <p>{props.description}</p>
-      </Modal.Body>
+      <Modal.Body>{props.children}</Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        {props.onOkay ? (
+          <Button variant="link" onClick={props.onHide}>
+            OK
+          </Button>
+        ) : null}
+        <Button variant="link" className="btn-danger" onClick={props.onHide}>
+          Close
+        </Button>
       </Modal.Footer>
     </Modal>
   );
