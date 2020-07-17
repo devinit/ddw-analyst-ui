@@ -73,7 +73,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
 4. Build & run your app with the dev docker config:
 
-        docker-compose -f docker-compose-dev.yml up --build
+        docker-compose -f docker-compose.dev.yml up --build
 
 5. Migrate the database:
 
@@ -118,7 +118,7 @@ After, run `python3 manage.py crontab add` from the docker container or `docker-
 
 You may confirm if the cron job has finally been added by running `docker-compose exec web python3 manage.py crontab show`. Running `docker-compose exec web python3 manage.py crontab remove` deletes all cron entries listed in settings.
 
-You may want to run `apt-get install nano` to install an editor to list all cron entries in case you want to inspect them from the container. This may be useful especially on staging or during development. It's not a requirement for the production environment. Similarly, in case you want to log the cron jobs (may be helpful in debugging), run `apt-get install -y rsyslog`. Syslog logs cron job executions here `/var/log/syslog`. 
+You may want to run `apt-get install nano` to install an editor to list all cron entries in case you want to inspect them from the container. This may be useful especially on staging or during development. It's not a requirement for the production environment. Similarly, in case you want to log the cron jobs (may be helpful in debugging), run `apt-get install -y rsyslog`. Syslog logs cron job executions here `/var/log/syslog`.
 
 ### End-To-End Testing
 
