@@ -6,23 +6,20 @@
     types, after first validating the incoming data.
 """
 from datetime import datetime
-from dateutil.relativedelta import *
-from django.utils import timezone
-from django.utils.timezone import make_aware
 from json.decoder import JSONDecodeError
+
+from dateutil.relativedelta import *
 from django.contrib.auth.models import Permission, User
 from django.db.models import Q
-from rest_framework import serializers
-from rest_framework import pagination
+from django.utils import timezone
+from django.utils.timezone import make_aware
+from rest_framework import pagination, serializers
 from rest_framework.utils import model_meta
-from core.const import DEFAULT_LIMIT_COUNT
 
-from core.models import (
-    Operation, OperationStep, Review,
-    ScheduledEvent, ScheduledEventRunInstance, Sector,
-    Source, SourceColumnMap, Tag,
-    Theme, UpdateHistory
-)
+from core.const import DEFAULT_LIMIT_COUNT
+from core.models import (Operation, OperationStep, Review, ScheduledEvent,
+                        ScheduledEventRunInstance, Sector, Source,
+                        SourceColumnMap, Tag, Theme, UpdateHistory)
 
 
 class DataSerializer(serializers.BaseSerializer):
@@ -303,9 +300,9 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         scheduled_event = validated_data.get('scheduled_event')
         running_instance = self.is_instance_running(scheduled_event)
-        if(running_instance):
+        if running_instance:
             return running_instance
         due_instance = self.is_due_to_run_in_5minutes(scheduled_event)
-        if(due_instance):
+        if due_instance:
             return due_instance
         return ScheduledEventRunInstance.objects.create(**validated_data)
