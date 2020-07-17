@@ -8,11 +8,17 @@ interface RunInstancePayload {
   status: string;
 }
 
-interface ServerResponse {
+interface RunInstance {
   scheduled_event: number;
   start_at: string;
   ended_at: string | undefined | null;
   status: string;
+}
+
+interface ServerResponse {
+  error: string;
+  success: string;
+  result: RunInstance[];
 }
 
 interface RunInstanceResponse {

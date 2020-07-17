@@ -5,20 +5,21 @@
     Serializers also provide deserialization, allowing parsed data to be converted back into complex
     types, after first validating the incoming data.
 """
+from datetime import datetime
 from json.decoder import JSONDecodeError
+
+from dateutil.relativedelta import *
 from django.contrib.auth.models import Permission, User
 from django.db.models import Q
-from rest_framework import serializers
-from rest_framework import pagination
+from django.utils import timezone
+from django.utils.timezone import make_aware
+from rest_framework import pagination, serializers
 from rest_framework.utils import model_meta
-from core.const import DEFAULT_LIMIT_COUNT
 
-from core.models import (
-    Operation, OperationStep, Review,
-    ScheduledEvent, ScheduledEventRunInstance, Sector,
-    Source, SourceColumnMap, Tag,
-    Theme, UpdateHistory
-)
+from core.const import DEFAULT_LIMIT_COUNT
+from core.models import (Operation, OperationStep, Review, ScheduledEvent,
+                        ScheduledEventRunInstance, Sector, Source,
+                        SourceColumnMap, Tag, Theme, UpdateHistory)
 
 
 class DataSerializer(serializers.BaseSerializer):
@@ -281,11 +282,27 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
             'status'
         )
 
+    def is_instance_running(self, scheduled_event):
+        queryset = ScheduledEventRunInstance.objects.filter(
+            (Q(scheduled_event=scheduled_event.id) & Q(status='r'))
+        )
+        if queryset.exists():
+            return queryset.earliest('id')
+
+    def is_due_to_run_in_5minutes(self, scheduled_event):
+        time_threshold = timezone.now() + relativedelta(minutes=5)
+        queryset = ScheduledEventRunInstance.objects.filter(
+            (Q(scheduled_event=scheduled_event.id) & Q(start_at__lt=time_threshold) & Q(status='p'))
+        )
+        if queryset.exists():
+            return queryset.earliest('id')
+
     def create(self, validated_data):
         scheduled_event = validated_data.get('scheduled_event')
-        if ScheduledEventRunInstance.objects.filter(Q(scheduled_event=scheduled_event.id) & Q(status='p')).exists():
-            return ScheduledEventRunInstance.objects.filter(
-                    Q(scheduled_event=scheduled_event.id) & Q(status='p')
-                ).latest('id')
-
+        running_instance = self.is_instance_running(scheduled_event)
+        if running_instance:
+            return running_instance
+        due_instance = self.is_due_to_run_in_5minutes(scheduled_event)
+        if due_instance:
+            return due_instance
         return ScheduledEventRunInstance.objects.create(**validated_data)

@@ -5,6 +5,7 @@ import codecs
 import csv
 import json
 
+import dateutil.parser
 from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -23,16 +24,16 @@ from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from core.models import (Operation, OperationStep, Review, ScheduledEvent,
-                         ScheduledEventRunInstance, Sector, Source, Tag, Theme)
+                        ScheduledEventRunInstance, Sector, Source, Tag, Theme)
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
 from core.serializers import (DataSerializer, OperationSerializer,
-                              OperationStepSerializer, ReviewSerializer,
-                              ScheduledEventRunInstanceSerializer,
-                              ScheduledEventSerializer, SectorSerializer,
-                              SourceSerializer, TagSerializer, ThemeSerializer,
-                              UserSerializer)
+                            OperationStepSerializer, ReviewSerializer,
+                            ScheduledEventRunInstanceSerializer,
+                            ScheduledEventSerializer, SectorSerializer,
+                            SourceSerializer, TagSerializer, ThemeSerializer,
+                            UserSerializer)
 from data.db_manager import update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
 
@@ -418,12 +419,35 @@ class ScheduledEventRunInstanceHistory(APIView):
             serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
             return Response(serializer.data)
 
+    def get_post_response(self, serializer, request):
+        error_message = ''
+        serialized_date = dateutil.parser.parse(serializer.data['start_at'])
+        post_date = dateutil.parser.parse(request.data['start_at'])
+        if post_date == serialized_date:
+            return {
+                'success': 'Instance was created',
+                'result': serializer.data
+            }
+        elif serializer.data['status'] == 'r':
+            error_message = 'We cannot create a run instance at the moment because there is one running'
+            return {
+                'error': error_message,
+                'result': serializer.data
+            }
+        elif serializer.data['status'] == 'p':
+            error_message = 'We cannot create a run instance at the moment because there is one pending in the next 5 minutes'
+            return {
+                'error': error_message,
+                'result': serializer.data
+            }
+
     def post(self, request, pk, format=None):
         request.data['scheduled_event'] = pk
         serializer = ScheduledEventRunInstanceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            return Response(self.get_post_response(serializer, request), status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
