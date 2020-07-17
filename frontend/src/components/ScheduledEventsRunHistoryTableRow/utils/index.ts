@@ -3,6 +3,7 @@ const status: { [char: string]: string } = {
   r: 'Running',
   c: 'Completed',
   e: 'Errored',
+  s: 'Skipped',
 };
 
 const statusClasses: { [char: string]: string } = {
@@ -10,6 +11,7 @@ const statusClasses: { [char: string]: string } = {
   r: 'badge-warning',
   c: 'badge-success',
   e: 'badge-danger',
+  s: 'badge-info',
 };
 
 export const convertStatus = (statusValue: string): string | undefined => {
