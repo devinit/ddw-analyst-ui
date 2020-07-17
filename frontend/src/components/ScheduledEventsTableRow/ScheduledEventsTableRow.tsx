@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { ScheduledEventContext } from '../../pages/ScheduledEvents';
 import { ScheduledEvent } from '../../types/scheduledEvents';
 import { convertIntervalType, createRunInstance } from './utils';
-import { BootstrapModal } from '../BootstrapModal';
+import { BasicModal } from '../BasicModal';
 
 export interface ScheduledEventsTableRowProps {
   id: number;
@@ -50,9 +50,9 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
 
   return (
     <>
-      <BootstrapModal show={modalShow} onHide={() => setModalShow(false)}>
+      <BasicModal show={modalShow} onHide={() => setModalShow(false)}>
         <p>{modalDescription}</p>
-      </BootstrapModal>
+      </BasicModal>
       <tr onClick={onRowClick} className={props.classNames}>
         <td className="text-center">{props.id}</td>
         <td>{props.event.name}</td>
