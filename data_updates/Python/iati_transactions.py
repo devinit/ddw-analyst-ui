@@ -17,8 +17,8 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 s3_key = os.environ.get('S3_KEY', None)
 s3_secret = os.environ.get('S3_SECRET', None)
-s3_host = os.environ.get('S3_HOST', None)
-s3_region = os.environ.get('S3_REGION', None)
+s3_host = "https://ams3.digitaloceanspaces.com"
+s3_region = "ams3"
 
 if s3_key and s3_secret and s3_host and s3_region:
     s3_session = boto3.session.Session()
@@ -37,7 +37,8 @@ METADATA_SCHEMA = "repo"
 METADATA_TABLENAME = "iati_registry_metadata"
 DATA_SCHEMA = "repo"
 DATA_TABLENAME = "iati_transactions"
-IATI_BUCKET_NAME = "iati_registry"
+IATI_BUCKET_NAME = "di-s3"
+IATI_FOLDER_NAME = "iati_registry/"
 
 DTYPES = {
     'iati_identifier': 'object',
@@ -200,7 +201,7 @@ def main(args):
             continue
 
         if s3_client:
-            s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=dataset['id'])
+            s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
 
         try:
             root = etree.fromstring(download_xml)
@@ -234,7 +235,7 @@ def main(args):
         conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
         conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
         if s3_client:
-            s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=dataset['id'])
+            s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
 
     engine.dispose()
 
