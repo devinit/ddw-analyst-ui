@@ -18,6 +18,8 @@ services:
     depends_on:
       - db
     environment:
+      - S3_KEY
+      - S3_SECRET
       - FTSUSER
       - FTSPASS
       - DJANGO_DEV
