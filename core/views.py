@@ -138,8 +138,8 @@ class ViewData(APIView):
     """
     List all data from executing the operation query.
     """
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = []
+    permission_classes = ()
 
     def get_object(self, pk):
         try:
@@ -228,8 +228,8 @@ class OperationList(generics.ListCreateAPIView):
     """
     This view should return a list of all the operations that are not for the currently authenticated user.
     """
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    authentication_classes = []
+    permission_classes = ()
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
@@ -240,24 +240,21 @@ class OperationList(generics.ListCreateAPIView):
         """
         Filters to return the operations that are not for the currently authenticated user.
         """
-        if self.request.user.is_anonymous:
-            return Operation.objects.filter(~Q(user=None) & Q(is_draft=False)).order_by('-updated_on')
-        else:
-            return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
+        return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
 
     def perform_create(self, serializer):
-        if self.request.user.is_anonymous:
-            serializer.save()
-        else:
+        if self.request.user.is_authenticated:
             serializer.save(user=self.request.user)
+        else:
+            serializer.save(user=None)
 
 
 class UserOperationList(generics.ListAPIView):
     """
     This view should return a list of all the operations for the currently authenticated user.
     """
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    authentication_classes = []
+    permission_classes = ()
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
@@ -353,9 +350,10 @@ class TagList(generics.ListCreateAPIView):
             serializer.save(user=self.request.user)
 
 
-@authentication_classes([])
-@permission_classes([])
 class TagDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
