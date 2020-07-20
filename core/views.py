@@ -22,6 +22,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
+from rest_framework.decorators import authentication_classes, permission_classes
 
 from core.models import (Operation, OperationStep, Review, ScheduledEvent,
                         ScheduledEventRunInstance, Sector, Source, Tag, Theme)
@@ -38,12 +39,12 @@ from data.db_manager import update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
 
 
+@authentication_classes([])
+@permission_classes([])
 class ListUpdateScripts(APIView):
     """
     A class to allow an superuser to list update scripts
     """
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
 
     def get(self, request):
         content = {"update_scripts": list_update_scripts()}
@@ -138,7 +139,7 @@ class ViewData(APIView):
     List all data from executing the operation query.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
         try:
@@ -189,13 +190,15 @@ class SectorList(generics.ListCreateAPIView):
     serializer_class = SectorSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if self.request.user.is_anonymous:
+            serializer.save()
+        else:
+            serializer.save(user=self.request.user)
 
 
+@authentication_classes([])
+@permission_classes([])
 class SectorDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-
     queryset = Sector.objects.all()
     serializer_class = SectorSerializer
 
@@ -208,13 +211,15 @@ class ThemeList(generics.ListCreateAPIView):
     serializer_class = ThemeSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if self.request.user.is_anonymous:
+            serializer.save()
+        else:
+            serializer.save(user=self.request.user)
 
 
+@authentication_classes([])
+@permission_classes([])
 class ThemeDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
 
@@ -235,10 +240,16 @@ class OperationList(generics.ListCreateAPIView):
         """
         Filters to return the operations that are not for the currently authenticated user.
         """
-        return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
+        if self.request.user.is_anonymous:
+            return Operation.objects.filter(~Q(user=None) & Q(is_draft=False)).order_by('-updated_on')
+        else:
+            return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if self.request.user.is_anonymous:
+            serializer.save()
+        else:
+            serializer.save(user=self.request.user)
 
 
 class UserOperationList(generics.ListAPIView):
@@ -257,13 +268,15 @@ class UserOperationList(generics.ListAPIView):
         """
         Filters to return a list of all the operations for the currently authenticated user.
         """
-        return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
+        if self.request.user.is_anonymous:
+            return Operation.objects.filter(user=None).order_by('-updated_on')
+        else:
+            return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
 
 
+@authentication_classes([])
+@permission_classes([])
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
 
@@ -276,13 +289,15 @@ class ReviewList(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if self.request.user.is_anonymous:
+            serializer.save()
+        else:
+            serializer.save(user=self.request.user)
 
 
+@authentication_classes([])
+@permission_classes([])
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
@@ -295,13 +310,15 @@ class OperationStepList(generics.ListCreateAPIView):
     serializer_class = OperationStepSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if self.request.user.is_anonymous:
+            serializer.save()
+        else:
+            serializer.save(user=self.request.user)
 
 
+@authentication_classes([])
+@permission_classes([])
 class OperationStepDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-
     queryset = OperationStep.objects.all()
     serializer_class = OperationStepSerializer
 
@@ -330,13 +347,15 @@ class TagList(generics.ListCreateAPIView):
     serializer_class = TagSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if self.request.user.is_anonymous:
+            serializer.save()
+        else:
+            serializer.save(user=self.request.user)
 
 
+@authentication_classes([])
+@permission_classes([])
 class TagDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
@@ -351,13 +370,15 @@ class SourceList(generics.ListCreateAPIView):
     search_fields = ('indicator', 'indicator_acronym', 'source', 'source_acronym', 'schema', 'description')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if self.request.user.is_anonymous:
+            serializer.save()
+        else:
+            serializer.save(user=self.request.user)
 
 
+@authentication_classes([])
+@permission_classes([])
 class SourceDetail(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
-
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
 
@@ -500,10 +521,9 @@ def streaming_tables_export_view(request, table_name):
     return response
 
 
+@authentication_classes([])
+@permission_classes([])
 class UpdateTableAPI(APIView):
-
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     def put(self, request, table_name):
 
