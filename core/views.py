@@ -330,7 +330,7 @@ class UserDetail(generics.RetrieveAPIView):
 
 class TagList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -341,7 +341,7 @@ class TagList(generics.ListCreateAPIView):
 
 class TagDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
