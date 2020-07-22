@@ -4,7 +4,7 @@ import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
+import { Dimmer, Loader, Placeholder, Segment, Modal } from 'semantic-ui-react';
 import * as sourcesActions from '../../actions/sources';
 import { SourceDetailsTab } from '../../components/SourceDetailsTab';
 import { SourcesTableCard } from '../../components/SourcesTableCard';
@@ -54,13 +54,13 @@ class DataSources extends React.Component<DataSourcesProps> {
     );
   }
 
-  // private renderDetailsTab(activeSource: SourceMap | undefined, loading = false): ReactNode {
-  //   if (activeSource && !loading) {
-  //     return <SourceDetailsTab source={activeSource} />;
-  //   }
+  private renderDetailsTab(activeSource: SourceMap | undefined, loading = false): ReactNode {
+    if (activeSource && !loading) {
+      return <SourceDetailsTab source={activeSource} />;
+    }
 
-    if (loading) {
-      return (
+    return (
+      <Modal>
         <Segment>
           <Placeholder>
             <Placeholder.Header>
@@ -72,14 +72,13 @@ class DataSources extends React.Component<DataSourcesProps> {
             </Placeholder.Paragraph>
           </Placeholder>
         </Segment>
-      );
-    }
-
-    return null;
+      </Modal>
+    );
   }
 
   private onRowClick = (activeSource: SourceMap): void => {
     this.props.actions.setActiveSource(activeSource);
+    console.log('click');
   };
 }
 
