@@ -19,6 +19,7 @@ export class SourcesTable extends React.Component<SourcesTableProps> {
           <tr>
             <th>Indicator</th>
             <th>Updated On</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>{this.renderRows(this.props.sources, this.props.activeSource)}</tbody>
