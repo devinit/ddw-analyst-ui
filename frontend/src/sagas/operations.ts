@@ -26,7 +26,7 @@ import { fetchActiveSource } from '../actions/sources';
 function* fetchOperations({ payload }: OperationsAction) {
   try {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const basePath = payload.mine ? api.routes.MY_OPERATIONS : api.routes.OPERATIONS;
+    const basePath = payload.mine ? api.routes.MY_DATASETS : api.routes.DATASETS;
     const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios
       .request({
         url:
@@ -60,7 +60,7 @@ function* fetchOperation({ payload }: OperationsAction) {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status, data }: AxiosResponse<Operation> = yield axios
       .request({
-        url: `${api.routes.OPERATIONS}${payload.id}/`,
+        url: `${api.routes.SINGLE_DATASET}${payload.id}/`,
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ function* deleteOperation({ payload }: OperationsAction) {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status }: AxiosResponse<Operation> = yield axios
       .request({
-        url: `${api.routes.OPERATIONS}${payload.id}/`,
+        url: `${api.routes.SINGLE_DATASET}${payload.id}/`,
         method: 'delete',
         headers: {
           'Content-Type': 'application/json',

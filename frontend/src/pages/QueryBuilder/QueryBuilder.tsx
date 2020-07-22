@@ -235,7 +235,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
       return;
     }
     const id = operation.get('id');
-    const url = id ? `${api.routes.OPERATIONS}${id}/` : api.routes.OPERATIONS;
+    const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
 
     const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
     if (this.props.token) {
