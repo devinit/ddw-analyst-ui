@@ -49,7 +49,7 @@ class DataSources extends React.Component<DataSourcesProps> {
           />
         </Col>
 
-        <Col lg={5}>{this.renderDetailsTab(activeSource, loading)}</Col>
+        {/* <Col lg={5}>{this.renderDetailsTab(activeSource, loading)}</Col> */}
       </Row>
     );
   }
