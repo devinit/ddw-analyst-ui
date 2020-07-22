@@ -33,7 +33,7 @@ class DataSources extends React.Component<DataSourcesProps> {
 
     return (
       <Row>
-        <Col lg={7}>
+        <Col>
           <Dimmer active={loading} inverted>
             <Loader content="Loading" />
           </Dimmer>
@@ -54,10 +54,10 @@ class DataSources extends React.Component<DataSourcesProps> {
     );
   }
 
-  private renderDetailsTab(activeSource: SourceMap | undefined, loading = false): ReactNode {
-    if (activeSource && !loading) {
-      return <SourceDetailsTab source={activeSource} />;
-    }
+  // private renderDetailsTab(activeSource: SourceMap | undefined, loading = false): ReactNode {
+  //   if (activeSource && !loading) {
+  //     return <SourceDetailsTab source={activeSource} />;
+  //   }
 
     if (loading) {
       return (
