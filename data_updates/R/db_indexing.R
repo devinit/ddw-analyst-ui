@@ -15,6 +15,7 @@ text_index = list(
 "dac2b_current"=c("recipient_name","donor_name"),
 "dac2a_current"=c("recipient_name","donor_name"),
 "dac1_current"=c("donor_name","part_name")
+"iati_transactions"=c("iati_identifier","title_narrative","description_narrative","transaction_description_narrative")
 )
 
 numeric_index = list(
