@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-
+import { Button } from 'react-bootstrap';
 export interface SourcesTableRowProps {
   classNames?: string;
   onClick: () => void;
@@ -19,6 +19,9 @@ export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
         </span>
       </td>
       <td>{new Date(props.updatedOn).toDateString()}</td>
+      <td><Button variant="outline-success" size="sm">
+           Metadata
+          </Button></td>
     </tr>
   );
 };
