@@ -43,7 +43,7 @@ class ListUpdateScripts(APIView):
     A class to allow an superuser to list update scripts
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
         content = {"update_scripts": list_update_scripts()}
@@ -138,7 +138,7 @@ class ViewData(APIView):
     List all data from executing the operation query.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_object(self, pk):
         try:
@@ -183,7 +183,7 @@ class ChangePassword(APIView):
 
 class SectorList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Sector.objects.all()
     serializer_class = SectorSerializer
@@ -194,7 +194,7 @@ class SectorList(generics.ListCreateAPIView):
 
 class SectorDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Sector.objects.all()
     serializer_class = SectorSerializer
@@ -202,7 +202,7 @@ class SectorDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ThemeList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
@@ -213,7 +213,7 @@ class ThemeList(generics.ListCreateAPIView):
 
 class ThemeDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
@@ -224,7 +224,7 @@ class OperationList(generics.ListCreateAPIView):
     This view should return a list of all the operations that are not for the currently authenticated user.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
@@ -235,7 +235,10 @@ class OperationList(generics.ListCreateAPIView):
         """
         Filters to return the operations that are not for the currently authenticated user.
         """
-        return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
+        if self.request.user.is_authenticated:
+            return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
+        else:
+            return Operation.objects.filter(Q(user__isnull=True) & Q(is_draft=False)).order_by('-updated_on')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -246,7 +249,7 @@ class UserOperationList(generics.ListAPIView):
     This view should return a list of all the operations for the currently authenticated user.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
@@ -257,12 +260,15 @@ class UserOperationList(generics.ListAPIView):
         """
         Filters to return a list of all the operations for the currently authenticated user.
         """
-        return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
+        if self.request.user.is_authenticated:
+            return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
+        else:
+            return Operation.objects.filter(user__isnull=True).order_by('-updated_on')
 
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
@@ -270,7 +276,7 @@ class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ReviewList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -281,7 +287,7 @@ class ReviewList(generics.ListCreateAPIView):
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -289,7 +295,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class OperationStepList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = OperationStep.objects.all()
     serializer_class = OperationStepSerializer
@@ -300,7 +306,7 @@ class OperationStepList(generics.ListCreateAPIView):
 
 class OperationStepDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = OperationStep.objects.all()
     serializer_class = OperationStepSerializer
@@ -308,7 +314,7 @@ class OperationStepDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class UserList(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -316,7 +322,7 @@ class UserList(generics.ListAPIView):
 
 class UserDetail(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -343,7 +349,7 @@ class TagDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class SourceList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
@@ -356,7 +362,7 @@ class SourceList(generics.ListCreateAPIView):
 
 class SourceDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
