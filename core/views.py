@@ -238,7 +238,7 @@ class OperationList(generics.ListCreateAPIView):
         if self.request.user.is_authenticated:
             return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
         else:
-            return Operation.objects.filter(Q(user__isnull=True) & Q(is_draft=False)).order_by('-updated_on')
+            return Operation.objects.filter(Q(is_draft=False)).order_by('-updated_on')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -263,7 +263,7 @@ class UserOperationList(generics.ListAPIView):
         if self.request.user.is_authenticated:
             return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
         else:
-            return Operation.objects.filter(user__isnull=True).order_by('-updated_on')
+            return Operation.objects.all().order_by('-updated_on')
 
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
