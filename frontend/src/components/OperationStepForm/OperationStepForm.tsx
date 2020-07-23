@@ -394,7 +394,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
                 hidden={!props.editable}
                 size="sm"
               >
-                {props.editing ? 'Edit Step' : 'Add Step'}
+                {props.editing ? 'Edit Step' : 'Save Step'}
               </Button>
               <Button
                 variant="dark"
