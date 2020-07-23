@@ -66,7 +66,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           <Tab.Container defaultActiveKey="operation">
             <Card className="source-details">
               <Card.Header className="card-header-text card-header-danger">
-                <Card.Text>Operation</Card.Text>
+                <Card.Text>Dataset</Card.Text>
               </Card.Header>
               <StyledCardBody>{this.renderOperationForm()}</StyledCardBody>
             </Card>
@@ -77,7 +77,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
           <Card className={classNames({ 'd-none': !activeStep })}>
             <Card.Header>
               <Card.Title>
-                Create Operation Step
+                Create Query Step
                 <StyledIcon className="material-icons float-right" onClick={this.resetAction}>
                   close
                 </StyledIcon>
