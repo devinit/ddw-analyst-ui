@@ -12,14 +12,14 @@ urlpatterns = [
     path('users/<int:pk>/', core_views.UserDetail.as_view()),
     path('tags/', core_views.TagList.as_view()),
     path('tags/<int:pk>/', core_views.TagDetail.as_view()),
-    path('operation_steps/', core_views.OperationStepList.as_view()),
-    path('operation_steps/<int:pk>/', core_views.OperationStepDetail.as_view()),
+    path('operation_steps/', core_views.OperationStepList.as_view()), # TODO: deprecate endpoint
+    path('operation_steps/<int:pk>/', core_views.OperationStepDetail.as_view()), # TODO: deprecate endpoint
     path('reviews/', core_views.ReviewList.as_view()),
     path('reviews/<int:pk>/', core_views.ReviewDetail.as_view()),
-    path('operations/', core_views.OperationList.as_view()),
-    path('operations/mine/', core_views.UserOperationList.as_view()),
-    path('operations/<int:pk>/', core_views.OperationDetail.as_view()),
-    path('operations/data/<int:pk>/', core_views.ViewData.as_view()),
+    path('operations/', core_views.OperationList.as_view()), # TODO: deprecate endpoint
+    path('operations/mine/', core_views.UserOperationList.as_view()), # TODO: deprecate endpoint
+    path('operations/<int:pk>/', core_views.OperationDetail.as_view()), # TODO: deprecate endpoint
+    path('operations/data/<int:pk>/', core_views.ViewData.as_view()), # TODO: deprecate endpoint
     path('themes/', core_views.ThemeList.as_view()),
     path('themes/<int:pk>/', core_views.ThemeDetail.as_view()),
     path('scheduled_event/', core_views.ScheduledEventList.as_view()),
@@ -35,6 +35,11 @@ urlpatterns = [
     path('execute_update/', core_views.streaming_script_execute),
     path('tables/update/<str:table_name>/', core_views.UpdateTableAPI.as_view()),
     path('tables/download/<str:table_name>/', core_views.streaming_tables_export_view),
+    # v2 endpoints for handling queries & datasets
+    path('datasets/', core_views.OperationList.as_view()),
+    path('datasets/mine/', core_views.UserOperationList.as_view()),
+    path('dataset/<int:pk>/', core_views.OperationDetail.as_view()),
+    path('dataset/data/<int:pk>/', core_views.ViewData.as_view()),
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'

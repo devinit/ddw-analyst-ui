@@ -63,10 +63,10 @@ class OperationsTableCard extends React.Component<
             <Card.Body>
               <Nav variant="pills" className="nav-pills-danger" role="tablist">
                 <Nav.Item onClick={() => this.fetchQueries(true)}>
-                  <Nav.Link eventKey="myQueries">My Queries</Nav.Link>
+                  <Nav.Link eventKey="myQueries">My Datasets</Nav.Link>
                 </Nav.Item>
                 <Nav.Item onClick={() => this.fetchQueries()}>
-                  <Nav.Link eventKey="otherQueries">Other Queries</Nav.Link>
+                  <Nav.Link eventKey="otherQueries">Other Datasets</Nav.Link>
                 </Nav.Item>
               </Nav>
               <Tab.Content>

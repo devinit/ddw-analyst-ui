@@ -71,24 +71,24 @@ class TestRestFramework(TestCase):
     def test_post_nested_operation(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
-        response = client.post(
-            '/api/operations/',
-            {
-                "name": "Name",
-                "operation_query": "Query",
-                "theme": 1,
-                "operation_steps": [
-                    {
-                        "name": "Select",
-                        "step_id": 1,
-                        "source": 1,
-                        "query_func": "filter",
-                        "query_kwargs": "{\"filters\":[{\"field\":\"year\",\"func\":\"lt\",\"value\":\"1987\"}]}"
-                    }
-                ]
-            },
-            format="json"
-        )
+        data = {
+            "name": "Name",
+            "operation_query": "Query",
+            "theme": 1,
+            "operation_steps": [
+                {
+                    "name": "Select",
+                    "step_id": 1,
+                    "source": 1,
+                    "query_func": "filter",
+                    "query_kwargs": "{\"filters\":[{\"field\":\"year\",\"func\":\"lt\",\"value\":\"1987\"}]}"
+                }
+            ]
+        }
+        response = client.post('/api/operations/', data, format="json")
+        assert response.status_code == 201
+
+        response = client.post('/api/datasets/', data, format="json")
         assert response.status_code == 201
 
     def test_post_password_change(self):

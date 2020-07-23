@@ -38,9 +38,9 @@ class OperationSteps extends React.Component<OperationStepsProps> {
     return (
       <React.Fragment>
         <div className="mb-3">
-          <label>Active Data Set</label>
+          <label>Active Data Source</label>
           <Dropdown
-            placeholder="Select Data Set"
+            placeholder="Select Data Source"
             fluid
             selection
             search

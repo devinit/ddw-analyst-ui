@@ -31,7 +31,8 @@
 {% endblock footer-assets %}
 {% render_bundle 'main' 'js' 'DEFAULT' %}
 
-{% if DEBUG %}
-  <script src="//localhost:35729/livereload.js"></script>
-{% endif %}
+  {% if DEBUG %}
+    <script src="//localhost:35729/livereload.js"></script>
+  {% endif %}
+</body>
 </html>
