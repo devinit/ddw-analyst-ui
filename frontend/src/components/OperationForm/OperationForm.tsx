@@ -98,15 +98,6 @@ export class OperationForm extends React.Component<OperationFormProps> {
 
             {this.props.children}
 
-            <Button
-              variant="danger"
-              onClick={this.onDuplicate}
-              size="sm"
-              hidden={!(!!values.id && !this.props.editable)}
-            >
-              Make a Copy
-            </Button>
-
             <Dropdown hidden={!!values.id && !this.props.editable}>
               <Button
                 variant="danger"
@@ -140,13 +131,13 @@ export class OperationForm extends React.Component<OperationFormProps> {
               </Dropdown.Menu>
 
               <Button
-                variant="secondary"
+                variant="dark"
                 className={classNames('float-right', { 'd-none': !this.props.operation })}
                 onClick={this.onDelete}
                 size="sm"
                 hidden={!!values.id && !this.props.editable}
               >
-                <i className="material-icons">delete</i>
+                Delete Dataset
               </Button>
             </Dropdown>
           </Form>

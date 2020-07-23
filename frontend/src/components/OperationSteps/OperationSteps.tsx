@@ -28,6 +28,8 @@ interface OperationStepsProps {
 const StyledListItem = styled(ListGroup.Item)`
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+  border-color: ${(props) => (props.isActive ? '#737373 !important' : 'default')};
+  background-color: ${(props) => (props.isActive ? '#EEEEEE' : '#FFFFFF')};
 `;
 
 class OperationSteps extends React.Component<OperationStepsProps> {
@@ -97,7 +99,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
                   key={index}
                   onClick={!activeStep && this.onClickStep(step)}
                   disabled={activeStep && !isActiveStep}
-                  variant={isActiveStep ? 'danger' : undefined}
+                  isActive={isActiveStep}
                 >
                   <OperationStep step={step} />
                 </StyledListItem>

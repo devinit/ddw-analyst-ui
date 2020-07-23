@@ -183,17 +183,19 @@ export class OperationStepForm extends React.Component<
                   className="float-right"
                   type="submit"
                   hidden={!this.props.editable}
+                  size="sm"
                 >
                   {this.props.editing ? 'Edit Step' : 'Add Step'}
                 </Button>
                 <Button
-                  variant="secondary"
+                  variant="dark"
                   className={classNames('float-right', { 'd-none': !this.props.editing })}
                   type="submit"
                   onClick={() => this.props.onDeleteStep(this.props.step)}
                   hidden={!this.props.editable}
+                  size="sm"
                 >
-                  <i className="material-icons">delete</i>
+                  Delete Step
                 </Button>
               </Col>
             </Form>
