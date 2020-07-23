@@ -123,7 +123,7 @@ export class OperationForm extends React.Component<OperationFormProps> {
                 size="sm"
                 disabled={!this.props.valid || !isValid || isSubmitting || this.props.processing}
               />
-              <Dropdown.Menu>
+              <Dropdown.Menu className="transition-none">
                 <Dropdown.Item eventKey="1" onClick={this.onSuccess(true)}>
                   {this.props.processing ? 'Saving ...' : 'Save & Preview'}
                 </Dropdown.Item>
