@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { List } from 'immutable';
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
@@ -32,7 +31,6 @@ export class SourcesTable extends React.Component<SourcesTableProps> {
       return sources.map((source, index) => (
         <SourcesTableRow
           key={index}
-          classNames={classNames({ 'table-danger': activeSource.get('id') === source.get('id') })}
           onClick={() => this.props.onRowClick(source)}
           indicator={source.get('indicator') as string}
           indicatorAcronym={source.get('indicator_acronym') as string}

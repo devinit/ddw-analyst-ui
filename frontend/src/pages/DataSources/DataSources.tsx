@@ -1,10 +1,11 @@
 import { List } from 'immutable';
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode, FunctionComponent, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Dimmer, Loader, Placeholder, Segment, Modal } from 'semantic-ui-react';
+import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
+import { Modal } from 'react-bootstrap';
 import * as sourcesActions from '../../actions/sources';
 import { SourceDetailsTab } from '../../components/SourceDetailsTab';
 import { SourcesTableCard } from '../../components/SourcesTableCard';
@@ -25,62 +26,65 @@ interface ReduxState {
 }
 type DataSourcesProps = ReduxState & ActionProps & RouteComponentProps;
 
-class DataSources extends React.Component<DataSourcesProps> {
-  render(): ReactElement {
-    const sources = this.props.sources.get('sources') as List<SourceMap>;
-    const loading = this.props.sources.get('loading') as boolean;
-    const activeSource = this.props.page.get('activeSource') as SourceMap | undefined;
+const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
+  const sources = props.sources.get('sources') as List<SourceMap>;
+  const loading = props.sources.get('loading') as boolean;
+  const activeSource = props.page.get('activeSource') as SourceMap | undefined;
+  const [showModal, setShowModal] = useState(false);
 
-    return (
-      <Row>
-        <Col>
-          <Dimmer active={loading} inverted>
-            <Loader content="Loading" />
-          </Dimmer>
-
-          <SourcesTableCard
-            loading={loading}
-            sources={sources}
-            limit={this.props.sources.get('limit') as number}
-            offset={this.props.sources.get('offset') as number}
-            activeSource={activeSource}
-            count={this.props.sources.get('count') as number}
-            onRowClick={this.onRowClick}
-          />
-        </Col>
-
-        {/* <Col lg={5}>{this.renderDetailsTab(activeSource, loading)}</Col> */}
-      </Row>
-    );
-  }
-
-  private renderDetailsTab(activeSource: SourceMap | undefined, loading = false): ReactNode {
+  const renderDetailsTab = (activeSource: SourceMap | undefined, loading = false): ReactNode => {
     if (activeSource && !loading) {
-      return <SourceDetailsTab source={activeSource} />;
+      return (
+        <Modal show={showModal} onHide={hideModal}>
+          <SourceDetailsTab source={activeSource} />
+        </Modal>
+      );
     }
 
     return (
-      <Modal>
-        <Segment>
-          <Placeholder>
-            <Placeholder.Header>
-              <Placeholder.Line length="very short" />
-              <Placeholder.Line length="medium" />
-            </Placeholder.Header>
-            <Placeholder.Paragraph>
-              <Placeholder.Line length="short" />
-            </Placeholder.Paragraph>
-          </Placeholder>
-        </Segment>
-      </Modal>
+      <Segment>
+        <Placeholder>
+          <Placeholder.Header>
+            <Placeholder.Line length="very short" />
+            <Placeholder.Line length="medium" />
+          </Placeholder.Header>
+          <Placeholder.Paragraph>
+            <Placeholder.Line length="short" />
+          </Placeholder.Paragraph>
+        </Placeholder>
+      </Segment>
     );
-  }
-
-  private onRowClick = (activeSource: SourceMap): void => {
-    this.props.actions.setActiveSource(activeSource);
-    console.log('click');
   };
-}
+
+  const onRowClick = (activeSource: SourceMap): void => {
+    props.actions.setActiveSource(activeSource);
+    setShowModal(true);
+  };
+
+  const hideModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <Row>
+      <Col>
+        <Dimmer active={loading} inverted>
+          <Loader content="Loading" />
+        </Dimmer>
+        <SourcesTableCard
+          loading={loading}
+          sources={sources}
+          limit={props.sources.get('limit') as number}
+          offset={props.sources.get('offset') as number}
+          activeSource={activeSource}
+          count={props.sources.get('count') as number}
+          onRowClick={onRowClick}
+        />
+      </Col>
+      {renderDetailsTab(activeSource, loading)}
+    </Row>
+  );
+};
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
   dispatch,
