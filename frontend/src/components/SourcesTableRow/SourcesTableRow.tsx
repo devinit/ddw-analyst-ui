@@ -23,6 +23,9 @@ export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
         <Button variant="outline-success" size="sm" onClick={props.onClick}>
           Metadata
         </Button>
+        <Button variant="outline-success" size="sm">
+          Datasets
+        </Button>
       </td>
     </tr>
   );
