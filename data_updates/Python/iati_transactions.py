@@ -5,12 +5,16 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy import and_, create_engine, MetaData, or_, Table
 from lxml import etree
-from iati_transaction_spec import IatiFlat
+from iati_transaction_spec import IatiFlat, DTYPES, NUMERIC_DTYPES
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import boto3
+from datetime import datetime
+
+
+current_timestamp = datetime.now().strftime("%Y-%m-%d")
 
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -39,104 +43,6 @@ DATA_SCHEMA = "repo"
 DATA_TABLENAME = "iati_transactions"
 IATI_BUCKET_NAME = "di-s3"
 IATI_FOLDER_NAME = "iati_registry/"
-
-DTYPES = {
-    'iati_identifier': 'object',
-    'x_transaction_number': 'float64',
-    'reporting_org_ref': 'object',
-    'reporting_org_narrative': 'object',
-    'reporting_org_secondary_reporter': 'object',
-    'reporting_org_type_code': 'object',
-    'title_narrative': 'object',
-    'recipient_country_code': 'object',
-    'recipient_country_percentage': 'object',
-    'transaction_recipient_country_code': 'object',
-    'x_country_code': 'object',
-    'x_country_percentage': 'object',
-    'recipient_region_vocabulary': 'object',
-    'recipient_region_code': 'object',
-    'recipient_region_percentage': 'object',
-    'transaction_recipient_region_vocabulary': 'object',
-    'transaction_recipient_region_code': 'object',
-    'x_region_vocabulary': 'object',
-    'x_region_code': 'object',
-    'x_region_percentage': 'object',
-    'sector_vocabulary': 'object',
-    'sector_code': 'object',
-    'sector_percentage': 'object',
-    'transaction_sector_vocabulary': 'object',
-    'transaction_sector_code': 'object',
-    'x_sector_vocabulary': 'object',
-    'x_default_vocabulary': 'object',
-    'x_sector_code': 'object',
-    'x_sector_percentage': 'object',
-    'x_dac3_sector_code': 'object',
-    'transaction_type_code': 'object',
-    'transaction_date_iso_date': 'object',
-    'transaction_value_date': 'object',
-    'x_transaction_date': 'object',
-    'x_transaction_year': 'float64',
-    'default_currency': 'object',
-    'transaction_value_currency': 'object',
-    'x_currency': 'object',
-    'transaction_value': 'float64',
-    'x_transaction_value': 'float64',
-    'x_transaction_value_usd': 'float64',
-    'default_flow_type_code': 'object',
-    'transaction_flow_type_code': 'object',
-    'x_flow_type_code': 'object',
-    'default_finance_type_code': 'object',
-    'transaction_finance_type_code': 'object',
-    'x_finance_type_code': 'object',
-    'default_aid_type_vocabulary': 'object',
-    'default_aid_type_code': 'object',
-    'transaction_aid_type_vocabulary': 'object',
-    'transaction_aid_type_code': 'object',
-    'x_mod_aid_type_vocabulary': 'object',
-    'x_mod_aid_type_code': 'object',
-    'x_dac_aid_type_code': 'object',
-    'default_tied_status_code': 'object',
-    'transaction_tied_status_code': 'object',
-    'x_tied_status_code': 'object',
-    'transaction_disbursement_channel_code': 'object',
-    'description_narrative': 'object',
-    'transaction_description_narrative': 'object',
-    'humanitarian': 'object',
-    'transaction_humanitarian': 'object',
-    'humanitarian_scope_type': 'object',
-    'humanitarian_scope_vocabulary': 'object',
-    'humanitarian_scope_code': 'object',
-    'humanitarian_scope_narrative': 'object',
-    'x_hum_emergency_vocabulary': 'object',
-    'x_hum_emergency_code': 'object',
-    'x_hum_appeal_vocabulary': 'object',
-    'x_hum_appeal_code': 'object',
-    'transaction_provider_org_narrative': 'object',
-    'transaction_provider_org_provider_activity_id': 'object',
-    'transaction_provider_org_ref': 'object',
-    'transaction_provider_org_type': 'object',
-    'transaction_receiver_org_narrative': 'object',
-    'transaction_receiver_org_receiver_activity_id': 'object',
-    'transaction_receiver_org_ref': 'object',
-    'transaction_receiver_org_type': 'object',
-    'transaction_ref': 'object',
-    'participating_org_narrative': 'object',
-    'participating_org_type': 'object',
-    'participating_org_role': 'object',
-    'participating_org_ref': 'object',
-    'tag_narrative': 'object',
-    'tag_vocabulary': 'object',
-    'tag_code': 'object',
-    'x_reporting_org_type': 'object',
-    'x_transaction_type': 'object',
-    'x_country': 'object',
-    'x_finance_type': 'object',
-    'x_aid_type': 'object',
-    'x_dac3_sector': 'object',
-    'x_di_sector': 'object',
-    'package_id': 'object'
-}
-NUMERIC_DTYPES = [column_name for column_name, dtype in DTYPES.items() if dtype != "object"]
 
 
 def requests_retry_session(
@@ -189,6 +95,8 @@ def main(args):
             datasets.c.error == False
         )
 
+    repeat_package_ids = list()
+    repeat_activity_ids = list()
     bar = progressbar.ProgressBar()
     new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
     for dataset in bar(new_datasets):
@@ -215,20 +123,34 @@ def main(args):
         flat_data = pd.DataFrame(flat_output)
         flat_data.columns = header
         flat_data["package_id"] = dataset["id"]
+        flat_data["last_modified"] = current_timestamp
         for numeric_column in NUMERIC_DTYPES:
             flat_data[numeric_column] = pd.to_numeric(flat_data[numeric_column], errors='coerce')
         flat_data = flat_data.astype(dtype=DTYPES)
 
         if if_exists == "append":
             repeat_ids = flat_data.iati_identifier.unique().tolist()
-            del_st = transaction_table.delete().where(transaction_table.c.iati_identifier.in_(repeat_ids))
-            conn.execute(del_st)
+            repeat_package_ids.append(dataset["id"])
+            repeat_activity_ids += repeat_ids
 
         flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
 
         if if_exists == "replace":
             transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
             if_exists = "append"
+
+    repeat_filter = or_(
+        and_(
+            transaction_table.c.package_id.in_(repeat_package_ids),
+            transaction_table.c.last_modified != current_timestamp
+        ),
+        and_(
+            transaction_table.c.iati_refresh.in_(repeat_activity_ids),
+            transaction_table.c.last_modified != current_timestamp
+        )
+    )
+    del_st = transaction_table.delete().where(repeat_filter)
+    conn.execute(del_st)
 
     stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
     for dataset in stale_datasets:
