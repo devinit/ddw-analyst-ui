@@ -8,7 +8,7 @@ import boto3
 from datetime import datetime
 
 
-current_timestamp = datetime.now().strftime("%Y-%m-%d")
+current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 s3_key = os.environ.get('S3_KEY', None)

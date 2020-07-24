@@ -14,7 +14,7 @@ import boto3
 from datetime import datetime
 
 
-current_timestamp = datetime.now().strftime("%Y-%m-%d")
+current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
