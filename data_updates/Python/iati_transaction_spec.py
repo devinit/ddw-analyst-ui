@@ -948,6 +948,10 @@ class IatiFlat(object):
 
                     x_sector_vocabulary_list = x_sector_vocabulary.split("|")
                     x_default_vocabulary = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
+                    if "1" in x_sector_vocabulary_list:
+                        x_default_vocabulary = "1"
+                    elif "2" in x_sector_vocabulary_list:
+                        x_default_vocabulary = "2"
                     x_sector_code_list = x_sector_code.split("|")
                     x_sector_percentage_list = x_sector_percentage.split("|")
                     if len(x_sector_vocabulary_list) > 0:
