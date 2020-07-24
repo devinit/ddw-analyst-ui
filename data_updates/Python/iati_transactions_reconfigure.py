@@ -39,8 +39,8 @@ def main():
     iatiflat = IatiFlat()
     header = iatiflat.header
 
-    # engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
-    engine = create_engine('postgresql://postgres@:5432/analyst_ui')
+    engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
+    # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
 
     if_exists = "replace"
 
