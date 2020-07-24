@@ -34,7 +34,7 @@ if s3_key and s3_secret and s3_host and s3_region:
         aws_secret_access_key=s3_secret
     )
 else:
-    s3_client = None
+    raise(Exception('S3_KEY or S3_SECRET not found. Please configure environmental variables before continuing.'))
 
 
 METADATA_SCHEMA = "repo"
@@ -108,8 +108,7 @@ def main(args):
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
             continue
 
-        if s3_client:
-            s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
+        s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
 
         try:
             root = etree.fromstring(download_xml)
@@ -156,8 +155,7 @@ def main(args):
     for dataset in stale_datasets:
         conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
         conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
-        if s3_client:
-            s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
+        s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
 
     engine.dispose()
 
