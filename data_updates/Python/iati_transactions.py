@@ -115,28 +115,31 @@ def main(args):
         except etree.XMLSyntaxError:
             continue
 
-        flat_output = iatiflat.flatten_activities(root)
-        if not flat_output:
-            continue
+        activities = root.findall("iati-activity")
 
-        flat_data = pd.DataFrame(flat_output)
-        flat_data.columns = header
-        flat_data["package_id"] = dataset["id"]
-        flat_data["last_modified"] = current_timestamp
-        for numeric_column in NUMERIC_DTYPES:
-            flat_data[numeric_column] = pd.to_numeric(flat_data[numeric_column], errors='coerce')
-        flat_data = flat_data.astype(dtype=DTYPES)
+        for activity in activities:
+            flat_output = iatiflat.flatten_activity(activity)
+            if not flat_output:
+                continue
 
-        if if_exists == "append":
-            repeat_ids = flat_data.iati_identifier.unique().tolist()
-            repeat_package_ids.append(dataset["id"])
-            repeat_activity_ids += repeat_ids
+            flat_data = pd.DataFrame(flat_output)
+            flat_data.columns = header
+            flat_data["package_id"] = dataset["id"]
+            flat_data["last_modified"] = current_timestamp
+            for numeric_column in NUMERIC_DTYPES:
+                flat_data[numeric_column] = pd.to_numeric(flat_data[numeric_column], errors='coerce')
+            flat_data = flat_data.astype(dtype=DTYPES)
 
-        flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
+            if if_exists == "append":
+                repeat_ids = flat_data.iati_identifier.unique().tolist()
+                repeat_package_ids.append(dataset["id"])
+                repeat_activity_ids += repeat_ids
 
-        if if_exists == "replace":
-            transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
-            if_exists = "append"
+            flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
+
+            if if_exists == "replace":
+                transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
+                if_exists = "append"
 
     repeat_filter = or_(
         and_(
