@@ -95,8 +95,6 @@ def main(args):
             datasets.c.error == False
         )
 
-    repeat_package_ids = list()
-    repeat_activity_ids = list()
     bar = progressbar.ProgressBar()
     new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
     for dataset in bar(new_datasets):
@@ -129,27 +127,24 @@ def main(args):
 
         if if_exists == "append":
             repeat_ids = flat_data.iati_identifier.unique().tolist()
-            repeat_package_ids.append(dataset["id"])
-            repeat_activity_ids += repeat_ids
+            repeat_filter = or_(
+                and_(
+                    transaction_table.c.package_id == dataset["id"],
+                    transaction_table.c.last_modified != current_timestamp
+                ),
+                and_(
+                    transaction_table.c.iati_identifier.in_(repeat_ids),
+                    transaction_table.c.last_modified != current_timestamp
+                )
+            )
+            del_st = transaction_table.delete().where(repeat_filter)
+            conn.execute(del_st)
 
         flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
 
         if if_exists == "replace":
             transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
             if_exists = "append"
-
-    repeat_filter = or_(
-        and_(
-            transaction_table.c.package_id.in_(repeat_package_ids),
-            transaction_table.c.last_modified != current_timestamp
-        ),
-        and_(
-            transaction_table.c.iati_identifier.in_(repeat_activity_ids),
-            transaction_table.c.last_modified != current_timestamp
-        )
-    )
-    del_st = transaction_table.delete().where(repeat_filter)
-    conn.execute(del_st)
 
     stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
     for dataset in stale_datasets:
