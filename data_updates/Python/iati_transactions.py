@@ -144,7 +144,7 @@ def main(args):
             transaction_table.c.last_modified != current_timestamp
         ),
         and_(
-            transaction_table.c.iati_refresh.in_(repeat_activity_ids),
+            transaction_table.c.iati_identifier.in_(repeat_activity_ids),
             transaction_table.c.last_modified != current_timestamp
         )
     )
