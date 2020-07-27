@@ -36,7 +36,7 @@ const renderTableRows = (data: List<OperationDataMap>, columns: (string | number
       <tr key={key}>
         {columns.map((column) => (
           <td key={column} className="text-truncate">
-            {item.get(column)}
+            {item.get(column)?.toString()}
           </td>
         ))}
       </tr>
