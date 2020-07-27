@@ -11,7 +11,7 @@ export interface SourcesTableRowProps {
 
 export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
   return (
-    <tr className={props.classNames} data-testid="sources-table-row">
+    <tr className={props.classNames}>
       <td>
         {props.indicator}
         <span className={classNames('text-uppercase', { 'd-none': !props.indicatorAcronym })}>
@@ -20,7 +20,12 @@ export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
       </td>
       <td>{new Date(props.updatedOn).toDateString()}</td>
       <td>
-        <Button variant="outline-success" size="sm" onClick={props.onClick}>
+        <Button
+          variant="outline-success"
+          size="sm"
+          onClick={props.onClick}
+          data-testid="sources-table-row"
+        >
           Metadata
         </Button>
         <Button variant="outline-success" size="sm">

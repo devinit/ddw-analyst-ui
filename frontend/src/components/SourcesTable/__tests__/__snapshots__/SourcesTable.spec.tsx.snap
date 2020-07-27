@@ -15,6 +15,9 @@ exports[`renders an empty table if no sources are provided 1`] = `
         <th>
           Updated On
         </th>
+        <th>
+          Actions
+        </th>
       </tr>
     </thead>
     <tbody />
@@ -38,13 +41,13 @@ exports[`renders correctly when the sources are updated 1`] = `
           <th>
             Updated On
           </th>
+          <th>
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          class="table-danger"
-          data-testid="sources-table-row"
-        >
+        <tr>
           <td>
             Common Reporting Standard
             <span
@@ -56,11 +59,23 @@ exports[`renders correctly when the sources are updated 1`] = `
           <td>
             Sun Aug 19 2018
           </td>
+          <td>
+            <button
+              class="btn btn-outline-success btn-sm"
+              data-testid="sources-table-row"
+              type="button"
+            >
+              Metadata
+            </button>
+            <button
+              class="btn btn-outline-success btn-sm"
+              type="button"
+            >
+              Datasets
+            </button>
+          </td>
         </tr>
-        <tr
-          class=""
-          data-testid="sources-table-row"
-        >
+        <tr>
           <td>
             World Bank Indicators
             <span
@@ -72,11 +87,23 @@ exports[`renders correctly when the sources are updated 1`] = `
           <td>
             Sun Aug 19 2018
           </td>
+          <td>
+            <button
+              class="btn btn-outline-success btn-sm"
+              data-testid="sources-table-row"
+              type="button"
+            >
+              Metadata
+            </button>
+            <button
+              class="btn btn-outline-success btn-sm"
+              type="button"
+            >
+              Datasets
+            </button>
+          </td>
         </tr>
-        <tr
-          class=""
-          data-testid="sources-table-row"
-        >
+        <tr>
           <td>
             Official Development Assistance
             <span
@@ -87,6 +114,21 @@ exports[`renders correctly when the sources are updated 1`] = `
           </td>
           <td>
             Sun Aug 19 2018
+          </td>
+          <td>
+            <button
+              class="btn btn-outline-success btn-sm"
+              data-testid="sources-table-row"
+              type="button"
+            >
+              Metadata
+            </button>
+            <button
+              class="btn btn-outline-success btn-sm"
+              type="button"
+            >
+              Datasets
+            </button>
           </td>
         </tr>
       </tbody>
@@ -110,14 +152,13 @@ exports[`renders correctly with default props 1`] = `
         <th>
           Updated On
         </th>
+        <th>
+          Actions
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr
-        className="table-danger"
-        data-testid="sources-table-row"
-        onClick={[Function]}
-      >
+      <tr>
         <td>
           Common Reporting Standard
           <span
@@ -129,12 +170,26 @@ exports[`renders correctly with default props 1`] = `
         <td>
           Sun Aug 19 2018
         </td>
+        <td>
+          <button
+            className="btn btn-outline-success btn-sm"
+            data-testid="sources-table-row"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Metadata
+          </button>
+          <button
+            className="btn btn-outline-success btn-sm"
+            disabled={false}
+            type="button"
+          >
+            Datasets
+          </button>
+        </td>
       </tr>
-      <tr
-        className=""
-        data-testid="sources-table-row"
-        onClick={[Function]}
-      >
+      <tr>
         <td>
           World Bank Indicators
           <span
@@ -145,6 +200,24 @@ exports[`renders correctly with default props 1`] = `
         </td>
         <td>
           Sun Aug 19 2018
+        </td>
+        <td>
+          <button
+            className="btn btn-outline-success btn-sm"
+            data-testid="sources-table-row"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Metadata
+          </button>
+          <button
+            className="btn btn-outline-success btn-sm"
+            disabled={false}
+            type="button"
+          >
+            Datasets
+          </button>
         </td>
       </tr>
     </tbody>
