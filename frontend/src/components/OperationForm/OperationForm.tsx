@@ -27,6 +27,8 @@ const schema = Yup.object().shape({
 
 export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const [hasFocus, setHasFocus] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(0);
 
   const getFormGroupClasses = (fieldName: string, value?: string | number) => {
     return classNames('bmd-form-group', {
@@ -76,8 +78,18 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const onSuccess = (preview = false) => () => props.onSuccess(preview);
 
   const onDelete = () => {
-    if (props.onDeleteOperation && props.operation) {
-      props.onDeleteOperation(props.operation);
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setTimeoutId(
+        setTimeout(() => {
+          setConfirmDelete(false);
+        }, 3000),
+      );
+    } else {
+      if (props.onDeleteOperation && props.operation) {
+        props.onDeleteOperation(props.operation);
+      }
+      clearTimeout(timeoutId);
     }
   };
 
@@ -183,7 +195,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               size="sm"
               hidden={!!values.id && !props.editable}
             >
-              Delete Dataset
+              {`${confirmDelete ? 'Confirm ' : ''}Delete Dataset`}
             </Button>
           </Dropdown>
         </Form>
