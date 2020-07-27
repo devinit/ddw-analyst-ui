@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import React, { ReactElement, ReactNode, FunctionComponent, useState } from 'react';
+import React, { ReactNode, FunctionComponent, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
