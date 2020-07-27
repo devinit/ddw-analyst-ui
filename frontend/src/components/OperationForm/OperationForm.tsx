@@ -89,6 +89,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
       if (props.onDeleteOperation && props.operation) {
         props.onDeleteOperation(props.operation);
       }
+      setConfirmDelete(false);
       clearTimeout(timeoutId);
     }
   };

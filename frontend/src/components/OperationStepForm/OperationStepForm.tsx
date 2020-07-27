@@ -48,6 +48,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
   const [alerts, setAlerts] = useState<{ [key: string]: string }>({});
   const [hasFocus, setHasFocus] = useState('');
   const [confirmDeleteStep, setConfirmDeleteStep] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(0);
 
   const getFormGroupClasses = (fieldName: string, value: string | number) => {
     return classNames('bmd-form-group', {
@@ -263,9 +264,15 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
     event.preventDefault();
     if (!confirmDeleteStep) {
       setConfirmDeleteStep(true);
+      setTimeoutId(
+        setTimeout(() => {
+          setConfirmDeleteStep(false);
+        }, 3000),
+      );
     } else {
       props.onDeleteStep(props.step);
       setConfirmDeleteStep(false);
+      clearTimeout(timeoutId);
     }
   };
 
