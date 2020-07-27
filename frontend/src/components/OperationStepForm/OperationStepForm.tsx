@@ -47,6 +47,7 @@ const queries = [
 export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (props) => {
   const [alerts, setAlerts] = useState<{ [key: string]: string }>({});
   const [hasFocus, setHasFocus] = useState('');
+  const [confirmDeleteStep, setConfirmDeleteStep] = useState(false);
 
   const getFormGroupClasses = (fieldName: string, value: string | number) => {
     return classNames('bmd-form-group', {
@@ -258,6 +259,16 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
     );
   };
 
+  const onDeleteStep = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    event.preventDefault();
+    if (!confirmDeleteStep) {
+      setConfirmDeleteStep(true);
+    } else {
+      props.onDeleteStep(props.step);
+      setConfirmDeleteStep(false);
+    }
+  };
+
   return (
     <Formik validationSchema={schema} initialValues={props.step.toJS()} onSubmit={onSuccess}>
       {({
@@ -382,11 +393,11 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
                 variant="dark"
                 className={classNames('float-right', { 'd-none': !props.editing })}
                 type="submit"
-                onClick={() => props.onDeleteStep(props.step)}
+                onClick={onDeleteStep}
                 hidden={!props.editable}
                 size="sm"
               >
-                Delete Step
+                {`${confirmDeleteStep ? 'Confirm ' : ''}Delete Step`}
               </Button>
             </Col>
           </Form>
