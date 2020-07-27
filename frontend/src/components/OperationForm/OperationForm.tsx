@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Formik, FormikProps } from 'formik';
 import { fromJS } from 'immutable';
 import { debounce } from 'lodash';
-import * as React from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Alert, Button, Dropdown, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Operation, OperationMap } from '../../types/operations';
@@ -20,200 +20,192 @@ interface OperationFormProps {
   onSuccess: (preview?: boolean) => void;
   onReset?: () => void;
 }
-interface OperationFormState {
-  alerts: Partial<Operation>;
-  hasFocus: string;
-}
 
-export class OperationForm extends React.Component<OperationFormProps> {
-  static defaultProps: Partial<OperationFormProps> = {
-    valid: true,
-    processing: false,
-  };
-  state: OperationFormState = {
-    alerts: {},
-    hasFocus: '',
-  };
-  private schema = Yup.object().shape({
-    name: Yup.string().required('Name is required!'),
-  });
+const schema = Yup.object().shape({
+  name: Yup.string().required('Name is required!'),
+});
 
-  render() {
-    const values: Partial<Operation> = this.props.operation ? this.props.operation.toJS() : {};
+export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
+  const [hasFocus, setHasFocus] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(0);
 
-    return (
-      <Formik
-        validationSchema={this.schema}
-        initialValues={values}
-        onSubmit={this.onSuccess()}
-        validateOnMount
-      >
-        {({ errors, isSubmitting, isValid, setFieldValue }: FormikProps<Operation>) => (
-          <Form className="form" noValidate data-testid="operation-form">
-            <Alert variant="danger" hidden={!this.props.alert}>
-              {this.props.alert}
-            </Alert>
-
-            <Form.Group className={this.getFormGroupClasses('name', values.name)}>
-              <Form.Label className="bmd-label-floating">Name</Form.Label>
-              <Form.Control
-                required
-                name="name"
-                type="text"
-                value={values.name || ''}
-                isInvalid={!!errors.name}
-                onChange={debounce(this.onChange(setFieldValue), 1000, { leading: true })}
-                onFocus={this.setFocusedField}
-                onBlur={this.resetFocus}
-                disabled={!!values.id && !this.props.editable}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.name ? errors.name : null}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className={this.getFormGroupClasses('description', values.description)}>
-              <Form.Label className="bmd-label-floating">Description</Form.Label>
-              <Form.Control
-                name="description"
-                as="textarea"
-                onChange={debounce(this.onChange(setFieldValue), 1000, { leading: true })}
-                isInvalid={!!errors.description}
-                onFocus={this.setFocusedField}
-                onBlur={this.resetFocus}
-                value={values.description ? values.description.toString() : ''}
-                disabled={!!values.id && !this.props.editable}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.description ? errors.description : null}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <CheckBox
-              defaultChecked={values.is_draft}
-              onChange={this.toggleDraft}
-              label="Is Draft"
-              disabled={!!values.id && !this.props.editable}
-            />
-
-            {this.props.children}
-
-            <Button
-              variant="danger"
-              onClick={this.onDuplicate}
-              size="sm"
-              hidden={!(!!values.id && !this.props.editable)}
-            >
-              Make a Copy
-            </Button>
-
-            <Dropdown hidden={!!values.id && !this.props.editable}>
-              <Button
-                variant="danger"
-                disabled={!this.props.valid || !isValid || isSubmitting || this.props.processing}
-                onClick={this.onSuccess()}
-                size="sm"
-              >
-                {this.props.processing ? 'Saving ...' : 'Save'}
-              </Button>
-              <Dropdown.Toggle
-                split
-                variant="danger"
-                id="operation-form-actions"
-                size="sm"
-                disabled={!this.props.valid || !isValid || isSubmitting || this.props.processing}
-              />
-              <Dropdown.Menu>
-                <Dropdown.Item eventKey="1" onClick={this.onSuccess(true)}>
-                  {this.props.processing ? 'Saving ...' : 'Save & Preview'}
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="2" hidden={!values.id} onClick={this.onDuplicate}>
-                  Make a Copy
-                </Dropdown.Item>
-                <Dropdown.Item
-                  eventKey="3"
-                  onClick={this.props.onReset}
-                  hidden={!this.props.onReset || !!(values.id && !this.props.editable)}
-                >
-                  Refresh
-                </Dropdown.Item>
-              </Dropdown.Menu>
-
-              <Button
-                variant="secondary"
-                className={classNames('float-right', { 'd-none': !this.props.operation })}
-                onClick={this.onDelete}
-                size="sm"
-                hidden={!!values.id && !this.props.editable}
-              >
-                <i className="material-icons">delete</i>
-              </Button>
-            </Dropdown>
-          </Form>
-        )}
-      </Formik>
-    );
-  }
-
-  private getFormGroupClasses(fieldName: string, value?: string | number) {
+  const getFormGroupClasses = (fieldName: string, value?: string | number) => {
     return classNames('bmd-form-group', {
-      'is-focused': this.state.hasFocus === fieldName,
+      'is-focused': hasFocus === fieldName,
       'is-filled': value,
     });
-  }
+  };
 
-  private setFocusedField = ({
+  const setFocusedField = ({
     currentTarget,
   }: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    this.setState({ hasFocus: currentTarget.name });
+    setHasFocus(currentTarget.name);
   };
 
-  private resetFocus = () => {
-    this.setState({ hasFocus: '' });
+  const resetFocus = () => {
+    setHasFocus('');
   };
 
-  private onChange = (setFieldValue: (field: string, value: any) => void) => ({
+  const onChange = (setFieldValue: (field: string, value: any) => void) => ({
     currentTarget,
   }: React.FormEvent<any>) => {
     const { name, value } = currentTarget;
     setFieldValue(name, value);
-    if (this.props.onUpdateOperation) {
-      if (this.props.operation) {
-        this.props.onUpdateOperation(this.props.operation.set(name, value));
+    if (props.onUpdateOperation) {
+      if (props.operation) {
+        props.onUpdateOperation(props.operation.set(name, value));
       } else {
         const operation = fromJS({ [name]: value });
-        this.props.onUpdateOperation(operation);
+        props.onUpdateOperation(operation);
       }
     }
   };
 
-  private toggleDraft = () => {
-    if (this.props.onUpdateOperation) {
-      if (this.props.operation) {
-        const isDraft = !!this.props.operation.get('is_draft');
-        const operation = this.props.operation.set('is_draft', !isDraft);
-        this.props.onUpdateOperation(operation);
+  const toggleDraft = () => {
+    if (props.onUpdateOperation) {
+      if (props.operation) {
+        const isDraft = !!props.operation.get('is_draft');
+        const operation = props.operation.set('is_draft', !isDraft);
+        props.onUpdateOperation(operation);
       } else {
         const operation = fromJS({ is_draft: true });
-        this.props.onUpdateOperation(operation);
+        props.onUpdateOperation(operation);
       }
     }
   };
 
-  private onSuccess = (preview = false) => () => this.props.onSuccess(preview);
+  const onSuccess = (preview = false) => () => props.onSuccess(preview);
 
-  private onDelete = () => {
-    if (this.props.onDeleteOperation && this.props.operation) {
-      this.props.onDeleteOperation(this.props.operation);
+  const onDelete = () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setTimeoutId(
+        setTimeout(() => {
+          setConfirmDelete(false);
+        }, 3000),
+      );
+    } else {
+      if (props.onDeleteOperation && props.operation) {
+        props.onDeleteOperation(props.operation);
+      }
+      setConfirmDelete(false);
+      clearTimeout(timeoutId);
     }
   };
 
-  private onDuplicate = () => {
-    if (this.props.operation && this.props.onDuplicateOperation) {
-      const operation = this.props.operation.withMutations((opn) =>
+  const onDuplicate = () => {
+    if (props.operation && props.onDuplicateOperation) {
+      const operation = props.operation.withMutations((opn) =>
         opn.delete('id').set('name', `Copy of ${opn.get('name')}`),
       );
-      this.props.onDuplicateOperation(operation);
+      props.onDuplicateOperation(operation);
     }
   };
-}
+
+  const values: Partial<Operation> = props.operation ? props.operation.toJS() : {};
+
+  return (
+    <Formik validationSchema={schema} initialValues={values} onSubmit={onSuccess()} validateOnMount>
+      {({ errors, isSubmitting, isValid, setFieldValue }: FormikProps<Operation>) => (
+        <Form className="form" noValidate data-testid="operation-form">
+          <Alert variant="danger" hidden={!props.alert}>
+            {props.alert}
+          </Alert>
+
+          <Form.Group className={getFormGroupClasses('name', values.name)}>
+            <Form.Label className="bmd-label-floating">Name</Form.Label>
+            <Form.Control
+              required
+              name="name"
+              type="text"
+              value={values.name || ''}
+              isInvalid={!!errors.name}
+              onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
+              onFocus={setFocusedField}
+              onBlur={resetFocus}
+              disabled={!!values.id && !props.editable}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.name ? errors.name : null}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className={getFormGroupClasses('description', values.description)}>
+            <Form.Label className="bmd-label-floating">Description</Form.Label>
+            <Form.Control
+              name="description"
+              as="textarea"
+              onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
+              isInvalid={!!errors.description}
+              onFocus={setFocusedField}
+              onBlur={resetFocus}
+              value={values.description ? values.description.toString() : ''}
+              disabled={!!values.id && !props.editable}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.description ? errors.description : null}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <CheckBox
+            defaultChecked={values.is_draft}
+            onChange={toggleDraft}
+            label="Is Draft"
+            disabled={!!values.id && !props.editable}
+          />
+
+          {props.children}
+
+          <Dropdown hidden={!!values.id && !props.editable}>
+            <Button
+              variant="danger"
+              disabled={!props.valid || !isValid || isSubmitting || props.processing}
+              onClick={onSuccess()}
+              size="sm"
+            >
+              {props.processing ? 'Saving ...' : 'Save'}
+            </Button>
+            <Dropdown.Toggle
+              split
+              variant="danger"
+              id="operation-form-actions"
+              size="sm"
+              disabled={!props.valid || !isValid || isSubmitting || props.processing}
+            />
+            <Dropdown.Menu className="transition-none">
+              <Dropdown.Item eventKey="1" onClick={onSuccess(true)}>
+                {props.processing ? 'Saving ...' : 'Save & Preview'}
+              </Dropdown.Item>
+              <Dropdown.Item eventKey="2" hidden={!values.id} onClick={onDuplicate}>
+                Make a Copy
+              </Dropdown.Item>
+              <Dropdown.Item
+                eventKey="3"
+                onClick={props.onReset}
+                hidden={!props.onReset || !!(values.id && !props.editable)}
+              >
+                Refresh
+              </Dropdown.Item>
+            </Dropdown.Menu>
+
+            <Button
+              variant="dark"
+              className={classNames('float-right', { 'd-none': !props.operation })}
+              onClick={onDelete}
+              size="sm"
+              hidden={!!values.id && !props.editable}
+            >
+              {`${confirmDelete ? 'Confirm ' : ''}Delete Dataset`}
+            </Button>
+          </Dropdown>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+OperationForm.defaultProps = {
+  valid: true,
+  processing: false,
+};
