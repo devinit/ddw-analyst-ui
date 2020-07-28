@@ -41,6 +41,8 @@ METADATA_SCHEMA = "repo"
 METADATA_TABLENAME = "iati_registry_metadata"
 DATA_SCHEMA = "repo"
 DATA_TABLENAME = "iati_transactions"
+TMP_DATA_SCHEMA = "repo"
+TMP_DATA_TABLENAME = "tmpiati_transactions"
 IATI_BUCKET_NAME = "di-s3"
 IATI_FOLDER_NAME = "iati_registry/"
 
@@ -80,6 +82,11 @@ def main(args):
         raise ValueError("No database found. Try running `iati_refresh.py` first.")
     try:
         transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
+        first_run = False
+    except sqlalchemy.exc.NoSuchTableError:
+        first_run = True
+    try:
+        tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
         if_exists = "append"
     except sqlalchemy.exc.NoSuchTableError:
         if_exists = "replace"
@@ -125,32 +132,41 @@ def main(args):
             flat_data[numeric_column] = pd.to_numeric(flat_data[numeric_column], errors='coerce')
         flat_data = flat_data.astype(dtype=DTYPES)
 
-        if if_exists == "append":
+        if first_run:
+            flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
+            if if_exists == "replace":
+                transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
+                if_exists = "append"
+        else:
             repeat_ids = flat_data.iati_identifier.unique().tolist()
             repeat_filter = or_(
-                and_(
-                    transaction_table.c.package_id == dataset["id"],
-                    transaction_table.c.last_modified != current_timestamp
-                ),
-                and_(
-                    transaction_table.c.iati_identifier.in_(repeat_ids),
-                    transaction_table.c.last_modified != current_timestamp
-                )
+                transaction_table.c.package_id == dataset["id"],
+                transaction_table.c.iati_identifier.in_(repeat_ids)
             )
             del_st = transaction_table.delete().where(repeat_filter)
             conn.execute(del_st)
 
-        flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
+            flat_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=TMP_DATA_SCHEMA, index=False, if_exists=if_exists)
 
-        if if_exists == "replace":
-            transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
-            if_exists = "append"
+            if if_exists == "replace":
+                tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
+                if_exists = "append"
 
-    stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
-    for dataset in stale_datasets:
-        conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
-        conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
-        s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
+    # Combine tmp and permanent, erase tmp
+    if not first_run:
+        with engine.connect() as con:
+            insert_command = "INSERT INTO `{}.{}` (SELECT * FROM `{}.{}`)".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
+            con.execute(insert_command)
+            drop_command = "DROP TABLE `{}.{}`".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
+            con.execute(drop_command)
+
+
+    if not first_run:
+        stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
+        for dataset in stale_datasets:
+            conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
+            conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
+            s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
 
     engine.dispose()
 
