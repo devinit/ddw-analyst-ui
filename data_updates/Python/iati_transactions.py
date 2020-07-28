@@ -147,7 +147,6 @@ def main(args):
             flat_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=TMP_DATA_SCHEMA, index=False, if_exists=if_exists)
 
             if if_exists == "replace":
-                tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
                 if_exists = "append"
 
         if download_success:
