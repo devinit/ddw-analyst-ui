@@ -76,6 +76,8 @@ def main(args):
     conn = engine.connect()
     meta = MetaData(engine)
     meta.reflect()
+    disable_trigger_command = "ALTER TABLE {}.{} DISABLE TRIGGER ALL".format(DATA_SCHEMA, DATA_TABLENAME)
+    enable_trigger_command = "ALTER TABLE {}.{} ENABLE TRIGGER ALL".format(DATA_SCHEMA, DATA_TABLENAME)
     try:
         datasets = Table(METADATA_TABLENAME, meta, schema=METADATA_SCHEMA, autoload=True)
     except sqlalchemy.exc.NoSuchTableError:
@@ -87,11 +89,13 @@ def main(args):
         first_run = True
     try:
         # Was stopped in the middle of processing
+        conn.execute(disable_trigger_command)
         tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
         insert_command = "INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
         conn.execute(insert_command)
         drop_command = "DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
         conn.execute(drop_command)
+        conn.execute(enable_trigger_command)
     except sqlalchemy.exc.NoSuchTableError:
         pass
 
@@ -155,7 +159,6 @@ def main(args):
 
     # Delete repeats, insert tmp into permanent, erase tmp
     if not first_run:
-        disable_trigger_command = "ALTER TABLE {}.{} DISABLE TRIGGER ALL".format(DATA_SCHEMA, DATA_TABLENAME)
         conn.execute(disable_trigger_command)
         if modified_package_ids:
             conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(modified_package_ids)))
@@ -167,7 +170,6 @@ def main(args):
             conn.execute(drop_command)
         except sqlalchemy.exc.NoSuchTableError:  # In case nothing was inserted into tmp table during update
             pass
-        enable_trigger_command = "ALTER TABLE {}.{} ENABLE TRIGGER ALL".format(DATA_SCHEMA, DATA_TABLENAME)
         conn.execute(enable_trigger_command)
 
 
