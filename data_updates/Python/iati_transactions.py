@@ -109,6 +109,7 @@ def main(args):
     if_exists = "replace"
     bar = progressbar.ProgressBar()
     new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
+    modified_package_ids = [dataset["id"] for dataset in new_datasets if dataset["modified"] or dataset["error"]]
     for dataset in bar(new_datasets):
         download_xml = ""
         try:
@@ -143,9 +144,6 @@ def main(args):
                 transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
                 if_exists = "append"
         else:
-            if dataset["modified"] or dataset["error"]:
-                conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
-
             flat_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=TMP_DATA_SCHEMA, index=False, if_exists=if_exists)
 
             if if_exists == "replace":
@@ -157,8 +155,10 @@ def main(args):
         else:
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
 
-    # Combine tmp and permanent, erase tmp
+    # Delete repeats, insert tmp into permanent, erase tmp
     if not first_run:
+        if modified_package_ids:
+            conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(modified_package_ids)))
         insert_command = "INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
         conn.execute(insert_command)
         drop_command = "DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
