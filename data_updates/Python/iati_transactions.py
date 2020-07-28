@@ -86,10 +86,14 @@ def main(args):
     except sqlalchemy.exc.NoSuchTableError:
         first_run = True
     try:
+        # Was stopped in the middle of processing
         tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
-        if_exists = "append"
+        insert_command = "INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
+        conn.execute(insert_command)
+        drop_command = "DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
+        conn.execute(drop_command)
     except sqlalchemy.exc.NoSuchTableError:
-        if_exists = "replace"
+        pass
 
     if args.errors:
         dataset_filter = datasets.c.error == True
@@ -102,6 +106,7 @@ def main(args):
             datasets.c.error == False
         )
 
+    if_exists = "replace"
     bar = progressbar.ProgressBar()
     new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
     for dataset in bar(new_datasets):
