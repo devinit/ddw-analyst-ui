@@ -117,14 +117,13 @@ def main(args):
             download_success = True
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
             download_success = False
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
             continue
 
         s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
 
         if download_success:
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False))
-        else:
-            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
 
         try:
             root = etree.fromstring(download_xml)
