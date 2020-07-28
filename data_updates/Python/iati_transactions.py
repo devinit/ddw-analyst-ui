@@ -170,9 +170,10 @@ def main(args):
 
     if not first_run:
         stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
+        stale_dataset_ids = [dataset["id"] for dataset in stale_datasets]
+        conn.execute(datasets.delete().where(datasets.c.id.in_(stale_dataset_ids)))
+        conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(stale_dataset_ids)))
         for dataset in stale_datasets:
-            conn.execute(datasets.delete().where(datasets.c.id == dataset["id"]))
-            conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
             s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
 
     engine.dispose()
