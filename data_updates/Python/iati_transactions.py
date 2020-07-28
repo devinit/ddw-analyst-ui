@@ -3,7 +3,7 @@ import argparse
 import progressbar
 import pandas as pd
 import sqlalchemy
-from sqlalchemy import and_, create_engine, MetaData, or_, Table
+from sqlalchemy import and_, distinct, create_engine, MetaData, or_, select, Table
 from lxml import etree
 from iati_transaction_spec import IatiFlat, DTYPES, NUMERIC_DTYPES
 import requests
@@ -91,6 +91,10 @@ def main(args):
         # Was stopped in the middle of processing
         tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
         conn.execute(disable_trigger_command)
+        repeat_id_tuples = conn.execute(select([distinct(tmp_transaction_table.c.package_id)])).fetchall()
+        repeat_ids = [repeat_id_tuple[0] for repeat_id_tuple in repeat_id_tuples]
+        if repeat_ids:
+            conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(repeat_ids)))
         insert_command = "INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
         conn.execute(insert_command)
         drop_command = "DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
