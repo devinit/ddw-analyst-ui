@@ -108,9 +108,9 @@ def main(args):
         download_xml = ""
         try:
             download_xml = requests_retry_session(retries=3).get(url=dataset["url"], timeout=5).content
-            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False))
+            download_success = True
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
-            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
+            download_success = False
             continue
 
         s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
@@ -151,6 +151,11 @@ def main(args):
             if if_exists == "replace":
                 tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
                 if_exists = "append"
+
+        if download_success:
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False))
+        else:
+            conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
 
     # Combine tmp and permanent, erase tmp
     if not first_run:
