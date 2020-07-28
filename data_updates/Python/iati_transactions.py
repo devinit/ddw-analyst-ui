@@ -156,7 +156,11 @@ def main(args):
     # Delete repeats, insert tmp into permanent, erase tmp
     if not first_run:
         if modified_package_ids:
+            disable_trigger_command = "ALTER TABLE {}.{} DISABLE TRIGGER ALL".format(DATA_SCHEMA, DATA_TABLENAME)
+            conn.execute(disable_trigger_command)
             conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(modified_package_ids)))
+            enable_trigger_command = "ALTER TABLE {}.{} ENABLE TRIGGER ALL".format(DATA_SCHEMA, DATA_TABLENAME)
+            conn.execute(enable_trigger_command)
         try:
             tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
             insert_command = "INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
