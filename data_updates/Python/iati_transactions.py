@@ -138,13 +138,7 @@ def main(args):
                 transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
                 if_exists = "append"
         else:
-            repeat_ids = flat_data.iati_identifier.unique().tolist()
-            repeat_filter = or_(
-                transaction_table.c.package_id == dataset["id"],
-                transaction_table.c.iati_identifier.in_(repeat_ids)
-            )
-            del_st = transaction_table.delete().where(repeat_filter)
-            conn.execute(del_st)
+            conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
 
             flat_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=TMP_DATA_SCHEMA, index=False, if_exists=if_exists)
 
