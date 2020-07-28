@@ -143,7 +143,7 @@ def main(args):
                 transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
                 if_exists = "append"
         else:
-            if dataset["modified"] == True:
+            if dataset["modified"] or dataset["error"]:
                 conn.execute(transaction_table.delete().where(transaction_table.c.package_id == dataset["id"]))
 
             flat_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=TMP_DATA_SCHEMA, index=False, if_exists=if_exists)
