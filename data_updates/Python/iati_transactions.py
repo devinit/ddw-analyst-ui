@@ -159,9 +159,9 @@ def main(args):
 
     # Combine tmp and permanent, erase tmp
     if not first_run:
-        insert_command = "INSERT INTO `{}.{}` (SELECT * FROM `{}.{}`)".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
+        insert_command = "INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
         conn.execute(insert_command)
-        drop_command = "DROP TABLE `{}.{}`".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
+        drop_command = "DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
         conn.execute(drop_command)
 
 
