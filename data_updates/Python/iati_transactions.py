@@ -154,11 +154,10 @@ def main(args):
 
     # Combine tmp and permanent, erase tmp
     if not first_run:
-        with engine.connect() as con:
-            insert_command = "INSERT INTO `{}.{}` (SELECT * FROM `{}.{}`)".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
-            con.execute(insert_command)
-            drop_command = "DROP TABLE `{}.{}`".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
-            con.execute(drop_command)
+        insert_command = "INSERT INTO `{}.{}` (SELECT * FROM `{}.{}`)".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
+        conn.execute(insert_command)
+        drop_command = "DROP TABLE `{}.{}`".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
+        conn.execute(drop_command)
 
 
     if not first_run:
