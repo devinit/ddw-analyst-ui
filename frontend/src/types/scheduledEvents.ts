@@ -14,4 +14,5 @@ export interface ScheduledEventRunHistory {
   start_at: string;
   ended_at?: string;
   status: string;
+  logs?: string;
 }

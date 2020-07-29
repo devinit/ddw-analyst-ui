@@ -279,7 +279,8 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
             'scheduled_event',
             'start_at',
             'ended_at',
-            'status'
+            'status',
+            'logs'
         )
 
     def is_instance_running(self, scheduled_event):

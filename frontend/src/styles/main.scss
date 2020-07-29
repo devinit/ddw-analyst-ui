@@ -254,3 +254,12 @@ th .material-icons {
 .card-wizard .moving-tab {
   font-weight: 300;
 }
+
+/** ==== MODAL ==== */
+.modal-dialog {
+  .modal-header {
+    .modal-title {
+      min-height: 25px;
+    }
+  }
+}

@@ -54,7 +54,7 @@ export const ScheduledEventsTableCard: FunctionComponent = () => {
         <Loader content="Loading" />
       </Dimmer>
       <Card className="col-md-12">
-        <Card.Header className="card-header-rose card-header-icon">
+        <Card.Header className="card-header-danger card-header-icon">
           <Card.Header className="card-icon">
             <i className="material-icons">schedule</i>
           </Card.Header>
