@@ -61,22 +61,34 @@ def prod(iterable):
 
 class QueryBuilder:
 
-    def __init__(self, operation=None):
+    def __init__(self, operation=None, request=None, source=None):
 
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
 
-        query_steps = operation.operationstep_set.order_by('step_id')
-        self.initial_table_name = query_steps.first().source.active_mirror_name
-        self.initial_schema_name = query_steps.first().source.schema
+        if request is None:
+            query_steps = operation.operationstep_set.order_by('step_id').all()
+            self.initial_table_name = query_steps.first().source.active_mirror_name
+            self.initial_schema_name = query_steps.first().source.schema
+
+        else:
+            query_steps = request['operation_steps']
+            current_source = source.objects.get(pk=query_steps[0]['source'])
+            self.initial_table_name = current_source.active_mirror_name
+            self.initial_schema_name = current_source.schema
+
         self.current_dataset = Table(
             self.initial_table_name,
             schema=self.initial_schema_name
         )
         self.current_query = Query.from_(self.current_dataset)
 
-        for query_step in query_steps.all():
-            query_func = getattr(self, query_step.query_func)
-            kwargs = query_step.query_kwargs
+        for query_step in query_steps:
+            if request is None:
+                query_func = getattr(self, query_step.query_func)
+                kwargs = query_step.query_kwargs
+            else:
+                query_func = getattr(self, query_step['query_func'])
+                kwargs = query_step['query_kwargs']
             if isinstance(kwargs, type(None)):
                 self = query_func()
             else:
