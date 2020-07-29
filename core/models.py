@@ -233,3 +233,4 @@ class ScheduledEventRunInstance(BaseEntity):
     start_at = models.DateTimeField(null=False, blank=False)
     ended_at = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=1, choices=status_choices, default='p')
+    logs = models.TextField(blank=True, null=True)
