@@ -29,9 +29,10 @@ class Command(BaseCommand):
 
     def run_schedule_when_due(self, schedule, run_instances):
         if run_instances:
+            schedule_has_running_instance = self.check_for_running_instances(schedule)
             for run_instance in run_instances:
-                if self.check_status_of_instance(run_instance, 'p') and run_instance.start_at <= timezone.now():
-                    if self.check_if_schedule_is_already_running(run_instance):
+                if run_instance.status == 'p' and run_instance.start_at <= timezone.now():
+                    if schedule_has_running_instance:
                         self.update_run_instance(run_instance, 's')
                     else:
                         # First update instance to "r" then run
@@ -41,22 +42,16 @@ class Command(BaseCommand):
             start_date = timezone.now() if schedule.start_date <= timezone.now() else schedule.start_date
             self.create_next_run_instance(schedule, last_rundate=timezone.now(), start_date=start_date)
 
-    def check_status_of_instance(self, run_instance, status):
-        run_instance = ScheduledEventRunInstance.objects.get(pk=run_instance.id)
-        if run_instance.status == status:
-            return True
-        return False
-
-    def check_if_schedule_is_already_running(self, run_instance):
+    def check_for_running_instances(self, scheduled_event):
         running_instances = ScheduledEventRunInstance.objects.filter(
-            Q(scheduled_event=run_instance.scheduled_event) & Q(status='r')
+            Q(scheduled_event=scheduled_event) & Q(status='r')
         ).count()
-        if running_instances > 0:
-            return True
-        return False
+
+        return running_instances > 0
 
     def update_run_instance(self, runInstance, updated_status, logs=None):
-        runInstance.ended_at = make_aware(datetime.now())
+        if updated_status != 'p' and updated_status != 'r':
+            runInstance.ended_at = make_aware(datetime.now())
         runInstance.status = updated_status
         runInstance.logs = logs
         runInstance.save()
@@ -79,6 +74,7 @@ class Command(BaseCommand):
             self.create_next_run_instance(schedule, current_date_time)
         except:
             self.update_run_instance(runInstance, 'e', 'An unexpected error occured while executing the script ... please contact the administrator')
+            self.create_next_run_instance(schedule, make_aware(datetime.now()))
 
     def execute_script(self, script_name):
         post_status = status.HTTP_200_OK
