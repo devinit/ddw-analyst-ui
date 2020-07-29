@@ -75,7 +75,7 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
         <Loader content="Loading" />
       </Dimmer>
       <Card className="col-md-12">
-        <Card.Header className="card-header-rose card-header-icon">
+        <Card.Header className="card-header-danger card-header-icon">
           <h4 className="card-title">{event.name} Run History</h4>
         </Card.Header>
         <Card.Body>
