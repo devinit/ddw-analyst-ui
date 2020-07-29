@@ -28,8 +28,8 @@ class Command(BaseCommand):
             self.run_schedule_when_due(schedule, run_instances)
 
     def run_schedule_when_due(self, schedule, run_instances):
+        schedule_has_running_instance = self.check_for_running_instances(schedule)
         if run_instances:
-            schedule_has_running_instance = self.check_for_running_instances(schedule)
             for run_instance in run_instances:
                 if run_instance.status == 'p' and run_instance.start_at <= timezone.now():
                     if schedule_has_running_instance:
@@ -38,7 +38,7 @@ class Command(BaseCommand):
                         # First update instance to "r" then run
                         self.update_run_instance(run_instance, 'r')
                         self.run_and_update_schedule(schedule, run_instance)
-        else:
+        elif not schedule_has_running_instance:
             start_date = timezone.now() if schedule.start_date <= timezone.now() else schedule.start_date
             self.create_next_run_instance(schedule, last_rundate=timezone.now(), start_date=start_date)
 
@@ -63,7 +63,7 @@ class Command(BaseCommand):
 
             #Check if script run was a success/fail and update run instance
             if update_response['return_code'] != 0:
-                self.update_run_instance(runInstance, 'e')
+                self.update_run_instance(runInstance, 'e', update_response['message'])
                 self.stdout.write('Script execution failed for ' + schedule.script_name)
             else:
                 self.update_run_instance(runInstance, 'c')
@@ -84,15 +84,23 @@ class Command(BaseCommand):
         response_data['result'] = 'success'
         response_data['message'] = 'Script ran successfully'
         response_data['return_code'] = 0
+        logs = ''
 
         for item in stream:
+            try:
+                # parse stream content - it's mostly returned as bytes
+                for content in item:
+                    if content:
+                        logs += content.decode('utf-8') + '\n'
+            except TypeError:
+                pass
             pass
         # Check if the last item in generator is an integer
         # The integer is a return code showing 0 for success or anything else for a file execute error
         if item != 0:
             post_status = status.HTTP_500_INTERNAL_SERVER_ERROR
             response_data['result'] = 'error'
-            response_data['message'] = 'Failed to execute the script update'
+            response_data['message'] = 'Script execution failed:\n\n' + logs
             response_data['return_code'] = item
 
         return response_data
@@ -110,7 +118,7 @@ class Command(BaseCommand):
                 status = 'p'
             )
             nextRunInstance.save()
-            self.stdout.write('Pending run instance created')
+            self.stdout.write('Next run instance created for ' + schedule.name)
 
     def calculate_next_runtime(self, last_rundate, interval, interval_type):
         if interval_type and interval_type in 'min':
