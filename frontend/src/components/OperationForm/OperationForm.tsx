@@ -18,6 +18,7 @@ interface OperationFormProps {
   onDeleteOperation?: (operation: OperationMap) => void;
   onDuplicateOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
+  onPreview: () => void;
   onReset?: () => void;
 }
 
@@ -103,6 +104,8 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
     }
   };
 
+  const onPreview = () => () => props.onPreview();
+
   const values: Partial<Operation> = props.operation ? props.operation.toJS() : {};
 
   return (
@@ -186,6 +189,9 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
                 hidden={!props.onReset || !!(values.id && !props.editable)}
               >
                 Refresh
+              </Dropdown.Item>
+              <Dropdown.Item eventKey="4" onClick={onPreview()}>
+                {'Preview Only'}
               </Dropdown.Item>
             </Dropdown.Menu>
 
