@@ -6,6 +6,7 @@ import csv
 import json
 
 import dateutil.parser
+from json.decoder import JSONDecodeError
 from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -29,13 +30,14 @@ from core.models import (Operation, OperationStep, Review, ScheduledEvent,
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
+from core.pypika_utils import QueryBuilder
 from core.serializers import (DataSerializer, OperationSerializer,
                             OperationStepSerializer, ReviewSerializer,
                             ScheduledEventRunInstanceSerializer,
                             ScheduledEventSerializer, SectorSerializer,
                             SourceSerializer, TagSerializer, ThemeSerializer,
                             UserSerializer)
-from data.db_manager import update_table_from_tuple
+from data.db_manager import fetch_data, update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
 
 
@@ -155,6 +157,53 @@ class ViewData(APIView):
         paginator = DataPaginator()
         paginator.set_count(serializer.data['count'])
         page_data = paginator.paginate_queryset(serializer.data['data'], request)
+        return paginator.get_paginated_response(page_data)
+
+
+class PreviewData(APIView):
+    """
+    List top 10 data from executing the operation query.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+
+    def build_query(self, request, limit=None, offset=None, estimate_count=None):
+        """Build an SQL query"""
+        count_query = QueryBuilder(self, request=request.data, source=Source).count_sql(estimate_count)
+        if limit is None:
+            return (count_query, QueryBuilder(self, request=request.data, source=Source).get_sql_without_limit())
+        return (count_query, QueryBuilder(self, request=request.data, source=Source).get_sql(limit, offset))
+
+    def query_table(self, request, limit, offset, estimate_count):
+        """Build a query then execute it to return the matching data"""
+        if limit is None or int(limit) > 10000:
+            limit = 10000
+        queries = self.build_query(request, limit, offset, estimate_count)
+        return fetch_data(queries)
+
+    def get_object(self, request):
+        try:
+            count, data = self.query_table(request, limit=10, offset=0, estimate_count=True)
+            return {
+                'count': count,
+                'data': data
+            }
+        except JSONDecodeError as json_error:
+            return {
+                'count': 0,
+                'data': [
+                    {
+                        'error': str(json_error),
+                        'error_type': 'JSONDecodeError'
+                    }
+                ]
+            }
+
+    def post(self, request):
+        data = self.get_object(request)
+        paginator = DataPaginator()
+        paginator.set_count(data['count'])
+        page_data = paginator.paginate_queryset(data['data'], request)
         return paginator.get_paginated_response(page_data)
 
 
