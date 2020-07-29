@@ -28,16 +28,20 @@ class Command(BaseCommand):
             self.run_schedule_when_due(schedule, run_instances)
 
     def run_schedule_when_due(self, schedule, run_instances):
-        for run_instance in run_instances:
-            if self.check_current_status_of_instance(run_instance, 'p') and run_instance.start_at <= timezone.now():
-                if self.check_if_schedule_is_already_running(run_instance):
-                    self.update_run_instance(run_instance, 's')
-                else:
-                    # First update instance to "r" then run
-                    self.update_run_instance(run_instance, 'r')
-                    self.run_and_update_schedule(schedule, run_instance)
+        if run_instances:
+            for run_instance in run_instances:
+                if self.check_status_of_instance(run_instance, 'p') and run_instance.start_at <= timezone.now():
+                    if self.check_if_schedule_is_already_running(run_instance):
+                        self.update_run_instance(run_instance, 's')
+                    else:
+                        # First update instance to "r" then run
+                        self.update_run_instance(run_instance, 'r')
+                        self.run_and_update_schedule(schedule, run_instance)
+        else:
+            start_date = timezone.now() if schedule.start_date <= timezone.now() else schedule.start_date
+            self.create_next_run_instance(schedule, last_rundate=timezone.now(), start_date=start_date)
 
-    def check_current_status_of_instance(self, run_instance, status):
+    def check_status_of_instance(self, run_instance, status):
         run_instance = ScheduledEventRunInstance.objects.get(pk=run_instance.id)
         if run_instance.status == status:
             return True
@@ -93,7 +97,7 @@ class Command(BaseCommand):
 
         return response_data
 
-    def create_next_run_instance(self, schedule, last_rundate):
+    def create_next_run_instance(self, schedule, last_rundate, start_date=None):
         if schedule.repeat:
             #Create future run instance if schedule has been repeated
             nextRunInstance = ScheduledEventRunInstance(
@@ -102,7 +106,7 @@ class Command(BaseCommand):
                     last_rundate,
                     schedule.interval,
                     schedule.interval_type
-                ),
+                ) if not start_date else start_date,
                 status = 'p'
             )
             nextRunInstance.save()
