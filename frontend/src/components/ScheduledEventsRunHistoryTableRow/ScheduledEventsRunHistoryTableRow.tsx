@@ -27,7 +27,7 @@ export const ScheduledEventsRunHistoryTableRow: FunctionComponent<ScheduledEvent
         <span className={classNames('badge', badgeClass)}>{convertStatus(history.status)}</span>
       </td>
       <td>{moment.utc(history.start_at).format('LLL')}</td>
-      <td>{history.ended_at ? moment.utc(history.ended_at).format('LLL') : 'None'}</td>
+      <td>{history.ended_at ? moment.utc(history.ended_at).format('LLL') : ''}</td>
       <td>
         {history.logs && onViewLogs ? (
           <Button size="sm" variant="link" className="btn-danger" onClick={onClickInfo}>
