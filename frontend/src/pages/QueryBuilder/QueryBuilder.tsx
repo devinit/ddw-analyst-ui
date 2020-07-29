@@ -16,12 +16,14 @@ import { SourcesState } from '../../reducers/sources';
 import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
-import { Operation, OperationMap, OperationStepMap } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { Operation, OperationMap, OperationStepMap, OperationData } from '../../types/operations';
+import { SourceMap, ColumnList } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { QueryBuilderState, queryBuilderReducerId } from './reducers';
+import { BasicModal } from '../../components/BasicModal';
+import { OperationDataPreviewTable } from '../../components/OperationDataPreviewTable';
 
 interface ActionProps {
   actions: typeof sourcesActions &
@@ -33,6 +35,7 @@ interface ActionProps {
 }
 interface ReduxState {
   sources: SourcesState;
+  source?: SourceMap;
   operations: List<OperationMap>;
   activeOperation?: OperationMap;
   activeSource?: SourceMap;
@@ -42,6 +45,10 @@ interface ReduxState {
 }
 interface RouterParams {
   id?: string;
+}
+interface QueryState {
+  modalShow: boolean;
+  previewData: OperationData[];
 }
 type QueryBuilderProps = ActionProps & ReduxState & RouteComponentProps<RouterParams>;
 
@@ -55,7 +62,15 @@ const StyledCardBody = styled(Card.Body)`
   }
 `;
 
-class QueryBuilder extends React.Component<QueryBuilderProps> {
+class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
+  constructor(props: QueryBuilderProps) {
+    super(props);
+    this.state = {
+      modalShow: false,
+      previewData: [],
+    };
+  }
+
   render() {
     const { activeSource, page } = this.props;
     const activeStep = page.get('activeStep') as OperationStepMap | undefined;
@@ -127,30 +142,57 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     const editable = this.isEditable(operation);
 
     return (
-      <OperationForm
-        operation={operation}
-        editable={editable}
-        valid={steps.count() > 0}
-        onUpdateOperation={this.onUpdateOperation}
-        onDuplicateOperation={this.onDuplicateOperation}
-        onSuccess={this.onSaveOperation}
-        processing={this.props.page.get('processing') as boolean}
-        onDeleteOperation={this.onDeleteOperation}
-        onReset={!id ? () => this.props.actions.setActiveOperation() : undefined}
-      >
-        <OperationSteps
-          sources={this.props.sources.get('sources') as List<SourceMap>}
-          isFetchingSources={this.props.sources.get('loading') as boolean}
-          steps={steps}
-          fetchSources={this.props.actions.fetchSources}
-          onSelectSource={this.props.actions.setActiveSource}
-          onAddStep={this.props.actions.updateActiveStep}
-          activeSource={this.props.activeSource}
-          activeStep={activeStep}
-          onClickStep={(step) => this.props.actions.updateActiveStep(step, true)}
+      <>
+        <BasicModal
+          show={this.state.modalShow}
+          onHide={() => {
+            this.setState((state) => {
+              return { modalShow: !state.modalShow };
+            });
+          }}
+        >
+          <p>{this.renderTable()}</p>
+        </BasicModal>
+        <OperationForm
+          operation={operation}
           editable={editable}
-        />
-      </OperationForm>
+          valid={steps.count() > 0}
+          onUpdateOperation={this.onUpdateOperation}
+          onDuplicateOperation={this.onDuplicateOperation}
+          onSuccess={this.onSaveOperation}
+          onPreview={this.onPreviewOperation}
+          processing={this.props.page.get('processing') as boolean}
+          onDeleteOperation={this.onDeleteOperation}
+          onReset={!id ? () => this.props.actions.setActiveOperation() : undefined}
+        >
+          <OperationSteps
+            sources={this.props.sources.get('sources') as List<SourceMap>}
+            isFetchingSources={this.props.sources.get('loading') as boolean}
+            steps={steps}
+            fetchSources={this.props.actions.fetchSources}
+            onSelectSource={this.props.actions.setActiveSource}
+            onAddStep={this.props.actions.updateActiveStep}
+            activeSource={this.props.activeSource}
+            activeStep={activeStep}
+            onClickStep={(step) => this.props.actions.updateActiveStep(step, true)}
+            editable={editable}
+          />
+        </OperationForm>
+      </>
+    );
+  }
+
+  private renderTable() {
+    const columns =
+      this.props.source && (this.props.source.get('columns') as ColumnList | undefined);
+
+    return (
+      <OperationDataPreviewTable
+        list={this.state.previewData}
+        columns={columns}
+        limit={10}
+        offset={0}
+      />
     );
   }
 
@@ -265,6 +307,37 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     }
   };
 
+  private onPreviewOperation = () => {
+    const steps = this.props.page.get('steps') as List<OperationStepMap>;
+    const { activeOperation: operation } = this.props;
+    if (!operation) {
+      return;
+    }
+
+    const url = `${api.routes.PREVIEW_SINGLE_DATASET}`;
+
+    const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
+    if (this.props.token) {
+      axios
+        .request({
+          url,
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${this.props.token}`,
+          },
+          data,
+        })
+        .then((response: AxiosResponse) => {
+          this.setState({ previewData: response.data.results });
+          this.setState({ modalShow: true });
+        })
+        .catch(() => {
+          console.log(`The preview operation was not successsful`);
+        });
+    }
+  };
+
   private onDeleteOperationStep = (step: OperationStepMap) => {
     this.props.actions.updateActiveStep(undefined);
     this.props.actions.deleteOperationStep(step);
@@ -294,6 +367,7 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
     activeSource: reduxStore.getIn(['sources', 'activeSource']),
     page: reduxStore.get(`${queryBuilderReducerId}`),
     user: reduxStore.get('user') as UserState,
+    source: reduxStore.getIn(['sources', 'activeSource']),
   };
 };
 
