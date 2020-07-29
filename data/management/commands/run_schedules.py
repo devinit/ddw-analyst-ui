@@ -55,26 +55,30 @@ class Command(BaseCommand):
             return True
         return False
 
-    def update_run_instance(self, runInstance, updated_status):
+    def update_run_instance(self, runInstance, updated_status, logs=None):
         runInstance.ended_at = make_aware(datetime.now())
         runInstance.status = updated_status
+        runInstance.logs = logs
         runInstance.save()
 
     def run_and_update_schedule(self, schedule, runInstance):
-        #Run the script
-        update_response = self.execute_script(schedule.script_name)
+        try:
+            #Run the script
+            update_response = self.execute_script(schedule.script_name)
 
-        #Check if script run was a success/fail and update run instance
-        if update_response['return_code'] != 0:
-            self.update_run_instance(runInstance, 'e')
-            self.stdout.write('Update failed for ' + schedule.script_name)
-        else:
-            self.update_run_instance(runInstance, 'c')
-            self.stdout.write('Update successful for ' + schedule.script_name)
+            #Check if script run was a success/fail and update run instance
+            if update_response['return_code'] != 0:
+                self.update_run_instance(runInstance, 'e')
+                self.stdout.write('Script execution failed for ' + schedule.script_name)
+            else:
+                self.update_run_instance(runInstance, 'c')
+                self.stdout.write('Script ran successfully for ' + schedule.script_name)
 
-        # This makes sure the next runtime is calculated from the time the last one was run i.e current time
-        current_date_time = make_aware(datetime.now())
-        self.create_next_run_instance(schedule, current_date_time)
+            # This makes sure the next runtime is calculated from the time the last one was run i.e current time
+            current_date_time = make_aware(datetime.now())
+            self.create_next_run_instance(schedule, current_date_time)
+        except:
+            self.update_run_instance(runInstance, 'e', 'An unexpected error occured while executing the script ... please contact the administrator')
 
     def execute_script(self, script_name):
         post_status = status.HTTP_200_OK
@@ -82,7 +86,7 @@ class Command(BaseCommand):
         stream = executor.stream()
         response_data = {}
         response_data['result'] = 'success'
-        response_data['message'] = 'Script update success'
+        response_data['message'] = 'Script ran successfully'
         response_data['return_code'] = 0
 
         for item in stream:
