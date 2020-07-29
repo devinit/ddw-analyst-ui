@@ -36,7 +36,7 @@ export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRun
       </thead>
       <tbody>{renderRows()}</tbody>
       <BasicModal show={!!info} onHide={onModalHide}>
-        <p>{info}</p>
+        <p style={{ whiteSpace: 'pre-line' }}>{info}</p>
       </BasicModal>
     </Table>
   );
