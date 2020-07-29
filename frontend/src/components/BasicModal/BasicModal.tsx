@@ -6,16 +6,18 @@ interface BasicModalProps extends ModalProps {
   title?: string;
   onOkay?: () => void;
   justifyFooter?: boolean;
+  onHide?: () => void;
 }
 
 export const BasicModal: FunctionComponent<BasicModalProps> = ({
   title,
   onOkay,
   justifyFooter,
+  onHide,
   ...props
 }) => {
   return (
-    <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
+    <Modal {...props} aria-labelledby="contained-modal-title-vcenter" onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">{title}</Modal.Title>
       </Modal.Header>
@@ -26,7 +28,7 @@ export const BasicModal: FunctionComponent<BasicModalProps> = ({
             OK
           </Button>
         ) : null}
-        <Button variant="link" className="btn-danger" onClick={props.onHide}>
+        <Button variant="link" className="btn-danger" onClick={onHide}>
           Close
         </Button>
       </Modal.Footer>
