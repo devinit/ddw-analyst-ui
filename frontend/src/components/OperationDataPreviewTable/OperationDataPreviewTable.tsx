@@ -1,8 +1,7 @@
-import { List } from 'immutable';
 import * as React from 'react';
 import { Col, Row, Table } from 'react-bootstrap';
 import styled from 'styled-components';
-import { OperationDataMap, OperationData } from '../../types/operations';
+import { OperationData } from '../../types/operations';
 import { ColumnList } from '../../types/sources';
 import { formatString } from '../../utils';
 
