@@ -7,6 +7,7 @@ export const api = {
     DATASETS: '/api/datasets/',
     MY_DATASETS: '/api/datasets/mine/',
     SINGLE_DATASET: '/api/dataset/',
+    PREVIEW_SINGLE_DATASET: '/api/dataset/preview/',
     EXPORT: '/api/export/',
     CHANGE_PASSWORD: '/api/change_password/',
     VIEW_SCHEDULED_EVENTS: '/api/scheduled_event/',
