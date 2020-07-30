@@ -17,7 +17,6 @@ interface ComponentProps {
   offset: number;
   links?: LinksMap;
   count: number;
-  onRowClick: (source: SourceMap) => void;
 }
 type SourcesTableCardProps = ComponentProps;
 
@@ -80,11 +79,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
           </Card.Title>
         </Card.Header>
         <Card.Body>
-          <SourcesTable
-            sources={props.sources}
-            onRowClick={props.onRowClick}
-            activeSource={props.activeSource}
-          />
+          <SourcesTable sources={props.sources} activeSource={props.activeSource} />
           {renderPagination()}
         </Card.Body>
       </Card>

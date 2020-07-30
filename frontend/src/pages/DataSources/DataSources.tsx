@@ -1,11 +1,10 @@
 import { List } from 'immutable';
-import React, { ReactNode, FunctionComponent, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import React, { ReactNode, FunctionComponent, useState, createContext } from 'react';
+import { Col, Row, Modal } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
-import { Modal } from 'react-bootstrap';
 import * as sourcesActions from '../../actions/sources';
 import { SourceDetailsTab } from '../../components/SourceDetailsTab';
 import { SourcesTableCard } from '../../components/SourcesTableCard';
@@ -24,7 +23,14 @@ interface ReduxState {
   sources: SourcesState;
   page: DataSourcesState;
 }
+
+export interface DataSource {
+  onMetadataClick?: (source: SourceMap) => void;
+  onDatasetClick?: (source: SourceMap) => void;
+}
 type DataSourcesProps = ReduxState & ActionProps & RouteComponentProps;
+
+export const DataSourcesContext = createContext<DataSource>({});
 
 const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
   const sources = props.sources.get('sources') as List<SourceMap>;
@@ -33,7 +39,7 @@ const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
 
   const renderDetailsTab = (activeSource: SourceMap | undefined, loading = false): ReactNode => {
-    if (activeSource && !loading) {
+    if (activeSource && !loading && showModal) {
       return (
         <Modal show={showModal} onHide={hideModal}>
           <SourceDetailsTab source={activeSource} />
@@ -56,9 +62,15 @@ const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
     );
   };
 
-  const onRowClick = (activeSource: SourceMap): void => {
+  const handleMetadata = (activeSource: SourceMap) => {
     props.actions.setActiveSource(activeSource);
     setShowModal(true);
+  };
+
+  const handleDataSet = (activeSource: SourceMap): void => {
+    props.actions.setActiveSource(activeSource);
+    console.log('data');
+    // navigates to a page containing all Queries created from a particular Data Source.
   };
 
   const hideModal = () => {
@@ -66,23 +78,29 @@ const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
   };
 
   return (
-    <Row>
-      <Col>
-        <Dimmer active={loading} inverted>
-          <Loader content="Loading" />
-        </Dimmer>
-        <SourcesTableCard
-          loading={loading}
-          sources={sources}
-          limit={props.sources.get('limit') as number}
-          offset={props.sources.get('offset') as number}
-          activeSource={activeSource}
-          count={props.sources.get('count') as number}
-          onRowClick={onRowClick}
-        />
-      </Col>
-      {renderDetailsTab(activeSource, loading)}
-    </Row>
+    <DataSourcesContext.Provider
+      value={{
+        onMetadataClick: handleMetadata,
+        onDatasetClick: handleDataSet,
+      }}
+    >
+      <Row>
+        <Col>
+          <Dimmer active={loading} inverted>
+            <Loader content="Loading" />
+          </Dimmer>
+          <SourcesTableCard
+            loading={loading}
+            sources={sources}
+            limit={props.sources.get('limit') as number}
+            offset={props.sources.get('offset') as number}
+            activeSource={activeSource}
+            count={props.sources.get('count') as number}
+          />
+        </Col>
+        {showModal ? renderDetailsTab(activeSource, loading) : null}
+      </Row>
+    </DataSourcesContext.Provider>
   );
 };
 

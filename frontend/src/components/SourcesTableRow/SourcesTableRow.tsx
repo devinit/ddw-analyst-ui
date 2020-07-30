@@ -1,12 +1,13 @@
 import classNames from 'classnames';
-import * as React from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 export interface SourcesTableRowProps {
   classNames?: string;
-  onClick: () => void;
   indicator: string;
   indicatorAcronym: string;
   updatedOn: string;
+  onDatasetClick: (() => void) | undefined;
+  onMetadataClick: (() => void) | undefined;
 }
 
 export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
@@ -23,12 +24,12 @@ export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
         <Button
           variant="outline-success"
           size="sm"
-          onClick={props.onClick}
+          onClick={props.onMetadataClick}
           data-testid="sources-table-row"
         >
           Metadata
         </Button>
-        <Button variant="outline-success" size="sm">
+        <Button variant="outline-success" size="sm" onClick={props.onDatasetClick}>
           Datasets
         </Button>
       </td>

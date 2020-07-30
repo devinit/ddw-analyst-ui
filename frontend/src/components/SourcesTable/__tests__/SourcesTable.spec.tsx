@@ -37,7 +37,7 @@ afterEach(cleanup);
 
 test('renders correctly with default props', () => {
   const renderer = TestRenderer.create(
-    <SourcesTable activeSource={source} sources={sourcesList} onRowClick={jest.fn()} />,
+    <SourcesTable activeSource={source} sources={sourcesList} />,
   ).toJSON();
 
   expect(renderer).toMatchSnapshot();
@@ -45,7 +45,7 @@ test('renders correctly with default props', () => {
 
 test('renders an empty table if no sources are provided', () => {
   const renderer = TestRenderer.create(
-    <SourcesTable activeSource={source} sources={List()} onRowClick={jest.fn()} />,
+    <SourcesTable activeSource={source} sources={List()} />,
   ).toJSON();
 
   expect(renderer).toMatchSnapshot();
@@ -53,7 +53,7 @@ test('renders an empty table if no sources are provided', () => {
 
 test('renders correctly when the sources are updated', () => {
   const { container, rerender } = render(
-    <SourcesTable activeSource={source} sources={sourcesList} onRowClick={jest.fn()} />,
+    <SourcesTable activeSource={source} sources={sourcesList} />,
   );
   sourcesList = sourcesList.push(
     source
@@ -62,7 +62,7 @@ test('renders correctly when the sources are updated', () => {
       .set('indicator_acronym', 'DAC1')
       .set('last_updated_on', new Date('August 19, 2018 23:15:30').toISOString()),
   );
-  rerender(<SourcesTable activeSource={source} sources={sourcesList} onRowClick={jest.fn()} />);
+  rerender(<SourcesTable activeSource={source} sources={sourcesList} />);
 
   expect(container).toMatchSnapshot();
 });
