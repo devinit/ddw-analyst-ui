@@ -41,7 +41,7 @@ from data_updates.utils import ScriptExecutor, list_update_scripts
 
 class ListUpdateScripts(APIView):
     """
-    A class to allow an superuser to list update scripts
+    Allow any user to list all update scripts
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

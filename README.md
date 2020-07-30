@@ -221,3 +221,69 @@ postman.setEnvironmentVariable("token", jsonData.token);
     {
         'status': 'c', //possible options for the status field are in ScheduledEventRunInstance model
     }
+
+5.  List all update scripts
+    GET - http://127.0.0.1:8000/api/list_update_scripts/
+
+6.  Download csv file for selected operation; Operation is defined by id which is 1 below;
+    GET - http://127.0.0.1:8000/api/export/1/
+
+7.  Return result of query operation defined by its id which is 1 below;
+    GET - http://127.0.0.1:8000/api/operations/data/1/
+
+8.  Return list of sectors;
+    GET - http://127.0.0.1:8000/api/sectors/
+
+9.  Return details of sector selected by id;
+    GET - http://127.0.0.1:8000/api/sectors/1/
+
+10. Return list of themes;
+    GET - http://127.0.0.1:8000/api/themes/
+
+11. Return details of theme selected by id;
+    GET - http://127.0.0.1:8000/api/themes/1/
+
+12. Return list of published datasets;
+    GET - http://127.0.0.1:8000/api/datasets/
+
+13. Return list of both draft and published datasets;
+    GET - http://127.0.0.1:8000/api/datasets/mine/
+
+14. Return details of selected dataset;
+    GET - http://127.0.0.1:8000/api/dataset/1/
+
+15. Return list of reviews;
+    GET - http://127.0.0.1:8000/api/reviews/
+
+16. Return details of review selected by id;
+    GET - http://127.0.0.1:8000/api/reviews/1/
+
+17. Return list of operation steps;
+    GET - http://127.0.0.1:8000/api/operation_steps/
+
+18. Return details of operation step selected by id;
+    GET - http://127.0.0.1:8000/api/operation_steps/1/
+
+19. Return list of users;
+    GET - http://127.0.0.1:8000/api/users/
+
+20. Return details of user selected by id;
+    GET - http://127.0.0.1:8000/api/users/1/
+
+21. Return list of tags;
+    GET - http://127.0.0.1:8000/api/tags/
+    Headers:
+    Authorization: Token 444e8557ae50b6513470af8d87e089ade581ed30a4ae654c16928d7a
+    Content-Type: application/json
+
+22. Return details of tag selected by id;
+    GET - http://127.0.0.1:8000/api/tag/1/
+    Headers:
+    Authorization: Token 444e8557ae50b6513470af8d87e089ade581ed30a4ae654c16928d7a
+    Content-Type: application/json
+
+23. Return list of sources;
+    GET - http://127.0.0.1:8000/api/sources/
+
+24. Return details of source selected by id;
+    GET - http://127.0.0.1:8000/api/sources/1/
