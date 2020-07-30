@@ -175,7 +175,6 @@ exports[`renders correctly with default props 1`] = `
             className="btn btn-outline-success btn-sm"
             data-testid="sources-table-row"
             disabled={false}
-            onClick={[Function]}
             type="button"
           >
             Metadata
@@ -206,7 +205,6 @@ exports[`renders correctly with default props 1`] = `
             className="btn btn-outline-success btn-sm"
             data-testid="sources-table-row"
             disabled={false}
-            onClick={[Function]}
             type="button"
           >
             Metadata

@@ -7,10 +7,11 @@ import { fireEvent, render } from '@testing-library/react';
 import { SourcesTableRow, SourcesTableRowProps } from '../SourcesTableRow';
 
 const props: SourcesTableRowProps = {
-  onClick: jest.fn(),
   indicator: 'World Bank Indicators',
   indicatorAcronym: 'wbi',
   updatedOn: new Date('August 19, 2018 23:15:30').toISOString(),
+  onDatasetClick: jest.fn(),
+  onMetadataClick: jest.fn(),
 };
 
 test('renders correctly with the default props', () => {
@@ -29,5 +30,5 @@ test('responds to click events', () => {
 
   fireEvent.click(getByTestId('sources-table-row'));
 
-  expect(props.onClick).toHaveBeenCalled();
+  expect(props.onMetadataClick).toHaveBeenCalled();
 });

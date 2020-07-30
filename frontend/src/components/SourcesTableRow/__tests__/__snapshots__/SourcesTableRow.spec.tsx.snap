@@ -26,6 +26,7 @@ exports[`renders correctly with the default props 1`] = `
     <button
       className="btn btn-outline-success btn-sm"
       disabled={false}
+      onClick={[MockFunction]}
       type="button"
     >
       Datasets
