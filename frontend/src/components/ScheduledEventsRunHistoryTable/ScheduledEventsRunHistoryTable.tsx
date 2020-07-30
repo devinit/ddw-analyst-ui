@@ -1,5 +1,6 @@
 import React, { FunctionComponent, ReactNode, useState } from 'react';
 import { Table } from 'react-bootstrap';
+import styled from 'styled-components';
 import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 import { BasicModal } from '../BasicModal';
 import { ScheduledEventsRunHistoryTableRow } from '../ScheduledEventsRunHistoryTableRow';
@@ -7,6 +8,13 @@ import { ScheduledEventsRunHistoryTableRow } from '../ScheduledEventsRunHistoryT
 interface ScheduledEventRunHistoryTableProps {
   data: ScheduledEventRunHistory[];
 }
+
+const StyledContent = styled.p`
+  white-space: pre-line;
+  max-height: 300px;
+  overflow-y: auto;
+`;
+
 export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRunHistoryTableProps> = (
   props,
 ) => {
@@ -36,7 +44,7 @@ export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRun
       </thead>
       <tbody>{renderRows()}</tbody>
       <BasicModal show={!!info} onHide={onModalHide}>
-        <p style={{ whiteSpace: 'pre-line' }}>{info}</p>
+        <StyledContent>{info}</StyledContent>
       </BasicModal>
     </Table>
   );
