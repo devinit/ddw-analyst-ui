@@ -164,3 +164,60 @@ postman.setEnvironmentVariable("token", jsonData.token);
 4. Check if there is a cron job set to renew certificates. If there is non add the cron task below. This will try to renew the certificate twice a day every day
 
 `0 */12 * * * /root/ddw-analyst-ui/certbot.sh >/dev/null 2>&1`
+
+
+### API
+
+1.  Login and get token
+    POST - http://127.0.0.1:8000/api/auth/login/
+    Request Body:
+    {
+      'username': ......,
+      'password': ......
+    }
+    Response:
+    {
+      "expiry": "2020-05-21T19:44:52.855584Z",
+      "token": "444e8557ae50b6513490ca73c970af8d87e089ade581ed30a4ae654c16928d7a",
+      "user": {
+        "id": 1,
+        "username": ....,
+        "tag_set": [],
+        "operation_set": [],
+        "review_set": [],
+        "is_superuser": true,
+        "user_permissions": []
+      }
+    }
+
+2.  Fetch scheduled events
+    GET - http://127.0.0.1:8000/api/scheduled_event/
+    Headers:
+    Authorization: Token 557ae50b6513490ca73c970af8d87e089ade581ed30a4ae654c16928d7a
+    Content-Type: application/json
+
+3.  Fetch scheduled event run instances (history) - takes in the scheduled event ID
+    GET - http://127.0.0.1:8000/api/scheduled_event/1/run_instances/
+    Headers:
+    Authorization: Token 444e855790ca73c970af8d87e089ade581ed30a4ae654c16928d7a
+    Content-Type: application/json
+
+3.  Create scheduled event run instance - this is how runs are scheduled outside the parameters of the main event
+    POST - http://127.0.0.1:8000/api/scheduled_event/1/run_instances/
+    Headers:
+    Authorization: Token 444e8557ae50b6513470af8d87e089ade581ed30a4ae654c16928d7a
+    Content-Type: application/json
+    Request Body:
+    {
+      'start_at': '2020-05-21T04:23Z', //datetime field
+    }
+
+4.  Update run instance
+    PUT - http://127.0.0.1:8000/api/scheduled_event/run_instances/1/
+    Headers:
+    Authorization: Token 444e8557ae50b6513490ca73c970af8d87e089ade581ed30a4ae654c16928d7a
+    Content-Type: application/json
+    Request Body:
+    {
+        'status': 'c', //possible options for the status field are in ScheduledEventRunInstance model
+    }
