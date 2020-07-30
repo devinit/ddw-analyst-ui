@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.db import connections
 from django.db.models import Q
 from django.http import Http404, HttpResponse, StreamingHttpResponse
+from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from knox.auth import TokenAuthentication
@@ -117,20 +118,19 @@ class StreamingExporter:
 
 @csrf_exempt
 def streaming_export_view(request, pk):
-    posted_token = request.POST.get("token", None)
-    if posted_token is not None:
-        token_auth = TokenAuthentication()
-        try:
-            user, _ = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
-            if user.is_authenticated:
-                operation = Operation.objects.get(pk=pk)
-                exporter = StreamingExporter(operation)
-                response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
-                response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
-                return response
-        except exceptions.AuthenticationFailed:
-            return redirect('/login/')
-    return redirect('/login/')
+    try:
+        operation = Operation.objects.get(pk=pk)
+        exporter = StreamingExporter(operation)
+        response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
+        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
+        return response
+    except Operation.DoesNotExist:
+        raise Http404
+    except json.decoder.JSONDecodeError as json_error:
+        JsonResponse({
+            'error': str(json_error),
+            'error_type': 'JSONDecodeError'
+        })
 
 
 class ViewData(APIView):
