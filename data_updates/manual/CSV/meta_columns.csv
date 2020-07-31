@@ -502,3 +502,11 @@ iati_transactions,x_yyyymm,x_yyyymm,YYYYMM year and month,C
 iati_transactions,x_covid,x_covid,X Covid flag,C
 iati_transactions,package_id,package_id,IATI Registry Package ID,C
 iati_transactions,last_modified,last_modified,Last modified timestamp,C
+iati_publishers,reporting_org_ref,reporting_org_ref,Reporting Organisation Reference Code,C
+iati_publishers,reporting_org_narrative,reporting_org_narrative,Reporting Organisation Narrative,C
+iati_publishers,x_di_org_type,x_di_org_type,DI Organisation Type,C
+iati_publishers,x_di_realtime_status,x_di_realtime_status,DI Realtime Data Satus,C
+iati_publishers,reporting_org_type_code,reporting_org_type_code,Reporting Organisation Type Code,N
+iati_publishers,x_reporting_org_type,x_reporting_org_type,X Reporting Organisation Type,C
+iati_publishers,org_hq,org_hq,Organisation Headquarters,C
+iati_publishers,registry_id,registry_id,Registry ID,C
