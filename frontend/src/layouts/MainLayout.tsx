@@ -212,7 +212,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/update" exact component={AsyncDataUpdate} />
               <Route path="/queries/data/:id" exact component={AsyncQueryData} />
               <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
-              <Route path="/datasource/:id" exact component={AsyncDataSourceQuery} />
+              <Route path="/sources/datasource/:id" exact component={AsyncDataSourceQuery} />
             </Switch>
             <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
               {ModalContent ? <ModalContent /> : null}
