@@ -20,5 +20,5 @@ urlpatterns = [
     path('designs/scheduled-events/', views.scheduled_events),
     path('designs/update-data-source/', views.update_data_source),
     path('scheduledevents/', views.index),
-    path('datasource/<int:pk>', views.with_id)
+    path('sources/datasource/<int:pk>', views.with_id)
 ]

@@ -2,7 +2,7 @@ import { List } from 'immutable';
 import React, { ReactNode, FunctionComponent, useState, createContext } from 'react';
 import { Col, Row, Modal } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
 import * as sourcesActions from '../../actions/sources';
@@ -37,6 +37,7 @@ const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
   const loading = props.sources.get('loading') as boolean;
   const activeSource = props.page.get('activeSource') as SourceMap | undefined;
   const [showModal, setShowModal] = useState(false);
+  const history = useHistory();
 
   const renderDetailsTab = (activeSource: SourceMap | undefined, loading = false): ReactNode => {
     if (activeSource && !loading && showModal) {
@@ -69,8 +70,8 @@ const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
 
   const handleDataSet = (activeSource: SourceMap, sourceId: number): void => {
     props.actions.setActiveSource(activeSource);
-    console.log(sourceId);
-    // navigates to a page containing all Queries created from a particular Data Source.
+    const path = `datasource/${sourceId}`;
+    history.push(path);
   };
 
   const hideModal = () => {
