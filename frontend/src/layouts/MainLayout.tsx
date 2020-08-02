@@ -15,6 +15,7 @@ import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { AsyncDataSources } from '../pages/DataSources';
+import { AsyncDataSourceQuery } from '../pages/DataSourceQuery';
 import { AsyncDataUpdate } from '../pages/DataUpdate';
 import { AsyncHome } from '../pages/Home';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
@@ -211,6 +212,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/update" exact component={AsyncDataUpdate} />
               <Route path="/queries/data/:id" exact component={AsyncQueryData} />
               <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
+              <Route path="/datasource/:id" exact component={AsyncDataSourceQuery} />
             </Switch>
             <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
               {ModalContent ? <ModalContent /> : null}

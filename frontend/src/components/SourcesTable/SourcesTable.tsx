@@ -20,7 +20,7 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
           indicator={source.get('indicator') as string}
           indicatorAcronym={source.get('indicator_acronym') as string}
           updatedOn={source.get('last_updated_on') as string}
-          onDatasetClick={onDatasetClick ? () => onDatasetClick(source) : undefined}
+          onDatasetClick={onDatasetClick ? () => onDatasetClick(source, source.get('id')) : undefined}
           onMetadataClick={onMetadataClick ? () => onMetadataClick(source) : undefined}
         />
       ));
