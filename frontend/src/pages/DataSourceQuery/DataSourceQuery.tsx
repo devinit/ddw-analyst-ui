@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useParams } from 'react-router';
 import { Row } from 'react-bootstrap';
+import { DataSourceQueryCard } from '../../components/DataSourceQueryCard';
 
 const DataSourceQuery = (): ReactElement => {
   const { id } = useParams();
@@ -8,7 +9,7 @@ const DataSourceQuery = (): ReactElement => {
   return (
     <Row>
       {/*  Queries created from a particular Data Source. */}
-      <h1>DataSourceQuery {id}</h1>
+      <DataSourceQueryCard id={id} />
     </Row>
   );
 };
