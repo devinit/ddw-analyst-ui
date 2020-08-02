@@ -26,7 +26,7 @@ interface ReduxState {
 
 export interface DataSource {
   onMetadataClick?: (source: SourceMap) => void;
-  onDatasetClick?: (source: SourceMap) => void;
+  onDatasetClick?: (source: SourceMap, sourceId: number) => void;
 }
 type DataSourcesProps = ReduxState & ActionProps & RouteComponentProps;
 
@@ -67,9 +67,9 @@ const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
     setShowModal(true);
   };
 
-  const handleDataSet = (activeSource: SourceMap): void => {
+  const handleDataSet = (activeSource: SourceMap, sourceId: number): void => {
     props.actions.setActiveSource(activeSource);
-    console.log('data');
+    console.log(sourceId);
     // navigates to a page containing all Queries created from a particular Data Source.
   };
 
