@@ -16,6 +16,7 @@ from django.utils.timezone import make_aware
 from rest_framework import pagination, serializers
 from rest_framework.utils import model_meta
 
+from core import query
 from core.const import DEFAULT_LIMIT_COUNT
 from core.models import (Operation, OperationStep, Review, ScheduledEvent,
                         ScheduledEventRunInstance, Sector, Source,
@@ -34,7 +35,7 @@ class DataSerializer(serializers.BaseSerializer):
             limit = DEFAULT_LIMIT_COUNT
         operation = instance['operation_instance']
         try:
-            count, data = operation.query_table(limit, offset, estimate_count=True)
+            count, data = query.query_table(limit, offset, estimate_count=True, operation=operation)
             return {
                 'count': count,
                 'data': data
@@ -126,7 +127,7 @@ class OperationSerializer(serializers.ModelSerializer):
         for step in read_only_dict['operationstep_set']:
             OperationStep.objects.create(operation=operation, **step)
         operation.user = read_only_dict['user']
-        operation.operation_query = operation.build_query()
+        operation.operation_query = query.build_query(operation=operation)
         operation.save()
 
         return operation
@@ -162,7 +163,7 @@ class OperationSerializer(serializers.ModelSerializer):
             step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
             step_for_delete.delete()
 
-        instance.operation_query = instance.build_query()
+        instance.operation_query = query.build_query(operation=instance)
         instance.save()
 
         return instance

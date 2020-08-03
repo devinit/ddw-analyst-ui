@@ -6,7 +6,6 @@ import csv
 import json
 
 import dateutil.parser
-from json.decoder import JSONDecodeError
 from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -25,6 +24,7 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
+from core import query
 from core.models import (Operation, OperationStep, Review, ScheduledEvent,
                         ScheduledEventRunInstance, Sector, Source, Tag, Theme)
 from core.pagination import DataPaginator
@@ -100,7 +100,7 @@ class Echo:
 class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
     def __init__(self, operation):
-        self.main_query = operation.build_query()[1]
+        self.main_query = query.build_query(operation=operation)[1]
 
     def stream(self):
         with connections["datasets"].chunked_cursor() as main_cursor:
@@ -160,35 +160,26 @@ class ViewData(APIView):
         return paginator.get_paginated_response(page_data)
 
 
-class PreviewData(APIView):
+class PreviewOperationData(APIView):
     """
     List top 10 data from executing the operation query.
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
-    def build_query(self, request, limit=None, offset=None, estimate_count=None):
-        """Build an SQL query"""
-        count_query = QueryBuilder(self, request=request.data, source=Source).count_sql(estimate_count)
-        if limit is None:
-            return (count_query, QueryBuilder(self, request=request.data, source=Source).get_sql_without_limit())
-        return (count_query, QueryBuilder(self, request=request.data, source=Source).get_sql(limit, offset))
-
-    def query_table(self, request, limit, offset, estimate_count):
-        """Build a query then execute it to return the matching data"""
-        if limit is None or int(limit) > 10000:
-            limit = 10000
-        queries = self.build_query(request, limit, offset, estimate_count)
-        return fetch_data(queries)
-
     def get_object(self, request):
         try:
-            count, data = self.query_table(request, limit=10, offset=0, estimate_count=True)
+            count, data = query.query_table(
+                op_steps=request.data['operation_steps'],
+                limit=10,
+                offset=0,
+                estimate_count=True
+            )
             return {
                 'count': count,
                 'data': data
             }
-        except JSONDecodeError as json_error:
+        except json.decoder.JSONDecodeError as json_error:
             return {
                 'count': 0,
                 'data': [
