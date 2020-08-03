@@ -15,7 +15,7 @@ const LIMIT = 10;
 const getInfoListFromColumns = (columns: ColumnList): InfoListItems => {
   return columns.map((column) =>
     Map()
-      .set('caption', formatString(column.get('name') as string))
+      .set('caption', formatString(column.get('alias') as string))
       .set('info', column.get('description') as string),
   ) as InfoListItems;
 };
