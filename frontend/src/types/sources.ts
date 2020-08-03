@@ -21,6 +21,7 @@ export interface Source {
 export interface Column {
   id: number;
   name: string | null;
+  alias: string | null;
   description: string | null;
   source_name: string | null;
   data_type: 'N' | 'C' | null;
