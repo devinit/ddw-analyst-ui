@@ -190,11 +190,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               >
                 Refresh
               </Dropdown.Item>
-              <Dropdown.Item eventKey="4" onClick={onPreview()}>
-                {'Preview Only'}
-              </Dropdown.Item>
             </Dropdown.Menu>
-
             <Button
               variant="dark"
               className={classNames('float-right', { 'd-none': !props.operation })}
@@ -202,7 +198,16 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               size="sm"
               hidden={!!values.id && !props.editable}
             >
-              {`${confirmDelete ? 'Confirm ' : ''}Delete Dataset`}
+              {`Delete Dataset`}
+            </Button>
+            <Button
+              variant="dark"
+              className={classNames('float-right', { 'd-none': !props.operation })}
+              onClick={onPreview()}
+              size="sm"
+              hidden={!!values.id && !props.editable}
+            >
+              {`Preview`}
             </Button>
           </Dropdown>
         </Form>
