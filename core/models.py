@@ -74,6 +74,7 @@ class SourceColumnMap(BaseEntity):
     source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
+    alias = models.TextField(blank=True, null=True)
     source_name = models.TextField()
 
     def __str__(self):
