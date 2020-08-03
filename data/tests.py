@@ -8,6 +8,7 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.utils.timezone import make_aware
 
+from core import query
 from core.models import (Operation, OperationStep, ScheduledEvent,
                          ScheduledEventRunInstance, UpdateHistory)
 from data.db_manager import fetch_data
