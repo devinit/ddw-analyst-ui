@@ -33,7 +33,7 @@ class TestFixtureData(TestCase):
         )
 
     def test_can_generate_select_all(self):
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(len(dat[0].keys()), 88)
 
@@ -46,7 +46,7 @@ class TestFixtureData(TestCase):
             query_kwargs="{ \"columns\": [ \"year\" ] }",
             source_id=1
         )
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(len(dat[0].keys()), 1)
 
@@ -59,7 +59,7 @@ class TestFixtureData(TestCase):
             query_kwargs='{"filters":[{"field":"year", "value":1973, "func":"ge"},{"field":"short_description", "value":"%sector%|%wheat%", "func":"text_search"}]}',
             source_id=1
         )
-        queries = self.op.build_query()
+        queries = query.build_query(operation=self.op)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(len(dat), 41)
 
@@ -72,7 +72,7 @@ class TestFixtureData(TestCase):
             query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"year":"year"}}',
             source_id=2
         )
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(len(dat[0].keys()), 100)
 
@@ -87,7 +87,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(len(dat[0].keys()), 90)
 
@@ -101,7 +101,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue('usd_commitment_Sum' in dat[0].keys())
 
@@ -125,7 +125,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue(dat[0]['usd_commitment_Sum'] > 150)
 
@@ -139,7 +139,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(dat[0]["ntile"], 1)
 
@@ -153,7 +153,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(dat[0]["dense_rank"], 1)
 
@@ -167,7 +167,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue(dat[0]['first_value'] > 0)
 
@@ -181,7 +181,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue(dat[0]['last_value'] > 14)
 
@@ -211,7 +211,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue(dat[0]["avg"] > 9)
 
@@ -225,7 +225,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue(dat[0]['stddev'] > 8)
 
@@ -239,7 +239,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue(dat[0]["usd_commitment_Avg"] > 9)
 
@@ -253,7 +253,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue(dat[0]['short_description_text_search'])
 
@@ -267,7 +267,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query()
+        queries = query.build_query(operation=self.op)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue('usd_disbursement_sum' in dat[0].keys())
 
@@ -281,7 +281,7 @@ class TestFixtureData(TestCase):
             source_id=2
         )
 
-        queries = self.op.build_query()
+        queries = query.build_query(operation=self.op)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue('usd_disbursement_divide' in dat[0].keys())
 
@@ -294,7 +294,7 @@ class TestFixtureData(TestCase):
             query_kwargs="{ \"columns\": [ \"iso10\" ] }",
             source_id=1
         )
-        queries = self.op.build_query(1, 0, True)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertTrue("error" in list(dat[0].keys()))
 
@@ -307,7 +307,7 @@ class TestFixtureData(TestCase):
             query_kwargs='{"filters":[{"field":"year", "value":9999, "func":"ge"}]}',
             source_id=1
         )
-        queries = self.op.build_query(1, 0, False)
+        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(len(dat), 0)
 
