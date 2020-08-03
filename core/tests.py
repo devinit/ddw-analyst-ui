@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 from rest_framework.test import APIClient
 
+from core import query
 from core.models import AuditLogEntry, Operation, OperationStep, Tag
 from core.pypika_utils import QueryBuilder
 
@@ -397,11 +398,10 @@ class TestPypikaUtils(TestCase):
 
     def test_can_generate_select_with_defined_limit(self):
         expected = 'SELECT * FROM "public"."crs_current" LIMIT 5 OFFSET 10'
-        self.assertEqual(self.op.build_query(limit=5, offset=10)[1], expected)
-
+        self.assertEqual(query.build_query(operation=self.op, limit=5, offset=10)[1], expected)
     def test_can_generate_select_without_limit(self):
         expected = 'SELECT * FROM "public"."crs_current"'
-        self.assertEqual(self.op.build_query(offset=10)[1], expected)
+        self.assertEqual(query.build_query(operation=self.op, offset=10)[1], expected)
 
     def test_can_perform_scalar_transform(self):
         expected = 'SELECT "sq0".*,"sq0"."short_description" ILIKE \'%wheat%\' "short_description_text_search" FROM (SELECT * FROM "public"."crs_current") "sq0"'
