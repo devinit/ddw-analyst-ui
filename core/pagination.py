@@ -19,7 +19,7 @@ class DataPaginator(pagination.LimitOffsetPagination):
         return Response({
             # 'next': self.get_next_link(),
             # 'previous': self.get_previous_link(),
-            # 'count': self.true_count,
+            'count': self.true_count,
             'results': data
         })
 

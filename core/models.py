@@ -103,6 +103,9 @@ class Operation(BaseEntity):
     def export_data(self):
         return reverse('export_stream', args=[self.pk])
 
+    def get_operation_steps(self):
+        return self.operationstep_set.order_by('step_id')
+
 
 class OperationStep(BaseEntity):
     """These are the individual steps in a query."""
