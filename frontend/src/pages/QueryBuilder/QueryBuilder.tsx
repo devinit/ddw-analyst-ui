@@ -98,7 +98,6 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
     activeSource: SourceMap | undefined,
     page: QueryBuilderState | undefined,
   ) {
-
     return this.state.previewShow ? (
       <BasicCard
         title="Preview Dataset"
