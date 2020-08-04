@@ -27,6 +27,7 @@ interface OperationStepFormProps {
   onSuccess: (step: OperationStepMap) => void;
   onUpdateStep: (step: OperationStepMap, editingStep?: boolean) => void;
   onDeleteStep: (step: OperationStepMap) => void;
+  onClose: () => void;
 }
 const schema = Yup.object().shape({
   step_id: Yup.string().required('Step ID is required!'),
@@ -387,24 +388,21 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
             </Col>
 
             <Col md={12} className="mt-3">
-              <Button
-                variant="danger"
-                className="float-right"
-                type="submit"
-                hidden={!props.editable}
-                size="sm"
-              >
-                {props.editing ? 'Edit Step' : 'Save Step'}
+              <Button variant="dark" hidden={!props.onClose} size="sm" onClick={props.onClose}>
+                Close
               </Button>
               <Button
                 variant="dark"
-                className={classNames('float-right', { 'd-none': !props.editing })}
+                className={classNames({ 'd-none': !props.editing })}
                 type="submit"
                 onClick={onDeleteStep}
                 hidden={!props.editable}
                 size="sm"
               >
                 {`${confirmDeleteStep ? 'Confirm ' : ''}Delete Step`}
+              </Button>
+              <Button variant="danger" type="submit" hidden={!props.editable} size="sm">
+                {props.editing ? 'Edit Step' : 'Save Step'}
               </Button>
             </Col>
           </Form>

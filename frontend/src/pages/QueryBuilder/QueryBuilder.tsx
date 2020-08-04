@@ -254,6 +254,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           onUpdateStep={props.actions.updateActiveStep}
           onSuccess={onAddOperationStep}
           onDeleteStep={onDeleteOperationStep}
+          onClose={resetAction}
           editing={editing}
           editable={editable}
         />
