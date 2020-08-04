@@ -13,7 +13,7 @@ jest
   .mockImplementation(() => 'Sun Aug 19 2018 23:15:30 GMT+0300 (East Africa Time)');
 
 const columns: ColumnList = List([
-  Map({ source_name: 'Column 1', description: 'Column One' }),
+  Map({ name: 'Column 1', description: 'Column One', alias: 'Column Uno' }),
 ]) as ColumnList;
 const updateHistory: UpdateHistoryList = List([
   Map({
