@@ -1,0 +1,1188 @@
+reporting_org_ref,reporting_org_narrative,x_di_org_type,x_di_realtime_status,reporting_org_type_code,x_reporting_org_type,org_hq,registry_id
+21032,Population Service International,International NGO,,21,International NGO,United States,psi
+21-PK-WWF,World Wide Fund for Nature - Pakistan,International NGO,,21,International NGO,Pakistan,wwfpakistan
+30001,The Global Alliance for Improved Nutrition,International NGO,,21,International NGO,Switzerland,gain
+41119,United Nations Population Fund,UN,F,40,Multilateral,"Bilateral, unspecified",unfpa
+41120,UN-Habitat,UN,X,40,Multilateral,(No country assigned),unhabitat
+41AAA,United Nations Office for Project Services (UNOPS),UN,F,40,Multilateral,(No country assigned),unops
+44000,The World Bank,IFI,1A,40,Multilateral,(No country assigned),worldbank
+46002,African Development Bank,IFI,1A,40,Multilateral,(No country assigned),afdb
+46004,Asian Development Bank,IFI,1A,40,Multilateral,(No country assigned),asdb
+47045,"The Global Fund to Fight AIDS, Tuberculosis and Malaria",Multilateral,1A,40,Multilateral,Switzerland,theglobalfund
+47111,Adaptation Fund,Multilateral,,40,Multilateral,United States,af
+47122,"Gavi, the vaccine alliance",Public Private Partnership,2A,30,Public Private Partnership,Switzerland,gavi
+47135,Climate Investment Funds,Multilateral,,40,Multilateral,"Bilateral, unspecified",cif
+AE-HFZA-1526,Altai Consulting,Private Sector,,70,Private Sector,United Arab Emirates,altai
+AF-MOE-1212,Afghanistan Public Policy Research Organization (APPRO),"Academic, Training and Research",,80,"Academic, Training and Research",Afghanistan,appro-af
+AF-MOE-138,Aga Khan Foundation Afghanistan,Foundation,,60,Foundation,Afghanistan,akf_afghanistan
+AF-MOE-22,CARE International Afghanistan,International NGO,,21,International NGO,Afghanistan,ciafg
+AR-CENOC-16969-A,Fundación Fondo Mujeres del Sur,Foundation,,60,Foundation,Argentina,fms
+AU-5,Australia - Department of  Foreign Affairs and Trade,Bilateral,F,10,Government,Australia,ausgov
+AU-ACNC-18055208636,Oxfam Australia,International NGO,,21,International NGO,Australia,oau
+AU-ACNC-19242959685,International Women's Development Agency,International NGO,,21,International NGO,Australia,iwda
+BD-NAB-002,BRAC,International NGO,,21,International NGO,Bangladesh,brac_admin2
+BD-NAB-0210,ActionAid Bangladesh,International NGO,,21,International NGO,Bangladesh,aab
+BD-NAB-0271,Bangladesh Nari Progati Sangha,National NGO,,22,National NGO,Bangladesh,bnps
+BD-NAB-051,YWCA of Bangladesh,National NGO,,22,National NGO,Bangladesh,ywcabd
+BD-NAB-0682,Development Organisation of the Rural Poor,National NGO,,22,National NGO,Bangladesh,dorp-org
+BD-NAB-1102,Population Services and Training Centre (PSTC),National NGO,,22,National NGO,Bangladesh,pstc_1102
+BD-NAB-1301,Transparency International Bangladesh,National NGO,,22,National NGO,Bangladesh,tib
+BE-BCE_KBO-0264814354,Belgian development agency (Enabel),Bilateral,,10,Government,Belgium,enabel
+BE-BCE_KBO-0406694670,Damiaanactie / Action Damien,National NGO,,22,National NGO,Belgium,damien-foundation
+BE-BCE_KBO-0407562029,Unicef Belgium National Committee,National NGO,,22,National NGO,Belgium,ub
+BE-BCE_KBO-0408022778,Djapo,National NGO,,22,National NGO,Belgium,djapo
+BE-BCE_KBO-0408095925,Auto-Développement Afrique (ADA),National NGO,,22,National NGO,Belgium,ada
+BE-BCE_KBO-0408256667,Congodorpen vzw,National NGO,,22,National NGO,Belgium,congodorpen
+BE-BCE_KBO-0408628435,SOS Kinderdorpen België / SOS Villages d'Enfants Belgique,International NGO,,21,International NGO,Belgium,svdbskb_admin
+BE-BCE_KBO-0408643875,Oxfam Solidarité-Solidariteit,National NGO,,22,National NGO,Belgium,oxsol
+BE-BCE_KBO-0408656248,World Wide Fund for Nature Belgium (WWF-BE),National NGO,,22,National NGO,Belgium,wwf-be
+BE-BCE_KBO-0408908151,Iles de Paix,National NGO,,22,National NGO,Belgium,idp
+BE-BCE_KBO-0409451054,Enfance Tiers Monde Kinderen Derde Wereld,National NGO,,22,National NGO,Belgium,etmkdw
+BE-BCE_KBO-0409597544,FONCABA ASBL KBA VZW,National NGO,,22,National NGO,Belgium,foncaba
+BE-BCE_KBO-0410057701,Institute of Tropical Medicine,Other Public Sector,,15,Other Public Sector,Belgium,itm
+BE-BCE_KBO-0410644946,Caritas International (Belgium),National NGO,,22,National NGO,Belgium,cibe
+BE-BCE_KBO-0410661673,SCI Projets Internationaux ASBL_Service Civil International branche belge,National NGO,,22,National NGO,Belgium,scibelgium
+BE-BCE_KBO-0410757386,Solidagro,"Academic, Training and Research",,80,"Academic, Training and Research",Belgium,solidagro_admin
+BE-BCE_KBO-0413119733,VIA Don Bosco,National NGO,,22,National NGO,Belgium,via-db
+BE-BCE_KBO-0413986102,Wereldsolidariteit-Solidarité Mondiale (WSM),National NGO,,22,National NGO,Belgium,wsm
+BE-BCE_KBO-0415365777,Oxfam Wereldwinkels,National NGO,,22,National NGO,Belgium,oww
+BE-BCE_KBO-0415426155,Miel Maya Honing asbl,National NGO,,22,National NGO,Belgium,mmha
+BE-BCE_KBO-0415499795,ITECO - Centre de formation pour le développement,National NGO,,22,National NGO,Belgium,iteco
+BE-BCE_KBO-0415627875,ULB-Coopération,National NGO,,22,National NGO,Belgium,ulbcoop
+BE-BCE_KBO-0415880570,Association pour la Promotion de l'Education et de la Formation à l'Etranger,Other Public Sector,,15,Other Public Sector,Belgium,apefe
+BE-BCE_KBO-0416486821,Oxfam-Magasins du monde (omdm),National NGO,,22,National NGO,Belgium,omdm
+BE-BCE_KBO-0416867297,KIYO,International NGO,,21,International NGO,Belgium,kiyo
+BE-BCE_KBO-0416934803,Forum Universitaire pour la Coopération Internationale au Développement -FUCID ASBL,National NGO,,22,National NGO,Belgium,fucid
+BE-BCE_KBO-0417299047,Protos,National NGO,,22,National NGO,Belgium,protos
+BE-BCE_KBO-0417549465,Coopération par l'Education et la Culture,National NGO,,22,National NGO,Belgium,cec
+BE-BCE_KBO-0418015461,Entraide et Fraternité,National NGO,,22,National NGO,Belgium,ef_
+BE-BCE_KBO-0418088113,Broederlijk Delen,National NGO,,22,National NGO,Belgium,bd
+BE-BCE_KBO-0418282311,Viva Salud,National NGO,,22,National NGO,Belgium,g3w-m3m_admin
+BE-BCE_KBO-0418399305,COMMISSION JUSTICE ET PAIX ASBL (cjp),National NGO,,22,National NGO,Belgium,cjp
+BE-BCE_KBO-0418766123,Vlaamse Interuniversitaire Raad voor Universitaire Ontwikkelingssamenwerking (VLIR-UOS),"Academic, Training and Research",,80,"Academic, Training and Research",Belgium,vlir-uos
+BE-BCE_KBO-0419189557,Rotary Clubs For Development,National NGO,,22,National NGO,Belgium,rc4d
+BE-BCE_KBO-0419872616,Tearfund VZW (TFBE),National NGO,,22,National NGO,Belgium,tfb_admin1
+BE-BCE_KBO-0420656336,Rikolto in Belgium,National NGO,,22,National NGO,Belgium,rikolto_belgium
+BE-BCE_KBO-0420790948,Universitair Centrum voor Ontwikkelingssamenwerking,National NGO,,22,National NGO,Belgium,ucos
+BE-BCE_KBO-0421207751,Centre National de Coopération au Développement (CNCD-11.11.11),National NGO,,22,National NGO,Belgium,cncd
+BE-BCE_KBO-0421210424,Koepel van de Vlaamse Noord-Zuidbeweging 11.11.11 VZW,National NGO,,22,National NGO,Belgium,111111_publisher
+BE-BCE_KBO-0422717486,Louvain Coopération,National NGO,,22,National NGO,Belgium,lc
+BE-BCE_KBO-0423588904,Autre Terre asbl,"Academic, Training and Research",,80,"Academic, Training and Research",Belgium,a-t
+BE-BCE_KBO-0423616717,VVOB Education for Development,Other Public Sector,,15,Other Public Sector,Belgium,vvob
+BE-BCE_KBO-0424198222,Association for Cultural Technical and Educational Cooperation (ACTEC),National NGO,,22,National NGO,Belgium,actec
+BE-BCE_KBO-0425410524,SOS FAIM - SOS HUNGER,National NGO,,22,National NGO,Belgium,sosfaim
+BE-BCE_KBO-0425420917,Plan International Belgium,National NGO,,22,National NGO,Belgium,pib
+BE-BCE_KBO-0427736148,Trias,National NGO,,22,National NGO,Belgium,trias
+BE-BCE_KBO-0430826290,Le Monde selon les femmes asbl,National NGO,,22,National NGO,Belgium,mondefemmes
+BE-BCE_KBO-0431955945,Sensorial Handicap Cooperation,"Academic, Training and Research",,80,"Academic, Training and Research",Belgium,shc
+BE-BCE_KBO-0432235661,Handicap International Belgique,National NGO,,22,National NGO,Belgium,hib
+BE-BCE_KBO-0432503697,Eclosio,National NGO,,22,National NGO,Belgium,eclosio
+BE-BCE_KBO-0432552989,Fonds voor Ontwikkelingssamenwerking - Socialistische Solidariteit VZW,National NGO,,22,National NGO,Belgium,fos
+BE-BCE_KBO-0432622077,FIAN Belgium,National NGO,,22,National NGO,Belgium,fian-belgium
+BE-BCE_KBO-0432624255,Solsoc,National NGO,,22,National NGO,Belgium,solsoc
+BE-BCE_KBO-0433439550,Défi Belgique Afrique,National NGO,,22,National NGO,Belgium,dba
+BE-BCE_KBO-0435563751,Memisa,"Academic, Training and Research",,80,"Academic, Training and Research",Belgium,memisa
+BE-BCE_KBO-0441988715,Fairtrade Belgium,National NGO,,22,National NGO,Belgium,fairtrade_be
+BE-BCE_KBO-0442168263,VETERINAIRES SANS FRONTIERES / DIERENARTSEN ZONDER GRENZEN - BELGIUM,National NGO,,22,National NGO,Belgium,vsfbelgium
+BE-BCE_KBO-0443262185,Echos Communication,National NGO,,22,National NGO,Belgium,ec
+BE-BCE_KBO-0445412518,Institute for International Workers Education,National NGO,,22,National NGO,Belgium,iiwe
+BE-BCE_KBO-0445741823,Quinoa,National NGO,,22,National NGO,Belgium,quinoa
+BE-BCE_KBO-0446340550,Comité pour l'abolition des dettes illégitimes,National NGO,,22,National NGO,Belgium,cadtm
+BE-BCE_KBO-0447404580,Avocats Sans Frontières,National NGO,,22,National NGO,Belgium,asf
+BE-BCE_KBO-0448723978,Médecins Sans Vacances,National NGO,,22,National NGO,Belgium,msv
+BE-BCE_KBO-0448755949,Collectif Stratégies Alimentaires,National NGO,,22,National NGO,Belgium,csa
+BE-BCE_KBO-0449400604,Ngo-federatie (Vlaamse federatie van ngo's voor ontwikkelingssamenwerking),National NGO,,22,National NGO,Belgium,ngo-federatie
+BE-BCE_KBO-0451461655,Union des Villes et Communes de Wallonie (UVCW),Other Public Sector,,15,Other Public Sector,Belgium,uvcw
+BE-BCE_KBO-0451516390,Brulocalis,Other Public Sector,,15,Other Public Sector,Belgium,brulocalis
+BE-BCE_KBO-0451857573,VVSG - Vereniging van Vlaamse Steden en Gemeenten,Other Public Sector,,15,Other Public Sector,Belgium,vvsg
+BE-BCE_KBO-0453072647,Institut de Formation Syndical International - Internationaal Syndicaal Vormingsinstituut,National NGO,,22,National NGO,Belgium,ifsi_isvi
+BE-BCE_KBO-0453475391,Search for Common Ground (SFCG),International NGO,,21,International NGO,Belgium,sfcg
+BE-BCE_KBO-0454555163,RCN Justice & Démocratie,National NGO,,22,National NGO,Belgium,rcn
+BE-BCE_KBO-0460162753,Medecins du Monde Belgique - Dokters van de Wereld Belgïe,National NGO,,22,National NGO,Belgium,medecins
+BE-BCE_KBO-0460240749,Light For The World Belgium,National NGO,,22,National NGO,Belgium,lftw-be
+BE-BCE_KBO-0461076236,Centre Tricontinental - CETRI,National NGO,,22,National NGO,Belgium,ct-admin
+BE-BCE_KBO-0461634084,Rode Kruis-Vlaanderen Internationaal vzw,National NGO,,22,National NGO,Belgium,rkiv
+BE-BCE_KBO-0462132150,Croix-Rouge de Belgique Communauté francophone - Activités internationales ASBL,National NGO,,22,National NGO,Belgium,crb-ai_admin
+BE-BCE_KBO-0462279234,ACODEV,National NGO,,22,National NGO,Belgium,acodev
+BE-BCE_KBO-0463455904,Chaîne de l'Espoir Belgique / Keten van Hoop België / Chain of Hope Belgium,National NGO,,22,National NGO,Belgium,cdeb-kvhb_admin
+BE-BCE_KBO-0463729878,Benelux Afro Center,National NGO,,22,National NGO,Belgium,bac
+BE-BCE_KBO-0472089102,GEOMOUN ASBL,National NGO,,22,National NGO,Belgium,geomoun
+BE-BCE_KBO-0474198059,Africalia,Other Public Sector,,15,Other Public Sector,Belgium,africalia
+BE-BCE_KBO-0474912493,Dynamo International asbl,National NGO,,22,National NGO,Belgium,dynamo_international
+BE-BCE_KBO-0478060441,Beweging voor Internationale Solidariteit - Mouvement pour la Solidarité Internationale,National NGO,,22,National NGO,Belgium,bismsi
+BE-BCE_KBO-0479222461,BOS+ tropen,National NGO,,22,National NGO,Belgium,bos_plus_tropen
+BE-BCE_KBO-0479866027,Studio Globo,"Academic, Training and Research",,80,"Academic, Training and Research",Belgium,sg
+BE-BCE_KBO-0546740696,Académie de recherche et d'enseignement supérieur,"Academic, Training and Research",,80,"Academic, Training and Research",Belgium,ares
+BE-BCE_KBO-0550758080,European Institute of Peace,Other Public Sector,,15,Other Public Sector,Belgium,eip
+BE-BCE_KBO-0662878501,Rikolto,Foundation,,60,Foundation,Belgium,rikolto
+BE-GTCF-630789842,APPRO-Europe,"Academic, Training and Research",,80,"Academic, Training and Research",Belgium,appro-eu
+BJ-IFU-3200700033415,Société Nationale des eaux du Bénin (SONEB),Other Public Sector,,15,Other Public Sector,Benin,soneb-benin
+BJ-IFU-4201710012551,Commune de Dangbo - Benin,Other Public Sector,,15,Other Public Sector,Benin,dangbo
+BJ-IFU-4201710116446,"Institut National de l'Eau, Benin","Academic, Training and Research",,80,"Academic, Training and Research",Benin,ine_benin
+BJ-IFU-4201710182326,Agence Nationale d'Approvisionnement en Eau Potable en Milieu Rural du Benin,Government,,10,Government,Benin,anaepmr_benin
+BJ-IFU-5200081145006,Commune de Toffo - Bénin,Other Public Sector,,15,Other Public Sector,Benin,toffo
+BJ-IFU-5200801335602,Commune de Adjohoun - Bénin,Other Public Sector,,15,Other Public Sector,Benin,adjohoun
+BJ-IFU-5201000673108,CARE BENIN/TOGO,International NGO,,21,International NGO,United States,carebenintogo
+BJ-IFU-6200801257400,Commune de Zè - Bénin,Other Public Sector,,15,Other Public Sector,Benin,ze
+BJ-IFU-6200901851300,Commune de Kétou - Bénin,Other Public Sector,,15,Other Public Sector,Benin,ketou
+BJ-IFU-6200901944008,Commune de Adja-Ouere - Bénin,Other Public Sector,,15,Other Public Sector,Benin,adja-ouere
+BJ-IFU-6200901944209,Commune de Bopa - Bénin,Other Public Sector,,15,Other Public Sector,Benin,bopa
+BJ-IFU-6200901944805,Commune de Lalo - Bénin,Other Public Sector,,15,Other Public Sector,Benin,lalo
+BJ-IFU-6200901945503,Commune de Toviklin - Bénin,Other Public Sector,,15,Other Public Sector,Benin,toviklin
+BJ-IFU-6201000068802,Commune de Parakou - Bénin,Other Public Sector,,15,Other Public Sector,Benin,parakou
+BJ-IFU-6201000370801,Commune de Comè - Bénin,Other Public Sector,,15,Other Public Sector,Benin,come
+BJ-IFU-6201001076902,Commune de Aplahoué - Bénin,Other Public Sector,,15,Other Public Sector,Benin,aplahoue
+BJ-IFU-6201001843703,Commune de Akpro-Missérété - Bénin,Other Public Sector,,15,Other Public Sector,Benin,akpro-misserete
+BJ-IFU-6201100034408,Commune de Klouékanmè - Bénin,Other Public Sector,,15,Other Public Sector,Benin,klouekanme
+BJ-IFU-6201100143407,Commune de Ifangni - Bénin,Other Public Sector,,15,Other Public Sector,Benin,ifangni
+BJ-IFU-6201101048400,Social Watch Benin,National NGO,,22,National NGO,Benin,swb_1
+BJ-IFU-6201101182902,Commune de Kpomassè - Bénin,Other Public Sector,,15,Other Public Sector,Benin,kpomasse
+BJ-IFU-6201200579608,Commune de Pobè - Bénin,Other Public Sector,,15,Other Public Sector,Benin,pobe
+BJ-IFU-6201200599008,ONG ALCRER,National NGO,,22,National NGO,Benin,alcrer-1
+BJ-IFU-6201300688700,Commune de Avrankou - Bénin,Other Public Sector,,15,Other Public Sector,Benin,avrankou
+BJ-IFU-6201408024805,The National Association of Municipalities of Benin (ANCB),National NGO,,22,National NGO,Benin,ancb_benin
+BJ-IFU-6201501755307,Commune de Allada - Bénin,Other Public Sector,,15,Other Public Sector,Benin,allada
+BJ-IFU-6201810251129,Commune de Adjarra - Bénin,Other Public Sector,,15,Other Public Sector,Benin,adjarra
+BW-CIPA-CO20151011,International Treatment Preparedness Coalition (ITPC),International NGO,,21,International NGO,Botswana,itpc
+CA_ON-ONT-1597880,CANADEM,International NGO,,21,International NGO,Canada,canadem
+CA-3,Canada - Global Affairs Canada | Affaires mondiales Canada,Bilateral,1A,10,Government,Canada,gac-amc
+CA-4,Canada Department of Finance / Ministère des Finances Canada,Bilateral,,10,Government,Canada,finance_canada
+CA-CRA_ACR-101182509,Cowater International Inc,Private Sector,,70,Private Sector,Canada,cowater
+CA-CRA_ACR-118846575,Center for International Studies and Cooperation,International NGO,,21,International NGO,Canada,ceci
+CA-CRA_ACR-805837713,OpenNorth,International NGO,,21,International NGO,Canada,opennorth
+CA-CRA_ACR-817387277,Mastercard Foundation,Foundation,,60,Foundation,Canada,mastercard-foundation
+CA-CRA_ACR-869974816,Nutrition International,International NGO,,21,International NGO,Canada,nutritionintl
+CA-CRA_ACR-872374426,War Child Canada,International NGO,,21,International NGO,Canada,wcc
+CA-CRA_ARC-119304848,World University Service of Canada,International NGO,,21,International NGO,Canada,wusc
+CA-CRA-89980-1815-RR0001,Engineers Without Borders Canada,International NGO,,21,International NGO,Canada,ewb_canada
+CH-4,Switzerland - Swiss Agency for Development and Cooperation (SDC),Bilateral,F,10,Government,Switzerland,sdc_ch
+CH-FDJP-106064950,Medair,International NGO,,21,International NGO,Switzerland,medair
+CH-FDJP-109458452,DCAF - Geneva Centre for Security Sector Governance,Foundation,,60,Foundation,Switzerland,dcaf
+CH-FDJP-258577051,Humanitarian Quality Assurance Initiative,International NGO,,21,International NGO,Switzerland,hqai
+CH-FDJP-66004229946,World Economic Forum Geneva,International NGO,,21,International NGO,Switzerland,weforum_geneva
+CH-FDJP-CHE100871337,International Council of Voluntary Agencies,International NGO,,21,International NGO,Switzerland,icva
+CH-FDJP-CHE102197003,International Federation of Accountants,International NGO,,21,International NGO,Switzerland,ifac
+CH-FDJP-CHE-105181636,Centre for Humanitarian Dialogue (HD Centre),Foundation,,60,Foundation,Switzerland,hdcentre
+CH-FDJP-CHE105834763,Helvetas Swiss Intercooperation,International NGO,,21,International NGO,Switzerland,hsi
+CH-FDJP-CHE106823242,Terre des hommes- Aide à l'enfance dans le monde- Fondation,International NGO,,21,International NGO,Switzerland,tdh_foundation
+CH-FDJP-CHE109506789,Geneva International Centre for Humanitarian Demining,Foundation,,60,Foundation,Switzerland,gichd
+CH-FDJP-CHE109947366,Fondation Hirondelle,International NGO,,21,International NGO,Switzerland,fh_ch
+CH-FDJP-CHE109994012,Interpeace,International NGO,,21,International NGO,Switzerland,interpeace
+CH-FDJP-CHE110141200,Drugs for Neglected Diseases initiative,"Academic, Training and Research",,80,"Academic, Training and Research",Switzerland,dndi_transparency
+CH-FDJP-CHE232974628,Responsible Mining Foundation,Foundation,,60,Foundation,Switzerland,rmf
+CH-FDJP-CHE251665168,Earthworm Foundation,International NGO,,21,International NGO,Switzerland,ewf
+ciks,Centre for Indian Knowledge Systems,"Academic, Training and Research",,80,"Academic, Training and Research",India,ciks
+CO-CCB-00159397,Urgent Action Fund Latin America and the Caribbean,Regional NGO,,23,Regional NGO,Colombia,uafla
+CO-CCB-S0052181,transforma,National NGO,,22,National NGO,Colombia,transforma
+CO-RUE-830140714-1,Brujula Comunicaciones Estrategicas SAS,Private Sector,,70,Private Sector,Colombia,brujula
+CO-RUE-860049972,Fundación Oriéntame,National NGO,,22,National NGO,Colombia,orientame
+CR-RPJ-3-006-125548,Fundacion Acceso,Regional NGO,,23,Regional NGO,Costa Rica,fundacion-acceso
+CZ-ICO-25755277,People in Need,International NGO,,21,International NGO,Czechia,pin
+DAC-1601,Bill & Melinda Gates Foundation,Foundation,1A,60,Foundation,United States,bmgf
+DE-1,Germany - Ministry for Economic Cooperation and Development,Bilateral,1A,10,Government,Germany,bmz
+DE-AG-VR7795,Fairtrade Labelling Organizations International e.V.,International NGO,,21,International NGO,Germany,fairtrade_international
+DE-CR-BonnVR8726,IFOAM - Organics International,International NGO,,21,International NGO,Germany,ifoam
+DE-CR-RA000209-VR1207,World Vision Germany,International NGO,,21,International NGO,Germany,wv_de
+DE-CR-RA000217-HRB121747B,Democracy Reporting International gGmbH,International NGO,,21,International NGO,Germany,dri
+DE-CR-RA000220-VR3810,Welthungerhilfe,International NGO,,21,International NGO,Germany,whh
+DE-CR-VR32914,Water Integrity Network Association,International NGO,,21,International NGO,Germany,win
+DK-CVR-12006004,Dansk Missionråds Udviklingsafdeling,International NGO,,21,International NGO,Denmark,dmru
+DK-CVR-12921047,CARE Danmark Fonden for Frivillig Ulandsbistand,National NGO,,22,National NGO,Denmark,12921047
+DK-CVR-13078513,DUF - The Danish Youth Council,National NGO,,22,National NGO,Denmark,duf
+DK-CVR-14723692,Mission Øst,International NGO,,21,International NGO,Denmark,missioneast
+DK-CVR-14766383,Disabled People's Organisations Denmark,National NGO,,22,National NGO,Denmark,dpod
+DK-CVR-18243717,ActionAid Denmark (Mellemfolkeligt Samvirke),International NGO,,21,International NGO,Denmark,aadk
+DK-CVR-19348407,CISU,National NGO,,22,National NGO,Denmark,cisu
+DK-CVR-20074035,ADRA Denmark,National NGO,,22,National NGO,Denmark,adra-dk
+DK-CVR-20356731,PlanBørnefonden,International NGO,,21,International NGO,Denmark,plb
+DK-CVR-20453672,Danish Trade Union Development Agency (Ulandssekretariatet),International NGO,,21,International NGO,Denmark,loftf
+DK-CVR-20699310,Danish Refugee Council,International NGO,,21,International NGO,Denmark,drc
+DK-CVR-20700211,Danish Red Cross,National NGO,,22,National NGO,Denmark,danishrc
+DK-CVR-25191501,Danmission,National NGO,,22,National NGO,Denmark,danmission
+dk-cvr-26487013,International Media Support,International NGO,,21,International NGO,Denmark,ims
+DK-CVR-29439915,Caritas Denmark,National NGO,,22,National NGO,Denmark,caritas_denmark
+DK-CVR-33985339,Trianglen,National NGO,,22,National NGO,Denmark,trianglen
+DK-CVR-35429867,Global Focus,National NGO,,22,National NGO,Denmark,globaltfokus
+DK-CVR-36980214,DanChurchAid,International NGO,,21,International NGO,Denmark,dca
+DK-CVR-37295728,NIRAS A/S,Private Sector,,70,Private Sector,Denmark,niras
+DK-CVR-40781218,World Wide Fund for Nature Denmark,Foundation,,60,Foundation,Denmark,wwfdk
+DK-CVR-44623528,COWI,Other Public Sector,,15,Other Public Sector,Denmark,cowi
+DK-CVR-58185728,Danish Family Planning Association,National NGO,,22,National NGO,Denmark,dfpa
+DK-CVR-63407216,Save the Children DK,International NGO,,21,International NGO,Denmark,redbarnet
+DK-CVR-88136411,Oxfam IBIS,International NGO,,21,International NGO,Denmark,ibis_denmark
+ES-CIF-G81164105,ACTION AGAINST HUNGER SPAIN,International NGO,,21,International NGO,Spain,acfspain
+ES-CIF-G-8236803,Oxfam Intermón,International NGO,,21,International NGO,Spain,oxfamintermon
+ES-DIR3-E04585801,Spain - Ministry of Foreign Affairs and Cooperation,Bilateral,X,10,Government,Spain,maec
+ES-DIR3-EA0035768,Spanish Agency for International Development Cooperation (AECID),Bilateral,F,10,Government,Spain,aecid
+ET-CSA-0062,DKT Ethiopia,International NGO,,21,International NGO,Ethiopia,dkt_ethiopia
+ET-CSA-0475,Family Guidance Association of Ethiopia,National NGO,,22,National NGO,Ethiopia,fgae_ethiopia
+ET-CSA-0486,Wolayita Development Association,"Academic, Training and Research",,80,"Academic, Training and Research",Ethiopia,woda_0486
+ET-CSA-0638,Send a Cow Ethiopia,National NGO,,22,National NGO,Ethiopia,sacethiopia
+ET-CSA-0976,Dawuro Development Association,"Academic, Training and Research",,80,"Academic, Training and Research",Ethiopia,dawuro_da
+ET-CSA-1063,Orbis Ethiopia,National NGO,,22,National NGO,Ethiopia,orbis_ethiopia
+ET-CSA-1233,EngenderHealth Ethiopia,International NGO,,21,International NGO,Ethiopia,engenderhealth_eth
+ET-MFA-0001989741,Amref Health Africa in Ethiopia,International NGO,,21,International NGO,Ethiopia,amrefeth
+ET-MOT-020/4/007,Ethiopian Horticulture Producer Exporters Association (EHPEA),National NGO,,22,National NGO,Ethiopia,ehpea
+FI-3,Finland - Ministry for Foreign Affairs,Bilateral,1A,10,Government,Finland,finland_mfa
+FI-PRO-0998454-4,Finn Church Aid (Kirkon Ulkomaanapu sr),International NGO,,21,International NGO,Finland,fca
+FI-PRO-139407,Caritas Finland,National NGO,,22,National NGO,Finland,caritasfin
+FI-PRO-143138,Kepa ry,National NGO,,22,National NGO,Finland,kepa
+FI-PRO-1498487-2,Plan International Finland,International NGO,,21,International NGO,Finland,planinternationalfinland
+FR-3,Agence Française de Développement,Other Public Sector,F,15,Other Public Sector,France,afd
+FR-6,France - Ministry for Europe and Foreign Affairs,Bilateral,F,10,Government,France,france
+FR-INSEE-32101874900127,Medecins du Monde France,International NGO,,21,International NGO,France,mdm-fr
+FR-RCS-31899089200065,Action Contre la Faim,International NGO,,21,International NGO,France,acf-fr
+FR-RCS-389515180,Solidarites International,International NGO,,21,International NGO,France,solidarites-international
+FR-RCS-40885667200030,Triangle Génération Humanitaire,International NGO,,21,International NGO,France,tgh
+FR-RCS-49962201700014,Bibliothèques Sans Frontières,International NGO,,21,International NGO,France,bsf1
+FR-RCS-519655997,Handicap International Federation,International NGO,,21,International NGO,France,hi_fed
+FR-RCS-78049888700022,Centre International de Développement et de Recherche,International NGO,,21,International NGO,France,cidr
+FR-RCS-83764263600018,Syrian Center for Media and Freedom of Expression,National NGO,,22,National NGO,France,scm
+FR-SIRET-4028868160030,ACTED,International NGO,,21,International NGO,France,acted
+FR-SIRET-77566669600015,SECOURS CATHOLIQUE - CARITAS FRANCE,International NGO,,21,International NGO,France,sccf
+GB-9,UK - Department for Work and Pensions,Bilateral,,10,Government,United Kingdom,dwp
+GB-CC-1098893,Blue Ventures Conservation,International NGO,,21,International NGO,United Kingdom,blueventures
+GB-CHC-000391,The Open University,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,open_university
+GB-CHC-1000717,CODA International,International NGO,,21,International NGO,United Kingdom,coda
+GB-CHC-1001349,Samaritan's Purse UK,International NGO,,21,International NGO,United Kingdom,spuk
+GB-CHC-1001698,Interact Worldwide,International NGO,,21,International NGO,United Kingdom,iww_publish
+GB-CHC-1001813,The HALO Trust,International NGO,,21,International NGO,United Kingdom,halo
+GB-CHC-1013587,Chance for Childhood,International NGO,,21,International NGO,United Kingdom,chanceforchildhood
+GB-CHC-1016676,INTRAC,International NGO,,21,International NGO,United Kingdom,intrac
+GB-CHC-1017255,Homeless International,International NGO,,21,International NGO,United Kingdom,hi
+GB-CHC-1020488,Children in Crisis,International NGO,,21,International NGO,United Kingdom,cic
+GB-CHC-1024903,Hospice Africa Ltd,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,hauk
+GB-CHC-1027201,Institute for War & Peace Reporting,International NGO,,21,International NGO,United Kingdom,iwpr
+GB-CHC-1029161,Camfed International,International NGO,,21,International NGO,United Kingdom,camfed
+GB-CHC-1038785,Mifumi UK,International NGO,,21,International NGO,United Kingdom,mifumi_uk
+GB-CHC-1038860,Frontline AIDS,International NGO,,21,International NGO,United Kingdom,f-aids
+GB-CHC-1043843,Saferworld,International NGO,,21,International NGO,United Kingdom,saferworld
+GB-CHC-1045348,Afghanaid,International NGO,,21,International NGO,United Kingdom,afghanaid
+GB-CHC-1046001,Disability and Development Partners,International NGO,,21,International NGO,United Kingdom,ddp
+GB-CHC-1046579,Consortium for Street Children,International NGO,,21,International NGO,United Kingdom,csc
+GB-CHC-1047501,Action Against Hunger UK,International NGO,,21,International NGO,United Kingdom,acf
+GB-CHC-1047608,Alliance of Religions and Conservation,International NGO,,21,International NGO,United Kingdom,alliance_of_religions_and_conservation
+GB-CHC-1047653,Raleigh International,International NGO,,21,International NGO,United Kingdom,raleigh_int
+GB-CHC-1048007,Link Community Development International,International NGO,,21,International NGO,United Kingdom,lcdi_admin
+GB-CHC-1049160,Anti-Slavery International,International NGO,,21,International NGO,United Kingdom,asil
+GB-CHC-1050327,The Leprosy Mission England and Wales,International NGO,,21,International NGO,United Kingdom,tlmew
+GB-CHC-1051681,Amnesty International UK Section Charitable Trust,International NGO,,21,International NGO,United Kingdom,aiuk
+GB-CHC-1053389,Viva,International NGO,,21,International NGO,United Kingdom,viva
+GB-CHC-1054369,KwaAfrica,International NGO,,21,International NGO,United Kingdom,kwaafrica
+GB-CHC-1055436,Conciliation Resources,International NGO,,21,International NGO,United Kingdom,cr
+GB-CHC-1058162,Christian Blind Mission (UK) Ltd.,International NGO,,21,International NGO,United Kingdom,cbm
+GB-CHC-1058991,Railway Children,International NGO,,21,International NGO,United Kingdom,rc
+GB-CHC-1059996,Power International,International NGO,,21,International NGO,United Kingdom,power
+GB-CHC-1061352,Orbis Charitable Trust,International NGO,,21,International NGO,United Kingdom,orbis_uk
+GB-CHC-1062638,Disasters Emergency Committee,National NGO,,22,National NGO,United Kingdom,dec-uk
+GB-CHC-1064413,African Initiatives,International NGO,,21,International NGO,United Kingdom,ai_1064413
+GB-CHC-1065705,Survivors Fund (SURF),International NGO,,21,International NGO,United Kingdom,surf
+GB-CHC-1065972,International Rescue Committee UK,International NGO,,21,International NGO,United Kingdom,irc_uk
+GB-CHC-1067406,Doctors of the World UK,International NGO,,21,International NGO,United Kingdom,dotw_uk
+GB-CHC-1068839,Bond,National NGO,,22,National NGO,United Kingdom,bond
+GB-CHC-1069182,International Service,International NGO,,21,International NGO,United Kingdom,unais
+GB-CHC-1069208,Trust for Africa's Orphans,International NGO,,21,International NGO,United Kingdom,tao-03473165
+GB-CHC-1070684,Cord,Regional NGO,,23,Regional NGO,United Kingdom,cord
+GB-CHC-1071659,War Child UK,International NGO,,21,International NGO,United Kingdom,wcuk
+GB-CHC-1071660,Cecily's Fund,International NGO,,21,International NGO,United Kingdom,cecily
+GB-CHC-1071886,TB Alert,International NGO,,21,International NGO,United Kingdom,tbalert
+GB-CHC-1074937,ADRA-UK,International NGO,,21,International NGO,United Kingdom,adrauk
+GB-CHC-1075920,Indigo Trust,Foundation,,60,Foundation,United Kingdom,indtrust
+GB-CHC-1076235,BBC Media Action,International NGO,,21,International NGO,United Kingdom,bbcmediaaction
+GB-CHC-1076497,Sense International,International NGO,,21,International NGO,United Kingdom,sense_international
+GB-CHC-1076822,Save the Children International,International NGO,,21,International NGO,United Kingdom,sci
+GB-CHC-1077216,Compassion UK,International NGO,,21,International NGO,United Kingdom,comp_uk
+GB-CHC-1077889,Pump Aid,International NGO,,21,International NGO,United Kingdom,pumpaid
+GB-CHC-1078768,People In Aid,International NGO,,21,International NGO,United Kingdom,peopleinaid
+GB-CHC-1078803,Bees for Development Trust,International NGO,,21,International NGO,United Kingdom,beesfordevelopment
+GB-CHC-1079358,Motivation,International NGO,,21,International NGO,United Kingdom,motivation
+GB-CHC-1079599,BasicNeeds,International NGO,,21,International NGO,United Kingdom,basicneeds
+GB-CHC-1081695,Vision Aid Overseas,International NGO,,21,International NGO,United Kingdom,vao
+GB-CHC-1081769,Transform Africa,International NGO,,21,International NGO,United Kingdom,transafrica19
+GB-CHC-1082139,Thomson Reuters Foundation,Foundation,,60,Foundation,United Kingdom,trf
+GB-CHC-1082565,Handicap International UK,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,hiuk
+GB-CHC-1083008,MAG,International NGO,,21,International NGO,United Kingdom,mag
+GB-CHC-1084729,World Child Cancer UK,International NGO,,21,International NGO,United Kingdom,wccuk
+GB-CHC-1085096,Women and Children First (UK),International NGO,,21,International NGO,United Kingdom,wcf
+GB-CHC-1086159,One to One Children's Fund,International NGO,,21,International NGO,United Kingdom,onetoonecf
+GB-CHC-1087997,Stars Foundation,Foundation,,60,Foundation,United Kingdom,starsfoundation
+GB-CHC-1089110,Global Canopy,International NGO,,21,International NGO,United Kingdom,globalcanopy
+GB-CHC-1089490,Hope and Homes for Children,International NGO,,21,International NGO,United Kingdom,hhc
+GB-CHC-1089879,EveryChild,International NGO,,21,International NGO,United Kingdom,evc
+GB-CHC-1090745,ICA:UK,National NGO,,22,National NGO,United Kingdom,icauk
+GB-CHC-1091105,Meningitis Research Foundation,International NGO,,21,International NGO,United Kingdom,mrf
+GB-CHC-1092236,Concern Worldwide UK,International NGO,,21,International NGO,United Kingdom,concernuk
+GB-CHC-1093861,International Medical Corps UK,International NGO,,21,International NGO,United Kingdom,imc_uk
+GB-CHC-1094272,Project Harar,International NGO,,21,International NGO,United Kingdom,phe
+GB-CHC-1094478,Excellent Development,International NGO,,21,International NGO,United Kingdom,excellent
+GB-CHC-1096479,ShelterBox,International NGO,,21,International NGO,United Kingdom,shelterbox
+GB-CHC-1096908,Afghanistan and Central Asian Association,International NGO,,21,International NGO,United Kingdom,acaa
+GB-CHC-1098106,Relief International UK,International NGO,,21,International NGO,United Kingdom,ri-uk
+GB-CHC-1098752,Target TB,International NGO,,21,International NGO,United Kingdom,targettb
+GB-CHC-1099776,Malaria Consortium,International NGO,,21,International NGO,United Kingdom,malariaconsortium
+GB-CHC-1101217,LAMB Health Care Foundation,National NGO,,22,National NGO,United Kingdom,lhcf
+GB-CHC-1102028,Canon Collins Trust,International NGO,,21,International NGO,United Kingdom,canoncollinstrust
+GB-CHC-1104287,MicroLoan Foundation,International NGO,,21,International NGO,United Kingdom,mlf
+GB-CHC-1104458,Theatre for a Change UK,International NGO,,21,International NGO,United Kingdom,tfac
+GB-CHC-1105277,Learning for Life,International NGO,,21,International NGO,United Kingdom,learningforlife
+GB-CHC-1105489,Sabre Education Limited,International NGO,,21,International NGO,United Kingdom,sct
+GB-CHC-1105851,Christian Aid,International NGO,,21,International NGO,United Kingdom,caid
+GB-CHC-1106156,kidasha,International NGO,,21,International NGO,United Kingdom,kidasha
+GB-CHC-1106349,International Network for Advancing Science and Policy,International NGO,,21,International NGO,United Kingdom,inasp
+GB-CHC-1107403,GOAL,International NGO,,21,International NGO,Ireland,goal
+GB-CHC-1108464,Bees Abroad UK,International NGO,,21,International NGO,United Kingdom,bauk
+GB-CHC-1108718,African Revival,International NGO,,21,International NGO,United Kingdom,africanrevival
+GB-CHC-1109789,Y Care International,International NGO,,21,International NGO,United Kingdom,ycare
+GB-CHC-1110434,Wellfound,International NGO,,21,International NGO,United Kingdom,wellfound
+GB-CHC-1112699,Teach A Man To Fish,International NGO,,21,International NGO,United Kingdom,tamtf
+GB-CHC-1112734,PHASE Worldwide,International NGO,,21,International NGO,United Kingdom,phase_worldwide
+GB-CHC-1112842,Transparency International UK,International NGO,,21,International NGO,United Kingdom,ti-uk
+GB-CHC-1113101,Tropical Health and Education Trust,International NGO,,21,International NGO,United Kingdom,tropicalhealth
+GB-CHC-1113868,Hand in Hand International,International NGO,,21,International NGO,United Kingdom,handinhand
+GB-CHC-1114727,Joshua Orphan and Community Care,International NGO,,21,International NGO,(No country assigned),jocc_uk
+GB-CHC-1114944,iPartner India,International NGO,,21,International NGO,United Kingdom,ip-india
+GB-CHC-1115109,Women for Women International (UK),International NGO,,21,International NGO,United Kingdom,wfwiuk
+GB-CHC-1117377,Village Water Ltd,International NGO,,21,International NGO,United Kingdom,villagewater
+GB-CHC-1117528,Haiti Hospital Appeal,International NGO,,21,International NGO,United Kingdom,hha
+GB-CHC-1118528,Child.org,International NGO,,21,International NGO,(No country assigned),child-dot_org
+GB-CHC-1119168,Energy 4 Impact,International NGO,,21,International NGO,United Kingdom,e4i
+GB-CHC-1120413,MICAIA,International NGO,,21,International NGO,United Kingdom,mic-uk
+GB-CHC-1120932,Network for Africa,International NGO,,21,International NGO,United Kingdom,network4africa
+GB-CHC-1121273,FRANK Water,International NGO,,21,International NGO,United Kingdom,frankwater
+GB-CHC-1122299,interburns,International NGO,,21,International NGO,United Kingdom,interburns
+GB-CHC-1122330,CDP Worldwide,International NGO,,21,International NGO,United Kingdom,cdp
+GB-CHC-1122799,Retrak,International NGO,,21,International NGO,United Kingdom,retrak
+GB-CHC-1122924,Developments In Literacy Trust UK,International NGO,,21,International NGO,United Kingdom,diltuk
+GB-CHC-1123241,Peace Direct,International NGO,,21,International NGO,(No country assigned),peacedirect
+GB-CHC-1123946,Youth Business International,International NGO,,21,International NGO,United Kingdom,ybi
+GB-CHC-1125217,Welbodi Partnership,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,welbodipartnership
+GB-CHC-1125512,Lively Minds,International NGO,,21,International NGO,United Kingdom,livelyminds
+GB-CHC-1125948,PONT,International NGO,,21,International NGO,United Kingdom,pont
+GB-CHC-1126281,Human Relief Foundation,International NGO,,21,International NGO,United Kingdom,hrf
+GB-CHC-1126550,PEAS (Promoting Equality in African Schools),International NGO,,21,International NGO,United Kingdom,peas
+GB-CHC-1126727,MapAction,International NGO,,21,International NGO,United Kingdom,mapaction
+GB-CHC-1127206,StreetInvest,International NGO,,21,International NGO,United Kingdom,si
+GB-CHC-1127366,British Asian Trust,International NGO,,21,International NGO,United Kingdom,b_a_t
+GB-CHC-1127488,Restless Development,International NGO,,21,International NGO,United Kingdom,restless
+GB-CHC-1128267-8,HelpAge International UK,National NGO,,22,National NGO,United Kingdom,ageintl
+GB-CHC-1128536,Street Child,International NGO,,21,International NGO,United Kingdom,street_child
+GB-CHC-1129603,Cyan International,International NGO,,21,International NGO,United Kingdom,cyan
+GB-CHC-1133342,Zing,Foundation,,60,Foundation,United Kingdom,zing
+GB-CHC-1135156,TREE AID,International NGO,,21,International NGO,United Kingdom,treea
+GB-CHC-1135700,British & Irish Agencies Afghanistan Group,International NGO,,21,International NGO,United Kingdom,baag
+GB-CHC-1138287,Rainforest Foundation UK,International NGO,,21,International NGO,United Kingdom,rfuk
+GB-CHC-1139083,Grow Movement,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,growmovement_admin
+GB-CHC-1140123,Vision for a Nation Foundation,International NGO,,21,International NGO,United Kingdom,vfan
+GB-CHC-1140276,International NGO Safety Orgnisation,International NGO,,21,International NGO,United Kingdom,inso
+GB-CHC-1140288,The Fred Hollows Foundation (UK),International NGO,,21,International NGO,United Kingdom,fhfuk
+GB-CHC-1141028,AfriKids,International NGO,,21,International NGO,United Kingdom,afrikids
+GB-CHC-1141552,Balloon Ventures Foundation,International NGO,,21,International NGO,United Kingdom,bvf
+GB-CHC-1142476,Friends of Kipkelion,Regional NGO,,23,Regional NGO,Kenya,kipkelion
+GB-CHC-1142516,ColaLife,National NGO,,22,National NGO,United Kingdom,colalife
+GB-CHC-1143797,Syria Relief,National NGO,,22,National NGO,United Kingdom,sr
+GB-CHC-1143852,Hagar International UK,International NGO,,21,International NGO,United Kingdom,hagar_uk
+GB-CHC-1145119,Varkey Foundation,International NGO,,21,International NGO,Ghana,varkeyfoundation
+GB-CHC-1145640,The Queen Elizabeth Diamond Jubilee Trust,Foundation,,60,Foundation,United Kingdom,qedjt
+GB-CHC-1145721,Zambia Orphans Aid UK,International NGO,,21,International NGO,United Kingdom,zoa_uk
+GB-CHC-1147083,Rojiroti UK,International NGO,,21,International NGO,United Kingdom,rojiroti
+GB-CHC-1147298,One Young World,National NGO,,22,National NGO,United Kingdom,oyw
+GB-CHC-1148143,Stakeholder Democracy Network,International NGO,,21,International NGO,United Kingdom,sdn
+GB-CHC-1148404,Internews Europe,International NGO,,21,International NGO,United Kingdom,ieu
+GB-CHC-1150214,Carers Worldwide,International NGO,,21,International NGO,United Kingdom,cww
+GB-CHC-1150964,inHive,International NGO,,21,International NGO,United Kingdom,inhive
+GB-CHC-1150993,Near East Foundation UK (NEF UK),International NGO,,21,International NGO,United Kingdom,nef-uk
+GB-CHC-1151219,DeafKidz International,International NGO,,21,International NGO,United Kingdom,dki1151219
+GB-CHC-1151615,Signal,International NGO,,21,International NGO,United Kingdom,signal
+GB-CHC-1152010,Child-to-Child,International NGO,,21,International NGO,United Kingdom,ctc
+GB-CHC-1154085,Exeter Ethiopia Link,International NGO,,21,International NGO,United Kingdom,eel
+GB-CHC-1154230,Girls Not Brides: The Global Partnership to End Child Marriage,International NGO,,21,International NGO,United Kingdom,girlsnotbrides
+GB-CHC-1157009,Abaseen Foundation UK,International NGO,,21,International NGO,United Kingdom,abaseen
+GB-CHC-1157722,Irise International,International NGO,,21,International NGO,United Kingdom,irise_int
+GB-CHC-1158206,Water Works,International NGO,,21,International NGO,United Kingdom,waterworks
+GB-CHC-1160263,WasteAid UK,International NGO,,21,International NGO,United Kingdom,wasteaid
+GB-CHC-1161729,Hope for Children,International NGO,,21,International NGO,United Kingdom,hfc
+GB-CHC-1171353,Global Innovation Fund,International NGO,,21,International NGO,United Kingdom,gif
+GB-CHC-1172875,East African Playgrounds,International NGO,,21,International NGO,United Kingdom,eap
+GB-CHC-1173827,Accountable Now,International NGO,,21,International NGO,United Kingdom,accountablenow
+GB-CHC-1174874,Royal Commonwealth Ex-Sevices League,International NGO,,21,International NGO,United Kingdom,rcel
+GB-CHC-1178168,CDAC Network,International NGO,,21,International NGO,United Kingdom,cdacnetwork
+GB-CHC-1187935,International Campaign Women´s Right to Safe Abortion,National NGO,,22,National NGO,United Kingdom,icwrsa
+GB-CHC-1837621,Health Poverty Action,International NGO,,21,International NGO,United Kingdom,hpa
+GB-CHC-202918,Oxfam GB,International NGO,,21,International NGO,United Kingdom,oxfamgb
+GB-CHC-206658,World Horse Welfare,International NGO,,21,International NGO,United Kingdom,whw2019
+GB-CHC-207076,Royal Society for the Protection of Birds,International NGO,,21,International NGO,United Kingdom,rspb_
+GB-CHC-207544,Sightsavers,International NGO,,21,International NGO,United Kingdom,ss-org
+GB-CHC-208223,Royal Institute of International Affairs,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,riia
+GB-CHC-208724,War on Want,International NGO,,21,International NGO,United Kingdom,waronwant
+GB-CHC-209131,British Council,Other Public Sector,,15,Other Public Sector,United Kingdom,britishcouncil
+GB-CHC-209603,Royal National Lifeboat Institution (RNLI),International NGO,,21,International NGO,United Kingdom,rnli_international
+GB-CHC-213251,Lepra,International NGO,,21,International NGO,United Kingdom,lepra
+GB-CHC-213280,Royal College of Obstetricians & Gynaecologists,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,rcog_resilience_in_obstetric_skills
+GB-CHC-214779,The Salvation Army International Development UK,International NGO,,21,International NGO,United Kingdom,said-uk
+GB-CHC-218186,Leonard Cheshire Disability,International NGO,,21,International NGO,United Kingdom,lcd_admin
+GB-CHC-220949,British Red Cross,International NGO,,21,International NGO,United Kingdom,gb-chc-220949
+GB-CHC-222655,Liverpool School of Tropical Medicine,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,lstm
+GB-CHC-223106,Royal College of General Practitioners (RCGP),National NGO,,22,National NGO,United Kingdom,rcgp-international
+GB-CHC-228248,Overseas Development Institute,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,odi
+GB-CHC-229476,International Planned Parenthood Federation,International NGO,,21,International NGO,United Kingdom,ippf
+GB-CHC-250456,Find Your Feet,International NGO,,21,International NGO,United Kingdom,fyf
+GB-CHC-254781,The International Children's Trust,International NGO,,21,International NGO,United Kingdom,theict
+GB-CHC-261488,Amref Health Africa - UK,International NGO,,21,International NGO,United Kingdom,amrefha
+GB-CHC-265464,Tearfund,International NGO,,21,International NGO,United Kingdom,tearfund
+GB-CHC-272465,United Purpose,International NGO,,21,International NGO,United Kingdom,cu
+GB-CHC-274467,ActionAid UK,International NGO,,21,International NGO,United Kingdom,aauk
+GB-CHC-281681,"Friends of the Earth England, Wales and Northern Ireland",National NGO,,22,National NGO,United Kingdom,foe_ewni
+GB-CHC-282305,Minority Rights Group,International NGO,,21,International NGO,United Kingdom,mrg
+GB-CHC-283302,Agency for Cooperation and Research in Development (ACORD),International NGO,,21,International NGO,United Kingdom,acord
+GB-CHC-285776,Catholic Agency For Overseas Development (CAFOD),International NGO,,21,International NGO,United Kingdom,cafod
+GB-CHC-285908,World Vision UK,International NGO,,21,International NGO,United Kingdom,wvuk
+GB-CHC-287287,Centre for Economic Policy Research,National NGO,,22,National NGO,United Kingdom,cepr
+GB-CHC-288701,WaterAid,International NGO,,21,International NGO,United Kingdom,wateraid
+GB-CHC-289036,Emmanuel International UK,International NGO,,21,International NGO,United Kingdom,eiuk
+GB-CHC-290767,World Jewish Relief,International NGO,,21,International NGO,United Kingdom,wjr_001
+GB-CHC-290836,APT Action on Poverty,International NGO,,21,International NGO,United Kingdom,apt
+GB-CHC-291167,Jeevika Trust,International NGO,,21,International NGO,United Kingdom,jeevika_trust
+GB-CHC-291333,Feed the Minds,International NGO,,21,International NGO,United Kingdom,ftm-291333
+GB-CHC-291691,All We Can (formerly Methodist Relief and Development Fund),International NGO,,21,International NGO,United Kingdom,allwecan
+GB-CHC-291824,Twin,International NGO,,21,International NGO,United Kingdom,twin-iati
+GB-CHC-292506,CARE International UK,International NGO,,21,International NGO,United Kingdom,ciuk
+GB-CHC-293734,Christian Engineers in Development,International NGO,,21,International NGO,United Kingdom,ced
+GB-CHC-294329,Progressio,International NGO,,21,International NGO,United Kingdom,progressio
+GB-CHC-295224,Muslim Aid,International NGO,,21,International NGO,United Kingdom,muslimaid
+GB-CHC-297716,Business in the Community,International NGO,,21,International NGO,United Kingdom,bitc
+GB-CHC-298316,Build Africa,International NGO,,21,International NGO,United Kingdom,buildafrica
+GB-CHC-299717,Send a Cow,International NGO,,21,International NGO,United Kingdom,sendacow
+GB-CHC-313139,Africa Educational Trust,International NGO,,21,International NGO,United Kingdom,aet
+GB-CHC-313757,Voluntary Service Overseas (VSO),International NGO,,21,International NGO,United Kingdom,vso
+GB-CHC-314137,Association of Commonwealth Universities,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,acu
+GB-CHC-326568,Charity Projects Ltd (Comic Relief),Foundation,,60,Foundation,United Kingdom,cprojects
+GB-CHC-326859,Able Child Africa,International NGO,,21,International NGO,United Kingdom,ablechildafrica
+GB-CHC-327421,Article19,International NGO,,21,International NGO,United Kingdom,art19
+GB-CHC-327461,Karuna Trust,International NGO,,21,International NGO,United Kingdom,karuna
+GB-CHC-327519,Zimbabwe Educational Trust,International NGO,,21,International NGO,United Kingdom,zet
+GB-CHC-328158,Islamic Relief Worldwide,International NGO,,21,International NGO,United Kingdom,irw
+GB-CHC-328206,Womankind Worldwide,International NGO,,21,International NGO,United Kingdom,womankindworld
+GB-CHC-328273,Food for the Hungry UK,International NGO,,21,International NGO,United Kingdom,fh
+GB-CHC-328434,ChildHope UK,International NGO,,21,International NGO,United Kingdom,childhopeuk
+GB-CHC-800672,Living Earth Foundation,International NGO,,21,International NGO,United Kingdom,livingearth12
+GB-CHC-802353,Ethiopiaid UK,International NGO,,21,International NGO,United Kingdom,ethiopiaiduk
+GB-COH-00637978,Maxwell Stamp PLC,Private Sector,,70,Private Sector,United Kingdom,mstamp
+GB-COH-00986729,"Natural Resources Institute, University of Greenwich.","Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,nri
+GB-COH-01245534,Atos IT Services Ltd,Private Sector,,70,Private Sector,United Kingdom,atosuk
+GB-COH-01650169,Ecorys UK,Private Sector,,70,Private Sector,United Kingdom,ecuk
+GB-COH-01846493,AECOM,Private Sector,,70,Private Sector,United Kingdom,aecom
+GB-COH-01926828,Farm Africa,International NGO,,21,International NGO,United Kingdom,fa
+GB-COH-02622374,Energy Saving Trust,Other Public Sector,,15,Other Public Sector,United Kingdom,energy_saving_trust
+GB-COH-02651349,IMC WORLDWIDE,Private Sector,,70,Private Sector,United Kingdom,imcw_admin
+GB-COH-02693163,Westminster Foundation for Democracy,Other Public Sector,,15,Other Public Sector,United Kingdom,wfd
+GB-COH-02768268,Nathan Associates London Ltd.,Private Sector,,70,Private Sector,United Kingdom,nathan
+GB-COH-0277068,Fauna & Flora International,International NGO,,21,International NGO,United Kingdom,ffi_publisher
+GB-COH-02863827,ClientEarth,International NGO,,21,International NGO,United Kingdom,clientearth-1
+GB-COH-02962250,Commonwealth Local Government Forum,International NGO,,21,International NGO,United Kingdom,clgf_data
+GB-COH-03054929,DAI Global Health,Private Sector,,70,Private Sector,United Kingdom,healthpartners-international
+GB-COH-03122495,Oxford Policy Management,Private Sector,,70,Private Sector,United Kingdom,opml
+GB-COH-03259922,Crown Agents Limited,Private Sector,,70,Private Sector,United Kingdom,cal
+GB-COH-03580586,PwC,Private Sector,,70,Private Sector,United Kingdom,pwc
+GB-COH-03580586-GEC,Girls’ Education Challenge – Fund Manager PwC,Private Sector,,70,Private Sector,United Kingdom,gecfundmanagerpwc
+GB-COH-03613839,IOD PARC,Private Sector,,70,Private Sector,United Kingdom,iodparc
+GB-COH-03788027,Triple Line,Private Sector,,70,Private Sector,United Kingdom,tripleline_crownagents
+GB-COH-03846881,Social Development Direct Limited,Private Sector,,70,Private Sector,United Kingdom,sddirect
+GB-COH-03877777,CDC Group plc,Other Public Sector,X,15,Other Public Sector,United Kingdom,cdc
+GB-COH-04105827,MannionDaniels,Private Sector,,70,Private Sector,United Kingdom,manniondaniels
+GB-COH-04154075,Penal Reform International,International NGO,,21,International NGO,United Kingdom,pri
+GB-COH-04161656,ICF Consulting Services Ltd,Private Sector,,70,Private Sector,United Kingdom,icf
+GB-COH-04276635,act4africa,International NGO,,21,International NGO,United Kingdom,act4africa
+GB-COH-04354941,Sound Seekers Limited,International NGO,,21,International NGO,United Kingdom,soundseekers
+GB-COH-04589451,ARK (Absolute Return for Kids),International NGO,,21,International NGO,United Kingdom,ark
+GB-COH-04644326,Agulhas Applied Knowledge,Private Sector,,70,Private Sector,United Kingdom,aak
+GB-COH-04930461,Concordis International,International NGO,,21,International NGO,United Kingdom,concordis
+GB-COH-05126149,The MENTOR Initiative,International NGO,,21,International NGO,United Kingdom,the_mentor_initiative
+GB-COH-05322719,Opportunity International UK,International NGO,,21,International NGO,United Kingdom,opportunity-international-uk
+GB-COH-05543952,Cardno Emerging Markets,Private Sector,,70,Private Sector,United Kingdom,cardnoem
+GB-COH-06069322,Development Media International,International NGO,,21,International NGO,United Kingdom,dmi_admin
+GB-COH-06133927,Avanti Communications Plc,Private Sector,,70,Private Sector,United Kingdom,ava_admin
+GB-COH-06274284,Carbon Trust Advisory Ltd,Private Sector,,70,Private Sector,United Kingdom,carbontrustadvisory
+GB-COH-06368740,Development Initiatives Poverty Research,International NGO,,21,International NGO,United Kingdom,dipr
+GB-COH-06407873,HTSPE,Private Sector,,70,Private Sector,United Kingdom,htspe
+GB-COH-06587734,InterClimate Network,International NGO,,21,International NGO,United Kingdom,icn
+GB-COH-06735120,Worldwide Hospice Palliative Care Alliance,International NGO,,21,International NGO,United Kingdom,whpca
+GB-COH-07026479,AgDevCo,Private Sector,,70,Private Sector,United Kingdom,agdevco
+GB-COH-07157505,ODI Sales Limited,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,odi_sales_ltd
+GB-COH-07291220,50 Eight Limited,Private Sector,,70,Private Sector,United Kingdom,fifty_eight
+GB-COH-07321996,Integrity Research and Consultancy Ltd,Private Sector,,70,Private Sector,United Kingdom,integrity
+GB-COH-07627789,D. Capital Partners,Public Private Partnership,,30,Public Private Partnership,United Kingdom,dcapitalpartners
+GB-COH-07629751,Digital Campus,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,dc
+GB-COH-07669775,GEMS Education Solutions,Private Sector,,70,Private Sector,Ghana,mgcubed
+GB-COH-07676886,Publish What You Fund,International NGO,,21,International NGO,United Kingdom,pwyf
+GB-COH-07840888,MedicineAfrica Ltd.,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,medafrica
+GB-COH-08212556,PositiveNegatives,Other Public Sector,,15,Other Public Sector,United Kingdom,posneg
+GB-COH-08327972,Aktis Strategy Ltd,Private Sector,,70,Private Sector,United Kingdom,aktis
+GB-COH-08333641,Delivery Associates Ltd,Private Sector,,70,Private Sector,United Kingdom,delivery_associates
+GB-COH-08567552,UN Global Compact Local Network UK,UN,,40,Multilateral,United Kingdom,ungc-uk
+GB-COH-08828458,International Network of People who Use Drugs (INPUD),International NGO,,21,International NGO,United Kingdom,inpud_admin
+GB-COH-09288843,The Power of Nutrition,Foundation,,60,Foundation,United Kingdom,the_power_of_nutrition
+GB-COH-10633588,Abt Britain Limited,Private Sector,,70,Private Sector,United Kingdom,abtbritain
+GB-COH-1081247,WWF-UK,International NGO,,21,International NGO,United Kingdom,wwf-uk
+GB-COH-1100897,Aga Khan Foundation (United Kingdom),International NGO,,21,International NGO,United Kingdom,akfuk73
+GB-COH-1102208,Marie Stopes International,International NGO,,21,International NGO,United Kingdom,msi
+GB-COH-1110949,Mott MacDonald Limited,Private Sector,,70,Private Sector,United Kingdom,mml
+GB-COH-1134415,MADE in Europe,International NGO,,21,International NGO,United Kingdom,mie-1134415
+GB-COH-1158838,The Freedom Fund,International NGO,,21,International NGO,United Kingdom,thefreedomfund
+GB-COH-1364201,Plan International UK,International NGO,,21,International NGO,United Kingdom,plan_uk
+GB-COH-1574821,Landell Mills,Private Sector,,70,Private Sector,United Kingdom,landell-mills
+GB-COH-1762840,HelpAge International,International NGO,,21,International NGO,United Kingdom,helpage_international
+GB-COH-1858644,DAI Europe,Private Sector,,70,Private Sector,United Kingdom,dai-e
+GB-COH-1869600,Itad,Private Sector,,70,Private Sector,United Kingdom,itad
+GB-COH-2082273,World Association for Christian Communication (UK),International NGO,,21,International NGO,United Kingdom,wacc-uk
+GB-COH-2100867,SOS Sahel International UK,International NGO,,21,International NGO,United Kingdom,sossaheluk
+GB-COH-213890,Save the Children UK,International NGO,,21,International NGO,United Kingdom,scuk
+GB-COH-2153193,International Alert,International NGO,,21,International NGO,United Kingdom,international-alert
+GB-COH-2394229,Palladium International Ltd (UK),Private Sector,,70,Private Sector,United Kingdom,palladium
+GB-COH-2695347,Options Consultancy Services,Private Sector,,70,Private Sector,United Kingdom,options
+GB-COH-2732176,Adam Smith International,Private Sector,,70,Private Sector,United Kingdom,asi
+GB-COH-294860,ADD International (Action on Disability and Development),International NGO,,21,International NGO,United Kingdom,addinternational
+GB-COH-3008440,Forests Monitor,International NGO,,21,International NGO,United Kingdom,fm
+GB-COH-3031674,Traidcraft Exchange,International NGO,,21,International NGO,United Kingdom,traidcraft
+GB-COH-353570,Water Witness International,International NGO,,21,International NGO,United Kingdom,water-witness-international
+GB-COH-3578127,Ethical Trading Initiative,International NGO,,21,International NGO,United Kingdom,eti
+GB-COH-3799145,Coffey International Development,Private Sector,,70,Private Sector,United Kingdom,coffey
+GB-COH-4075590,LEAD International,International NGO,,21,International NGO,United Kingdom,lead_international
+GB-COH-4884328,Integrity Action,International NGO,,21,International NGO,United Kingdom,integrity_action
+GB-COH-4887855,HealthProm,International NGO,,21,International NGO,United Kingdom,hp_12
+GB-COH-4905100,Resource Extraction Monitoring,International NGO,,21,International NGO,United Kingdom,rem
+GB-COH-5155300,Alcis Holdings Limited,Private Sector,,70,Private Sector,United Kingdom,alcis
+GB-COH-5419428,Water & Sanitation for the Urban Poor (WSUP),Public Private Partnership,,30,Public Private Partnership,United Kingdom,wsup
+GB-COH-7207947,PRI Association,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,pri_icf
+GB-COH-7557881,Social Impact Lab CIC,International NGO,,21,International NGO,United Kingdom,simlab
+GB-COH-8159144,Construction Sector Transparency Initiative (CoST),International NGO,,21,International NGO,(No country assigned),cost_uk
+GB-COH-871954,Practical Action,International NGO,,21,International NGO,United Kingdom,pa
+GB-COH-877338,Institute of Development Studies,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,ids
+GB-COH-8835431,Simprints,International NGO,,21,International NGO,United Kingdom,simprints
+GB-COH-FC012665,McKinsey & Company,Private Sector,,70,Private Sector,(No country assigned),mck
+GB-COH-NI011322,War on Want NI,International NGO,,21,International NGO,United Kingdom,wowni
+GB-COH-NI21482,Trocaire (Northern Ireland),International NGO,,21,International NGO,United Kingdom,troc
+GB-COH-NI630024,Siren Associates,Private Sector,,70,Private Sector,United Kingdom,siren
+GB-COH-OC301540,KPMG LLP,Private Sector,,70,Private Sector,United Kingdom,kpmgllp
+GB-COH-OC305127,BDO LLP,Private Sector,,70,Private Sector,United Kingdom,bdo
+GB-COH-OC350651,Montrose International LLP,"Academic, Training and Research",,80,"Academic, Training and Research",(No country assigned),montrose_llp
+GB-COH-RC000297,King's College London,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,kingscollegelondon
+GB-COH-RC000346,UK - Medical Research Council,Bilateral,,10,Government,United Kingdom,mrc
+GB-COH-RC000631,University College London,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,ucl
+GB-COH-RC000658,University of Leeds,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,leedsuni
+GB-COH-RC000660,University Of Liverpool,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,uol
+GB-COH-RC000664,University of Nottingham,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,uni_of_nottingham
+GB-COH-RC000749,Zoological Society of London,International NGO,,21,International NGO,United Kingdom,zsl
+GB-COH-RC000797,The University of Manchester,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,uom
+GB-COH-SC100833,LTS International Limited,Private Sector,,70,Private Sector,United Kingdom,lts
+GB-COH-SC301345,Upper Quartile,Private Sector,,70,Private Sector,United Kingdom,uq
+GB-COH-SC349355,Global Network of Sex Work Projects (NSWP),International NGO,,21,International NGO,United Kingdom,nswp
+GB-EDU-133784,University of Birmingham (Governance and Social Development Resource Centre),"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,universityofbirmingham_gsdrc
+GB-GOV-1,UK - Department for International Development (DFID),Bilateral,1A,10,Government,United Kingdom,dfid
+GB-GOV-10,UK - Department of Health and Social Care (DHSC),Bilateral,,10,Government,United Kingdom,dhsc
+GB-GOV-12,"UK - Department for Digital, Culture, Media and Sport",Bilateral,,10,Government,United Kingdom,dcms
+GB-GOV-13,"UK - Department for Business, Energy and Industrial Strategy (BEIS)",Bilateral,3A,10,Government,United Kingdom,beis
+GB-GOV-14,UK – Department for Education,Bilateral,,10,Government,United Kingdom,dfe
+GB-GOV-15,Department for International Trade,Bilateral,,10,Government,United Kingdom,dit
+GB-GOV-2,HM Treasury,Bilateral,,10,Government,United Kingdom,hmtfitb
+GB-GOV-21,UK - Scottish Government,Bilateral,,10,Government,United Kingdom,scottish_government
+GB-GOV-3,UK - Foreign & Commonwealth Office,Bilateral,3A,10,Government,United Kingdom,fco
+GB-GOV-50,Cross-Government Prosperity Fund,Bilateral,,10,Government,United Kingdom,prosperityfund
+GB-GOV-52,"Conflict, Stability and Security Fund",Bilateral,,10,Government,United Kingdom,cssf
+GB-GOV-6,UK - Home Office,Bilateral,3A,10,Government,United Kingdom,homeoffice
+GB-GOV-7,"UK - Department for Environment, Food and Rural Affairs",Bilateral,,10,Government,United Kingdom,defra_transparency
+GB-GOV-8,UK - Ministry of Defence,Bilateral,,10,Government,United Kingdom,ukmod
+GB-LAE-LND,City of London Corporation,Other Public Sector,,15,Other Public Sector,United Kingdom,col-greenfinance
+GB-NIC-101412,Children in Crossfire,International NGO,,21,International NGO,United Kingdom,cicni
+GB-SC-015096,University of Dundee,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,uodcepmlp
+GB-SC-037597,CIFAL Scotland,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,cifal
+GB-SC-044007,Bioclimate Research and Development,International NGO,,21,International NGO,United Kingdom,bioclimate
+GB-SC-SC012302,Scottish Catholic International Aid Fund (SCIAF),International NGO,,21,International NGO,United Kingdom,sciaf
+GB-SC-SC030289,Mercy Corps Europe,International NGO,,21,International NGO,United Kingdom,mce
+GB-SC-SC032327,EMMS International,International NGO,,21,International NGO,United Kingdom,emms
+GB-SC-SC035314,Scotland's International Development Alliance,Regional NGO,,23,Regional NGO,United Kingdom,sinda
+GB-SC-SC037959,Link Community Development Scotland,International NGO,,21,International NGO,United Kingdom,lcds
+GB-SC-SCO45223,marysmeals,International NGO,,21,International NGO,United Kingdom,marysmeals
+GB-UKPRN-10007774,The University of Oxford,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,oxford
+GH-DSW-1103,Regional Advisory Information and Network Systems,National NGO,,22,National NGO,Ghana,rains
+GH-DSW-2000,Northern Network for Education Development,National NGO,,22,National NGO,Ghana,nned
+GH-DSW-2046,African Women's Development Fund,Regional NGO,,23,Regional NGO,Ghana,awdf
+GH-DSW-258,Friends of the Earth-Ghana,National NGO,,22,National NGO,Ghana,foe-ghana
+GH-DSW-3064,ActionAid Ghana,National NGO,,22,National NGO,Ghana,aag
+GH-DSW-4711,Savana Signatures,National NGO,,22,National NGO,Ghana,savsign-org
+GH-DSW-5574,Solidaridad West Africa,International NGO,,21,International NGO,Ghana,solidaridad-waf
+GH-RGD-99389,Opportunity International Savings and Loans Ltd,Private Sector,,70,Private Sector,Ghana,oisl_gh
+GH-RGD-CG077262013,Nature and Development Foundation,National NGO,,22,National NGO,Ghana,ndf_fgm
+GPAF-IMP-031,Development Aid from People to People (DAPP) Malawi,National NGO,,22,National NGO,Malawi,dapp
+HK-CR-1494242,Solidaridad South & South-East Asia,International NGO,,21,International NGO,India,solidaridad-ssea
+HK-CR-2091642,Seefar,Private Sector,,70,Private Sector,Hong Kong,seefar
+IE-CHY-15037,Plan Ireland Charitable Assistance Limited,International NGO,,21,International NGO,Ireland,plan_ireland
+IE-CHY-20009090,Concern Worldwide,International NGO,,21,International NGO,Ireland,concern_worldwide
+IE-CHY-20009601,Trocaire,International NGO,,21,International NGO,Ireland,trocaire
+IE-CHY-6410,Dóchas - Irish Association of Non Governmental Development Organisations,National NGO,,22,National NGO,Ireland,dochas
+IE-CHY-6663,Self Help Africa,International NGO,,21,International NGO,Ireland,self-help-africa
+IE-CHY-6998,Christian Aid Ireland,International NGO,,21,International NGO,Ireland,caid_ireland
+IL-RA-580166452,Musalaha Ministry of Reconciliation,"Academic, Training and Research",,80,"Academic, Training and Research",Israel,mmr_admin2
+IM-CR-024714B,openmindedly,Private Sector,,70,Private Sector,Isle of Man,openmindedly
+IN-,MAMTA - Health Institute for Mother and Child,National NGO,,22,National NGO,India,mamta_himc
+IN-AR-775,Pragya India,National NGO,,22,National NGO,India,pragya
+IN-ITA-1886,Micro Insurance Academy,"Academic, Training and Research",,80,"Academic, Training and Research",India,mia_india
+IN-MCA-AAE-8458,Deloitte Touche Tohmatsu India LLP,Private Sector,,70,Private Sector,India,dttillp
+IN-MCA-U74140DL1998PLC097579,IPE Global Limited,Private Sector,,70,Private Sector,India,ipeglobal
+IN-MCA-U74140WB1983PTC036093,PricewaterhouseCoopers Private Limited India,Private Sector,,70,Private Sector,India,pwcplindia
+IN-MCA-U74999DL2004NPL131340,Oxfam India,National NGO,,22,National NGO,India,oxfamindia
+IN-MHA-147110006,CINI,National NGO,,22,National NGO,India,cini_jhk
+IN-MHA-231650063,Voluntary Health Association of India,"Academic, Training and Research",,80,"Academic, Training and Research",(No country assigned),vhai-org
+IN-MHA-337680017,Network For Enterprise Enhancement and Development Support,National NGO,,22,National NGO,India,needs
+IQ-NGO-1Z2634,"Rehabilitation, Education and Community Health (REACH)",National NGO,,22,National NGO,Iraq,reach-iraq
+IT-CF-00677540288,Doctors with Africa CUAMM,International NGO,,21,International NGO,Italy,cuamm
+IT-CF-95008730160,Cesvi,International NGO,,21,International NGO,Italy,cesvi
+IT-CF-97091470589,INTERSOS Onlus,International NGO,,21,International NGO,Italy,intersos_main
+IT-RI-97241280151,We World - GVC Onlus,International NGO,,21,International NGO,Italy,ww-gvc
+JE-FSC-NPO_1108,Irrawaddy Policy Exchange,"Academic, Training and Research",,80,"Academic, Training and Research",United Kingdom,ipe
+JO-CCD-200104681,Leaders of Tomorrow,Private Sector,,70,Private Sector,Jordan,sqf
+JO-CCD-200138796,Horizons for Green Development,National NGO,,22,National NGO,Jordan,horizons
+JO-CCD-2826,World Vision Syria,International NGO,,21,International NGO,Syrian Arab Republic,wvsyria
+JO-MSD-2009011100178,The Princess Alia Foundation,Foundation,,60,Foundation,Jordan,paf_2018
+JO-MSD-2013011100066,Queen Rania Foundation for Education and Development,National NGO,,22,National NGO,Jordan,qrfed
+KE-KRA-P000634725S,African Women's Development and Communication Network,Regional NGO,,23,Regional NGO,Kenya,femnet
+KE-KRA-P051097200R,International Centre of Insect Physiology and Ecology (icipe),"Academic, Training and Research",,80,"Academic, Training and Research",Kenya,icipe
+KE-KRA-P051119468K,Kisumu Medical and Education Trust,National NGO,,22,National NGO,Kenya,kmet
+KE-KRA-P051155108P,Kenya National Commission on Human Rights,Government,,10,Government,Kenya,knchr
+KE-KRA-P051161193S,Trust for Indigenous Culture and Health,International NGO,,21,International NGO,Kenya,ticah
+KE-KRA-P051311853T,Northern Rangelands Trust,National NGO,,22,National NGO,Kenya,nrt-kenya
+KE-KRA-P051502549C,National Coalition of Human Rights Defenders - Kenya,National NGO,,22,National NGO,Kenya,nchrdk
+KE-KRA-P051542095J,LIWA programme trust,"Academic, Training and Research",,80,"Academic, Training and Research",Kenya,liwa-admin
+KE-KRA-P051713416W,AFELT,"Academic, Training and Research",,80,"Academic, Training and Research",Kenya,afelt
+KE-NCB-200201282375,Urgent Action Fund-Africa,Regional NGO,,23,Regional NGO,Kenya,uaf-africa
+KE-NCB-218/051/15179/10159,Kesho Kenya,National NGO,,22,National NGO,Kenya,kesho_kenya
+KE-NCB-218/051/93132/90,Federation of Women Lawyers Kenya,National NGO,,22,National NGO,Kenya,fida
+KE-NCB-218/051/9384/74,CARE SOMALIA,National NGO,,22,National NGO,Kenya,csom1
+KE-NCB-218/051/96110/823,Centre for the Study of Adolescence,"Academic, Training and Research",,80,"Academic, Training and Research",Kenya,csa-kenya
+KE-NCB-2180511304359047,Population Services Kenya,National NGO,,22,National NGO,Kenya,pskenya_19
+KE-NCB-2180511403539790,Faith to Action Network,International NGO,,21,International NGO,Kenya,f2a
+KE-NCB-2180511703310709,Send a Cow Kenya,National NGO,,22,National NGO,Kenya,sac_kenya
+KE-NCB-218051200501953650,Healthright International-Kenya,National NGO,,22,National NGO,Kenya,hri
+KE-NCB-21805120080955572,Ashoka East Africa,International NGO,,21,International NGO,Kenya,ashoka
+KE-NCB-93175,Amref Health Africa in Kenya,International NGO,,21,International NGO,Kenya,amrefkenya
+KE-NCB-KENCBOP218051200802235390,Pastoralist Girls Initiative,National NGO,,22,National NGO,Kenya,pgi_kenya
+KE-NCB-OP/218/051/915/65,Windle Trust Kenya,National NGO,,22,National NGO,Kenya,wtk
+KE-NCB-OP/218/051/924/84,ACTIONAID INTERNATIONAL KENYA,International NGO,,21,International NGO,Kenya,aaik
+KE-NCB-OP-218-051-2007-0183-4781,Relief International - Somalia,International NGO,,21,International NGO,Kenya,ri_kenya
+KE-NCB-OP21805193101154,Ananda Marga Universal Relief Team (AMURT) Africa,National NGO,,22,National NGO,Kenya,amurt_kenya
+KE-NGC-3372,I Choose Life Africa,National NGO,,22,National NGO,Kenya,ke-ngc-3372
+KE-NGC-663,Adventist Development and Relief Agency (ADRA Somalia),International NGO,,21,International NGO,Somalia,adrasom
+KE-NGC-9381,Across,International NGO,,21,International NGO,Kenya,across
+KE-NGCB-149,SOS Children's Villages Kenya,International NGO,,21,International NGO,Kenya,soscvkenya
+KE-RCO-105217,Kenya Private Sector Alliance,Private Sector,,70,Private Sector,Kenya,kepsa
+KE-RCO-201036685,UHAI EASHRI,Foundation,,60,Foundation,Kenya,uhai-eashri
+KE-RCO-270901,Education Development Trust,International NGO,,21,International NGO,Kenya,edt_kenya
+KE-RCO-78260,ADS-Nyanza,Other Public Sector,,15,Other Public Sector,Kenya,ads-nyanza
+KE-RCO-84486,Transparency International Kenya,National NGO,,22,National NGO,Kenya,ti_kenya
+KE-RCO-C110031,Farm Concern International,Regional NGO,,23,Regional NGO,Kenya,fci
+KE-RCO-C1-61,Amref Health Africa Headquarters,International NGO,,21,International NGO,Kenya,amrefhq
+KE-RCO-CPR/2009/5689,TradeMark East Africa,Regional NGO,,23,Regional NGO,Kenya,tmea
+KE-RCO-CPR/2011/63463,Partnership for African Social & Governance Research (PASGR),"Academic, Training and Research",,80,"Academic, Training and Research",Kenya,pasgr
+KE-RSO-14210,United Disabled Persons of Kenya,National NGO,,22,National NGO,Kenya,udpk
+KR-GOV-021,Republic of Korea,Bilateral,X,10,Government,Korea (Republic of),odakorea
+LB-MOI-110,Rene Moawad Foundation,National NGO,,22,National NGO,Lebanon,rmf-lb
+LB-MOI-1-100,Al Majmoua,National NGO,,22,National NGO,Lebanon,al_majmoua
+LB-MOI-18291,Arab foundation for freedoms and equality,Regional NGO,,23,Regional NGO,Lebanon,afemena
+LB-MOI-25465,Fiftyfifty,National NGO,,22,National NGO,Lebanon,fiftyfifty-lb
+LB-MOI-26_AD,Berytech Foundation,Foundation,,60,Foundation,Lebanon,berytech
+LB-MOI-497,ABAAD - Resource Center for Gender Equality,National NGO,,22,National NGO,Lebanon,arcfge
+LB-MOI-6491,Restart Center,National NGO,,22,National NGO,Lebanon,restartcenter
+LB-MOI-853,AVT-L Association of Victims of Terrorism Lebanon,National NGO,,22,National NGO,Lebanon,avt-l
+LK-DRC-GA139,Women's Fund Asia,Regional NGO,,23,Regional NGO,Sri Lanka,wf-asia
+LR-MPEA-NGO-AC-0298,YMCA of Liberia,National NGO,,22,National NGO,Liberia,libymca
+ML-NIF-055000335T,Near East Foundation Mali (NEF Mali),International NGO,,21,International NGO,Mali,nef_mali
+ML-NIF-082208943A,Groupe Pivot Santé Population,"Academic, Training and Research",,80,"Academic, Training and Research",Mali,gpsp-org
+ML-NIF-400100027H,DNH Mali (Direction Nationale de l’Hydraulique du Mali),Government,,10,Government,Mali,pca-gire
+MM-MHA-1/Local/0047,Karuna Mission Social Solidarity - KMSS,National NGO,,22,National NGO,Myanmar,kmss
+MW-CNM-BCM-CF,Baylor College of Medicine Children's Foundation Malawi,National NGO,,22,National NGO,Malawi,bcm-cf
+MW-CNM-C057/1998,the center for victimized women and children,National NGO,,22,National NGO,Malawi,cavwoc
+MW-CNM-C076-1999,Youth Net and Counselling - YONECO,National NGO,,22,National NGO,Malawi,yoneco1997
+MW-MRA-20120896,David Gordon Memorial Hospital,"Academic, Training and Research",,80,"Academic, Training and Research",Malawi,dgmh
+MW-MRA-20123139,NKHOMA MISSION HOSPITAL,National NGO,,22,National NGO,Malawi,nmhiati
+MW-MRA-20125995,Mulanje Mission Hospital,National NGO,,22,National NGO,Malawi,mmh
+MW-NBM-00139,Theatre for a Change Malawi,National NGO,,22,National NGO,Malawi,tfacmalawi
+MW-NBM-NGO/L/18/024,Palliative Care Association of Malawi,National NGO,,22,National NGO,Malawi,pacam
+MW-NBM-R1527,Amref Health Africa Malawi,National NGO,,22,National NGO,Malawi,amrefmw
+MW-RG-2977,Palliative Care Support Trust,National NGO,,22,National NGO,Malawi,pcst
+MZ-MOJ-100717344,IMD Moçambique,National NGO,,22,National NGO,Mozambique,imdmozambique
+MZ-MOJ-203D,Alfalit,National NGO,,22,National NGO,Mozambique,alfalit
+mz-moj-64vq1,Ajuda de Desenvolvimento de Povo para Povo (ADPP),National NGO,,22,National NGO,Mozambique,adpp
+MZ-MOJ-F2G1No4,Magariro,National NGO,,22,National NGO,Mozambique,magariro
+MZ-MOJ-F30G1No89,ANDA,National NGO,,22,National NGO,Mozambique,anda
+MZ-NUIT-500004037,Direcção Provincial de Saúde de Nampula,Government,,10,Government,Mozambique,dps-nampula
+MZ-NUIT-50039061,Agência de Desenvolvimento do Vale do Zambeze,Government,,10,Government,Mozambique,agencia_do_zambeze
+MZ-NUIT-600000381,Fundo de Investimento e Patrimonio do Abastecimento de Água (FIPAG),Other Public Sector,,15,Other Public Sector,Mozambique,fipag
+MZ-NUIT-700098168,Administração de Infra-Estruturas de Águas e Saneamento,Government,,10,Government,Mozambique,aias
+MZ-NUIT-700179850,Plataforma Moçambicana da Água (PLAMA),National NGO,,22,National NGO,Mozambique,plama
+NE-DGI-5355,Timidria,National NGO,,22,National NGO,Niger,timidria
+NG-CAC-1260478,Silsab Foundation,National NGO,,22,National NGO,Nigeria,silsab1-_
+NG-CAC-19258,Centre for Environment Human Rights and Development,International NGO,,21,International NGO,Nigeria,cehrd1
+NG-CAC-495140,Women Environmental Programme,National NGO,,22,National NGO,Nigeria,wep
+NG-CAC-54522,Centre for Legal Research and Development,National NGO,,22,National NGO,Nigeria,clerd-prpi
+NG-CAC-57289,Environmental Centre for Oil Spills and Gas Flaring (NACGOND),National NGO,,22,National NGO,Nigeria,nacgond-
+NG-CAC-5938,Association for Reproductive and Family Health,National NGO,,22,National NGO,Nigeria,arfh
+NG-CAC-692943,Academy for Health Development (AHEAD),"Academic, Training and Research",,80,"Academic, Training and Research",Nigeria,ahead
+NG-CAC-73022,Niger Delta Stakeholders Initiative for Community Development and Empowerment,National NGO,,22,National NGO,Nigeria,ndsicde
+NG-CAC-83813,Neem Foundation,National NGO,,22,National NGO,Nigeria,neem
+NG-CAC-IT-23286,Centre For Citizens With Disabilities,National NGO,,22,National NGO,Nigeria,ccdnigeria
+NG-CAC-RC481360,The Convention on Business Integrity,International NGO,,21,International NGO,Nigeria,cbi-nigeria
+NI-MIGOB-3602,Fondo Centroamericano de Mujeres,Foundation,,60,Foundation,Nicaragua,fcam
+NL-CCI-20081098,BRAC International,International NGO,,21,International NGO,Netherlands,bracintl
+NL-KVK-06702132,WYG International B.V.,Private Sector,,70,Private Sector,United Kingdom,wygi
+NL-KVK-08134161,VEI (Vitens-Evides International),Private Sector,,70,Private Sector,Netherlands,vei_nl
+NL-KVK-08215619-201210000,Kadaster International,Bilateral,,10,Government,Netherlands,kad
+NL-KVK-09098104,Wageningen University & Research - Stichting Wageningen Research,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,wageningen_ur
+NL-KVK-09119363,PRACTICA Foundation,Foundation,,60,Foundation,Netherlands,practica
+NL-KVK-09181221,Resilience,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,resilience
+NL-KVK-20093733,Heifer Nederland,National NGO,,22,National NGO,Netherlands,heifernederland
+NL-KVK-24316726,Ecorys Nederland B.V.,Private Sector,,70,Private Sector,Netherlands,ecorysnl
+NL-KVK-24365461,Right to Play Netherlands Foundation,International NGO,,21,International NGO,Netherlands,rtp
+NL-KVK-27078545,FMO,Public Private Partnership,,30,Public Private Partnership,Netherlands,fmo
+NL-KVK-27102631,UNICEF Netherlands National Committee,National NGO,,22,National NGO,Netherlands,unicefnl
+NL-KVK-27108436,Oxfam Novib,International NGO,,21,International NGO,Netherlands,onl
+NL-KVK-27189542,Netherlands Institute for Multiparty Democracy (NIMD),International NGO,,21,International NGO,Netherlands,nimd-hq
+NL-KVK-27195046,VNG International,Other Public Sector,,15,Other Public Sector,Netherlands,vngi
+NL-KVK-27248417,Aqua for All,Foundation,,60,Foundation,Netherlands,aqua4all
+NL-KVK-27251823,Support Trust for Africa Development (STAD),International NGO,,21,International NGO,Netherlands,stad
+NL-KVK-27264198,ActionAid International,International NGO,,21,International NGO,Netherlands,aai
+NL-KVK-27267681,Red Cross Red Crescent Climate Centre,International NGO,,21,International NGO,Netherlands,climate_centre
+NL-KVK-27284008,DECP,National NGO,,22,National NGO,Netherlands,decp
+NL-KVK-27290536,HiiL innovating Justice,Foundation,,60,Foundation,Netherlands,hiil_mfa
+NL-KVK-27293385,"WO=MEN, Dutch Gender Platform",National NGO,,22,National NGO,Netherlands,wo-men
+NL-KVK-27302841,Giro555 (Stichting Samenwerkende Hulporganisaties),International NGO,,21,International NGO,Netherlands,giro555
+NL-KVK-27327087,Akvo Foundation,International NGO,,21,International NGO,Netherlands,akvo
+NL-KVK-27367015,Netherlands Organisation for Scientific Research (NWO),Bilateral,,10,Government,Netherlands,nwo
+NL-KVK-27368929,Universiteit Leiden,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,universiteit_leiden
+NL-KVK-27378529,Netherlands Enterprise Agency,Bilateral,,10,Government,Netherlands,rvo
+NL-KVK-30114696,Palladium Europe,Private Sector,,70,Private Sector,Netherlands,palladium_eur
+NL-KVK-30157019,Larive International,Private Sector,,70,Private Sector,Netherlands,larive
+NL-KVK-30195730,MVO Nederland,Other Public Sector,,15,Other Public Sector,Netherlands,mvo_nederland
+NL-KVK-30204842,AgriProFocus,Foundation,,60,Foundation,Netherlands,agriprofocus
+NL-KVK-30214009,PAX,International NGO,,21,International NGO,Netherlands,pax
+NL-KVK-30238214,Impunity Watch,International NGO,,21,International NGO,Netherlands,iw_admin
+NL-KVK-30276595,Koninklijk Nederlands Meteorologisch Instituut,Bilateral,,10,Government,Netherlands,knmi
+NL-KVK-30285304,Stichting Humana,International NGO,,21,International NGO,Netherlands,humana_houben
+NL-KVK-30285304,Sympany+,International NGO,,21,International NGO,Netherlands,simone_sympany
+NL-KVK-32037590,International Procurement Agency,Private Sector,,70,Private Sector,Netherlands,ipa
+NL-KVK-32092131,Edukans Foundation,International NGO,,21,International NGO,Netherlands,edukans_foundation
+NL-KVK-32102434,RUAF Foundation,Foundation,,60,Foundation,Netherlands,ruaf
+NL-KVK-32108345,CHOICE for Youth and Sexuality,International NGO,,21,International NGO,Netherlands,cfyas
+NL-KVK-33185213,Royal Tropical Institute,International NGO,,21,International NGO,Netherlands,kit
+NL-KVK-33226495,Atradius Dutch State Business,Private Sector,,70,Private Sector,Netherlands,adsb
+NL-KVK-34106722,AWEPA,International NGO,,21,International NGO,Netherlands,awepa
+NL-KVK-34111374,Fair Wear Foundation,International NGO,,21,International NGO,Netherlands,fwf
+NL-KVK-34141098,Fairfood International,National NGO,,22,National NGO,Netherlands,fairfood
+NL-KVK-34148682,AFEW International,International NGO,,21,International NGO,Netherlands,afewinternational
+NL-KVK-34159275,UTZ,International NGO,,21,International NGO,Netherlands,utz
+NL-KVK-34185938,Access to Medicine Foundation,Foundation,,60,Foundation,Netherlands,atmf
+NL-KVK-34197379,dance4life,International NGO,,21,International NGO,Netherlands,dance4life
+NL-KVK-34200988 (deprecated),RAIN Foundation (former),International NGO,,21,International NGO,Netherlands,rainfoundation
+NL-KVK-34214586,partos,National NGO,,22,National NGO,Netherlands,partos_nl
+NL-KVK-34219433,Max Foundation,Foundation,,60,Foundation,Netherlands,max-foundation
+NL-KVK-34229026,Stichting Aflatoun International,International NGO,,21,International NGO,Netherlands,aflatoun
+NL-KVK-34234456,Health Insurance Fund,International NGO,,21,International NGO,Netherlands,hif
+NL-KVK-34271281,World Waternet,Foundation,,60,Foundation,Netherlands,worldwaternet
+NL-KVK-34308169,Free a Girl,Foundation,,60,Foundation,Netherlands,freeagirl
+NL-KVK-34370207,University of Amsterdam,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,uva_org
+NL-KVK-40407706,Unie van Waterschappen,Other Public Sector,,15,Other Public Sector,Netherlands,uvw
+NL-KVK-40409352,Netherlands Red Cross,International NGO,,21,International NGO,Netherlands,nlrc
+NL-KVK-40478591,Royal Netherlands Football Association,Other Public Sector,,15,Other Public Sector,Netherlands,knvb
+NL-KVK-40530156,COC Nederland,National NGO,,22,National NGO,Netherlands,cocnl_publisher
+NL-KVK-40530467,Milieudefensie,National NGO,,22,National NGO,Netherlands,foenl
+NL-KVK-40530953,Amnesty International The Netherlands,International NGO,,21,International NGO,Netherlands,amnesty
+NL-KVK-40535338,Friends of the Earth International,International NGO,,21,International NGO,Netherlands,foei
+NL-KVK-40594571,Simavi,Foundation,,60,Foundation,Netherlands,simavi
+NL-KVK-41009723,ZOA,International NGO,,21,International NGO,Netherlands,zoa
+NL-KVK-41022454,Stichting Red een Kind,International NGO,,21,International NGO,Netherlands,redeenkind
+NL-KVK-41048542,Stichting Agriterra,Foundation,,60,Foundation,Netherlands,agriterra
+NL-KVK-41077447,ECDPM,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,ecdpm
+NL-KVK-41078390,European Journalism Centre,National NGO,,22,National NGO,Netherlands,ejc
+NL-KVK-41081480,Stichting Liliane Fonds,National NGO,,22,National NGO,Netherlands,slf
+NL-KVK-41118168,Stichting Woord en Daad,International NGO,,21,International NGO,Netherlands,w-d
+NL-KVK-41145371,Maastricht School of Management,Foundation,,60,Foundation,Netherlands,msm-ipd
+NL-KVK-41146461,Stichting Deltares,Foundation,,60,Foundation,Netherlands,deltares
+NL-KVK-41146484,IHE Delft Institute for Water Education,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,ihedelft
+NL-KVK-41149287,Terre des Hommes Netherlands,International NGO,,21,International NGO,Netherlands,tdh_nl
+NL-KVK-41149486,Stichting Vluchteling,International NGO,,21,International NGO,Netherlands,st_vluchteling
+NL-KVK-41149831,Mensen met een Missie,National NGO,,22,National NGO,Netherlands,mm1
+NL-KVK-41150085,Nuffic,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,nuffic20171017
+NL-KVK-41150298,Amref Flying Doctors,National NGO,,22,National NGO,Netherlands,amrefnl
+NL-KVK-41150939,Solidaridad Europe,International NGO,,21,International NGO,Netherlands,solidaridad-europe
+NL-KVK-41151952,IRC,International NGO,,21,International NGO,Netherlands,irc
+NL-KVK-41152786,SNV Netherlands Development Organisation,International NGO,,21,International NGO,Netherlands,snv
+NL-KVK-41152832,Stichting Nederlands Instituut voor Internationale Betrekkingen 'Clingendael',"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,clingendael
+NL-KVK-41153698,World Federalist Movement - Institute for Global Policy,International NGO,,21,International NGO,Netherlands,wfm-igp
+NL-KVK-41155305,Tropenbos International,International NGO,,21,International NGO,Netherlands,tbi
+NL-KVK-41158230,CARE Nederland,International NGO,,21,International NGO,Netherlands,carenederland
+NL-KVK-41159889,Prince Claus Fund,International NGO,,21,International NGO,Netherlands,pcf
+NL-KVK-41160054,Cordaid,International NGO,,21,International NGO,Netherlands,cordaid
+NL-KVK-41160229,PUM Netherlands,International NGO,,21,International NGO,Netherlands,pumnl
+NL-KVK-41166983,Center for International Legal Cooperation (CILC),Foundation,,60,Foundation,Netherlands,cilc
+NL-KVK-41167934,Stichting Kinderpostzegels Nederland,International NGO,,21,International NGO,Netherlands,skn
+NL-KVK-41169161,International Child Development Initiatives,International NGO,,21,International NGO,Netherlands,icdi
+NL-KVK-41172933,WASTE advisers on urban environment and development,Foundation,,60,Foundation,Netherlands,waste
+NL-KVK-41177385,TEAR fund Nederland,National NGO,,22,National NGO,Netherlands,tear
+NL-KVK-41177588,WNF Wereld Natuur Fonds,International NGO,,21,International NGO,Netherlands,wnf
+NL-KvK-41177601,Mondiaal FNV,National NGO,,22,National NGO,Netherlands,mondiaalfnv
+NL-KVK-41179943,World Vision Netherlands,Foundation,,60,Foundation,Netherlands,wvnld
+NL-KVK-41180500,LIGHT FOR THE WORLD The Netherlands,International NGO,,21,International NGO,Netherlands,lftwnl
+NL-KVK-41180885,IUCN Nederlands Comité,International NGO,,21,International NGO,Netherlands,iucn_nl
+NL-KVK-41185216,Netherlands Commission for Environmental Assessment,Foundation,,60,Foundation,Netherlands,ncea
+NL-KVK-41186799,Women Engage for a Common Future,International NGO,,21,International NGO,Netherlands,wecf
+NL-KVK-41188664,ICS,International NGO,,21,International NGO,Netherlands,ics
+NL-KVK-41193594,Rutgers,International NGO,,21,International NGO,Netherlands,rutgers
+NL-KVK-41197411,International Bureau of Fiscal Documentation (IBFD),"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,ibfd
+NL-KVK-41197577,SOS Children's Villages The Netherlands,Foundation,,60,Foundation,Netherlands,sosnl
+NL-KVK-41198677,Hivos,International NGO,,21,International NGO,Netherlands,stichting_hivos
+NL-KVK-41198890,Plan International Netherlands,International NGO,,21,International NGO,Netherlands,plannlno
+NL-KVK-41199723,Netherlands Leprosy Relief,International NGO,,21,International NGO,Netherlands,nlr
+NL-KVK-41201198,The Hunger Project Netherlands,International NGO,,21,International NGO,Netherlands,thp_org
+NL-KVK-41201463,Save the Children Netherlands,International NGO,,21,International NGO,Netherlands,scnl
+NL-KVK-41201644,Wemos Foundation,International NGO,,21,International NGO,Netherlands,wemos
+NL-KVK-41201806,Transnational Institute,Foundation,,60,Foundation,Netherlands,tni
+NL-KVK-41202535,Mama Cash,Foundation,,60,Foundation,Netherlands,mamac
+NL-KVK-41207580,Stichting Health Action International,Foundation,,60,Foundation,Netherlands,hai
+NL-KVK-41207989,Aidsfonds - Soa Aids Nederland,International NGO,,21,International NGO,Netherlands,nl-kvk-41207989
+NL-KVK-41208024,Stichting Aidenvironment,Foundation,,60,Foundation,Netherlands,aidenvironment
+NL-KVK-41208813,Defence for Children International Netherlands - ECPAT Netherlands,National NGO,,22,National NGO,Netherlands,dciecpatnl
+NL-KVK-41209946,Mainline,Foundation,,60,Foundation,Netherlands,mainline
+NL-KVK-41210098,Both ENDS,National NGO,,22,National NGO,Netherlands,bothends
+NL-KVK-41210820,Clean Clothes Campaign,International NGO,,21,International NGO,Netherlands,ccc
+NL-KVK-41211943,HealthNet TPO,International NGO,,21,International NGO,Netherlands,healthnet
+NL-KVK-41213450,SPARK,International NGO,,21,International NGO,Netherlands,spark
+NL-KVK-41214768,Global Network of People Living with HIV (GNP+),International NGO,,21,International NGO,Netherlands,gnpplus
+NL-KVK-41215393,War Child Holland,International NGO,,21,International NGO,Netherlands,warchildholland
+NL-KVK-41217404,GPPAC Foundation,International NGO,,21,International NGO,Netherlands,gppac
+NL-KVK-41217595,Stichting ActionAId,International NGO,,21,International NGO,Netherlands,aanl
+NL-KVK-41223308,Stichting Onderzoek Multinationale Ondernemingen (SOMO),"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,somo
+NL-KVK-41236410,Dorcas Aid International,International NGO,,21,International NGO,Netherlands,dai
+NL-KVK-50130536,University Twente,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,utwente
+NL-KVK-50744984,BoP Innovation Center,Foundation,,60,Foundation,Netherlands,bopinc
+NL-KVK-51756811,Solidaridad,International NGO,,21,International NGO,Netherlands,solidaridad
+NL-KVK-52957535,Free Press Unlimited,International NGO,,21,International NGO,Netherlands,free_press_unlimited
+NL-KVK-53521129,"IDH, the Sustainable Trade Initiative",International NGO,,21,International NGO,Netherlands,idh
+NL-KVK-53744993,World Benchmarking Alliance Foundation,Foundation,,60,Foundation,Netherlands,wba
+NL-KVK-53815211,Stichting VU Amsterdam - Amsterdam Centre for World Food Studies,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,acwfs_vu
+NL-KVK-54436222,CNV Internationaal,National NGO,,22,National NGO,Netherlands,nl-kvk-54436222-27541
+NL-KVK-56083459,Women Peacemakers Program,International NGO,,21,International NGO,Netherlands,wpp
+NL-KVK-56185154,"NpM, Platform for Inclusive Finance",National NGO,,22,National NGO,Netherlands,npm
+NL-KVK-56484038,ICCO Cooperation,International NGO,,21,International NGO,Netherlands,icco-cooperation
+NL-KVK-56821743,MDF Global,Foundation,,60,Foundation,Netherlands,mdf
+NL-KVK-58183167,HE Foundation,Foundation,,60,Foundation,Netherlands,hefoundation
+NL-KVK-58279199,The Access to Nutrition Foundation,International NGO,,21,International NGO,Netherlands,atnf
+NL-KVK-60633468,Water Finance Facility,Private Sector,,70,Private Sector,Netherlands,wff
+NL-KVK-61172863,Stichting fondsbeheer DGGF lokaal MKB,Foundation,,60,Foundation,Netherlands,dggf_financing_local_smes
+NL-KVK-62066064,GOGLA - Global Off-Grid Lighting Association,Private Sector,,70,Private Sector,Netherlands,gogla
+NL-KVK-64460789,Coöperatief Climate Fund Managers U.A.,Private Sector,,70,Private Sector,Netherlands,cfm
+NL-KVK-64763064,Data4Development,Private Sector,,70,Private Sector,Netherlands,d4d
+NL-KVK-65306198,equileap,International NGO,,21,International NGO,Netherlands,equileap
+NL-KVK-66926262,Win Win Strategies,International NGO,,21,International NGO,Netherlands,wws
+NL-KVK-67143555,United Work,National NGO,,22,National NGO,Netherlands,united_work
+NL-KVK-70048436,Global Rights Compliance,Foundation,,60,Foundation,Netherlands,grc2018
+NL-KVK-70292361,Access to Seeds Foundation,International NGO,,21,International NGO,Netherlands,atsf
+NL-KVK-70292388,Index Initiative Foundation,Foundation,,60,Foundation,Netherlands,iif
+NL-KVK-70333564,Mercy Corps Netherlands,International NGO,,21,International NGO,Netherlands,mcn
+NL-KVK-72849770,Stichting Beheer Subsidiegelden DRA,International NGO,,21,International NGO,Netherlands,stichting-subsidiegelden-dra
+NL-KVK-729081140000,The AGRI3 Fund,Public Private Partnership,,30,Public Private Partnership,Netherlands,agri3_fund
+NL-KVK-74064800,Programming Their Future,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,p-t-f-
+NL-KVK-815165924,STC International,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,stc-international
+NL-KVK-855689493,Stichting Mayday Rescue Foundation,Foundation,,60,Foundation,Netherlands,maydayrescue
+NL-KVK-9099028,Wetlands International,International NGO,,21,International NGO,(No country assigned),wi
+NO-BRC-871033552,Norwegian People's Aid,International NGO,,21,International NGO,Norway,npa
+NO-BRC-917687811,Coalition for Epidemic Preparedness Innovations,International NGO,,21,International NGO,Norway,cepi
+NO-BRC-971277882,Norad - Norwegian Agency for Development Cooperation,Bilateral,3A,10,Government,Norway,norad
+NO-BRC-977538319,Norwegian Refugee Council,International NGO,,21,International NGO,Norway,nrc
+NO-BRC-980997278,INTOSAI Development Initiative,International NGO,,21,International NGO,Norway,idi
+NP-CRO-45995/063/064,Young Innovations Pvt. Ltd,"Academic, Training and Research",,80,"Academic, Training and Research",Nepal,yipl
+NP-DAO-27-127/062/063,Freedom Forum,National NGO,,22,National NGO,Nepal,ff
+NP-DAO-27-689/063/064,NGO Federation of Nepal,National NGO,,22,National NGO,Nepal,nfn
+NP-DAO-531/062/063,PHASE Nepal,National NGO,,22,National NGO,Nepal,phase-nepal
+NP-DAO-DANG-18-046/47,Backward Society Education (BASE),National NGO,,22,National NGO,Nepal,base_22
+NP-IRD-302113730,"Adventist Development and Relief Agency, Nepal",International NGO,,21,International NGO,Nepal,adra_nepal
+NP-IRD-302274734,CARE Nepal,International NGO,,21,International NGO,Nepal,cnepal
+NP-SWC-00589,Shtrii Shakti,National NGO,,22,National NGO,Nepal,shtrii_shakti
+NP-SWC-10136,Nepal Disabled Human Rights Center,National NGO,,22,National NGO,Nepal,dhrc_nepal
+NP-SWC-13712,Global Action Nepal,National NGO,,22,National NGO,Nepal,gan
+NP-SWC-17775,The Leprosy Mission Nepal,National NGO,,22,National NGO,Nepal,tlmnepal
+NP-SWC-1844,Center for Research on Environment Health and Population Activities (CREHPA),National NGO,,22,National NGO,Nepal,crehpa
+NP-SWC-24,Nepal Netra Jyoti Sangh,National NGO,,22,National NGO,Nepal,nnjs_nepal
+NP-SWC-27288,Burns Violence Survivors - Nepal,National NGO,,22,National NGO,Nepal,bvs-nepal
+NP-SWC-27693,Aasaman Nepal,National NGO,,22,National NGO,Nepal,aasaman
+NP-SWC-37725,South Asian Women Development Forum,"Academic, Training and Research",,80,"Academic, Training and Research",(No country assigned),sawdf-admin
+NP-SWC-46024,Accelerator Nepal,National NGO,,22,National NGO,Nepal,acceleratornepal
+NP-SWC-8220,Aapasi Sahayog Kendra Syangja Nepal (ASK Nepal),National NGO,,22,National NGO,Nepal,ask
+NZ-1,New Zealand - Ministry of Foreign Affairs and Trade - New Zealand Aid Programme,Bilateral,1A,10,Government,New Zealand,mfat
+PE-SUNARP-11744379,Centro de Promocion y Defensa de los Derechos Sexuales y Reproductivos,Regional NGO,,23,Regional NGO,Peru,promsex
+PE-SUNARP-12623829,International Indigenous Women Forum,Foundation,,60,Foundation,Peru,fimi_iiwf_2019
+PH-SEC-FN200806591,Women's Global Network on Reproductive Rights,International NGO,,21,International NGO,Philippines,wgnrr_iati
+PK-MSW-633-1965,Rahnuma-Family Planning Assocation of Pakistan,National NGO,,22,National NGO,Pakistan,rfpap
+PK-SEC-0080655,DKT - (Pakistan),Private Sector,,70,Private Sector,Pakistan,dkt
+PK-SEC-0105957,Sehat Kahani (Community Innovation Hub),Private Sector,,70,Private Sector,Pakistan,sehatkahanicih
+PK-VSWA-32-2004,Tameer-e-Khalaq Foundation,National NGO,,22,National NGO,Pakistan,tkf1234
+PK-VSWA-511-2007,Acid Survivors Foundation,National NGO,,22,National NGO,Pakistan,_admin
+PS-MOI-RA-22220-A,Union of Agricultural Work Committees,National NGO,,22,National NGO,"Palestine, State of",uawc
+RS-APR-17062603,Caritas Serbia,National NGO,,22,National NGO,(No country assigned),caritas_serbia
+RW-RGB-002-RGB-NGO-2017,EDUCATION DEVELOPMENT TRUST - RWANDA,International NGO,,21,International NGO,Rwanda,edt_rwanda
+RW-RGB-101-RGB-NGO-2014,UWEZO Youth Empowerment,National NGO,,22,National NGO,Rwanda,uwezo_youth_empowerment
+RW-RGB-114-RGB-RGO-2013,The Legal Aid Forum,National NGO,,22,National NGO,Rwanda,laf
+RW-RGB-61-RGB-NGO-2017,ActionAid Rwanda,National NGO,,22,National NGO,Rwanda,aar
+RW-RGB-77-RGB-NGO-2013,Health Development Initiative,National NGO,,22,National NGO,Rwanda,hdi
+SACU,Send a Cow Uganda,National NGO,,22,National NGO,Uganda,sacu
+SE-0,"Sweden, through Swedish International Development Cooperation Agency (Sida)",Bilateral,F,10,Government,Sweden,sida
+SE-ON-802004-1524,We Effect,International NGO,,21,International NGO,Sweden,weeffect
+SE-ON-802005-9823,WWF Sweden,International NGO,,21,International NGO,Sweden,wwf-se
+SE-ON-802007-2446,Afrikagrupperna Sweden,International NGO,,21,International NGO,Sweden,afrikagrupperna
+SE-ON-802017-3517,Diakonia Sweden,International NGO,,21,International NGO,Sweden,diakonia802017-3517
+SE-ON-802425-8702,Stockholm International Water Institute,International NGO,,21,International NGO,Sweden,siwi
+SK-ZRSR-31784828,Pontis Foundation,Foundation,,60,Foundation,Slovakia,pontis
+SL-NRA-1001562-8,"Medical Research Centre (MRC), Sierra Leone",National NGO,,22,National NGO,Sierra Leone,mrc-sierra-leone
+SN-NINEA-621108990A0,Panos Institute West Africa (PIWA),International NGO,,21,International NGO,Senegal,ipao
+SS-RRC-004,Nonviolent Peaceforce South Sudan,International NGO,,21,International NGO,South Sudan,npss
+TN-TIN-102123727,CUAMM Trustees,National NGO,,22,National NGO,"Tanzania, United Republic of",cuammtrustees
+TR-MOI-27-018-163,Local Development and Small Projects Support,National NGO,,22,National NGO,Turkey,ldsps
+TR-MOI-27-019-074,Emissa,National NGO,,22,National NGO,Turkey,emissa
+TZ-BRE-63966,Twaweza,Regional NGO,,23,Regional NGO,"Tanzania, United Republic of",twaweza
+TZ-BRLA-36057,KPMG East Africa,Private Sector,,70,Private Sector,Kenya,kpmgea
+TZ-BRLA-4368,Amref Health Africa in Tanzania,International NGO,,21,International NGO,"Tanzania, United Republic of",amreftz
+TZ-TRA-101-091-759,Economic and Social Research Foundation (ESRF),"Academic, Training and Research",,80,"Academic, Training and Research","Tanzania, United Republic of",esrf
+TZ-TRA-101-304-795,Chama cha Uzazi na Malezi Bora Tanzania (UMATI),National NGO,,22,National NGO,"Tanzania, United Republic of",umati
+TZ-TRA-102316134,"Iringa Development of Youth, Disabled and Children Care",National NGO,,22,National NGO,"Tanzania, United Republic of",idydc
+TZ-TRA-110-664-087,Railway Children Africa,National NGO,,22,National NGO,"Tanzania, United Republic of",rc2africa
+TZ-TRA-116315386,Babawatoto Centre For Children and Youth,National NGO,,22,National NGO,"Tanzania, United Republic of",bawacecy-tz
+TZ-TRA-121406209,CHEKA SANA TANZANIA,National NGO,,22,National NGO,"Tanzania, United Republic of",cst
+UG-NGB-0498,Mukisa Foundation,National NGO,,22,National NGO,Uganda,mukisa_foundation
+UG-NGB-10890,Bucks Community NGO,National NGO,,22,National NGO,Uganda,bucksfarm
+UG-NGB-12317,Reach A Hand Uganda,National NGO,,22,National NGO,Uganda,rahuug
+UG-NGB-1826,Family Life Education Program,National NGO,,22,National NGO,Uganda,flepuganda
+UG-NGB-5914-129,AVSI FOUNDATION IN UGANDA,International NGO,,21,International NGO,Uganda,avsi_uganda
+UG-NGB-5914-252,Amref Health Africa in Uganda,National NGO,,22,National NGO,Uganda,amrefug
+UG-NGB-5914-7209,Cheshire Services Uganda,National NGO,,22,National NGO,Uganda,csu
+UG-NGB-5914-9186,CRANE,National NGO,,22,National NGO,Uganda,crane
+UG-NGB-63360,Protecting Families Against HIV/AIDS,National NGO,,22,National NGO,Uganda,prefa_1
+UG-NGO-3329,Auschwitz Institute for the Prevention of Genocide and Mass Atrocities,"Academic, Training and Research",,80,"Academic, Training and Research",Uganda,aipr
+UG-RSB-73316,African Centre for Global Health and Social Transformation,International NGO,,21,International NGO,Uganda,achest
+UG-RSB-80010000253134/25060,Uganda Martyrs University,"Academic, Training and Research",,80,"Academic, Training and Research",Uganda,umu
+UG-RSB-80010003259159/105066,SolarNow Services (U) Ltd,Private Sector,,70,Private Sector,Uganda,solarnowsofa
+US-18,Millennium Challenge Corporation,Bilateral,F,10,Government,United States,millenniumchallenge
+US-501c3-522318905,AidData,"Academic, Training and Research",,80,"Academic, Training and Research",United States,aiddata
+US-DOS-64562614,One Acre Fund,International NGO,,21,International NGO,(No country assigned),oneacrefund
+US-EIN-030358029,Population Media Center,International NGO,,21,International NGO,United States,pmc
+US-EIN-03-0419743,Urgent Action Fund for Women's Human Rights,International NGO,,21,International NGO,United States,uaf
+US-EIN-04-2103547,Boston University,"Academic, Training and Research",,80,"Academic, Training and Research",United States,bu-carbx-admin
+US-EIN-042312909,Brigham and Women's Hospital,"Academic, Training and Research",,80,"Academic, Training and Research",United States,bwh
+US-EIN-042347643,Abt Associates Inc,Private Sector,,70,Private Sector,United States,abt
+US-EIN-06-1597-668,Just Associates,International NGO,,21,International NGO,United States,jass
+US-EIN-06-1608361,African Population and Health Research Center,International NGO,,21,International NGO,United States,aphrc
+US-EIN-11-3580024,International Center for Transitional Justice,International NGO,,21,International NGO,United States,ictj
+US-EIN-11-3803281,African Center for Economic Transformation (ACET),Regional NGO,,23,Regional NGO,United States,acet
+US-EIN-13-1624114,Near East Foundation (NEF USA),International NGO,,21,International NGO,United States,nef_usa
+US-EIN-13-1687001,"The Population Council, Inc.","Academic, Training and Research",,80,"Academic, Training and Research",United States,populationcouncil
+US-EIN-13-1740011,Wildlife Conservation Society,International NGO,,21,International NGO,United States,wcs
+US-EIN-13-1804349,World Education Inc.,"Academic, Training and Research",,80,"Academic, Training and Research",United States,wei
+US-EIN-131837418,The Foundation Center,International NGO,,21,International NGO,United States,foundation_center
+US-EIN-13-2626135,TechnoServe,International NGO,,21,International NGO,United States,tns
+US-EIN-13-2702768,Pact,International NGO,,21,International NGO,United States,pact
+US-EIN-13-2890727,Guttmacher Institute,International NGO,,21,International NGO,United States,guttmacher
+US-EIN-13-3287064,InterAction,International NGO,,21,International NGO,United States,interaction
+US-EIN-13-3287064NAM,InterAction's NGO Aid Map,International NGO,,21,International NGO,United States,ia_nam
+US-EIN-13-3327220,Action Against Hunger USA,International NGO,,21,International NGO,United States,aahusa
+US-EIN-13-3377893,Rainforest Alliance,International NGO,,21,International NGO,United States,rainforest-alliance
+US-EIN-13-3870223,International Aids Vaccine Initiative (IAVI),International NGO,,21,International NGO,United States,iavi
+US-EIN-13-4128413,Global Alliance for TB Drug Development,"Academic, Training and Research",,80,"Academic, Training and Research",United States,tb-a
+US-EIN-134166228,Acumen,International NGO,,21,International NGO,United States,acumen
+US-EIN-13-5563422,Catholic Relief Services,International NGO,,21,International NGO,United States,crs
+US-EIN-13-5660870,The International Rescue Committee,International NGO,,21,International NGO,United States,irc_inc
+US-EIN-14-1945286,"The Global Development Incubator, Inc",International NGO,,21,International NGO,United States,gdi
+US-EIN-20-1173866,Omidyar Network Fund Inc.,Foundation,,60,Foundation,United States,omidyarnetwork
+US-EIN-203908371,World Economic Forum,International NGO,,21,International NGO,United States,worldeconomicforum
+US-EIN-20-4451390,Natural Resource Governance Institute (NRGI),International NGO,,21,International NGO,United States,nrgi
+US-EIN-20-8530747,Results for Development,International NGO,,21,International NGO,United States,r4d
+US-EIN-22-1754524,The Louis Berger Group Inc.,Private Sector,,70,Private Sector,United States,lbg
+US-EIN-22-2852248,Village Enterprise,International NGO,,21,International NGO,United States,villageenterprise
+US-EIN-22-3087809,IREX (International Research and Exchange Board),International NGO,,21,International NGO,United States,irex
+US-EIN-22-3900800,VisionFund International,International NGO,,21,International NGO,United States,vfi
+US-EIN-23-1352010,American Friends Service Committee,"Academic, Training and Research",,80,"Academic, Training and Research",United States,afsc
+US-EIN-23-2220051,iDE,International NGO,,21,International NGO,United States,ide
+US-EIN-23-7069110,Oxfam America,International NGO,,21,International NGO,United States,oxfamus
+US-EIN-237297651,Orbis International,International NGO,,21,International NGO,United States,orbis_international
+US-EIN-237413005,FHI360,International NGO,,21,International NGO,United States,fhi360
+US-EIN-26-1931968,Promundo-US,International NGO,,21,International NGO,United States,pmo-us
+US-EIN-262681792,International Initiative for Impact Evaluation,International NGO,,21,International NGO,United States,3ie
+US-EIN-26-3933134,Special Hope Network,International NGO,,21,International NGO,United States,shn
+US-EIN-26-4129153,Climate Policy Initiative,"Academic, Training and Research",,80,"Academic, Training and Research",United States,cpi
+US-EIN-27-1414646,Clinton Health Access Initiative,International NGO,,21,International NGO,United States,chai
+US-EIN-27-1661997,GiveDirectly,International NGO,,21,International NGO,United States,givedirectly
+US-EIN-27-3755556,IDEO.org,International NGO,,21,International NGO,United States,ideo_org
+US-EIN-27-4933181,IDinsight,International NGO,,21,International NGO,United States,idinsight
+US-EIN-27-5026293,Disability Rights Fund,International NGO,,21,International NGO,United States,drf
+US-EIN-27-5026463,Disability Rights Advocacy Fund,International NGO,,21,International NGO,United States,draf
+US-EIN-300108263,GlobalGiving.org,International NGO,,21,International NGO,United States,globalgiving
+US-EIN-30-0739799,Heartland Alliance International,International NGO,,21,International NGO,United States,ha-i
+US-EIN-31-1812979,CREA,International NGO,,21,International NGO,India,creausa-org
+US-EIN-32-0060251,AIDSPAN,International NGO,,21,International NGO,United States,aidspan
+US-EIN-33-1112770,CLASP,International NGO,,21,International NGO,United States,clasp
+US-EIN-45-2779314,Shift Project Ltd.,International NGO,,21,International NGO,United States,shiftproject
+US-EIN-45-2796201,"Namati, Inc",International NGO,,21,International NGO,United States,namati_inc
+US-EIN-45-4613016,Accountability Lab,National NGO,,22,National NGO,United States,alab
+US-EIN-45-5015494,Instiglio,International NGO,,21,International NGO,United States,instiglio
+US-EIN-463668128,Women's Refugee Commission,International NGO,,21,International NGO,United States,w_r_c
+US-EIN-471065461,The Global Forum on MSM & HIV (MSMGF),International NGO,,21,International NGO,United States,msmgf
+US-EIN-47-3594688,Global Fund to End Modern Slavery,National NGO,,22,National NGO,United States,gfems
+US-EIN-47-4128047,Friends of Publish What You Fund,International NGO,,21,International NGO,United States,friendsofpwyf
+US-EIN-47-5049026,International Youth Alliance for Family Planning,International NGO,,21,International NGO,United States,iyafp
+US-EIN-52-0595110,Johns Hopkins University,"Academic, Training and Research",,80,"Academic, Training and Research",United States,gi-jhu
+US-EIN-52-1238773,Women's Environment & Development Organization,International NGO,,21,International NGO,United States,wedo
+US-EIN-521257057,World Resources Institute,International NGO,,21,International NGO,United States,wri
+US-EIN-521291786,Association for Women's Rights in Development (AWID),International NGO,,21,International NGO,United States,awid
+US-EIN-521750875,Iraq Foundation,International NGO,,21,International NGO,United States,iraq_foundation
+US-EIN-52-1764268,BSR,International NGO,,21,International NGO,United States,bsr_admin
+US-EIN-52-1818273,International Center for Not-for-Profit Law,International NGO,,21,International NGO,United States,icnl_org
+US-EIN-522043740,"Discovery Learning Alliance, Inc.",International NGO,,21,International NGO,United States,dla
+US-EIN-522044704,Aeras,International NGO,,21,International NGO,United States,aeras
+US-EIN-522112460,IMA World Health,International NGO,,21,International NGO,United States,us-imawh
+US-EIN-52-2145827,Chemonics International Inc.,Private Sector,,70,Private Sector,United States,chemonics
+US-EIN-52-5170039,International Crisis Group,International NGO,,21,International NGO,Belgium,crisisgroup
+US-EIN-54-0536100,ChildFund International,International NGO,,21,International NGO,United States,childfund
+US-EIN-550825466,IntraHealth International,International NGO,,21,International NGO,United States,intrahealth
+US-EIN-56-1071085,Ipas,International NGO,,21,International NGO,United States,ipas
+US-EIN-56-2460366,Conflict Dynamics International,International NGO,,21,International NGO,United States,cdi
+US-EIN-58-1454716,The Carter Center,International NGO,,21,International NGO,United States,carter-center
+US-EIN-58-2368165,United Nations Foundation,National NGO,,22,National NGO,United States,unf
+US-EIN-63-0676451,International Fertilizer Development Center,International NGO,,21,International NGO,United States,ifdc-us
+US-EIN-75-3130860,Center for Civilians in Conflict,International NGO,,21,International NGO,United States,civic_admin
+US-EIN-84-1166148,Water for People,International NGO,,21,International NGO,United States,w4p
+US-EIN-84-1648607,Educate!,International NGO,,21,International NGO,United States,educate
+US-EIN-900634376,C40 Cities Climate Leadership Group,"Academic, Training and Research",,80,"Academic, Training and Research",United States,c40cities
+US-EIN-91-1148123,Mercy Corps Global,International NGO,,21,International NGO,United States,mcg
+US-EIN-91-1157127,PATH,International NGO,,21,International NGO,United States,_path_
+US-EIN-941191246,The Asia Foundation,International NGO,,21,International NGO,United States,taf
+US-EIN-941655673,The William and Flora Hewlett Foundation,Foundation,,60,Foundation,United States,hewlett-foundation
+US-EIN-94-3045180,Rainforest Action Network,International NGO,,21,International NGO,United States,ran
+US-EIN-943287156,Association for Progressive Communication,International NGO,,21,International NGO,United States,apc
+US-EIN-95-3202116,World Vision International,International NGO,,21,International NGO,United States,wvi
+US-GOV-1,United States Agency for International Development (USAID),Bilateral,1A,10,Government,United States,usaid
+US-IRS-13-5661832,Plan International USA,International NGO,,21,International NGO,United States,plan_usa
+US-IRS-562339052,CDA Collaborative Learning Projects,International NGO,,21,International NGO,United States,cda
+US-USAGOV,United States,Bilateral,3A,10,Government,United States,unitedstates
+XI-BRIDGE-1812689272,The Mailman School of Public Health,"Academic, Training and Research",,80,"Academic, Training and Research",United States,mailman_school_of_public_health
+XI-BRIDGE-6385676864,GEF Secretariat,Multilateral,,40,Multilateral,United States,gef
+XI-GRID-grid.11194.3c,Makerere University School of Public Health,"Academic, Training and Research",,80,"Academic, Training and Research",Uganda,maksph
+XI-GRID-grid.13001.33,University Of Zimbabwe,"Academic, Training and Research",,80,"Academic, Training and Research",Zimbabwe,1-uz
+XI-GRID-grid.419346.d,International Food Policy Research Institute,International NGO,,21,International NGO,United States,ifpri
+XI-GRID-grid.442459.a,"The University of Dodoma (UDOM), Tanzania","Academic, Training and Research",,80,"Academic, Training and Research","Tanzania, United Republic of",udom
+XI-GRID-grid.442465.5,Mzumbe University,"Academic, Training and Research",,80,"Academic, Training and Research","Tanzania, United Republic of",m_u
+XI-GRID-grid.442626.0,Gulu University,"Academic, Training and Research",,80,"Academic, Training and Research",Uganda,guluuni
+XI-GRID-grid.52681.38,BRAC University,"Academic, Training and Research",,80,"Academic, Training and Research",Bangladesh,bu
+XI-GRID-grid.8193.3,University of Dar es Salaam,"Academic, Training and Research",,80,"Academic, Training and Research","Tanzania, United Republic of",udsm-cbs
+XI-GRID-grid.9783.5,University of Kinshasa,"Academic, Training and Research",,80,"Academic, Training and Research",Congo (Democratic Republic of the),dspd_unikin
+XI-GRID-grid.9829.a,Kwame Nkrumah University of Science and Technology,"Academic, Training and Research",,80,"Academic, Training and Research",Ghana,knust
+XI-IATI-035026724,Hilfswerk Austria Zimbabwe,International NGO,,21,International NGO,Zimbabwe,hwa-zm
+XI-IATI-1001,The Coca-Cola Export Corporation,Private Sector,,70,Private Sector,United States,tccec
+XI-IATI-1002,United Mission to Nepal,International NGO,,21,International NGO,Nepal,umn
+XI-IATI-5914-1107,Stromme Foundation,National NGO,,22,National NGO,Uganda,stromme_ug
+XI-IATI-ACATBA,Association Centrafricaine de Traduction de la Bible et Alphabetisation,National NGO,,22,National NGO,Central African Republic,acatba
+XI-IATI-AGR,AgResults Initiative,Multilateral,,40,Multilateral,(No country assigned),agresults
+XI-IATI-CABI,CABI,Multilateral,,40,Multilateral,(No country assigned),cabi
+XI-IATI-CWSEC,The Commonwealth Secretariat,Multilateral,,40,Multilateral,(No country assigned),commonwealthsecretariat
+XI-IATI-DGF,Democratic Governance Facility,Other Public Sector,,15,Other Public Sector,Uganda,dgf
+XI-IATI-EBRD,European Bank for Reconstruction and Development,IFI,1A,40,Multilateral,"Bilateral, unspecified",ebrd
+XI-IATI-EC_DEVCO,European Commission - Directorate-General for International Cooperation and Development,Bilateral,1A,15,Other Public Sector,(No country assigned),ec-devco
+XI-IATI-EC_ECHO,European Commission - Humanitarian Aid & Civil Protection,Bilateral,1A,15,Other Public Sector,(No country assigned),ec-echo
+XI-IATI-EC_FPI,European Commission - Service for Foreign Policy Instruments,Bilateral,1A,15,Other Public Sector,"Europe, regional",ec-fpi
+XI-IATI-EC_NEAR,European Commission - Neighbourhood and Enlargement Negotiations,Bilateral,1A,15,Other Public Sector,(No country assigned),ec-near
+XI-IATI-ESFD,Economic and Social Fund for Development,Government,,10,Government,Lebanon,esfd
+XI-IATI-FIABEL,Fiabel,National NGO,,22,National NGO,Belgium,fiabel
+XI-IATI-IADB,Inter-American Development Bank,IFI,1A,40,Multilateral,(No country assigned),iadb
+XI-IATI-IKI,International Climate Initiative / BMU - IKI Secretariat,Bilateral,,10,Government,Germany,bmu_iki
+XI-IATI-LPI,living peace institute,National NGO,,22,National NGO,Congo (Democratic Republic of the),lpi
+XI-IATI-MIF,Multilateral Investment Fund,Multilateral,,40,Multilateral,United States,fomin
+XI-IATI-NSO,Netherlands Space Office,"Academic, Training and Research",,80,"Academic, Training and Research",Netherlands,nso
+XI-IATI-OCHASDC,United Nations Office for the Coordination of Humanitarian Affairs (Specially-Designated Contributions),UN,,40,Multilateral,United States,unocha-sdc
+XI-IATI-OFID,The OPEC Fund for International Development (OFID),Multilateral,X,40,Multilateral,Austria,ofid
+XI-IATI-UNPF,UN Pooled Funds,UN,X,40,Multilateral,(No country assigned),unpf
+XI-IATI-WAI,WASH Alliance International,International NGO,,21,International NGO,Netherlands,wai
+XM-DAC-1409,Enhanced Integrated Framework,Multilateral,,40,Multilateral,Switzerland,eif
+XM-DAC-2-10,Belgian Development Cooperation,Bilateral,1A,10,Government,Belgium,be-dgd
+XM-DAC-21016,International Committee of the Red Cross (ICRC),Multilateral,,40,Multilateral,Switzerland,icrc
+XM-DAC-21018,International Federation of the Red Cross and Red Crescent (IFRC),International NGO,,21,International NGO,Switzerland,ifrcrcs
+XM-DAC-21033,Transparency International Secretariat,International NGO,,21,International NGO,Germany,transparency-international
+XM-DAC-21-1,Ireland - Department of Foreign Affairs and Trade,Bilateral,X,10,Government,Ireland,irishaid
+XM-DAC-236,Ministère de l'Economie et des Finances du Bénin,Government,,10,Government,Benin,mefbenin
+XM-DAC-30009,Small Arms Survey,"Academic, Training and Research",,80,"Academic, Training and Research",Switzerland,sas_sana
+XM-DAC-30010,UNITAID,UN,1A,40,Multilateral,Switzerland,utd
+XM-DAC-30011,International Union for Conservation of Nature and Natural Resources,Other Public Sector,,15,Other Public Sector,Switzerland,iucn
+XM-DAC-301-2,Canada - International Development Research Centre/Centre de recherches pour le développement international,Bilateral,,15,Other Public Sector,Canada,idrccrdi
+XM-DAC-3-1,"Denmark - Ministry of Foreign Affairs, Danida",Bilateral,1A,10,Government,Denmark,danida
+XM-DAC-41108,International Fund for Agricultural Development (IFAD),UN,F,40,Multilateral,(No country assigned),ifad
+XM-DAC-41110,United Nations Joint Programme on HIV and AIDS Secretariat (UNAIDS),UN,X,40,Multilateral,Switzerland,unaids
+XM-DAC-41111,United Nations Capital Development Fund,UN,X,40,Multilateral,United States,uncdf
+XM-DAC-41114,United Nations Development Programme (UNDP),UN,1A,40,Multilateral,(No country assigned),undp
+XM-DAC-41116,United Nations Environment Programme (UNEP),UN,X,40,Multilateral,(No country assigned),un-environment
+XM-DAC-41121,United Nations High Commissioner for Refugees (UNHCR),UN,F,40,Multilateral,Switzerland,unhcr
+XM-DAC-41122,United Nations Children's Fund (UNICEF),UN,F,40,Multilateral,(No country assigned),unicef
+XM-DAC-41123,United Nations Industrial Development Organization (UNIDO),UN,F,40,Multilateral,(No country assigned),unido
+XM-DAC-41127,United Nations Office for the Coordination of Humanitarian Affairs (OCHA),UN,F,40,Multilateral,Switzerland,unocha
+XM-DAC-41130,The United Nations Relief and Works Agency for Palestine Refugees in the Near East (UNRWA),UN,F,40,Multilateral,(No country assigned),unrwa
+XM-DAC-41140,United Nations World Food Programme (WFP),UN,1A,40,Multilateral,Italy,wfp
+XM-DAC-41146,UN Women,UN,F,40,Multilateral,(No country assigned),unw
+XM-DAC-41301,Food and Agriculture Organization of the United Nations (FAO),UN,F,40,Multilateral,Italy,fao
+XM-DAC-41302,International Labour Organization (ILO),UN,X,40,Multilateral,Switzerland,ilo
+XM-DAC-41304,"United Nations Educational, Scientific and Cultural Organization (UNESCO)",UN,X,40,Multilateral,France,unesco
+XM-DAC-43000,International Monetary Fund,IFI,X,40,Multilateral,United States,imf
+XM-DAC-45001,International Trade Centre (ITC),International NGO,,21,International NGO,Switzerland,itc
+XM-DAC-46009,Caribbean Development Bank (CDB),IFI,,40,Multilateral,(No country assigned),caribank
+XM-DAC-47008,World Vegetable Center,International NGO,,21,International NGO,Taiwan (Province of China),worldveg
+XM-DAC-47021,International Potato Center,Multilateral,,40,Multilateral,Peru,cip
+XM-DAC-47056,World Agroforestry Centre,"Academic, Training and Research",,80,"Academic, Training and Research",Kenya,icraf_
+XM-DAC-47058,International IDEA,Multilateral,,40,Multilateral,Sweden,idea
+XM-DAC-47059,International Development Law Organization (IDLO),Multilateral,,40,Multilateral,Italy,idlo
+XM-DAC-47064,International Network for Bamboo and Rattan (INBAR),Multilateral,,40,Multilateral,(No country assigned),inbar
+XM-DAC-47066,International Organization for Migration (IOM),UN,F,40,Multilateral,Switzerland,iom
+XM-DAC-47080,OECD,Multilateral,,40,Multilateral,France,oecd
+XM-DAC-47086,Private Infrastructure Development Group,Multilateral,,40,Multilateral,United Kingdom,pidg
+XM-DAC-47136,Global Green Growth Institute (GGGI),Multilateral,,40,Multilateral,(No country assigned),gggi
+XM-DAC-47501,Global Partnership for Education,Multilateral,,40,Multilateral,United States,gpe
+XM-DAC-5-7,Germany - Federal Foreign Office,Bilateral,1A,10,Government,Germany,fo_germany
+XM-DAC-576,Ministry of Foreign Affairs - United Arab Emirates (UAE),Bilateral,X,10,Government,United Arab Emirates,mofaic_uae
+XM-DAC-61-2,Slovenia - Ministry of Foreign Affairs,Bilateral,,10,Government,Slovenia,si-mfa
+XM-DAC-6-4,AICS - Agenzia Italiana per la Cooperazione allo Sviluppo / Italian Agency for Cooperation and Development,Bilateral,X,10,Government,Italy,aics
+XM-DAC-69-1,Ministry of Foreign and European Affairs of the Slovak Republic,Bilateral,,10,Government,Slovakia,slovakaid
+XM-DAC-7,Netherlands - Ministry of Foreign Affairs,Bilateral,1A,10,Government,Netherlands,minbuza_nl
+XM-DAC-701-2,Ministry of Foreign Affairs of  Japan,Bilateral,X,10,Government,Japan,mofa-jpn
+XM-DAC-701-8,Japan International Cooperation Agency (JICA),Bilateral,X,10,Government,Japan,jica
+XM-DAC-77,Romania Ministry of Foreign Affairs,Bilateral,,10,Government,Romania,uasd
+XM-DAC-84,"Lithuania, Ministry of Foreign Affairs",Bilateral,,10,Government,Lithuania,lithuania_mfa
+XM-DAC-903,International Finance Corporation,IFI,1A,40,Multilateral,United States,ifcwbg
+XM-DAC-918-3,European Investment Bank,IFI,1A,40,Multilateral,(No country assigned),eib
+XM-DAC-928,World Health Organization,UN,F,40,Multilateral,Switzerland,who
+XM-OCHA-CBPF,OCHA Country Based Pooled Funds,UN,1A,40,Multilateral,(No country assigned),unocha-cbpf
+XM-OCHA-CERF,United Nations Central Emergency Response Fund (CERF),UN,1A,40,Multilateral,United States,cerf
+XM-OCHA-FTS18563,"Social Fund for Development, Yemen",Other Public Sector,,15,Other Public Sector,Yemen,sfd-yemen
+XM-OCHA-HPC3664,Jordan River Foundation,National NGO,,22,National NGO,Jordan,jrf
+XM-OCHA-HPC6770,King Salman Humanitarian Aid and Relief Centre,Bilateral,,10,Government,Saudi Arabia,ksrelief291
+XM-OCHA-HPC8568,CARE international foundation Switzerland in Sudan,International NGO,,21,International NGO,Sudan,cis
+YE-MSAL-18-2013,Mwatana for Human Rights,National NGO,,22,National NGO,Yemen,mwatana
+YE-MSAL-473-2001,Family Counseling and Development Foundation,National NGO,,22,National NGO,Yemen,fcdf
+YE-MSAL-49-M-2019,Sana'a Center for Strategic Studies,National NGO,,22,National NGO,Yemen,scss
+YE-MSAL-80/295,Yamaan Foundation for Health and Social Development,National NGO,,22,National NGO,Yemen,yffhsd
+ZA-CIP-2005-028883-23,Okapi Consulting,International NGO,,21,International NGO,South Africa,okapiconsulting
+ZA-CIP-2007-0308903-08,African Parks Network,International NGO,,21,International NGO,South Africa,african_parks
+ZA-CIPC-2001/005850/08,Gender Links,Regional NGO,,23,Regional NGO,South Africa,gl
+ZA-NPO-006-981,Institute for Security Studies,International NGO,,21,International NGO,South Africa,issafrica
+ZA-NPO-013484,Heifer International South Africa,National NGO,,22,National NGO,South Africa,hsa
+ZA-NPO-025-359,mothers2mothers,International NGO,,21,International NGO,South Africa,m2m_sa
+ZA-NPO-029-864,CIVICUS World Alliance for Citizen Participation,International NGO,,21,International NGO,South Africa,civicus
+ZA-NPO-048-364,SouthSouthNorth,International NGO,,21,International NGO,South Africa,ssn
+ZA-NPO-061-870,Southern African Catholic Bishops' Conference Aids Office,Regional NGO,,23,Regional NGO,South Africa,sacbc
+ZA-PBO-064-502,Sonke Gender Justice,International NGO,,21,International NGO,South Africa,sjg
+ZA-PBO-930040668,Orbis Africa,International NGO,,21,International NGO,South Africa,orbis_africa
+ZA-ROC-1999/05072/08,Desmond Tutu HIV Foundation,"Academic, Training and Research",,80,"Academic, Training and Research",South Africa,dthfxx12
+ZW-PVO-15/2003,CARE International in Zimbabwe,International NGO,,21,International NGO,Zimbabwe,ciz
+ZW-PVO-26/79,World Vision Zimbabwe,International NGO,,21,International NGO,Zimbabwe,wvz-gec
+ZW-PVO-WO1789,Family Aids Caring Trust,National NGO,,22,National NGO,Zimbabwe,fact
+ZW-ROD-MA0000405/2015,Young Africa International HUB,International NGO,,21,International NGO,Zimbabwe,yai-hub
+ZW-ROD-MA988/87,Women's Action Group,National NGO,,22,National NGO,Zimbabwe,wag-1983
