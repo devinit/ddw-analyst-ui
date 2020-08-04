@@ -96,7 +96,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   to="/"
                   single
                   icon="home"
-                  textNormal="Data Sets"
+                  textNormal="Datasets"
                   onClick={this.setActiveRoute}
                 />
               </Sidebar.Item>
