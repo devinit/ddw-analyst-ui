@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import classNames from 'classnames';
 import { List } from 'immutable';
 import * as React from 'react';
 import { Card, Col, Row, Tab } from 'react-bootstrap';
@@ -21,7 +20,7 @@ import { SourceMap, ColumnList } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
-import { QueryBuilderState, queryBuilderReducerId } from './reducers';
+import { QueryBuilderState, queryBuilderReducerId, QueryBuilderAction } from './reducers';
 import { OperationDataPreviewTable } from '../../components/OperationDataPreviewTable';
 import { BasicCard } from '../../components/BasicCard';
 
@@ -99,12 +98,13 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
     activeSource: SourceMap | undefined,
     page: QueryBuilderState | undefined,
   ) {
-    return this.state.previewShow && !activeStep ? (
+
+    return this.state.previewShow ? (
       <BasicCard
         title="Preview Dataset"
         onClose={() =>
           this.setState((state) => {
-            return { previewShow: !state.previewShow };
+            return { ...state, previewShow: false };
           })
         }
         activeStep={true}
@@ -171,15 +171,28 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
             steps={steps}
             fetchSources={this.props.actions.fetchSources}
             onSelectSource={this.props.actions.setActiveSource}
-            onAddStep={this.props.actions.updateActiveStep}
+            onAddStep={this.addStep.bind(this)}
             activeSource={this.props.activeSource}
             activeStep={activeStep}
-            onClickStep={(step) => this.props.actions.updateActiveStep(step, true)}
+            onClickStep={(step) => {
+              this.setState((state) => {
+                return { ...state, previewShow: false };
+              });
+              this.props.actions.updateActiveStep(step, true);
+            }}
             editable={editable}
           />
         </OperationForm>
       </>
     );
+  }
+
+  private addStep(step?: OperationStepMap | undefined): Partial<QueryBuilderAction> {
+    this.setState((state) => {
+      return { ...state, previewShow: false };
+    });
+
+    return this.props.actions.updateActiveStep(step);
   }
 
   private renderTable() {
@@ -338,7 +351,10 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
           });
         })
         .catch(() => {
-          console.log(`The preview operation was not successsful`);
+          this.setState({ previewData: [] });
+          this.setState((state) => {
+            return { ...state, previewShow: true, loadingPreview: false };
+          });
         });
     }
   };
