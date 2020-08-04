@@ -10,6 +10,7 @@ interface OperationDataTableContainerProps {
   id?: string;
   limit: number;
   offset: number;
+  count: number;
   fetchData?: typeof fetchOperationData;
 }
 
@@ -27,7 +28,7 @@ const getColumns = (item?: OperationDataMap): string[] => {
 export const OperationDataTableContainer: FunctionComponent<OperationDataTableContainerProps> = (
   props,
 ) => {
-  const { fetchData, id, limit, offset, list } = props;
+  const { fetchData, id, limit, offset, list, count } = props;
   const columns = props.list ? getColumns(props.list.get(0)) : [];
   const itemId = id ? id : '';
 
@@ -51,7 +52,8 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
         <OperationDataTable list={list} columns={columns} />
         <Row>
           <Col md={6}>
-            Showing {offset + 1} to {list.count() < limit ? offset + list.count() : offset + limit}
+            Showing {offset + 1} to {list.count() < limit ? offset + list.count() : offset + limit}{' '}
+            of {count}
           </Col>
           <Col md={6}>
             <Pagination className="float-right">
