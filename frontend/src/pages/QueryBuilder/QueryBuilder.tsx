@@ -22,8 +22,8 @@ import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { QueryBuilderState, queryBuilderReducerId } from './reducers';
-import { BasicModal } from '../../components/BasicModal';
 import { OperationDataPreviewTable } from '../../components/OperationDataPreviewTable';
+import { BasicCard } from '../../components/BasicCard';
 
 interface ActionProps {
   actions: typeof sourcesActions &
@@ -47,14 +47,12 @@ interface RouterParams {
   id?: string;
 }
 interface QueryState {
-  modalShow: boolean;
   previewData: OperationData[];
+  previewShow: boolean;
+  loadingPreview: boolean;
 }
 type QueryBuilderProps = ActionProps & ReduxState & RouteComponentProps<RouterParams>;
 
-const StyledIcon = styled.i`
-  cursor: pointer;
-`;
 const StyledCardBody = styled(Card.Body)`
   &.card-body {
     padding-right: 15px;
@@ -66,8 +64,9 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
   constructor(props: QueryBuilderProps) {
     super(props);
     this.state = {
-      modalShow: false,
+      previewShow: false,
       previewData: [],
+      loadingPreview: false,
     };
   }
 
@@ -89,27 +88,37 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
         </Col>
 
         <Col md={12} lg={8}>
-          <Card className={classNames({ 'd-none': !activeStep })}>
-            <Card.Header>
-              <Card.Title>
-                Create Query Step
-                <StyledIcon className="material-icons float-right" onClick={this.resetAction}>
-                  close
-                </StyledIcon>
-              </Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <div className="mb-2">
-                {this.renderOperationStepForm(
-                  activeSource,
-                  activeStep,
-                  page.get('editingStep') as boolean,
-                )}
-              </div>
-            </Card.Body>
-          </Card>
+          {this.renderStepFormOrDatasetPreview(activeStep, activeSource, page)}
         </Col>
       </Row>
+    );
+  }
+
+  private renderStepFormOrDatasetPreview(
+    activeStep: OperationStepMap | undefined,
+    activeSource: SourceMap | undefined,
+    page: QueryBuilderState | undefined,
+  ) {
+    return this.state.previewShow && !activeStep ? (
+      <BasicCard
+        title="Preview Dataset"
+        onClose={() =>
+          this.setState((state) => {
+            return { previewShow: !state.previewShow };
+          })
+        }
+        activeStep={true}
+      >
+        {this.renderTable()}
+      </BasicCard>
+    ) : (
+      <BasicCard title="Create Query Step" onClose={this.resetAction} activeStep={activeStep}>
+        {this.renderOperationStepForm(
+          activeSource,
+          activeStep,
+          page ? (page.get('editingStep') as boolean) : false,
+        )}
+      </BasicCard>
     );
   }
 
@@ -143,16 +152,6 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
 
     return (
       <>
-        <BasicModal
-          show={this.state.modalShow}
-          onHide={() => {
-            this.setState((state) => {
-              return { modalShow: !state.modalShow };
-            });
-          }}
-        >
-          <p>{this.renderTable()}</p>
-        </BasicModal>
         <OperationForm
           operation={operation}
           editable={editable}
@@ -161,6 +160,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
           onDuplicateOperation={this.onDuplicateOperation}
           onSuccess={this.onSaveOperation}
           onPreview={this.onPreviewOperation}
+          previewing={this.state.loadingPreview}
           processing={this.props.page.get('processing') as boolean}
           onDeleteOperation={this.onDeleteOperation}
           onReset={!id ? () => this.props.actions.setActiveOperation() : undefined}
@@ -308,6 +308,9 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
   };
 
   private onPreviewOperation = () => {
+    this.setState((state) => {
+      return { ...state, loadingPreview: true };
+    });
     const steps = this.props.page.get('steps') as List<OperationStepMap>;
     const { activeOperation: operation } = this.props;
     if (!operation) {
@@ -330,7 +333,9 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
         })
         .then((response: AxiosResponse) => {
           this.setState({ previewData: response.data.results });
-          this.setState({ modalShow: true });
+          this.setState((state) => {
+            return { ...state, previewShow: true, loadingPreview: false };
+          });
         })
         .catch(() => {
           console.log(`The preview operation was not successsful`);

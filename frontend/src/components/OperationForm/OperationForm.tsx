@@ -14,6 +14,7 @@ interface OperationFormProps {
   alert?: string;
   valid?: boolean;
   processing?: boolean;
+  previewing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
   onDeleteOperation?: (operation: OperationMap) => void;
   onDuplicateOperation?: (operation: OperationMap) => void;
@@ -104,7 +105,10 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
     }
   };
 
-  const onPreview = () => () => props.onPreview();
+  const onPreview = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    event.preventDefault();
+    props.onPreview();
+  };
 
   const values: Partial<Operation> = props.operation ? props.operation.toJS() : {};
 
@@ -203,11 +207,12 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
             <Button
               variant="dark"
               className={classNames('float-right', { 'd-none': !props.operation })}
-              onClick={onPreview()}
+              onClick={onPreview}
               size="sm"
               hidden={!!values.id && !props.editable}
+              disabled={!props.valid}
             >
-              {`Preview`}
+              {props.previewing ? 'Loading ...' : 'Preview'}
             </Button>
           </Dropdown>
         </Form>

@@ -171,8 +171,8 @@ class PreviewOperationData(APIView):
         try:
             count, data = query.query_table(
                 op_steps=request.data['operation_steps'],
-                limit=request.query_params.get('limit', None),
-                offset=request.query_params.get('offset', None),
+                limit=request.query_params.get('limit', 10),
+                offset=request.query_params.get('offset', 0),
                 estimate_count=True
             )
             return {
