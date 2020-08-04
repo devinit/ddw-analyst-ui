@@ -130,7 +130,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
     );
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     if (!this.props.isFetchingSources) {
       this.props.fetchSources({ limit: 1000 });
     }
@@ -139,7 +139,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
       string
     >;
     const selectableColumns = columnsSet.count()
-      ? QueryBuilderHandler.getSelectOptionsFromColumns(columnsSet)
+      ? QueryBuilderHandler.getSelectOptionsFromColumns(columnsSet, columns)
       : [];
     this.setState({ selectableColumns });
     if (this.props.onUpdate && !this.props.columnsX.length) {

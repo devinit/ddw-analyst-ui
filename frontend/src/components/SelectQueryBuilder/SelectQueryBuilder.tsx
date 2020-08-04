@@ -70,7 +70,7 @@ class SelectQueryBuilder extends React.Component<
     const selectableColumns = getStepSelectableColumns(step, steps, columns) as Set<string>;
     this.setState({
       selectableColumns: selectableColumns.count()
-        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns, columns)
         : [],
     });
   }

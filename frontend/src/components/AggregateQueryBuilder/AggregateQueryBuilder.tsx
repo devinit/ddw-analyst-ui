@@ -142,7 +142,7 @@ export class AggregateQueryBuilder extends React.Component<
           )
         : [],
       groupByColumns: selectableColumns.count()
-        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns, columns)
         : [],
     });
   }
