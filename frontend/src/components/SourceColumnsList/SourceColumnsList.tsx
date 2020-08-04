@@ -1,7 +1,6 @@
 import { Map } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { ColumnList } from '../../types/sources';
-import { formatString } from '../../utils';
 import { InfoList, InfoListItems } from '../InfoList';
 import { Pagination } from '../Pagination';
 import { Row, Col } from 'react-bootstrap';
@@ -15,7 +14,7 @@ const LIMIT = 10;
 const getInfoListFromColumns = (columns: ColumnList): InfoListItems => {
   return columns.map((column) =>
     Map()
-      .set('caption', formatString(column.get('alias') as string))
+      .set('caption', `${column.get('alias') as string} (${column.get('name') as string})`)
       .set('info', column.get('description') as string),
   ) as InfoListItems;
 };
