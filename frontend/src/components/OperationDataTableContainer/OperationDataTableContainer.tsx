@@ -1,17 +1,17 @@
 import { List } from 'immutable';
 import React, { FunctionComponent } from 'react';
-import { Col, Pagination, Row } from 'react-bootstrap';
 import { fetchOperationData } from '../../pages/QueryData/actions';
 import { OperationDataMap } from '../../types/operations';
 import { OperationDataTable } from '../OperationDataTable';
+import { PaginationRow } from '../PaginationRow';
 
 interface OperationDataTableContainerProps {
   list?: List<OperationDataMap>;
-  id?: string;
+  id: string;
   limit: number;
   offset: number;
   count: number;
-  fetchData?: typeof fetchOperationData;
+  fetchData: typeof fetchOperationData;
 }
 
 const getColumns = (item?: OperationDataMap): string[] => {
@@ -28,47 +28,28 @@ const getColumns = (item?: OperationDataMap): string[] => {
 export const OperationDataTableContainer: FunctionComponent<OperationDataTableContainerProps> = (
   props,
 ) => {
-  const { fetchData, id, limit, offset, list, count } = props;
+  const { fetchData, id, limit, list, count } = props;
   const columns = props.list ? getColumns(props.list.get(0)) : [];
-  const itemId = id ? id : '';
 
-  const goToFirst = () => (fetchData ? fetchData({ id: itemId, limit, offset: 0 }) : null);
-  const goToNext = () => {
-    const newOffset = offset + limit;
-    if (list && list.count() >= limit) {
-      fetchData ? fetchData({ id: itemId, limit, offset: newOffset }) : null;
-    }
-  };
-  const goToPrev = () => {
-    if (offset > 0) {
-      const newOffset = offset - limit;
-      fetchData ? fetchData({ id: itemId, limit, offset: newOffset }) : null;
-    }
+  const onPageChange = (page: { selected: number }): void => {
+    fetchData({
+      id,
+      limit,
+      offset: page.selected * limit,
+    });
   };
 
   if (list && list.count()) {
     return (
       <>
         <OperationDataTable list={list} columns={columns} />
-        <Row>
-          <Col md={6}>
-            Showing {offset + 1} to {list.count() < limit ? offset + list.count() : offset + limit}{' '}
-            of {count}
-          </Col>
-          <Col md={6}>
-            <Pagination className="float-right">
-              <Pagination.First onClick={goToFirst} data-testid="operations-pagination-first">
-                <i className="material-icons">first_page</i>
-              </Pagination.First>
-              <Pagination.Prev onClick={goToPrev} data-testid="operations-pagination-prev">
-                <i className="material-icons">chevron_left</i>
-              </Pagination.Prev>
-              <Pagination.Next onClick={goToNext} data-testid="operations-pagination-next">
-                <i className="material-icons">chevron_right</i>
-              </Pagination.Next>
-            </Pagination>
-          </Col>
-        </Row>
+        <PaginationRow
+          pageRangeDisplayed={5}
+          limit={limit}
+          count={count}
+          pageCount={Math.ceil(count / limit)}
+          onPageChange={onPageChange}
+        />
       </>
     );
   }
