@@ -1,4 +1,5 @@
-import { List, Map, fromJS } from 'immutable';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { Map, fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
 import { OperationDataAPIResponseMap } from '../../../types/operations';
 import { SourceMap } from '../../../types/sources';
@@ -9,9 +10,10 @@ export interface QueryDataAction extends Action, State {
 interface State {
   source?: SourceMap;
   loading: boolean;
-  data: List<OperationDataAPIResponseMap>;
+  data: OperationDataAPIResponseMap;
   limit: number;
   offset: number;
+  count: number;
   alert: string;
 }
 export type QueryDataState = Map<keyof State, State[keyof State]>;
@@ -36,7 +38,8 @@ export const queryDataReducer: Reducer<QueryDataState, QueryDataAction> = (
         .set('data', action.data)
         .set('loading', false)
         .set('limit', action.payload.limit)
-        .set('offset', action.payload.offset),
+        .set('offset', action.payload.offset)
+        .set('count', action.data.get('count') as number),
     );
   }
   if (action.type === FETCH_OPERATION_DATA_FAILED) {

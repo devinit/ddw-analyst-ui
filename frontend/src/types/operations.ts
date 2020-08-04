@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { List, Map } from 'immutable';
 
 export type QueryName = 'filter' | 'join' | 'aggregate' | 'transform';
