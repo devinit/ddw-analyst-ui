@@ -33,7 +33,7 @@ class DataSerializer(serializers.BaseSerializer):
         request = instance['request']
         limit = request.query_params.get('limit', None)
         offset = request.query_params.get('offset', None)
-        use_aliases = request.query_params.get('aliases', False)
+        use_aliases = request.query_params.get('aliases', 0)
         if limit == 0:
             limit = DEFAULT_LIMIT_COUNT
         operation = instance['operation_instance']
@@ -42,7 +42,7 @@ class DataSerializer(serializers.BaseSerializer):
             count, data = query.query_table(operation, limit, offset, estimate_count=True)
             return {
                 'count': count,
-                'data': self.use_aliases(data) if use_aliases else data
+                'data': self.use_aliases(data) if use_aliases == '1' else data
             }
         except JSONDecodeError as json_error:
             return {
