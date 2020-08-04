@@ -26,4 +26,4 @@ RUN python3 manage.py crontab add
 # Below line 'exports' env to cron, otherwise cron will not run
 RUN printenv >> /etc/environment
 
-CMD export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}') && service cron restart && gunicorn -w 2 -b 0.0.0.0:80 -t 600 --keep-alive 600 ddw_analyst_ui.wsgi
+CMD export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}') && service cron restart && gunicorn -w 2 -b 0.0.0.0:80 -t 6000 --keep-alive 6000 ddw_analyst_ui.wsgi
