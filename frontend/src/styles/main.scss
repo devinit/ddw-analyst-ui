@@ -209,6 +209,17 @@ th .material-icons {
       }
     }
   }
+  &.search {
+    &.dropdown{
+      >.text {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 1.1em;
+      }
+    }
+  }
 }
 
 .transition-none {
@@ -226,6 +237,8 @@ th .material-icons {
   }
 }
 
+/** === CARDS === **/
+
 .card.bg-danger,
 .card .card-header-danger .card-icon, .card .card-header-danger .card-text,
 .card .card-header-danger:not(.card-header-icon):not(.card-header-text),
@@ -233,10 +246,11 @@ th .material-icons {
   background: linear-gradient(60deg,#c8271d,#8F1B15);
 }
 
-.list-group-item-danger {
-  color: #8f1b13;
-  background-color: #fbbbb6;
+.card-wizard .moving-tab {
+  font-weight: 300;
 }
+
+/** === DROPDOWN MENU === **/
 
 .dropdown-menu .dropdown-item:focus,
 .dropdown-menu .dropdown-item:hover,
@@ -244,21 +258,6 @@ th .material-icons {
 .dropdown-menu a:focus,
 .dropdown-menu a:hover {
   background-color: #c8271d;
-}
-
-.badge,
-.nav-pills .nav-item .nav-link {
-  font-weight: 400;
-}
-
-.navbar-dark {
-  .navbar-brand:hover {
-    color: #C8271E;
-  }
-}
-
-.card-wizard .moving-tab {
-  font-weight: 300;
 }
 
 /** ==== MODAL ==== */
@@ -273,4 +272,22 @@ th .material-icons {
 /** === POPOVERS === **/
 .popover {
   padding: 8px 12px;
+}
+
+/** ==== OTHERS ==== **/
+
+.list-group-item-danger {
+  color: #8f1b13;
+  background-color: #fbbbb6;
+}
+
+.badge,
+.nav-pills .nav-item .nav-link {
+  font-weight: 400;
+}
+
+.navbar-dark {
+  .navbar-brand:hover {
+    color: #C8271E;
+  }
 }

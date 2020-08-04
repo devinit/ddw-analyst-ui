@@ -311,7 +311,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   return (
     <Row>
-      <Col md={12} lg={4}>
+      <Col md={12} lg={9} className={classNames('ml-auto mr-auto', { 'd-none': activeStep })}>
         <Tab.Container defaultActiveKey="operation">
           <Card className="source-details">
             <Card.Header className="card-header-text card-header-danger">
@@ -322,8 +322,8 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         </Tab.Container>
       </Col>
 
-      <Col md={12} lg={8}>
-        <Card className={classNames({ 'd-none': !activeStep && !showPreview })}>
+      <Col md={12} lg={12} className={classNames({ 'd-none': !activeStep && !showPreview })}>
+        <Card>
           <Card.Header>
             <Card.Title>
               {showPreview ? 'Preview Dataset' : 'Create Query Step'}
