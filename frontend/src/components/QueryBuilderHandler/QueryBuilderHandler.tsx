@@ -29,11 +29,14 @@ interface ReduxState {
 type QueryBuilderHandlerProps = ComponentProps & ReduxState;
 
 class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
-  static getSelectOptionsFromColumns(columns: Set<string>): DropdownItemProps[] {
+  static getSelectOptionsFromColumns(
+    columns: Set<string>,
+    columnList: ColumnList,
+  ): DropdownItemProps[] {
     if (columns.count()) {
       return columns.toArray().map((column, key) => ({
         key,
-        text: formatString(column),
+        text: QueryBuilderHandler.getColumnAlias(column, columnList),
         value: column,
       }));
     }
@@ -41,7 +44,7 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
     return [];
   }
 
-  static isNumerical(functn: string) {
+  static isNumerical(functn: string): boolean {
     const nonNumericalFunctions = [
       'text_search',
       'concat',
@@ -86,10 +89,16 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
     return selectableColumns
       .map((column, key) => ({
         key,
-        text: formatString(column),
+        text: QueryBuilderHandler.getColumnAlias(column, columnsList),
         value: column,
       }))
       .toJS();
+  }
+
+  static getColumnAlias(columnName: string, columns: ColumnList): string {
+    const matching = columns.find((column) => column.get('name') === columnName);
+
+    return (matching && (matching.get('alias') as string)) || formatString(columnName);
   }
 
   render() {

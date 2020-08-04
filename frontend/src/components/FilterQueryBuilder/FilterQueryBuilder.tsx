@@ -87,7 +87,7 @@ export class FilterQueryBuilder extends React.Component<
     );
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const columns = this.props.source.get('columns') as ColumnList;
     const selectableColumns = getStepSelectableColumns(
       this.props.step,
@@ -96,7 +96,7 @@ export class FilterQueryBuilder extends React.Component<
     ) as Set<string>;
     this.setState({
       selectableColumns: selectableColumns.count()
-        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns, columns)
         : [],
     });
   }

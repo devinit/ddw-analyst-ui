@@ -105,7 +105,7 @@ export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = (props) =>
     );
     setSelectableOptions(
       selectableColumns.count()
-        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns)
+        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectableColumns, columnList)
         : [],
     );
   }, [func]);
