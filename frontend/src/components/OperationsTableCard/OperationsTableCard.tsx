@@ -201,7 +201,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 <Nav.Link eventKey="myQueries">My Datasets</Nav.Link>
               </Nav.Item>
               <Nav.Item onClick={() => fetchQueries()}>
-                <Nav.Link eventKey="otherQueries">Other Datasets</Nav.Link>
+                <Nav.Link eventKey="otherQueries">Published Datasets</Nav.Link>
               </Nav.Item>
             </Nav>
             <Tab.Content>
