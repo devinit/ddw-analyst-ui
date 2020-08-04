@@ -162,7 +162,7 @@ class ViewData(APIView):
 
 class PreviewOperationData(APIView):
     """
-    List top 10 data from executing the operation query.
+    Preview data from executing the operation query.
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
