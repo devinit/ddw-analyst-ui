@@ -96,8 +96,18 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   to="/"
                   single
                   icon="home"
-                  textNormal="Home"
+                  textNormal="Data Sets"
                   onClick={this.setActiveRoute}
+                />
+              </Sidebar.Item>
+              <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
+                <Sidebar.Link
+                  to="/queries/build/"
+                  single
+                  icon="query_builder"
+                  textNormal="Query Builder"
+                  onClick={this.setActiveRoute}
+                  data-testid="sidebar-link-query-builder"
                 />
               </Sidebar.Item>
               <Sidebar.Item active={this.state.activeRoute === '/sources/'}>
@@ -118,16 +128,6 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   textNormal="Update Data Source"
                   onClick={this.setActiveRoute}
                   data-testid="sidebar-link-update"
-                />
-              </Sidebar.Item>
-              <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
-                <Sidebar.Link
-                  to="/queries/build/"
-                  single
-                  icon="query_builder"
-                  textNormal="Query Builder"
-                  onClick={this.setActiveRoute}
-                  data-testid="sidebar-link-query-builder"
                 />
               </Sidebar.Item>
               <Sidebar.Item active={this.state.activeRoute === '/scheduledevents/'}>
