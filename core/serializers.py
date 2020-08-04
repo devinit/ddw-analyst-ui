@@ -27,18 +27,22 @@ class DataSerializer(serializers.BaseSerializer):
     """
         Handle a request for operation data
     """
+    operation = None
+
     def to_representation(self, instance):
         request = instance['request']
         limit = request.query_params.get('limit', None)
         offset = request.query_params.get('offset', None)
+        use_aliases = request.query_params.get('aliases', False)
         if limit == 0:
             limit = DEFAULT_LIMIT_COUNT
         operation = instance['operation_instance']
+        self.set_operation(operation)
         try:
             count, data = query.query_table(operation, limit, offset, estimate_count=True)
             return {
                 'count': count,
-                'data': data
+                'data': self.use_aliases(data) if use_aliases else data
             }
         except JSONDecodeError as json_error:
             return {
@@ -51,6 +55,36 @@ class DataSerializer(serializers.BaseSerializer):
                 ]
             }
 
+    def set_operation(self, operation):
+        self.operation = operation
+
+    def get_operation(self):
+        return self.operation
+
+    def use_aliases(self, data):
+        """
+        Return data with column name aliases instead of database names
+        """
+        try:
+            first_step = self.operation.get_operation_steps()[0]
+            data_column_keys = data[0].keys()
+            columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+            column_keys = [column.name for column in columns]
+            aliased_data = []
+            for row in data:
+                aliased_row = {}
+                for column in columns:
+                    aliased_row[column.alias] = row[column.name]
+
+                for column in data_column_keys:
+                    if not column in column_keys:
+                        aliased_row[column] = row[column]
+
+                aliased_data.append(aliased_row)
+
+            return aliased_data
+        except:
+            return data
 
 class TagSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
