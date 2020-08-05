@@ -20,7 +20,6 @@ import {
   OperationMap,
   OperationStepMap,
   OperationDataMap,
-  OperationDataAPIResponseMap,
 } from '../../types/operations';
 import { SourceMap, ColumnList } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
