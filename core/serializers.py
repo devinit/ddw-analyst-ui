@@ -18,7 +18,7 @@ from rest_framework.utils import model_meta
 
 from core import query
 from core.const import DEFAULT_LIMIT_COUNT
-from core.models import (Operation, OperationStep, Review, ScheduledEvent,
+from core.models import (Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
                         ScheduledEventRunInstance, Sector, Source,
                         SourceColumnMap, Tag, Theme, UpdateHistory)
 
@@ -171,6 +171,7 @@ class OperationSerializer(serializers.ModelSerializer):
         operation.user = read_only_dict['user']
         operation.operation_query = query.build_query(operation=operation)
         operation.save()
+        self.create_operation_data_aliases(operation)
 
         return operation
 
@@ -209,6 +210,24 @@ class OperationSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+    def create_operation_data_aliases(self, operation):
+        count, data = operation.query_table(1, 0, estimate_count=True)
+        try:
+            data_column_keys = data[0].keys()
+            first_step = operation.get_operation_steps()[0]
+            columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+            for column in data_column_keys:
+                matching = columns.filter(name=column)
+                if len(matching):
+                    alias = OperationDataColumnAlias.objects.create(
+                        operation=operation, column_name=column, column_alias=matching[0].alias)
+                else:
+                    alias = OperationDataColumnAlias.objects.create(
+                        operation=operation, column_name=column, column_alias=column)
+                alias.save()
+        except: # FIXME: handle specific errors
+            pass
 
 
 class ThemeSerializer(serializers.ModelSerializer):
