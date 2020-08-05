@@ -124,6 +124,16 @@ class OperationStep(BaseEntity):
         unique_together = (('operation', 'step_id'),)
 
 
+class OperationDataColumnAlias(BaseEntity):
+    """Alternative titles/names for data columns returned by an operation"""
+    operation = models.ForeignKey(Operation, models.CASCADE)
+    column_name = models.TextField()
+    column_alias = models.TextField()
+
+    class Meta:
+        unique_together = (('operation', 'column_name', 'column_alias'))
+
+
 class Review(BaseEntity):
     """A model to allow users to review other queries?"""
     operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
