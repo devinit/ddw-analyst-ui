@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { List } from 'immutable';
+import { List, fromJS } from 'immutable';
 import * as React from 'react';
 import { Card, Col, Row, Tab } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
@@ -15,14 +15,20 @@ import { SourcesState } from '../../reducers/sources';
 import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
-import { Operation, OperationMap, OperationStepMap, OperationData } from '../../types/operations';
+import {
+  Operation,
+  OperationMap,
+  OperationStepMap,
+  OperationDataMap,
+  OperationDataAPIResponseMap,
+} from '../../types/operations';
 import { SourceMap, ColumnList } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { QueryBuilderState, queryBuilderReducerId, QueryBuilderAction } from './reducers';
-import { OperationDataPreviewTable } from '../../components/OperationDataPreviewTable';
 import { BasicCard } from '../../components/BasicCard';
+import { OperationDataTableContainer } from '../../components/OperationDataTableContainer';
 
 interface ActionProps {
   actions: typeof sourcesActions &
@@ -46,7 +52,7 @@ interface RouterParams {
   id?: string;
 }
 interface QueryState {
-  previewData: OperationData[];
+  previewData?: List<OperationDataMap>;
   previewShow: boolean;
   loadingPreview: boolean;
 }
@@ -64,8 +70,8 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
     super(props);
     this.state = {
       previewShow: false,
-      previewData: [],
       loadingPreview: false,
+      previewData: List(),
     };
   }
 
@@ -199,7 +205,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
       this.props.source && (this.props.source.get('columns') as ColumnList | undefined);
 
     return (
-      <OperationDataPreviewTable
+      <OperationDataTableContainer
         list={this.state.previewData}
         columns={columns}
         limit={10}
@@ -344,13 +350,13 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
           data,
         })
         .then((response: AxiosResponse) => {
-          this.setState({ previewData: response.data.results });
+          this.setState({ previewData: fromJS(response.data.results) });
           this.setState((state) => {
             return { ...state, previewShow: true, loadingPreview: false };
           });
         })
         .catch(() => {
-          this.setState({ previewData: [] });
+          this.setState({ previewData: List() });
           this.setState((state) => {
             return { ...state, previewShow: true, loadingPreview: false };
           });

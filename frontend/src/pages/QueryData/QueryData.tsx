@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { fetchOperation, setOperation } from '../../actions/operations';
 import { fetchActiveSource, setActiveSource } from '../../actions/sources';
-import { OperationDataTable } from '../../components/OperationDataTable/OperationDataTable';
+import { OperationDataTableContainer } from '../../components/OperationDataTableContainer/OperationDataTableContainer';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
@@ -97,13 +97,14 @@ class QueryData extends React.Component<QueryDataProps> {
 
     if (id && data && data.count() !== 0) {
       return (
-        <OperationDataTable
+        <OperationDataTableContainer
           id={id}
           list={data}
           columns={columns}
           limit={this.props.page.get('limit') as number}
           offset={this.props.page.get('offset') as number}
           fetchData={fetchData}
+          hidePaginate={false}
         />
       );
     }
