@@ -16,6 +16,7 @@ from pypika import JoinType
 from pypika.terms import Function
 
 from core.const import DEFAULT_LIMIT_COUNT
+from core.models import Source
 
 
 class NullIf(Function):
@@ -70,9 +71,9 @@ class QueryBuilder:
             query_steps = operation.operationstep_set.order_by('step_id').all()
             self.initial_table_name = query_steps.first().source.active_mirror_name
             self.initial_schema_name = query_steps.first().source.schema
-        elif source is not None:
+        else:
             query_steps = sorted(operation_steps, key=itemgetter('step_id'))
-            current_source = source.objects.get(pk=query_steps[0]['source'])
+            current_source = Source.objects.get(pk=query_steps[0]['source'])
             self.initial_table_name = current_source.active_mirror_name
             self.initial_schema_name = current_source.schema
 
