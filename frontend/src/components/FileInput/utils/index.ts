@@ -59,10 +59,6 @@ const getColumnsFromData = (data: string[][]): Column[] => {
 };
 
 export const convertCSVFileToJSON = async (file: File, config?: ParseConfig): Promise<CSVData> => {
-  if (file.type !== 'text/csv') {
-    throw 'Provided file is not a CSV';
-  }
-
   return new Promise((resolve, reject) => {
     const defaultConfig: ParseConfig = {
       complete: ({ errors, data }) => {
