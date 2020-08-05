@@ -1,13 +1,12 @@
 from core.pypika_utils import QueryBuilder
 from data.db_manager import fetch_data
-from core.models import Source
 
 def build_query(operation=None, steps=None, limit=None, offset=None, estimate_count=None):
         """Build an SQL query"""
-        count_query = QueryBuilder(operation=operation, operation_steps=steps, source=Source).count_sql(estimate_count)
+        count_query = QueryBuilder(operation=operation, operation_steps=steps).count_sql(estimate_count)
         if limit is None:
-            return (count_query, QueryBuilder(operation=operation, operation_steps=steps, source=Source).get_sql_without_limit())
-        return (count_query, QueryBuilder(operation=operation, operation_steps=steps, source=Source).get_sql(limit, offset))
+            return (count_query, QueryBuilder(operation=operation, operation_steps=steps).get_sql_without_limit())
+        return (count_query, QueryBuilder(operation=operation, operation_steps=steps).get_sql(limit, offset))
 
 def query_table(limit=10, offset=0, estimate_count=None, op_steps=None, operation=None):
     """Build a query then execute it to return the matching data"""

@@ -30,7 +30,6 @@ from core.models import (Operation, OperationStep, Review, ScheduledEvent,
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
-from core.pypika_utils import QueryBuilder
 from core.serializers import (DataSerializer, OperationSerializer,
                             OperationStepSerializer, ReviewSerializer,
                             ScheduledEventRunInstanceSerializer,
