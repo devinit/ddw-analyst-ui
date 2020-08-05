@@ -14,7 +14,7 @@ function* fetchOperationData({ payload }: QueryDataAction) {
     const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status, data }: AxiosResponse<Operation> = yield axios
       .request({
-        url: `${api.routes.SINGLE_DATASET}data/${payload.id}/?aliases=1&limit=${payload.limit}&offset=${payload.offset}`,
+        url: `${api.routes.SINGLE_DATASET}data/${payload.id}/?limit=${payload.limit}&offset=${payload.offset}`,
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
