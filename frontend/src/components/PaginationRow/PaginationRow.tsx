@@ -29,7 +29,11 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
           : `Showing ${offset + 1} to ${max > count ? count : max} of ${count}`}
       </Col>
       <Col lg={8} className="align-middle">
-        <Pagination className="float-right" {...props} onPageChange={onPageSelected} />
+        <Pagination
+          className="pagination-danger float-right"
+          {...props}
+          onPageChange={onPageSelected}
+        />
       </Col>
     </Row>
   );
