@@ -106,6 +106,9 @@ class Operation(BaseEntity):
     def get_operation_steps(self):
         return self.operationstep_set.order_by('step_id')
 
+    def get_aliases(self):
+        return self.operationdatacolumnalias_set.all()
+
 
 class OperationStep(BaseEntity):
     """These are the individual steps in a query."""
