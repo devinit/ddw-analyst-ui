@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import { OverlayTrigger, Popover, Table } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import { ReactNode, ReactElement } from 'react';
@@ -14,30 +14,20 @@ interface InfoListProps {
   className?: string;
 }
 
-export class InfoList extends React.Component<InfoListProps> {
-  render(): ReactElement {
+export const InfoList: FunctionComponent<InfoListProps> = (props) => {
+  const renderPopOver = (info: string): ReactElement => {
     return (
-      <div>
-        <Table size="sm" className={`${this.props.className || ''}`}>
-          <tbody>
-            {this.props.list.map((item, index) => (
-              <tr key={index}>
-                <td colSpan={item.get('info') ? 1 : 2}>{item.get('caption')}</td>
-                {this.renderRow(item)}
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+      <Popover id="popover-basic" data-testid="info-list-info">
+        {info}
+      </Popover>
     );
-  }
-
-  private renderRow(item: InfoMap): ReactNode {
+  };
+  const renderRow = (item: InfoMap): ReactNode => {
     const info = item.get('info');
     if (info) {
       return (
         <td className="text-right">
-          <OverlayTrigger placement="bottom" overlay={this.renderPopOver(info)}>
+          <OverlayTrigger placement="bottom" overlay={renderPopOver(info)}>
             <i className="material-icons" data-testid="info-trigger">
               info
             </i>
@@ -45,13 +35,20 @@ export class InfoList extends React.Component<InfoListProps> {
         </td>
       );
     }
-  }
+  };
 
-  private renderPopOver(info: string): ReactElement {
-    return (
-      <Popover id="popover-basic" data-testid="info-list-info">
-        {info}
-      </Popover>
-    );
-  }
-}
+  return (
+    <div>
+      <Table size="sm" className={`${props.className || ''}`}>
+        <tbody>
+          {props.list.map((item, index) => (
+            <tr key={index}>
+              <td colSpan={item.get('info') ? 1 : 2}>{item.get('caption')}</td>
+              {renderRow(item)}
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div>
+  );
+};
