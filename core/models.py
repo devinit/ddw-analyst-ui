@@ -124,11 +124,14 @@ class OperationStep(BaseEntity):
         unique_together = (('operation', 'step_id'),)
 
 
-class OperationDataColumnAlias(BaseEntity):
+class OperationDataColumnAlias(models.Model):
     """Alternative titles/names for data columns returned by an operation"""
     operation = models.ForeignKey(Operation, models.CASCADE)
     column_name = models.TextField()
     column_alias = models.TextField()
+
+    def __str__(self):
+        return '{} - {}'.format(self.column_name, self.column_alias)
 
     class Meta:
         unique_together = (('operation', 'column_name', 'column_alias'))
