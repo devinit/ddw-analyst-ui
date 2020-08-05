@@ -124,6 +124,18 @@ class OperationStepSerializer(serializers.ModelSerializer):
         )
 
 
+class OperationDataColumnAliasSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='pk')
+
+    class Meta:
+        model = OperationDataColumnAlias
+        fields = (
+            'id',
+            'column_name',
+            'column_alias',
+        )
+
+
 class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
 
@@ -139,6 +151,7 @@ class OperationSerializer(serializers.ModelSerializer):
     operation_steps = OperationStepSerializer(source='operationstep_set', many=True)
     reviews = ReviewSerializer(source='review_set', many=True, read_only=True)
     id = serializers.ReadOnlyField(source='pk')
+    aliases = OperationDataColumnAliasSerializer(source='operationdatacolumnalias_set', many=True, read_only=True)
 
     class Meta:
         model = Operation
@@ -156,7 +169,8 @@ class OperationSerializer(serializers.ModelSerializer):
             'is_draft',
             'user',
             'created_on',
-            'updated_on'
+            'updated_on',
+            'aliases',
         )
 
     def create(self, validated_data):
