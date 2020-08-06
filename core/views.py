@@ -273,6 +273,11 @@ class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
 
+class ViewDataSetPerSource(generics.ListCreateAPIView):
+    authentication_class = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    pass
+
 
 class ReviewList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]

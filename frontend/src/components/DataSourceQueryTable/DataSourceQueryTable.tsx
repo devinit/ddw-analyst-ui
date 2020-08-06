@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import { Table } from 'react-bootstrap';
-// import { DataSourceQueryRow } from '../../components/DataSourceQueryRow';
+import { DataSourceQueryRow } from '../../components/DataSourceQueryRow';
 
 export const DataSourceQueryTable: FunctionComponent = () => {
-  //   const renderRow = () => {
-  //     return <DataSourceQueryRow />;
-  //   };
+  const renderRow = () => {
+    return <DataSourceQueryRow />;
+  };
 
   return (
     <Table responsive hover striped className="sources-table">
@@ -17,7 +17,7 @@ export const DataSourceQueryTable: FunctionComponent = () => {
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>datasourcequery</tbody>
+      <tbody>{renderRow()}</tbody>
     </Table>
   );
 };
