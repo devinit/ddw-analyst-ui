@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { List, fromJS } from 'immutable';
 import * as React from 'react';
 import { Card, Col, Row, Tab } from 'react-bootstrap';
@@ -22,7 +22,7 @@ import {
   OperationDataMap,
 } from '../../types/operations';
 import { SourceMap, ColumnList } from '../../types/sources';
-import { api, getSourceIDFromOperation } from '../../utils';
+import { getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { QueryBuilderState, queryBuilderReducerId, QueryBuilderAction } from './reducers';
