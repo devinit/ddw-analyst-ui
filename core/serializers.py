@@ -115,7 +115,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'user',
             'created_on',
             'updated_on',
-            'source',
+            'source_id',
         )
 
     def create(self, validated_data):
