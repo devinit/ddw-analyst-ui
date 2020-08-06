@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement, createContext } from 'react';
 import { Card } from 'react-bootstrap';
 import { DataSourceQueryTable } from '../DataSourceQueryTable';
-import { QueryResult } from '../../pages/DataSourceQuery/utils';
+import { QueryResult, ResultData } from '../../pages/DataSourceQuery/utils';
 
 export interface DataSourceQueryCardProps {
   query?: QueryResult;
@@ -10,6 +10,8 @@ export interface DataSourceQueryCardProps {
 export interface DataSourcesQueryContext {
   count?: number;
   next?: number;
+  previous?: number;
+  results?: Array<ResultData>;
 }
 
 export const DataSourceQueryContext = createContext<DataSourcesQueryContext>({});
@@ -20,7 +22,12 @@ export const DataSourceQueryCard: FunctionComponent<DataSourceQueryCardProps> = 
   return (
     <React.Fragment>
       <DataSourceQueryContext.Provider
-        value={{ count: props.query?.count, next: props.query?.next }}
+        value={{
+          count: props.query?.count,
+          next: props.query?.next,
+          previous: props.query?.previous,
+          results: props.query?.results,
+        }}
       >
         <Card className="col-md-12">
           <Card.Header className="card-header-danger card-header-icon">

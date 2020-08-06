@@ -14,6 +14,6 @@ export const api = {
     CREATE_SCHEDULED_INSTANCE: '/api/scheduled_event/{scheduleId}/run_instances/',
     UPDATE_TABLE: '/api/tables/update/',
     DOWNLOAD_TABLE: '/api/tables/download/',
-    FETCH_DATASETS_ON_SOURCE: '/api/sources/{id}/datasets',
+    FETCH_DATASETS_ON_SOURCE: '/api/sources/{id}/datasets/',
   },
 };

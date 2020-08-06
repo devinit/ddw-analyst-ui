@@ -5,14 +5,20 @@ import {
 } from '../../components/DataSourceQueryCard';
 
 export const DataSourceQueryRow: FunctionComponent = () => {
-  const { count, next } = useContext<DataSourcesQueryContext>(DataSourceQueryContext);
+  const { results } = useContext<DataSourcesQueryContext>(DataSourceQueryContext);
 
   return (
-    <tr>
-      <td>{count}</td>
-      <td>{next}</td>
-      <td>3</td>
-      <td>4</td>
-    </tr>
+    <>
+      {results
+        ? results.map((result) => (
+            <tr key={result.id}>
+              <td>{result.name}</td>
+              <td>{result.updated_on}</td>
+              <td>{result.is_draft ? 'published' : 'pending'}</td>
+              <td>{result.operation_query}</td>
+            </tr>
+          ))
+        : null}
+    </>
   );
 };
