@@ -277,7 +277,29 @@ class ViewDataSetPerSource(APIView):
     """
     Get all Datasets attached to a specific data source id
     """
-    pass
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    def get_object(self, pk, request):
+        try:
+            source_id = self.kwargs['pk']
+            if source_id:
+                return Operation.objects.filter(Q(source_id = source_id)).order_by('-updated_on')
+            else:
+                return Operation.objects.filter(id=pk).order_by('-updated_on')
+        except Operation.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        dataset = self.get_object(pk, request)
+        if self.request.query_params.get('limit', None) is not None or self.request.query_params.get('offset', None) is not None:
+            pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+            paginator = pagination_class()
+            page = paginator.paginate_queryset(dataset, request)
+            serializer = OperationSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            serializer = OperationSerializer(dataset, many=True)
+            return Response(serializer.data)
 
 class ReviewList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
