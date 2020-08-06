@@ -40,7 +40,7 @@ urlpatterns = [
     path('datasets/mine/', core_views.UserOperationList.as_view()),
     path('dataset/<int:pk>/', core_views.OperationDetail.as_view()),
     path('dataset/data/<int:pk>/', core_views.ViewData.as_view()),
-    path('sources/<int:pk>/datasets', core_views.ViewDataSetPerSource.as_view()),
+    path('sources/<int:pk>/datasets/', core_views.ViewDataSetPerSource.as_view()),
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'

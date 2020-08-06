@@ -113,7 +113,8 @@ class OperationSerializer(serializers.ModelSerializer):
             'is_draft',
             'user',
             'created_on',
-            'updated_on'
+            'updated_on',
+            'source',
         )
 
     def create(self, validated_data):
@@ -229,6 +230,7 @@ class SourceSerializer(serializers.ModelSerializer):
     columns = SourceColumnMapSerializer(source='sourcecolumnmap_set', many=True, read_only=True)
     update_history = UpdateHistorySerializer(source='updatehistory_set', many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
+    operations = OperationSerializer(many=True, read_only=True)
     id = serializers.ReadOnlyField(source='pk')
 
     class Meta:
@@ -251,7 +253,8 @@ class SourceSerializer(serializers.ModelSerializer):
             'updated_on',
             'columns',
             'update_history',
-            'tags'
+            'tags',
+            'operations',
         )
 
 
@@ -307,3 +310,4 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
         if due_instance:
             return due_instance
         return ScheduledEventRunInstance.objects.create(**validated_data)
+
