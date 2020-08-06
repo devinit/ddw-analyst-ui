@@ -8,7 +8,7 @@ def build_query(operation=None, steps=None, limit=None, offset=None, estimate_co
             return (count_query, QueryBuilder(operation=operation, operation_steps=steps).get_sql_without_limit())
         return (count_query, QueryBuilder(operation=operation, operation_steps=steps).get_sql(limit, offset))
 
-def query_table(limit=10, offset=0, estimate_count=None, op_steps=None, operation=None):
+def query_table(limit=None, offset=0, estimate_count=None, op_steps=None, operation=None):
     """Build a query then execute it to return the matching data"""
     if limit is None or int(limit) > 10000:
         limit = 10000

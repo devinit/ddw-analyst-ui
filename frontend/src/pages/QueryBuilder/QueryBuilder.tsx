@@ -28,6 +28,8 @@ import './QueryBuilder.scss';
 import { QueryBuilderState, queryBuilderReducerId, QueryBuilderAction } from './reducers';
 import { BasicCard } from '../../components/BasicCard';
 import { OperationDataTableContainer } from '../../components/OperationDataTableContainer';
+import { BasicModal } from '../../components/BasicModal';
+import { previewOperation, saveOperation } from './utils';
 
 interface ActionProps {
   actions: typeof sourcesActions &
@@ -54,6 +56,7 @@ interface QueryState {
   previewData?: List<OperationDataMap>;
   previewShow: boolean;
   loadingPreview: boolean;
+  modalShow: boolean;
 }
 type QueryBuilderProps = ActionProps & ReduxState & RouteComponentProps<RouterParams>;
 
@@ -71,6 +74,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
       previewShow: false,
       loadingPreview: false,
       previewData: List(),
+      modalShow: false,
     };
   }
 
@@ -79,22 +83,32 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
     const activeStep = page.get('activeStep') as OperationStepMap | undefined;
 
     return (
-      <Row>
-        <Col md={12} lg={4}>
-          <Tab.Container defaultActiveKey="operation">
-            <Card className="source-details">
-              <Card.Header className="card-header-text card-header-danger">
-                <Card.Text>Dataset</Card.Text>
-              </Card.Header>
-              <StyledCardBody>{this.renderOperationForm()}</StyledCardBody>
-            </Card>
-          </Tab.Container>
-        </Col>
+      <>
+        <BasicModal
+          show={this.state.modalShow}
+          onHide={() => {
+            this.setState({ modalShow: false });
+          }}
+        >
+          <p>This query returns too many rows, please try again.</p>
+        </BasicModal>
+        <Row>
+          <Col md={12} lg={4}>
+            <Tab.Container defaultActiveKey="operation">
+              <Card className="source-details">
+                <Card.Header className="card-header-text card-header-danger">
+                  <Card.Text>Dataset</Card.Text>
+                </Card.Header>
+                <StyledCardBody>{this.renderOperationForm()}</StyledCardBody>
+              </Card>
+            </Tab.Container>
+          </Col>
 
-        <Col md={12} lg={8}>
-          {this.renderStepFormOrDatasetPreview(activeStep, activeSource, page)}
-        </Col>
-      </Row>
+          <Col md={12} lg={8}>
+            {this.renderStepFormOrDatasetPreview(activeStep, activeSource, page)}
+          </Col>
+        </Row>
+      </>
     );
   }
 
@@ -294,28 +308,30 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
       return;
     }
     const id = operation.get('id');
-    const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
 
     const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
     if (this.props.token) {
-      axios
-        .request({
-          url,
-          method: id ? 'put' : 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `token ${this.props.token}`,
-          },
-          data,
-        })
-        .then((response: AxiosResponse<Operation>) => {
-          if (response.status === 200 || response.status === 201) {
-            this.props.actions.operationSaved(true);
-            if (preview) {
-              this.props.history.push(`/queries/data/${response.data.id}/`);
-            } else {
-              this.props.history.push('/');
-            }
+      previewOperation(data)
+        .then((response: AxiosResponse) => {
+          if (response.data.results.length > 1048575) {
+            this.setState((state) => {
+              return { ...state, modalShow: true };
+            });
+          } else {
+            saveOperation(id, data)
+              .then((response: AxiosResponse<Operation>) => {
+                if (response.status === 200 || response.status === 201) {
+                  this.props.actions.operationSaved(true);
+                  if (preview) {
+                    this.props.history.push(`/queries/data/${response.data.id}/`);
+                  } else {
+                    this.props.history.push('/');
+                  }
+                }
+              })
+              .catch(() => {
+                this.props.actions.operationSaved(false);
+              });
           }
         })
         .catch(() => {
@@ -334,30 +350,22 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
       return;
     }
 
-    const url = `${api.routes.PREVIEW_SINGLE_DATASET}`;
-
     const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
     if (this.props.token) {
-      axios
-        .request({
-          url,
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `token ${this.props.token}`,
-          },
-          data,
-        })
+      previewOperation(data)
         .then((response: AxiosResponse) => {
-          this.setState({ previewData: fromJS(response.data.results) });
           this.setState((state) => {
-            return { ...state, previewShow: true, loadingPreview: false };
+            return {
+              ...state,
+              previewShow: true,
+              loadingPreview: false,
+              previewData: fromJS(response.data.results),
+            };
           });
         })
         .catch(() => {
-          this.setState({ previewData: List() });
           this.setState((state) => {
-            return { ...state, previewShow: true, loadingPreview: false };
+            return { ...state, previewShow: true, loadingPreview: false, previewData: List() };
           });
         });
     }
