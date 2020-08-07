@@ -1,8 +1,9 @@
 import { List } from 'immutable';
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
+import { Col, Pagination, Row } from 'react-bootstrap';
+import { fetchOperationData } from '../../pages/QueryData/actions';
 import { OperationDataMap } from '../../types/operations';
 import { ColumnList } from '../../types/sources';
-import { fetchOperationData } from '../../pages/QueryData/actions';
 import { OperationDataTable } from '../OperationDataTable';
 
 interface OperationDataTableContainerProps {
@@ -11,7 +12,6 @@ interface OperationDataTableContainerProps {
   id?: string;
   limit: number;
   offset: number;
-  hidePaginate?: boolean | undefined;
   fetchData?: typeof fetchOperationData;
 }
 
@@ -26,8 +26,10 @@ const getColumns = (item?: OperationDataMap): string[] => {
   return [];
 };
 
-export const OperationDataTableContainer: React.SFC<OperationDataTableContainerProps> = (props) => {
-  const { fetchData, id, limit, offset, list, hidePaginate } = props;
+export const OperationDataTableContainer: FunctionComponent<OperationDataTableContainerProps> = (
+  props,
+) => {
+  const { fetchData, id, limit, offset, list } = props;
   const columns = props.list ? getColumns(props.list.get(0)) : [];
   const itemId = id ? id : '';
 
@@ -47,16 +49,27 @@ export const OperationDataTableContainer: React.SFC<OperationDataTableContainerP
 
   if (list && list.count() && props.columns) {
     return (
-      <OperationDataTable
-        list={list}
-        prev={goToPrev}
-        next={goToNext}
-        first={goToFirst}
-        columns={columns}
-        limit={limit}
-        offset={offset}
-        hidePaginate={hidePaginate}
-      />
+      <>
+        <OperationDataTable list={list} columns={columns} />
+        <Row>
+          <Col md={6}>
+            Showing {offset + 1} to {list.count() < limit ? offset + list.count() : offset + limit}
+          </Col>
+          <Col md={6}>
+            <Pagination className="float-right">
+              <Pagination.First onClick={goToFirst} data-testid="operations-pagination-first">
+                <i className="material-icons">first_page</i>
+              </Pagination.First>
+              <Pagination.Prev onClick={goToPrev} data-testid="operations-pagination-prev">
+                <i className="material-icons">chevron_left</i>
+              </Pagination.Prev>
+              <Pagination.Next onClick={goToNext} data-testid="operations-pagination-next">
+                <i className="material-icons">chevron_right</i>
+              </Pagination.Next>
+            </Pagination>
+          </Col>
+        </Row>
+      </>
     );
   }
 
@@ -64,5 +77,6 @@ export const OperationDataTableContainer: React.SFC<OperationDataTableContainerP
 };
 
 OperationDataTableContainer.defaultProps = {
-  hidePaginate: true,
+  limit: 10,
+  offset: 0,
 };
