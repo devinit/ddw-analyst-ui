@@ -312,7 +312,11 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   return (
     <Row>
-      <Col md={12} lg={9} className={classNames('ml-auto mr-auto', { 'd-none': activeStep })}>
+      <Col
+        md={12}
+        lg={9}
+        className={classNames('ml-auto mr-auto', { 'd-none': activeStep || showPreview })}
+      >
         <Tab.Container defaultActiveKey="operation">
           <Card className="source-details">
             <Card.Header className="card-header-text card-header-danger">
