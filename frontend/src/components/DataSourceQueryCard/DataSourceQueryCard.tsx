@@ -8,9 +8,6 @@ export interface DataSourceQueryCardProps {
 }
 
 export interface DataSourcesQueryContext {
-  count?: number;
-  next?: number;
-  previous?: number;
   results?: Array<ResultData>;
 }
 
@@ -23,10 +20,7 @@ export const DataSourceQueryCard: FunctionComponent<DataSourceQueryCardProps> = 
     <React.Fragment>
       <DataSourceQueryContext.Provider
         value={{
-          count: props.query?.count,
-          next: props.query?.next,
-          previous: props.query?.previous,
-          results: props.query?.results,
+          results: props.query?.data,
         }}
       >
         <Card className="col-md-12">

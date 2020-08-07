@@ -10,14 +10,13 @@ const DataSourceQuery = (): ReactElement => {
   useEffect(() => {
     fetchQueriesOnDataset(id).then((result) => {
       if (result) {
-        setQueryResult(result.data);
+        setQueryResult(result);
       }
     });
   }, []);
 
   return (
     <Row>
-      {/*  Queries created from a particular Data Source. */}
       <DataSourceQueryCard query={queryResult} />
     </Row>
   );

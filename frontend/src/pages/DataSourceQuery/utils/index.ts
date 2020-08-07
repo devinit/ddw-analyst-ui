@@ -13,13 +13,10 @@ export interface ResultData {
 }
 
 export interface QueryResult {
-  count: number;
-  next?: number;
-  previous?: number;
-  results: Array<ResultData>;
+  data: Array<ResultData>;
 }
 
-export const fetchQueriesOnDataset = async (id: number): Promise<any> => {
+export const fetchQueriesOnDataset = async (id: number): Promise<QueryResult> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   const headers = {
     'Content-Type': 'application/json',
