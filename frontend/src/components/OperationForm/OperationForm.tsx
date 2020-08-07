@@ -51,7 +51,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
 
   const onChange = (setFieldValue: (field: string, value: any) => void) => ({
     currentTarget,
-  }: React.FormEvent<any>) => {
+  }: React.ChangeEvent<any>) => {
     const { name, value } = currentTarget;
     setFieldValue(name, value);
     if (props.onUpdateOperation) {
@@ -102,13 +102,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
         opn.delete('id').set('name', `Copy of ${opn.get('name')}`),
       );
       props.onDuplicateOperation(operation);
-    }
-  };
-
-  const onPreview = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    event.preventDefault();
-    if (props.onPreview) {
-      props.onPreview();
     }
   };
 
@@ -178,9 +171,9 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
             <Button
               variant="dark"
               className={classNames({ 'd-none': !props.operation })}
-              onClick={onPreview}
+              onClick={props.onPreview}
               size="sm"
-              hidden={!!values.id && !props.editable}
+              hidden={!props.onPreview}
               disabled={!props.valid}
             >
               {props.previewing ? 'Close Preview' : 'Preview'}
