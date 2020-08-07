@@ -207,7 +207,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               size="sm"
               hidden={!!values.id && !props.editable}
             >
-              {`Delete Dataset`}
+              {`${confirmDelete ? 'Confirm ' : ''}Delete Dataset`}
             </Button>
           </Dropdown>
         </Form>
