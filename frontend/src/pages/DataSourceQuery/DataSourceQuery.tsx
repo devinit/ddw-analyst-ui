@@ -1,15 +1,23 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Row } from 'react-bootstrap';
 import { DataSourceQueryCard } from '../../components/DataSourceQueryCard';
+import { fetchQueriesOnDataset, QueryResult } from './utils';
 
 const DataSourceQuery = (): ReactElement => {
+  const [queryResult, setQueryResult] = useState<QueryResult>();
   const { id } = useParams();
+  useEffect(() => {
+    fetchQueriesOnDataset(id).then((result) => {
+      if (result) {
+        setQueryResult(result);
+      }
+    });
+  }, []);
 
   return (
     <Row>
-      {/*  Queries created from a particular Data Source. */}
-      <DataSourceQueryCard id={id} />
+      <DataSourceQueryCard query={queryResult} />
     </Row>
   );
 };
