@@ -24,6 +24,7 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
+from core import query
 from core.models import (Operation, OperationStep, Review, ScheduledEvent,
                         ScheduledEventRunInstance, Sector, Source, Tag, Theme)
 from core.pagination import DataPaginator
@@ -35,7 +36,7 @@ from core.serializers import (DataSerializer, OperationSerializer,
                             ScheduledEventSerializer, SectorSerializer,
                             SourceSerializer, TagSerializer, ThemeSerializer,
                             UserSerializer)
-from data.db_manager import update_table_from_tuple
+from data.db_manager import fetch_data, update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
 
 
@@ -98,7 +99,7 @@ class Echo:
 class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
     def __init__(self, operation):
-        self.main_query = operation.build_query()[1]
+        self.main_query = query.build_query(operation=operation)[1]
 
     def stream(self):
         with connections["datasets"].chunked_cursor() as main_cursor:
@@ -155,6 +156,44 @@ class ViewData(APIView):
         paginator = DataPaginator()
         paginator.set_count(serializer.data['count'])
         page_data = paginator.paginate_queryset(serializer.data['data'], request)
+        return paginator.get_paginated_response(page_data)
+
+
+class PreviewOperationData(APIView):
+    """
+    Preview data from executing the operation query.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+
+    def get_data(self, request):
+        try:
+            count, data = query.query_table(
+                operation_steps=request.data['operation_steps'],
+                limit=request.query_params.get('limit', 10),
+                offset=request.query_params.get('offset', 0),
+                estimate_count=True
+            )
+            return {
+                'count': count,
+                'data': data
+            }
+        except json.decoder.JSONDecodeError as json_error:
+            return {
+                'count': 0,
+                'data': [
+                    {
+                        'error': str(json_error),
+                        'error_type': 'JSONDecodeError'
+                    }
+                ]
+            }
+
+    def post(self, request):
+        data = self.get_data(request)
+        paginator = DataPaginator()
+        paginator.set_count(data['count'])
+        page_data = paginator.paginate_queryset(data['data'], request)
         return paginator.get_paginated_response(page_data)
 
 

@@ -1,14 +1,15 @@
 import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
-import { List } from 'immutable';
-import * as React from 'react';
+import { fromJS, List } from 'immutable';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Card, Col, Row, Tab } from 'react-bootstrap';
-import { MapDispatchToProps, connect } from 'react-redux';
+import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import { deleteOperation, fetchOperation, setOperation } from '../../actions/operations';
 import * as sourcesActions from '../../actions/sources';
+import { OperationDataTable } from '../../components/OperationDataTable';
 import { OperationForm } from '../../components/OperationForm';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
@@ -16,12 +17,17 @@ import { SourcesState } from '../../reducers/sources';
 import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
-import { Operation, OperationMap, OperationStepMap } from '../../types/operations';
+import {
+  Operation,
+  OperationDataMap,
+  OperationMap,
+  OperationStepMap,
+} from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
-import { QueryBuilderState, queryBuilderReducerId } from './reducers';
+import { queryBuilderReducerId, QueryBuilderState } from './reducers';
 
 interface ActionProps {
   actions: typeof sourcesActions &
@@ -33,6 +39,7 @@ interface ActionProps {
 }
 interface ReduxState {
   sources: SourcesState;
+  source?: SourceMap;
   operations: List<OperationMap>;
   activeOperation?: OperationMap;
   activeSource?: SourceMap;
@@ -43,6 +50,7 @@ interface ReduxState {
 interface RouterParams {
   id?: string;
 }
+
 type QueryBuilderProps = ActionProps & ReduxState & RouteComponentProps<RouterParams>;
 
 const StyledIcon = styled.i`
@@ -55,182 +63,88 @@ const StyledCardBody = styled(Card.Body)`
   }
 `;
 
-class QueryBuilder extends React.Component<QueryBuilderProps> {
-  render() {
-    const { activeSource, page } = this.props;
-    const activeStep = page.get('activeStep') as OperationStepMap | undefined;
+const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
+  const [showPreview, setShowPreview] = useState(false);
+  const [loadingPreview, setLoadingPreview] = useState(false);
+  const [previewData, setPreviewData] = useState<List<OperationDataMap>>(List());
 
-    return (
-      <Row>
-        <Col md={12} lg={4}>
-          <Tab.Container defaultActiveKey="operation">
-            <Card className="source-details">
-              <Card.Header className="card-header-text card-header-danger">
-                <Card.Text>Dataset</Card.Text>
-              </Card.Header>
-              <StyledCardBody>{this.renderOperationForm()}</StyledCardBody>
-            </Card>
-          </Tab.Container>
-        </Col>
-
-        <Col md={12} lg={8}>
-          <Card className={classNames({ 'd-none': !activeStep })}>
-            <Card.Header>
-              <Card.Title>
-                Create Query Step
-                <StyledIcon className="material-icons float-right" onClick={this.resetAction}>
-                  close
-                </StyledIcon>
-              </Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <div className="mb-2">
-                {this.renderOperationStepForm(
-                  activeSource,
-                  activeStep,
-                  page.get('editingStep') as boolean,
-                )}
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    );
-  }
-
-  componentDidMount() {
-    const { activeOperation } = this.props;
-    const { id } = this.props.match.params;
-    if (id && !activeOperation) {
-      this.setActiveOperationByID(id);
+  useEffect(() => {
+    const { id } = props.match.params;
+    if (id && !props.activeOperation) {
+      setActiveOperationByID(id);
     }
-    if (!id && activeOperation) {
-      this.fetchActiveSourceByOperation(activeOperation);
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.actions.setActiveOperation();
-    this.props.actions.resetQueryBuilderState();
-  }
-
-  private renderOperationForm() {
-    const { activeOperation: operation } = this.props;
-    const { id } = this.props.match.params;
-
-    if (id && !operation) {
-      return 'Loading ...';
+    if (!id && props.activeOperation) {
+      fetchActiveSourceByOperation(props.activeOperation);
     }
 
-    const steps = this.props.page.get('steps') as List<OperationStepMap>;
-    const activeStep = this.props.page.get('activeStep') as OperationStepMap | undefined;
-    const editable = this.isEditable(operation);
+    return () => {
+      props.actions.setActiveOperation();
+      props.actions.resetQueryBuilderState();
+    };
+  }, []);
 
-    return (
-      <OperationForm
-        operation={operation}
-        editable={editable}
-        valid={steps.count() > 0}
-        onUpdateOperation={this.onUpdateOperation}
-        onDuplicateOperation={this.onDuplicateOperation}
-        onSuccess={this.onSaveOperation}
-        processing={this.props.page.get('processing') as boolean}
-        onDeleteOperation={this.onDeleteOperation}
-        onReset={!id ? () => this.props.actions.setActiveOperation() : undefined}
-      >
-        <OperationSteps
-          sources={this.props.sources.get('sources') as List<SourceMap>}
-          isFetchingSources={this.props.sources.get('loading') as boolean}
-          steps={steps}
-          fetchSources={this.props.actions.fetchSources}
-          onSelectSource={this.props.actions.setActiveSource}
-          onAddStep={this.props.actions.updateActiveStep}
-          activeSource={this.props.activeSource}
-          activeStep={activeStep}
-          onClickStep={(step) => this.props.actions.updateActiveStep(step, true)}
-          editable={editable}
-        />
-      </OperationForm>
-    );
-  }
-
-  private renderOperationStepForm(source?: SourceMap, step?: OperationStepMap, editing = false) {
-    if (step && source) {
-      const editable = this.isEditable(this.props.activeOperation);
-
-      return (
-        <OperationStepForm
-          source={source}
-          step={step}
-          onUpdateStep={this.props.actions.updateActiveStep}
-          onSuccess={this.onAddOperationStep}
-          onDeleteStep={this.onDeleteOperationStep}
-          editing={editing}
-          editable={editable}
-        />
-      );
-    }
-
-    return null;
-  }
-
-  private isEditable(operation?: OperationMap) {
-    const user = this.props.user.get('username') as string;
-    const isSuperUser = this.props.user.get('is_superuser') as boolean;
+  const isEditable = (operation?: OperationMap) => {
+    const user = props.user.get('username') as string;
+    const isSuperUser = props.user.get('is_superuser') as boolean;
 
     return !operation || !operation.get('id') || user === operation.get('user') || isSuperUser;
-  }
+  };
 
-  private setActiveOperationByID(id: string) {
-    const operation = this.props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
+  const setActiveOperationByID = (id: string) => {
+    const operation = props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
     if (operation) {
-      this.props.actions.setActiveOperation(operation);
-      this.fetchActiveSourceByOperation(operation);
+      props.actions.setActiveOperation(operation);
+      fetchActiveSourceByOperation(operation);
     } else {
-      this.props.actions.fetchOperation(id);
+      props.actions.fetchOperation(id);
     }
-  }
+  };
 
-  private fetchActiveSourceByOperation(operation: OperationMap) {
+  const fetchActiveSourceByOperation = (operation: OperationMap) => {
     const sourceID = getSourceIDFromOperation(operation);
     if (sourceID) {
-      this.props.actions.fetchActiveSource(sourceID);
+      props.actions.fetchActiveSource(sourceID);
     }
-  }
-
-  private resetAction = () => {
-    this.props.actions.updateActiveStep(undefined);
   };
 
-  private onAddOperationStep = (step: OperationStepMap) => {
-    if (this.props.page.get('editingStep')) {
-      this.props.actions.editOperationStep(step);
+  const resetAction = () => {
+    props.actions.updateActiveStep(undefined);
+    if (showPreview) {
+      setShowPreview(false);
+    }
+  };
+
+  const onAddOperationStep = (step: OperationStepMap) => {
+    if (props.page.get('editingStep')) {
+      props.actions.editOperationStep(step);
     } else {
-      this.props.actions.addOperationStep(step);
+      props.actions.addOperationStep(step);
     }
-    this.props.actions.updateActiveStep(undefined);
+    props.actions.updateActiveStep(undefined);
   };
 
-  private onUpdateOperation = (operation: OperationMap) => {
-    this.props.actions.setActiveOperation(operation, true);
+  const onUpdateOperation = (operation: OperationMap) => {
+    props.actions.setActiveOperation(operation, true);
   };
 
-  private onDuplicateOperation = (operation: OperationMap) => {
-    this.onUpdateOperation(operation);
-    this.props.history.push('/queries/build');
+  const onDuplicateOperation = (operation: OperationMap) => {
+    onUpdateOperation(operation);
+    props.history.push('/queries/build');
   };
 
-  private onDeleteOperation = (operation: OperationMap) => {
+  const onDeleteOperation = (operation: OperationMap) => {
     const operationID = operation.get('id') as string | undefined;
     if (operationID) {
-      this.props.actions.deleteOperation(operationID, this.props.history);
+      props.actions.deleteOperation(operationID, props.history);
+    } else {
+      props.actions.setActiveOperation();
     }
   };
 
-  private onSaveOperation = (preview = false) => {
-    this.props.actions.savingOperation();
-    const steps = this.props.page.get('steps') as List<OperationStepMap>;
-    const { activeOperation: operation } = this.props;
+  const onSaveOperation = (preview = false) => {
+    props.actions.savingOperation();
+    const steps = props.page.get('steps') as List<OperationStepMap>;
+    const { activeOperation: operation } = props;
     if (!operation) {
       return;
     }
@@ -238,38 +152,202 @@ class QueryBuilder extends React.Component<QueryBuilderProps> {
     const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
 
     const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
-    if (this.props.token) {
+    if (props.token) {
       axios
         .request({
           url,
           method: id ? 'put' : 'post',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `token ${this.props.token}`,
+            Authorization: `token ${props.token}`,
           },
           data,
         })
         .then((response: AxiosResponse<Operation>) => {
           if (response.status === 200 || response.status === 201) {
-            this.props.actions.operationSaved(true);
+            props.actions.operationSaved(true);
             if (preview) {
-              this.props.history.push(`/queries/data/${response.data.id}/`);
+              props.history.push(`/queries/data/${response.data.id}/`);
             } else {
-              this.props.history.push('/');
+              props.history.push('/');
             }
           }
         })
         .catch(() => {
-          this.props.actions.operationSaved(false);
+          props.actions.operationSaved(false);
         });
     }
   };
 
-  private onDeleteOperationStep = (step: OperationStepMap) => {
-    this.props.actions.updateActiveStep(undefined);
-    this.props.actions.deleteOperationStep(step);
+  const onTogglePreview = () => {
+    if (showPreview) {
+      setPreviewData(List());
+      setShowPreview(false);
+      setLoadingPreview(false);
+
+      return;
+    }
+
+    setLoadingPreview(true);
+    const steps = props.page.get('steps') as List<OperationStepMap>;
+    const { activeOperation: operation } = props;
+    if (!operation) return;
+
+    const url = `${api.routes.PREVIEW_SINGLE_DATASET}`;
+
+    const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
+    if (props.token) {
+      axios
+        .request({
+          url,
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${props.token}`,
+          },
+          data,
+        })
+        .then((response: AxiosResponse) => {
+          setPreviewData(fromJS(response.data.results));
+          setShowPreview(true);
+          setLoadingPreview(false);
+        })
+        .catch(() => {
+          setPreviewData(List());
+          setShowPreview(false); // FIXME: why would preview still show when there's been an error?
+          setLoadingPreview(false);
+        });
+    }
   };
-}
+
+  const onDeleteOperationStep = (step: OperationStepMap) => {
+    props.actions.updateActiveStep(undefined);
+    props.actions.deleteOperationStep(step);
+  };
+
+  const renderPreview = () => {
+    if (loadingPreview) {
+      return <div>Loading ...</div>;
+    }
+    if (previewData.count()) {
+      const columns: string[] = [];
+      previewData.get(0)?.mapKeys((key: string) => columns.push(key));
+
+      return <OperationDataTable list={previewData} columns={columns} />;
+    }
+
+    return <div>No results found</div>;
+  };
+
+  const renderOperationStepForm = (
+    source?: SourceMap,
+    step?: OperationStepMap,
+    editing = false,
+  ) => {
+    if (step && source) {
+      const editable = isEditable(props.activeOperation);
+
+      return (
+        <OperationStepForm
+          source={source}
+          step={step}
+          onUpdateStep={props.actions.updateActiveStep}
+          onSuccess={onAddOperationStep}
+          onDeleteStep={onDeleteOperationStep}
+          editing={editing}
+          editable={editable}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  const renderOperationForm = () => {
+    const { activeOperation: operation } = props;
+    const { id } = props.match.params;
+
+    if (id && !operation) {
+      return 'Loading ...';
+    }
+
+    const steps = props.page.get('steps') as List<OperationStepMap>;
+    const activeStep = props.page.get('activeStep') as OperationStepMap | undefined;
+    const editable = isEditable(operation);
+
+    return (
+      <OperationForm
+        operation={operation}
+        editable={editable}
+        valid={steps.count() > 0}
+        onUpdateOperation={onUpdateOperation}
+        onDuplicateOperation={onDuplicateOperation}
+        onSuccess={onSaveOperation}
+        onPreview={onTogglePreview}
+        previewing={showPreview}
+        processing={props.page.get('processing') as boolean}
+        onDeleteOperation={onDeleteOperation}
+        onReset={!id ? () => props.actions.setActiveOperation() : undefined}
+      >
+        <OperationSteps
+          sources={props.sources.get('sources') as List<SourceMap>}
+          isFetchingSources={props.sources.get('loading') as boolean}
+          steps={steps}
+          fetchSources={props.actions.fetchSources}
+          onSelectSource={props.actions.setActiveSource}
+          onAddStep={props.actions.updateActiveStep}
+          activeSource={props.activeSource}
+          activeStep={activeStep}
+          onClickStep={(step) => props.actions.updateActiveStep(step, true)}
+          editable={editable}
+          disabled={showPreview}
+        />
+      </OperationForm>
+    );
+  };
+
+  const { activeSource, page } = props;
+  const activeStep = page.get('activeStep') as OperationStepMap | undefined;
+
+  return (
+    <Row>
+      <Col md={12} lg={4}>
+        <Tab.Container defaultActiveKey="operation">
+          <Card className="source-details">
+            <Card.Header className="card-header-text card-header-danger">
+              <Card.Text>Dataset</Card.Text>
+            </Card.Header>
+            <StyledCardBody>{renderOperationForm()}</StyledCardBody>
+          </Card>
+        </Tab.Container>
+      </Col>
+
+      <Col md={12} lg={8}>
+        <Card className={classNames({ 'd-none': !activeStep && !showPreview })}>
+          <Card.Header>
+            <Card.Title>
+              {showPreview ? 'Preview Dataset' : 'Create Query Step'}
+              <StyledIcon className="material-icons float-right" onClick={resetAction}>
+                close
+              </StyledIcon>
+            </Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <div className="mb-2">
+              {showPreview
+                ? renderPreview()
+                : renderOperationStepForm(
+                    activeSource,
+                    activeStep,
+                    page.get('editingStep') as boolean,
+                  )}
+            </div>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+  );
+};
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
   dispatch,
@@ -294,6 +372,7 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
     activeSource: reduxStore.getIn(['sources', 'activeSource']),
     page: reduxStore.get(`${queryBuilderReducerId}`),
     user: reduxStore.get('user') as UserState,
+    source: reduxStore.getIn(['sources', 'activeSource']),
   };
 };
 

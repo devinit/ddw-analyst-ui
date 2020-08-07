@@ -14,10 +14,12 @@ interface OperationFormProps {
   alert?: string;
   valid?: boolean;
   processing?: boolean;
+  previewing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
   onDeleteOperation?: (operation: OperationMap) => void;
   onDuplicateOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
+  onPreview?: () => void;
   onReset?: () => void;
 }
 
@@ -49,7 +51,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
 
   const onChange = (setFieldValue: (field: string, value: any) => void) => ({
     currentTarget,
-  }: React.FormEvent<any>) => {
+  }: React.ChangeEvent<any>) => {
     const { name, value } = currentTarget;
     setFieldValue(name, value);
     if (props.onUpdateOperation) {
@@ -166,6 +168,16 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
             >
               {props.processing ? 'Saving ...' : 'Save'}
             </Button>
+            <Button
+              variant="dark"
+              className={classNames({ 'd-none': !props.operation })}
+              onClick={props.onPreview}
+              size="sm"
+              hidden={!props.onPreview}
+              disabled={!props.valid}
+            >
+              {props.previewing ? 'Close Preview' : 'Preview'}
+            </Button>
             <Dropdown.Toggle
               split
               variant="danger"
@@ -188,7 +200,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
                 Refresh
               </Dropdown.Item>
             </Dropdown.Menu>
-
             <Button
               variant="dark"
               className={classNames('float-right', { 'd-none': !props.operation })}
