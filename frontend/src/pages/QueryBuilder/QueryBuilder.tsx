@@ -136,6 +136,8 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const operationID = operation.get('id') as string | undefined;
     if (operationID) {
       props.actions.deleteOperation(operationID, props.history);
+    } else {
+      props.actions.setActiveOperation();
     }
   };
 
