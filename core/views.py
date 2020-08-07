@@ -174,17 +174,15 @@ class PreviewOperationData(APIView):
                 offset=request.query_params.get('offset', 0),
                 estimate_count=True
             )
-            print('Counting')
-            print(count)
 
             return {
                 'count': count,
-                'data': data
+                'results': data
             }
         except json.decoder.JSONDecodeError as json_error:
             return {
                 'count': 0,
-                'data': [
+                'results': [
                     {
                         'error': str(json_error),
                         'error_type': 'JSONDecodeError'
@@ -194,51 +192,17 @@ class PreviewOperationData(APIView):
 
     def post(self, request):
         data = self.get_object(request)
-        paginator = DataPaginator()
-        paginator.set_count(data['count'])
-        page_data = paginator.paginate_queryset(data['data'], request)
-        return paginator.get_paginated_response(page_data)
-
-
-class CountOperationData(APIView):
-    """
-    Preview data from executing the operation query.
-    """
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
-
-    def get_object(self, request):
-        try:
-            count, data = query.query_table(
-                op_steps=request.data['operation_steps'],
-                limit=request.query_params.get('limit', 10),
-                offset=request.query_params.get('offset', 0),
-                estimate_count=True
+        if request.query_params.get('limit') is None and request.query_params.get('offset') is None:
+            return HttpResponse(
+                json.dumps(data),
+                content_type='application/json',
+                status=status.HTTP_200_OK
             )
-            print('Counting')
-            print(count)
-
-            return {
-                'count': count,
-                'data': data
-            }
-        except json.decoder.JSONDecodeError as json_error:
-            return {
-                'count': 0,
-                'data': [
-                    {
-                        'error': str(json_error),
-                        'error_type': 'JSONDecodeError'
-                    }
-                ]
-            }
-
-    def post(self, request):
-        data = self.get_object(request)
-        paginator = DataPaginator()
-        paginator.set_count(data['count'])
-        page_data = paginator.paginate_queryset(data['data'], request)
-        return paginator.get_paginated_response(page_data)
+        else:
+            paginator = DataPaginator()
+            paginator.set_count(data['count'])
+            page_data = paginator.paginate_queryset(data['results'], request)
+            return paginator.get_paginated_response(page_data)
 
 
 class ChangePassword(APIView):

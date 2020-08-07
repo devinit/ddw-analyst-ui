@@ -313,7 +313,7 @@ class QueryBuilder extends React.Component<QueryBuilderProps, QueryState> {
     if (this.props.token) {
       previewOperation(data)
         .then((response: AxiosResponse) => {
-          if (response.data.results.length > 1048575) {
+          if (response.data.count >= 1048575) {
             this.setState((state) => {
               return { ...state, modalShow: true };
             });
