@@ -104,7 +104,6 @@ class QueryData extends React.Component<QueryDataProps> {
           limit={this.props.page.get('limit') as number}
           offset={this.props.page.get('offset') as number}
           fetchData={fetchData}
-          hidePaginate={false}
         />
       );
     }
