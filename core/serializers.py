@@ -59,7 +59,7 @@ class DataSerializer(serializers.BaseSerializer):
     def estimate_count(self):
         if self.operation:
             MAX_OFFSET = 65390
-            count, data = self.operation.query_table(1, MAX_OFFSET, estimate_count=True)
+            count, data = query.query_table(self.operation, 1, MAX_OFFSET, estimate_count=True)
             return len(data) > 0
         return True
 
@@ -227,7 +227,7 @@ class OperationSerializer(serializers.ModelSerializer):
         return instance
 
     def create_operation_data_aliases(self, operation):
-        count, data = operation.query_table(1, 0, estimate_count=True)
+        count, data = query.query_table(operation, 1, 0, estimate_count=True)
         try:
             data_column_keys = data[0].keys()
             first_step = operation.get_operation_steps()[0]
@@ -240,7 +240,7 @@ class OperationSerializer(serializers.ModelSerializer):
             pass
 
     def update_operation_data_aliases(self, operation):
-        count, data = operation.query_table(1, 0, estimate_count=True)
+        count, data = query.query_table(operation, 1, 0, estimate_count=True)
         try:
             data_column_keys = data[0].keys()
             first_step = operation.get_operation_steps()[0]
