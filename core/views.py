@@ -166,10 +166,10 @@ class PreviewOperationData(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
-    def get_object(self, request):
+    def get_data(self, request):
         try:
             count, data = query.query_table(
-                op_steps=request.data['operation_steps'],
+                operation_steps=request.data['operation_steps'],
                 limit=request.query_params.get('limit', 10),
                 offset=request.query_params.get('offset', 0),
                 estimate_count=True
@@ -190,7 +190,7 @@ class PreviewOperationData(APIView):
             }
 
     def post(self, request):
-        data = self.get_object(request)
+        data = self.get_data(request)
         paginator = DataPaginator()
         paginator.set_count(data['count'])
         page_data = paginator.paginate_queryset(data['data'], request)
