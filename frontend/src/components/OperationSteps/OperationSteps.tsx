@@ -19,6 +19,7 @@ interface OperationStepsProps {
   steps: List<OperationStepMap>;
   activeSource?: SourceMap;
   activeStep?: OperationStepMap;
+  disabled?: boolean;
   fetchSources: (options: FetchOptions) => Partial<SourcesAction>;
   onSelectSource: (source: SourceMap) => Partial<QueryBuilderAction>;
   onAddStep: (step?: OperationStepMap) => Partial<QueryBuilderAction>;
@@ -33,7 +34,7 @@ const StyledListItem = styled(ListGroup.Item)`
 `;
 
 class OperationSteps extends React.Component<OperationStepsProps> {
-  static defaultProps: Partial<OperationStepsProps> = { editable: true };
+  static defaultProps: Partial<OperationStepsProps> = { editable: true, disabled: false };
   render() {
     const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = this.props;
 
@@ -51,7 +52,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             onClick={this.fetchSources}
             onChange={this.onSelectSource}
             value={activeSource ? (activeSource.get('id') as string) : undefined}
-            disabled={!editable}
+            disabled={!editable || this.props.disabled}
           />
         </div>
 
@@ -60,7 +61,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
             variant="danger"
             size="sm"
             onClick={this.onAddStep}
-            disabled={!!activeStep}
+            disabled={!!activeStep || this.props.disabled}
             hidden={!editable}
           >
             <i className="material-icons mr-1">add</i>
@@ -98,7 +99,7 @@ class OperationSteps extends React.Component<OperationStepsProps> {
                   className="py-2"
                   key={index}
                   onClick={!activeStep && this.onClickStep(step)}
-                  disabled={activeStep && !isActiveStep}
+                  disabled={(activeStep && !isActiveStep) || this.props.disabled}
                   isActive={isActiveStep}
                 >
                   <OperationStep step={step} />

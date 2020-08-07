@@ -10,7 +10,7 @@ import { fetchActiveSource, setActiveSource } from '../../actions/sources';
 import { OperationDataTableContainer } from '../../components/OperationDataTableContainer/OperationDataTableContainer';
 import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
-import { ColumnList, SourceMap } from '../../types/sources';
+import { SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import { QueryDataState, queryDataReducerId } from './reducers';
@@ -89,8 +89,6 @@ class QueryData extends React.Component<QueryDataProps> {
 
   private renderTable() {
     const data = this.props.page.getIn(['data', 'results']) as List<OperationDataMap>;
-    const columns =
-      this.props.source && (this.props.source.get('columns') as ColumnList | undefined);
     const loading = this.props.page.get('loading') as boolean;
     const { fetchOperationData: fetchData } = this.props.actions;
     const { id } = this.props.match.params;
@@ -100,7 +98,6 @@ class QueryData extends React.Component<QueryDataProps> {
         <OperationDataTableContainer
           id={id}
           list={data}
-          columns={columns}
           limit={this.props.page.get('limit') as number}
           offset={this.props.page.get('offset') as number}
           fetchData={fetchData}

@@ -19,7 +19,7 @@ interface OperationFormProps {
   onDeleteOperation?: (operation: OperationMap) => void;
   onDuplicateOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
-  onPreview: () => void;
+  onPreview?: () => void;
   onReset?: () => void;
 }
 
@@ -107,7 +107,9 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
 
   const onPreview = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     event.preventDefault();
-    props.onPreview();
+    if (props.onPreview) {
+      props.onPreview();
+    }
   };
 
   const values: Partial<Operation> = props.operation ? props.operation.toJS() : {};
@@ -173,6 +175,16 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
             >
               {props.processing ? 'Saving ...' : 'Save'}
             </Button>
+            <Button
+              variant="dark"
+              className={classNames({ 'd-none': !props.operation })}
+              onClick={onPreview}
+              size="sm"
+              hidden={!!values.id && !props.editable}
+              disabled={!props.valid}
+            >
+              {props.previewing ? 'Close Preview' : 'Preview'}
+            </Button>
             <Dropdown.Toggle
               split
               variant="danger"
@@ -203,16 +215,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               hidden={!!values.id && !props.editable}
             >
               {`Delete Dataset`}
-            </Button>
-            <Button
-              variant="dark"
-              className={classNames('float-right', { 'd-none': !props.operation })}
-              onClick={onPreview}
-              size="sm"
-              hidden={!!values.id && !props.editable}
-              disabled={!props.valid}
-            >
-              {props.previewing ? 'Loading ...' : 'Preview'}
             </Button>
           </Dropdown>
         </Form>
