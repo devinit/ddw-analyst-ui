@@ -3,12 +3,10 @@ import React, { FunctionComponent } from 'react';
 import { Col, Pagination, Row } from 'react-bootstrap';
 import { fetchOperationData } from '../../pages/QueryData/actions';
 import { OperationDataMap } from '../../types/operations';
-import { ColumnList } from '../../types/sources';
 import { OperationDataTable } from '../OperationDataTable';
 
 interface OperationDataTableContainerProps {
   list?: List<OperationDataMap>;
-  columns?: ColumnList;
   id?: string;
   limit: number;
   offset: number;
@@ -47,7 +45,7 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
     }
   };
 
-  if (list && list.count() && props.columns) {
+  if (list && list.count()) {
     return (
       <>
         <OperationDataTable list={list} columns={columns} />
