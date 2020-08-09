@@ -94,7 +94,7 @@ class Operation(BaseEntity):
     sample_output_path = models.TextField(blank=True, null=True)
     tags = models.ManyToManyField(Tag)
     is_draft = models.BooleanField(default=True)
-    source = models.ForeignKey(Source, on_delete = models.CASCADE, related_name="operations", default=1)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="operations", null=True)
 
     def __str__(self):
         return self.name
