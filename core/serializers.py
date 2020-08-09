@@ -231,7 +231,6 @@ class SourceSerializer(serializers.ModelSerializer):
     columns = SourceColumnMapSerializer(source='sourcecolumnmap_set', many=True, read_only=True)
     update_history = UpdateHistorySerializer(source='updatehistory_set', many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
-    operations = OperationSerializer(many=True, read_only=True)
     id = serializers.ReadOnlyField(source='pk')
 
     class Meta:

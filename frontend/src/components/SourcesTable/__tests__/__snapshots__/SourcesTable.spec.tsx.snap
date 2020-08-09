@@ -63,14 +63,14 @@ exports[`renders correctly when the sources are updated 1`] = `
           </td>
           <td>
             <button
-              class="btn btn-outline-success btn-sm"
+              class="btn btn-outline-danger btn-sm"
               data-testid="sources-table-metadata-button"
               type="button"
             >
               Metadata
             </button>
             <button
-              class="btn btn-outline-success btn-sm"
+              class="btn btn-outline-danger btn-sm"
               data-testid="sources-table-dataset-button"
               type="button"
             >
@@ -94,14 +94,14 @@ exports[`renders correctly when the sources are updated 1`] = `
           </td>
           <td>
             <button
-              class="btn btn-outline-success btn-sm"
+              class="btn btn-outline-danger btn-sm"
               data-testid="sources-table-metadata-button"
               type="button"
             >
               Metadata
             </button>
             <button
-              class="btn btn-outline-success btn-sm"
+              class="btn btn-outline-danger btn-sm"
               data-testid="sources-table-dataset-button"
               type="button"
             >
@@ -125,14 +125,14 @@ exports[`renders correctly when the sources are updated 1`] = `
           </td>
           <td>
             <button
-              class="btn btn-outline-success btn-sm"
+              class="btn btn-outline-danger btn-sm"
               data-testid="sources-table-metadata-button"
               type="button"
             >
               Metadata
             </button>
             <button
-              class="btn btn-outline-success btn-sm"
+              class="btn btn-outline-danger btn-sm"
               data-testid="sources-table-dataset-button"
               type="button"
             >
@@ -183,7 +183,7 @@ exports[`renders correctly with default props 1`] = `
         </td>
         <td>
           <button
-            className="btn btn-outline-success btn-sm"
+            className="btn btn-outline-danger btn-sm"
             data-testid="sources-table-metadata-button"
             disabled={false}
             type="button"
@@ -191,7 +191,7 @@ exports[`renders correctly with default props 1`] = `
             Metadata
           </button>
           <button
-            className="btn btn-outline-success btn-sm"
+            className="btn btn-outline-danger btn-sm"
             data-testid="sources-table-dataset-button"
             disabled={false}
             type="button"
@@ -216,7 +216,7 @@ exports[`renders correctly with default props 1`] = `
         </td>
         <td>
           <button
-            className="btn btn-outline-success btn-sm"
+            className="btn btn-outline-danger btn-sm"
             data-testid="sources-table-metadata-button"
             disabled={false}
             type="button"
@@ -224,7 +224,7 @@ exports[`renders correctly with default props 1`] = `
             Metadata
           </button>
           <button
-            className="btn btn-outline-success btn-sm"
+            className="btn btn-outline-danger btn-sm"
             data-testid="sources-table-dataset-button"
             disabled={false}
             type="button"

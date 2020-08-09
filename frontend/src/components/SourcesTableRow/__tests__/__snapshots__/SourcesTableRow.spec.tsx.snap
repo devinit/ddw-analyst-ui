@@ -17,7 +17,7 @@ exports[`renders correctly with the default props 1`] = `
   </td>
   <td>
     <button
-      className="btn btn-outline-success btn-sm"
+      className="btn btn-outline-danger btn-sm"
       data-testid="sources-table-metadata-button"
       disabled={false}
       onClick={[MockFunction]}
@@ -26,7 +26,7 @@ exports[`renders correctly with the default props 1`] = `
       Metadata
     </button>
     <button
-      className="btn btn-outline-success btn-sm"
+      className="btn btn-outline-danger btn-sm"
       data-testid="sources-table-dataset-button"
       disabled={false}
       onClick={[MockFunction]}
