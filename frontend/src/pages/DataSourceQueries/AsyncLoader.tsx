@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-const DataSourceQuery = React.lazy(() => import('./DataSourceQuery'));
-export const AsyncDataSourceQuery = (): ReactElement => (
+const DataSourceQueries = React.lazy(() => import('./DataSourceQueries'));
+export const AsyncDataSourceQueries = (): ReactElement => (
   <React.Suspense
     fallback={
       <Dimmer active={true} inverted>
@@ -10,6 +10,6 @@ export const AsyncDataSourceQuery = (): ReactElement => (
       </Dimmer>
     }
   >
-    <DataSourceQuery />
+    <DataSourceQueries />
   </React.Suspense>
 );

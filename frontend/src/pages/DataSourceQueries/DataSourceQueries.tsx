@@ -4,7 +4,7 @@ import { Row } from 'react-bootstrap';
 import { DataSourceQueryCard } from '../../components/DataSourceQueryCard';
 import { fetchQueriesOnDataset, QueryResult } from './utils';
 
-const DataSourceQuery = (): ReactElement => {
+const DataSourceQueries = (): ReactElement => {
   const [queryResult, setQueryResult] = useState<QueryResult>();
   const { id } = useParams();
   useEffect(() => {
@@ -22,4 +22,4 @@ const DataSourceQuery = (): ReactElement => {
   );
 };
 
-export default DataSourceQuery;
+export default DataSourceQueries;

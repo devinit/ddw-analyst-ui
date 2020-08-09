@@ -47,20 +47,6 @@ const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
         </Modal>
       );
     }
-
-    return (
-      <Segment>
-        <Placeholder>
-          <Placeholder.Header>
-            <Placeholder.Line length="very short" />
-            <Placeholder.Line length="medium" />
-          </Placeholder.Header>
-          <Placeholder.Paragraph>
-            <Placeholder.Line length="short" />
-          </Placeholder.Paragraph>
-        </Placeholder>
-      </Segment>
-    );
   };
 
   const handleMetadata = (activeSource: SourceMap) => {

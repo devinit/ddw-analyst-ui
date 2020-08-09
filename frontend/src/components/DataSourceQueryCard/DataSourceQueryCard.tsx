@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement, createContext } from 'react';
 import { Card } from 'react-bootstrap';
 import { DataSourceQueryTable } from '../DataSourceQueryTable';
-import { QueryResult, ResultData } from '../../pages/DataSourceQuery/utils';
+import { QueryResult, ResultData } from '../../pages/DataSourceQueries/utils';
 
 export interface DataSourceQueryCardProps {
   query?: QueryResult;
