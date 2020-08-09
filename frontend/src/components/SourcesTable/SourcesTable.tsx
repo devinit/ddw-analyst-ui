@@ -3,7 +3,7 @@ import React, { useContext, FunctionComponent } from 'react';
 import { Table } from 'react-bootstrap';
 import { SourceMap } from '../../types/sources';
 import { SourcesTableRow } from '../SourcesTableRow';
-import { DataSourcesContext, DataSource } from '../../pages/DataSources/DataSources';
+import { DataSourcesContext, DataSource } from '../../pages/DataSources';
 
 interface SourcesTableProps {
   sources: List<SourceMap>;

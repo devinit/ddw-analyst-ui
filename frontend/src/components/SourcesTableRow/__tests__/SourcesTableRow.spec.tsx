@@ -20,7 +20,7 @@ test('renders correctly with the default props', () => {
   expect(renderer).toMatchSnapshot();
 });
 
-test('responds to click events', () => {
+test('metadata button responds to click events', () => {
   const table = document.createElement('table');
   const tableBody = document.createElement('tbody');
   table.appendChild(tableBody);
@@ -28,7 +28,20 @@ test('responds to click events', () => {
     container: document.body.appendChild(tableBody),
   });
 
-  fireEvent.click(getByTestId('sources-table-row'));
+  fireEvent.click(getByTestId('sources-table-metadata-button'));
 
   expect(props.onMetadataClick).toHaveBeenCalled();
+});
+
+test('dataset button responds to click events', () => {
+  const table = document.createElement('table');
+  const tableBody = document.createElement('tbody');
+  table.appendChild(tableBody);
+  const { getByTestId } = render(<SourcesTableRow {...props} />, {
+    container: document.body.appendChild(tableBody),
+  });
+
+  fireEvent.click(getByTestId('sources-table-dataset-button'));
+
+  expect(props.onDatasetClick).toHaveBeenCalled();
 });
