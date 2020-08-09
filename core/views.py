@@ -318,7 +318,7 @@ class ViewSourceDatasets(APIView):
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
-    def get_object(self, pk, request):
+    def get_queryset(self, pk, request):
         try:
             source_id = self.kwargs['pk']
             if source_id:
@@ -329,15 +329,15 @@ class ViewSourceDatasets(APIView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        dataset = self.get_object(pk, request)
+        datasets = self.get_queryset(pk, request)
         if self.request.query_params.get('limit', None) is not None or self.request.query_params.get('offset', None) is not None:
             pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
             paginator = pagination_class()
-            page = paginator.paginate_queryset(dataset, request)
+            page = paginator.paginate_queryset(datasets, request)
             serializer = OperationSerializer(page, many=True)
             return paginator.get_paginated_response(serializer.data)
         else:
-            serializer = OperationSerializer(dataset, many=True)
+            serializer = OperationSerializer(datasets, many=True)
             return Response(serializer.data)
 
 class ReviewList(generics.ListCreateAPIView):
