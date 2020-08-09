@@ -29,6 +29,7 @@ urlpatterns = [
     path('sectors/<int:pk>/', core_views.SectorDetail.as_view()),
     path('sources/', core_views.SourceList.as_view()),
     path('sources/<int:pk>/', core_views.SourceDetail.as_view()),
+    path('sources/<int:pk>/datasets/', core_views.ViewDataSetPerSource.as_view()),
     path('export/<int:pk>/', core_views.streaming_export_view, name="export_stream"),
     path('change_password/', core_views.ChangePassword.as_view()),
     path('list_update_scripts/', core_views.ListUpdateScripts.as_view()),
@@ -41,7 +42,6 @@ urlpatterns = [
     path('dataset/<int:pk>/', core_views.OperationDetail.as_view()),
     path('dataset/preview/', core_views.PreviewOperationData.as_view()),
     path('dataset/data/<int:pk>/', core_views.ViewData.as_view()),
-    path('sources/<int:pk>/datasets/', core_views.ViewDataSetPerSource.as_view()),
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'
