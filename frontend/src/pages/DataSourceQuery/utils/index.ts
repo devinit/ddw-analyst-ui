@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as localForage from 'localforage';
 import { api, localForageKeys } from '../../../utils';
 
-const BASEPATH = api.routes.FETCH_DATASETS_ON_SOURCE;
+const BASEPATH = api.routes.FETCH_SOURCE_DATASETS;
 
 export interface ResultData {
   id: number;
