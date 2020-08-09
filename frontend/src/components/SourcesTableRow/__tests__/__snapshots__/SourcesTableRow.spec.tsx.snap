@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly with the default props 1`] = `
-<tr>
+<tr
+  data-testid="sources-table-row"
+>
   <td>
     World Bank Indicators
     <span
@@ -16,7 +18,7 @@ exports[`renders correctly with the default props 1`] = `
   <td>
     <button
       className="btn btn-outline-success btn-sm"
-      data-testid="sources-table-row"
+      data-testid="sources-table-metadata-button"
       disabled={false}
       onClick={[MockFunction]}
       type="button"
@@ -25,6 +27,7 @@ exports[`renders correctly with the default props 1`] = `
     </button>
     <button
       className="btn btn-outline-success btn-sm"
+      data-testid="sources-table-dataset-button"
       disabled={false}
       onClick={[MockFunction]}
       type="button"
