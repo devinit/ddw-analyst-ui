@@ -312,7 +312,7 @@ class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
 
-class ViewDataSetPerSource(APIView):
+class ViewSourceDatasets(APIView):
     """
     Get all Datasets attached to a specific data source id
     """
