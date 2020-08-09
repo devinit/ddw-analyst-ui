@@ -22,7 +22,7 @@ export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
       <td>{new Date(props.updatedOn).toDateString()}</td>
       <td>
         <Button
-          variant="outline-success"
+          variant="outline-danger"
           size="sm"
           onClick={props.onMetadataClick}
           data-testid="sources-table-metadata-button"
@@ -30,7 +30,7 @@ export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
           Metadata
         </Button>
         <Button
-          variant="outline-success"
+          variant="outline-danger"
           size="sm"
           onClick={props.onDatasetClick}
           data-testid="sources-table-dataset-button"
