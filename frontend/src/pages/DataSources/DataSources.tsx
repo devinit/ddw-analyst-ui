@@ -4,7 +4,7 @@ import { Col, Row, Modal } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import * as sourcesActions from '../../actions/sources';
 import { SourceDetailsTab } from '../../components/SourceDetailsTab';
 import { SourcesTableCard } from '../../components/SourcesTableCard';
@@ -56,7 +56,7 @@ const DataSources: FunctionComponent<DataSourcesProps> = (props) => {
 
   const handleDataSet = (activeSource: SourceMap, sourceId: number): void => {
     props.actions.setActiveSource(activeSource);
-    const path = `datasource/${sourceId}`;
+    const path = `${sourceId}/datasets`;
     history.push(path);
   };
 

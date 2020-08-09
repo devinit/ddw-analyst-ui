@@ -13,6 +13,7 @@ urlpatterns = [
     path('', views.index),
     path('login/', views.index),
     path('sources/', views.index),
+    path('sources/<int:pk>/datasets/', views.with_id),
     path('queries/build/', views.index),
     path('queries/build/<int:pk>/', views.with_id),
     path('queries/data/<int:pk>/', views.with_id),
@@ -20,5 +21,4 @@ urlpatterns = [
     path('designs/scheduled-events/', views.scheduled_events),
     path('designs/update-data-source/', views.update_data_source),
     path('scheduledevents/', views.index),
-    path('sources/datasource/<int:pk>', views.with_id)
 ]
