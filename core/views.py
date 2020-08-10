@@ -25,14 +25,14 @@ from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from core import query
-from core.models import (Operation, OperationStep, Review, ScheduledEvent,
+from core.models import (Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
                         ScheduledEventRunInstance, Sector, Source, Tag, Theme)
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
 from core.serializers import (DataSerializer, OperationSerializer,
-                            OperationStepSerializer, ReviewSerializer,
-                            ScheduledEventRunInstanceSerializer,
+                            OperationStepSerializer, OperationDataColumnAliasSerializer,
+                            ReviewSerializer, ScheduledEventRunInstanceSerializer,
                             ScheduledEventSerializer, SectorSerializer,
                             SourceSerializer, TagSerializer, ThemeSerializer,
                             UserSerializer)
@@ -386,6 +386,14 @@ class ViewUserSourceDatasets(APIView):
         else:
             serializer = OperationSerializer(datasets, many=True)
             return Response(serializer.data)
+
+class OperationColumnAlias(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    queryset = OperationDataColumnAlias.objects.all()
+    serializer_class = OperationDataColumnAliasSerializer
+
 
 class ReviewList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
