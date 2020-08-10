@@ -164,3 +164,8 @@ postman.setEnvironmentVariable("token", jsonData.token);
 4. Check if there is a cron job set to renew certificates. If there is non add the cron task below. This will try to renew the certificate twice a day every day
 
 `0 */12 * * * /root/ddw-analyst-ui/certbot.sh >/dev/null 2>&1`
+
+
+### API Documentation
+
+Read more [here](./core/docs/API.md)
