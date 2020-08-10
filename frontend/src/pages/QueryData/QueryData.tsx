@@ -1,4 +1,4 @@
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import * as React from 'react';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
@@ -84,18 +84,20 @@ class QueryData extends React.Component<QueryDataProps> {
   }
 
   componentWillUnmount() {
-    this.props.actions.setOperationData(List(), {});
+    this.props.actions.setOperationData(Map(), {} as any); // eslint-disable-line @typescript-eslint/no-explicit-any
   }
 
   private renderTable() {
-    const data = this.props.page.getIn(['data', 'results']) as List<OperationDataMap>;
-    const loading = this.props.page.get('loading') as boolean;
-    const { fetchOperationData: fetchData } = this.props.actions;
-    const { id } = this.props.match.params;
+    const { page, actions, match, activeOperation: operation } = this.props;
+    const data = page.getIn(['data', 'results']) as List<OperationDataMap>;
+    const loading = page.get('loading') as boolean;
+    const { fetchOperationData: fetchData } = actions;
+    const { id } = match.params;
 
-    if (id && data && data.count() !== 0) {
+    if (id && data && data.count() !== 0 && operation) {
       return (
         <OperationDataTableContainer
+          operation={operation}
           id={id}
           list={data}
           limit={this.props.page.get('limit') as number}

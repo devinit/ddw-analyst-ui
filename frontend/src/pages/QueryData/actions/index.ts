@@ -1,4 +1,4 @@
-import { List } from 'immutable';
+import { FetchOptions } from '../../../types/api';
 import { OperationDataAPIResponseMap } from '../../../types/operations';
 import {
   FETCH_OPERATION_DATA,
@@ -6,7 +6,6 @@ import {
   QueryDataAction,
   SET_OPERATION_DATA,
 } from '../reducers';
-import { FetchOptions } from '../../../types/api';
 
 type FetchOptionsWithId = FetchOptions & { id: string };
 
@@ -23,6 +22,6 @@ export const fetchOperationDataFailed = (alert: string): Partial<QueryDataAction
   alert,
 });
 export const setOperationData = (
-  data: List<OperationDataAPIResponseMap>,
-  payload: FetchOptions,
-) => ({ type: SET_OPERATION_DATA, data, payload });
+  data: OperationDataAPIResponseMap,
+  payload: { id: number | string; limit: number; offset: number },
+): Partial<QueryDataAction> => ({ type: SET_OPERATION_DATA, data, payload });

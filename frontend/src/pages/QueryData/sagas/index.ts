@@ -25,7 +25,7 @@ function* fetchOperationData({ payload }: QueryDataAction) {
       .catch((error) => error.response);
 
     if (status === 200 || (status === 201 && data)) {
-      yield put(setOperationData(fromJS(data), payload));
+      yield put(setOperationData(fromJS(data), payload) as QueryDataAction);
     } else if (status === 401) {
       yield put(setToken(''));
       yield put(fetchOperationDataFailed('') as QueryDataAction);

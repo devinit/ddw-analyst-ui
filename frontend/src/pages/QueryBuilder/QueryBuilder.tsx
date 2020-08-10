@@ -23,7 +23,7 @@ import {
   OperationMap,
   OperationStepMap,
 } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { SourceMap, OperationColumn, OperationColumnMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
@@ -230,8 +230,9 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       return <div>Loading ...</div>;
     }
     if (previewData.count()) {
-      const columns: string[] = [];
-      previewData.get(0)?.mapKeys((key: string) => columns.push(key));
+      const columns: OperationColumn[] = props.activeOperation
+        ? (props.activeOperation.get('aliases') as List<OperationColumnMap>).toJS()
+        : [];
 
       return <OperationDataTable list={previewData} columns={columns} />;
     }

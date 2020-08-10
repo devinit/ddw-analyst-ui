@@ -26,6 +26,12 @@ export interface Column {
   source_name: string | null;
   data_type: 'N' | 'C' | null;
 }
+export interface OperationColumn {
+  id: number;
+  column_name: string;
+  column_alias: string;
+}
+export type OperationColumnMap = Map<keyof OperationColumn, OperationColumn[keyof OperationColumn]>;
 export interface UpdateHistory {
   source: number;
   history_table: string | null;
