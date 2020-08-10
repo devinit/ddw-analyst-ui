@@ -172,12 +172,3 @@ Read more [here](./core/docs/API.md)
 
 
 ### Management Commands
-
-#### add_aliases
-
-This command updates existing source column objects with aliases retrieved from the `meta_columns.csv`.
-For objects without aliases in the `meta_columns.csv`, this command generates one from the `col_name`.
-
-This command should only ever need to be run once since the `load_manual` command handle subsequent updates.
-
-        docker-compose exec web python manage.py add_aliases
