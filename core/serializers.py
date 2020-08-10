@@ -81,12 +81,15 @@ class DataSerializer(serializers.BaseSerializer):
             aliased_data = []
             for row in data:
                 aliased_row = {}
-                for column in aliases:
-                    aliased_row[column.column_alias] = row[column.column_name]
-
                 for column in data_column_keys:
                     if not column in column_names:
                         aliased_row[column] = row[column]
+                    else:
+                        alias = aliases.filter(column_name=column).first()
+                        if alias:
+                            aliased_row[alias.column_alias] = row[column]
+                        else:
+                            aliased_row[column] = row[column]
 
                 aliased_data.append(aliased_row)
 
