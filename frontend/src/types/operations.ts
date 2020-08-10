@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { List, Map } from 'immutable';
+import { OperationColumn, OperationColumnMap } from './sources';
 
 export type QueryName = 'filter' | 'join' | 'aggregate' | 'transform';
 export interface Filter {
@@ -27,6 +28,7 @@ export interface Operation {
   created_on: string;
   updated_on: string;
   user: string;
+  aliases: OperationColumn[] | List<OperationColumnMap>;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {
