@@ -167,5 +167,5 @@ postman.setEnvironmentVariable("token", jsonData.token);
 
 
 ### API Documentation
-<br>
-<p>Read more [here](core/docs/API.md)</p>
+
+Read more [here](./core/docs/API.md)
