@@ -76,16 +76,16 @@ class DataSerializer(serializers.BaseSerializer):
         try:
             first_step = self.operation.get_operation_steps()[0]
             data_column_keys = data[0].keys()
-            columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
-            column_keys = [column.name for column in columns]
+            aliases = OperationDataColumnAlias.objects.filter(operation=self.operation)
+            column_names = [column.column_name for column in aliases]
             aliased_data = []
             for row in data:
                 aliased_row = {}
-                for column in columns:
-                    aliased_row[column.alias] = row[column.name]
+                for column in aliases:
+                    aliased_row[column.column_alias] = row[column.column_name]
 
                 for column in data_column_keys:
-                    if not column in column_keys:
+                    if not column in column_names:
                         aliased_row[column] = row[column]
 
                 aliased_data.append(aliased_row)
