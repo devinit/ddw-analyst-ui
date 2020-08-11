@@ -23,5 +23,5 @@ export const fetchQueriesOnDataset = async (id: number): Promise<QueryResult> =>
     Authorization: `token ${token}`,
   };
 
-  return await axios(`${BASEPATH.replace('{id}', id.toString())}`, { headers });
+  return await axios(`${BASEPATH}${id}`, { headers });
 };

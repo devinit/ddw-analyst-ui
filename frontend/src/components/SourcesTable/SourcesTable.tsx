@@ -17,7 +17,7 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
 
   const onShowDatasets = (source: SourceMap) => {
     setActiveSource(source);
-    history.push(`${source.get('id') as string}/datasets`);
+    history.push(`/source/datasets/${source.get('id') as string}`);
   };
   const onShowMetadata = (source: SourceMap) => {
     setActiveSource(source);
