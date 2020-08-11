@@ -1,29 +1,38 @@
 import { List } from 'immutable';
-import React, { useContext, FunctionComponent } from 'react';
-import { Table } from 'react-bootstrap';
+import React, { FunctionComponent, useState } from 'react';
+import { Modal, Table, Alert } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import { SourceMap } from '../../types/sources';
+import { SourceDetailsTab } from '../SourceDetailsTab';
 import { SourcesTableRow } from '../SourcesTableRow';
-import { DataSourcesContext, DataSource } from '../../pages/DataSources';
 
 interface SourcesTableProps {
   sources: List<SourceMap>;
   activeSource?: SourceMap;
 }
 export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
-  const { onMetadataClick, onDatasetClick } = useContext<DataSource>(DataSourcesContext);
+  const [showModal, setShowModal] = useState(false);
+  const [activeSource, setActiveSource] = useState<SourceMap | undefined>();
+  const history = useHistory();
+
+  const onShowDatasets = (source: SourceMap) => {
+    setActiveSource(source);
+    history.push(`${source.get('id') as string}/datasets`);
+  };
+  const onShowMetadata = (source: SourceMap) => {
+    setActiveSource(source);
+    setShowModal(true);
+  };
+  const onHideModal = () => setShowModal(false);
 
   const renderRows = (sources: List<SourceMap>, activeSource?: SourceMap) => {
     if (sources && sources.size && activeSource) {
       return sources.map((source, index) => (
         <SourcesTableRow
           key={index}
-          indicator={source.get('indicator') as string}
-          indicatorAcronym={source.get('indicator_acronym') as string}
-          updatedOn={source.get('last_updated_on') as string}
-          onDatasetClick={
-            onDatasetClick ? () => onDatasetClick(source, source.get('id') as number) : undefined
-          }
-          onMetadataClick={onMetadataClick ? () => onMetadataClick(source) : undefined}
+          source={source}
+          onShowDatasets={onShowDatasets}
+          onShowMetadata={onShowMetadata}
         />
       ));
     }
@@ -32,15 +41,24 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
   };
 
   return (
-    <Table responsive hover striped className="sources-table" size="sm">
-      <thead>
-        <tr>
-          <th>Indicator</th>
-          <th>Updated On</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>{renderRows(props.sources, props.activeSource)}</tbody>
-    </Table>
+    <>
+      <Table responsive hover striped className="sources-table" size="sm">
+        <thead>
+          <tr>
+            <th>Indicator</th>
+            <th>Updated On</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>{renderRows(props.sources, props.activeSource)}</tbody>
+      </Table>
+      <Modal show={showModal} onHide={onHideModal}>
+        {activeSource ? (
+          <SourceDetailsTab source={activeSource} />
+        ) : (
+          <Alert variant="warning">No active source</Alert>
+        )}
+      </Modal>
+    </>
   );
 };
