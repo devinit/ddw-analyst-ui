@@ -16,17 +16,6 @@ interface OperationDataTableContainerProps {
   fetchData: typeof fetchOperationData;
 }
 
-// const getColumns = (item?: OperationDataMap): string[] => {
-//   if (item) {
-//     const columns: string[] = [];
-//     item.mapKeys((key: string) => columns.push(key));
-
-//     return columns;
-//   }
-
-//   return [];
-// };
-
 export const OperationDataTableContainer: FunctionComponent<OperationDataTableContainerProps> = (
   props,
 ) => {
@@ -45,7 +34,7 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
   if (list && list.count()) {
     return (
       <>
-        <OperationDataTable list={list} columns={columns} />
+        <OperationDataTable list={list} columns={columns} editableHeaders />
         <PaginationRow
           pageRangeDisplayed={5}
           limit={limit}
