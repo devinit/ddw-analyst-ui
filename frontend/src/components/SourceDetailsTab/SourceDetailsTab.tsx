@@ -1,6 +1,7 @@
 import { List, Map } from 'immutable';
 import * as React from 'react';
 import { Card, Nav, Tab } from 'react-bootstrap';
+import styled from 'styled-components';
 import { ColumnList, SourceMap, UpdateHistoryList } from '../../types/sources';
 import { InfoList, InfoListItems } from '../InfoList';
 import { PaginatedContent } from '../PaginatedContent';
@@ -11,11 +12,15 @@ interface SourceDetailsProps {
   source: SourceMap;
 }
 
+const StyledCard = styled(Card)`
+  box-shadow: none;
+`;
+
 export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
   render(): React.ReactElement {
     return (
       <Tab.Container defaultActiveKey="metadata">
-        <Card className="source-details">
+        <StyledCard className="source-details border-0">
           <Card.Body>
             <Nav variant="pills" className="nav-pills-danger" role="tablist">
               <Nav.Item>
@@ -45,7 +50,7 @@ export class SourceDetailsTab extends React.Component<SourceDetailsProps> {
               </Tab.Pane>
             </Tab.Content>
           </Card.Body>
-        </Card>
+        </StyledCard>
       </Tab.Container>
     );
   }
