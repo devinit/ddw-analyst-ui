@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+import 'jest-styled-components';
 import { List, Map } from 'immutable';
 import * as React from 'react';
 import { render } from '@testing-library/react';

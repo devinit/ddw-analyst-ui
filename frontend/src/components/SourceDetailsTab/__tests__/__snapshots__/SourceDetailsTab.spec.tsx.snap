@@ -1,9 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly with default props 1`] = `
+.c0 {
+  box-shadow: none;
+}
+
 <div>
   <div
-    class="source-details card"
+    class="c0 source-details border-0 card"
   >
     <div
       class="card-body"
