@@ -1,4 +1,4 @@
-from unittest import skip
+from unittest import mock, skip
 
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
@@ -71,8 +71,14 @@ class TestRestFramework(TestCase):
         response = client.delete('/api/tags/{}/'.format(self.user_tag.pk))
         assert response.status_code == 204
 
-    @skip('Updated the api/datasets/ endpoint to make use of content in the datasets data base')
     def test_post_nested_operation(self):
+        # mock query_table function
+        query_table = query.query_table
+        mock_data = [
+            { 'year': 2004 },
+            { 'year': 2005 }
+        ]
+        query.query_table = mock.MagicMock(return_value=mock_data)
         client = APIClient()
         client.force_authenticate(user=self.user)
         data = {
@@ -94,6 +100,8 @@ class TestRestFramework(TestCase):
 
         response = client.post('/api/datasets/', data, format="json")
         assert response.status_code == 201
+
+        query.query_table = query_table
 
     def test_post_password_change(self):
         client = APIClient()
