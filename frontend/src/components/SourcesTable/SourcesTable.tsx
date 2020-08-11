@@ -32,7 +32,7 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
   };
 
   return (
-    <Table responsive hover striped className="sources-table">
+    <Table responsive hover striped className="sources-table" size="sm">
       <thead>
         <tr>
           <th>Indicator</th>

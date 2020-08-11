@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
 export interface SourcesTableRowProps {
   classNames?: string;
   indicator: string;
@@ -21,22 +21,24 @@ export const SourcesTableRow: React.SFC<SourcesTableRowProps> = (props) => {
       </td>
       <td>{new Date(props.updatedOn).toDateString()}</td>
       <td>
-        <Button
-          variant="outline-danger"
-          size="sm"
-          onClick={props.onMetadataClick}
-          data-testid="sources-table-metadata-button"
-        >
-          Metadata
-        </Button>
-        <Button
-          variant="outline-danger"
-          size="sm"
-          onClick={props.onDatasetClick}
-          data-testid="sources-table-dataset-button"
-        >
-          Datasets
-        </Button>
+        <ButtonGroup>
+          <Button
+            variant="dark"
+            size="sm"
+            onClick={props.onMetadataClick}
+            data-testid="sources-table-metadata-button"
+          >
+            Metadata
+          </Button>
+          <Button
+            variant="dark"
+            size="sm"
+            onClick={props.onDatasetClick}
+            data-testid="sources-table-dataset-button"
+          >
+            Datasets
+          </Button>
+        </ButtonGroup>
       </td>
     </tr>
   );
