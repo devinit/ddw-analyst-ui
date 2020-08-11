@@ -5,7 +5,7 @@ exports[`renders an empty table if no sources are provided 1`] = `
   className="table-responsive"
 >
   <table
-    className="sources-table table table-striped table-hover"
+    className="sources-table table table-sm table-striped table-hover"
   >
     <thead>
       <tr>
@@ -31,7 +31,7 @@ exports[`renders correctly when the sources are updated 1`] = `
     class="table-responsive"
   >
     <table
-      class="sources-table table table-striped table-hover"
+      class="sources-table table table-sm table-striped table-hover"
     >
       <thead>
         <tr>
@@ -62,20 +62,25 @@ exports[`renders correctly when the sources are updated 1`] = `
             Sun Aug 19 2018
           </td>
           <td>
-            <button
-              class="btn btn-outline-danger btn-sm"
-              data-testid="sources-table-metadata-button"
-              type="button"
+            <div
+              class="btn-group"
+              role="group"
             >
-              Metadata
-            </button>
-            <button
-              class="btn btn-outline-danger btn-sm"
-              data-testid="sources-table-dataset-button"
-              type="button"
-            >
-              Datasets
-            </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-metadata-button"
+                type="button"
+              >
+                Metadata
+              </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-dataset-button"
+                type="button"
+              >
+                Datasets
+              </button>
+            </div>
           </td>
         </tr>
         <tr
@@ -93,20 +98,25 @@ exports[`renders correctly when the sources are updated 1`] = `
             Sun Aug 19 2018
           </td>
           <td>
-            <button
-              class="btn btn-outline-danger btn-sm"
-              data-testid="sources-table-metadata-button"
-              type="button"
+            <div
+              class="btn-group"
+              role="group"
             >
-              Metadata
-            </button>
-            <button
-              class="btn btn-outline-danger btn-sm"
-              data-testid="sources-table-dataset-button"
-              type="button"
-            >
-              Datasets
-            </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-metadata-button"
+                type="button"
+              >
+                Metadata
+              </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-dataset-button"
+                type="button"
+              >
+                Datasets
+              </button>
+            </div>
           </td>
         </tr>
         <tr
@@ -124,20 +134,25 @@ exports[`renders correctly when the sources are updated 1`] = `
             Sun Aug 19 2018
           </td>
           <td>
-            <button
-              class="btn btn-outline-danger btn-sm"
-              data-testid="sources-table-metadata-button"
-              type="button"
+            <div
+              class="btn-group"
+              role="group"
             >
-              Metadata
-            </button>
-            <button
-              class="btn btn-outline-danger btn-sm"
-              data-testid="sources-table-dataset-button"
-              type="button"
-            >
-              Datasets
-            </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-metadata-button"
+                type="button"
+              >
+                Metadata
+              </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-dataset-button"
+                type="button"
+              >
+                Datasets
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -151,7 +166,7 @@ exports[`renders correctly with default props 1`] = `
   className="table-responsive"
 >
   <table
-    className="sources-table table table-striped table-hover"
+    className="sources-table table table-sm table-striped table-hover"
   >
     <thead>
       <tr>
@@ -182,22 +197,29 @@ exports[`renders correctly with default props 1`] = `
           Sun Aug 19 2018
         </td>
         <td>
-          <button
-            className="btn btn-outline-danger btn-sm"
-            data-testid="sources-table-metadata-button"
-            disabled={false}
-            type="button"
+          <div
+            className="btn-group"
+            role="group"
           >
-            Metadata
-          </button>
-          <button
-            className="btn btn-outline-danger btn-sm"
-            data-testid="sources-table-dataset-button"
-            disabled={false}
-            type="button"
-          >
-            Datasets
-          </button>
+            <button
+              className="btn btn-dark btn-sm"
+              data-testid="sources-table-metadata-button"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Metadata
+            </button>
+            <button
+              className="btn btn-dark btn-sm"
+              data-testid="sources-table-dataset-button"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Datasets
+            </button>
+          </div>
         </td>
       </tr>
       <tr
@@ -215,22 +237,29 @@ exports[`renders correctly with default props 1`] = `
           Sun Aug 19 2018
         </td>
         <td>
-          <button
-            className="btn btn-outline-danger btn-sm"
-            data-testid="sources-table-metadata-button"
-            disabled={false}
-            type="button"
+          <div
+            className="btn-group"
+            role="group"
           >
-            Metadata
-          </button>
-          <button
-            className="btn btn-outline-danger btn-sm"
-            data-testid="sources-table-dataset-button"
-            disabled={false}
-            type="button"
-          >
-            Datasets
-          </button>
+            <button
+              className="btn btn-dark btn-sm"
+              data-testid="sources-table-metadata-button"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Metadata
+            </button>
+            <button
+              className="btn btn-dark btn-sm"
+              data-testid="sources-table-dataset-button"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Datasets
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>
