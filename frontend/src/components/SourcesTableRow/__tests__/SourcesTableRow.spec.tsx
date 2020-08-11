@@ -1,17 +1,21 @@
 /**
  * @jest-environment jsdom
  */
+import { fireEvent, render } from '@testing-library/react';
+import { Map } from 'immutable';
 import * as React from 'react';
 import * as TestRenderer from 'react-test-renderer';
-import { fireEvent, render } from '@testing-library/react';
+import { SourceMap } from '../../../types/sources';
 import { SourcesTableRow, SourcesTableRowProps } from '../SourcesTableRow';
 
 const props: SourcesTableRowProps = {
-  indicator: 'World Bank Indicators',
-  indicatorAcronym: 'wbi',
-  updatedOn: new Date('August 19, 2018 23:15:30').toISOString(),
-  onDatasetClick: jest.fn(),
-  onMetadataClick: jest.fn(),
+  source: Map({
+    indicator: 'World Bank Indicators',
+    indicator_acronym: 'wbi',
+    last_updated_on: 'August 19, 2018 23:15:30',
+  }) as SourceMap,
+  onShowDatasets: jest.fn(),
+  onShowMetadata: jest.fn(),
 };
 
 test('renders correctly with the default props', () => {
@@ -30,7 +34,7 @@ test('metadata button responds to click events', () => {
 
   fireEvent.click(getByTestId('sources-table-metadata-button'));
 
-  expect(props.onMetadataClick).toHaveBeenCalled();
+  expect(props.onShowMetadata).toHaveBeenCalled();
 });
 
 test('dataset button responds to click events', () => {
@@ -43,5 +47,5 @@ test('dataset button responds to click events', () => {
 
   fireEvent.click(getByTestId('sources-table-dataset-button'));
 
-  expect(props.onDatasetClick).toHaveBeenCalled();
+  expect(props.onShowDatasets).toHaveBeenCalled();
 });

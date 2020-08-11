@@ -16,24 +16,29 @@ exports[`renders correctly with the default props 1`] = `
     Sun Aug 19 2018
   </td>
   <td>
-    <button
-      className="btn btn-outline-danger btn-sm"
-      data-testid="sources-table-metadata-button"
-      disabled={false}
-      onClick={[MockFunction]}
-      type="button"
+    <div
+      className="btn-group"
+      role="group"
     >
-      Metadata
-    </button>
-    <button
-      className="btn btn-outline-danger btn-sm"
-      data-testid="sources-table-dataset-button"
-      disabled={false}
-      onClick={[MockFunction]}
-      type="button"
-    >
-      Datasets
-    </button>
+      <button
+        className="btn btn-dark btn-sm"
+        data-testid="sources-table-metadata-button"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Metadata
+      </button>
+      <button
+        className="btn btn-dark btn-sm"
+        data-testid="sources-table-dataset-button"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Datasets
+      </button>
+    </div>
   </td>
 </tr>
 `;
