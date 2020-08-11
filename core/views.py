@@ -100,16 +100,22 @@ class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
     def __init__(self, operation):
         self.main_query = query.build_query(operation=operation)[1]
+        self.operation = operation
 
     def stream(self):
         with connections["datasets"].chunked_cursor() as main_cursor:
             main_cursor.execute(self.main_query)
             first_row = main_cursor.fetchone()
             header = [col[0] for col in main_cursor.description]
+            aliases = OperationDataColumnAlias.objects.filter(operation=self.operation)
+            header_aliases = []
+            for column in header:
+                alias = aliases.filter(column_name=column).first()
+                header_aliases.append(alias.column_alias if alias else column)
             pseudo_buffer = Echo()
             yield pseudo_buffer.write(codecs.BOM_UTF8)
             writer = csv.writer(pseudo_buffer, delimiter=",")
-            yield writer.writerow(header)
+            yield writer.writerow(header_aliases)
             yield writer.writerow(first_row)
             next_row = main_cursor.fetchone()
             while next_row is not None:
