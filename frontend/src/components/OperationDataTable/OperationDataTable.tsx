@@ -1,18 +1,22 @@
+import axios, { AxiosResponse } from 'axios';
 import { List } from 'immutable';
-import * as React from 'react';
-import { Table } from 'react-bootstrap';
+import * as localForage from 'localforage';
+import React, { FunctionComponent, KeyboardEvent, useState } from 'react';
+import { FormControl, Table } from 'react-bootstrap';
 import styled from 'styled-components';
 import { OperationDataMap } from '../../types/operations';
 import { OperationColumn } from '../../types/sources';
-import { formatString } from '../../utils';
+import { api, formatString, localForageKeys } from '../../utils';
 
 interface OperationDataTableProps {
   list: List<OperationDataMap>;
   columns: OperationColumn[];
+  editableHeaders?: boolean;
 }
 
 const StyledTableHeader = styled.th`
   border-top: 1px solid #ddd !important;
+  font-weight: 400 !important;
 `;
 
 const renderTableRows = (data: List<OperationDataMap>, columns: OperationColumn[]) => {
@@ -21,7 +25,7 @@ const renderTableRows = (data: List<OperationDataMap>, columns: OperationColumn[
       <tr key={key}>
         {columns.map((column) => (
           <td key={column.column_name} className="text-truncate">
-            {item.get(column.column_alias)?.toString()}
+            {item.get(column.column_name)?.toString()}
           </td>
         ))}
       </tr>
@@ -29,19 +33,83 @@ const renderTableRows = (data: List<OperationDataMap>, columns: OperationColumn[
   }
 };
 
-export const OperationDataTable: React.SFC<OperationDataTableProps> = ({ list, columns }) => (
-  <Table bordered responsive hover striped className="operation-data-table">
-    <thead>
-      <tr>
-        {columns.map((column) => (
-          <StyledTableHeader key={column.column_name} className="text-truncate">
-            {formatString(column.column_alias)}
-          </StyledTableHeader>
-        ))}
-      </tr>
-    </thead>
-    <tbody>{renderTableRows(list, columns)}</tbody>
-  </Table>
-);
+export const OperationDataTable: FunctionComponent<OperationDataTableProps> = ({
+  list,
+  editableHeaders,
+  ...props
+}) => {
+  const [editableHeader, setEditableHeader] = useState('');
+  const [columns, setColumns] = useState(props.columns);
+  const onToggleEditingHeader = (column?: OperationColumn): void => {
+    setEditableHeader(column ? column.column_name : '');
+  };
 
-OperationDataTable.defaultProps = { columns: [] };
+  const onEditColumnHeader = (event: KeyboardEvent<HTMLInputElement>, column: OperationColumn) => {
+    if (event.key.toLowerCase() === 'enter') {
+      const alias = event.currentTarget.value;
+      localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
+        axios
+          .request({
+            url: `${api.routes.DATASET_ALIAS}${column.id}/`,
+            method: 'put',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `token ${token}`,
+            },
+            data: {
+              column_name: column.column_name,
+              column_alias: alias,
+            },
+          })
+          .then(({ data }: AxiosResponse<OperationColumn>) => {
+            setColumns(
+              columns.map((column) => {
+                if (column.column_name === data.column_name) {
+                  column.column_alias = data.column_alias;
+                }
+
+                return column;
+              }),
+            );
+            onToggleEditingHeader();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    }
+  };
+
+  return (
+    <Table bordered responsive hover striped className="operation-data-table">
+      <thead>
+        <tr>
+          {columns.map((column) => (
+            <StyledTableHeader
+              key={column.column_name}
+              className="text-truncate"
+              onClick={() => onToggleEditingHeader(column)}
+            >
+              {editableHeaders && editableHeader === column.column_name ? (
+                <FormControl
+                  type="text"
+                  defaultValue={column.column_alias}
+                  onKeyPress={(event: KeyboardEvent<HTMLInputElement>) =>
+                    onEditColumnHeader(event, column)
+                  }
+                  autoFocus
+                  onBlur={() => onToggleEditingHeader()}
+                />
+              ) : (
+                formatString(column.column_alias)
+              )}
+            </StyledTableHeader>
+          ))}
+        </tr>
+      </thead>
+      <tbody>{renderTableRows(list, columns)}</tbody>
+    </Table>
+  );
+};
+
+OperationDataTable.defaultProps = { columns: [], editableHeaders: false };
