@@ -15,5 +15,6 @@ export const api = {
     UPDATE_TABLE: '/api/tables/update/',
     DOWNLOAD_TABLE: '/api/tables/download/',
     FETCH_SOURCE_DATASETS: '/api/source/datasets/',
+    FETCH_MY_SOURCE_DATASETS: '/api/source/datasets/mine/',
   },
 };

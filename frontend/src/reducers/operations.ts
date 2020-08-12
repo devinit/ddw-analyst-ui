@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { List, Map, fromJS } from 'immutable';
 import { Action, Reducer } from 'redux';
 import { Operation, OperationMap } from '../types/operations';

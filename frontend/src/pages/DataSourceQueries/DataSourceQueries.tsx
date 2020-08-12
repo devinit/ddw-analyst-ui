@@ -1,23 +1,14 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import React, { ReactElement, FunctionComponent } from 'react';
 import { Row } from 'react-bootstrap';
-import { DataSourceQueryCard } from '../../components/DataSourceQueryCard';
-import { fetchQueriesOnDataset, QueryResult } from './utils';
+import { useParams } from 'react-router';
+import { OperationsTableCard } from '../../components/OperationsTableCard';
 
-const DataSourceQueries = (): ReactElement => {
-  const [queryResult, setQueryResult] = useState<QueryResult>();
+const DataSourceQueries: FunctionComponent = (): ReactElement => {
   const { id } = useParams();
-  useEffect(() => {
-    fetchQueriesOnDataset(id).then((result) => {
-      if (result) {
-        setQueryResult(result);
-      }
-    });
-  }, []);
 
   return (
     <Row>
-      <DataSourceQueryCard query={queryResult} />
+      <OperationsTableCard limit={10} offset={0} sourceID={id} />
     </Row>
   );
 };
