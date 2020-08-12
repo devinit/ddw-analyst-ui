@@ -11,6 +11,7 @@ import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
+import { api } from '../../utils';
 import { OperationsTable } from '../OperationsTable';
 import { PaginationRow } from '../PaginationRow';
 
@@ -24,8 +25,20 @@ interface ComponentProps extends RouteComponentProps {
   limit: number;
   offset: number;
   links?: LinksMap;
+  sourceID?: number;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
+
+const getSourceDatasetsLink = (
+  sourceID: number,
+  mine = false,
+  limit = 10,
+  offset = 0,
+  search = '',
+): string =>
+  `${
+    mine ? api.routes.FETCH_MY_SOURCE_DATASETS : api.routes.FETCH_SOURCE_DATASETS
+  }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
   const [showMyQueries, setShowMyQueries] = useState(true);
@@ -38,7 +51,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const fetchQueries = (mine = false) => {
     const loading = props.operations.get('loading') as boolean;
     if (!loading) {
-      props.actions.fetchOperations({ limit: props.limit, offset: 0, mine });
+      props.actions.fetchOperations({
+        limit: props.limit,
+        offset: 0,
+        mine,
+        link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
+      });
     }
     if (mine && !showMyQueries) {
       setShowMyQueries(true);
@@ -67,6 +85,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         offset: 0,
         search: value || '',
         mine: showMyQueries,
+        link: props.sourceID
+          ? getSourceDatasetsLink(props.sourceID, showMyQueries, props.limit, 0, value)
+          : undefined,
       });
     }
   };
@@ -137,21 +158,31 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       offset: page.selected * props.limit,
       search: searchQuery,
       mine: showMyQueries,
+      link: props.sourceID
+        ? getSourceDatasetsLink(
+            props.sourceID,
+            showMyQueries,
+            props.limit,
+            page.selected * props.limit,
+          )
+        : undefined,
     });
   };
 
   const renderPagination = () => {
     const count = props.operations.get('count') as number;
 
-    return (
-      <PaginationRow
-        pageRangeDisplayed={2}
-        limit={props.limit}
-        count={count}
-        pageCount={Math.ceil(count / props.limit)}
-        onPageChange={onPageChange}
-      />
-    );
+    if (count) {
+      return (
+        <PaginationRow
+          pageRangeDisplayed={2}
+          limit={props.limit}
+          count={count}
+          pageCount={Math.ceil(count / props.limit)}
+          onPageChange={onPageChange}
+        />
+      );
+    }
   };
 
   const operations = props.operations.get('operations') as List<OperationMap>;
