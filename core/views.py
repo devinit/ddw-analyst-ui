@@ -314,23 +314,65 @@ class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ViewSourceDatasets(APIView):
     """
-    Get all Datasets attached to a specific data source id
+    Get all published datasets attached to a specific data source, but not belonging the current user
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    queryset = Operation.objects.all()
+    serializer_class = OperationSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'description')
+
     def get_queryset(self, pk, request):
         try:
-            source_id = self.kwargs['pk']
-            if source_id:
-                return Operation.objects.filter(Q(source_id = source_id)).order_by('-updated_on')
+            if self.request.user.is_authenticated:
+                operations = Operation.objects.filter(~Q(user=self.request.user) & Q(source_id=pk) & Q(is_draft=False)).order_by('-updated_on')
             else:
-                return Operation.objects.filter(id=pk).order_by('-updated_on')
+                operations = Operation.objects.filter(is_draft=False).order_by('-updated_on')
+            search = request.query_params.get('search')
+            if search:
+                return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on')
+            return operations
         except Operation.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
         datasets = self.get_queryset(pk, request)
-        if self.request.query_params.get('limit', None) is not None or self.request.query_params.get('offset', None) is not None:
+        limit = self.request.query_params.get('limit', None)
+        offset = self.request.query_params.get('offset', None)
+        if limit is not None or offset is not None:
+            pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+            paginator = pagination_class()
+            page = paginator.paginate_queryset(datasets, request)
+            serializer = OperationSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            serializer = OperationSerializer(datasets, many=True)
+            return Response(serializer.data)
+
+class ViewUserSourceDatasets(APIView):
+    """
+    Get all datasets belonging to a specific data source and user
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self, pk, request):
+        try:
+            if self.request.user.is_authenticated:
+                operations = Operation.objects.filter(Q(user=self.request.user) & Q(source_id=pk)).order_by('-updated_on')
+                search = request.query_params.get('search')
+                if search:
+                    return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on')
+            return Operation.objects.filter(Q(source_id=pk)).order_by('-updated_on')
+        except Operation.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        datasets = self.get_queryset(pk, request)
+        limit = self.request.query_params.get('limit', None)
+        offset = self.request.query_params.get('offset', None)
+        if limit is not None or offset is not None:
             pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
             paginator = pagination_class()
             page = paginator.paginate_queryset(datasets, request)
