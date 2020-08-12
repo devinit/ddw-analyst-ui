@@ -172,6 +172,10 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   path="/scheduledevents/"
                   component={(): ReactElement => <span>Scheduled Events</span>}
                 />
+                <Route
+                  path="/source/datasets/:id/"
+                  component={(): ReactElement => <span>Source Datasets</span>}
+                />
               </Navbar.Brand>
             </div>
 
