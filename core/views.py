@@ -287,7 +287,9 @@ class ViewSourceDatasets(APIView):
     def get_queryset(self, pk, request):
         try:
             if self.request.user.is_authenticated:
-                operations = Operation.objects.filter(~Q(user=self.request.user) & Q(source_id=pk) & Q(is_draft=False)).order_by('-updated_on')
+                operations = Operation.objects.filter(
+                    ~Q(user=self.request.user) & Q(operationstep__source=pk) & Q(is_draft=False)
+                ).order_by('-updated_on')
             else:
                 operations = Operation.objects.filter(is_draft=False).order_by('-updated_on')
             search = request.query_params.get('search')
@@ -321,11 +323,14 @@ class ViewUserSourceDatasets(APIView):
     def get_queryset(self, pk, request):
         try:
             if self.request.user.is_authenticated:
-                operations = Operation.objects.filter(Q(user=self.request.user) & Q(source_id=pk)).order_by('-updated_on')
+                operations = Operation.objects.filter(
+                    Q(user=self.request.user) & Q(operationstep__source=pk)
+                ).order_by('-updated_on').distinct()
                 search = request.query_params.get('search')
                 if search:
                     return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on')
-            return Operation.objects.filter(Q(source_id=pk)).order_by('-updated_on')
+                return operations
+            return Operation.objects.filter(operationstep__source=pk).order_by('-updated_on')
         except Operation.DoesNotExist:
             raise Http404
 
