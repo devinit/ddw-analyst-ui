@@ -5,6 +5,7 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy import and_, distinct, create_engine, MetaData, or_, select, Table
 from lxml import etree
+from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, DTYPES, NUMERIC_DTYPES
 import requests
 from requests.adapters import HTTPAdapter
@@ -68,6 +69,7 @@ def requests_retry_session(
 
 
 def main(args):
+    large_parser = XMLParser(huge_tree=True)
     iatiflat = IatiFlat()
     header = iatiflat.header
 
@@ -134,7 +136,7 @@ def main(args):
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False))
 
         try:
-            root = etree.fromstring(download_xml)
+            root = etree.fromstring(download_xml, parser=large_parser)
         except etree.XMLSyntaxError:
             continue
 
