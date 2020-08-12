@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with default props 1`] = `
+<tr
+  onClick={[Function]}
+>
+  <td
+    className="text-center"
+  >
+    1
+  </td>
+  <td>
+    Common Reporting Standard
+  </td>
+  <td>
+    event1
+  </td>
+  <td>
+    <div
+      className="togglebutton"
+    >
+      <label
+        className="enabled"
+      >
+        <input
+          defaultChecked={true}
+          disabled={true}
+          type="checkbox"
+        />
+        <span
+          className="toggle"
+        />
+      </label>
+    </div>
+  </td>
+  <td>
+    August 12, 2020
+     at
+     
+    8:30 AM
+  </td>
+  <td>
+    Every 1 Seconds
+  </td>
+  <td>
+    <button
+      className="btn btn-outline-danger btn-sm"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Run Now
+    </button>
+  </td>
+</tr>
+`;
