@@ -1,16 +1,21 @@
 /**
  * @jest-environment jsdom
  */
+import { fireEvent, render } from '@testing-library/react';
+import { Map } from 'immutable';
 import * as React from 'react';
 import * as TestRenderer from 'react-test-renderer';
-import { fireEvent, render } from '@testing-library/react';
+import { SourceMap } from '../../../types/sources';
 import { SourcesTableRow, SourcesTableRowProps } from '../SourcesTableRow';
 
 const props: SourcesTableRowProps = {
-  onClick: jest.fn(),
-  indicator: 'World Bank Indicators',
-  indicatorAcronym: 'wbi',
-  updatedOn: new Date('August 19, 2018 23:15:30').toISOString(),
+  source: Map({
+    indicator: 'World Bank Indicators',
+    indicator_acronym: 'wbi',
+    last_updated_on: 'August 19, 2018 23:15:30',
+  }) as SourceMap,
+  onShowDatasets: jest.fn(),
+  onShowMetadata: jest.fn(),
 };
 
 test('renders correctly with the default props', () => {
@@ -19,7 +24,7 @@ test('renders correctly with the default props', () => {
   expect(renderer).toMatchSnapshot();
 });
 
-test('responds to click events', () => {
+test('metadata button responds to click events', () => {
   const table = document.createElement('table');
   const tableBody = document.createElement('tbody');
   table.appendChild(tableBody);
@@ -27,7 +32,20 @@ test('responds to click events', () => {
     container: document.body.appendChild(tableBody),
   });
 
-  fireEvent.click(getByTestId('sources-table-row'));
+  fireEvent.click(getByTestId('sources-table-metadata-button'));
 
-  expect(props.onClick).toHaveBeenCalled();
+  expect(props.onShowMetadata).toHaveBeenCalled();
+});
+
+test('dataset button responds to click events', () => {
+  const table = document.createElement('table');
+  const tableBody = document.createElement('tbody');
+  table.appendChild(tableBody);
+  const { getByTestId } = render(<SourcesTableRow {...props} />, {
+    container: document.body.appendChild(tableBody),
+  });
+
+  fireEvent.click(getByTestId('sources-table-dataset-button'));
+
+  expect(props.onShowDatasets).toHaveBeenCalled();
 });

@@ -252,7 +252,7 @@ class SourceSerializer(serializers.ModelSerializer):
             'updated_on',
             'columns',
             'update_history',
-            'tags'
+            'tags',
         )
 
 

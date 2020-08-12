@@ -15,6 +15,7 @@ import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { AsyncDataSources } from '../pages/DataSources';
+import { AsyncDataSourceQueries } from '../pages/DataSourceQueries';
 import { AsyncDataUpdate } from '../pages/DataUpdate';
 import { AsyncHome } from '../pages/Home';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
@@ -171,6 +172,10 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   path="/scheduledevents/"
                   component={(): ReactElement => <span>Scheduled Events</span>}
                 />
+                <Route
+                  path="/source/datasets/:id/"
+                  component={(): ReactElement => <span>Source Datasets</span>}
+                />
               </Navbar.Brand>
             </div>
 
@@ -211,6 +216,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/update" exact component={AsyncDataUpdate} />
               <Route path="/queries/data/:id" exact component={AsyncQueryData} />
               <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
+              <Route path="/source/datasets/:id" exact component={AsyncDataSourceQueries} />
             </Switch>
             <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
               {ModalContent ? <ModalContent /> : null}

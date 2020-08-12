@@ -3,7 +3,6 @@
 exports[`renders correctly with the default props 1`] = `
 <tr
   data-testid="sources-table-row"
-  onClick={[MockFunction]}
 >
   <td>
     World Bank Indicators
@@ -15,6 +14,31 @@ exports[`renders correctly with the default props 1`] = `
   </td>
   <td>
     Sun Aug 19 2018
+  </td>
+  <td>
+    <div
+      className="btn-group"
+      role="group"
+    >
+      <button
+        className="btn btn-dark btn-sm"
+        data-testid="sources-table-metadata-button"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Metadata
+      </button>
+      <button
+        className="btn btn-dark btn-sm"
+        data-testid="sources-table-dataset-button"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Datasets
+      </button>
+    </div>
   </td>
 </tr>
 `;

@@ -29,6 +29,8 @@ urlpatterns = [
     path('sectors/<int:pk>/', core_views.SectorDetail.as_view()),
     path('sources/', core_views.SourceList.as_view()),
     path('sources/<int:pk>/', core_views.SourceDetail.as_view()),
+    path('source/datasets/<int:pk>/', core_views.ViewSourceDatasets.as_view()),
+    path('source/datasets/mine/<int:pk>/', core_views.ViewUserSourceDatasets.as_view()),
     path('export/<int:pk>/', core_views.streaming_export_view, name="export_stream"),
     path('change_password/', core_views.ChangePassword.as_view()),
     path('list_update_scripts/', core_views.ListUpdateScripts.as_view()),

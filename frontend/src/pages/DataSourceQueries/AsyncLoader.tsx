@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-const Home = React.lazy(() => import('./Home'));
-export const AsyncHome = (props: RouteComponentProps): ReactElement => (
+const DataSourceQueries = React.lazy(() => import('./DataSourceQueries'));
+export const AsyncDataSourceQueries = (): ReactElement => (
   <React.Suspense
     fallback={
       <Dimmer active={true} inverted>
@@ -11,6 +10,6 @@ export const AsyncHome = (props: RouteComponentProps): ReactElement => (
       </Dimmer>
     }
   >
-    <Home {...props} />
+    <DataSourceQueries />
   </React.Suspense>
 );

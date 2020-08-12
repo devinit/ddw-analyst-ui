@@ -1,18 +1,7 @@
 import { List } from 'immutable';
-import * as React from 'react';
-import {
-  Button,
-  Card,
-  Col,
-  FormControl,
-  Nav,
-  OverlayTrigger,
-  Pagination,
-  Popover,
-  Row,
-  Tab,
-} from 'react-bootstrap';
-import { MapDispatchToProps, connect } from 'react-redux';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Button, Card, FormControl, Nav, OverlayTrigger, Popover, Tab } from 'react-bootstrap';
+import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
@@ -20,8 +9,11 @@ import * as operationsActions from '../../actions/operations';
 import { OperationsState } from '../../reducers/operations';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
+import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
-import { OperationsTable } from '../OperationsTable/OperationsTable';
+import { api } from '../../utils';
+import { OperationsTable } from '../OperationsTable';
+import { PaginationRow } from '../PaginationRow';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -33,87 +25,92 @@ interface ComponentProps extends RouteComponentProps {
   limit: number;
   offset: number;
   links?: LinksMap;
+  sourceID?: number;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
-interface OperationsTableCardState {
-  showingMyQueries: boolean;
-  searchQuery: string;
-}
 
-class OperationsTableCard extends React.Component<
-  OperationsTableCardProps,
-  OperationsTableCardState
-> {
-  static defaultProps: Partial<OperationsTableCardProps> = {
-    offset: 0,
+const getSourceDatasetsLink = (
+  sourceID: number,
+  mine = false,
+  limit = 10,
+  offset = 0,
+  search = '',
+): string =>
+  `${
+    mine ? api.routes.FETCH_MY_SOURCE_DATASETS : api.routes.FETCH_SOURCE_DATASETS
+  }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
+
+const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
+  const [showMyQueries, setShowMyQueries] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    fetchQueries(showMyQueries);
+  }, []);
+
+  const fetchQueries = (mine = false) => {
+    const loading = props.operations.get('loading') as boolean;
+    if (!loading) {
+      props.actions.fetchOperations({
+        limit: props.limit,
+        offset: 0,
+        mine,
+        link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
+      });
+    }
+    if (mine && !showMyQueries) {
+      setShowMyQueries(true);
+      setSearchQuery('');
+    }
+    if (!mine && showMyQueries) {
+      setShowMyQueries(false);
+      setSearchQuery('');
+    }
   };
-  state = { showingMyQueries: true, searchQuery: '' };
 
-  render() {
-    const operations = this.props.operations.get('operations') as List<OperationMap>;
-    const loading = this.props.operations.get('loading') as boolean;
+  const onSearchChange = (event: React.ChangeEvent<FormControlElement>) => {
+    const { value: searchQuery = '' } = event.currentTarget as HTMLInputElement;
+    setSearchQuery(searchQuery);
+  };
 
-    return (
-      <React.Fragment>
-        <Dimmer active={loading} inverted>
-          <Loader content="Loading" />
-        </Dimmer>
-        <Tab.Container defaultActiveKey="myQueries">
-          <Card>
-            <Card.Body>
-              <Nav variant="pills" className="nav-pills-danger" role="tablist">
-                <Nav.Item onClick={() => this.fetchQueries(true)}>
-                  <Nav.Link eventKey="myQueries">My Datasets</Nav.Link>
-                </Nav.Item>
-                <Nav.Item onClick={() => this.fetchQueries()}>
-                  <Nav.Link eventKey="otherQueries">Other Datasets</Nav.Link>
-                </Nav.Item>
-              </Nav>
-              <Tab.Content>
-                <Tab.Pane eventKey="myQueries">
-                  <FormControl
-                    placeholder="Search ..."
-                    className="w-25"
-                    value={this.state.searchQuery}
-                    onChange={this.onSearchChange}
-                    onKeyDown={this.onSearch}
-                    data-testid="sources-table-search"
-                  />
-                  {this.renderOperationsTable(operations, true)}
-                  {this.renderPagination()}
-                </Tab.Pane>
-                <Tab.Pane eventKey="otherQueries">
-                  <FormControl
-                    placeholder="Search ..."
-                    className="w-25"
-                    value={this.state.searchQuery}
-                    onChange={this.onSearchChange}
-                    onKeyDown={this.onSearch}
-                    data-testid="sources-table-search"
-                  />
-                  {this.renderOperationsTable(operations)}
-                  {this.renderPagination()}
-                </Tab.Pane>
-              </Tab.Content>
-            </Card.Body>
-          </Card>
-        </Tab.Container>
-      </React.Fragment>
-    );
-  }
+  const onSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
 
-  componentDidMount() {
-    this.fetchQueries(true);
-  }
+      const { value } = event.currentTarget as HTMLInputElement;
+      setSearchQuery(value || '');
+      props.actions.fetchOperations({
+        limit: props.limit,
+        offset: 0,
+        search: value || '',
+        mine: showMyQueries,
+        link: props.sourceID
+          ? getSourceDatasetsLink(props.sourceID, showMyQueries, props.limit, 0, value)
+          : undefined,
+      });
+    }
+  };
 
-  private renderOperationsTable(operations: List<OperationMap>, allowEdit = false) {
+  const viewData = (operation: OperationMap) => (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    const id = operation.get('id');
+    props.actions.setOperation(operation);
+    props.history.push(`/queries/data/${id}`);
+  };
+
+  const onEditOperation = (operation: OperationMap) => (
+    event: React.MouseEvent<HTMLButtonElement | HTMLTableRowElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    props.history.push(`/queries/build/${operation.get('id') as number}/`);
+  };
+
+  const renderOperationsTable = (operations: List<OperationMap>, allowEdit = false) => {
     const EditAction = ({ operation }: { operation: OperationMap }) => (
-      <Button
-        variant="danger"
-        size="sm"
-        className="btn-link"
-        onClick={this.onEditOperation(operation)}
-      >
+      <Button variant="danger" size="sm" className="btn-link" onClick={onEditOperation(operation)}>
         Edit
       </Button>
     );
@@ -128,7 +125,7 @@ class OperationsTableCard extends React.Component<
               name={operation.get('name') as string}
               updatedOn={operation.get('updated_on') as string}
               isDraft={operation.get('is_draft') as boolean}
-              onClick={this.onEditOperation(operation)}
+              onClick={onEditOperation(operation)}
             >
               <OperationsTable.Actions>
                 <OverlayTrigger
@@ -139,7 +136,7 @@ class OperationsTableCard extends React.Component<
                     variant="danger"
                     size="sm"
                     className="btn-link"
-                    onClick={this.viewData(operation)}
+                    onClick={viewData(operation)}
                   >
                     View Data
                   </Button>
@@ -153,136 +150,94 @@ class OperationsTableCard extends React.Component<
     }
 
     return <div className="mt-3">No results found</div>;
-  }
-
-  private renderPagination() {
-    const count = this.props.operations.get('count') as number;
-    const { offset, limit } = this.props;
-    const max = offset + limit;
-
-    if (!count) {
-      return null;
-    }
-
-    return (
-      <Row>
-        <Col md={6}>
-          Showing {offset + 1} to {max > count ? count : max} of {count}
-        </Col>
-        <Col md={6}>
-          <Pagination className="float-right">
-            <Pagination.First onClick={this.goToFirst} data-testid="operations-pagination-first">
-              <i className="material-icons">first_page</i>
-            </Pagination.First>
-            <Pagination.Prev onClick={this.goToPrev} data-testid="operations-pagination-prev">
-              <i className="material-icons">chevron_left</i>
-            </Pagination.Prev>
-            <Pagination.Next onClick={this.goToNext} data-testid="operations-pagination-next">
-              <i className="material-icons">chevron_right</i>
-            </Pagination.Next>
-            <Pagination.Last onClick={this.goToLast} data-testid="operations-pagination-last">
-              <i className="material-icons">last_page</i>
-            </Pagination.Last>
-          </Pagination>
-        </Col>
-      </Row>
-    );
-  }
-
-  private fetchQueries(mine = false) {
-    const loading = this.props.operations.get('loading') as boolean;
-    if (!loading) {
-      this.props.actions.fetchOperations({ limit: this.props.limit, offset: 0, mine });
-    }
-    if (mine && !this.state.showingMyQueries) {
-      this.setState({ showingMyQueries: true, searchQuery: '' });
-    }
-    if (!mine && this.state.showingMyQueries) {
-      this.setState({ showingMyQueries: false, searchQuery: '' });
-    }
-  }
-
-  private onSearchChange = (event: React.FormEvent<any>) => {
-    const { value: searchQuery = '' } = event.currentTarget as HTMLInputElement;
-    this.setState({ searchQuery });
   };
 
-  private onSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const { value } = event.currentTarget as HTMLInputElement;
-      this.setState({ searchQuery: value || '' });
-      this.props.actions.fetchOperations({
-        limit: this.props.limit,
-        offset: 0,
-        search: value || '',
-        mine: this.state.showingMyQueries,
-      });
-    }
-  };
-
-  private goToFirst = () => {
-    this.props.actions.fetchOperations({
-      limit: this.props.limit,
-      offset: 0,
-      search: this.state.searchQuery,
-      mine: this.state.showingMyQueries,
+  const onPageChange = (page: { selected: number }): void => {
+    props.actions.fetchOperations({
+      limit: props.limit,
+      offset: page.selected * props.limit,
+      search: searchQuery,
+      mine: showMyQueries,
+      link: props.sourceID
+        ? getSourceDatasetsLink(
+            props.sourceID,
+            showMyQueries,
+            props.limit,
+            page.selected * props.limit,
+          )
+        : undefined,
     });
   };
 
-  private goToLast = () => {
-    const count = this.props.operations.get('count') as number;
-    const pages = Math.ceil(count / this.props.limit);
-    const offset = (pages - 1) * this.props.limit;
-    this.props.actions.fetchOperations({
-      limit: this.props.limit,
-      offset,
-      search: this.state.searchQuery,
-      mine: this.state.showingMyQueries,
-    });
-  };
+  const renderPagination = () => {
+    const count = props.operations.get('count') as number;
 
-  private goToNext = () => {
-    const count = this.props.operations.get('count') as number;
-    const offset = this.props.offset + this.props.limit;
-    if (offset < count) {
-      this.props.actions.fetchOperations({
-        limit: this.props.limit,
-        offset,
-        search: this.state.searchQuery,
-        mine: this.state.showingMyQueries,
-      });
+    if (count) {
+      return (
+        <PaginationRow
+          pageRangeDisplayed={2}
+          limit={props.limit}
+          count={count}
+          pageCount={Math.ceil(count / props.limit)}
+          onPageChange={onPageChange}
+        />
+      );
     }
   };
 
-  private goToPrev = () => {
-    if (this.props.offset > 0) {
-      const offset = this.props.offset - this.props.limit;
-      this.props.actions.fetchOperations({
-        limit: this.props.limit,
-        offset,
-        search: this.state.searchQuery,
-        mine: this.state.showingMyQueries,
-      });
-    }
-  };
+  const operations = props.operations.get('operations') as List<OperationMap>;
+  const loading = props.operations.get('loading') as boolean;
 
-  private viewData = (operation: OperationMap) => (event: React.MouseEvent<any, MouseEvent>) => {
-    event.stopPropagation();
-    const id = operation.get('id');
-    this.props.actions.setOperation(operation);
-    this.props.history.push(`/queries/data/${id}`);
-  };
+  return (
+    <React.Fragment>
+      <Dimmer active={loading} inverted>
+        <Loader content="Loading" />
+      </Dimmer>
+      <Tab.Container defaultActiveKey="myQueries">
+        <Card>
+          <Card.Body>
+            <Nav variant="pills" className="nav-pills-danger" role="tablist">
+              <Nav.Item onClick={() => fetchQueries(true)}>
+                <Nav.Link eventKey="myQueries">My Datasets</Nav.Link>
+              </Nav.Item>
+              <Nav.Item onClick={() => fetchQueries()}>
+                <Nav.Link eventKey="otherQueries">Other Datasets</Nav.Link>
+              </Nav.Item>
+            </Nav>
+            <Tab.Content>
+              <Tab.Pane eventKey="myQueries">
+                <FormControl
+                  placeholder="Search ..."
+                  className="w-25"
+                  value={searchQuery}
+                  onChange={onSearchChange}
+                  onKeyDown={onSearch}
+                  data-testid="sources-table-search"
+                />
+                {renderOperationsTable(operations, true)}
+                {renderPagination()}
+              </Tab.Pane>
+              <Tab.Pane eventKey="otherQueries">
+                <FormControl
+                  placeholder="Search ..."
+                  className="w-25"
+                  value={searchQuery}
+                  onChange={onSearchChange}
+                  onKeyDown={onSearch}
+                  data-testid="sources-table-search"
+                />
+                {renderOperationsTable(operations)}
+                {renderPagination()}
+              </Tab.Pane>
+            </Tab.Content>
+          </Card.Body>
+        </Card>
+      </Tab.Container>
+    </React.Fragment>
+  );
+};
 
-  private onEditOperation = (operation: OperationMap) => (
-    event: React.MouseEvent<any, MouseEvent>,
-  ) => {
-    event.stopPropagation();
-    this.props.history.push(`/queries/build/${operation.get('id') as number}/`);
-  };
-}
+OperationsTableCard.defaultProps = { offset: 0 };
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (
   dispatch,
