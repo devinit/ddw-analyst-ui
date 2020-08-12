@@ -1,18 +1,7 @@
 import { List } from 'immutable';
-import React, { FunctionComponent, useState, useEffect } from 'react';
-import {
-  Button,
-  Card,
-  Col,
-  FormControl,
-  Nav,
-  OverlayTrigger,
-  Pagination,
-  Popover,
-  Row,
-  Tab,
-} from 'react-bootstrap';
-import { MapDispatchToProps, connect } from 'react-redux';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Button, Card, FormControl, Nav, OverlayTrigger, Popover, Tab } from 'react-bootstrap';
+import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
@@ -20,8 +9,10 @@ import * as operationsActions from '../../actions/operations';
 import { OperationsState } from '../../reducers/operations';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
+import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { OperationsTable } from '../OperationsTable';
+import { PaginationRow } from '../PaginationRow';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -59,7 +50,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const onSearchChange = (event: React.FormEvent<any>) => {
+  const onSearchChange = (event: React.ChangeEvent<FormControlElement>) => {
     const { value: searchQuery = '' } = event.currentTarget as HTMLInputElement;
     setSearchQuery(searchQuery);
   };
@@ -80,53 +71,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const goToFirst = () => {
-    props.actions.fetchOperations({
-      limit: props.limit,
-      offset: 0,
-      search: searchQuery,
-      mine: showingMyQueries,
-    });
-  };
-
-  const goToLast = () => {
-    const count = props.operations.get('count') as number;
-    const pages = Math.ceil(count / props.limit);
-    const offset = (pages - 1) * props.limit;
-    props.actions.fetchOperations({
-      limit: props.limit,
-      offset,
-      search: searchQuery,
-      mine: showingMyQueries,
-    });
-  };
-
-  const goToNext = () => {
-    const count = props.operations.get('count') as number;
-    const offset = props.offset + props.limit;
-    if (offset < count) {
-      props.actions.fetchOperations({
-        limit: props.limit,
-        offset,
-        search: searchQuery,
-        mine: showingMyQueries,
-      });
-    }
-  };
-
-  const goToPrev = () => {
-    if (props.offset > 0) {
-      const offset = props.offset - props.limit;
-      props.actions.fetchOperations({
-        limit: props.limit,
-        offset,
-        search: searchQuery,
-        mine: showingMyQueries,
-      });
-    }
-  };
-
-  const viewData = (operation: OperationMap) => (event: React.MouseEvent<any, MouseEvent>) => {
+  const viewData = (operation: OperationMap) => (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     event.stopPropagation();
     const id = operation.get('id');
     props.actions.setOperation(operation);
@@ -134,14 +81,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const onEditOperation = (operation: OperationMap) => (
-    event: React.MouseEvent<any, MouseEvent>,
+    event: React.MouseEvent<HTMLButtonElement | HTMLTableRowElement, MouseEvent>,
   ) => {
     event.stopPropagation();
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
-
-  const operations = props.operations.get('operations') as List<OperationMap>;
-  const loading = props.operations.get('loading') as boolean;
 
   const renderOperationsTable = (operations: List<OperationMap>, allowEdit = false) => {
     const EditAction = ({ operation }: { operation: OperationMap }) => (
@@ -187,39 +131,31 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     return <div className="mt-3">No results found</div>;
   };
 
+  const onPageChange = (page: { selected: number }): void => {
+    props.actions.fetchOperations({
+      limit: props.limit,
+      offset: page.selected * props.limit,
+      search: searchQuery,
+      mine: showingMyQueries,
+    });
+  };
+
   const renderPagination = () => {
     const count = props.operations.get('count') as number;
-    const { offset, limit } = props;
-    const max = offset + limit;
-
-    if (!count) {
-      return null;
-    }
 
     return (
-      <Row>
-        <Col md={6}>
-          Showing {offset + 1} to {max > count ? count : max} of {count}
-        </Col>
-        <Col md={6}>
-          <Pagination className="float-right">
-            <Pagination.First onClick={goToFirst} data-testid="operations-pagination-first">
-              <i className="material-icons">first_page</i>
-            </Pagination.First>
-            <Pagination.Prev onClick={goToPrev} data-testid="operations-pagination-prev">
-              <i className="material-icons">chevron_left</i>
-            </Pagination.Prev>
-            <Pagination.Next onClick={goToNext} data-testid="operations-pagination-next">
-              <i className="material-icons">chevron_right</i>
-            </Pagination.Next>
-            <Pagination.Last onClick={goToLast} data-testid="operations-pagination-last">
-              <i className="material-icons">last_page</i>
-            </Pagination.Last>
-          </Pagination>
-        </Col>
-      </Row>
+      <PaginationRow
+        pageRangeDisplayed={2}
+        limit={props.limit}
+        count={count}
+        pageCount={Math.ceil(count / props.limit)}
+        onPageChange={onPageChange}
+      />
     );
   };
+
+  const operations = props.operations.get('operations') as List<OperationMap>;
+  const loading = props.operations.get('loading') as boolean;
 
   return (
     <React.Fragment>
