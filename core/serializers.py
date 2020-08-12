@@ -114,8 +114,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'is_draft',
             'user',
             'created_on',
-            'updated_on',
-            'source_id',
+            'updated_on'
         )
 
     def create(self, validated_data):
@@ -254,7 +253,6 @@ class SourceSerializer(serializers.ModelSerializer):
             'columns',
             'update_history',
             'tags',
-            'operations',
         )
 
 
@@ -310,4 +308,3 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
         if due_instance:
             return due_instance
         return ScheduledEventRunInstance.objects.create(**validated_data)
-
