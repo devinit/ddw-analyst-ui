@@ -251,6 +251,12 @@ th .material-icons {
   font-weight: 400;
 }
 
+.navbar-dark {
+  .navbar-brand:hover {
+    color: #C8271E;
+  }
+}
+
 .card-wizard .moving-tab {
   font-weight: 300;
 }
