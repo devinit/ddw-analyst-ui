@@ -28,11 +28,11 @@ interface ComponentProps extends RouteComponentProps {
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
-  const [showingMyQueries, setShowingMyQueries] = useState(true);
+  const [showMyQueries, setShowMyQueries] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchQueries(true);
+    fetchQueries(showMyQueries);
   }, []);
 
   const fetchQueries = (mine = false) => {
@@ -40,12 +40,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     if (!loading) {
       props.actions.fetchOperations({ limit: props.limit, offset: 0, mine });
     }
-    if (mine && !showingMyQueries) {
-      setShowingMyQueries(true);
+    if (mine && !showMyQueries) {
+      setShowMyQueries(true);
       setSearchQuery('');
     }
-    if (!mine && showingMyQueries) {
-      setShowingMyQueries(false);
+    if (!mine && showMyQueries) {
+      setShowMyQueries(false);
       setSearchQuery('');
     }
   };
@@ -66,7 +66,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         limit: props.limit,
         offset: 0,
         search: value || '',
-        mine: showingMyQueries,
+        mine: showMyQueries,
       });
     }
   };
@@ -136,7 +136,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       limit: props.limit,
       offset: page.selected * props.limit,
       search: searchQuery,
-      mine: showingMyQueries,
+      mine: showMyQueries,
     });
   };
 
