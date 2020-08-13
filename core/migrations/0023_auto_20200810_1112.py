@@ -28,7 +28,7 @@ def generate_aliases(apps, schema_editor):
                 alias = OperationDataColumnAlias.objects.create(operation=operation, column_name=column)
                 alias.column_alias = column_object.alias if column_object else column
                 alias.save()
-        except JSONDecodeError:
+        except:
             pass
 
 
