@@ -5,7 +5,7 @@ import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 import { BasicModal } from '../BasicModal';
 import { ScheduledEventsRunHistoryTableRow } from '../ScheduledEventsRunHistoryTableRow';
 
-interface ScheduledEventRunHistoryTableProps {
+export interface ScheduledEventRunHistoryTableProps {
   data: ScheduledEventRunHistory[];
 }
 

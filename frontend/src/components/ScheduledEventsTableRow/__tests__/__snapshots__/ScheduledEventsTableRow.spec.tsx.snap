@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly with default props 1`] = `
+exports[`should take a snapshot 1`] = `
 <tr
   onClick={[Function]}
 >
@@ -10,11 +10,9 @@ exports[`renders correctly with default props 1`] = `
     1
   </td>
   <td>
-    Common Reporting Standard
-  </td>
-  <td>
     event1
   </td>
+  <td />
   <td>
     <div
       className="togglebutton"
@@ -34,13 +32,13 @@ exports[`renders correctly with default props 1`] = `
     </div>
   </td>
   <td>
-    August 12, 2020
+    Invalid date
      at
      
-    8:30 AM
+    Invalid date
   </td>
   <td>
-    Every 1 Seconds
+    Every 2 undefined
   </td>
   <td>
     <button

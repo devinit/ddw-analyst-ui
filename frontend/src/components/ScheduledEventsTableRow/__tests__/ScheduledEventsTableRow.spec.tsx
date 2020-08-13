@@ -1,26 +1,22 @@
-import * as React from 'react';
-import * as TestRenderer from 'react-test-renderer';
+import React from 'react';
+import renderer from 'react-test-renderer';
 import { ScheduledEventsTableRow } from '../ScheduledEventsTableRow';
 import { cleanup } from '@testing-library/react';
 import { ScheduledEvent } from '../../../types/scheduledEvents';
 
-const currentDate = new Date();
-
+afterEach(cleanup);
 const event: ScheduledEvent = {
   id: 1,
-  name: 'Common Reporting Standard',
-  description: 'event1',
+  name: 'event1',
+  description: null,
   enabled: true,
-  interval: 1,
-  interval_type: 'sec',
+  interval: 2,
+  start_date: '',
+  interval_type: 'secs',
   repeat: true,
-  start_date: currentDate.toISOString(),
 };
 
-afterEach(cleanup);
-
-test('renders correctly with default props', () => {
-  const renderer = TestRenderer.create(<ScheduledEventsTableRow id={1} event={event} />).toJSON();
-
-  expect(renderer).toMatchSnapshot();
+it('should take a snapshot', () => {
+  const tree = renderer.create(<ScheduledEventsTableRow id={1} event={event} />).toJSON();
+  expect(tree).toMatchSnapshot();
 });

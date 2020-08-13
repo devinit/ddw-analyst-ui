@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should take a snapshot 1`] = `
+<div
+  className="table-responsive"
+>
+  <table
+    className="table table-striped"
+  >
+    <thead>
+      <tr>
+        <th>
+          Status
+        </th>
+        <th>
+          Started
+        </th>
+        <th>
+          Ended
+        </th>
+        <th>
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <span
+            className="badge"
+          />
+        </td>
+        <td>
+          Invalid date
+        </td>
+        <td>
+          
+        </td>
+        <td />
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

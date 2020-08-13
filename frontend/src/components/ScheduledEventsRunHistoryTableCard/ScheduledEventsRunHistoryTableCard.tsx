@@ -7,7 +7,7 @@ import { PaginationRow } from '../PaginationRow';
 import { ScheduledEventsRunHistoryTable } from '../ScheduledEventsRunHistoryTable';
 import { fetchDataPerPage, LIMIT } from './utils';
 
-interface ComponentProps {
+export interface ComponentProps {
   event?: ScheduledEvent;
 }
 

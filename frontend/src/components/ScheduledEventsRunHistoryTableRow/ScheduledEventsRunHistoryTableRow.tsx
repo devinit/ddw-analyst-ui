@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 import { convertStatus, getStatusClasses } from './utils';
 
-interface ScheduledEventsRunHistoryTableRowProps {
+export interface ScheduledEventsRunHistoryTableRowProps {
   history: ScheduledEventRunHistory;
   onViewLogs?: (info: string) => void;
 }
