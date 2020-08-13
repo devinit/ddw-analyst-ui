@@ -3,6 +3,7 @@ import progressbar
 import pandas as pd
 from sqlalchemy import create_engine
 from lxml import etree
+from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, DTYPES, NUMERIC_DTYPES
 import boto3
 from datetime import datetime
@@ -36,6 +37,7 @@ IATI_FOLDER_NAME = "iati_registry/"
 
 
 def main():
+    large_parser = XMLParser(huge_tree=True)
     iatiflat = IatiFlat()
     header = iatiflat.header
 
@@ -56,7 +58,7 @@ def main():
         download_xml = s3_object['Body'].read()
 
         try:
-            root = etree.fromstring(download_xml)
+            root = etree.fromstring(download_xml, parser=large_parser)
         except etree.XMLSyntaxError:
             continue
 
