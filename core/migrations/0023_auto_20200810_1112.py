@@ -28,8 +28,15 @@ def generate_aliases(apps, schema_editor):
                 alias = OperationDataColumnAlias.objects.create(operation=operation, column_name=column)
                 alias.column_alias = column_object.alias if column_object else column
                 alias.save()
-        except JSONDecodeError:
-            pass
+        except:
+            first_step = operation.operationstep_set.order_by('step_id')[0]
+            if first_step:
+                columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+
+                for column in columns:
+                    alias = OperationDataColumnAlias.objects.create(operation=operation, column_name=column.name)
+                    alias.column_alias = column.alias
+                    alias.save()
 
 
 class Migration(migrations.Migration):
