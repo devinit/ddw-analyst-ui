@@ -30,7 +30,13 @@ export const ScheduledEventsRunHistoryTableRow: FunctionComponent<ScheduledEvent
       <td>{history.ended_at ? moment.utc(history.ended_at).format('LLL') : ''}</td>
       <td>
         {history.logs && onViewLogs ? (
-          <Button size="sm" variant="link" className="btn-danger" onClick={onClickInfo}>
+          <Button
+            size="sm"
+            variant="link"
+            className="btn-danger"
+            onClick={onClickInfo}
+            data-testid="logsbutton"
+          >
             <i className="material-icons" data-testid="info-trigger">
               info
             </i>{' '}
