@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ScheduledEventsRunHistoryTableCard should match snapshot 1`] = `
+<div>
+  <div
+    class="ui active transition visible inverted dimmer"
+    style="display: flex;"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="ui text loader"
+      >
+        Loading
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md-12 card"
+  >
+    <div
+      class="card-header-danger card-header-icon card-header"
+    >
+      <h4
+        class="card-title"
+      >
+        event1
+         Run History
+      </h4>
+    </div>
+    <div
+      class="card-body"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="dropdown-toggle btn btn-danger btn-sm"
+          id="status-filter"
+          type="button"
+        >
+          Filter By Status = All
+        </button>
+      </div>
+      <div
+        class="table-responsive"
+      >
+        <table
+          class="table table-striped"
+        >
+          <thead>
+            <tr>
+              <th>
+                Status
+              </th>
+              <th>
+                Started
+              </th>
+              <th>
+                Ended
+              </th>
+              <th>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody />
+        </table>
+      </div>
+      No Data
+    </div>
+  </div>
+</div>
+`;
