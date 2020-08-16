@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ScheduledEventsTableRow should take a snapshot 1`] = `
+<tr
+  onClick={[Function]}
+>
+  <td
+    className="text-center"
+  >
+    1
+  </td>
+  <td>
+    event1
+  </td>
+  <td />
+  <td>
+    <div
+      className="togglebutton"
+    >
+      <label
+        className="enabled"
+      >
+        <input
+          defaultChecked={true}
+          disabled={true}
+          type="checkbox"
+        />
+        <span
+          className="toggle"
+        />
+      </label>
+    </div>
+  </td>
+  <td>
+    Invalid date
+     at
+     
+    Invalid date
+  </td>
+  <td>
+    Every 2 undefined
+  </td>
+  <td>
+    <button
+      className="btn btn-outline-danger btn-sm"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Run Now
+    </button>
+  </td>
+</tr>
+`;

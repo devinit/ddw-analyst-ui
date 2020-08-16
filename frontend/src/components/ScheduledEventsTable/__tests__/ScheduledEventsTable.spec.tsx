@@ -8,7 +8,7 @@ import React from 'react';
 import { ScheduledEvent } from '../../../types/scheduledEvents';
 import { ScheduledEventsTable } from '../ScheduledEventsTable';
 
-describe('<ScheduledEventsTableCard', () => {
+describe('<ScheduledEventsTable', () => {
   const events: ScheduledEvent[] = [
     {
       id: 1,
