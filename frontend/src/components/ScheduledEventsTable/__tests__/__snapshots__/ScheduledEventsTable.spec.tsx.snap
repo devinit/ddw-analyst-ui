@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ScheduledEventsTableCard should match snapshot 1`] = `
+exports[`<ScheduledEventsTable should match snapshot 1`] = `
 <div>
   <div
     class="table-responsive"
