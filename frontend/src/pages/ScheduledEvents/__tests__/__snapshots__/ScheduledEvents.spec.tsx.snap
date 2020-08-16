@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ScheduledEvents should match snapshot 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div
+      class="ui active transition visible inverted dimmer"
+      style="display: flex;"
+    >
+      <div
+        class="content"
+      >
+        <div
+          class="ui text loader"
+        >
+          Loading
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-md-12 card"
+    >
+      <div
+        class="card-header-danger card-header-icon card-header"
+      >
+        <div
+          class="card-icon card-header"
+        >
+          <i
+            class="material-icons"
+          >
+            schedule
+          </i>
+        </div>
+        <h4
+          class="card-title"
+        >
+          Scheduled Events
+        </h4>
+      </div>
+      <div
+        class="card-body"
+      >
+        <div
+          class="table-responsive"
+        >
+          <table
+            class="table table-striped"
+          >
+            <thead>
+              <tr>
+                <th
+                  class="text-center"
+                >
+                  #
+                </th>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Enabled
+                </th>
+                <th>
+                  Start Date
+                </th>
+                <th>
+                  Interval
+                </th>
+                <th>
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+        </div>
+        No Data
+      </div>
+    </div>
+  </div>
+</div>
+`;
