@@ -950,19 +950,21 @@ class IatiFlat(object):
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
                     x_sector_vocabulary_list = x_sector_vocabulary.split("|")
-                    x_default_vocabulary = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
+                    x_default_vocabulary_transaction_level = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
                     if "1" in x_sector_vocabulary_list:
-                        x_default_vocabulary = "1"
+                        x_default_vocabulary_transaction_level = "1"
                     elif "2" in x_sector_vocabulary_list:
-                        x_default_vocabulary = "2"
+                        x_default_vocabulary_transaction_level = "2"
                     x_sector_code_list = x_sector_code.split("|")
                     x_sector_percentage_list = x_sector_percentage.split("|")
                     if len(x_sector_vocabulary_list) > 0:
                         for k in range(0, len(x_sector_vocabulary_list)):
                             x_sector_code = x_sector_code_list[k]
                             x_sector_vocabulary = x_sector_vocabulary_list[k]
-                            if x_default_vocabulary != x_sector_vocabulary:
+                            if x_default_vocabulary_transaction_level != x_sector_vocabulary:
                                 x_default_vocabulary = ""
+                            else:
+                                x_default_vocabulary = x_default_vocabulary_transaction_level
                             x_sector_percentage = x_sector_percentage_list[k]
                             try:
                                 float_x_sector_percentage = float(x_sector_percentage)
@@ -1021,8 +1023,10 @@ class IatiFlat(object):
                                 row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_country_code, x_country_percentage, x_region_vocabulary, x_region_code, x_region_percentage, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_country, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
                                 output.append(row)
                     else:
-                        if x_default_vocabulary != x_sector_vocabulary:
+                        if x_default_vocabulary_transaction_level != x_sector_vocabulary:
                             x_default_vocabulary = ""
+                        else:
+                            x_default_vocabulary = x_default_vocabulary_transaction_level
                         if len(x_country_code_list) > 0:
                             for j in range(0, len(x_country_code_list)):
                                 x_country_code = x_country_code_list[j]
