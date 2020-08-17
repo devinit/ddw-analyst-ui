@@ -10,7 +10,7 @@ def build_query(operation=None, steps=None, limit=None, offset=None, estimate_co
 
 def query_table(operation=None, limit=None, offset=None, estimate_count=None, operation_steps=None):
     """Build a query then execute it to return the matching data"""
-    limit = 10000 if limit is None or int(limit) > 10000 else 10
-    offset = 0
+    limit = 10000 if limit is None or int(limit) > 10000 else limit
+    offset = offset or 0
     queries = build_query(operation, steps=operation_steps, limit=limit, offset=offset, estimate_count=estimate_count)
     return fetch_data(queries)
