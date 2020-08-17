@@ -340,12 +340,12 @@ class ViewSourceDatasets(APIView):
             if self.request.user.is_authenticated:
                 operations = Operation.objects.filter(
                     ~Q(user=self.request.user) & Q(operationstep__source=pk) & Q(is_draft=False)
-                ).order_by('-updated_on')
+                ).order_by('-updated_on').distinct()
             else:
-                operations = Operation.objects.filter(is_draft=False).order_by('-updated_on')
+                operations = Operation.objects.filter(is_draft=False).order_by('-updated_on').distinct()
             search = request.query_params.get('search')
             if search:
-                return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on')
+                return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on').distinct()
             return operations
         except Operation.DoesNotExist:
             raise Http404
@@ -379,9 +379,9 @@ class ViewUserSourceDatasets(APIView):
                 ).order_by('-updated_on').distinct()
                 search = request.query_params.get('search')
                 if search:
-                    return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on')
+                    return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on').distinct()
                 return operations
-            return Operation.objects.filter(operationstep__source=pk).order_by('-updated_on')
+            return Operation.objects.filter(operationstep__source=pk).order_by('-updated_on').distinct()
         except Operation.DoesNotExist:
             raise Http404
 
