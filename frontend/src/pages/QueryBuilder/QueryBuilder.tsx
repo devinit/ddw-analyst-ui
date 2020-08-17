@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Card, Col, Row, Tab } from 'react-bootstrap';
+import { Card, Col, Row, Tab, Alert } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -67,6 +67,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [showPreview, setShowPreview] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [previewData, setPreviewData] = useState<List<OperationDataMap>>(List());
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     const { id } = props.match.params;
@@ -175,6 +176,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         })
         .catch(() => {
           props.actions.operationSaved(false);
+          setAlertMessage('An unknown error occured - please contact your administrator');
         });
     }
   };
@@ -208,9 +210,15 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           data,
         })
         .then((response: AxiosResponse) => {
-          setPreviewData(fromJS(response.data.results));
-          setShowPreview(true);
-          setLoadingPreview(false);
+          const { results } = response.data;
+          if (Array.isArray(results) && results[0].error) {
+            setLoadingPreview(false);
+            setAlertMessage(`Error: ${results[0].error}`);
+          } else {
+            setPreviewData(fromJS(response.data.results));
+            setShowPreview(true);
+            setLoadingPreview(false);
+          }
         })
         .catch(() => {
           setPreviewData(List());
@@ -308,6 +316,10 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     );
   };
 
+  const onAlertClose = (): void => {
+    setAlertMessage('');
+  };
+
   const { activeSource, page } = props;
   const activeStep = page.get('activeStep') as OperationStepMap | undefined;
 
@@ -323,7 +335,21 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
             <Card.Header className="card-header-text card-header-danger">
               <Card.Text>Dataset</Card.Text>
             </Card.Header>
-            <StyledCardBody>{renderOperationForm()}</StyledCardBody>
+            <StyledCardBody>
+              <Alert
+                variant="dark"
+                show={!!alertMessage}
+                onClose={onAlertClose}
+                className="mb-4"
+                dismissible
+              >
+                <span className="d-inline-flex">
+                  <i className="material-icons mr-2 text-danger">error</i>
+                  <p className="p-1">{alertMessage}</p>
+                </span>
+              </Alert>
+              {renderOperationForm()}
+            </StyledCardBody>
           </Card>
         </Tab.Container>
       </Col>
