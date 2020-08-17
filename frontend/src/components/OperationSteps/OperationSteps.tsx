@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { List, fromJS } from 'immutable';
-import * as React from 'react';
+import { fromJS, List } from 'immutable';
+import React, { FunctionComponent, useEffect } from 'react';
 import { Button, ListGroup, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -33,60 +33,15 @@ const StyledListItem = styled(ListGroup.Item)`
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
 `;
 
-class OperationSteps extends React.Component<OperationStepsProps> {
-  static defaultProps: Partial<OperationStepsProps> = { editable: true, disabled: false };
-  render() {
-    const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = this.props;
-
-    return (
-      <React.Fragment>
-        <div className="mb-3">
-          <label>Active Data Source</label>
-          <Dropdown
-            placeholder="Select Data Source"
-            fluid
-            selection
-            search
-            options={this.getSelectOptionsFromSources(sources)}
-            loading={isFetchingSources}
-            onClick={this.fetchSources}
-            onChange={this.onSelectSource}
-            value={activeSource ? (activeSource.get('id') as string) : undefined}
-            disabled={!editable || this.props.disabled}
-          />
-        </div>
-
-        <div className={classNames('mb-3', { 'd-none': !activeSource })}>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={this.onAddStep}
-            disabled={!!activeStep || this.props.disabled}
-            hidden={!editable}
-          >
-            <i className="material-icons mr-1">add</i>
-            Add Step
-          </Button>
-        </div>
-
-        {this.renderOperationSteps(steps, activeStep)}
-      </React.Fragment>
-    );
-  }
-
-  componentDidMount() {
-    if (this.props.activeSource && this.props.sources && this.props.sources.count() === 0) {
-      this.fetchSources();
+const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
+  const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = props;
+  useEffect(() => {
+    if (props.activeSource && props.sources && props.sources.count() === 0) {
+      fetchSources();
     }
-  }
+  });
 
-  componentDidUpdate() {
-    if (this.props.activeSource && this.props.sources && this.props.sources.count() === 0) {
-      this.fetchSources();
-    }
-  }
-
-  private renderOperationSteps(steps: List<OperationStepMap>, activeStep?: OperationStepMap) {
+  const renderOperationSteps = (steps: List<OperationStepMap>, activeStep?: OperationStepMap) => {
     if (steps.count()) {
       return (
         <Row>
@@ -98,8 +53,8 @@ class OperationSteps extends React.Component<OperationStepsProps> {
                 <StyledListItem
                   className="py-2"
                   key={index}
-                  onClick={!activeStep && this.onClickStep(step)}
-                  disabled={(activeStep && !isActiveStep) || this.props.disabled}
+                  onClick={!activeStep && onClickStep(step)}
+                  disabled={(activeStep && !isActiveStep) || props.disabled}
                   isActive={isActiveStep}
                 >
                   <OperationStep step={step} />
@@ -112,9 +67,9 @@ class OperationSteps extends React.Component<OperationStepsProps> {
     }
 
     return null;
-  }
+  };
 
-  private getSelectOptionsFromSources(sources: List<SourceMap>): DropdownItemProps[] {
+  const getSelectOptionsFromSources = (sources: List<SourceMap>): DropdownItemProps[] => {
     if (sources.count()) {
       return sources
         .map((source) => ({
@@ -127,31 +82,68 @@ class OperationSteps extends React.Component<OperationStepsProps> {
     }
 
     return [];
-  }
+  };
 
-  private fetchSources = () => {
-    if (!this.props.isFetchingSources) {
-      this.props.fetchSources({ limit: 100 });
+  const fetchSources = () => {
+    if (!props.isFetchingSources) {
+      props.fetchSources({ limit: 100 });
     }
   };
 
-  private onSelectSource = (
-    _event: React.SyntheticEvent<HTMLElement, Event>,
+  const onSelectSource = (
+    _event: React.SyntheticEvent<HTMLElement, Event>, // eslint-disable-line @typescript-eslint/naming-convention
     data: DropdownProps,
   ) => {
-    const selectedSource = this.props.sources.find((source) => source.get('id') === data.value);
+    const selectedSource = props.sources.find((source) => source.get('id') === data.value);
     if (selectedSource) {
-      this.props.onSelectSource(selectedSource);
+      props.onSelectSource(selectedSource);
     }
   };
 
-  private onAddStep = () => {
-    this.props.onAddStep(fromJS({ step_id: this.props.steps.count() + 1 }));
+  const onAddStep = () => {
+    props.onAddStep(fromJS({ step_id: props.steps.count() + 1 }));
   };
 
-  private onClickStep = (step: OperationStepMap) => () => {
-    this.props.onClickStep(step);
+  const onClickStep = (step: OperationStepMap) => () => {
+    props.onClickStep(step);
   };
-}
+
+  return (
+    <React.Fragment>
+      <div className="mb-3">
+        <label>Active Data Source</label>
+        <Dropdown
+          placeholder="Select Data Source"
+          fluid
+          selection
+          search
+          options={getSelectOptionsFromSources(sources)}
+          loading={isFetchingSources}
+          onClick={fetchSources}
+          onChange={onSelectSource}
+          value={activeSource ? (activeSource.get('id') as string) : undefined}
+          disabled={!editable || props.disabled}
+        />
+      </div>
+
+      <div className={classNames('mb-3', { 'd-none': !activeSource })}>
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={onAddStep}
+          disabled={!!activeStep || props.disabled}
+          hidden={!editable}
+        >
+          <i className="material-icons mr-1">add</i>
+          Add Step
+        </Button>
+      </div>
+
+      {renderOperationSteps(steps, activeStep)}
+    </React.Fragment>
+  );
+};
+
+OperationSteps.defaultProps = { editable: true, disabled: false };
 
 export default OperationSteps;
