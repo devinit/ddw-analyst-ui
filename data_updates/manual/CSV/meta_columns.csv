@@ -438,75 +438,75 @@ fts_precoded,domesticresponse,domesticresponse,Domestic response,C,Domestic resp
 fts_precoded,Deflators,Deflators,Deflators,N,Deflators
 fts_precoded,amountDeflated,amountDeflated,Amount deflated,N,Amount deflated
 fts_precoded,amountDeflatedMillions,amountDeflatedMillions,Amount deflated millions,N,Amount deflated millions
+iati_transactions,x_aid_type,x_aid_type,Aid Type,C,Aid Type - Calculated
+iati_transactions,x_country,x_country,Country,C,Country Name - Calculated
+iati_transactions,x_country_code,x_country_code,Calculated Country Code,C,Country Code - Calculated
+iati_transactions,x_country_percentage,x_country_percentage,Calculated Country Percentage,C,Country Percentage - Calculated
+iati_transactions,x_covid,x_covid,X Covid flag,C,Covid flag - Calculated
+iati_transactions,x_currency,x_currency,Calculated Currency,C,Currency - Calculated
+iati_transactions,x_dac_aid_type_code,x_dac_aid_type_code,Calculated DAC Aid Type Code,C,DAC Aid Type Code - Calculated
+iati_transactions,x_dac3_sector_code,x_dac3_sector_code,Calculated DAC3 Sector Code,C,DAC3 Sector Code - Calculated
+iati_transactions,x_dac3_sector,x_dac3_sector,DAC3 Sector Name,C,DAC3 Sector Name
+iati_transactions,x_default_vocabulary,x_default_vocabulary,Calculated Default Vocabulary,C,Default Vocabulary - Calculated
+iati_transactions,description_narrative,description_narrative,Description Narrative,C,Description Narrative
+iati_transactions,x_di_sector,x_di_sector,DI Sector Name,C,DI Sector Name
+iati_transactions,x_finance_type,x_finance_type,Finance Type,C,Finance Type Name - Calculated
+iati_transactions,x_finance_type_code,x_finance_type_code,Calculated Finance Type Code,C,Finance Type Code - Calculated
+iati_transactions,x_flow_type_code,x_flow_type_code,Calculated Flow Type Code,C,Flow Type Code - Calculated
+iati_transactions,humanitarian,humanitarian,Humanitarian,C,Humanitarian
+iati_transactions,x_hum_appeal_code,x_hum_appeal_code,Calculated Humanitarian Appeal Code,C,Humanitarian Appeal Code - Calculated
+iati_transactions,x_hum_emergency_code,x_hum_emergency_code,Calculated Humanitarian Emergency Code,C,Humanitarian Emergency Code - Calculated
+iati_transactions,humanitarian_scope_narrative,humanitarian_scope_narrative,Humanitarian Scope Narrative,C,Humanitarian Scope Narrative
 iati_transactions,iati_identifier,iati_identifier,IATI Identifier,C,IATI Identifier
-iati_transactions,x_transaction_number,x_transaction_number,Calculated Transaction Number,N,Calculated Transaction Number
-iati_transactions,reporting_org_ref,reporting_org_ref,Reporting Organsation Reference,C,Reporting Organsation Reference
+iati_transactions,package_id,package_id,IATI Registry Package ID,C,IATI Registry Package ID
+iati_transactions,last_modified,last_modified,Last modified timestamp,C,Last modified timestamp
+iati_transactions,x_mod_aid_type_code,x_mod_aid_type_code,Calculated Mod Aid Type Code,C,Mod Aid Type Code - Calculated
+iati_transactions,x_mod_aid_type_vocabulary,x_mod_aid_type_vocabulary,Calulated Mod Aid Type Vocabulary,C,Mod Aid Type Vocabulary - Calculated
+iati_transactions,participating_org_narrative,participating_org_narrative,Participating Organisation Narrative,C,Participating Organisation Narrative
+iati_transactions,participating_org_ref,participating_org_ref,Participating Organisation Reference,C,Participating Organisation Reference
+iati_transactions,participating_org_role,participating_org_role,Participating Organisation Role,C,Participating Organisation Role
+iati_transactions,participating_org_type,participating_org_type,Participating Organisation Type,C,Participating Organisation Type
+iati_transactions,x_region_code,x_region_code,Calculated Region Code,C,Region Code - Calculated
+iati_transactions,x_region_percentage,x_region_percentage,Calculated Region Percentage,C,Region Percentage - Calculated
+iati_transactions,x_region_vocabulary,x_region_vocabulary,Calculated Region Vocabulary,C,Region Vocabulary - Calculated
 iati_transactions,reporting_org_narrative,reporting_org_narrative,Reporting Organisation Narrative,C,Reporting Organisation Narrative
 iati_transactions,reporting_org_secondary_reporter,reporting_org_secondary_reporter,Reporting Organisation Secondary Reporter,C,Reporting Organisation Secondary Reporter
+iati_transactions,x_reporting_org_type,x_reporting_org_type,Reporting Organisation Type,C,Reporting Organisation Type Name - Calculated
 iati_transactions,reporting_org_type_code,reporting_org_type_code,Reporting Organisation Type Code,C,Reporting Organisation Type Code
+iati_transactions,reporting_org_ref,reporting_org_ref,Reporting Organsation Reference,C,Reporting Organsation Reference
+iati_transactions,x_sector_code,x_sector_code,Calculated Sector Code,C,Sector Code - Calculated
+iati_transactions,x_sector_percentage,x_sector_percentage,Calculated Sector Percentage,C,Sector Percentage - Calculated
+iati_transactions,x_sector_vocabulary,x_sector_vocabulary,Calculated Sector Vocabulary,C,Sector Vocabulary - Calculated
+iati_transactions,tag_code,tag_code,Tag Code,C,Tag Code
+iati_transactions,tag_narrative,tag_narrative,Tag Narrative,C,Tag Narrative
+iati_transactions,tag_vocabulary,tag_vocabulary,Tag Vocabulary,C,Tag Vocabulary
+iati_transactions,x_tied_status_code,x_tied_status_code,Calculated Tied Status Code,C,Tied Status Code - Calculated
 iati_transactions,title_narrative,title_narrative,Title Narrative,C,Title Narrative
-iati_transactions,x_country_code,x_country_code,Calculated Country Code,C,Calculated Country Code
-iati_transactions,x_country_percentage,x_country_percentage,Calculated Country Percentage,C,Calculated Country Percentage
-iati_transactions,x_region_vocabulary,x_region_vocabulary,Calculated Region Vocabulary,C,Calculated Region Vocabulary
-iati_transactions,x_region_code,x_region_code,Calculated Region Code,C,Calculated Region Code
-iati_transactions,x_region_percentage,x_region_percentage,Calculated Region Percentage,C,Calculated Region Percentage
-iati_transactions,x_sector_vocabulary,x_sector_vocabulary,Calculated Sector Vocabulary,C,Calculated Sector Vocabulary
-iati_transactions,x_default_vocabulary,x_default_vocabulary,Calculated Default Vocabulary,C,Calculated Default Vocabulary
-iati_transactions,x_sector_code,x_sector_code,Calculated Sector Code,C,Calculated Sector Code
-iati_transactions,x_sector_percentage,x_sector_percentage,Calculated Sector Percentage,C,Calculated Sector Percentage
-iati_transactions,x_dac3_sector_code,x_dac3_sector_code,Calculated DAC3 Sector Code,C,Calculated DAC3 Sector Code
-iati_transactions,transaction_type_code,transaction_type_code,Transaction Type Code,C,Transaction Type Code
-iati_transactions,x_transaction_date,x_transaction_date,Calculated Transaction Date,C,Calculated Transaction Date
-iati_transactions,x_transaction_year,x_transaction_year,Calculated Transaction Year,N,Calculated Transaction Year
-iati_transactions,x_currency,x_currency,Calculated Currency,C,Calculated Currency
-iati_transactions,x_transaction_value,x_transaction_value,Calculated Transaction Value,N,Calculated Transaction Value
-iati_transactions,x_transaction_value_usd,x_transaction_value_usd,Calulated Transaction Value USD,N,Calulated Transaction Value USD
-iati_transactions,x_flow_type_code,x_flow_type_code,Calculated Flow Type Code,C,Calculated Flow Type Code
-iati_transactions,x_finance_type_code,x_finance_type_code,Calculated Finance Type Code,C,Calculated Finance Type Code
-iati_transactions,x_mod_aid_type_vocabulary,x_mod_aid_type_vocabulary,Calulated Mod Aid Type Vocabulary,C,Calulated Mod Aid Type Vocabulary
-iati_transactions,x_mod_aid_type_code,x_mod_aid_type_code,Calculated Mod Aid Type Code,C,Calculated Mod Aid Type Code
-iati_transactions,x_dac_aid_type_code,x_dac_aid_type_code,Calculated DAC Aid Type Code,C,Calculated DAC Aid Type Code
-iati_transactions,x_tied_status_code,x_tied_status_code,Calculated Tied Status Code,C,Calculated Tied Status Code
-iati_transactions,transaction_disbursement_channel_code,transaction_disbursement_channel_code,Transaction Disbursement Channel Code,C,Transaction Disbursement Channel Code
-iati_transactions,description_narrative,description_narrative,Description Narrative,C,Description Narrative
+iati_transactions,x_transaction_date,x_transaction_date,Calculated Transaction Date,C,Transaction Date - Calculated
 iati_transactions,transaction_description_narrative,transaction_description_narrative,Transaction Description Narrative,C,Transaction Description Narrative
-iati_transactions,humanitarian,humanitarian,Humanitarian,C,Humanitarian
+iati_transactions,transaction_disbursement_channel_code,transaction_disbursement_channel_code,Transaction Disbursement Channel Code,C,Transaction Disbursement Channel Code
 iati_transactions,transaction_humanitarian,transaction_humanitarian,Transaction Humanitarian,C,Transaction Humanitarian
-iati_transactions,humanitarian_scope_narrative,humanitarian_scope_narrative,Humanitarian Scope Narrative,C,Humanitarian Scope Narrative
-iati_transactions,x_hum_emergency_code,x_hum_emergency_code,Calculated Humanitarian Emergency Code,C,Calculated Humanitarian Emergency Code
-iati_transactions,x_hum_appeal_code,x_hum_appeal_code,Calculated Humanitarian Appeal Code,C,Calculated Humanitarian Appeal Code
+iati_transactions,x_transaction_number,x_transaction_number,Calculated Transaction Number,N,Transaction Number - Calculated
 iati_transactions,transaction_provider_org_narrative,transaction_provider_org_narrative,Transaction Provider Organisation Narrative,C,Transaction Provider Organisation Narrative
 iati_transactions,transaction_provider_org_provider_activity_id,transaction_provider_org_provider_activity_id,Transaction Provider Organisation Provider Activity ID,C,Transaction Provider Organisation Provider Activity ID
 iati_transactions,transaction_provider_org_ref,transaction_provider_org_ref,Transaction Provider Organisation Reference,C,Transaction Provider Organisation Reference
 iati_transactions,transaction_provider_org_type,transaction_provider_org_type,Transaction Provider Organisation Type,C,Transaction Provider Organisation Type
 iati_transactions,transaction_receiver_org_narrative,transaction_receiver_org_narrative,Transaction Receiver Organisation Narrative,C,Transaction Receiver Organisation Narrative
-iati_transactions,transaction_receiver_org_receiver_activity_id,transaction_receiver_org_receiver_activity_id,Transaction Receiver Organisatio Receiver Activity IdD,C,Transaction Receiver Organisatio Receiver Activity IdD
+iati_transactions,transaction_receiver_org_receiver_activity_id,transaction_receiver_org_receiver_activity_id,Transaction Receiver Organisatio Receiver Activity IdD,C,Transaction Receiver Organisation Receiver Activity ID
 iati_transactions,transaction_receiver_org_ref,transaction_receiver_org_ref,Transaction Receiver Organisation Reference,C,Transaction Receiver Organisation Reference
 iati_transactions,transaction_receiver_org_type,transaction_receiver_org_type,Transaction Receiver Organisation Type,C,Transaction Receiver Organisation Type
 iati_transactions,transaction_ref,transaction_ref,Transaction Reference,C,Transaction Reference
-iati_transactions,participating_org_narrative,participating_org_narrative,Participating Organisation Narrative,C,Participating Organisation Narrative
-iati_transactions,participating_org_type,participating_org_type,Participating Organisation Type,C,Participating Organisation Type
-iati_transactions,participating_org_role,participating_org_role,Participating Organisation Role,C,Participating Organisation Role
-iati_transactions,participating_org_ref,participating_org_ref,Participating Organisation Reference,C,Participating Organisation Reference
-iati_transactions,tag_narrative,tag_narrative,Tag Narrative,C,Tag Narrative
-iati_transactions,tag_vocabulary,tag_vocabulary,Tag Vocabulary,C,Tag Vocabulary
-iati_transactions,tag_code,tag_code,Tag Code,C,Tag Code
-iati_transactions,x_reporting_org_type,x_reporting_org_type,Reporting Organisation Type,C,Reporting Organisation Type
 iati_transactions,x_transaction_type,x_transaction_type,Transaction Type,C,Transaction Type
-iati_transactions,x_country,x_country,Country,C,Country
-iati_transactions,x_finance_type,x_finance_type,Finance Type,C,Finance Type
-iati_transactions,x_aid_type,x_aid_type,Aid Type,C,Aid Type
-iati_transactions,x_dac3_sector,x_dac3_sector,DAC3 Sector Name,C,DAC3 Sector Name
-iati_transactions,x_di_sector,x_di_sector,DI Sector Name,C,DI Sector Name
+iati_transactions,transaction_type_code,transaction_type_code,Transaction Type Code,C,Transaction Type Code
+iati_transactions,x_transaction_value,x_transaction_value,Calculated Transaction Value,N,Transaction Value - Calculated
+iati_transactions,x_transaction_value_usd,x_transaction_value_usd,Calulated Transaction Value USD,N,Transaction Value USD - Calculated
+iati_transactions,x_transaction_year,x_transaction_year,Calculated Transaction Year,N,Transaction Year - Calculated
 iati_transactions,x_yyyymm,x_yyyymm,YYYYMM year and month,C,YYYYMM year and month
-iati_transactions,x_covid,x_covid,X Covid flag,C,X Covid flag
-iati_transactions,package_id,package_id,IATI Registry Package ID,C,IATI Registry Package ID
-iati_transactions,last_modified,last_modified,Last modified timestamp,C,Last modified timestamp
 iati_publishers,reporting_org_ref,reporting_org_ref,Reporting Organisation Reference Code,C,Reporting org ref
 iati_publishers,reporting_org_narrative,reporting_org_narrative,Reporting Organisation Narrative,C,Reporting org narrative
-iati_publishers,x_di_org_type,x_di_org_type,DI Organisation Type,C,X di org type
-iati_publishers,x_di_realtime_status,x_di_realtime_status,DI Realtime Data Satus,C,X di realtime status
+iati_publishers,x_di_org_type,x_di_org_type,DI Organisation Type,C,DI Organisation Type - Calculated
+iati_publishers,x_di_realtime_status,x_di_realtime_status,DI Realtime Data Satus,C,DI Realtime Status - Calculated
 iati_publishers,reporting_org_type_code,reporting_org_type_code,Reporting Organisation Type Code,N,Reporting org type code
-iati_publishers,x_reporting_org_type,x_reporting_org_type,X Reporting Organisation Type,C,X reporting org type
-iati_publishers,org_hq,org_hq,Organisation Headquarters,C,Org hq
-iati_publishers,registry_id,registry_id,Registry ID,C,Registry id
+iati_publishers,x_reporting_org_type,x_reporting_org_type,X Reporting Organisation Type,C,Reporting Organisation Type - Calculated
+iati_publishers,org_hq,org_hq,Organisation Headquarters,C,Organisation Headquarters
+iati_publishers,registry_id,registry_id,Registry ID,C,Registry ID

@@ -106,21 +106,27 @@ class StreamingExporter:
         with connections["datasets"].chunked_cursor() as main_cursor:
             main_cursor.execute(self.main_query)
             first_row = main_cursor.fetchone()
-            header = [col[0] for col in main_cursor.description]
-            aliases = OperationDataColumnAlias.objects.filter(operation=self.operation)
-            header_aliases = []
-            for column in header:
-                alias = aliases.filter(column_name=column).first()
-                header_aliases.append(alias.column_alias if alias else column)
+            header = self.get_header(main_cursor)
             pseudo_buffer = Echo()
             yield pseudo_buffer.write(codecs.BOM_UTF8)
             writer = csv.writer(pseudo_buffer, delimiter=",")
-            yield writer.writerow(header_aliases)
+            yield writer.writerow(header)
             yield writer.writerow(first_row)
             next_row = main_cursor.fetchone()
             while next_row is not None:
                 yield writer.writerow(next_row)
                 next_row = main_cursor.fetchone()
+
+    def get_header(self, cursor):
+        header = [col[0] for col in cursor.description]
+        if self.operation:
+            aliases = OperationDataColumnAlias.objects.filter(operation=self.operation)
+            header_aliases = []
+            for column in header:
+                alias = aliases.filter(column_name=column).first()
+                header_aliases.append(alias.column_alias if alias else column)
+            return header_aliases
+        return header
 
 
 @csrf_exempt
@@ -334,12 +340,12 @@ class ViewSourceDatasets(APIView):
             if self.request.user.is_authenticated:
                 operations = Operation.objects.filter(
                     ~Q(user=self.request.user) & Q(operationstep__source=pk) & Q(is_draft=False)
-                ).order_by('-updated_on')
+                ).order_by('-updated_on').distinct()
             else:
-                operations = Operation.objects.filter(is_draft=False).order_by('-updated_on')
+                operations = Operation.objects.filter(is_draft=False).order_by('-updated_on').distinct()
             search = request.query_params.get('search')
             if search:
-                return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on')
+                return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on').distinct()
             return operations
         except Operation.DoesNotExist:
             raise Http404
@@ -373,9 +379,9 @@ class ViewUserSourceDatasets(APIView):
                 ).order_by('-updated_on').distinct()
                 search = request.query_params.get('search')
                 if search:
-                    return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on')
+                    return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on').distinct()
                 return operations
-            return Operation.objects.filter(operationstep__source=pk).order_by('-updated_on')
+            return Operation.objects.filter(operationstep__source=pk).order_by('-updated_on').distinct()
         except Operation.DoesNotExist:
             raise Http404
 
@@ -612,6 +618,11 @@ class TableStreamingExporter(StreamingExporter):
     """Sets up generator for streaming PSQL content"""
     def __init__(self, main_query):
         self.main_query = main_query
+
+    def get_header(self, cursor):
+        header = [col[0] for col in cursor.description]
+
+        return header
 
 
 @csrf_exempt

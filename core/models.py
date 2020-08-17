@@ -225,6 +225,7 @@ class ScheduledEvent(BaseEntity):
 
 class ScheduledEventRunInstance(BaseEntity):
     """Scheduled Event Run Instances."""
+
     status_choices = (
         ('p', 'Pending'),
         ('r', 'Running'),
@@ -237,3 +238,6 @@ class ScheduledEventRunInstance(BaseEntity):
     ended_at = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=1, choices=status_choices, default='p')
     logs = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.scheduled_event.name + ' - ' + self.status
