@@ -38,6 +38,7 @@ exports[`<ScheduledEventsTable should match snapshot 1`] = `
       <tbody>
         <tr
           class=""
+          data-testid="tablerowtest"
         >
           <td
             class="text-center"
@@ -78,6 +79,7 @@ exports[`<ScheduledEventsTable should match snapshot 1`] = `
           <td>
             <button
               class="btn btn-outline-danger btn-sm"
+              data-testid="testruninstance"
               type="button"
             >
               Run Now
