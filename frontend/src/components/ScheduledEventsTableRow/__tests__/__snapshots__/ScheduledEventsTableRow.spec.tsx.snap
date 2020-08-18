@@ -2,6 +2,7 @@
 
 exports[`<ScheduledEventsTableRow should take a snapshot 1`] = `
 <tr
+  data-testid="tablerowtest"
   onClick={[Function]}
 >
   <td
@@ -43,6 +44,7 @@ exports[`<ScheduledEventsTableRow should take a snapshot 1`] = `
   <td>
     <button
       className="btn btn-outline-danger btn-sm"
+      data-testid="testruninstance"
       disabled={false}
       onClick={[Function]}
       type="button"
