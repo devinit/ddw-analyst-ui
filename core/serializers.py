@@ -39,8 +39,7 @@ class DataSerializer(serializers.BaseSerializer):
         operation = instance['operation_instance']
         self.set_operation(operation)
         try:
-            estimate_count = self.estimate_count()
-            count, data = query.query_table(operation, limit, offset, estimate_count=estimate_count)
+            count, data = query.query_table(operation, limit, offset, estimate_count=True)
             return {
                 'count': count,
                 'data': self.use_aliases(data) if use_aliases == '1' else data
@@ -55,13 +54,6 @@ class DataSerializer(serializers.BaseSerializer):
                     }
                 ]
             }
-
-    def estimate_count(self):
-        if self.operation:
-            MAX_OFFSET = 65390
-            count, data = query.query_table(self.operation, 1, MAX_OFFSET, estimate_count=True)
-            return len(data) > 0
-        return True
 
     def set_operation(self, operation):
         self.operation = operation
