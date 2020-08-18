@@ -155,6 +155,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'operation_query',
+            'row_count',
             'theme',
             'theme_name',
             'sample_output_path',
@@ -179,6 +180,7 @@ class OperationSerializer(serializers.ModelSerializer):
             OperationStep.objects.create(operation=operation, **step)
         operation.user = read_only_dict['user']
         operation.operation_query = query.build_query(operation=operation)
+        operation.count_rows = True
         operation.save()
         self.create_operation_data_aliases(operation)
 
@@ -216,6 +218,7 @@ class OperationSerializer(serializers.ModelSerializer):
             step_for_delete.delete()
 
         instance.operation_query = query.build_query(operation=instance)
+        instance.count_rows = True
         instance.save()
         self.update_operation_data_aliases(instance)
 
