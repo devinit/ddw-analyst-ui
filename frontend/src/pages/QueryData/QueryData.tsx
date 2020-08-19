@@ -102,7 +102,7 @@ class QueryData extends React.Component<QueryDataProps> {
           list={data}
           limit={this.props.page.get('limit') as number}
           offset={this.props.page.get('offset') as number}
-          count={this.props.page.get('count') as number}
+          count={operation.get('row_count') as number | null}
           fetchData={fetchData}
         />
       );

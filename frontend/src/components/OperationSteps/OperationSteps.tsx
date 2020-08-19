@@ -55,7 +55,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                   key={index}
                   onClick={!activeStep && onClickStep(step)}
                   disabled={(activeStep && !isActiveStep) || props.disabled}
-                  isActive={isActiveStep}
+                  active={isActiveStep}
                 >
                   <OperationStep step={step} />
                 </StyledListItem>

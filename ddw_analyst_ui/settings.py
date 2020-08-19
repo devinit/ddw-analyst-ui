@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_crontab',
     'frontend',
     'core',
     'data',
@@ -184,10 +183,6 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }
-
-CRONJOBS = [
-    ('* * * * *', 'django.core.management.call_command', ['run_schedules'])
-]
 
 QUERY_TABLES = [
     'fts_codenames', 'fts_privatemoney', 'fts_dacregion', 'fts_donorscountryid', 'fts_recipientcodename', 'fts_ngotype', 'fts_deliverychannels',

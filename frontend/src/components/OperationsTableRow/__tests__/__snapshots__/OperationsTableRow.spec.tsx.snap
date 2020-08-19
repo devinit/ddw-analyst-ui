@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OperationsTableRow does not render non-action children 1`] = `
+.c0 {
+  display: block !important;
+}
+
+<tr
+  data-testid="operations-table-row"
+>
+  <td>
+    My Test Dataset
+  </td>
+  <td>
+    Wed Jan 01 2020
+  </td>
+  <td>
+    <span
+      className="badge badge-danger"
+      data-testid="op-table-row-badge"
+    >
+      Published
+    </span>
+  </td>
+  <td
+    className="c0 td-actions text-right"
+  />
+</tr>
+`;
+
+exports[`OperationsTableRow renders actions when provided 1`] = `
+.c0 {
+  display: block !important;
+}
+
+<tr
+  data-testid="operations-table-row"
+>
+  <td>
+    My Test Dataset
+  </td>
+  <td>
+    Wed Jan 01 2020
+  </td>
+  <td>
+    <span
+      className="badge badge-danger"
+      data-testid="op-table-row-badge"
+    >
+      Published
+    </span>
+  </td>
+  <td
+    className="c0 td-actions text-right"
+  >
+    <button
+      type="button"
+    >
+      Click Me
+    </button>
+  </td>
+</tr>
+`;
+
+exports[`OperationsTableRow renders correctly with the default props 1`] = `
+.c0 {
+  display: block !important;
+}
+
+<tr
+  data-testid="operations-table-row"
+>
+  <td>
+    My Test Dataset
+  </td>
+  <td>
+    Wed Jan 01 2020
+  </td>
+  <td>
+    <span
+      className="badge badge-danger"
+      data-testid="op-table-row-badge"
+    >
+      Published
+    </span>
+  </td>
+  <td
+    className="c0 td-actions text-right"
+  />
+</tr>
+`;

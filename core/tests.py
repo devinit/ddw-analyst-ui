@@ -2,6 +2,8 @@ from unittest import mock, skip
 
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
+from django.db.models import signals
+
 from rest_framework.test import APIClient
 
 from core import query
@@ -39,6 +41,8 @@ class TestRestFramework(TestCase):
     fixtures = ['test_data']
 
     def setUp(self):
+        signals.post_save.disconnect(sender=Operation, dispatch_uid='count_operation_rows');
+
         self.user = User.objects.create_user(TEST_USER, 'test@test.test', TEST_PASS)
         self.superuser = User.objects.create_superuser(TEST_SUPERUSER, 'test@test.test', TEST_SUPERPASS)
         self.user_tag = Tag.objects.create(name="user_tag", user=self.user)

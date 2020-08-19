@@ -39,7 +39,7 @@ export class AggregateQueryBuilder extends React.Component<
     { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' },
     // { key: 'DistinctOptionFunction', text: 'Distinct', value: 'DistinctOptionFunction' }
   ];
-  state = { operationalColumns: [], groupByColumns: [] };
+  state: AggregateQueryBuilderState = { operationalColumns: [], groupByColumns: [] };
 
   render() {
     const { alerts } = this.props;
@@ -101,7 +101,9 @@ export class AggregateQueryBuilder extends React.Component<
             search
             selection
             options={this.state.groupByColumns.sort(sortObjectArrayByProperty('text').sort)}
-            value={this.props.groupBy}
+            value={this.props.groupBy?.filter((column) =>
+              this.state.groupByColumns.find((col) => col.value === column),
+            )}
             onChange={this.onChange}
             disabled={!this.props.editable}
           />
