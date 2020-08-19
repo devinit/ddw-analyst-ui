@@ -61,7 +61,9 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           search
           selection
           options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-          value={props.columns?.slice()}
+          value={props.columns?.filter((column) =>
+            selectableColumns.find((col) => col.value === column),
+          )}
           onChange={onChange}
           disabled={!props.editable}
         />
