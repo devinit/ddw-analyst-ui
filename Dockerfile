@@ -9,9 +9,6 @@ WORKDIR /src
 # install dependencies
 RUN apt-get update
 RUN apt-get install -y net-tools
-# Uncomment the line below on dev environments to log cron output at /var/log/syslog
-# RUN apt-get install -y rsyslog
-RUN apt-get install -y cron
 RUN pip install -r requirements.txt
 
 # R dependencies
@@ -20,10 +17,4 @@ RUN apt-get install -y r-cran-reshape2
 
 ENV DJANGO_SETTINGS_MODULE=ddw_analyst_ui.docker_settings
 
-# Below lines are cron specific
-RUN python3 manage.py crontab remove
-RUN python3 manage.py crontab add
-# Below line 'exports' env to cron, otherwise cron will not run
-RUN printenv >> /etc/environment
-
-CMD export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}') && service cron restart && gunicorn -w 2 -b 0.0.0.0:80 -t 6000 --keep-alive 6000 ddw_analyst_ui.wsgi
+CMD export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}') && gunicorn -w 2 -b 0.0.0.0:80 -t 6000 --keep-alive 6000 ddw_analyst_ui.wsgi
