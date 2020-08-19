@@ -26,7 +26,7 @@ interface TransformQueryBuilderProps {
 interface TransformQueryBuilderState {
   showInfo: boolean;
   hasFocus: string;
-  selectableColumns: DropdownItemProps;
+  selectableColumns: DropdownItemProps[];
 }
 
 export class TransformQueryBuilder extends React.Component<
@@ -52,7 +52,7 @@ export class TransformQueryBuilder extends React.Component<
     { key: 'divide', text: 'Divide', value: 'divide' },
     { key: 'concat', text: 'Concatanate', value: 'concat' },
   ];
-  state = { hasFocus: '', showInfo: false, selectableColumns: [] };
+  state: TransformQueryBuilderState = { hasFocus: '', showInfo: false, selectableColumns: [] };
 
   render() {
     const { alerts, multi } = this.props;
@@ -135,7 +135,13 @@ export class TransformQueryBuilder extends React.Component<
               search
               selection
               options={this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-              value={this.props.multi ? this.props.columns : this.props.column}
+              value={
+                this.props.multi
+                  ? this.props.columns?.filter((column) =>
+                      this.state.selectableColumns.find((col) => col.value === column),
+                    )
+                  : this.props.column
+              }
               onChange={this.onSelectChange}
               disabled={!this.props.editable}
             />

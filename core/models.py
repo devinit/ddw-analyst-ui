@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
-# from core.models_template import *
-
 
 class BaseEntity(models.Model):
     """An abstract model which allows all other models to inherit its characteristics.
@@ -95,7 +93,8 @@ class Operation(BaseEntity):
     sample_output_path = models.TextField(blank=True, null=True)
     tags = models.ManyToManyField(Tag)
     is_draft = models.BooleanField(default=True)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="operations", null=True)
+    row_count = models.IntegerField(blank=True, null=True)
+    count_rows = models.BooleanField(default=False) # controls whether to count rows in the post_save signal
 
     def __str__(self):
         return self.name

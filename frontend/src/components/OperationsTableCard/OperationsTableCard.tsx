@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Button, Card, FormControl, Nav, OverlayTrigger, Popover, Tab } from 'react-bootstrap';
+import { Card, FormControl, Nav, OverlayTrigger, Popover, Tab } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -13,6 +13,8 @@ import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { OperationsTable } from '../OperationsTable';
+import { OperationsTableRow } from '../OperationsTableRow';
+import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
 
 interface ActionProps {
@@ -93,57 +95,59 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const viewData = (operation: OperationMap) => (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
-    event.stopPropagation();
+    event.preventDefault();
     const id = operation.get('id');
     props.actions.setOperation(operation);
     props.history.push(`/queries/data/${id}`);
   };
 
   const onEditOperation = (operation: OperationMap) => (
-    event: React.MouseEvent<HTMLButtonElement | HTMLTableRowElement, MouseEvent>,
+    event: React.MouseEvent<HTMLAnchorElement | HTMLTableRowElement, MouseEvent>,
   ) => {
-    event.stopPropagation();
+    event.preventDefault();
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
 
   const renderOperationsTable = (operations: List<OperationMap>, allowEdit = false) => {
     const EditAction = ({ operation }: { operation: OperationMap }) => (
-      <Button variant="danger" size="sm" className="btn-link" onClick={onEditOperation(operation)}>
+      <a
+        className="btn btn-link btn-danger"
+        href={`/queries/build/${operation.get('id') as number}/`}
+        onClick={onEditOperation(operation)}
+      >
         Edit
-      </Button>
+      </a>
     );
 
     if (operations && operations.count()) {
       return (
         <OperationsTable>
           {operations.map((operation, index) => (
-            <OperationsTable.Row
+            <OperationsTableRow
               key={index}
               count={index + 1}
               name={operation.get('name') as string}
               updatedOn={operation.get('updated_on') as string}
               isDraft={operation.get('is_draft') as boolean}
-              onClick={onEditOperation(operation)}
             >
-              <OperationsTable.Actions>
+              <OperationsTableRowActions>
                 <OverlayTrigger
                   placement="top"
                   overlay={<Popover id="view">View Operation Data</Popover>}
                 >
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    className="btn-link"
+                  <a
+                    className="btn btn-link btn-danger"
+                    href={`/queries/data/${operation.get('id')}`}
                     onClick={viewData(operation)}
                   >
                     View Data
-                  </Button>
+                  </a>
                 </OverlayTrigger>
                 {allowEdit ? <EditAction operation={operation} /> : null}
-              </OperationsTable.Actions>
-            </OperationsTable.Row>
+              </OperationsTableRowActions>
+            </OperationsTableRow>
           ))}
         </OperationsTable>
       );

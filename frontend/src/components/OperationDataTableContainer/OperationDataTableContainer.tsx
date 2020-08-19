@@ -12,7 +12,7 @@ interface OperationDataTableContainerProps {
   id: string;
   limit: number;
   offset: number;
-  count: number;
+  count: number | null;
   fetchData: typeof fetchOperationData;
 }
 
@@ -35,13 +35,15 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
     return (
       <>
         <OperationDataTable list={list} columns={columns} editableHeaders />
-        <PaginationRow
-          pageRangeDisplayed={5}
-          limit={limit}
-          count={count}
-          pageCount={Math.ceil(count / limit)}
-          onPageChange={onPageChange}
-        />
+        {count !== null ? (
+          <PaginationRow
+            pageRangeDisplayed={5}
+            limit={limit}
+            count={count}
+            pageCount={Math.ceil(count / limit)}
+            onPageChange={onPageChange}
+          />
+        ) : null}
       </>
     );
   }

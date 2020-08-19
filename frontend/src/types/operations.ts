@@ -21,6 +21,7 @@ export interface Operation {
   name: string;
   description: string;
   operation_query: string;
+  row_count: number | null;
   theme: string;
   sample_output_path: string;
   operation_steps: OperationStep[] | List<OperationStepMap>;
