@@ -8,7 +8,7 @@ from core.models import Operation
 from data.db_manager import count_rows
 
 
-@receiver(post_save, sender=Operation)
+@receiver(post_save, sender=Operation, dispatch_uid="count_operation_rows")
 def count_operation_rows(sender, instance=None, created=False, **kwargs):
     if instance and instance.count_rows:
         count_query = QueryBuilder(operation=instance, operation_steps=None).count_sql(False)
