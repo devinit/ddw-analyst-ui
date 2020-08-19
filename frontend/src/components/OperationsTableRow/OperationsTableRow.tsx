@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { Badge } from 'react-bootstrap';
@@ -19,35 +19,28 @@ const StyledActionCell = styled.td`
   display: block !important;
 `;
 
-export class OperationsTableRow extends React.Component<OperationsTableRowProps> {
-  static Actions = OperationsTableRowActions;
-
-  render() {
-    return (
-      <StyledRow
-        className={this.props.classNames}
-        onClick={this.props.onClick}
-        data-testid="operations-table-row"
-      >
-        <td>{this.props.name}</td>
-        <td>{new Date(this.props.updatedOn).toDateString()}</td>
-        <td>
-          <Badge variant={this.props.isDraft ? 'warning' : 'danger'}>
-            {this.props.isDraft ? 'Draft' : 'Published'}
-          </Badge>
-        </td>
-        <StyledActionCell className="td-actions text-right">
-          {this.renderActions()}
-        </StyledActionCell>
-      </StyledRow>
-    );
-  }
-
-  private renderActions(): React.ReactNode {
-    return React.Children.map(this.props.children, (child) => {
+export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (props) => {
+  const renderActions = (): React.ReactNode =>
+    React.Children.map(props.children, (child) => {
       if (React.isValidElement(child) && child.type === OperationsTableRowActions) {
         return child;
       }
     });
-  }
-}
+
+  return (
+    <StyledRow
+      className={props.classNames}
+      onClick={props.onClick}
+      data-testid="operations-table-row"
+    >
+      <td>{props.name}</td>
+      <td>{new Date(props.updatedOn).toDateString()}</td>
+      <td>
+        <Badge variant={props.isDraft ? 'warning' : 'danger'}>
+          {props.isDraft ? 'Draft' : 'Published'}
+        </Badge>
+      </td>
+      <StyledActionCell className="td-actions text-right">{renderActions()}</StyledActionCell>
+    </StyledRow>
+  );
+};
