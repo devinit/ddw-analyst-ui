@@ -13,6 +13,8 @@ import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { OperationsTable } from '../OperationsTable';
+import { OperationsTableRow } from '../OperationsTableRow';
+import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
 
 interface ActionProps {
@@ -119,15 +121,14 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       return (
         <OperationsTable>
           {operations.map((operation, index) => (
-            <OperationsTable.Row
+            <OperationsTableRow
               key={index}
               count={index + 1}
               name={operation.get('name') as string}
               updatedOn={operation.get('updated_on') as string}
               isDraft={operation.get('is_draft') as boolean}
-              onClick={onEditOperation(operation)}
             >
-              <OperationsTable.Actions>
+              <OperationsTableRowActions>
                 <OverlayTrigger
                   placement="top"
                   overlay={<Popover id="view">View Operation Data</Popover>}
@@ -142,8 +143,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                   </Button>
                 </OverlayTrigger>
                 {allowEdit ? <EditAction operation={operation} /> : null}
-              </OperationsTable.Actions>
-            </OperationsTable.Row>
+              </OperationsTableRowActions>
+            </OperationsTableRow>
           ))}
         </OperationsTable>
       );

@@ -9,7 +9,6 @@ export interface OperationsTableRowProps {
   updatedOn: string;
   isDraft: boolean;
   classNames?: string;
-  onClick?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void;
 }
 
 const StyledRow = styled.tr`
@@ -28,11 +27,7 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (p
     });
 
   return (
-    <StyledRow
-      className={props.classNames}
-      onClick={props.onClick}
-      data-testid="operations-table-row"
-    >
+    <StyledRow className={props.classNames} data-testid="operations-table-row">
       <td>{props.name}</td>
       <td>{new Date(props.updatedOn).toDateString()}</td>
       <td>
