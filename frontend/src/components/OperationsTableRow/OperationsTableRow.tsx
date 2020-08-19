@@ -11,9 +11,6 @@ export interface OperationsTableRowProps {
   classNames?: string;
 }
 
-const StyledRow = styled.tr`
-  cursor: ${(props) => (props.onClick ? 'pointer' : 'default')};
-`;
 const StyledActionCell = styled.td`
   display: block !important;
 `;
@@ -27,15 +24,15 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (p
     });
 
   return (
-    <StyledRow className={props.classNames} data-testid="operations-table-row">
+    <tr className={props.classNames} data-testid="operations-table-row">
       <td>{props.name}</td>
       <td>{new Date(props.updatedOn).toDateString()}</td>
       <td>
-        <Badge variant={props.isDraft ? 'warning' : 'danger'}>
+        <Badge variant={props.isDraft ? 'warning' : 'danger'} data-testid="op-table-row-badge">
           {props.isDraft ? 'Draft' : 'Published'}
         </Badge>
       </td>
       <StyledActionCell className="td-actions text-right">{renderActions()}</StyledActionCell>
-    </StyledRow>
+    </tr>
   );
 };
