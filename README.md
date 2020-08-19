@@ -109,16 +109,11 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
         npm run dev
 
-### Django-crontab setup
-This is used to run cron jobs that run automated scripts that are added from the UI. You need to make sure cron is installed on the web docker container. If not, run `apt-get install cron`. This has been added to the Dockerfile so it should install this automatically for new deployments (container rebuilds)
+### Scheduled Events
 
-Export the env to cron by running this `printenv >> /etc/environment`. Then run `service cron restart` to restart cron.
+Configure a cronjob to run the `run-schedules.sh` script which in turn runs the command that checks for scheduled events every minute
 
-After, run `python3 manage.py crontab add` from the docker container or `docker-compose exec web python3 manage.py crontab add` from the host. This command should be run everytime there is a new cron entry added under settings file. Make sure to run this everytime a new entry is added to the CRONJOBS entry in settings. I advise running `python3 manage.py crontab remove` first to remove any entries that may no longer be wanted.
-
-You may confirm if the cron job has finally been added by running `docker-compose exec web python3 manage.py crontab show`. Running `docker-compose exec web python3 manage.py crontab remove` deletes all cron entries listed in settings.
-
-You may want to run `apt-get install nano` to install an editor to list all cron entries in case you want to inspect them from the container. This may be useful especially on staging or during development. It's not a requirement for the production environment. Similarly, in case you want to log the cron jobs (may be helpful in debugging), run `apt-get install -y rsyslog`. Syslog logs cron job executions here `/var/log/syslog`.
+    * * * * * /root/run-schedules.sh >/root/cron-logs.txt 2>&1
 
 ### End-To-End Testing
 
