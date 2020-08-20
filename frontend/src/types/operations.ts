@@ -54,6 +54,7 @@ export interface OperationData {
   [key: string]: string | number | null;
 }
 export type OperationDataMap = Map<keyof OperationData, OperationData[keyof OperationData]>;
+export type OperationDataList = List<OperationDataMap>;
 export type OperationDataAPIResponseMap = Map<
   keyof OperationDataAPIResponse,
   OperationDataAPIResponse[keyof OperationDataAPIResponse]

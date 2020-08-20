@@ -22,6 +22,7 @@ import {
   OperationDataMap,
   OperationMap,
   OperationStepMap,
+  OperationDataList,
 } from '../../types/operations';
 import { SourceMap, OperationColumn, OperationColumnMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
@@ -83,6 +84,12 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       props.actions.resetQueryBuilderState();
     };
   }, []);
+
+  const updatePreviewState = (data: OperationDataList, show: boolean, loading: boolean): void => {
+    setPreviewData(data);
+    setShowPreview(show);
+    setLoadingPreview(loading);
+  };
 
   const isEditable = (operation?: OperationMap) => {
     const user = props.user.get('username') as string;
@@ -189,9 +196,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const onTogglePreview = () => {
     if (showPreview) {
-      setPreviewData(List());
-      setShowPreview(false);
-      setLoadingPreview(false);
+      updatePreviewState(List(), false, false);
 
       return;
     }
@@ -221,15 +226,11 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
             setLoadingPreview(false);
             setAlertMessage(`Error: ${results[0].error}`);
           } else {
-            setPreviewData(fromJS(results || []));
-            setShowPreview(true);
-            setLoadingPreview(false);
+            updatePreviewState(fromJS(results || []), true, false);
           }
         })
         .catch(() => {
-          setPreviewData(List());
-          setShowPreview(false); // FIXME: why would preview still show when there's been an error?
-          setLoadingPreview(false);
+          updatePreviewState(List(), false, false);
         });
     }
   };
