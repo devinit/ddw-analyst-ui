@@ -211,11 +211,11 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         })
         .then((response: AxiosResponse) => {
           const { results } = response.data;
-          if (Array.isArray(results) && results[0].error) {
+          if (Array.isArray(results) && results.length && results[0].error) {
             setLoadingPreview(false);
             setAlertMessage(`Error: ${results[0].error}`);
           } else {
-            setPreviewData(fromJS(response.data.results));
+            setPreviewData(fromJS(results || []));
             setShowPreview(true);
             setLoadingPreview(false);
           }
@@ -366,7 +366,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           </Card.Header>
           <Card.Body>
             <div className="mb-2">
-              {showPreview
+              {showPreview || loadingPreview
                 ? renderPreview()
                 : renderOperationStepForm(
                     activeSource,
