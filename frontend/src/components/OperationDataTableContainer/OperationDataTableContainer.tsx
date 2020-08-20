@@ -2,9 +2,9 @@ import { List } from 'immutable';
 import React, { FunctionComponent } from 'react';
 import { fetchOperationData } from '../../pages/QueryData/actions';
 import { OperationDataMap, OperationMap } from '../../types/operations';
+import { OperationColumn, OperationColumnMap } from '../../types/sources';
 import { OperationDataTable } from '../OperationDataTable';
 import { PaginationRow } from '../PaginationRow';
-import { OperationColumn, OperationColumnMap } from '../../types/sources';
 
 interface OperationDataTableContainerProps {
   operation: OperationMap;

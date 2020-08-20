@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Card, Col, Row, Tab, Alert } from 'react-bootstrap';
+import { Alert, Card, Col, Row, Tab } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -19,12 +19,14 @@ import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import {
   Operation,
+  OperationDataList,
   OperationDataMap,
   OperationMap,
   OperationStepMap,
 } from '../../types/operations';
-import { SourceMap, OperationColumn, OperationColumnMap } from '../../types/sources';
+import { OperationColumn, SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
+import { fetchOperationDataPreview } from '../../utils/hooks/operations';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { queryBuilderReducerId, QueryBuilderState } from './reducers';
@@ -83,6 +85,12 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       props.actions.resetQueryBuilderState();
     };
   }, []);
+
+  const updatePreviewState = (data: OperationDataList, show: boolean, loading: boolean): void => {
+    setPreviewData(data);
+    setShowPreview(show);
+    setLoadingPreview(loading);
+  };
 
   const isEditable = (operation?: OperationMap) => {
     const user = props.user.get('username') as string;
@@ -181,11 +189,15 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   };
 
+  const onClickStep = (step: OperationStepMap) => {
+    if (loadingPreview) setLoadingPreview(false);
+    if (showPreview) setShowPreview(false);
+    props.actions.updateActiveStep(step, true);
+  };
+
   const onTogglePreview = () => {
     if (showPreview) {
-      setPreviewData(List());
-      setShowPreview(false);
-      setLoadingPreview(false);
+      updatePreviewState(List(), false, false);
 
       return;
     }
@@ -195,37 +207,14 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const { activeOperation: operation } = props;
     if (!operation) return;
 
-    const url = `${api.routes.PREVIEW_SINGLE_DATASET}`;
-
-    const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
-    if (props.token) {
-      axios
-        .request({
-          url,
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `token ${props.token}`,
-          },
-          data,
-        })
-        .then((response: AxiosResponse) => {
-          const { results } = response.data;
-          if (Array.isArray(results) && results[0].error) {
-            setLoadingPreview(false);
-            setAlertMessage(`Error: ${results[0].error}`);
-          } else {
-            setPreviewData(fromJS(response.data.results));
-            setShowPreview(true);
-            setLoadingPreview(false);
-          }
-        })
-        .catch(() => {
-          setPreviewData(List());
-          setShowPreview(false); // FIXME: why would preview still show when there's been an error?
-          setLoadingPreview(false);
-        });
-    }
+    fetchOperationDataPreview(operation.toJS() as Operation, steps.toJS()).then((results) => {
+      setLoadingPreview(false);
+      if (results.error) {
+        setAlertMessage(`Error: ${results.error}`);
+      } else {
+        updatePreviewState(fromJS(results.data), true, false);
+      }
+    });
   };
 
   const onDeleteOperationStep = (step: OperationStepMap) => {
@@ -238,9 +227,9 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       return <div>Loading ...</div>;
     }
     if (previewData.count()) {
-      const columns: OperationColumn[] = props.activeOperation
-        ? (props.activeOperation.get('aliases') as List<OperationColumnMap>).toJS()
-        : [];
+      const columns: OperationColumn[] = Object.keys(
+        (previewData.get(0) as OperationDataMap).toJS(),
+      ).map((column, index) => ({ id: index, column_alias: column, column_name: column }));
 
       return <OperationDataTable list={previewData} columns={columns} />;
     }
@@ -308,7 +297,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           onAddStep={props.actions.updateActiveStep}
           activeSource={props.activeSource}
           activeStep={activeStep}
-          onClickStep={(step) => props.actions.updateActiveStep(step, true)}
+          onClickStep={onClickStep}
           editable={editable}
           disabled={showPreview}
         />
@@ -328,7 +317,9 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       <Col
         md={12}
         lg={9}
-        className={classNames('ml-auto mr-auto', { 'd-none': activeStep || showPreview })}
+        className={classNames('ml-auto mr-auto', {
+          'd-none': activeStep || showPreview || loadingPreview,
+        })}
       >
         <Tab.Container defaultActiveKey="operation">
           <Card className="source-details">
@@ -354,11 +345,15 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         </Tab.Container>
       </Col>
 
-      <Col md={12} lg={12} className={classNames({ 'd-none': !activeStep && !showPreview })}>
+      <Col
+        md={12}
+        lg={12}
+        className={classNames({ 'd-none': !activeStep && !(showPreview || loadingPreview) })}
+      >
         <Card>
           <Card.Header>
             <Card.Title>
-              {showPreview ? 'Preview Dataset' : 'Create Query Step'}
+              {showPreview || loadingPreview ? 'Preview Dataset' : 'Create Query Step'}
               <StyledIcon className="material-icons float-right" onClick={resetAction}>
                 close
               </StyledIcon>
@@ -366,7 +361,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           </Card.Header>
           <Card.Body>
             <div className="mb-2">
-              {showPreview
+              {showPreview || loadingPreview
                 ? renderPreview()
                 : renderOperationStepForm(
                     activeSource,
