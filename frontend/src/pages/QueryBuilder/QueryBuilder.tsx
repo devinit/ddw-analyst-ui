@@ -181,6 +181,12 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   };
 
+  const onClickStep = (step: OperationStepMap) => {
+    if (loadingPreview) setLoadingPreview(false);
+    if (showPreview) setShowPreview(false);
+    props.actions.updateActiveStep(step, true);
+  };
+
   const onTogglePreview = () => {
     if (showPreview) {
       setPreviewData(List());
@@ -308,7 +314,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           onAddStep={props.actions.updateActiveStep}
           activeSource={props.activeSource}
           activeStep={activeStep}
-          onClickStep={(step) => props.actions.updateActiveStep(step, true)}
+          onClickStep={onClickStep}
           editable={editable}
           disabled={showPreview}
         />
@@ -328,7 +334,9 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       <Col
         md={12}
         lg={9}
-        className={classNames('ml-auto mr-auto', { 'd-none': activeStep || showPreview })}
+        className={classNames('ml-auto mr-auto', {
+          'd-none': activeStep || showPreview || loadingPreview,
+        })}
       >
         <Tab.Container defaultActiveKey="operation">
           <Card className="source-details">
@@ -354,11 +362,15 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         </Tab.Container>
       </Col>
 
-      <Col md={12} lg={12} className={classNames({ 'd-none': !activeStep && !showPreview })}>
+      <Col
+        md={12}
+        lg={12}
+        className={classNames({ 'd-none': !activeStep && !(showPreview || loadingPreview) })}
+      >
         <Card>
           <Card.Header>
             <Card.Title>
-              {showPreview ? 'Preview Dataset' : 'Create Query Step'}
+              {showPreview || loadingPreview ? 'Preview Dataset' : 'Create Query Step'}
               <StyledIcon className="material-icons float-right" onClick={resetAction}>
                 close
               </StyledIcon>
