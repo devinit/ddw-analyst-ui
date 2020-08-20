@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Card, Col, Row, Tab, Alert } from 'react-bootstrap';
+import { Alert, Card, Col, Row, Tab } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -19,13 +19,14 @@ import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import {
   Operation,
+  OperationDataList,
   OperationDataMap,
   OperationMap,
   OperationStepMap,
-  OperationDataList,
 } from '../../types/operations';
-import { SourceMap, OperationColumn, OperationColumnMap } from '../../types/sources';
+import { OperationColumn, OperationColumnMap, SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
+import { fetchOperationDataPreview } from '../../utils/hooks/operations';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { queryBuilderReducerId, QueryBuilderState } from './reducers';
@@ -206,33 +207,14 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const { activeOperation: operation } = props;
     if (!operation) return;
 
-    const url = `${api.routes.PREVIEW_SINGLE_DATASET}`;
-
-    const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
-    if (props.token) {
-      axios
-        .request({
-          url,
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `token ${props.token}`,
-          },
-          data,
-        })
-        .then((response: AxiosResponse) => {
-          const { results } = response.data;
-          if (Array.isArray(results) && results.length && results[0].error) {
-            setLoadingPreview(false);
-            setAlertMessage(`Error: ${results[0].error}`);
-          } else {
-            updatePreviewState(fromJS(results || []), true, false);
-          }
-        })
-        .catch(() => {
-          updatePreviewState(List(), false, false);
-        });
-    }
+    fetchOperationDataPreview(operation.toJS() as Operation, steps.toJS()).then((results) => {
+      setLoadingPreview(false);
+      if (results.error) {
+        setAlertMessage(`Error: ${results.error}`);
+      } else {
+        updatePreviewState(fromJS(results.data), true, false);
+      }
+    });
   };
 
   const onDeleteOperationStep = (step: OperationStepMap) => {

@@ -4,20 +4,19 @@ import * as localForage from 'localforage';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { api, localForageKeys } from '..';
 import { setToken } from '../../actions/token';
-import { OperationData, OperationDataList } from '../../types/operations';
+import { OperationData, OperationDataList, OperationStep, Operation } from '../../types/operations';
 
 interface OperationDataHookOptions {
   payload: DatasetDataPayload;
-  preview?: boolean;
 }
 
-interface OperationDataHookResult {
+interface OperationDataHookResult<T = OperationDataHookOptions> {
   data?: OperationDataList;
   dataLoading: boolean;
-  options: OperationDataHookOptions;
+  options: T;
   error?: string;
-  setOptions: Dispatch<SetStateAction<OperationDataHookOptions>>;
-  refetch?: (options?: OperationDataHookOptions) => void;
+  setOptions: Dispatch<SetStateAction<T>>;
+  refetch?: (options?: T) => void;
 }
 
 interface DatasetDataPayload {
@@ -38,7 +37,24 @@ interface OperationDataResult {
 }
 
 const BASEURL = api.routes.SINGLE_DATASET;
-// const PREVIEWBASEURL = api.routes.PREVIEW_SINGLE_DATASET;
+const PREVIEWBASEURL = api.routes.PREVIEW_SINGLE_DATASET;
+
+const handleDataResult = (status: number, data: OperationDataResult): FetchResponse => {
+  if (status === 200 || (status === 201 && data)) {
+    return { data: fromJS(data.results), status };
+  } else if (status === 401) {
+    setToken('');
+
+    return { status, error: 'invalid token' };
+  } else if (data.results && data.results.length && data.results[0].error) {
+    return { status, error: data.results[0].error as string };
+  }
+
+  return {
+    status,
+    error: 'An error occurred while executing query. Please contact your system administrator',
+  };
+};
 
 const fetchOperationData = async (payload: DatasetDataPayload): Promise<FetchResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
@@ -54,20 +70,28 @@ const fetchOperationData = async (payload: DatasetDataPayload): Promise<FetchRes
     .then((response: AxiosResponse<OperationDataResult>) => response)
     .catch((error) => error.response);
 
-  if (status === 200 || (status === 201 && data)) {
-    return { data: fromJS(data.results), status };
-  } else if (status === 401) {
-    setToken('');
+  return handleDataResult(status, data);
+};
 
-    return { status, error: 'invalid token' };
-  } else if (data.results && data.results.length && data.results[0].error) {
-    return { status, error: data.results[0].error as string };
-  }
+export const fetchOperationDataPreview = async (
+  operation: Operation,
+  steps: OperationStep[],
+): Promise<FetchResponse> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const { status, data }: AxiosResponse<OperationDataResult> = await axios
+    .request({
+      url: PREVIEWBASEURL,
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `token ${token}`,
+      },
+      data: { ...operation, operation_steps: steps },
+    })
+    .then((response: AxiosResponse<OperationDataResult>) => response)
+    .catch((error) => error.response);
 
-  return {
-    status,
-    error: 'An error occurred while executing query. Please contact your system administrator',
-  };
+  return handleDataResult(status, data);
 };
 
 export const useOperationData = (
