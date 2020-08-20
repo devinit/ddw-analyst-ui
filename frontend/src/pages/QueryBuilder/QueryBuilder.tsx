@@ -24,7 +24,7 @@ import {
   OperationMap,
   OperationStepMap,
 } from '../../types/operations';
-import { OperationColumn, OperationColumnMap, SourceMap } from '../../types/sources';
+import { OperationColumn, SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import { fetchOperationDataPreview } from '../../utils/hooks/operations';
 import * as pageActions from './actions';
@@ -227,9 +227,9 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       return <div>Loading ...</div>;
     }
     if (previewData.count()) {
-      const columns: OperationColumn[] = props.activeOperation
-        ? (props.activeOperation.get('aliases') as List<OperationColumnMap>).toJS()
-        : [];
+      const columns: OperationColumn[] = Object.keys(
+        (previewData.get(0) as OperationDataMap).toJS(),
+      ).map((column, index) => ({ id: index, column_alias: column, column_name: column }));
 
       return <OperationDataTable list={previewData} columns={columns} />;
     }
