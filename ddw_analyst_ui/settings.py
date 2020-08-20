@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '!brp5jw6nf-2f*=6=s$$@2he&!y+x*2gkhb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEV', 'False') == 'True'
 
-ALLOWED_HOSTS = ['.devinit.org', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.devinit.org', 'localhost', '127.0.0.1', '178.62.4.75']
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
