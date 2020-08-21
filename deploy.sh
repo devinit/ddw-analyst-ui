@@ -15,9 +15,9 @@ mkdir -p ~/ddw-analyst-ui
 
 cp -R -f ddw-analyst-ui-$1/ ~/ddw-analyst-ui/ || exit
 
-cd ~/ddw-analyst-ui || exit
-
 rm -rf ddw-analyst-ui-$1
+
+cd ~/ddw-analyst-ui || exit
 
 docker-compose build
 docker-compose down --remove-orphans
@@ -30,3 +30,15 @@ npm run build
 docker-compose exec web python manage.py migrate
 
 docker-compose restart
+
+git checkout master
+git fetch
+git stash
+git pull origin master
+docker-compose build --no-cache web
+npm install
+npm run build
+docker-compose down
+docker-compose up -d
+docker-compose exec web python manage.py migrate
+cd ~
