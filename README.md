@@ -167,3 +167,11 @@ Read more [here](./core/docs/API.md)
 
 
 ### Management Commands
+
+
+### Deployment
+
+1. Create a release branch with a name format `release/v[VERSION NUMBER]`
+2. Create a GitHub release with a name format `v[VERSION NUMBER]`
+3. On the server, there should be a `deploy.sh` script in the HOME folder. If not, make one with the contents of the `deploy.sh` file in this repo
+4. Run the script to deploy a specific version e.g `bash deploy.sh 2.0.2`
