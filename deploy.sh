@@ -1,7 +1,5 @@
 #!/bin/bash
 ## gets run on host server
-mkdir -p ~/ddw-analyst-ui
-cd ~/ddw-analyst-ui || exit
 
 echo "Downloading tag: $1"
 
@@ -13,13 +11,19 @@ unzip v$1.zip
 
 rm -rf v$1.zip
 
-cd ddw-analyst-ui-$1 || exit
+mkdir -p ~/ddw-analyst-ui
+
+cp -R -f ddw-analyst-ui-$1/ ~/ddw-analyst-ui/ || exit
+
+cd ~/ddw-analyst-ui || exit
+
+rm -rf ddw-analyst-ui-$1
 
 docker-compose build
 docker-compose down --remove-orphans
 docker-compose up -d
 
-npm i
+npm ci
 
 npm run build
 
