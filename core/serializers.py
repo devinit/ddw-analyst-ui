@@ -19,8 +19,8 @@ from rest_framework.utils import model_meta
 from core import query
 from core.const import DEFAULT_LIMIT_COUNT
 from core.models import (Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
-                        ScheduledEventRunInstance, Sector, Source,
-                        SourceColumnMap, Tag, Theme, UpdateHistory)
+                         ScheduledEventRunInstance, Sector, Source,
+                         SourceColumnMap, Tag, Theme, UpdateHistory, FrozenData, SavedQueryData)
 
 
 class DataSerializer(serializers.BaseSerializer):
@@ -39,7 +39,8 @@ class DataSerializer(serializers.BaseSerializer):
         operation = instance['operation_instance']
         self.set_operation(operation)
         try:
-            count, data = query.query_table(operation, limit, offset, estimate_count=True)
+            count, data = query.query_table(
+                operation, limit, offset, estimate_count=True)
             return {
                 'count': count,
                 'data': self.use_aliases(data) if use_aliases == '1' else data
@@ -68,7 +69,8 @@ class DataSerializer(serializers.BaseSerializer):
         try:
             first_step = self.operation.get_operation_steps()[0]
             data_column_keys = data[0].keys()
-            aliases = OperationDataColumnAlias.objects.filter(operation=self.operation)
+            aliases = OperationDataColumnAlias.objects.filter(
+                operation=self.operation)
             column_names = [column.column_name for column in aliases]
             aliased_data = []
             for row in data:
@@ -88,6 +90,7 @@ class DataSerializer(serializers.BaseSerializer):
             return aliased_data
         except:
             return data
+
 
 class TagSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
@@ -136,17 +139,20 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ('pk', 'rating', 'comment', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'rating', 'comment', 'user',
+                  'created_on', 'updated_on')
 
 
 class OperationSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     theme_name = serializers.ReadOnlyField(source='theme.name')
     tags = TagSerializer(many=True, read_only=True)
-    operation_steps = OperationStepSerializer(source='operationstep_set', many=True)
+    operation_steps = OperationStepSerializer(
+        source='operationstep_set', many=True)
     reviews = ReviewSerializer(source='review_set', many=True, read_only=True)
     id = serializers.ReadOnlyField(source='pk')
-    aliases = OperationDataColumnAliasSerializer(source='operationdatacolumnalias_set', many=True, read_only=True)
+    aliases = OperationDataColumnAliasSerializer(
+        source='operationdatacolumnalias_set', many=True, read_only=True)
 
     class Meta:
         model = Operation
@@ -170,7 +176,8 @@ class OperationSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set')
+        read_only_fields = ('user', 'theme_name', 'tags',
+                            'operationstep_set', 'review_set')
         read_only_dict = dict()
         for field in read_only_fields:
             if field in validated_data:
@@ -203,7 +210,8 @@ class OperationSerializer(serializers.ModelSerializer):
             updated_step_id = updated_step.get("step_id")
             if updated_step_id in existing_step_ids:
                 existing_step_ids.remove(updated_step_id)
-            updated_step_instance, _ = OperationStep.objects.get_or_create(operation=instance, step_id=updated_step_id)
+            updated_step_instance, _ = OperationStep.objects.get_or_create(
+                operation=instance, step_id=updated_step_id)
             step_info = model_meta.get_field_info(updated_step_instance)
             for attr, value in updated_step.items():
                 if attr in step_info.relations and step_info.relations[attr].to_many:
@@ -214,7 +222,8 @@ class OperationSerializer(serializers.ModelSerializer):
             updated_step_instance.save()
 
         for step_for_delete_id in existing_step_ids:
-            step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
+            step_for_delete = OperationStep.objects.get(
+                operation=instance, step_id=step_for_delete_id)
             step_for_delete.delete()
 
         instance.operation_query = query.build_query(operation=instance)
@@ -229,12 +238,14 @@ class OperationSerializer(serializers.ModelSerializer):
         try:
             data_column_keys = data[0].keys()
             first_step = operation.get_operation_steps()[0]
-            columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+            columns = SourceColumnMap.objects.filter(
+                source=first_step.source, name__in=data_column_keys)
             for column in data_column_keys:
                 matching = columns.filter(name=column).first()
-                alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
+                alias = self.create_operation_alias(
+                    operation, column, matching.alias if matching else column)
                 alias.save()
-        except: # FIXME: handle specific errors
+        except:  # FIXME: handle specific errors
             pass
 
     def update_operation_data_aliases(self, operation):
@@ -242,16 +253,20 @@ class OperationSerializer(serializers.ModelSerializer):
         try:
             data_column_keys = data[0].keys()
             first_step = operation.get_operation_steps()[0]
-            columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+            columns = SourceColumnMap.objects.filter(
+                source=first_step.source, name__in=data_column_keys)
             # delete obsolete aliases
-            OperationDataColumnAlias.objects.filter(operation=operation).exclude(column_name__in=data_column_keys).delete()
+            OperationDataColumnAlias.objects.filter(operation=operation).exclude(
+                column_name__in=data_column_keys).delete()
             for column in data_column_keys:
-                existing_alias = OperationDataColumnAlias.objects.filter(operation=operation, column_name=column).first()
+                existing_alias = OperationDataColumnAlias.objects.filter(
+                    operation=operation, column_name=column).first()
                 if not existing_alias:
                     matching = columns.filter(name=column).first()
-                    alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
+                    alias = self.create_operation_alias(
+                        operation, column, matching.alias if matching else column)
                     alias.save()
-        except: # FIXME: handle specific errors
+        except:  # FIXME: handle specific errors
             pass
 
     def create_operation_alias(self, operation, column_name, column_alias):
@@ -265,7 +280,8 @@ class ThemeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Theme
-        fields = ('pk', 'sector', 'name', 'user', 'operation_set', 'created_on', 'updated_on')
+        fields = ('pk', 'sector', 'name', 'user',
+                  'operation_set', 'created_on', 'updated_on')
 
 
 class SectorSerializer(serializers.ModelSerializer):
@@ -274,7 +290,8 @@ class SectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sector
-        fields = ('pk', 'name', 'description', 'theme_set', 'user', 'created_on', 'updated_on')
+        fields = ('pk', 'name', 'description', 'theme_set',
+                  'user', 'created_on', 'updated_on')
 
 
 class PermissionSerializer(serializers.ModelSerializer):
@@ -291,7 +308,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set', 'is_superuser', 'user_permissions')
+        fields = ('id', 'username', 'tag_set', 'operation_set',
+                  'review_set', 'is_superuser', 'user_permissions')
 
 
 class SourceColumnMapSerializer(serializers.ModelSerializer):
@@ -300,7 +318,8 @@ class SourceColumnMapSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SourceColumnMap
-        fields = ('id', 'source', 'name', 'alias', 'description', 'source_name', 'data_type')
+        fields = ('id', 'source', 'name', 'alias',
+                  'description', 'source_name', 'data_type')
 
 
 class UpdateHistorySerializer(serializers.ModelSerializer):
@@ -317,8 +336,10 @@ class UpdateHistorySerializer(serializers.ModelSerializer):
 
 
 class SourceSerializer(serializers.ModelSerializer):
-    columns = SourceColumnMapSerializer(source='sourcecolumnmap_set', many=True, read_only=True)
-    update_history = UpdateHistorySerializer(source='updatehistory_set', many=True, read_only=True)
+    columns = SourceColumnMapSerializer(
+        source='sourcecolumnmap_set', many=True, read_only=True)
+    update_history = UpdateHistorySerializer(
+        source='updatehistory_set', many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     id = serializers.ReadOnlyField(source='pk')
 
@@ -384,7 +405,8 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
     def is_due_to_run_in_5minutes(self, scheduled_event):
         time_threshold = timezone.now() + relativedelta(minutes=5)
         queryset = ScheduledEventRunInstance.objects.filter(
-            (Q(scheduled_event=scheduled_event.id) & Q(start_at__lt=time_threshold) & Q(status='p'))
+            (Q(scheduled_event=scheduled_event.id) & Q(
+                start_at__lt=time_threshold) & Q(status='p'))
         )
         if queryset.exists():
             return queryset.earliest('id')
@@ -398,3 +420,32 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
         if due_instance:
             return due_instance
         return ScheduledEventRunInstance.objects.create(**validated_data)
+
+
+class FrozenDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FrozenData
+        fields = (
+            'id',
+            'parent_db_table',
+            'frozen_db_table',
+            'completed',
+            'active',
+            'comment'
+        )
+
+
+class SavedQueryDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SavedQueryData
+        fields = (
+            'id',
+            'frozen_db_table',
+            'active',
+            'operation',
+            'full_query',
+            'completed',
+            'comment'
+        )
