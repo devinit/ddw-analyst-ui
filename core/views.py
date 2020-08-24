@@ -733,15 +733,17 @@ class FrozenDataList(APIView):
         serializer = FrozenDataSerializer(data=request.data)
         if serializer.is_valid():
             parent_db_table = serializer.validated_data.get('parent_db_table')
-            frozen_db_table = parent_db_table + datetime.now().strftime('%Y%m%d%H%M%S')
+            frozen_db_table = parent_db_table + \
+                datetime.datetime.now().strftime('%Y%m%d%H%M%S')
             serializer.save(user=self.request.user,
                             frozen_db_table=frozen_db_table)
             # Consider doing the below six lines via cron to improve response time
             query_builder = TableQueryBuilder(parent_db_table, "repo")
+            query_builder.select()
             create_query = query_builder.create_table_from_query(
                 frozen_db_table)
             create_result = create_table_from_query_result(create_query)
-            if create_result['result'] == 'success':
+            if create_result[0]['result'] == 'success':
                 serializer.save(completed='c')
                 serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -793,7 +795,7 @@ class SavedQueryDataList(APIView):
     def post(self, request, format=None):
         serializer = SavedQueryDataSerializer(data=request.data)
         if serializer.is_valid():
-            frozen_db_table = "query_data" + datetime.now().strftime('%Y%m%d%H%M%S')
+            frozen_db_table = "query_data" + datetime.datetime.now().strftime('%Y%m%d%H%M%S')
             serializer.save(user=self.request.user,
                             frozen_db_table=frozen_db_table)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

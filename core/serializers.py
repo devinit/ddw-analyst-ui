@@ -423,6 +423,7 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
 
 
 class FrozenDataSerializer(serializers.ModelSerializer):
+    frozen_db_table = serializers.ReadOnlyField()
 
     class Meta:
         model = FrozenData
@@ -437,6 +438,7 @@ class FrozenDataSerializer(serializers.ModelSerializer):
 
 
 class SavedQueryDataSerializer(serializers.ModelSerializer):
+    frozen_db_table = serializers.ReadOnlyField()
 
     class Meta:
         model = SavedQueryData
