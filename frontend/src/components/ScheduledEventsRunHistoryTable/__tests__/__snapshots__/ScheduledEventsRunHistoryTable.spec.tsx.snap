@@ -34,7 +34,9 @@ exports[`<ScheduledEventsRunHistoryTable should match snapshot 1`] = `
           <td>
             January 1, 2020 12:00 AM
           </td>
-          <td />
+          <td
+            data-testid="history-end-date"
+          />
           <td />
         </tr>
       </tbody>
