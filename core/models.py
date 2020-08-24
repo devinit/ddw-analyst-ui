@@ -268,20 +268,33 @@ class ScheduledEventRunInstance(BaseEntity):
 
 class FrozenData(BaseEntity):
     """Stores table names for "frozen" data"""
+    status_choices = (
+        ('p', 'Pending'),
+        ('r', 'Running'),
+        ('c', 'Completed'),
+        ('e', 'Errored'),
+    )
 
     parent_db_table = models.CharField(max_length=200, null=False)
     frozen_db_table = models.CharField(max_length=200, null=False)
-    completed = models.BooleanField(default=False)
+    completed = models.CharField(
+        max_length=1, choices=status_choices, default='p')
     active = models.BooleanField(default=True)
     comment = models.CharField(max_length=200, null=False)
 
 
-class SavedQueryData(FrozenData):
+class SavedQueryData(BaseEntity):
     """Borrows heavily from FrozenData to store query sets """
-    parent_db_table = models.CharField(max_length=200, null=True)
+    status_choices = (
+        ('p', 'Pending'),
+        ('r', 'Running'),
+        ('c', 'Completed'),
+        ('e', 'Errored'),
+    )
     frozen_db_table = models.CharField(max_length=200, null=False)
     active = models.BooleanField(default=True)
     operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
     full_query = models.TextField(null=False)
-    completed = models.BooleanField(default=False)
+    completed = models.CharField(
+        max_length=1, choices=status_choices, default='p')
     comment = models.CharField(max_length=200, null=False)
