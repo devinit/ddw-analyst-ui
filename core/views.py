@@ -26,16 +26,17 @@ from rest_framework.views import APIView
 
 from core import query
 from core.models import (Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
-                        ScheduledEventRunInstance, Sector, Source, Tag, Theme)
+                         ScheduledEventRunInstance, Sector, Source, Tag, Theme, FrozenData,
+                         SavedQueryData)
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
 from core.serializers import (DataSerializer, OperationSerializer,
-                            OperationStepSerializer, OperationDataColumnAliasSerializer,
-                            ReviewSerializer, ScheduledEventRunInstanceSerializer,
-                            ScheduledEventSerializer, SectorSerializer,
-                            SourceSerializer, TagSerializer, ThemeSerializer,
-                            UserSerializer)
+                              OperationStepSerializer, OperationDataColumnAliasSerializer,
+                              ReviewSerializer, ScheduledEventRunInstanceSerializer,
+                              ScheduledEventSerializer, SectorSerializer,
+                              SourceSerializer, TagSerializer, ThemeSerializer,
+                              UserSerializer, FrozenDataSerializer, SavedQueryDataSerializer)
 from data.db_manager import fetch_data, update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
 
@@ -63,7 +64,8 @@ def streaming_script_execute(request):
     if posted_token is not None:
         token_auth = TokenAuthentication()
         try:
-            user, _ = token_auth.authenticate_credentials(posted_token.encode("utf-8"))
+            user, _ = token_auth.authenticate_credentials(
+                posted_token.encode("utf-8"))
             if user.is_authenticated and user.is_superuser:
                 post_status = status.HTTP_200_OK
                 executor = ScriptExecutor(script_name)
@@ -91,6 +93,7 @@ class Echo:
     """An object that implements just the write method of the file-like
     interface.
     """
+
     def write(self, value):
         """Write the value by returning it, instead of storing in a buffer."""
         return value
@@ -98,6 +101,7 @@ class Echo:
 
 class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
+
     def __init__(self, operation):
         self.main_query = query.build_query(operation=operation)[1]
         self.operation = operation
@@ -120,7 +124,8 @@ class StreamingExporter:
     def get_header(self, cursor):
         header = [col[0] for col in cursor.description]
         if self.operation:
-            aliases = OperationDataColumnAlias.objects.filter(operation=self.operation)
+            aliases = OperationDataColumnAlias.objects.filter(
+                operation=self.operation)
             header_aliases = []
             for column in header:
                 alias = aliases.filter(column_name=column).first()
@@ -134,8 +139,10 @@ def streaming_export_view(request, pk):
     try:
         operation = Operation.objects.get(pk=pk)
         exporter = StreamingExporter(operation)
-        response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
-        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(operation.name)
+        response = StreamingHttpResponse(
+            exporter.stream(), content_type="text/csv")
+        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(
+            operation.name)
         return response
     except Operation.DoesNotExist:
         raise Http404
@@ -151,7 +158,8 @@ class ViewData(APIView):
     List all data from executing the operation query.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_object(self, pk):
         try:
@@ -167,7 +175,8 @@ class ViewData(APIView):
         })
         paginator = DataPaginator()
         paginator.set_count(serializer.data['count'])
-        page_data = paginator.paginate_queryset(serializer.data['data'], request)
+        page_data = paginator.paginate_queryset(
+            serializer.data['data'], request)
         return paginator.get_paginated_response(page_data)
 
 
@@ -176,7 +185,8 @@ class PreviewOperationData(APIView):
     Preview data from executing the operation query.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_data(self, request):
         try:
@@ -224,7 +234,8 @@ class ChangePassword(APIView):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            content = {"messages": ["Password successfully changed for user {}.".format(user.username)]}
+            content = {"messages": [
+                "Password successfully changed for user {}.".format(user.username)]}
             post_status = status.HTTP_202_ACCEPTED
         else:
             content = {"validation": form.errors.as_data()}
@@ -234,7 +245,8 @@ class ChangePassword(APIView):
 
 class SectorList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Sector.objects.all()
     serializer_class = SectorSerializer
@@ -245,7 +257,8 @@ class SectorList(generics.ListCreateAPIView):
 
 class SectorDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Sector.objects.all()
     serializer_class = SectorSerializer
@@ -253,7 +266,8 @@ class SectorDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ThemeList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
@@ -264,7 +278,8 @@ class ThemeList(generics.ListCreateAPIView):
 
 class ThemeDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
@@ -275,7 +290,8 @@ class OperationList(generics.ListCreateAPIView):
     This view should return a list of the published operations, including those for the currently authenticated user.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
@@ -297,7 +313,8 @@ class UserOperationList(generics.ListAPIView):
     This view should return a list of all the operations for the currently authenticated user.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
@@ -316,17 +333,20 @@ class UserOperationList(generics.ListAPIView):
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
+
 
 class ViewSourceDatasets(APIView):
     """
     Get all published datasets attached to a specific data source, but not belonging the current user
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
     queryset = Operation.objects.all()
     serializer_class = OperationSerializer
     filter_backends = (filters.SearchFilter,)
@@ -336,10 +356,12 @@ class ViewSourceDatasets(APIView):
         try:
             if self.request.user.is_authenticated:
                 operations = Operation.objects.filter(
-                    ~Q(user=self.request.user) & Q(operationstep__source=pk) & Q(is_draft=False)
+                    ~Q(user=self.request.user) & Q(
+                        operationstep__source=pk) & Q(is_draft=False)
                 ).order_by('-updated_on').distinct()
             else:
-                operations = Operation.objects.filter(is_draft=False).order_by('-updated_on').distinct()
+                operations = Operation.objects.filter(
+                    is_draft=False).order_by('-updated_on').distinct()
             search = request.query_params.get('search')
             if search:
                 return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on').distinct()
@@ -360,6 +382,7 @@ class ViewSourceDatasets(APIView):
         else:
             serializer = OperationSerializer(datasets, many=True)
             return Response(serializer.data)
+
 
 class ViewUserSourceDatasets(APIView):
     """
@@ -396,6 +419,7 @@ class ViewUserSourceDatasets(APIView):
             serializer = OperationSerializer(datasets, many=True)
             return Response(serializer.data)
 
+
 class OperationColumnAlias(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -406,7 +430,8 @@ class OperationColumnAlias(generics.RetrieveUpdateDestroyAPIView):
 
 class ReviewList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -417,7 +442,8 @@ class ReviewList(generics.ListCreateAPIView):
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -425,7 +451,8 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class OperationStepList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = OperationStep.objects.all()
     serializer_class = OperationStepSerializer
@@ -436,7 +463,8 @@ class OperationStepList(generics.ListCreateAPIView):
 
 class OperationStepDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = OperationStep.objects.all()
     serializer_class = OperationStepSerializer
@@ -444,7 +472,8 @@ class OperationStepDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class UserList(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -452,7 +481,8 @@ class UserList(generics.ListAPIView):
 
 class UserDetail(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -479,12 +509,14 @@ class TagDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class SourceList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('indicator', 'indicator_acronym', 'source', 'source_acronym', 'schema', 'description')
+    search_fields = ('indicator', 'indicator_acronym', 'source',
+                     'source_acronym', 'schema', 'description')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -492,7 +524,8 @@ class SourceList(generics.ListCreateAPIView):
 
 class SourceDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
@@ -506,6 +539,7 @@ class ScheduledEventList(APIView):
     """
     List all Scheduled Events, or create a new Scheduled Event.
     """
+
     def get(self, request, format=None):
         scheduled_events = ScheduledEvent.objects.all().order_by('-start_date')
         if request.query_params.get('limit', None) is not None or request.query_params.get('offset', None) is not None:
@@ -532,11 +566,12 @@ class ScheduledEventRunInstanceHistory(APIView):
 
     Create ScheduledEventRunInstances
     """
+
     def get_object(self, pk, request):
         try:
             status = request.query_params.get('status', None)
             if status:
-                return ScheduledEventRunInstance.objects.filter(Q(scheduled_event=pk) & Q(status = status)).order_by('-start_at')
+                return ScheduledEventRunInstance.objects.filter(Q(scheduled_event=pk) & Q(status=status)).order_by('-start_at')
             else:
                 return ScheduledEventRunInstance.objects.filter(scheduled_event=pk).order_by('-start_at')
         except ScheduledEventRunInstance.DoesNotExist:
@@ -547,12 +582,14 @@ class ScheduledEventRunInstanceHistory(APIView):
         if self.request.query_params.get('limit', None) is not None or self.request.query_params.get('offset', None) is not None:
             pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
             paginator = pagination_class()
-            page = paginator.paginate_queryset(scheduled_event_run_instance, request)
+            page = paginator.paginate_queryset(
+                scheduled_event_run_instance, request)
             serializer = ScheduledEventRunInstanceSerializer(page, many=True)
 
             return paginator.get_paginated_response(serializer.data)
         else:
-            serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, many=True)
+            serializer = ScheduledEventRunInstanceSerializer(
+                scheduled_event_run_instance, many=True)
             return Response(serializer.data)
 
     def get_post_response(self, serializer, request):
@@ -591,6 +628,7 @@ class ScheduledEventRunInstanceDetail(APIView):
     """
     Get and update ScheduledEventRunInstances using the primary key
     """
+
     def get_object(self, pk):
         try:
             return ScheduledEventRunInstance.objects.get(pk=pk)
@@ -599,12 +637,14 @@ class ScheduledEventRunInstanceDetail(APIView):
 
     def get(self, request, pk, format=None):
         scheduled_event_run_instance = self.get_object(pk)
-        serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance)
+        serializer = ScheduledEventRunInstanceSerializer(
+            scheduled_event_run_instance)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
         scheduled_event_run_instance = self.get_object(pk)
-        serializer = ScheduledEventRunInstanceSerializer(scheduled_event_run_instance, data=request.data, partial=True)
+        serializer = ScheduledEventRunInstanceSerializer(
+            scheduled_event_run_instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -613,6 +653,7 @@ class ScheduledEventRunInstanceDetail(APIView):
 
 class TableStreamingExporter(StreamingExporter):
     """Sets up generator for streaming PSQL content"""
+
     def __init__(self, main_query):
         self.main_query = main_query
 
@@ -635,9 +676,12 @@ def streaming_tables_export_view(request, table_name):
         return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
 
     table_query_builder = TableQueryBuilder(table_name, "repo")
-    exporter = TableStreamingExporter(table_query_builder.select().get_sql_without_limit())
-    response = StreamingHttpResponse(exporter.stream(), content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(table_name)
+    exporter = TableStreamingExporter(
+        table_query_builder.select().get_sql_without_limit())
+    response = StreamingHttpResponse(
+        exporter.stream(), content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(
+        table_name)
     return response
 
 
@@ -664,6 +708,107 @@ class UpdateTableAPI(APIView):
         insert_query = table_query_builder.insert(params)
 
         return_result = update_table_from_tuple([delete_query, insert_query])
-        return_status_code = status.HTTP_500_INTERNAL_SERVER_ERROR if return_result[0]['result'] == 'error' else status.HTTP_200_OK
+        return_status_code = status.HTTP_500_INTERNAL_SERVER_ERROR if return_result[
+            0]['result'] == 'error' else status.HTTP_200_OK
 
         return HttpResponse(json.dumps(return_result), content_type='application/json', status=return_status_code)
+
+
+class FrozenDataList(APIView):
+    """ List all FrozenData or create a new one"""
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    def get(self, request, format=None):
+        frozen_data = FrozenData.objects.all()
+        serializer = FrozenDataSerializer(frozen_data, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = FrozenDataSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FrozenDataDetail(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    def get_object(self, pk):
+        try:
+            return FrozenData.objects.get(pk=pk)
+        except FrozenData.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        frozen_data = self.get_object(pk)
+        serializer = FrozenDataSerializer(frozen_data)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        frozen_data = self.get_object(pk)
+        serializer = FrozenDataSerializer(
+            frozen_data, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        frozen_data = self.get_object(pk)
+        frozen_data.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SavedQueryDataList(APIView):
+    """ List all SavedQueryData or create a new one"""
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    def get(self, request, format=None):
+        saved_query_data = SavedQueryData.objects.all()
+        serializer = SavedQueryDataSerializer(saved_query_data, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = SavedQueryDataSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SavedQueryDataDetail(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+
+    def get_object(self, pk):
+        try:
+            return SavedQueryData.objects.get(pk=pk)
+        except SavedQueryData.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        saved_query_data = self.get_object(pk)
+        serializer = SavedQueryDataSerializer(saved_query_data)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        saved_query_data = self.get_object(pk)
+        serializer = SavedQueryDataSerializer(
+            saved_query_data, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        saved_query_data = self.get_object(pk)
+        saved_query_data.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
