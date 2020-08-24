@@ -15,7 +15,7 @@ exports[`<ScheduledEventsRunHistoryTableRow should match snapshot 1`] = `
     <td>
       <button
         class="btn-danger btn btn-link btn-sm"
-        data-testid="logsbutton"
+        data-testid="logs-button"
         type="button"
       >
         <i

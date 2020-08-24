@@ -9,8 +9,9 @@ import { ScheduledEventsTableCard } from '../ScheduledEventsTableCard';
 
 describe('<ScheduledEventsTableCard', () => {
   afterEach(cleanup);
-  const { container } = render(<ScheduledEventsTableCard />);
+
   it('should match snapshot', () => {
+    const { container } = render(<ScheduledEventsTableCard />);
     expect(container).toMatchSnapshot();
   });
 });

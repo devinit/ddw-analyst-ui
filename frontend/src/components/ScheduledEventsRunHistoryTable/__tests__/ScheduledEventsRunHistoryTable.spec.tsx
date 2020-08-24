@@ -12,13 +12,14 @@ describe('<ScheduledEventsRunHistoryTable', () => {
   const data: ScheduledEventRunHistory[] = [
     {
       scheduled_event: 1,
-      start_at: '',
+      start_at: new Date('2020-01-01').toISOString(),
       status: 'pending',
     },
   ];
   afterEach(cleanup);
-  const { container } = render(<ScheduledEventsRunHistoryTable data={data} />);
+
   it('should match snapshot', () => {
+    const { container } = render(<ScheduledEventsRunHistoryTable data={data} />);
     expect(container).toMatchSnapshot();
   });
 });

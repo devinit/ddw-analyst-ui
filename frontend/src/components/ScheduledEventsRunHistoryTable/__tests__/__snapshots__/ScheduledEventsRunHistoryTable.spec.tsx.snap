@@ -32,7 +32,7 @@ exports[`<ScheduledEventsRunHistoryTable should match snapshot 1`] = `
             />
           </td>
           <td>
-            Invalid date
+            January 1, 2020 12:00 AM
           </td>
           <td />
           <td />

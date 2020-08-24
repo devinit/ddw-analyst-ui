@@ -19,14 +19,13 @@ describe('<ScheduledEventsRunHistoryTableRow', () => {
   afterEach(cleanup);
   const tablebody = document.createElement('tbody');
 
-  const { container } = render(
-    <ScheduledEventsRunHistoryTableRow history={history} onViewLogs={onViewLogs} />,
-    {
-      container: document.body.appendChild(tablebody),
-    },
-  );
-
   it('should match snapshot', () => {
+    const { container } = render(
+      <ScheduledEventsRunHistoryTableRow history={history} onViewLogs={onViewLogs} />,
+      {
+        container: document.body.appendChild(tablebody),
+      },
+    );
     expect(container).toMatchSnapshot();
   });
 
@@ -35,7 +34,7 @@ describe('<ScheduledEventsRunHistoryTableRow', () => {
       <ScheduledEventsRunHistoryTableRow history={history} onViewLogs={onViewLogs} />,
       { container: document.body.appendChild(tablebody) },
     );
-    fireEvent.click(getByTestId('logsbutton'));
+    fireEvent.click(getByTestId('logs-button'));
     expect(onViewLogs).toHaveBeenCalledTimes(1);
   });
 });

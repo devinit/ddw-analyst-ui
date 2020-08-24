@@ -29,7 +29,7 @@ describe('<ScheduledEventsTableRow', () => {
     const { getByTestId } = render(<ScheduledEventsTableRow id={1} event={event} />, {
       container: document.body.appendChild(tablebody),
     });
-    const button = getByTestId('testruninstance');
+    const button = getByTestId('sche-events-table-btn');
     fireEvent.click(button);
     expect(button.innerHTML).toEqual('Creating instance...');
   });
