@@ -13,7 +13,7 @@ describe('<ScheduledEventsRunHistoryTableRow', () => {
   const history: ScheduledEventRunHistory = {
     scheduled_event: 1,
     start_at: new Date('2020-01-01').toISOString(),
-    status: 'pending',
+    status: 'p',
     logs: 'set of logs',
   };
   afterEach(cleanup);
@@ -29,13 +29,17 @@ describe('<ScheduledEventsRunHistoryTableRow', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('calls the onViewLogs function when logs button is clicked', () => {
+  it('displays logs if logs button is clicked', () => {
+    const onClickInfo = jest.fn();
     const { getByTestId } = render(
-      <ScheduledEventsRunHistoryTableRow history={history} onViewLogs={onViewLogs} />,
+      <ScheduledEventsRunHistoryTableRow history={history} onViewLogs={onViewLogs}>
+        <button onClick={onClickInfo}></button>
+      </ScheduledEventsRunHistoryTableRow>,
       { container: document.body.appendChild(tablebody) },
     );
     fireEvent.click(getByTestId('logs-button'));
     expect(onViewLogs).toHaveBeenCalledTimes(1);
+    expect(onViewLogs).toHaveBeenCalledWith(history.logs);
   });
 
   it('should not render logs button if onViewLogs is undefined', () => {
@@ -51,7 +55,7 @@ describe('<ScheduledEventsRunHistoryTableRow', () => {
       scheduled_event: 1,
       start_at: new Date('2020-01-01').toISOString(),
       ended_at: new Date('2020-08-01').toISOString(),
-      status: 'pending',
+      status: 'p',
       logs: 'set of logs',
     };
     const { getByTestId } = render(<ScheduledEventsRunHistoryTableRow history={history} />, {
