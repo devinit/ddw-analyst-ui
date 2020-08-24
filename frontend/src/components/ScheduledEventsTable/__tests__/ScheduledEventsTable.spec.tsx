@@ -18,14 +18,15 @@ describe('<ScheduledEventsTable', () => {
       interval: 5,
       interval_type: 'secs',
       repeat: true,
-      start_date: '',
+      start_date: new Date('2020-01-01').toISOString(),
     },
   ];
   afterEach(cleanup);
-  const { container } = render(
-    <ScheduledEventsTable currentPage={1} pageLimit={5} events={events} />,
-  );
+
   it('should match snapshot', () => {
+    const { container } = render(
+      <ScheduledEventsTable currentPage={1} pageLimit={5} events={events} />,
+    );
     expect(container).toMatchSnapshot();
   });
 });

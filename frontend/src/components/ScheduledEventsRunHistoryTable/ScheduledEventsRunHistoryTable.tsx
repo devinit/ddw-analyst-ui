@@ -22,15 +22,9 @@ export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRun
   const onViewLogs = (logs: string): void => setInfo(logs);
   const onModalHide = () => setInfo('');
   const renderRows = (): ReactNode =>
-    props.data
-      ? props.data.map((history: ScheduledEventRunHistory, index: number) => (
-          <ScheduledEventsRunHistoryTableRow
-            key={index}
-            history={history}
-            onViewLogs={onViewLogs}
-          />
-        ))
-      : null;
+    props.data.map((history: ScheduledEventRunHistory, index: number) => (
+      <ScheduledEventsRunHistoryTableRow key={index} history={history} onViewLogs={onViewLogs} />
+    ));
 
   return (
     <Table responsive striped>

@@ -35,7 +35,7 @@ export const ScheduledEventsRunHistoryTableRow: FunctionComponent<ScheduledEvent
             variant="link"
             className="btn-danger"
             onClick={onClickInfo}
-            data-testid="logsbutton"
+            data-testid="logs-button"
           >
             <i className="material-icons" data-testid="info-trigger">
               info
