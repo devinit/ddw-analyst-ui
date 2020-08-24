@@ -5,8 +5,10 @@ exports[`<ScheduledEventsRunHistoryTableRow should match snapshot 1`] = `
   <tr>
     <td>
       <span
-        class="badge"
-      />
+        class="badge badge-secondary"
+      >
+        PENDING
+      </span>
     </td>
     <td>
       January 1, 2020 12:00 AM
