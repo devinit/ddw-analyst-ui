@@ -37,8 +37,9 @@ from core.serializers import (DataSerializer, OperationSerializer,
                               ScheduledEventSerializer, SectorSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
                               UserSerializer, FrozenDataSerializer, SavedQueryDataSerializer)
-from data.db_manager import fetch_data, update_table_from_tuple
+from data.db_manager import fetch_data, update_table_from_tuple, create_table_from_query_result
 from data_updates.utils import ScriptExecutor, list_update_scripts
+import datetime
 
 
 class ListUpdateScripts(APIView):
@@ -728,7 +729,18 @@ class FrozenDataList(APIView):
     def post(self, request, format=None):
         serializer = FrozenDataSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=self.request.user)
+            parent_db_table = serializer.validated_data.get('parent_db_table')
+            frozen_db_table = parent_db_table + datetime.now().strftime('%Y%m%d%H%M%S')
+            serializer.save(user=self.request.user,
+                            frozen_db_table=frozen_db_table)
+            # Consider doing the below six lines via cron to improve response time
+            query_builder = TableQueryBuilder(parent_db_table, "repo")
+            create_query = query_builder.create_table_from_query(
+                frozen_db_table)
+            create_result = create_table_from_query_result(create_query)
+            if create_result['result'] == 'success':
+                serializer.save(completed='c')
+                serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -778,7 +790,9 @@ class SavedQueryDataList(APIView):
     def post(self, request, format=None):
         serializer = SavedQueryDataSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=self.request.user)
+            frozen_db_table = "query_data" + datetime.now().strftime('%Y%m%d%H%M%S')
+            serializer.save(user=self.request.user,
+                            frozen_db_table=frozen_db_table)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

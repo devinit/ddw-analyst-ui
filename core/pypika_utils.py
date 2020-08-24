@@ -305,9 +305,3 @@ class QueryBuilder:
 
     def get_sql_without_limit(self):
         return self.current_query.get_sql()
-
-    def create_table_from_query(self, table_name):
-        # CREATE TABLE table_name AS query
-        select = self.current_query
-        create_table = Query.create_table(table_name).as_select(select)
-        return create_table
