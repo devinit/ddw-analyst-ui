@@ -27,5 +27,5 @@ class TableQueryBuilder(pypika_utils.QueryBuilder):
         # CREATE TABLE table_name AS query
         select = self.current_query
         create_table = pypika_utils.Query.create_table(
-            table_name).as_select(select)
+            table_name).as_select(select).get_sql()
         return create_table
