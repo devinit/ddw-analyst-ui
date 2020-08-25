@@ -775,6 +775,7 @@ class FrozenDataDetail(APIView):
     def delete(self, request, pk, format=None):
         frozen_data = self.get_object(pk)
         frozen_data.delete()
+        # To do - Delete frozen_db_table after deleting frozen entry
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
