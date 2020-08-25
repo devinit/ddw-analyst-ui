@@ -16,8 +16,8 @@ describe('<ScheduledEventsTableRow', () => {
     description: null,
     enabled: true,
     interval: 2,
-    start_date: '',
-    interval_type: 'secs',
+    start_date: new Date('2020-01-01').toISOString(),
+    interval_type: 'sec',
     repeat: true,
   };
   it('should take a snapshot', () => {
