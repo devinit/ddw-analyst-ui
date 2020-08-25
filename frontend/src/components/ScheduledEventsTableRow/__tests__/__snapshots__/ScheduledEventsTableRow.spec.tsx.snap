@@ -32,13 +32,13 @@ exports[`<ScheduledEventsTableRow should take a snapshot 1`] = `
     </div>
   </td>
   <td>
-    Invalid date
+    January 1, 2020
      at
      
-    Invalid date
+    12:00 AM
   </td>
   <td>
-    Every 2 undefined
+    Every 2 Seconds
   </td>
   <td>
     <button
