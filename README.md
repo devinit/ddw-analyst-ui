@@ -131,9 +131,13 @@ To precode and join the dependency tables, we shall run:
 To update the manual FTS tables with missing codelist items, we shall finally run the below script
 5. `docker-compose exec web data_updates/fts_diff.sh`
 
+We can run 4 and 5 above in one step by using:
+`docker-compose exec web data_updates/finalise_precode.sh`
+This will be the preferred way of running them from the front end as a scheduled event.
+
 NOTE:
 1. All the above scripts should be run in that exact order on first run / deployment.
-2. After any update (i.e after running the script in 3 above, or an analyst using the https://ddw.devinit.org/update/ feature) is made to the codelists, run the last two scripts. These can be run from the `Scheduled Events` on the front end.
+2. After any update (i.e after running the script in 3 above, or an analyst using the https://ddw.devinit.org/update/ feature) is made to the codelists, run `docker-compose exec web data_updates/finalise_precode.sh` which combines 4 and 5 into one step. This can be run from the `Scheduled Events` on the front end.
 
 
 ### End-To-End Testing
