@@ -33,4 +33,13 @@ describe('<ScheduledEventsTableRow', () => {
     fireEvent.click(button);
     expect(button.innerHTML).toEqual('Creating instance...');
   });
+
+  xit('changes row colour on table row click', () => {
+    const { getByTestId } = render(<ScheduledEventsTableRow id={1} event={event} />, {
+      container: document.body.appendChild(tablebody),
+    });
+    const row = getByTestId('sche-events-table-row');
+    fireEvent.click(row);
+    expect(row).toHaveClass('table-danger');
+  });
 });

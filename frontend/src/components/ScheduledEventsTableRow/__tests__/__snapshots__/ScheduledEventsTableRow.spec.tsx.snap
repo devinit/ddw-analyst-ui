@@ -2,6 +2,7 @@
 
 exports[`<ScheduledEventsTableRow should take a snapshot 1`] = `
 <tr
+  data-testid="sche-events-table-row"
   onClick={[Function]}
 >
   <td
