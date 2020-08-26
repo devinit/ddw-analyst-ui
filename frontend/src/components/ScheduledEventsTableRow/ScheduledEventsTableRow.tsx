@@ -53,7 +53,7 @@ export const ScheduledEventsTableRow: FunctionComponent<ScheduledEventsTableRowP
       <BasicModal show={modalShow} onHide={() => setModalShow(false)}>
         <p>{modalDescription}</p>
       </BasicModal>
-      <tr onClick={onRowClick} className={props.classNames}>
+      <tr onClick={onRowClick} className={props.classNames} data-testid="sche-events-table-row">
         <td className="text-center">{props.id}</td>
         <td>{props.event.name}</td>
         <td>{props.event.description}</td>

@@ -38,6 +38,7 @@ exports[`<ScheduledEventsTable should match snapshot 1`] = `
       <tbody>
         <tr
           class=""
+          data-testid="sche-events-table-row"
         >
           <td
             class="text-center"
