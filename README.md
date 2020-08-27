@@ -115,6 +115,31 @@ Configure a cronjob to run the `run-schedules.sh` script which in turn runs the 
 
     * * * * * /root/run-schedules.sh >/root/cron-logs.txt 2>&1
 
+### FTS Precode feature set up and use
+On first run (i.e if you have used a database dump without FTS Precoded tables included or a clean DB set up) run the following scripts;
+1. `docker-compose exec web data_updates/manual_data.sh`
+2. `docker-compose exec web data_updates/manual_data_fts.sh` which adds the FTS metadata into the DB
+
+The above should only be run once, on initial deployment of the feature, and only if using a clean and fresh DB set up with no data or using a DB dump that does not include the FTS metadata
+
+To pull the latest FTS updates from the APIs, we shall run
+3. `docker-compose exec web data_updates/fts.sh`. Note that at this point the analyst may download the updated codelists and edit them, then re-upload them using the https://ddw.devinit.org/update/ feature
+
+To precode and join the dependency tables, we shall run:
+4. `docker-compose exec web data_updates/fts_precode.sh`. This should be run everytime there is a change made to the codelist entries or everytime the script in 3 above is run.
+
+To update the manual FTS tables with missing codelist items, we shall finally run the below script
+5. `docker-compose exec web data_updates/fts_diff.sh`
+
+We can run 4 and 5 above in one step by using:
+`docker-compose exec web data_updates/finalise_precode.sh`
+This will be the preferred way of running them from the front end as a scheduled event.
+
+NOTE:
+1. All the above scripts should be run in that exact order on first run / deployment.
+2. After any update (i.e after running the script in 3 above, or an analyst using the https://ddw.devinit.org/update/ feature) is made to the codelists, run `docker-compose exec web data_updates/finalise_precode.sh` which combines 4 and 5 into one step. This can be run from the `Scheduled Events` on the front end.
+
+
 ### End-To-End Testing
 
 This is set up to run with [Cypress](https://www.cypress.io/), and only locally at the moment.
