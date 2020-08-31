@@ -15,7 +15,57 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            Datasets list goes here
+            <div class="col-md-12">
+                <div class="card-body">
+                  <div class="accordion" id="dataset-accordion">
+                    <div class="card">
+                      <div id="datasetOne">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link" type="button" style="color: #3c4858" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Dataset 1
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseOne" class="collapse" aria-labelledby="datasetOne" data-parent="#dataset-accordion">
+                        <div class="card-body">
+                          Dataset 1
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div id="datasetTwo">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link collapsed" type="button" style="color: #3c4858" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Dataset 2
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseTwo" class="collapse" aria-labelledby="datasetTwo" data-parent="#dataset-accordion">
+                        <div class="card-body">
+                          Dataset 2
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div id="datasetThree">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link collapsed" type="button" style="color: #3c4858" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Dataset 3
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseThree" class="collapse" aria-labelledby="datasetThree" data-parent="#dataset-accordion">
+                        <div class="card-body">
+                         Dataset 3
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% include 'frontend/designs/includes/partials/pagination.html' %}
+                </div>
+            </div>
+
           </div>
         </div>
       </div>
