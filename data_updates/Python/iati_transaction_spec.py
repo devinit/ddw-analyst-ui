@@ -960,6 +960,9 @@ class IatiFlat(object):
                     elif tag_code == "COVID-19":
                         x_covid = True
 
+                    x_recipient_code_list = []
+                    x_recipient_percentage_list = []
+                    x_recipient_type_list = []
                     x_country_code_list = x_country_code.split("|")
                     x_country_percentage_list = x_country_percentage.split("|")
                     x_region_code_list = x_region_code.split("|")
