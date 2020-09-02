@@ -971,6 +971,8 @@ class IatiFlat(object):
                         x_country_percentage_list = [""] * len(x_country_code_list)
                     else:
                         x_country_percentage_list = x_country_percentage.split("|")
+                    while len(x_country_code_list) < len(x_country_percentage_list):
+                        x_country_code_list += [""]
                     if x_region_code == "":
                         x_region_code_list = list()
                     else:
@@ -979,6 +981,8 @@ class IatiFlat(object):
                         x_region_percentage_list = [""] * len(x_region_code_list)
                     else:
                         x_region_percentage_list = x_region_percentage.split("|")
+                    while len(x_region_code_list) < len(x_region_percentage_list):
+                        x_region_code_list += [""]
                     if len(x_country_code_list) > 0:
                         x_recipient_code_list = x_country_code_list.copy()
                         x_recipient_percentage_list = x_country_percentage_list.copy()
@@ -1018,7 +1022,6 @@ class IatiFlat(object):
                     x_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["transaction_type"])
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
-
 
                     x_sector_code_list = x_sector_code.split("|")
                     x_sector_percentage_list = x_sector_percentage.split("|")
