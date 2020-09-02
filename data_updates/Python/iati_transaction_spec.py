@@ -1019,18 +1019,10 @@ class IatiFlat(object):
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
-                    if x_sector_code == "":
-                        x_sector_code_list = list()
-                    else:
-                        x_sector_code_list = x_sector_code.split("|")
-                    if x_sector_percentage == "":
-                        x_sector_percentage_list = [""] * len(x_sector_code_list)
-                    else:
-                        x_sector_percentage_list = x_sector_percentage.split("|")
-                    if x_sector_vocabulary == "":
-                        x_sector_vocabulary_list = [""] * len(x_sector_code_list)
-                    else:
-                        x_sector_vocabulary_list = x_sector_vocabulary.split("|")
+
+                    x_sector_code_list = x_sector_code.split("|")
+                    x_sector_percentage_list = x_sector_percentage.split("|")
+                    x_sector_vocabulary_list = x_sector_vocabulary.split("|")
                     x_default_vocabulary_transaction_level = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
                     if "1" in x_sector_vocabulary_list:
                         x_default_vocabulary_transaction_level = "1"
