@@ -968,7 +968,7 @@ class IatiFlat(object):
                     else:
                         x_country_code_list = x_country_code.split("|")
                     if x_country_percentage == "":
-                        x_country_percentage_list = list()
+                        x_country_percentage_list = [""] * len(x_country_code_list)
                     else:
                         x_country_percentage_list = x_country_percentage.split("|")
                     if x_region_code == "":
@@ -976,7 +976,7 @@ class IatiFlat(object):
                     else:
                         x_region_code_list = x_region_code.split("|")
                     if x_region_percentage == "":
-                        x_region_percentage_list = list()
+                        x_region_percentage_list = [""] * len(x_region_code_list)
                     else:
                         x_region_percentage_list = x_region_percentage.split("|")
                     if len(x_country_code_list) > 0:
@@ -1019,8 +1019,16 @@ class IatiFlat(object):
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
+                    if x_sector_code == "":
+                        x_sector_code_list = list()
+                    else:
+                        x_sector_code_list = x_sector_code.split("|")
+                    if x_sector_percentage == "":
+                        x_sector_percentage_list = [""] * len(x_sector_code_list)
+                    else:
+                        x_sector_percentage_list = x_sector_percentage.split("|")
                     if x_sector_vocabulary == "":
-                        x_sector_vocabulary_list = list()
+                        x_sector_vocabulary_list = [""] * len(x_sector_code_list)
                     else:
                         x_sector_vocabulary_list = x_sector_vocabulary.split("|")
                     x_default_vocabulary_transaction_level = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
@@ -1028,14 +1036,6 @@ class IatiFlat(object):
                         x_default_vocabulary_transaction_level = "1"
                     elif "2" in x_sector_vocabulary_list:
                         x_default_vocabulary_transaction_level = "2"
-                    if x_sector_code == "":
-                        x_sector_code_list = list()
-                    else:
-                        x_sector_code_list = x_sector_code.split("|")
-                    if x_sector_percentage == "":
-                        x_sector_percentage_list = list()
-                    else:
-                        x_sector_percentage_list = x_sector_percentage.split("|")
 
                     if len(x_recipient_code_list) > 0:  # Has recipients
                         for k in range(0, len(x_recipient_code_list)):
