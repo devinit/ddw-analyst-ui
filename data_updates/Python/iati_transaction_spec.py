@@ -963,10 +963,10 @@ class IatiFlat(object):
                     x_recipient_code_list = []
                     x_recipient_percentage_list = []
                     x_recipient_type_list = []
-                    x_country_code_list = list(filter("", x_country_code.split("|")))
-                    x_country_percentage_list = list(filter("", x_country_percentage.split("|")))
-                    x_region_code_list = list(filter("", x_region_code.split("|")))
-                    x_region_percentage_list = list(filter("", x_region_percentage.split("|")))
+                    x_country_code_list = list(filter(None, x_country_code.split("|")))
+                    x_country_percentage_list = list(filter(None, x_country_percentage.split("|")))
+                    x_region_code_list = list(filter(None, x_region_code.split("|")))
+                    x_region_percentage_list = list(filter(None, x_region_percentage.split("|")))
                     if len(x_country_code_list) > 0:
                         x_recipient_code_list = x_country_code_list.copy()
                         x_recipient_percentage_list = x_country_percentage_list.copy()
@@ -985,9 +985,6 @@ class IatiFlat(object):
                         x_recipient_code_list = x_region_code_list.copy()
                         x_recipient_percentage_list = x_region_percentage_list.copy()
                         x_recipient_type_list = ["Region"] * len(x_region_code_list)
-
-                    if iati_identifier == "US-GOV-16-389-AID-EGEE-T-14-00001":
-                        import pdb; pdb.set_trace()
 
                     x_reporting_org_type = ""
                     x_transaction_type = ""
@@ -1010,14 +1007,14 @@ class IatiFlat(object):
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
-                    x_sector_vocabulary_list = list(filter("", x_sector_vocabulary.split("|")))
+                    x_sector_vocabulary_list = list(filter(None, x_sector_vocabulary.split("|")))
                     x_default_vocabulary_transaction_level = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
                     if "1" in x_sector_vocabulary_list:
                         x_default_vocabulary_transaction_level = "1"
                     elif "2" in x_sector_vocabulary_list:
                         x_default_vocabulary_transaction_level = "2"
-                    x_sector_code_list = list(filter("", x_sector_code.split("|")))
-                    x_sector_percentage_list = list(filter("", x_sector_percentage.split("|")))
+                    x_sector_code_list = list(filter(None, x_sector_code.split("|")))
+                    x_sector_percentage_list = list(filter(None, x_sector_percentage.split("|")))
 
                     if len(x_recipient_code_list) > 0:  # Has recipients
                         for k in range(0, len(x_recipient_code_list)):
@@ -1093,14 +1090,6 @@ class IatiFlat(object):
                             x_recipient_transaction_value = transaction_value
                             x_recipient_transaction_value_usd = ""
                     else:  # No recipients
-                        # Reset recipient-split specific defaults
-                        x_recipient_number = 1
-                        x_recipient_code = ""
-                        x_recipient = ""
-                        x_recipient_percentage = ""
-                        x_recipient_type = ""
-                        x_recipient_transaction_value = transaction_value
-                        x_recipient_transaction_value_usd = ""
                         if transaction_convertable:
                             if x_recipient_transaction_value and x_currency:
                                 if x_currency in self.dictionaries["ratedf"]:
