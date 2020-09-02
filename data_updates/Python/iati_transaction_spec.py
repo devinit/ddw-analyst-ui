@@ -697,8 +697,6 @@ class IatiFlat(object):
                 if code is not None:
                     recipient_country_code_list.append(code)
                     recipient_country_percentage_list.append(percentage)
-            recipient_country_code = "|".join(recipient_country_code_list)
-            recipient_country_percentage = "|".join(recipient_country_percentage_list)
 
             recipient_region_vocabulary_list = list()
             recipient_region_code_list = list()
@@ -718,9 +716,6 @@ class IatiFlat(object):
                     recipient_region_vocabulary_list.append(vocab)
                     recipient_region_code_list.append(code)
                     recipient_region_percentage_list.append(percentage)
-            recipient_region_vocabulary = "|".join(recipient_region_vocabulary_list)
-            recipient_region_code = "|".join(recipient_region_code_list)
-            recipient_region_percentage = "|".join(recipient_region_percentage_list)
 
             sector_code_list = list()
             sector_percentage_list = list()
@@ -742,9 +737,6 @@ class IatiFlat(object):
                     sector_code_list.append(code)
                     sector_percentage_list.append(percentage)
                     sector_vocabulary_list.append(vocab)
-            sector_code = "|".join(sector_code_list)
-            sector_percentage = "|".join(sector_percentage_list)
-            sector_vocabulary = "|".join(sector_vocabulary_list)
 
             humanitarian = default_first(activity.xpath("@humanitarian"))
             humanitarian_scope_narrative = default_first(activity.xpath("humanitarian-scope/narrative/text()"))
@@ -812,41 +804,40 @@ class IatiFlat(object):
 
                     transaction_recipient_country_code = default_first(transaction.xpath("recipient-country/@code"))
                     if transaction_recipient_country_code:
-                        x_country_code = transaction_recipient_country_code
-                        x_country_percentage = "100"
+                        x_country_code_list = [transaction_recipient_country_code]
+                        x_country_percentage_list = ["100"]
                     else:
-                        x_country_code = recipient_country_code
-                        x_country_percentage = recipient_country_percentage
+                        x_country_code_list = recipient_country_code_list.copy()
+                        x_country_percentage_list = recipient_country_percentage_list.copy()
 
                     transaction_recipient_region_code = default_first(transaction.xpath("recipient-region/@code"))
                     transaction_recipient_region_vocabulary = default_first(transaction.xpath("recipient-region/@vocabulary"))
                     if transaction_recipient_region_code:
-                        x_region_code = transaction_recipient_region_code
-                        x_region_vocabulary = transaction_recipient_region_vocabulary
-                        x_region_percentage = "100"
+                        x_region_code_list = [transaction_recipient_region_code]
+                        x_region_vocabulary_list = [transaction_recipient_region_vocabulary]
+                        x_region_percentage_list = ["100"]
                     else:
-                        x_region_code = recipient_region_code
-                        x_region_vocabulary = recipient_region_vocabulary
-                        x_region_percentage = recipient_region_percentage
-                    if recipient_country_percentage_sum >= 100 or transaction_recipient_country_code:
-                        x_region_code = ""
-                        x_region_vocabulary = ""
-                        x_region_percentage = ""
+                        x_region_code_list = recipient_region_code_list.copy()
+                        x_region_vocabulary_list = recipient_region_vocabulary_list.copy()
+                        x_region_percentage_list = recipient_region_percentage_list.copy()
 
                     transaction_sector_code = default_first(transaction.xpath("sector/@code"))
                     transaction_sector_vocabulary = default_first(transaction.xpath("sector/@vocabulary"))
                     if transaction_sector_code:
-                        x_sector_code = transaction_sector_code
-                        x_sector_percentage = "100"
-                        x_sector_vocabulary = ""
+                        x_sector_code_list = [transaction_sector_code]
+                        x_sector_percentage_list = ["100"]
+                        x_sector_vocabulary_list = [transaction_sector_vocabulary]
                     else:
-                        x_sector_code = sector_code
-                        x_sector_percentage = sector_percentage
-                        x_sector_vocabulary = sector_vocabulary
-                    if x_sector_vocabulary == "" and len(x_sector_code.split("|")[0]) == 5:
-                        x_sector_vocabulary = "1"
-                    elif x_sector_vocabulary == "":
-                        x_sector_vocabulary = "97"
+                        x_sector_code_list = sector_code_list.copy()
+                        x_sector_percentage_list = sector_percentage_list.copy()
+                        x_sector_vocabulary_list = sector_vocabulary_list.copy()
+                    for j in range(0, len(x_sector_code_list)):
+                        x_sector_code = x_sector_code_list[j]
+                        x_sector_vocabulary = x_sector_vocabulary_list[j]
+                        if x_sector_vocabulary == "" and len(x_sector_code) == 5:
+                            x_sector_vocabulary_list[j] = "1"
+                        elif x_sector_vocabulary == "":
+                            x_sector_vocabulary_list[j] = "97"
 
                     transaction_type_code = default_first(transaction.xpath("transaction-type/@code"))
                     transaction_date_iso_date = default_first(transaction.xpath("transaction-date/@iso-date"))
@@ -963,26 +954,6 @@ class IatiFlat(object):
                     x_recipient_code_list = list()
                     x_recipient_percentage_list = list()
                     x_recipient_type_list = list()
-                    if x_country_code == "":
-                        x_country_code_list = list()
-                    else:
-                        x_country_code_list = x_country_code.split("|")
-                    if x_country_percentage == "":
-                        x_country_percentage_list = [""] * len(x_country_code_list)
-                    else:
-                        x_country_percentage_list = x_country_percentage.split("|")
-                    while len(x_country_code_list) < len(x_country_percentage_list):
-                        x_country_code_list += [""]
-                    if x_region_code == "":
-                        x_region_code_list = list()
-                    else:
-                        x_region_code_list = x_region_code.split("|")
-                    if x_region_percentage == "":
-                        x_region_percentage_list = [""] * len(x_region_code_list)
-                    else:
-                        x_region_percentage_list = x_region_percentage.split("|")
-                    while len(x_region_code_list) < len(x_region_percentage_list):
-                        x_region_code_list += [""]
                     if len(x_country_code_list) > 0:
                         x_recipient_code_list = x_country_code_list.copy()
                         x_recipient_percentage_list = x_country_percentage_list.copy()
@@ -1014,7 +985,12 @@ class IatiFlat(object):
                     x_recipient_transaction_value = transaction_value
                     x_recipient_transaction_value_usd = ""
                     x_sector_number = 1
+                    x_sector_code = ""
+                    x_sector_vocabulary = ""
+                    x_default_vocabulary = ""
+                    x_sector_percentage = ""
                     x_dac3_sector = ""
+                    x_dac3_sector_code = ""
                     x_di_sector = ""
                     x_transaction_value = transaction_value
                     x_transaction_value_usd = ""
@@ -1023,29 +999,10 @@ class IatiFlat(object):
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
-                    max_sector_length = 0
-                    if x_sector_code == "":
-                        x_sector_code_list = list()
+                    if len(x_sector_vocabulary_list) > 0:
+                        x_default_vocabulary_transaction_level = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
                     else:
-                        x_sector_code_list = x_sector_code.split("|")
-                        max_sector_length = max(max_sector_length, len(x_sector_code_list))
-                    if x_sector_percentage == "":
-                        x_sector_percentage_list = [""] * len(x_sector_code_list)
-                    else:
-                        x_sector_percentage_list = x_sector_percentage.split("|")
-                        max_sector_length = max(max_sector_length, len(x_sector_percentage_list))
-                    if x_sector_vocabulary == "":
-                        x_sector_vocabulary_list = [""] * len(x_sector_code_list)
-                    else:
-                        x_sector_vocabulary_list = x_sector_vocabulary.split("|")
-                        max_sector_length = max(max_sector_length, len(x_sector_vocabulary_list))
-                    while len(x_sector_code_list) < max_sector_length:
-                        x_sector_code_list += [""]
-                    while len(x_sector_percentage_list) < max_sector_length:
-                        x_sector_percentage_list += [""]
-                    while len(x_sector_vocabulary_list) < max_sector_length:
-                        x_sector_vocabulary_list += [""]
-                    x_default_vocabulary_transaction_level = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
+                        x_default_vocabulary_transaction_level = ""
                     if "1" in x_sector_vocabulary_list:
                         x_default_vocabulary_transaction_level = "1"
                     elif "2" in x_sector_vocabulary_list:
@@ -1104,7 +1061,12 @@ class IatiFlat(object):
                                     output.append(row)
                                     # Reset sector-split specific defaults
                                     x_sector_number = 1
+                                    x_sector_code = ""
+                                    x_sector_vocabulary = ""
+                                    x_default_vocabulary = ""
+                                    x_sector_percentage = ""
                                     x_dac3_sector = ""
+                                    x_dac3_sector_code = ""
                                     x_di_sector = ""
                                     x_transaction_value = transaction_value
                                     x_transaction_value_usd = ""
@@ -1163,7 +1125,12 @@ class IatiFlat(object):
                                 output.append(row)
                                 # Reset sector-split specific defaults
                                 x_sector_number = 1
+                                x_sector_code = ""
+                                x_sector_vocabulary = ""
+                                x_default_vocabulary = ""
+                                x_sector_percentage = ""
                                 x_dac3_sector = ""
+                                x_dac3_sector_code = ""
                                 x_di_sector = ""
                                 x_transaction_value = transaction_value
                                 x_transaction_value_usd = ""
