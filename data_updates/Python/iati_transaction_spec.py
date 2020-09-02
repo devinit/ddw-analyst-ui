@@ -5,6 +5,7 @@ import os
 DTYPES = {
     'iati_identifier': 'object',
     'x_transaction_number': 'float64',
+    'x_recipient_number': 'float64',
     'reporting_org_ref': 'object',
     'reporting_org_narrative': 'object',
     'reporting_org_secondary_reporter': 'object',
@@ -936,6 +937,21 @@ class IatiFlat(object):
                     x_country_percentage_list = x_country_percentage.split("|")
                     x_region_code_list = x_region_code.split("|")
                     x_region_percentage_list = x_region_percentage.split("|")
+                    if len(x_country_code_list) > 0:
+                        x_recipient_code_list = x_country_code_list
+                        x_recipient_percentage_list = x_country_percentage_list
+                        country_percentage_sum = 0
+                        for country_percentage in x_country_percentage_list:
+                            try:
+                                country_percentage_sum += float(country_percentage)
+                            except ValueError:
+                                pass
+                        if country_percentage_sum < 100:
+                            x_recipient_code_list += x_region_code_list
+                            x_recipient_percentage_list += x_region_percentage_list
+                    else:
+                        x_recipient_code_list = x_region_code_list
+                        x_recipient_percentage_list = x_region_percentage_list
 
                     x_reporting_org_type = ""
                     x_transaction_type = ""
