@@ -5,17 +5,18 @@ import os
 DTYPES = {
     'iati_identifier': 'object',
     'x_transaction_number': 'float64',
-    'x_recipient_number': 'float64',
     'reporting_org_ref': 'object',
     'reporting_org_narrative': 'object',
     'reporting_org_secondary_reporter': 'object',
     'reporting_org_type_code': 'object',
     'title_narrative': 'object',
-    'x_country_code': 'object',
-    'x_country_percentage': 'object',
-    'x_region_vocabulary': 'object',
-    'x_region_code': 'object',
-    'x_region_percentage': 'object',
+    'x_recipient_number': 'float64',
+    'x_recipient_code': 'object',
+    'x_recipient': 'object',
+    'x_recipient_percentage': 'object',
+    'x_recipient_type': 'object',
+    'x_recipient_transaction_value': 'float64',
+    'x_recipient_transaction_value_usd': 'float64',
     'x_sector_vocabulary': 'object',
     'x_default_vocabulary': 'object',
     'x_sector_code': 'object',
@@ -59,7 +60,6 @@ DTYPES = {
     'tag_code': 'object',
     'x_reporting_org_type': 'object',
     'x_transaction_type': 'object',
-    'x_country': 'object',
     'x_finance_type': 'object',
     'x_aid_type': 'object',
     'x_dac3_sector': 'object',
@@ -148,7 +148,7 @@ def convert_usd(value, year, currency, ratedf):
 # A class that will hold the flattening function and dictionary definitions
 class IatiFlat(object):
     def __init__(self):
-        self.header = ["iati_identifier", "x_transaction_number", "reporting_org_ref", "reporting_org_narrative", "reporting_org_secondary_reporter", "reporting_org_type_code", "title_narrative", "x_country_code", "x_country_percentage", "x_region_vocabulary", "x_region_code", "x_region_percentage", "x_sector_vocabulary", "x_default_vocabulary", "x_sector_code", "x_sector_percentage", "x_dac3_sector_code", "transaction_type_code", "x_transaction_date", "x_transaction_year", "x_currency", "x_transaction_value", "x_transaction_value_usd", "x_flow_type_code", "x_finance_type_code", "x_mod_aid_type_vocabulary", "x_mod_aid_type_code", "x_dac_aid_type_code", "x_tied_status_code", "transaction_disbursement_channel_code", "description_narrative", "transaction_description_narrative", "humanitarian", "transaction_humanitarian", "humanitarian_scope_narrative", "x_hum_emergency_code", "x_hum_appeal_code", "transaction_provider_org_narrative", "transaction_provider_org_provider_activity_id", "transaction_provider_org_ref", "transaction_provider_org_type", "transaction_receiver_org_narrative", "transaction_receiver_org_receiver_activity_id", "transaction_receiver_org_ref", "transaction_receiver_org_type", "transaction_ref", "participating_org_narrative", "participating_org_type", "participating_org_role", "participating_org_ref", "tag_narrative", "tag_vocabulary", "tag_code", "x_reporting_org_type", "x_transaction_type", "x_country", "x_finance_type", "x_aid_type", "x_dac3_sector", "x_di_sector", "x_yyyymm", "x_covid"]
+        self.header = ["iati_identifier", "x_transaction_number", "reporting_org_ref", "reporting_org_narrative", "reporting_org_secondary_reporter", "reporting_org_type_code", "title_narrative", "x_recipient_number", "x_recipient_code", "x_recipient", "x_recipient_percentage", "x_recipient_type", "x_recipient_transaction_value", "x_recipient_transaction_value_usd", "x_sector_vocabulary", "x_default_vocabulary", "x_sector_code", "x_sector_percentage", "x_dac3_sector_code", "transaction_type_code", "x_transaction_date", "x_transaction_year", "x_currency", "x_transaction_value", "x_transaction_value_usd", "x_flow_type_code", "x_finance_type_code", "x_mod_aid_type_vocabulary", "x_mod_aid_type_code", "x_dac_aid_type_code", "x_tied_status_code", "transaction_disbursement_channel_code", "description_narrative", "transaction_description_narrative", "humanitarian", "transaction_humanitarian", "humanitarian_scope_narrative", "x_hum_emergency_code", "x_hum_appeal_code", "transaction_provider_org_narrative", "transaction_provider_org_provider_activity_id", "transaction_provider_org_ref", "transaction_provider_org_type", "transaction_receiver_org_narrative", "transaction_receiver_org_receiver_activity_id", "transaction_receiver_org_ref", "transaction_receiver_org_type", "transaction_ref", "participating_org_narrative", "participating_org_type", "participating_org_role", "participating_org_ref", "tag_narrative", "tag_vocabulary", "tag_code", "x_reporting_org_type", "x_transaction_type", "x_finance_type", "x_aid_type", "x_dac3_sector", "x_di_sector", "x_yyyymm", "x_covid"]
         self.dictionaries = {}
         # Defaults, can be overwritten with next function
         self.dictionaries["ratedf"] = ratedf
@@ -437,6 +437,34 @@ class IatiFlat(object):
             "YE": "Yemen",
             "ZM": "Zambia",
             "ZW": "Zimbabwe"
+        }
+        self.dictionaries["region"] = {
+            "88": "States Ex-Yugoslavia unspecified",
+            "89": "Europe, regional",
+            "189": "North of Sahara, regional",
+            "289": "South of Sahara, regional",
+            "298": "Africa, regional",
+            "380": "West Indies, regional",
+            "389": "North & Central America, regional",
+            "489": "South America, regional",
+            "498": "America, regional",
+            "589": "Middle East, regional",
+            "619": "Central Asia, regional",
+            "679": "South Asia, regional",
+            "689": "South & Central Asia, regional",
+            "789": "Far East Asia, regional",
+            "798": "Asia, regional",
+            "889": "Oceania, regional",
+            "998": "Developing countries, unspecified",
+            "1027": "Eastern Africa, regional",
+            "1028": "Middle Africa, regional",
+            "1029": "Southern Africa, regional",
+            "1030": "Western Africa, regional",
+            "1031": "Caribbean, regional",
+            "1032": "Central America, regional",
+            "1033": "Melanesia, regional",
+            "1034": "Micronesia, regional",
+            "1035": "Polynesia, regional"
         }
         self.dictionaries["finance_type"] = {
             "1": "GNI: Gross National Income",
@@ -931,8 +959,6 @@ class IatiFlat(object):
                     elif tag_code == "COVID-19":
                         x_covid = True
 
-                    x_transaction_value = transaction_value
-                    x_transaction_value_usd = ""
                     x_country_code_list = x_country_code.split("|")
                     x_country_percentage_list = x_country_percentage.split("|")
                     x_region_code_list = x_region_code.split("|")
@@ -940,6 +966,7 @@ class IatiFlat(object):
                     if len(x_country_code_list) > 0:
                         x_recipient_code_list = x_country_code_list
                         x_recipient_percentage_list = x_country_percentage_list
+                        x_recipient_type_list = ["Country"] * len(x_country_code_list)
                         country_percentage_sum = 0
                         for country_percentage in x_country_percentage_list:
                             try:
@@ -949,9 +976,11 @@ class IatiFlat(object):
                         if country_percentage_sum < 100:
                             x_recipient_code_list += x_region_code_list
                             x_recipient_percentage_list += x_region_percentage_list
+                            x_recipient_type_list += ["Region"] * len(x_region_code_list)
                     else:
                         x_recipient_code_list = x_region_code_list
                         x_recipient_percentage_list = x_region_percentage_list
+                        x_recipient_type_list = ["Region"] * len(x_region_code_list)
 
                     x_reporting_org_type = ""
                     x_transaction_type = ""
@@ -959,7 +988,15 @@ class IatiFlat(object):
                     x_aid_type = ""
                     x_dac3_sector = ""
                     x_di_sector = ""
-                    x_country = ""
+                    x_recipient_number = 1
+                    x_recipient_code = ""
+                    x_recipient = ""
+                    x_recipient_percentage = ""
+                    x_recipient_type = ""
+                    x_recipient_transaction_value = transaction_value
+                    x_recipient_transaction_value_usd = ""
+                    x_transaction_value = transaction_value
+                    x_transaction_value_usd = ""
                     x_reporting_org_type = recode_if_not_none(reporting_org_type_code, self.dictionaries["organisation_type"])
                     x_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["transaction_type"])
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
@@ -973,62 +1010,89 @@ class IatiFlat(object):
                         x_default_vocabulary_transaction_level = "2"
                     x_sector_code_list = x_sector_code.split("|")
                     x_sector_percentage_list = x_sector_percentage.split("|")
-                    if len(x_sector_vocabulary_list) > 0:
-                        for k in range(0, len(x_sector_vocabulary_list)):
-                            x_sector_code = x_sector_code_list[k]
-                            x_sector_vocabulary = x_sector_vocabulary_list[k]
-                            if x_default_vocabulary_transaction_level != x_sector_vocabulary:
-                                x_default_vocabulary = ""
+
+                    if len(x_recipient_code_list) > 0:  # Has recipients
+                        for k in range(0, len(x_recipient_code_list)):
+                            x_recipient_number = k + 1
+                            x_recipient_code = x_recipient_code_list[k]
+                            x_recipient_percentage = x_recipient_percentage_list[k]
+                            x_recipient_type = x_recipient_type_list[k]
+                            if x_recipient_type == "Country":
+                                x_recipient = recode_if_not_none(x_recipient_code, self.dictionaries["country"])
                             else:
-                                x_default_vocabulary = x_default_vocabulary_transaction_level
-                            x_sector_percentage = x_sector_percentage_list[k]
+                                x_recipient = recode_if_not_none(x_recipient_code, self.dictionaries["region"])
                             try:
-                                float_x_sector_percentage = float(x_sector_percentage)
+                                float_x_recipient_percentage = float(x_recipient_percentage)
                             except ValueError:
-                                float_x_sector_percentage = 100
-                            x_dac3_sector_code = ""
-                            if x_sector_vocabulary == "1":
-                                x_dac3_sector_code = x_sector_code[:3]
-                            elif x_sector_vocabulary == "2":
-                                x_dac3_sector_code = x_sector_code
-                            x_dac3_sector = recode_if_not_none(x_dac3_sector_code, self.dictionaries["dac_3_sector"])
-                            x_di_sector = recode_if_not_none(x_dac3_sector_code, self.dictionaries["di_sector"])
-                            if len(x_country_code_list) > 0:
-                                for j in range(0, len(x_country_code_list)):
-                                    x_country_code = x_country_code_list[j]
-                                    x_country = recode_if_not_none(x_country_code, self.dictionaries["country"])
-                                    x_country_percentage = x_country_percentage_list[j]
+                                float_x_recipient_percentage = 100
+                            if transaction_convertable:
+                                x_recipient_transaction_value = transaction_value * (float_x_recipient_percentage/100)
+                                if x_recipient_transaction_value and x_currency:
+                                    if x_currency in self.dictionaries["ratedf"]:
+                                        x_recipient_transaction_value_usd = convert_usd(x_recipient_transaction_value, year, x_currency, self.dictionaries["ratedf"])
+                                    else:
+                                        pass
+                            if len(x_sector_vocabulary_list) > 0:  # Has recipients and sectors
+                                for j in range(0, len(x_sector_vocabulary_list)):
+                                    x_sector_code = x_sector_code_list[j]
+                                    x_sector_vocabulary = x_sector_vocabulary_list[j]
+                                    if x_default_vocabulary_transaction_level != x_sector_vocabulary:
+                                        x_default_vocabulary = ""
+                                    else:
+                                        x_default_vocabulary = x_default_vocabulary_transaction_level
+                                    x_sector_percentage = x_sector_percentage_list[j]
                                     try:
-                                        float_x_country_percentage = float(x_country_percentage)
+                                        float_x_sector_percentage = float(x_sector_percentage)
                                     except ValueError:
-                                        float_x_country_percentage = 100
+                                        float_x_sector_percentage = 100
+                                    x_dac3_sector_code = ""
+                                    if x_sector_vocabulary == "1":
+                                        x_dac3_sector_code = x_sector_code[:3]
+                                    elif x_sector_vocabulary == "2":
+                                        x_dac3_sector_code = x_sector_code
+                                    x_dac3_sector = recode_if_not_none(x_dac3_sector_code, self.dictionaries["dac_3_sector"])
+                                    x_di_sector = recode_if_not_none(x_dac3_sector_code, self.dictionaries["di_sector"])
                                     if transaction_convertable:
-                                        x_transaction_value = transaction_value * (float_x_country_percentage/100) * (float_x_sector_percentage/100)
+                                        x_transaction_value = transaction_value * (float_x_recipient_percentage/100) * (float_x_sector_percentage/100)
                                         if x_transaction_value and x_currency:
                                             if x_currency in self.dictionaries["ratedf"]:
                                                 x_transaction_value_usd = convert_usd(x_transaction_value, year, x_currency, self.dictionaries["ratedf"])
                                             else:
                                                 pass
-                                    row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_country_code, x_country_percentage, x_region_vocabulary, x_region_code, x_region_percentage, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_country, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
+                                    row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
                                     output.append(row)
-                            elif len(x_region_code_list) > 0:
-                                for j in range(0, len(x_region_code_list)):
-                                    x_region_code = x_region_code_list[j]
-                                    x_region_percentage = x_region_percentage_list[j]
-                                    try:
-                                        float_x_region_percentage = float(x_region_percentage)
-                                    except ValueError:
-                                        float_x_region_percentage = 100
-                                    if transaction_convertable:
-                                        x_transaction_value = transaction_value * (float_x_region_percentage/100) * (float_x_sector_percentage/100)
-                                        if x_transaction_value and x_currency:
-                                            if x_currency in self.dictionaries["ratedf"]:
-                                                x_transaction_value_usd = convert_usd(x_transaction_value, year, x_currency, self.dictionaries["ratedf"])
-                                            else:
-                                                pass
-                                    row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_country_code, x_country_percentage, x_region_vocabulary, x_region_code, x_region_percentage, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_country, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
-                                    output.append(row)
-                            else:
+                            else:  # Has recipients, no sectors
+                                x_transaction_value = x_recipient_transaction_value
+                                x_transaction_value_usd = x_recipient_transaction_value_usd
+                                row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
+                                output.append(row)
+                    else:  # No recipients
+                        if transaction_convertable:
+                            if x_recipient_transaction_value and x_currency:
+                                if x_currency in self.dictionaries["ratedf"]:
+                                    x_recipient_transaction_value_usd = convert_usd(x_recipient_transaction_value, year, x_currency, self.dictionaries["ratedf"])
+                                else:
+                                    pass
+                        if len(x_sector_vocabulary_list) > 0:  # No recipients, but sectors
+                            for j in range(0, len(x_sector_vocabulary_list)):
+                                x_sector_code = x_sector_code_list[j]
+                                x_sector_vocabulary = x_sector_vocabulary_list[j]
+                                if x_default_vocabulary_transaction_level != x_sector_vocabulary:
+                                    x_default_vocabulary = ""
+                                else:
+                                    x_default_vocabulary = x_default_vocabulary_transaction_level
+                                x_sector_percentage = x_sector_percentage_list[j]
+                                try:
+                                    float_x_sector_percentage = float(x_sector_percentage)
+                                except ValueError:
+                                    float_x_sector_percentage = 100
+                                x_dac3_sector_code = ""
+                                if x_sector_vocabulary == "1":
+                                    x_dac3_sector_code = x_sector_code[:3]
+                                elif x_sector_vocabulary == "2":
+                                    x_dac3_sector_code = x_sector_code
+                                x_dac3_sector = recode_if_not_none(x_dac3_sector_code, self.dictionaries["dac_3_sector"])
+                                x_di_sector = recode_if_not_none(x_dac3_sector_code, self.dictionaries["di_sector"])
                                 if transaction_convertable:
                                     x_transaction_value = transaction_value * (float_x_sector_percentage/100)
                                     if x_transaction_value and x_currency:
@@ -1036,57 +1100,12 @@ class IatiFlat(object):
                                             x_transaction_value_usd = convert_usd(x_transaction_value, year, x_currency, self.dictionaries["ratedf"])
                                         else:
                                             pass
-                                row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_country_code, x_country_percentage, x_region_vocabulary, x_region_code, x_region_percentage, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_country, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
+                                row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
                                 output.append(row)
-                    else:
-                        if x_default_vocabulary_transaction_level != x_sector_vocabulary:
-                            x_default_vocabulary = ""
-                        else:
-                            x_default_vocabulary = x_default_vocabulary_transaction_level
-                        if len(x_country_code_list) > 0:
-                            for j in range(0, len(x_country_code_list)):
-                                x_country_code = x_country_code_list[j]
-                                x_country = recode_if_not_none(x_country_code, self.dictionaries["country"])
-                                x_country_percentage = x_country_percentage_list[j]
-                                try:
-                                    float_x_country_percentage = float(x_country_percentage)
-                                except ValueError:
-                                    float_x_country_percentage = 100
-                                if transaction_convertable:
-                                    x_transaction_value = transaction_value * (float_x_country_percentage/100) * (float_x_sector_percentage/100)
-                                    if x_transaction_value and x_currency:
-                                        if x_currency in self.dictionaries["ratedf"]:
-                                            x_transaction_value_usd = convert_usd(x_transaction_value, year, x_currency, self.dictionaries["ratedf"])
-                                        else:
-                                            pass
-                                row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_country_code, x_country_percentage, x_region_vocabulary, x_region_code, x_region_percentage, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_country, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
-                                output.append(row)
-                        elif len(x_region_code_list) > 0:
-                            for j in range(0, len(x_region_code_list)):
-                                x_region_code = x_region_code_list[j]
-                                x_region_percentage = x_region_percentage_list[j]
-                                try:
-                                    float_x_region_percentage = float(x_region_percentage)
-                                except ValueError:
-                                    float_x_region_percentage = 100
-                                if transaction_convertable:
-                                    x_transaction_value = transaction_value * (float_x_region_percentage/100) * (float_x_sector_percentage/100)
-                                    if x_transaction_value and x_currency:
-                                        if x_currency in self.dictionaries["ratedf"]:
-                                            x_transaction_value_usd = convert_usd(x_transaction_value, year, x_currency, self.dictionaries["ratedf"])
-                                        else:
-                                            pass
-                                row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_country_code, x_country_percentage, x_region_vocabulary, x_region_code, x_region_percentage, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_country, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
-                                output.append(row)
-                        else:
-                            if transaction_convertable:
-                                x_transaction_value = transaction_value * (float_x_sector_percentage/100)
-                                if x_transaction_value and x_currency:
-                                    if x_currency in self.dictionaries["ratedf"]:
-                                        x_transaction_value_usd = convert_usd(x_transaction_value, year, x_currency, self.dictionaries["ratedf"])
-                                    else:
-                                        pass
-                            row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_country_code, x_country_percentage, x_region_vocabulary, x_region_code, x_region_percentage, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_country, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
+                        else:  # No recipients, no sectors
+                            x_transaction_value = x_recipient_transaction_value
+                            x_transaction_value_usd = x_recipient_transaction_value_usd
+                            row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_vocabulary, x_default_vocabulary, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, participating_org_narrative, participating_org_type, participating_org_role, participating_org_ref, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid]
                             output.append(row)
 
         return output
