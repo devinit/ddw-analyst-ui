@@ -657,7 +657,7 @@ class IatiFlat(object):
     def flatten_activities(self, root):
         for dictionary_name in ["ratedf"]:
             assert dictionary_name in self.dictionaries, "Missing dictionary: {}".format(dictionary_name)
-        output = []
+        output = list()
         try:
             version = root.attrib["version"]
         except KeyError:
@@ -679,8 +679,8 @@ class IatiFlat(object):
             reporting_org_secondary_reporter = replace_default_if_none(reporting_org_secondary_reporter, "0")
             reporting_org_type_code = default_first(activity.xpath("reporting-org/@type"))
 
-            recipient_country_code_list = []
-            recipient_country_percentage_list = []
+            recipient_country_code_list = list()
+            recipient_country_percentage_list = list()
             recipient_country_percentage_sum = 0
             recipient_countries = activity.findall("recipient-country")
             for recipient_country in recipient_countries:
@@ -700,9 +700,9 @@ class IatiFlat(object):
             recipient_country_code = "|".join(recipient_country_code_list)
             recipient_country_percentage = "|".join(recipient_country_percentage_list)
 
-            recipient_region_vocabulary_list = []
-            recipient_region_code_list = []
-            recipient_region_percentage_list = []
+            recipient_region_vocabulary_list = list()
+            recipient_region_code_list = list()
+            recipient_region_percentage_list = list()
             recipient_regions = activity.findall("recipient-region")
             for recipient_region in recipient_regions:
                 attribs = recipient_region.attrib
@@ -722,9 +722,9 @@ class IatiFlat(object):
             recipient_region_code = "|".join(recipient_region_code_list)
             recipient_region_percentage = "|".join(recipient_region_percentage_list)
 
-            sector_code_list = []
-            sector_percentage_list = []
-            sector_vocabulary_list = []
+            sector_code_list = list()
+            sector_percentage_list = list()
+            sector_vocabulary_list = list()
             activity_sectors = activity.findall("sector")
             for activity_sector in activity_sectors:
                 attribs = activity_sector.attrib
@@ -763,10 +763,10 @@ class IatiFlat(object):
             tag_vocabulary = default_first(activity.xpath("tag/@vocabulary"))
             tag_narrative = default_first(activity.xpath("tag/narrative/text()"))
 
-            participating_org_ref_list = []
-            participating_org_type_list = []
-            participating_org_role_list = []
-            participating_org_narrative_list = []
+            participating_org_ref_list = list()
+            participating_org_type_list = list()
+            participating_org_role_list = list()
+            participating_org_narrative_list = list()
             participating_orgs = activity.findall("participating-org")
             for participating_org in participating_orgs:
                 attribs = participating_org.attrib
@@ -960,13 +960,25 @@ class IatiFlat(object):
                     elif tag_code == "COVID-19":
                         x_covid = True
 
-                    x_recipient_code_list = []
-                    x_recipient_percentage_list = []
-                    x_recipient_type_list = []
-                    x_country_code_list = list(filter(None, x_country_code.split("|")))
-                    x_country_percentage_list = list(filter(None, x_country_percentage.split("|")))
-                    x_region_code_list = list(filter(None, x_region_code.split("|")))
-                    x_region_percentage_list = list(filter(None, x_region_percentage.split("|")))
+                    x_recipient_code_list = list()
+                    x_recipient_percentage_list = list()
+                    x_recipient_type_list = list()
+                    if x_country_code == "":
+                        x_country_code_list = list()
+                    else:
+                        x_country_code_list = x_country_code.split("|")
+                    if x_country_percentage == "":
+                        x_country_percentage_list = list()
+                    else:
+                        x_country_percentage_list = x_country_percentage.split("|")
+                    if x_region_code == "":
+                        x_region_code_list = list()
+                    else:
+                        x_region_code_list = x_region_code.split("|")
+                    if x_region_percentage == "":
+                        x_region_percentage_list = list()
+                    else:
+                        x_region_percentage_list = x_region_percentage.split("|")
                     if len(x_country_code_list) > 0:
                         x_recipient_code_list = x_country_code_list.copy()
                         x_recipient_percentage_list = x_country_percentage_list.copy()
@@ -1007,14 +1019,23 @@ class IatiFlat(object):
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
-                    x_sector_vocabulary_list = list(filter(None, x_sector_vocabulary.split("|")))
+                    if x_sector_vocabulary == "":
+                        x_sector_vocabulary_list = list()
+                    else:
+                        x_sector_vocabulary_list = x_sector_vocabulary.split("|")
                     x_default_vocabulary_transaction_level = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
                     if "1" in x_sector_vocabulary_list:
                         x_default_vocabulary_transaction_level = "1"
                     elif "2" in x_sector_vocabulary_list:
                         x_default_vocabulary_transaction_level = "2"
-                    x_sector_code_list = list(filter(None, x_sector_code.split("|")))
-                    x_sector_percentage_list = list(filter(None, x_sector_percentage.split("|")))
+                    if x_sector_code == "":
+                        x_sector_code_list = list()
+                    else:
+                        x_sector_code_list = x_sector_code.split("|")
+                    if x_sector_percentage == "":
+                        x_sector_percentage_list = list()
+                    else:
+                        x_sector_percentage_list = x_sector_percentage.split("|")
 
                     if len(x_recipient_code_list) > 0:  # Has recipients
                         for k in range(0, len(x_recipient_code_list)):
