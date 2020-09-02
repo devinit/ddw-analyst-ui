@@ -1023,9 +1023,28 @@ class IatiFlat(object):
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
-                    x_sector_code_list = x_sector_code.split("|")
-                    x_sector_percentage_list = x_sector_percentage.split("|")
-                    x_sector_vocabulary_list = x_sector_vocabulary.split("|")
+                    max_sector_length = 0
+                    if x_sector_code == "":
+                        x_sector_code_list = list()
+                    else:
+                        x_sector_code_list = x_sector_code.split("|")
+                        max_sector_length = max(max_sector_length, len(x_sector_code_list))
+                    if x_sector_percentage == "":
+                        x_sector_percentage_list = [""] * len(x_sector_code_list)
+                    else:
+                        x_sector_percentage_list = x_sector_percentage.split("|")
+                        max_sector_length = max(max_sector_length, len(x_sector_percentage_list))
+                    if x_sector_vocabulary == "":
+                        x_sector_vocabulary_list = [""] * len(x_sector_code_list)
+                    else:
+                        x_sector_vocabulary_list = x_sector_vocabulary.split("|")
+                        max_sector_length = max(max_sector_length, len(x_sector_vocabulary_list))
+                    while len(x_sector_code_list) < max_sector_length:
+                        x_sector_code_list += [""]
+                    while len(x_sector_percentage_list) < max_sector_length:
+                        x_sector_percentage_list += [""]
+                    while len(x_sector_vocabulary_list) < max_sector_length:
+                        x_sector_vocabulary_list += [""]
                     x_default_vocabulary_transaction_level = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
                     if "1" in x_sector_vocabulary_list:
                         x_default_vocabulary_transaction_level = "1"
