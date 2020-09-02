@@ -703,8 +703,8 @@ class IatiFlat(object):
             recipient_region_vocabulary_list = []
             recipient_region_code_list = []
             recipient_region_percentage_list = []
-            recipient_countries = activity.findall("recipient-region")
-            for recipient_region in recipient_countries:
+            recipient_regions = activity.findall("recipient-region")
+            for recipient_region in recipient_regions:
                 attribs = recipient_region.attrib
                 attrib_keys = list(attribs.keys())
                 percentage = attribs['percentage'] if 'percentage' in attrib_keys else "100"
@@ -1090,6 +1090,14 @@ class IatiFlat(object):
                             x_recipient_transaction_value = transaction_value
                             x_recipient_transaction_value_usd = ""
                     else:  # No recipients
+                        # Reset recipient-split specific defaults
+                        x_recipient_number = 1
+                        x_recipient_code = ""
+                        x_recipient = ""
+                        x_recipient_percentage = ""
+                        x_recipient_type = ""
+                        x_recipient_transaction_value = transaction_value
+                        x_recipient_transaction_value_usd = ""
                         if transaction_convertable:
                             if x_recipient_transaction_value and x_currency:
                                 if x_currency in self.dictionaries["ratedf"]:
