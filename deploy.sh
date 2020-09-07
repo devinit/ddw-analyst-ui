@@ -37,7 +37,7 @@ echo "Setting up rabbitmq user and permissions"
 
 function setup_rabbitmq {
   until docker-compose exec -T rabbitmq rabbitmqctl start_app; do
-      log "Rabbit is unavailable - sleeping"
+      echo "Rabbit is unavailable - sleeping"
       sleep 10
   done
 
