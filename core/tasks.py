@@ -10,5 +10,3 @@ def count_operation_rows(operation):
     operation.row_count = count
     operation.count_rows = False
     operation.save()
-
-    return 'Operation {} has {} rows'.format(operation.name, count)
