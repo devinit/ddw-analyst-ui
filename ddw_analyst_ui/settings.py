@@ -189,6 +189,9 @@ QUERY_TABLES = [
     'fts_recipientcountryid', 'fts_odaeligible', 'fts_destinationcountryid', 'fts_incomegroups', 'fts_deflators', 'fts_isos', 'fts_privatemoney',
 ]
 
+# Celery
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:

@@ -22,9 +22,28 @@ services:
       - FTSPASS
       - DJANGO_DEV
       - DJANGO_SECRET_KEY
+      - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
     command: bash -c "export DJANGO_DEV='True' && python manage.py runserver 0.0.0.0:80"
     ports:
       - "80:80"
+
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - 4369:4369
+      - 5671:5671
+      - 5672:5672
+      - 15672:15672
+    restart: always
+
+  celery:
+    build: .
+    command: celery -A ddw_analyst_ui worker -l info
+    depends_on:
+      - web
+      - rabbitmq
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
 
 volumes:
   metadata:
