@@ -2,6 +2,7 @@ beautifulsoup4==4.9.0
 boto3==1.14.21
 coverage>=4.5.3
 codecov>=2.0.15
+celery==4.4.7
 Django==2.2.13
 django-celery==3.3.1
 djangorestframework>=3.11.0
