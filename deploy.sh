@@ -19,14 +19,33 @@ rm -rf ddw-analyst-ui-$1
 
 cd ~/ddw-analyst-ui || exit
 
+echo "Building docker"
+
 docker-compose build
 docker-compose down --remove-orphans
 docker-compose up -d
+
+echo "Building JS"
 
 npm ci
 
 npm run build
 
 docker-compose exec web python manage.py migrate
+
+echo "Setting up rabbitmq user and permissions"
+
+function setup_rabbitmq {
+  until docker-compose exec -T rabbitmq rabbitmqctl start_app; do
+      echo "Rabbit is unavailable - sleeping"
+      sleep 10
+  done
+
+  docker-compose exec -T rabbitmq rabbitmqctl add_user admin ddw_analyst_ui
+  docker-compose exec -T rabbitmq rabbitmqctl add_vhost myvhost
+  docker-compose exec -T rabbitmq rabbitmqctl set_permissions -p myvhost admin ".*" ".*" ".*"
+}
+
+setup_rabbitmq
 
 docker-compose restart
