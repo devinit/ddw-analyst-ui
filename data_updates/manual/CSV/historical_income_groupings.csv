@@ -124,7 +124,7 @@ Montenegro,ME,MNE,1987,
 St. Martin (French part),MF,MAF,1987,
 Madagascar,MG,MDG,1987,L
 Marshall Islands,MH,MHL,1987,
-"Macedonia, FYR",MK,MKD,1987,
+North Macedonia,MK,MKD,1987,
 Mali,ML,MLI,1987,L
 Myanmar,MM,MMR,1987,L
 Mongolia,MN,MNG,1987,
@@ -341,7 +341,7 @@ Montenegro,ME,MNE,1988,
 St. Martin (French part),MF,MAF,1988,
 Madagascar,MG,MDG,1988,L
 Marshall Islands,MH,MHL,1988,
-"Macedonia, FYR",MK,MKD,1988,
+North Macedonia,MK,MKD,1988,
 Mali,ML,MLI,1988,L
 Myanmar,MM,MMR,1988,L
 Mongolia,MN,MNG,1988,
@@ -558,7 +558,7 @@ Montenegro,ME,MNE,1989,
 St. Martin (French part),MF,MAF,1989,
 Madagascar,MG,MDG,1989,L
 Marshall Islands,MH,MHL,1989,
-"Macedonia, FYR",MK,MKD,1989,
+North Macedonia,MK,MKD,1989,
 Mali,ML,MLI,1989,L
 Myanmar,MM,MMR,1989,L
 Mongolia,MN,MNG,1989,LM
@@ -775,7 +775,7 @@ Montenegro,ME,MNE,1990,
 St. Martin (French part),MF,MAF,1990,
 Madagascar,MG,MDG,1990,L
 Marshall Islands,MH,MHL,1990,
-"Macedonia, FYR",MK,MKD,1990,
+North Macedonia,MK,MKD,1990,
 Mali,ML,MLI,1990,L
 Myanmar,MM,MMR,1990,L
 Mongolia,MN,MNG,1990,LM
@@ -992,7 +992,7 @@ Montenegro,ME,MNE,1991,
 St. Martin (French part),MF,MAF,1991,
 Madagascar,MG,MDG,1991,L
 Marshall Islands,MH,MHL,1991,LM
-"Macedonia, FYR",MK,MKD,1991,
+North Macedonia,MK,MKD,1991,
 Mali,ML,MLI,1991,L
 Myanmar,MM,MMR,1991,L
 Mongolia,MN,MNG,1991,LM
@@ -1209,7 +1209,7 @@ Montenegro,ME,MNE,1992,
 St. Martin (French part),MF,MAF,1992,
 Madagascar,MG,MDG,1992,L
 Marshall Islands,MH,MHL,1992,LM
-"Macedonia, FYR",MK,MKD,1992,LM
+North Macedonia,MK,MKD,1992,LM
 Mali,ML,MLI,1992,L
 Myanmar,MM,MMR,1992,L
 Mongolia,MN,MNG,1992,LM
@@ -1426,7 +1426,7 @@ Montenegro,ME,MNE,1993,
 St. Martin (French part),MF,MAF,1993,
 Madagascar,MG,MDG,1993,L
 Marshall Islands,MH,MHL,1993,LM
-"Macedonia, FYR",MK,MKD,1993,LM
+North Macedonia,MK,MKD,1993,LM
 Mali,ML,MLI,1993,L
 Myanmar,MM,MMR,1993,L
 Mongolia,MN,MNG,1993,L
@@ -1643,7 +1643,7 @@ Montenegro,ME,MNE,1994,
 St. Martin (French part),MF,MAF,1994,
 Madagascar,MG,MDG,1994,L
 Marshall Islands,MH,MHL,1994,LM
-"Macedonia, FYR",MK,MKD,1994,LM
+North Macedonia,MK,MKD,1994,LM
 Mali,ML,MLI,1994,L
 Myanmar,MM,MMR,1994,L
 Mongolia,MN,MNG,1994,L
@@ -1860,7 +1860,7 @@ Montenegro,ME,MNE,1995,
 St. Martin (French part),MF,MAF,1995,
 Madagascar,MG,MDG,1995,L
 Marshall Islands,MH,MHL,1995,LM
-"Macedonia, FYR",MK,MKD,1995,LM
+North Macedonia,MK,MKD,1995,LM
 Mali,ML,MLI,1995,L
 Myanmar,MM,MMR,1995,L
 Mongolia,MN,MNG,1995,L
@@ -2077,7 +2077,7 @@ Montenegro,ME,MNE,1996,
 St. Martin (French part),MF,MAF,1996,
 Madagascar,MG,MDG,1996,L
 Marshall Islands,MH,MHL,1996,LM
-"Macedonia, FYR",MK,MKD,1996,LM
+North Macedonia,MK,MKD,1996,LM
 Mali,ML,MLI,1996,L
 Myanmar,MM,MMR,1996,L
 Mongolia,MN,MNG,1996,L
@@ -2294,7 +2294,7 @@ Montenegro,ME,MNE,1997,
 St. Martin (French part),MF,MAF,1997,
 Madagascar,MG,MDG,1997,L
 Marshall Islands,MH,MHL,1997,LM
-"Macedonia, FYR",MK,MKD,1997,LM
+North Macedonia,MK,MKD,1997,LM
 Mali,ML,MLI,1997,L
 Myanmar,MM,MMR,1997,L
 Mongolia,MN,MNG,1997,L
@@ -2511,7 +2511,7 @@ Montenegro,ME,MNE,1998,
 St. Martin (French part),MF,MAF,1998,
 Madagascar,MG,MDG,1998,L
 Marshall Islands,MH,MHL,1998,LM
-"Macedonia, FYR",MK,MKD,1998,LM
+North Macedonia,MK,MKD,1998,LM
 Mali,ML,MLI,1998,L
 Myanmar,MM,MMR,1998,L
 Mongolia,MN,MNG,1998,L
@@ -2728,7 +2728,7 @@ Montenegro,ME,MNE,1999,
 St. Martin (French part),MF,MAF,1999,
 Madagascar,MG,MDG,1999,L
 Marshall Islands,MH,MHL,1999,LM
-"Macedonia, FYR",MK,MKD,1999,LM
+North Macedonia,MK,MKD,1999,LM
 Mali,ML,MLI,1999,L
 Myanmar,MM,MMR,1999,L
 Mongolia,MN,MNG,1999,L
@@ -2945,7 +2945,7 @@ Montenegro,ME,MNE,2000,
 St. Martin (French part),MF,MAF,2000,
 Madagascar,MG,MDG,2000,L
 Marshall Islands,MH,MHL,2000,LM
-"Macedonia, FYR",MK,MKD,2000,LM
+North Macedonia,MK,MKD,2000,LM
 Mali,ML,MLI,2000,L
 Myanmar,MM,MMR,2000,L
 Mongolia,MN,MNG,2000,L
@@ -3162,7 +3162,7 @@ Montenegro,ME,MNE,2001,
 St. Martin (French part),MF,MAF,2001,
 Madagascar,MG,MDG,2001,L
 Marshall Islands,MH,MHL,2001,LM
-"Macedonia, FYR",MK,MKD,2001,LM
+North Macedonia,MK,MKD,2001,LM
 Mali,ML,MLI,2001,L
 Myanmar,MM,MMR,2001,L
 Mongolia,MN,MNG,2001,L
@@ -3379,7 +3379,7 @@ Montenegro,ME,MNE,2002,
 St. Martin (French part),MF,MAF,2002,
 Madagascar,MG,MDG,2002,L
 Marshall Islands,MH,MHL,2002,LM
-"Macedonia, FYR",MK,MKD,2002,LM
+North Macedonia,MK,MKD,2002,LM
 Mali,ML,MLI,2002,L
 Myanmar,MM,MMR,2002,L
 Mongolia,MN,MNG,2002,L
@@ -3596,7 +3596,7 @@ Montenegro,ME,MNE,2003,
 St. Martin (French part),MF,MAF,2003,
 Madagascar,MG,MDG,2003,L
 Marshall Islands,MH,MHL,2003,LM
-"Macedonia, FYR",MK,MKD,2003,LM
+North Macedonia,MK,MKD,2003,LM
 Mali,ML,MLI,2003,L
 Myanmar,MM,MMR,2003,L
 Mongolia,MN,MNG,2003,L
@@ -3813,7 +3813,7 @@ Montenegro,ME,MNE,2004,
 St. Martin (French part),MF,MAF,2004,
 Madagascar,MG,MDG,2004,L
 Marshall Islands,MH,MHL,2004,LM
-"Macedonia, FYR",MK,MKD,2004,LM
+North Macedonia,MK,MKD,2004,LM
 Mali,ML,MLI,2004,L
 Myanmar,MM,MMR,2004,L
 Mongolia,MN,MNG,2004,L
@@ -4030,7 +4030,7 @@ Montenegro,ME,MNE,2005,
 St. Martin (French part),MF,MAF,2005,
 Madagascar,MG,MDG,2005,L
 Marshall Islands,MH,MHL,2005,LM
-"Macedonia, FYR",MK,MKD,2005,LM
+North Macedonia,MK,MKD,2005,LM
 Mali,ML,MLI,2005,L
 Myanmar,MM,MMR,2005,L
 Mongolia,MN,MNG,2005,L
@@ -4247,7 +4247,7 @@ Montenegro,ME,MNE,2006,UM
 St. Martin (French part),MF,MAF,2006,
 Madagascar,MG,MDG,2006,L
 Marshall Islands,MH,MHL,2006,LM
-"Macedonia, FYR",MK,MKD,2006,LM
+North Macedonia,MK,MKD,2006,LM
 Mali,ML,MLI,2006,L
 Myanmar,MM,MMR,2006,L
 Mongolia,MN,MNG,2006,L
@@ -4464,7 +4464,7 @@ Montenegro,ME,MNE,2007,UM
 St. Martin (French part),MF,MAF,2007,
 Madagascar,MG,MDG,2007,L
 Marshall Islands,MH,MHL,2007,LM
-"Macedonia, FYR",MK,MKD,2007,LM
+North Macedonia,MK,MKD,2007,LM
 Mali,ML,MLI,2007,L
 Myanmar,MM,MMR,2007,L
 Mongolia,MN,MNG,2007,LM
@@ -4681,7 +4681,7 @@ Montenegro,ME,MNE,2008,UM
 St. Martin (French part),MF,MAF,2008,
 Madagascar,MG,MDG,2008,L
 Marshall Islands,MH,MHL,2008,LM
-"Macedonia, FYR",MK,MKD,2008,UM
+North Macedonia,MK,MKD,2008,UM
 Mali,ML,MLI,2008,L
 Myanmar,MM,MMR,2008,L
 Mongolia,MN,MNG,2008,LM
@@ -4863,6 +4863,7 @@ Israel,IL,ISR,2009,H
 Isle of Man,IM,IMN,2009,H
 India,IN,IND,2009,LM
 Iraq,IQ,IRQ,2009,LM
+Zimbabwe,ZW,ZWE,2009,L
 "Iran, Islamic Rep.",IR,IRN,2009,UM
 Iceland,IS,ISL,2009,H
 Italy,IT,ITA,2009,H
@@ -4898,7 +4899,7 @@ Montenegro,ME,MNE,2009,UM
 St. Martin (French part),MF,MAF,2009,
 Madagascar,MG,MDG,2009,L
 Marshall Islands,MH,MHL,2009,LM
-"Macedonia, FYR",MK,MKD,2009,UM
+North Macedonia,MK,MKD,2009,UM
 Mali,ML,MLI,2009,L
 Myanmar,MM,MMR,2009,L
 Mongolia,MN,MNG,2009,LM
@@ -4989,7 +4990,6 @@ Kosovo,XK,XKX,2009,LM
 "Yemen, Rep.",YE,YEM,2009,LM
 South Africa,ZA,ZAF,2009,UM
 Zambia,ZM,ZMB,2009,L
-Zimbabwe,ZW,ZWE,2009,L
 Andorra,AD,AND,2010,H
 United Arab Emirates,AE,ARE,2010,H
 Afghanistan,AF,AFG,2010,L
@@ -5115,7 +5115,7 @@ Montenegro,ME,MNE,2010,UM
 St. Martin (French part),MF,MAF,2010,H
 Madagascar,MG,MDG,2010,L
 Marshall Islands,MH,MHL,2010,LM
-"Macedonia, FYR",MK,MKD,2010,UM
+North Macedonia,MK,MKD,2010,UM
 Mali,ML,MLI,2010,L
 Myanmar,MM,MMR,2010,L
 Mongolia,MN,MNG,2010,LM
@@ -5332,7 +5332,7 @@ Montenegro,ME,MNE,2011,UM
 St. Martin (French part),MF,MAF,2011,H
 Madagascar,MG,MDG,2011,L
 Marshall Islands,MH,MHL,2011,LM
-"Macedonia, FYR",MK,MKD,2011,UM
+North Macedonia,MK,MKD,2011,UM
 Mali,ML,MLI,2011,L
 Myanmar,MM,MMR,2011,L
 Mongolia,MN,MNG,2011,LM
@@ -5549,7 +5549,7 @@ Montenegro,ME,MNE,2012,UM
 St. Martin (French part),MF,MAF,2012,H
 Madagascar,MG,MDG,2012,L
 Marshall Islands,MH,MHL,2012,UM
-"Macedonia, FYR",MK,MKD,2012,UM
+North Macedonia,MK,MKD,2012,UM
 Mali,ML,MLI,2012,L
 Myanmar,MM,MMR,2012,L
 Mongolia,MN,MNG,2012,LM
@@ -5766,7 +5766,7 @@ Montenegro,ME,MNE,2013,UM
 St. Martin (French part),MF,MAF,2013,H
 Madagascar,MG,MDG,2013,L
 Marshall Islands,MH,MHL,2013,UM
-"Macedonia, FYR",MK,MKD,2013,UM
+North Macedonia,MK,MKD,2013,UM
 Mali,ML,MLI,2013,L
 Myanmar,MM,MMR,2013,L
 Mongolia,MN,MNG,2013,LM
@@ -5983,7 +5983,7 @@ Montenegro,ME,MNE,2014,UM
 St. Martin (French part),MF,MAF,2014,H
 Madagascar,MG,MDG,2014,L
 Marshall Islands,MH,MHL,2014,UM
-"Macedonia, FYR",MK,MKD,2014,UM
+North Macedonia,MK,MKD,2014,UM
 Mali,ML,MLI,2014,L
 Myanmar,MM,MMR,2014,LM
 Mongolia,MN,MNG,2014,UM
@@ -6200,7 +6200,7 @@ Montenegro,ME,MNE,2015,UM
 St. Martin (French part),MF,MAF,2015,H
 Madagascar,MG,MDG,2015,L
 Marshall Islands,MH,MHL,2015,UM
-"Macedonia, FYR",MK,MKD,2015,UM
+North Macedonia,MK,MKD,2015,UM
 Mali,ML,MLI,2015,L
 Myanmar,MM,MMR,2015,LM
 Mongolia,MN,MNG,2015,LM
@@ -6417,7 +6417,7 @@ Montenegro,ME,MNE,2016,UM
 St. Martin (French part),MF,MAF,2016,H
 Madagascar,MG,MDG,2016,L
 Marshall Islands,MH,MHL,2016,UM
-"Macedonia, FYR",MK,MKD,2016,UM
+North Macedonia,MK,MKD,2016,UM
 Mali,ML,MLI,2016,L
 Myanmar,MM,MMR,2016,LM
 Mongolia,MN,MNG,2016,LM
@@ -6634,7 +6634,7 @@ Montenegro,ME,MNE,2017,UM
 St. Martin (French part),MF,MAF,2017,H
 Madagascar,MG,MDG,2017,L
 Marshall Islands,MH,MHL,2017,UM
-"Macedonia, FYR",MK,MKD,2017,UM
+North Macedonia,MK,MKD,2017,UM
 Mali,ML,MLI,2017,L
 Myanmar,MM,MMR,2017,LM
 Mongolia,MN,MNG,2017,LM
@@ -6726,3 +6726,220 @@ Kosovo,XK,XKX,2017,LM
 South Africa,ZA,ZAF,2017,UM
 Zambia,ZM,ZMB,2017,LM
 Zimbabwe,ZW,ZWE,2017,L
+Andorra,AD,AND,2018,H
+United Arab Emirates,AE,ARE,2018,H
+Afghanistan,AF,AFG,2018,L
+Antigua and Barbuda,AG,ATG,2018,H
+Albania,AL,ALB,2018,UM
+Armenia,AM,ARM,2018,UM
+Angola,AO,AGO,2018,LM
+Argentina,AR,ARG,2018,UM
+American Samoa,AS,ASM,2018,UM
+Austria,AT,AUT,2018,H
+Australia,AU,AUS,2018,H
+Aruba,AW,ABW,2018,H
+Azerbaijan,AZ,AZE,2018,UM
+Bosnia and Herzegovina,BA,BIH,2018,UM
+Barbados,BB,BRB,2018,H
+Bangladesh,BD,BGD,2018,LM
+Belgium,BE,BEL,2018,H
+Burkina Faso,BF,BFA,2018,L
+Bulgaria,BG,BGR,2018,UM
+Bahrain,BH,BHR,2018,H
+Burundi,BI,BDI,2018,L
+Benin,BJ,BEN,2018,L
+Bermuda,BM,BMU,2018,H
+Brunei Darussalam,BN,BRN,2018,H
+Bolivia,BO,BOL,2018,LM
+Brazil,BR,BRA,2018,UM
+"Bahamas, The",BS,BHS,2018,H
+Bhutan,BT,BTN,2018,LM
+Botswana,BW,BWA,2018,UM
+Belarus,BY,BLR,2018,UM
+Belize,BZ,BLZ,2018,UM
+Canada,CA,CAN,2018,H
+"Congo, Dem. Rep.",CD,COD,2018,L
+Central African Republic,CF,CAF,2018,L
+"Congo, Rep.",CG,COG,2018,LM
+Switzerland,CH,CHE,2018,H
+Côte d'Ivoire,CI,CIV,2018,LM
+Chile,CL,CHL,2018,H
+Cameroon,CM,CMR,2018,LM
+China,CN,CHN,2018,UM
+Colombia,CO,COL,2018,UM
+Costa Rica,CR,CRI,2018,UM
+Cuba,CU,CUB,2018,UM
+Cabo Verde,CV,CPV,2018,LM
+Curaçao,CW,CUW,2018,H
+Cyprus,CY,CYP,2018,H
+Czech Republic,CZ,CZE,2018,H
+Germany,DE,DEU,2018,H
+Djibouti,DJ,DJI,2018,LM
+Denmark,DK,DNK,2018,H
+Dominica,DM,DMA,2018,UM
+Dominican Republic,DO,DOM,2018,UM
+Algeria,DZ,DZA,2018,UM
+Ecuador,EC,ECU,2018,UM
+Estonia,EE,EST,2018,H
+"Egypt, Arab Rep.",EG,EGY,2018,LM
+Eritrea,ER,ERI,2018,L
+Spain,ES,ESP,2018,H
+Ethiopia,ET,ETH,2018,L
+Finland,FI,FIN,2018,H
+Fiji,FJ,FJI,2018,UM
+"Micronesia, Fed. Sts.",FM,FSM,2018,LM
+Faeroe Islands,FO,FRO,2018,H
+France,FR,FRA,2018,H
+Gabon,GA,GAB,2018,UM
+United Kingdom,GB,GBR,2018,H
+Grenada,GD,GRD,2018,UM
+Georgia,GE,GEO,2018,UM
+Ghana,GH,GHA,2018,LM
+Gibraltar,GI,GIB,2018,H
+Greenland,GL,GRL,2018,H
+"Gambia, The",GM,GMB,2018,L
+Guinea,GN,GIN,2018,L
+Equatorial Guinea,GQ,GNQ,2018,UM
+Greece,GR,GRC,2018,H
+Guatemala,GT,GTM,2018,UM
+Guam,GU,GUM,2018,H
+Guinea-Bissau,GW,GNB,2018,L
+Guyana,GY,GUY,2018,UM
+"Hong Kong SAR, China",HK,HKG,2018,H
+Honduras,HN,HND,2018,LM
+Croatia,HR,HRV,2018,H
+Haiti,HT,HTI,2018,L
+Hungary,HU,HUN,2018,H
+Indonesia,ID,IDN,2018,LM
+Ireland,IE,IRL,2018,H
+Israel,IL,ISR,2018,H
+Isle of Man,IM,IMN,2018,H
+India,IN,IND,2018,LM
+Iraq,IQ,IRQ,2018,UM
+"Iran, Islamic Rep.",IR,IRN,2018,UM
+Iceland,IS,ISL,2018,H
+Italy,IT,ITA,2018,H
+Jamaica,JM,JAM,2018,UM
+Jordan,JO,JOR,2018,UM
+Japan,JP,JPN,2018,H
+Kenya,KE,KEN,2018,LM
+Kyrgyz Republic,KG,KGZ,2018,LM
+Cambodia,KH,KHM,2018,LM
+Kiribati,KI,KIR,2018,LM
+Comoros,KM,COM,2018,LM
+St. Kitts and Nevis,KN,KNA,2018,H
+"Korea, Dem. Rep.",KP,PRK,2018,L
+"Korea, Rep.",KR,KOR,2018,H
+Kuwait,KW,KWT,2018,H
+Cayman Islands,KY,CYM,2018,H
+Kazakhstan,KZ,KAZ,2018,UM
+Lao PDR,LA,LAO,2018,LM
+Lebanon,LB,LBN,2018,UM
+St. Lucia,LC,LCA,2018,UM
+Liechtenstein,LI,LIE,2018,H
+Sri Lanka,LK,LKA,2018,UM
+Liberia,LR,LBR,2018,L
+Lesotho,LS,LSO,2018,LM
+Lithuania,LT,LTU,2018,H
+Luxembourg,LU,LUX,2018,H
+Latvia,LV,LVA,2018,H
+Libya,LY,LBY,2018,UM
+Morocco,MA,MAR,2018,LM
+Monaco,MC,MCO,2018,H
+Moldova,MD,MDA,2018,LM
+Montenegro,ME,MNE,2018,UM
+St. Martin (French part),MF,MAF,2018,H
+Madagascar,MG,MDG,2018,L
+Marshall Islands,MH,MHL,2018,UM
+North Macedonia,MK,MKD,2018,UM
+Mali,ML,MLI,2018,L
+Myanmar,MM,MMR,2018,LM
+Mongolia,MN,MNG,2018,LM
+"Macao SAR, China",MO,MAC,2018,H
+Northern Mariana Islands,MP,MNP,2018,H
+Mauritania,MR,MRT,2018,LM
+Malta,MT,MLT,2018,H
+Mauritius,MU,MUS,2018,UM
+Maldives,MV,MDV,2018,UM
+Malawi,MW,MWI,2018,L
+Mexico,MX,MEX,2018,UM
+Malaysia,MY,MYS,2018,UM
+Mozambique,MZ,MOZ,2018,L
+Namibia,NA,NAM,2018,UM
+New Caledonia,NC,NCL,2018,H
+Niger,NE,NER,2018,L
+Nigeria,NG,NGA,2018,LM
+Nicaragua,NI,NIC,2018,LM
+Netherlands,NL,NLD,2018,H
+Norway,NO,NOR,2018,H
+Nepal,NP,NPL,2018,L
+Nauru,NR,NRU,2018,UM
+New Zealand,NZ,NZL,2018,H
+Oman,OM,OMN,2018,H
+Panama,PA,PAN,2018,H
+Peru,PE,PER,2018,UM
+French Polynesia,PF,PYF,2018,H
+Papua New Guinea,PG,PNG,2018,LM
+Philippines,PH,PHL,2018,LM
+Pakistan,PK,PAK,2018,LM
+Poland,PL,POL,2018,H
+Puerto Rico,PR,PRI,2018,H
+West Bank and Gaza,PS,PSE,2018,LM
+Portugal,PT,PRT,2018,H
+Palau,PW,PLW,2018,H
+Paraguay,PY,PRY,2018,UM
+Qatar,QA,QAT,2018,H
+Romania,RO,ROU,2018,UM
+Serbia,RS,SRB,2018,UM
+Russian Federation,RU,RUS,2018,UM
+Rwanda,RW,RWA,2018,L
+Saudi Arabia,SA,SAU,2018,H
+Solomon Islands,SB,SLB,2018,LM
+Seychelles,SC,SYC,2018,H
+Sudan,SD,SDN,2018,LM
+Sweden,SE,SWE,2018,H
+Singapore,SG,SGP,2018,H
+Slovenia,SI,SVN,2018,H
+Slovak Republic,SK,SVK,2018,H
+Sierra Leone,SL,SLE,2018,L
+San Marino,SM,SMR,2018,H
+Senegal,SN,SEN,2018,LM
+Somalia,SO,SOM,2018,L
+Suriname,SR,SUR,2018,UM
+South Sudan,SS,SSD,2018,L
+São Tomé and Principe,ST,STP,2018,LM
+El Salvador,SV,SLV,2018,LM
+Sint Maarten (Dutch part),SX,SXM,2018,H
+Syrian Arab Republic,SY,SYR,2018,L
+Swaziland,SZ,SWZ,2018,LM
+Turks and Caicos Islands,TC,TCA,2018,H
+Chad,TD,TCD,2018,L
+Togo,TG,TGO,2018,L
+Thailand,TH,THA,2018,UM
+Tajikistan,TJ,TJK,2018,L
+Timor-Leste,TL,TLS,2018,LM
+Turkmenistan,TM,TKM,2018,UM
+Tunisia,TN,TUN,2018,LM
+Tonga,TO,TON,2018,UM
+Turkey,TR,TUR,2018,UM
+Trinidad and Tobago,TT,TTO,2018,H
+Tuvalu,TV,TUV,2018,UM
+"Taiwan, China",TW,TWN,2018,H
+Tanzania,TZ,TZA,2018,L
+Ukraine,UA,UKR,2018,LM
+Uganda,UG,UGA,2018,L
+United States,US,USA,2018,H
+Uruguay,UY,URY,2018,H
+Uzbekistan,UZ,UZB,2018,LM
+St. Vincent and the Grenadines,VC,VCT,2018,UM
+"Venezuela, RB",VE,VEN,2018,UM
+British Virgin Islands,VG,VGB,2018,H
+Virgin Islands (U.S.),VI,VIR,2018,H
+Vietnam,VN,VNM,2018,LM
+Vanuatu,VU,VUT,2018,LM
+Samoa,WS,WSM,2018,UM
+Kosovo,XK,XKX,2018,UM
+"Yemen, Rep.",YE,YEM,2018,L
+South Africa,ZA,ZAF,2018,UM
+Zambia,ZM,ZMB,2018,LM
+Zimbabwe,ZW,ZWE,2018,LM
