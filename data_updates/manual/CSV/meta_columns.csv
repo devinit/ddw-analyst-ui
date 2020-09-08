@@ -103,7 +103,9 @@ oecd_regions,region_code,region_code,Region code,C,Region code
 developing_countries,country_name,country_name,Country name,C,Country name
 developing_countries,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
 developing_countries,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
-developing_countries,developing,developing,Developing country marker (1 = True),N,Developing country marker
+developing_countries,oda_eligible_2014_2017,oda_eligible_2014_2017,ODA eligibility 2014-2017 (1 = True),N,ODA eligibility 2014-17
+developing_countries,oda_eligible_2018_2019,oda_eligible_2018_2019,ODA eligibility 2018-2019 (1 = True),N,ODA eligibility 2018-19
+developing_countries,oda_eligible_2020,oda_eligible_2020,ODA eligibility 2020 (1 = True),N,ODA eligibility 2020
 di_deflators_2016,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
 di_deflators_2016,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
 di_deflators_2016,country_name,country_name,Country name,C,Country name
