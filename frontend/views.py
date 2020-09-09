@@ -21,6 +21,6 @@ def update_data_source(request):
 
     raise Http404()
 
-def update_dataset_ui(request):
+def datasets(request):
     if settings.DEBUG:
-        return render(request, 'frontend/designs/dataset_ui.html')
+        return render(request, 'frontend/designs/datasets.html')

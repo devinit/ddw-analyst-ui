@@ -1,0 +1,35 @@
+{% extends 'frontend/index.html' %}
+{% load static %}
+
+
+{% block content %}
+  <div class="wrapper ">
+    {% include 'frontend/designs/includes/sidebar.html' with active='dataset-ui' %}
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      {% with title='Datasets'  %}
+        {% include 'frontend/designs/includes/navbar.html' %}
+      {% endwith %}
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="card dataset-list">
+            <div class="card-body p-0">
+              {% include 'frontend/designs/includes/partials/dataset_row.html' %}
+              {% include 'frontend/designs/includes/partials/dataset_row.html' %}
+            </div>
+            <div class="card-footer d-block">
+              {% include 'frontend/designs/includes/partials/pagination.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% comment %} Footer Goes Here {% endcomment %}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block footer-assets %}
+  {{ block.super }}
+{% endblock footer-assets %}
