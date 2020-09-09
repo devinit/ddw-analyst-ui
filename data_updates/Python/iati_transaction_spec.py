@@ -826,12 +826,30 @@ class IatiFlat(object):
                         x_region_vocabulary_list = recipient_region_vocabulary_list.copy()
                         x_region_percentage_list = recipient_region_percentage_list.copy()
 
-                    transaction_sector_code = default_first(transaction.xpath("sector/@code"))
-                    transaction_sector_vocabulary = default_first(transaction.xpath("sector/@vocabulary"))
-                    if transaction_sector_code:
-                        x_sector_code_list = [transaction_sector_code]
-                        x_sector_percentage_list = ["100"]
-                        x_sector_vocabulary_list = [transaction_sector_vocabulary]
+                    transaction_sector_code_list = list()
+                    transaction_sector_percentage_list = list()
+                    transaction_sector_vocabulary_list = list()
+                    transaction_sectors = transaction.findall("sector")
+                    for transaction_sector in transaction_sectors:
+                        attribs = transaction_sector.attrib
+                        attrib_keys = list(attribs.keys())
+                        percentage = attribs['percentage'] if 'percentage' in attrib_keys else "100"
+                        if percentage is not None:
+                            percentage = percentage.replace("%", "")
+                        if percentage is None:
+                            percentage = ""
+                        vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else None
+                        if vocab is None:
+                            vocab = ""
+                        code = attribs['code'] if 'code' in attrib_keys else None
+                        if code is not None:
+                            transaction_sector_code_list.append(code)
+                            transaction_sector_percentage_list.append(percentage)
+                            transaction_sector_vocabulary_list.append(vocab)
+                    if len(transaction_sector_code_list) > 0:
+                        x_sector_code_list = transaction_sector_code_list.copy()
+                        x_sector_percentage_list = transaction_sector_percentage_list.copy()
+                        x_sector_vocabulary_list = transaction_sector_vocabulary_list.copy()
                     else:
                         x_sector_code_list = sector_code_list.copy()
                         x_sector_percentage_list = sector_percentage_list.copy()
