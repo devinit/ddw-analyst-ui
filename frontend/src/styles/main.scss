@@ -309,5 +309,22 @@ th .material-icons {
         font-weight: 500;
       }
     }
+
+    .dataset-row-actions {
+      display: none;
+
+      .btn {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+
+    &:hover {
+      background-color: #F5F8FA;
+    }
+
+    &:hover .dataset-row-actions {
+      display: block;
+    }
   }
 }
