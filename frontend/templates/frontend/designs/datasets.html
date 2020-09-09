@@ -12,13 +12,14 @@
         {% include 'frontend/designs/includes/navbar.html' %}
       {% endwith %}
       <!-- End Navbar -->
-      <div class="content">
+      <div class="content pt-0">
         <div class="container-fluid">
           <div class="card dataset-list">
             <div class="card-body">
               <input placeholder="Search ..." class="w-25 form-control" value="">
             </div>
             <div class="card-body p-0">
+              {% include 'frontend/designs/includes/partials/dataset_row.html' %}
               {% include 'frontend/designs/includes/partials/dataset_row.html' %}
               {% include 'frontend/designs/includes/partials/dataset_row.html' %}
               {% include 'frontend/designs/includes/partials/dataset_row.html' %}
