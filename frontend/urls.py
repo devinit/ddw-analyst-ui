@@ -20,6 +20,6 @@ urlpatterns = [
     path('update/', views.index),
     path('designs/scheduled-events/', views.scheduled_events),
     path('designs/update-data-source/', views.update_data_source),
-    path('designs/dataset-ui/', views.update_dataset_ui),
+    path('designs/datasets/', views.datasets),
     path('scheduledevents/', views.index),
 ]
