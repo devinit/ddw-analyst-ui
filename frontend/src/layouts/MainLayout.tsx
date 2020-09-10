@@ -96,7 +96,16 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   to="/"
                   single
                   icon="home"
-                  textNormal="Datasets"
+                  textNormal="My Datasets"
+                  onClick={this.setActiveRoute}
+                />
+              </Sidebar.Item>
+              <Sidebar.Item active={this.state.activeRoute === '/datasets/'}>
+                <Sidebar.Link
+                  to="/datasets/"
+                  single
+                  icon="table_chart"
+                  textNormal="Published Datasets"
                   onClick={this.setActiveRoute}
                 />
               </Sidebar.Item>
@@ -154,7 +163,12 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
             <div className="navbar-wrapper">
               <NavbarMinimise />
               <Navbar.Brand href="/">
-                <Route path="/" exact component={(): ReactElement => <span>Home</span>} />
+                <Route path="/" exact component={(): ReactElement => <span>My Datasets</span>} />
+                <Route
+                  path="/datasets"
+                  exact
+                  component={(): ReactElement => <span>Published Datasets</span>}
+                />
                 <Route
                   path="/sources"
                   exact
