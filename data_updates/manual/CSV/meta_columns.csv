@@ -397,6 +397,7 @@ oecd_crs_sector_itep_map,itep_sector,itep_sector,ITEP sector,C,ITEP sector
 oecd_crs_donor_type_ref,donor_code,donor_code,Donor code,N,Donor code
 oecd_crs_donor_type_ref,donor_name,donor_name,Donor name,C,Donor name
 oecd_crs_donor_type_ref,donor_type,donor_type,Donor type,C,Donor type
+oecd_crs_donor_type_ref,donor_dac_and_multi,donor_dac_and_multi,Donor DAC and multi,C,Donor DAC and multi
 fts_precoded,id,id,ID,N,ID
 fts_precoded,amountUSD,amountUSD,Amount USD,N,Amount USD
 fts_precoded,budgetYear,budgetYear,Budget Year,N,Budget Year
