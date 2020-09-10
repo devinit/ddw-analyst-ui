@@ -14,10 +14,11 @@ import { AccountModal } from '../components/AccountModal';
 import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
-import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncDataSourceQueries } from '../pages/DataSourceQueries';
+import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncDataUpdate } from '../pages/DataUpdate';
 import { AsyncHome } from '../pages/Home';
+import { AsyncPublishedDatasets } from '../pages/PublishedDatasets/AsyncLoader';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
 import { AsyncQueryData } from '../pages/QueryData';
 import { AsyncScheduledEvents } from '../pages/ScheduledEvents';
@@ -224,6 +225,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
           <AdminLayout.Content>
             <Switch>
               <Route path="/" exact component={AsyncHome} />
+              <Route path="/datasets" exact component={AsyncPublishedDatasets} />
               <Route path="/sources" exact component={AsyncDataSources} />
               <Route path="/queries/build" exact component={AsyncQueryBuilder} />
               <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
