@@ -379,6 +379,7 @@ oecd_crs_aid_type_ref,aid_type_parent_name,aid_type_parent_name,Aid type parent 
 oecd_crs_aid_type_ref,aid_type_name,aid_type_name,Aid type name,C,Aid type name
 oecd_crs_aid_type_ref,aid_type_description,aid_type_description,Aid type description,C,Aid type description
 oecd_crs_aid_type_ref,aid_type_di_name,aid_type_di_name,Aid type DI name,C,Aid type DI name
+oecd_crs_aid_type_ref,transfer_aid,transfer_aid,Transfer Aid,C,Transfer Aid
 oecd_crs_channel_map,channel_parent_category_code,channel_parent_category_code,Channel Parent Category code,N,Channel Parent Category code
 oecd_crs_channel_map,channel_id_code,channel_id_code,Channel ID code,N,Channel ID code
 oecd_crs_channel_map,year_added,year_added,Year added,N,Year added
