@@ -394,6 +394,8 @@ oecd_crs_channel_map,references_notes,references_notes,References/Notes,C,Refere
 oecd_crs_sector_itep_map,oecd_sector_code,oecd_sector_code,OECD sector code,N,OECD sector code
 oecd_crs_sector_itep_map,oecd_sector_name,oecd_sector_name,OECD sector name,C,OECD sector name
 oecd_crs_sector_itep_map,itep_sector,itep_sector,ITEP sector,C,ITEP sector
+oecd_crs_sector_itep_map,aggregated_sector,aggregated_sector,Aggregated sector,C,Aggregated sector
+oecd_crs_sector_itep_map,humanitarian_and_development,humanitarian_and_development,Humanitarian and Development,C,Humanitarian and Development
 oecd_crs_donor_type_ref,donor_code,donor_code,Donor code,N,Donor code
 oecd_crs_donor_type_ref,donor_name,donor_name,Donor name,C,Donor name
 oecd_crs_donor_type_ref,donor_type,donor_type,Donor type,C,Donor type
