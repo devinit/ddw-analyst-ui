@@ -30,7 +30,7 @@
             </div>
           </div>
         </div>
-        <div class="modal fade" tabindex="-1" role="dialog" id="queryModal">
+        <div class="modal fade query-modal" tabindex="-1" role="dialog" id="queryModal">
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -39,11 +39,9 @@
                 </button>
               </div>
               <div class="modal-body">
-                <p>"('SELECT COUNT(\"sq1\".*) FROM (SELECT \"sq0\".* FROM (SELECT \"Donor\",\"codename\" FROM \"repo\".\"fts_precoded\") \"sq0\" WHERE \"sq0\".\"Donor\" ILIKE \\'Queen Silvia Foundation\\') \"sq1\"', 'SELECT \"sq0\".* FROM (SELECT \"Donor\",\"codename\" FROM \"repo\".\"fts_precoded\") \"sq0\" WHERE \"sq0\".\"Donor\" ILIKE \\'Queen Silvia Foundation\\'')"</p>
+                <code>('SELECT COUNT(\"sq1\".*) FROM (SELECT \"sq0\".* FROM (SELECT \"Donor\",\"codename\" FROM \"repo\".\"fts_precoded\") \"sq0\" WHERE \"sq0\".\"Donor\" ILIKE \\'Queen Silvia Foundation\\') \"sq1\"', 'SELECT \"sq0\".* FROM (SELECT \"Donor\",\"codename\" FROM \"repo\".\"fts_precoded\") \"sq0\" WHERE \"sq0\".\"Donor\" ILIKE \\'Queen Silvia Foundation\\'')</code>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
+              <div class="modal-footer"></div>
             </div>
           </div>
         </div>
