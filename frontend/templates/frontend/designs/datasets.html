@@ -1,0 +1,58 @@
+{% extends 'frontend/index.html' %}
+{% load static %}
+
+
+{% block content %}
+  <div class="wrapper ">
+    {% include 'frontend/designs/includes/sidebar.html' with active='dataset-ui' %}
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      {% with title='Datasets'  %}
+        {% include 'frontend/designs/includes/navbar.html' %}
+      {% endwith %}
+      <!-- End Navbar -->
+      <div class="content pt-0">
+        <div class="container-fluid">
+          <div class="card dataset-list">
+            <div class="card-body">
+              <input placeholder="Search ..." class="w-25 form-control" value="">
+            </div>
+            <div class="card-body p-0">
+              {% include 'frontend/designs/includes/partials/dataset_row.html' with draft=True %}
+              {% include 'frontend/designs/includes/partials/dataset_row.html' %}
+              {% include 'frontend/designs/includes/partials/dataset_row.html' with draft=True %}
+              {% include 'frontend/designs/includes/partials/dataset_row.html' %}
+              {% include 'frontend/designs/includes/partials/dataset_row.html' %}
+            </div>
+            <div class="card-footer d-block">
+              {% include 'frontend/designs/includes/partials/pagination.html' %}
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="queryModal">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>"('SELECT COUNT(\"sq1\".*) FROM (SELECT \"sq0\".* FROM (SELECT \"Donor\",\"codename\" FROM \"repo\".\"fts_precoded\") \"sq0\" WHERE \"sq0\".\"Donor\" ILIKE \\'Queen Silvia Foundation\\') \"sq1\"', 'SELECT \"sq0\".* FROM (SELECT \"Donor\",\"codename\" FROM \"repo\".\"fts_precoded\") \"sq0\" WHERE \"sq0\".\"Donor\" ILIKE \\'Queen Silvia Foundation\\'')"</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% comment %} Footer Goes Here {% endcomment %}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block footer-assets %}
+  {{ block.super }}
+{% endblock footer-assets %}

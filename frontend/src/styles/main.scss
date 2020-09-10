@@ -292,3 +292,39 @@ th .material-icons {
     color: #C8271E;
   }
 }
+
+
+/** === DATASET LIST VIEW === */
+.dataset-list {
+  .dataset-row {
+    .dataset-row-title {
+      font-weight: 400;
+    }
+
+    .dataset-row-footer {
+      font-weight: normal;
+      text-transform: capitalize;
+
+      span {
+        font-weight: 500;
+      }
+    }
+
+    .dataset-row-actions {
+      display: none;
+
+      .btn {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+
+    &:hover {
+      background-color: #F5F8FA;
+    }
+
+    &:hover .dataset-row-actions {
+      display: block;
+    }
+  }
+}
