@@ -11,6 +11,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
+    path('datasets/', views.index),
     path('login/', views.index),
     path('sources/', views.index),
     path('source/datasets/<int:pk>/', views.with_id),
