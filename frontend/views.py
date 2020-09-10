@@ -23,4 +23,11 @@ def update_data_source(request):
 
 def datasets(request):
     if settings.DEBUG:
-        return render(request, 'frontend/designs/datasets.html')
+        sources = [
+            'Financial Tracking System (FTS)',
+            'OECD DAC1',
+            'OECD Creditor Reporting System (CRS)',
+            'International Aid Transparency Initiative Transactions (IATI)',
+            'World Development Indicators (WDI)'
+        ]
+        return render(request, 'frontend/designs/datasets.html', { 'sources': sources })
