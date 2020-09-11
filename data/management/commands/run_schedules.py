@@ -58,8 +58,22 @@ class Command(BaseCommand):
 
     def run_and_update_schedule(self, schedule, runInstance):
         try:
+            #Get average running time of all successfull run instances
+            average_instance_runtime_in_seconds = self.calculateAverageInstanceRuntime(schedule)
             #Run the script
-            update_response = self.execute_script(schedule.script_name)
+            parent_conn, child_conn = multiprocessing.Pipe()
+            p = multiprocessing.Process(target=self.execute_script, args=(schedule.script_name, child_conn,))
+
+            #Start process
+            p.start()
+            #wait until process runs more than timeout
+            p.join(timeout=average_instance_runtime_in_seconds)
+
+            if p.is_alive():
+                schedule.alert.alert_long_running_schedule(schedule)
+                p.join()
+
+            update_response = parent_conn.recv()
 
             #Check if script run was a success/fail and update run instance
             if update_response['return_code'] != 0:
@@ -76,7 +90,7 @@ class Command(BaseCommand):
             self.update_run_instance(runInstance, 'e', 'An unexpected error occured while executing the script ... please contact the administrator')
             self.create_next_run_instance(schedule, make_aware(datetime.now()))
 
-    def execute_script(self, script_name):
+    def execute_script(self, script_name, child_conn):
         post_status = status.HTTP_200_OK
         executor = ScriptExecutor(script_name)
         stream = executor.stream()
@@ -103,6 +117,8 @@ class Command(BaseCommand):
             response_data['message'] = 'Script execution failed:\n\n' + logs
             response_data['return_code'] = item
 
+        child_conn.send(response_data)
+        child_conn.close()
         return response_data
 
     def create_next_run_instance(self, schedule, last_rundate, start_date=None):
@@ -135,3 +151,13 @@ class Command(BaseCommand):
             return last_rundate + relativedelta(months=+interval)
         elif interval_type and interval_type in 'yrs':
             return last_rundate + relativedelta(years=+interval)
+
+    def calculateAverageInstanceRuntime(self, schedule):
+        instances = ScheduledEventRunInstance.objects.filter(
+            Q(scheduled_event=schedule.id) & Q(status='c')
+        )
+        timedeltas = []
+        for instance in instances:
+            timedeltas.append(instance.ended_at - instance.start_at)
+        average_timedelta = sum(timedeltas, timedelta(0)) / len(timedeltas)
+        return int(average_timedelta.total_seconds())
