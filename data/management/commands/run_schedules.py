@@ -82,7 +82,7 @@ class Command(BaseCommand):
 
             if p.is_alive():
                 print('emailing')
-                schedule.alert.alert_long_running_schedule()
+                ##schedule.alert.alert_long_running_schedule()
                 print('emailing done')
                 p.join()
 
