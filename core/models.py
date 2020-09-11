@@ -1,6 +1,7 @@
 """
     Database Models
 """
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -209,6 +210,11 @@ class ScheduledEvent(BaseEntity):
         ('mnt', 'Months'),
         ('yrs', 'Years'),
     )
+    expected_runtime_type_choices = (
+        ('min', 'Minutes'),
+        ('sec', 'Seconds'),
+        ('hrs', 'Hours'),
+    )
     name = models.TextField(null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     script_name = models.TextField(null=False, blank=False)
@@ -217,6 +223,9 @@ class ScheduledEvent(BaseEntity):
     repeat = models.BooleanField(default=False)
     interval = models.BigIntegerField(blank=True, null=True)
     interval_type = models.CharField(max_length=3, choices=interval_type_choices, null=True, blank=True)
+    expected_runtime = models.BigIntegerField(blank=True, null=True)
+    expected_runtime_type = models.CharField(max_length=3, choices=expected_runtime_type_choices, null=True, blank=True)
+    alert = models.ForeignKey('Alert', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -240,3 +249,31 @@ class ScheduledEventRunInstance(BaseEntity):
 
     def __str__(self):
         return self.scheduled_event.name + ' - ' + self.status
+
+
+class Alert(models.Model):
+    AVAILABLE_PLATFORMS = [
+        ('ml', 'email')
+    ]
+    name = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    message = models.TextField(blank=True, null=True)
+    platform = models.CharField(blank=True, null=True, max_length=255, choices=AVAILABLE_PLATFORMS)
+
+    def __str__(self):
+        return self.name
+
+
+    def send_emails(self, subject, message, recipient_list):
+        print('Yup emailing is really going nooooooow')
+        message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
+        send_mass_mail((message_payload, ), fail_silently=False)
+
+
+    def alert_long_running_schedule(self, schedule):
+        print('Yup emailing now')
+        # placeholder
+        subject = "{} scheduled event is running longer than expected.".format(schedule.name)
+        if self.platform == 'ml':
+            self.send_emails(subject, self.message, [user[1] for user in settings.ADMINS])
+        return
