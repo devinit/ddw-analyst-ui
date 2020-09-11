@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from core.models import (
+    Alert,
     AuditLogEntry,
     Operation,
     OperationStep,
@@ -34,3 +35,4 @@ admin.site.register(UpdateHistory)
 admin.site.register(AuditLogEntry, AuditLogEntryAdmin)
 admin.site.register(ScheduledEvent)
 admin.site.register(ScheduledEventRunInstance)
+admin.site.register(Alert)
