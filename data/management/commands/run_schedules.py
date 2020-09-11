@@ -2,6 +2,7 @@ import json
 from datetime import date, datetime, timedelta
 import calendar
 import datetime as dtime
+import multiprocessing
 
 from django.core.management.base import BaseCommand
 from django.db.models import Q
@@ -58,19 +59,31 @@ class Command(BaseCommand):
 
     def run_and_update_schedule(self, schedule, runInstance):
         try:
+            print('running')
+            expected_runtime = 2 #2 seconds for testing
+
             #Get average running time of all successfull run instances
             average_instance_runtime_in_seconds = self.calculateAverageInstanceRuntime(schedule)
+
+            #if average_instance_runtime_in_seconds is not None:
+                #expected_runtime = average_instance_runtime_in_seconds
+
             #Run the script
             parent_conn, child_conn = multiprocessing.Pipe()
             p = multiprocessing.Process(target=self.execute_script, args=(schedule.script_name, child_conn,))
 
+            print('expected runtime')
+            print(expected_runtime)
+
             #Start process
             p.start()
             #wait until process runs more than timeout
-            p.join(timeout=average_instance_runtime_in_seconds)
+            p.join(timeout=expected_runtime)
 
             if p.is_alive():
-                schedule.alert.alert_long_running_schedule(schedule)
+                print('emailing')
+                schedule.alert.alert_long_running_schedule()
+                print('emailing done')
                 p.join()
 
             update_response = parent_conn.recv()
@@ -119,7 +132,6 @@ class Command(BaseCommand):
 
         child_conn.send(response_data)
         child_conn.close()
-        return response_data
 
     def create_next_run_instance(self, schedule, last_rundate, start_date=None):
         if schedule.repeat:
@@ -157,7 +169,9 @@ class Command(BaseCommand):
             Q(scheduled_event=schedule.id) & Q(status='c')
         )
         timedeltas = []
-        for instance in instances:
-            timedeltas.append(instance.ended_at - instance.start_at)
-        average_timedelta = sum(timedeltas, timedelta(0)) / len(timedeltas)
-        return int(average_timedelta.total_seconds())
+        if instances:
+            for instance in instances:
+                timedeltas.append(instance.ended_at - instance.start_at)
+            average_timedelta = sum(timedeltas, timedelta(0)) / len(timedeltas)
+            return int(average_timedelta.total_seconds())
+        return None
