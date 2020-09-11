@@ -268,12 +268,13 @@ class Alert(models.Model):
         print('Yup emailing is really going nooooooow')
         message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
         send_mass_mail((message_payload, ), fail_silently=False)
+        print('Sent it out')
 
 
-    def alert_long_running_schedule(self, schedule):
+    def alert_long_running_schedule(self):
         print('Yup emailing now')
         # placeholder
-        subject = "{} scheduled event is running longer than expected.".format(schedule.name)
+        subject = "{} scheduled event is running longer than expected.".format(self.name)
         if self.platform == 'ml':
             self.send_emails(subject, self.message, [user[1] for user in settings.ADMINS])
         return
