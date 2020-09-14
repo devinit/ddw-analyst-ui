@@ -59,31 +59,32 @@ class Command(BaseCommand):
 
     def run_and_update_schedule(self, schedule, runInstance):
         try:
-            print('running')
-            expected_runtime = 2 #2 seconds for testing
+            expected_runtime = 7200 # 7200 seconds or 2 hours
 
             #Get average running time of all successfull run instances
             average_instance_runtime_in_seconds = self.calculateAverageInstanceRuntime(schedule)
 
-            #if average_instance_runtime_in_seconds is not None:
-                #expected_runtime = average_instance_runtime_in_seconds
+            if average_instance_runtime_in_seconds is not None:
+                expected_runtime = average_instance_runtime_in_seconds
+            elif schedule.expected_runtime and schedule.expected_runtime_type in 'min':
+                expected_runtime = schedule.expected_runtime * 60
+            elif schedule.expected_runtime and schedule.expected_runtime_type in 'sec':
+                expected_runtime = schedule.expected_runtime
+            elif schedule.expected_runtime and schedule.expected_runtime_type in 'hrs':
+                expected_runtime = schedule.expected_runtime * 60 * 60
 
             #Run the script
             parent_conn, child_conn = multiprocessing.Pipe()
             p = multiprocessing.Process(target=self.execute_script, args=(schedule.script_name, child_conn,))
 
-            print('expected runtime')
-            print(expected_runtime)
-
             #Start process
             p.start()
+
             #wait until process runs more than timeout
             p.join(timeout=expected_runtime)
 
             if p.is_alive():
-                print('emailing')
-                ##schedule.alert.alert_long_running_schedule()
-                print('emailing done')
+                schedule.alert.alert_long_running_schedule()
                 p.join()
 
             update_response = parent_conn.recv()

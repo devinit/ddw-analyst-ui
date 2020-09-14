@@ -2,6 +2,7 @@
     Database Models
 """
 from django.conf import settings
+from django.core.mail import send_mass_mail
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -263,18 +264,12 @@ class Alert(models.Model):
     def __str__(self):
         return self.name
 
-
     def send_emails(self, subject, message, recipient_list):
-        print('Yup emailing is really going nooooooow')
         message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
         send_mass_mail((message_payload, ), fail_silently=False)
-        print('Sent it out')
-
 
     def alert_long_running_schedule(self):
-        print('Yup emailing now')
         # placeholder
-        subject = "{} scheduled event is running longer than expected.".format(self.name)
+        subject = "{} is running too long.".format(self.name)
         if self.platform == 'ml':
             self.send_emails(subject, self.message, [user[1] for user in settings.ADMINS])
-        return
