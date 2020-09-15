@@ -92,6 +92,7 @@ class Command(BaseCommand):
             #Check if script run was a success/fail and update run instance
             if update_response['return_code'] != 0:
                 self.update_run_instance(runInstance, 'e', update_response['message'])
+                schedule.alert.alert_failed_schedule()
                 self.stdout.write('Script execution failed for ' + schedule.script_name)
             else:
                 self.update_run_instance(runInstance, 'c')

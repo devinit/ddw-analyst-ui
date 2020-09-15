@@ -273,3 +273,9 @@ class Alert(models.Model):
         subject = "{} is running too long.".format(self.name)
         if self.platform == 'ml':
             self.send_emails(subject, self.message, [user[1] for user in settings.ADMINS])
+
+    def alert_failed_schedule(self):
+        # placeholder
+        subject = "{} has failed.".format(self.name)
+        if self.platform == 'ml':
+            self.send_emails(subject, self.message, [user[1] for user in settings.ADMINS])
