@@ -80,13 +80,18 @@ class Command(BaseCommand):
             #Start process
             p.start()
 
-            #wait until process runs more than timeout
+            #wait until process runs longer than timeout
             p.join(timeout=expected_runtime)
 
+            #If process is still running after timeout, send emails and wait till it completes
             if p.is_alive():
+                #Send email notifications for delayed schedule
                 schedule.alert.alert_long_running_schedule()
+
+                #Wait for schedule to complete
                 p.join()
 
+            #Receive data from executed script
             update_response = parent_conn.recv()
 
             #Check if script run was a success/fail and update run instance
