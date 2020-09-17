@@ -25,6 +25,12 @@ interface OperationFormProps {
 
 const schema = Yup.object().shape({
   name: Yup.string().required('Name is required!'),
+  description: Yup.string().when('is_draft', {
+    is: true,
+    then: Yup.string(),
+    otherwise: Yup.string().required('Description is Required'),
+  }),
+  is_draft: Yup.bool(),
 });
 
 export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
@@ -64,7 +70,11 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
     }
   };
 
-  const toggleDraft = () => {
+  const toggleDraft = (setFieldValue: (field: string, value: any) => void) => ({
+    currentTarget,
+  }: React.ChangeEvent<any>) => {
+    const { checked } = currentTarget;
+    setFieldValue('is_draft', checked);
     if (props.onUpdateOperation) {
       if (props.operation) {
         const isDraft = !!props.operation.get('is_draft');
@@ -152,7 +162,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
 
           <CheckBox
             defaultChecked={values.is_draft}
-            onChange={toggleDraft}
+            onChange={debounce(toggleDraft(setFieldValue), 1000, { leading: true })}
             label="Is Draft"
             disabled={!!values.id && !props.editable}
           />
