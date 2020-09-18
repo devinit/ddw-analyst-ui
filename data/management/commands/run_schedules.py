@@ -4,6 +4,7 @@ import calendar
 import datetime as dtime
 import multiprocessing
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 from django.http import HttpResponse, StreamingHttpResponse
@@ -86,7 +87,11 @@ class Command(BaseCommand):
             #If process is still running after timeout, send emails and wait till it completes
             if p.is_alive():
                 #Send email notifications for delayed schedule
-                schedule.alert.alert_long_running_schedule()
+                schedule.send_emails(
+                    "Delayed Schedule",
+                    "{} has been running for more than {} seconds.".format(schedule.script_name, expected_runtime),
+                    [user[1] for user in settings.ADMINS]
+                )
 
                 #Wait for schedule to complete
                 p.join()
@@ -97,7 +102,11 @@ class Command(BaseCommand):
             #Check if script run was a success/fail and update run instance
             if update_response['return_code'] != 0:
                 self.update_run_instance(runInstance, 'e', update_response['message'])
-                schedule.alert.alert_failed_schedule()
+                schedule.send_emails(
+                    "Schedule failed with an error",
+                    "{} failed with the following error - {}.".format(schedule.script_name, update_response['message']),
+                    [user[1] for user in settings.ADMINS]
+                )
                 self.stdout.write('Script execution failed for ' + schedule.script_name)
             else:
                 self.update_run_instance(runInstance, 'c')
