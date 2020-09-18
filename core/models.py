@@ -226,10 +226,13 @@ class ScheduledEvent(BaseEntity):
     interval_type = models.CharField(max_length=3, choices=interval_type_choices, null=True, blank=True)
     expected_runtime = models.BigIntegerField(blank=True, null=True)
     expected_runtime_type = models.CharField(max_length=3, choices=expected_runtime_type_choices, null=True, blank=True)
-    alert = models.ForeignKey('Alert', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+    def send_emails(self, subject, message, recipient_list):
+        message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
+        send_mass_mail((message_payload, ), fail_silently=False)
 
 
 class ScheduledEventRunInstance(BaseEntity):
@@ -251,31 +254,3 @@ class ScheduledEventRunInstance(BaseEntity):
     def __str__(self):
         return self.scheduled_event.name + ' - ' + self.status
 
-
-class Alert(models.Model):
-    AVAILABLE_PLATFORMS = [
-        ('ml', 'email')
-    ]
-    name = models.TextField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    message = models.TextField(blank=True, null=True)
-    platform = models.CharField(blank=True, null=True, max_length=255, choices=AVAILABLE_PLATFORMS)
-
-    def __str__(self):
-        return self.name
-
-    def send_emails(self, subject, message, recipient_list):
-        message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
-        send_mass_mail((message_payload, ), fail_silently=False)
-
-    def alert_long_running_schedule(self):
-        # placeholder
-        subject = "{} is running too long.".format(self.name)
-        if self.platform == 'ml':
-            self.send_emails(subject, self.message, [user[1] for user in settings.ADMINS])
-
-    def alert_failed_schedule(self):
-        # placeholder
-        subject = "{} has failed.".format(self.name)
-        if self.platform == 'ml':
-            self.send_emails(subject, self.message, [user[1] for user in settings.ADMINS])
