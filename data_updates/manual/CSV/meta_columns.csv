@@ -379,6 +379,7 @@ oecd_crs_aid_type_ref,aid_type_parent_name,aid_type_parent_name,Aid type parent 
 oecd_crs_aid_type_ref,aid_type_name,aid_type_name,Aid type name,C,Aid type name
 oecd_crs_aid_type_ref,aid_type_description,aid_type_description,Aid type description,C,Aid type description
 oecd_crs_aid_type_ref,aid_type_di_name,aid_type_di_name,Aid type DI name,C,Aid type DI name
+oecd_crs_aid_type_ref,transfer_aid,transfer_aid,Transfer Aid,C,Transfer Aid
 oecd_crs_channel_map,channel_parent_category_code,channel_parent_category_code,Channel Parent Category code,N,Channel Parent Category code
 oecd_crs_channel_map,channel_id_code,channel_id_code,Channel ID code,N,Channel ID code
 oecd_crs_channel_map,year_added,year_added,Year added,N,Year added
@@ -393,9 +394,12 @@ oecd_crs_channel_map,references_notes,references_notes,References/Notes,C,Refere
 oecd_crs_sector_itep_map,oecd_sector_code,oecd_sector_code,OECD sector code,N,OECD sector code
 oecd_crs_sector_itep_map,oecd_sector_name,oecd_sector_name,OECD sector name,C,OECD sector name
 oecd_crs_sector_itep_map,itep_sector,itep_sector,ITEP sector,C,ITEP sector
+oecd_crs_sector_itep_map,aggregated_sector,aggregated_sector,Aggregated sector,C,Aggregated sector
+oecd_crs_sector_itep_map,humanitarian_and_development,humanitarian_and_development,Humanitarian and Development,C,Humanitarian and Development
 oecd_crs_donor_type_ref,donor_code,donor_code,Donor code,N,Donor code
 oecd_crs_donor_type_ref,donor_name,donor_name,Donor name,C,Donor name
 oecd_crs_donor_type_ref,donor_type,donor_type,Donor type,C,Donor type
+oecd_crs_donor_type_ref,donor_dac_and_multi,donor_dac_and_multi,Donor DAC and multi,C,Donor DAC and multi
 fts_precoded,id,id,ID,N,ID
 fts_precoded,amountUSD,amountUSD,Amount USD,N,Amount USD
 fts_precoded,budgetYear,budgetYear,Budget Year,N,Budget Year
