@@ -1026,13 +1026,22 @@ class IatiFlat(object):
                     if len(x_sector_vocabulary_list) > 0:
                         x_sector_vocabulary_mode = max(set(x_sector_vocabulary_list), key=x_sector_vocabulary_list.count)
                         unique_sector_vocabularies = sorted(set(x_sector_vocabulary_list))
-                        unique_sector_vocabularies.remove(x_sector_vocabulary_mode)
                         if "1" in unique_sector_vocabularies:
                             unique_sector_vocabularies.remove("1")
+                        else:
+                            x_sector_priority_order.remove("1")
+
                         if "2" in unique_sector_vocabularies:
                             unique_sector_vocabularies.remove("2")
+                        else:
+                            x_sector_priority_order.remove("2")
+
+                        if x_sector_vocabulary_mode in unique_sector_vocabularies:
+                            unique_sector_vocabularies.remove(x_sector_vocabulary_mode)
+
                         if x_sector_vocabulary_mode not in x_sector_priority_order:
                             x_sector_priority_order.append(x_sector_vocabulary_mode)
+
                         x_sector_priority_order += unique_sector_vocabularies
 
                     if len(x_recipient_code_list) > 0:  # Has recipients
