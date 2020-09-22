@@ -1,6 +1,8 @@
 """
     Database Models
 """
+from django.conf import settings
+from django.core.mail import send_mass_mail
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -209,6 +211,11 @@ class ScheduledEvent(BaseEntity):
         ('mnt', 'Months'),
         ('yrs', 'Years'),
     )
+    expected_runtime_type_choices = (
+        ('min', 'Minutes'),
+        ('sec', 'Seconds'),
+        ('hrs', 'Hours'),
+    )
     name = models.TextField(null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     script_name = models.TextField(null=False, blank=False)
@@ -217,9 +224,15 @@ class ScheduledEvent(BaseEntity):
     repeat = models.BooleanField(default=False)
     interval = models.BigIntegerField(blank=True, null=True)
     interval_type = models.CharField(max_length=3, choices=interval_type_choices, null=True, blank=True)
+    expected_runtime = models.BigIntegerField(blank=True, null=True)
+    expected_runtime_type = models.CharField(max_length=3, choices=expected_runtime_type_choices, null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+    def send_emails(self, subject, message, recipient_list):
+        message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
+        send_mass_mail((message_payload, ), fail_silently=False)
 
 
 class ScheduledEventRunInstance(BaseEntity):
@@ -240,3 +253,4 @@ class ScheduledEventRunInstance(BaseEntity):
 
     def __str__(self):
         return self.scheduled_event.name + ' - ' + self.status
+
