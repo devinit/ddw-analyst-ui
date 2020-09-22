@@ -15,12 +15,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, lint
+    - name: Install dependencies
       run: |
-        npm install
-        npm lint
-    - name: npm test
-      run: |
-        npm test
+        npm config set '@bit:registry' https://node.bit.dev
+        npm install --ignore-scripts
+        npm install -g codecov
+        pip3 install --user codecov
       env:
         CI: true
