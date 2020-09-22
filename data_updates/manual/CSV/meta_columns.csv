@@ -456,7 +456,7 @@ iati_transactions,x_currency,x_currency,Calculated Currency,C,Currency - Calcula
 iati_transactions,x_dac_aid_type_code,x_dac_aid_type_code,Calculated DAC Aid Type Code,C,DAC Aid Type Code - Calculated
 iati_transactions,x_dac3_sector_code,x_dac3_sector_code,Calculated DAC3 Sector Code,C,DAC3 Sector Code - Calculated
 iati_transactions,x_dac3_sector,x_dac3_sector,DAC3 Sector Name,C,DAC3 Sector Name
-iati_transactions,x_default_vocabulary,x_default_vocabulary,Calculated Default Vocabulary,C,Default Vocabulary - Calculated
+iati_transactions,x_vocabulary_number,x_vocabulary_number,Sector Vocabulary Number,N,Sector Vocabulary Number
 iati_transactions,description_narrative,description_narrative,Description Narrative,C,Description Narrative
 iati_transactions,x_di_sector,x_di_sector,DI Sector Name,C,DI Sector Name
 iati_transactions,x_finance_type,x_finance_type,Finance Type,C,Finance Type Name - Calculated
