@@ -734,14 +734,11 @@ class IatiFlat(object):
                     percentage = percentage.replace("%", "")
                 if percentage is None:
                     percentage = ""
-                vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else None
-                if vocab is None:
-                    vocab = ""
-                code = attribs['code'] if 'code' in attrib_keys else None
-                if code is not None:
-                    sector_code_list.append(code)
-                    sector_percentage_list.append(percentage)
-                    sector_vocabulary_list.append(vocab)
+                vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else "99"
+                code = attribs['code'] if 'code' in attrib_keys else ""
+                sector_code_list.append(code)
+                sector_percentage_list.append(percentage)
+                sector_vocabulary_list.append(vocab)
 
             humanitarian = default_first(activity.xpath("@humanitarian"))
             humanitarian_scope_narrative = default_first(activity.xpath("humanitarian-scope/narrative/text()"))
@@ -838,14 +835,11 @@ class IatiFlat(object):
                             percentage = percentage.replace("%", "")
                         if percentage is None:
                             percentage = ""
-                        vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else None
-                        if vocab is None:
-                            vocab = ""
-                        code = attribs['code'] if 'code' in attrib_keys else None
-                        if code is not None:
-                            transaction_sector_code_list.append(code)
-                            transaction_sector_percentage_list.append(percentage)
-                            transaction_sector_vocabulary_list.append(vocab)
+                        vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else "99"
+                        code = attribs['code'] if 'code' in attrib_keys else ""
+                        transaction_sector_code_list.append(code)
+                        transaction_sector_percentage_list.append(percentage)
+                        transaction_sector_vocabulary_list.append(vocab)
                     if len(transaction_sector_code_list) > 0:
                         x_sector_code_list = transaction_sector_code_list.copy()
                         x_sector_percentage_list = transaction_sector_percentage_list.copy()
