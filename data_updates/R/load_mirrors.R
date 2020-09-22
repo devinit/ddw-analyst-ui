@@ -151,7 +151,7 @@ clean_dac1_file = function(){
              ,'value'
              ,'flags'
            ));
-  
+
   dbWriteTable(con, name = dac1.table.quote, value = dac1, row.names = F, overwrite = T)
 }
 
@@ -234,8 +234,8 @@ merge_crs_tables = function(file_vec){
     "text",
     "integer",
     "integer",
-    "integer",
-    "integer",
+    "text",
+    "text",
     "text",
     "text",
     "float8",
@@ -369,4 +369,3 @@ clean_dac2b_file()
 clean_dac5_file()
 
 dbDisconnect(con)
-
