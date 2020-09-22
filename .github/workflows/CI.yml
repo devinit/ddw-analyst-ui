@@ -26,6 +26,10 @@ jobs:
         npm install --ignore-scripts
         npm install -g codecov
         pip3 install --user codecov
+    - name: Run docker build
+      run: |
+        docker volume create --name=metadata
+        docker-compose up -d --build
     - name: Run tests
       run: |
         npm run lint
