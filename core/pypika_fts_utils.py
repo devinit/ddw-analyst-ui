@@ -29,3 +29,8 @@ class TableQueryBuilder(pypika_utils.QueryBuilder):
         create_table = pypika_utils.Query.create_table(
             table_name).as_select(select).get_sql()
         return create_table
+
+    def delete_table(self, table_name: str) -> str:
+        table = pypika_utils.Table(table_name)
+        sql = "DROP TABLE {table}".format(table=table.get_sql())
+        return sql
