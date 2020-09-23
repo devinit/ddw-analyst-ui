@@ -65,3 +65,12 @@ jobs:
         echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
         echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
 
+    - name: ssh into remote server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          echo "deployment"
