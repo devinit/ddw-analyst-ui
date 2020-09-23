@@ -1,16 +1,17 @@
 import React, { FunctionComponent } from 'react';
+import { DatasetCardBody } from '../DatasetCardBody';
 
 export const OperationsTable: FunctionComponent = (props) => {
   const renderRows = () =>
     React.Children.map(props.children, (child) => {
-      if (React.isValidElement(child) && child.type) {
+      if (React.isValidElement(child)) {
         return child;
       }
     });
 
   return (
     <div className="card dataset-list">
-      <div className="card-body p-0">{renderRows()}</div>
+      <DatasetCardBody removePadding={true}>{renderRows()}</DatasetCardBody>
     </div>
   );
 };

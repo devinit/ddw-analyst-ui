@@ -12,6 +12,9 @@ import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
+import { DatasetCardBody } from '../DatasetCardBody';
+import { DatasetCardFooter } from '../DatasetCardFooter';
+import { DatasetContent } from '../DatasetContent';
 import { OperationsTable } from '../OperationsTable';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
@@ -124,7 +127,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     if (operations && operations.count()) {
       return (
         <OperationsTable>
-          <div className="card-body">
+          <DatasetCardBody removePadding={false}>
             <FormControl
               placeholder="Search ..."
               className="w-25"
@@ -133,7 +136,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               onKeyDown={onSearch}
               data-testid="sources-table-search"
             />
-          </div>
+          </DatasetCardBody>
           {operations.map((operation, index) => (
             <OperationsTableRow
               key={index}
@@ -159,7 +162,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               </OperationsTableRowActions>
             </OperationsTableRow>
           ))}
-          <div className="card-footer d-block">{renderPagination()}</div>
+          <DatasetCardFooter>{renderPagination()}</DatasetCardFooter>
         </OperationsTable>
       );
     }
@@ -209,9 +212,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         <Loader content="Loading" />
       </Dimmer>
       <Tab.Container defaultActiveKey="myQueries">
-        <div className="content pt-0">
-          <div className="container-fluid">{renderOperationsTable(operations, true)}</div>
-        </div>
+        <DatasetContent>{renderOperationsTable(operations, true)}</DatasetContent>
       </Tab.Container>
     </React.Fragment>
   );
