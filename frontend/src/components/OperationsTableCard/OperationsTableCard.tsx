@@ -200,40 +200,16 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       <Tab.Container defaultActiveKey="myQueries">
         <Card>
           <Card.Body>
-            <Nav variant="pills" className="nav-pills-danger" role="tablist">
-              <Nav.Item onClick={() => fetchQueries(true)}>
-                <Nav.Link eventKey="myQueries">My Datasets</Nav.Link>
-              </Nav.Item>
-              <Nav.Item onClick={() => fetchQueries()}>
-                <Nav.Link eventKey="otherQueries">Published Datasets</Nav.Link>
-              </Nav.Item>
-            </Nav>
-            <Tab.Content>
-              <Tab.Pane eventKey="myQueries">
-                <FormControl
-                  placeholder="Search ..."
-                  className="w-25"
-                  value={searchQuery}
-                  onChange={onSearchChange}
-                  onKeyDown={onSearch}
-                  data-testid="sources-table-search"
-                />
-                {renderOperationsTable(operations, true)}
-                {renderPagination()}
-              </Tab.Pane>
-              <Tab.Pane eventKey="otherQueries">
-                <FormControl
-                  placeholder="Search ..."
-                  className="w-25"
-                  value={searchQuery}
-                  onChange={onSearchChange}
-                  onKeyDown={onSearch}
-                  data-testid="sources-table-search"
-                />
-                {renderOperationsTable(operations)}
-                {renderPagination()}
-              </Tab.Pane>
-            </Tab.Content>
+            <FormControl
+              placeholder="Search ..."
+              className="w-25"
+              value={searchQuery}
+              onChange={onSearchChange}
+              onKeyDown={onSearch}
+              data-testid="sources-table-search"
+            />
+            {renderOperationsTable(operations, true)}
+            {renderPagination()}
           </Card.Body>
         </Card>
       </Tab.Container>
