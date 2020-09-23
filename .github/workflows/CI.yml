@@ -65,6 +65,17 @@ jobs:
         echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
         echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
 
+    - name: copy deploy script to server
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ env.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.KEY }}
+      with:
+        source: "deploy.sh"
+        target: "."
+
     - name: ssh into remote server
       uses: appleboy/ssh-action@master
       with:
