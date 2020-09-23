@@ -15,7 +15,7 @@ export interface OperationsTableRowProps {
 //   display: block !important;
 // `;
 
-export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (props) => {
+export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = () => {
   // const renderActions = (): React.ReactNode =>
   //   React.Children.map(props.children, (child) => {
   //     if (React.isValidElement(child) && child.type === OperationsTableRowActions) {

@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Card, FormControl, Nav, OverlayTrigger, Popover, Tab } from 'react-bootstrap';
+import { FormControl, OverlayTrigger, Popover, Tab } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
