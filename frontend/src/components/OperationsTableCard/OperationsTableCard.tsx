@@ -124,6 +124,16 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     if (operations && operations.count()) {
       return (
         <OperationsTable>
+          <div className="card-body">
+            <FormControl
+              placeholder="Search ..."
+              className="w-25"
+              value={searchQuery}
+              onChange={onSearchChange}
+              onKeyDown={onSearch}
+              data-testid="sources-table-search"
+            />
+          </div>
           {operations.map((operation, index) => (
             <OperationsTableRow
               key={index}
@@ -149,6 +159,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               </OperationsTableRowActions>
             </OperationsTableRow>
           ))}
+          <div className="card-footer d-block">{renderPagination()}</div>
         </OperationsTable>
       );
     }
@@ -198,20 +209,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         <Loader content="Loading" />
       </Dimmer>
       <Tab.Container defaultActiveKey="myQueries">
-        <Card>
-          <Card.Body>
-            <FormControl
-              placeholder="Search ..."
-              className="w-25"
-              value={searchQuery}
-              onChange={onSearchChange}
-              onKeyDown={onSearch}
-              data-testid="sources-table-search"
-            />
-            {renderOperationsTable(operations, true)}
-            {renderPagination()}
-          </Card.Body>
-        </Card>
+        <div className="content pt-0">
+          <div className="container-fluid">{renderOperationsTable(operations, true)}</div>
+        </div>
       </Tab.Container>
     </React.Fragment>
   );
