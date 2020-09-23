@@ -36,3 +36,32 @@ jobs:
         npm run coverage
       env:
         CI: true
+  deploy:
+    needs: [test]
+    runs-on: ubuntu-latest
+    if:
+      contains('
+        refs/heads/master
+        refs/heads/develop
+        refs/heads/feature/deploy-to-actions
+      ', github.ref)
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set env for develop branch
+      if: endsWith(github.ref, '/develop')
+      run: |
+        echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
+        echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
+
+    - name: Set env for master branch
+      if: endsWith(github.ref, '/master')
+      run: |
+        echo "::set-env name=HOST::${{ secrets.PROD_HOST }}"
+        echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
+
+    - name: Set env for test branch
+      if: endsWith(github.ref, '/feature/deploy-to-actions')
+      run: |
+        echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
+        echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
+
