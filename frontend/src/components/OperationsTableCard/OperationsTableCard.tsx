@@ -125,6 +125,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     );
 
     if (operations && operations.count()) {
+      console.log(JSON.stringify(operations));
+
       return (
         <OperationsTable>
           <DatasetCardBody removePadding={false}>
@@ -144,6 +146,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               name={operation.get('name') as string}
               updatedOn={operation.get('updated_on') as string}
               isDraft={operation.get('is_draft') as boolean}
+              description={operation.get('description') as string}
+              user={operation.get('user') as string}
             >
               <OperationsTableRowActions>
                 {allowEdit ? <EditAction operation={operation} /> : null}
