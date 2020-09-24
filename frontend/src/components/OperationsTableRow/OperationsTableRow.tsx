@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
-// import styled from 'styled-components';
-// import OperationsTableRowActions from '../OperationsTableRowActions';
-// import { Badge } from 'react-bootstrap';
+import { DatasetRowItem } from '../DatasetRowItem';
+import { OperationsTableRowActions } from '../OperationsTableRowActions';
 
 export interface OperationsTableRowProps {
   count: number;
@@ -11,41 +10,28 @@ export interface OperationsTableRowProps {
   classNames?: string;
 }
 
-// const StyledActionCell = styled.td`
-//   display: block !important;
-// `;
-
-export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = () => {
-  // const renderActions = (): React.ReactNode =>
-  //   React.Children.map(props.children, (child) => {
-  //     if (React.isValidElement(child) && child.type === OperationsTableRowActions) {
-  //       return child;
-  //     }
-  //   });
+export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (props) => {
+  const renderActions = (): React.ReactNode =>
+    React.Children.map(props.children, (child) => {
+      if (React.isValidElement(child) && child.type === OperationsTableRowActions) {
+        return child;
+      }
+    });
 
   return (
-    <>
-      <div className="dataset-row p-3 border-bottom">
-        <div className="col-md-12">
-          <div className="dataset-row-title h4">
-            Hola <span className="badge badge-warning align-middle">Draft</span>
-          </div>
-          <p className="mb-2">Lets rock people we got this</p>
-          <div className="dataset-row-actions mb-1">
-            <button className="btn btn-sm btn-dark">Edit</button>
-            <button className="btn btn-sm btn-dark">Preview Data</button>
-            <button className="btn btn-sm btn-dark" data-toggle="modal" data-target="#queryModal">
-              SQL Query
-            </button>
-            <button className="btn btn-sm btn-dark">Export to CSV</button>
-          </div>
+    <div className="dataset-row p-3 border-bottom">
+      <div className="col-md-12">
+        <DatasetRowItem text="Hola" addClass="dataset-row-title h4">
+          <span className="badge badge-warning align-middle">Draft</span>
+        </DatasetRowItem>
+        <DatasetRowItem addClass="mb-2" text="Lets rock people we got this"></DatasetRowItem>
 
-          <div className="h6 dataset-row-footer">
-            Updated 2 days ago by <span>Edwin P. Magezi</span> from{' '}
-            <span className="text-uppercase text-danger">yolo</span>
-          </div>
-        </div>
+        <DatasetRowItem addClass="dataset-row-actions mb-1">{renderActions()}</DatasetRowItem>
+
+        <DatasetRowItem addClass="h6 dataset-row-footer" text="Updated 2 days ago by">
+          <span>Edwin P. Magezi</span> from <span className="text-uppercase text-danger">yolo</span>
+        </DatasetRowItem>
       </div>
-    </>
+    </div>
   );
 };
