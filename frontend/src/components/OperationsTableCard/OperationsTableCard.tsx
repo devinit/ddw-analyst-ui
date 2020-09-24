@@ -116,7 +116,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const renderOperationsTable = (operations: List<OperationMap>, allowEdit = false) => {
     const EditAction = ({ operation }: { operation: OperationMap }) => (
       <a
-        className="btn btn-link btn-danger"
+        className="btn btn-sm btn-dark"
         href={`/queries/build/${operation.get('id') as number}/`}
         onClick={onEditOperation(operation)}
       >
@@ -146,19 +146,27 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               isDraft={operation.get('is_draft') as boolean}
             >
               <OperationsTableRowActions>
+                {allowEdit ? <EditAction operation={operation} /> : null}
                 <OverlayTrigger
                   placement="top"
                   overlay={<Popover id="view">View Operation Data</Popover>}
                 >
                   <a
-                    className="btn btn-link btn-danger"
+                    className="btn btn-sm btn-dark"
                     href={`/queries/data/${operation.get('id')}`}
                     onClick={viewData(operation)}
                   >
                     View Data
                   </a>
                 </OverlayTrigger>
-                {allowEdit ? <EditAction operation={operation} /> : null}
+                <button
+                  className="btn btn-sm btn-dark"
+                  data-toggle="modal"
+                  data-target="#queryModal"
+                >
+                  SQL Query
+                </button>
+                <button className="btn btn-sm btn-dark">Export to CSV</button>
               </OperationsTableRowActions>
             </OperationsTableRow>
           ))}
