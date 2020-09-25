@@ -1,14 +1,12 @@
 name: CI
 
-on: [push, pull_request]
-
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x]
-
+    if: github.event_name == 'pull_request' || github.event.action == 'created'
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -45,6 +43,7 @@ jobs:
         refs/heads/develop
         refs/heads/feature/deploy-to-actions
       ', github.ref)
+    if: github.event_name == 'release' && github.event.action == 'created'
     steps:
     - uses: actions/checkout@v2
     - name: Set env for develop branch
@@ -64,12 +63,6 @@ jobs:
       run: |
         echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
         echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
-
-    - name: Check if Git tag exists
-      run: |
-        echo "::set-env name=HEAD_TAG::$(git tag --points-at HEAD)"
-        echo env.HEAD_TAG
-        echo $HEAD_TAG
 
     - name: copy deploy script to server
       uses: appleboy/scp-action@master
