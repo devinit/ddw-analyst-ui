@@ -1,12 +1,14 @@
 name: CI
 
+on: [push, pull_request]
+
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x]
-    if: github.event_name == 'pull_request' || github.event.action == 'created'
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
