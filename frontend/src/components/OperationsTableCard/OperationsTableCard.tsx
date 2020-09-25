@@ -31,6 +31,7 @@ interface ComponentProps extends RouteComponentProps {
   offset: number;
   links?: LinksMap;
   sourceID?: number;
+  showMyQueries: boolean;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
 
@@ -46,7 +47,7 @@ const getSourceDatasetsLink = (
   }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
-  const [showMyQueries, setShowMyQueries] = useState(true);
+  const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -55,7 +56,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   const fetchQueries = (mine = false) => {
     const loading = props.operations.get('loading') as boolean;
+    console.log(`Loading is ${loading}`);
     if (!loading) {
+      console.log(`Mine is ${mine}`);
       props.actions.fetchOperations({
         limit: props.limit,
         offset: 0,
@@ -223,9 +226,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       <Dimmer active={loading} inverted>
         <Loader content="Loading" />
       </Dimmer>
-      <Tab.Container defaultActiveKey="myQueries">
-        <DatasetContent>{renderOperationsTable(operations, true)}</DatasetContent>
-      </Tab.Container>
+      <DatasetContent>{renderOperationsTable(operations, true)}</DatasetContent>
     </React.Fragment>
   );
 };

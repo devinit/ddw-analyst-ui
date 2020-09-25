@@ -9,7 +9,7 @@ export const PublishedDatasets: FunctionComponent<PageProps> = () => {
   return (
     <Row>
       <Col>
-        <OperationsTableCard limit={10} offset={0} />
+        <OperationsTableCard limit={10} offset={0} showMyQueries={false} />
       </Col>
     </Row>
   );
