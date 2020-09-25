@@ -4,7 +4,7 @@ import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as operationsActions from '../../actions/operations';
-import { OperationsTableCard } from '../../components/OperationsTableCard';
+import { MyDatasets } from '../../components/MyDatasets';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import * as pageActions from './actions';
@@ -24,7 +24,7 @@ class Home extends React.Component<HomeProps> {
     return (
       <Row>
         <Col>
-          <OperationsTableCard
+          <MyDatasets
             limit={this.props.page.getIn(['operations', 'limit'])}
             offset={this.props.page.getIn(['operations', 'offset'])}
           />
