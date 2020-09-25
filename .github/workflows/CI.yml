@@ -44,8 +44,7 @@ jobs:
         refs/heads/master
         refs/heads/develop
         refs/heads/feature/deploy-to-actions
-      ', github.ref)
-    if: github.event_name == 'release' && github.event.action == 'created'
+      ', github.ref) && github.event_name == 'release' && github.event.action == 'created'
     steps:
     - uses: actions/checkout@v2
     - name: Set env for develop branch
