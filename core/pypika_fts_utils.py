@@ -3,8 +3,9 @@ from core import pypika_utils
 
 class TableQueryBuilder(pypika_utils.QueryBuilder):
 
-    def __init__(self, initial_table_name, initial_schema_name):
+    def __init__(self, initial_table_name, initial_schema_name, operation=None):
 
+        super().__init__(operation=operation)
         self.initial_table_name = initial_table_name
         self.initial_schema_name = initial_schema_name
 
