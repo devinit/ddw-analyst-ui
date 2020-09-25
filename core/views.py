@@ -37,7 +37,7 @@ from core.serializers import (DataSerializer, OperationSerializer,
                               ScheduledEventSerializer, SectorSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
                               UserSerializer, FrozenDataSerializer, SavedQueryDataSerializer)
-from data.db_manager import fetch_data, update_table_from_tuple, create_table_from_query_result
+from data.db_manager import fetch_data, update_table_from_tuple, run_query
 from data_updates.utils import ScriptExecutor, list_update_scripts
 import datetime
 
@@ -730,16 +730,15 @@ class FrozenDataList(APIView):
         serializer = FrozenDataSerializer(data=request.data)
         if serializer.is_valid():
             parent_db_table = serializer.validated_data.get('parent_db_table')
-            frozen_db_table = parent_db_table + \
+            frozen_db_table = "archive_" + parent_db_table + \
                 datetime.datetime.now().strftime('%Y%m%d%H%M%S')
             serializer.save(user=self.request.user,
                             frozen_db_table=frozen_db_table)
             # Consider doing the below six lines via cron to improve response time
             query_builder = TableQueryBuilder(parent_db_table, "repo")
-            query_builder.select()
             create_query = query_builder.create_table_from_query(
                 frozen_db_table)
-            create_result = create_table_from_query_result(create_query)
+            create_result = run_query(create_query)
             if create_result[0]['result'] == 'success':
                 serializer.save(completed='c')
                 serializer.save()
@@ -774,11 +773,15 @@ class FrozenDataDetail(APIView):
 
     def delete(self, request, pk, format=None):
         frozen_data = self.get_object(pk)
-        parent_db_table = frozen_data.get
+        table_name = frozen_data.frozen_db_table
         frozen_data.delete()
-        # To do - Delete frozen_db_table after deleting frozen entry
-        query_builder = TableQueryBuilder(parent_db_table, "repo")
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        query_builder = TableQueryBuilder(table_name, "repo")
+        delete_sql = query_builder.delete_table(table_name)
+        delete_result = run_query(delete_sql)
+        if delete_result[0]['result'] == 'success':
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(delete_result, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class SavedQueryDataList(APIView):
@@ -795,9 +798,21 @@ class SavedQueryDataList(APIView):
     def post(self, request, format=None):
         serializer = SavedQueryDataSerializer(data=request.data)
         if serializer.is_valid():
-            frozen_db_table = "query_data" + datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+            saved_query_db_table = "query_data_" + \
+                datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+            operation = Operation.objects.get(pk=request.data['operation'])
+            query_builder = TableQueryBuilder(
+                saved_query_db_table, "repo", operation=operation)
+            sql = query_builder.get_sql()
             serializer.save(user=self.request.user,
-                            frozen_db_table=frozen_db_table)
+                            frozen_db_table=saved_query_db_table, full_query=sql)
+
+            create_query = query_builder.create_table_from_query(
+                saved_query_db_table)
+            create_result = run_query(create_query)
+            if create_result[0]['result'] == 'success':
+                serializer.save(completed='c')
+                serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -829,5 +844,12 @@ class SavedQueryDataDetail(APIView):
 
     def delete(self, request, pk, format=None):
         saved_query_data = self.get_object(pk)
+        table_name = saved_query_data.frozen_db_table
         saved_query_data.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        query_builder = TableQueryBuilder(table_name, "repo")
+        delete_sql = query_builder.delete_table(table_name)
+        delete_result = run_query(delete_sql)
+        if delete_result[0]['result'] == 'success':
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(delete_result, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

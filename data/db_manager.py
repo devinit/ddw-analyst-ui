@@ -84,7 +84,7 @@ def update_table_from_tuple(queries, database="datasets"):
         return results
 
 
-def create_table_from_query_result(query, database="datasets"):
+def run_query(query, database="datasets"):
     with connections[database].cursor() as create_cursor:
         try:
             create_cursor.execute(query)
