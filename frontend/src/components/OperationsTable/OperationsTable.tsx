@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { BasicModal } from '../BasicModal';
 import { DatasetCardBody } from '../DatasetCardBody';
 import { DatasetCardFooter } from '../DatasetCardFooter';
 import { OperationsTableRow } from '../OperationsTableRow';
@@ -10,7 +11,8 @@ export const OperationsTable: FunctionComponent = (props) => {
         React.isValidElement(child) &&
         (child.type === DatasetCardBody ||
           child.type === OperationsTableRow ||
-          child.type === DatasetCardFooter)
+          child.type === DatasetCardFooter ||
+          child.type === BasicModal)
       ) {
         return child;
       }
