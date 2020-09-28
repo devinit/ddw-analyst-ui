@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { FormControl, OverlayTrigger, Popover, Tab } from 'react-bootstrap';
+import { FormControl, OverlayTrigger, Popover } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,7 @@ import { OperationsState } from '../../reducers/operations';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
-import { OperationMap } from '../../types/operations';
+import { OperationMap, OperationStepMap } from '../../types/operations';
 import { api } from '../../utils';
 import { DatasetCardBody } from '../DatasetCardBody';
 import { DatasetCardFooter } from '../DatasetCardFooter';
@@ -151,6 +151,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               isDraft={operation.get('is_draft') as boolean}
               description={operation.get('description') as string}
               user={operation.get('user') as string}
+              updated_on={operation.get('updated_on') as string}
+              operation_steps={operation.get('operation_steps') as List<OperationStepMap>}
             >
               <OperationsTableRowActions>
                 {allowEdit ? <EditAction operation={operation} /> : null}
@@ -166,14 +168,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                     View Data
                   </a>
                 </OverlayTrigger>
-                <button
-                  className="btn btn-sm btn-dark"
-                  data-toggle="modal"
-                  data-target="#queryModal"
-                >
+                <a className="btn btn-sm btn-dark" href="#">
                   SQL Query
-                </button>
-                <button className="btn btn-sm btn-dark">Export to CSV</button>
+                </a>
+                <a className="btn btn-sm btn-dark" href="#">
+                  Export to CSV
+                </a>
               </OperationsTableRowActions>
             </OperationsTableRow>
           ))}
