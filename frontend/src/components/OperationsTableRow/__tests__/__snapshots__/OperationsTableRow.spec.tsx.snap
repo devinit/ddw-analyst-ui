@@ -28,6 +28,7 @@ exports[`OperationsTableRow does not render non-action children 1`] = `
     >
       Updated
        
+      9 months ago
        by 
       <span>
          
@@ -77,6 +78,7 @@ exports[`OperationsTableRow renders actions when provided 1`] = `
     >
       Updated
        
+      9 months ago
        by 
       <span>
          
@@ -121,6 +123,7 @@ exports[`OperationsTableRow renders correctly with the default props 1`] = `
     >
       Updated
        
+      9 months ago
        by 
       <span>
          
