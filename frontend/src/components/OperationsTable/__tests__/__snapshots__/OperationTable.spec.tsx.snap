@@ -1,87 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`OperationsTable only renders OperationsTableRow children 1`] = `
-.c0 {
-  display: block !important;
-}
-
 <div
-  className="table-responsive"
+  className="card dataset-list"
 >
-  <table
-    className="operations-table table table-striped table-hover"
+  <div
+    className="card-body p-0"
   >
-    <thead>
-      <tr>
-        <th>
-          Name
-        </th>
-        <th>
-          Updated On
-        </th>
-        <th>
-          Status
-        </th>
-        <th
-          className="text-right"
-        >
-          Actions
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        data-testid="operations-table-row"
+    <div
+      className="dataset-row p-3 border-bottom"
+    >
+      <div
+        className="col-md-12"
       >
-        <td>
+        <div
+          className="dataset-row-title h4"
+        >
           My Test Dataset
-        </td>
-        <td>
-          Wed Jan 01 2020
-        </td>
-        <td>
-          <span
-            className="badge badge-danger"
-            data-testid="op-table-row-badge"
-          >
-            Published
+           
+        </div>
+        <div
+          className="mb-2"
+        >
+           
+        </div>
+        <div
+          className="dataset-row-actions mb-1"
+        >
+           
+        </div>
+        <div
+          className="h6 dataset-row-footer"
+        >
+          Updated
+           
+           by 
+          <span>
+             
+             
           </span>
-        </td>
-        <td
-          className="c0 td-actions text-right"
-        />
-      </tr>
-    </tbody>
-  </table>
+          from 
+          <span
+            className="text-uppercase text-danger"
+          >
+            
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`OperationsTable renders correctly with the default props 1`] = `
 <div
-  className="table-responsive"
+  className="card dataset-list"
 >
-  <table
-    className="operations-table table table-striped table-hover"
-  >
-    <thead>
-      <tr>
-        <th>
-          Name
-        </th>
-        <th>
-          Updated On
-        </th>
-        <th>
-          Status
-        </th>
-        <th
-          className="text-right"
-        >
-          Actions
-        </th>
-      </tr>
-    </thead>
-    <tbody />
-  </table>
+  <div
+    className="card-body p-0"
+  />
 </div>
 `;
