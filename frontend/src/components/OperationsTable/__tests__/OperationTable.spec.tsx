@@ -1,3 +1,4 @@
+import { List } from 'immutable';
 /**
  * @jest-environment jsdom
  */
@@ -19,7 +20,9 @@ describe('OperationsTable', () => {
       count: 2,
       name: 'My Test Dataset',
       updatedOn: new Date('2020-01-01').toISOString(),
+      updated_on: new Date('2020-01-02').toISOString(),
       isDraft: false,
+      operation_steps: List(),
     };
     const renderer = TestRenderer.create(
       <OperationsTable {...props}>
