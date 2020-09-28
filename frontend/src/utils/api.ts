@@ -4,6 +4,7 @@ export const api = {
     LOGOUT: '/api/auth/logout/',
     USERS: '/api/users/',
     SOURCES: '/api/sources/',
+    SINGLE_SOURCE: '/api/sources/{sourceId}',
     DATASETS: '/api/datasets/',
     MY_DATASETS: '/api/datasets/mine/',
     SINGLE_DATASET: '/api/dataset/',
