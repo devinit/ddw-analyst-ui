@@ -17,8 +17,8 @@ if [ -d $APP_DIR ]; then
       echo "Cloning new content from develop"
       git fetch
       git stash
-      git checkout $ACTIVE_BRANCH
-      git reset --hard origin/deploy-to-actions
+      git checkout develop
+      git reset --hard origin/develop
       } || {
       echo "Failed to update from git repository"
       exit 20;
@@ -28,7 +28,7 @@ else
       git clone -b develop $REPOSITORY
 
       } || {
-      echo "Failed to perform git clone on $REPOSITORY with branch $ACTIVE_BRANCH "
+      echo "Failed to perform git clone on $REPOSITORY with branch develop"
       exit 20;
   }
 fi

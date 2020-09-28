@@ -89,7 +89,8 @@ jobs:
         source: "deploy.sh"
         target: "."
 
-    - name: ssh into remote server
+    - name: ssh into remote dev server
+      if: endsWith(github.ref, '/feature/deploy-to-actions')
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.HOST }}
@@ -97,4 +98,17 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          echo "deployment"
+          chmod 700 "deploy_script.sh"
+          ./deploy_script.sh
+
+    - name: ssh into remote production server
+      if: endsWith(github.ref, '/master')
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          chmod 700 deploy.sh
+          ./deploy.sh
