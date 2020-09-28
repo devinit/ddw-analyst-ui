@@ -33,7 +33,7 @@ interface ComponentProps extends RouteComponentProps {
   offset: number;
   links?: LinksMap;
   sourceID?: number;
-  showMyQueries: boolean;
+  showMyQueries?: boolean;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
 
