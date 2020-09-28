@@ -2,9 +2,9 @@ import { List } from 'immutable';
 import React, { FunctionComponent } from 'react';
 import { DatasetRowItem } from '../DatasetRowItem';
 import { OperationsTableRowActions } from '../OperationsTableRowActions';
-import TimeAgo from 'timeago-react';
 import { OperationStepMap } from '../../types/operations';
 import { fetchSource } from './utils';
+import moment from 'moment';
 
 export interface OperationsTableRowProps {
   count: number;
@@ -50,14 +50,18 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (p
     <div className="dataset-row p-3 border-bottom">
       <div className="col-md-12">
         <DatasetRowItem text={props.name} addClass="dataset-row-title h4">
-          {props.isDraft ? <span className="badge badge-warning align-middle">Draft</span> : null}
+          {props.isDraft ? (
+            <span data-testid="draft-span" className="badge badge-warning align-middle">
+              Draft
+            </span>
+          ) : null}
         </DatasetRowItem>
         <DatasetRowItem addClass="mb-2" text={props.description}></DatasetRowItem>
 
         <DatasetRowItem addClass="dataset-row-actions mb-1">{renderActions()}</DatasetRowItem>
 
         <DatasetRowItem addClass="h6 dataset-row-footer" text="Updated">
-          <TimeAgo datetime={props.updated_on} locale="en" />
+          {moment(props.updated_on).fromNow()}
           {` by `}
           <span> {props.user} </span>
           {`from `}
