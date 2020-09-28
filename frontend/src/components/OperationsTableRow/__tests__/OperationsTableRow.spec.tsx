@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 import { render } from '@testing-library/react';
+import { List } from 'immutable';
 import 'jest-styled-components';
 import React from 'react';
 import * as TestRenderer from 'react-test-renderer';
@@ -12,7 +13,9 @@ const props: OperationsTableRowProps = {
   count: 2,
   name: 'My Test Dataset',
   updatedOn: new Date('2020-01-01').toISOString(),
+  updated_on: new Date('2020-01-02').toISOString(),
   isDraft: false,
+  operation_steps: List(),
 };
 
 describe('OperationsTableRow', () => {
