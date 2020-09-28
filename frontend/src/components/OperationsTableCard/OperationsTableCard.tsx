@@ -12,6 +12,7 @@ import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap, OperationStepMap } from '../../types/operations';
 import { api } from '../../utils';
+import { BasicModal } from '../BasicModal';
 import { DatasetCardBody } from '../DatasetCardBody';
 import { DatasetCardFooter } from '../DatasetCardFooter';
 import { DatasetContent } from '../DatasetContent';
@@ -19,6 +20,7 @@ import { OperationsTable } from '../OperationsTable';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
+import styled from 'styled-components';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -46,9 +48,17 @@ const getSourceDatasetsLink = (
     mine ? api.routes.FETCH_MY_SOURCE_DATASETS : api.routes.FETCH_SOURCE_DATASETS
   }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
 
+const StyledContent = styled.p`
+  white-space: pre-line;
+  max-height: 300px;
+  overflow-y: auto;
+`;
+
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
+  const [info, setInfo] = useState('');
+  const onModalHide = () => setInfo('');
 
   useEffect(() => {
     fetchQueries(showMyQueries);
@@ -109,6 +119,14 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     props.history.push(`/queries/data/${id}`);
   };
 
+  const viewSqlQuery = (operation: OperationMap) => (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    console.log(JSON.stringify(operation.get('operation_query')));
+    setInfo(operation.get('operation_query') as string);
+  };
+
   const onEditOperation = (operation: OperationMap) => (
     event: React.MouseEvent<HTMLAnchorElement | HTMLTableRowElement, MouseEvent>,
   ) => {
@@ -128,7 +146,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     );
 
     if (operations && operations.count()) {
-      console.log(JSON.stringify(operations));
+      // console.log(JSON.stringify(operations));
 
       return (
         <OperationsTable>
@@ -142,6 +160,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               data-testid="sources-table-search"
             />
           </DatasetCardBody>
+          <BasicModal show={!!info} onHide={onModalHide}>
+            <StyledContent>{info}</StyledContent>
+          </BasicModal>
           {operations.map((operation, index) => (
             <OperationsTableRow
               key={index}
@@ -168,7 +189,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                     View Data
                   </a>
                 </OverlayTrigger>
-                <a className="btn btn-sm btn-dark" href="#">
+                <a className="btn btn-sm btn-dark" href="#" onClick={viewSqlQuery(operation)}>
                   SQL Query
                 </a>
                 <a className="btn btn-sm btn-dark" href="#">
