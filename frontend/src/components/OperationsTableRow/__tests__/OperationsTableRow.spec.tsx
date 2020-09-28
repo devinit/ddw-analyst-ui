@@ -51,22 +51,21 @@ describe('OperationsTableRow', () => {
     const { getByTestId } = render(<OperationsTableRow {...props} isDraft></OperationsTableRow>, {
       container: document.createElement('tbody'),
     });
-    const badge = getByTestId('op-table-row-badge');
+    const badge = getByTestId('draft-span');
 
     expect(badge.classList).toContain('badge-warning');
     expect(badge.innerHTML).toBe('Draft');
   });
 
   test('that is not a draft renders a published badge of danger variant', () => {
-    const { getByTestId } = render(
+    const { queryByTestId } = render(
       <OperationsTableRow {...props} isDraft={false}></OperationsTableRow>,
       {
         container: document.createElement('tbody'),
       },
     );
-    const badge = getByTestId('op-table-row-badge');
+    const badge = queryByTestId('draft-span');
 
-    expect(badge.classList).toContain('badge-danger');
-    expect(badge.innerHTML).toBe('Published');
+    expect(badge).toBeNull();
   });
 });
