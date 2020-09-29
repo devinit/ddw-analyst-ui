@@ -37,15 +37,15 @@ cd ~/ddw-analyst-ui || exit
 
 echo "Building docker"
 
-docker-compose build
+# docker-compose build
 docker-compose down --remove-orphans
-docker-compose up -d
+docker-compose up -d --build
 
-echo "Building JS"
+# echo "Building JS"
 
-npm ci
+# npm ci
 
-npm run build
+# npm run build
 
 docker-compose exec -T web python manage.py migrate
 
