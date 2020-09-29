@@ -90,7 +90,6 @@ jobs:
         target: "."
 
     - name: ssh into remote dev server
-      timeout-minutes: 30 # Times out after 1 minute
       if: endsWith(github.ref, '/feature/deploy-to-actions')
       uses: appleboy/ssh-action@master
       with:
@@ -113,3 +112,16 @@ jobs:
         script: |
           chmod 700 deploy.sh
           ./deploy.sh
+
+    - name: Build JS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          echo $GITHUB_REF
+          cd ~/ddw-analyst-ui
+          npm ci
+          npm run build
