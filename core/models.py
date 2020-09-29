@@ -291,7 +291,7 @@ class SavedQueryData(BaseEntity):
         ('c', 'Completed'),
         ('e', 'Errored'),
     )
-    frozen_db_table = models.CharField(max_length=200, null=False)
+    saved_query_db_table = models.CharField(max_length=200, null=True)
     active = models.BooleanField(default=True)
     operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
     full_query = models.TextField(null=False)
