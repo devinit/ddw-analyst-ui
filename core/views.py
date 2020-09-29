@@ -38,6 +38,7 @@ from core.serializers import (DataSerializer, OperationSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
                               UserSerializer, FrozenDataSerializer, SavedQueryDataSerializer)
 from data.db_manager import fetch_data, update_table_from_tuple, run_query
+from core.pypika_utils import QueryBuilder
 from data_updates.utils import ScriptExecutor, list_update_scripts
 import datetime
 
@@ -736,12 +737,13 @@ class FrozenDataList(APIView):
                             frozen_db_table=frozen_db_table)
             # Consider doing the below six lines via cron to improve response time
             query_builder = TableQueryBuilder(parent_db_table, "repo")
-            create_query = query_builder.create_table_from_query(
-                frozen_db_table)
+            create_query = query_builder.select().create_table_from_query(
+                frozen_db_table, "archives")
             create_result = run_query(create_query)
             if create_result[0]['result'] == 'success':
                 serializer.save(completed='c')
-                serializer.save()
+            else:
+                return HttpResponse(json.dumps(create_result), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -775,8 +777,8 @@ class FrozenDataDetail(APIView):
         frozen_data = self.get_object(pk)
         table_name = frozen_data.frozen_db_table
         frozen_data.delete()
-        query_builder = TableQueryBuilder(table_name, "repo")
-        delete_sql = query_builder.delete_table(table_name)
+        query_builder = TableQueryBuilder(table_name, "archive")
+        delete_sql = query_builder.delete_table(table_name, "archive")
         delete_result = run_query(delete_sql)
         if delete_result[0]['result'] == 'success':
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -800,19 +802,17 @@ class SavedQueryDataList(APIView):
         if serializer.is_valid():
             saved_query_db_table = "query_data_" + \
                 datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-            operation = Operation.objects.get(pk=request.data['operation'])
             query_builder = TableQueryBuilder(
-                saved_query_db_table, "repo", operation=operation)
-            sql = query_builder.get_sql()
-            serializer.save(user=self.request.user,
-                            frozen_db_table=saved_query_db_table, full_query=sql)
+                saved_query_db_table, "repo", operation=serializer.validated_data["operation"])
+            sql = query_builder.get_sql_without_limit()
+            serializer.save(user=self.request.user, full_query=sql,
+                            saved_query_db_table=saved_query_db_table)
 
             create_query = query_builder.create_table_from_query(
-                saved_query_db_table)
+                saved_query_db_table, "dataset")
             create_result = run_query(create_query)
             if create_result[0]['result'] == 'success':
                 serializer.save(completed='c')
-                serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -844,10 +844,10 @@ class SavedQueryDataDetail(APIView):
 
     def delete(self, request, pk, format=None):
         saved_query_data = self.get_object(pk)
-        table_name = saved_query_data.frozen_db_table
+        table_name = saved_query_data.saved_query_db_table
         saved_query_data.delete()
-        query_builder = TableQueryBuilder(table_name, "repo")
-        delete_sql = query_builder.delete_table(table_name)
+        query_builder = TableQueryBuilder(table_name, "dataset")
+        delete_sql = query_builder.delete_table(table_name, "dataset")
         delete_result = run_query(delete_sql)
         if delete_result[0]['result'] == 'success':
             return Response(status=status.HTTP_204_NO_CONTENT)
