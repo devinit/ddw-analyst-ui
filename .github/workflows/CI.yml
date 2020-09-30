@@ -53,11 +53,11 @@ jobs:
         echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
         echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
 
-    - name: Set env for master branch
-      if: endsWith(github.ref, '/master')
-      run: |
-        echo "::set-env name=HOST::${{ secrets.PROD_HOST }}"
-        echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
+    # - name: Set env for master branch
+    #   if: endsWith(github.ref, '/master')
+    #   run: |
+    #     echo "::set-env name=HOST::${{ secrets.PROD_HOST }}"
+    #     echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
 
     - name: Set env for test branch
       if: endsWith(github.ref, '/feature/deploy-to-actions')
@@ -77,20 +77,21 @@ jobs:
         source: "deploy_script.sh"
         target: "."
 
-    - name: copy deploy script to server
-      if: endsWith(github.ref, '/master')
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ env.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.KEY }}
-      with:
-        source: "deploy.sh"
-        target: "."
+    # - name: copy deploy script to server
+    #   if: endsWith(github.ref, '/master')
+    #   uses: appleboy/scp-action@master
+    #   env:
+    #     HOST: ${{ env.HOST }}
+    #     USERNAME: ${{ secrets.USERNAME }}
+    #     PORT: ${{ secrets.PORT }}
+    #     KEY: ${{ secrets.KEY }}
+    #   with:
+    #     source: "deploy.sh"
+    #     target: "."
 
     - name: ssh into remote dev server
-      if: endsWith(github.ref, '/feature/deploy-to-actions')
+      # if: endsWith(github.ref, '/feature/deploy-to-actions')
+      if: startsWith(github.ref, 'refs/tags/v')
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.HOST }}
@@ -101,17 +102,17 @@ jobs:
           chmod 700 "deploy_script.sh"
           ./deploy_script.sh
 
-    - name: ssh into remote production server
-      if: endsWith(github.ref, '/master')
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ env.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          chmod 700 deploy.sh
-          ./deploy.sh
+    # - name: ssh into remote production server
+    #   if: startsWith(github.ref, 'refs/tags/v')
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ env.HOST }}
+    #     username: ${{ secrets.USERNAME }}
+    #     key: ${{ secrets.KEY }}
+    #     port: ${{ secrets.PORT }}
+    #     script: |
+    #       chmod 700 deploy.sh
+    #       ./deploy.sh
 
     - name: Build JS
       uses: appleboy/ssh-action@master
@@ -121,7 +122,6 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          echo $GITHUB_REF
           cd ~/ddw-analyst-ui
           npm ci
           npm run build
