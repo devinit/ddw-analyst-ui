@@ -49,6 +49,8 @@ urlpatterns = [
          core_views.UpdateTableAPI.as_view()),
     path('tables/download/<str:table_name>/',
          core_views.streaming_tables_export_view),
+    path('tables/download/<str:table_name>/<str:schema>/',
+         core_views.streaming_tables_export_view),
     # v2 endpoints for handling queries & datasets
     path('datasets/', core_views.OperationList.as_view()),
     path('datasets/mine/', core_views.UserOperationList.as_view()),
@@ -59,8 +61,6 @@ urlpatterns = [
     # For handling saving query sets, and freezing data
     path('savedquerysets/', core_views.SavedQueryDataList.as_view()),
     path('savedqueryset/<int:pk>/', core_views.SavedQueryDataDetail.as_view()),
-    # path('savedqueryset/download/<int:pk>/', core_views.SavedQueryDataDetail.as_view()),
-    # path('savedqueryset/view/<int:pk>/', core_views.SavedQueryDataDetail.as_view()),
     path('frozendata/', core_views.FrozenDataList.as_view()),
     path('frozendata/<int:pk>/', core_views.FrozenDataDetail.as_view()),
 ]
