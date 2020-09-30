@@ -68,14 +68,14 @@
 13. Return details of Frozen Data selected by ID
     Get - https://ddw.devinit.org/api/frozendata/[FROZENDATA_ID]/
 
-12. Return list of Saved Query Data
+14. Return list of Saved Query Data
     Get - https://ddw.devinit.org/api/savedquerysets/
 
-13. Return details of Saved Query Data selected by ID
+15. Return details of Saved Query Data selected by ID
     Get - https://ddw.devinit.org/api/savedqueryset/[SAVEDQUERYDATA_ID]/
 
-14. Download Frozen Data
-    Get - https://localhost/api/tables/download/[FROZEN_TABLE_NAME]/archives/
+16. Download Frozen Data
+    Get - https://ddw.devinit.org/api/tables/download/[FROZEN_TABLE_NAME]/archives/
 
-15. Download Saved Query Set Data
-    Get - https://localhost/api/tables/download/[QUERY_SET_DB_TABLE]/dataset/
+17. Download Saved Query Set Data
+    Get - https://ddw.devinit.org/api/tables/download/[QUERY_SET_DB_TABLE]/dataset/
