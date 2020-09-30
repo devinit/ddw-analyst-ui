@@ -700,7 +700,7 @@ def streaming_tables_export_view(request, table_name, schema="repo"):
                 "message": "Invalid table " + table_name,
             }
         ]
-        return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_200_OK)
+        return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
 
     table_query_builder = TableQueryBuilder(table_name, schema)
     exporter = TableStreamingExporter(
