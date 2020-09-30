@@ -656,7 +656,7 @@ class ScheduledEventRunInstanceDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class TableStreamingExporter(StreamingExporter):
+class TableStreamingExporter():
     """Sets up generator for streaming PSQL content"""
 
     def __init__(self, main_query):
@@ -667,20 +667,45 @@ class TableStreamingExporter(StreamingExporter):
 
         return header
 
+    def stream(self):
+        with connections["datasets"].chunked_cursor() as main_cursor:
+            main_cursor.execute(self.main_query)
+            first_row = main_cursor.fetchone()
+            header = [col[0] for col in main_cursor.description]
+            pseudo_buffer = Echo()
+            yield pseudo_buffer.write(codecs.BOM_UTF8)
+            writer = csv.writer(pseudo_buffer, delimiter=",")
+            yield writer.writerow(header)
+            yield writer.writerow(first_row)
+            next_row = main_cursor.fetchone()
+            while next_row is not None:
+                yield writer.writerow(next_row)
+                next_row = main_cursor.fetchone()
+
 
 @csrf_exempt
-def streaming_tables_export_view(request, table_name):
+def streaming_tables_export_view(request, table_name, schema="repo"):
 
-    if table_name not in settings.QUERY_TABLES:
+    data_table = True
+    frozen_table = True
+    try:
+        FrozenData.objects.get(frozen_db_table=table_name)
+        SavedQueryData.objects.get(saved_query_db_table=table_name)
+    except FrozenData.DoesNotExist:
+        frozen_table = False
+    except SavedQueryData.DoesNotExist:
+        data_table = False
+
+    if table_name not in settings.QUERY_TABLES and not frozen_table and not data_table:
         return_result = [
             {
                 "result": "error",
-                "message": "Invalid code list table " + table_name,
+                "message": "Invalid table " + table_name,
             }
         ]
-        return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
+        return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_200_OK)
 
-    table_query_builder = TableQueryBuilder(table_name, "repo")
+    table_query_builder = TableQueryBuilder(table_name, schema)
     exporter = TableStreamingExporter(
         table_query_builder.select().get_sql_without_limit())
     response = StreamingHttpResponse(
