@@ -1,6 +1,7 @@
 import { List } from 'immutable';
+import * as localForage from 'localforage';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { FormControl, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Button, Form, FormControl, OverlayTrigger, Popover } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -11,7 +12,7 @@ import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap, OperationStepMap } from '../../types/operations';
-import { api } from '../../utils';
+import { api, localForageKeys } from '../../utils';
 import { BasicModal } from '../BasicModal';
 import { DatasetCardBody } from '../DatasetCardBody';
 import { DatasetCardFooter } from '../DatasetCardFooter';
@@ -57,8 +58,12 @@ const StyledContent = styled.p`
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
+  const [token, setToken] = useState('');
   const [info, setInfo] = useState('');
   const onModalHide = () => setInfo('');
+  localForage.getItem<string>(localForageKeys.API_KEY).then(function (token) {
+    setToken(token);
+  });
 
   useEffect(() => {
     fetchQueries(showMyQueries);
@@ -146,8 +151,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     );
 
     if (operations && operations.count()) {
-      // console.log(JSON.stringify(operations));
-
       return (
         <OperationsTable>
           <DatasetCardBody removePadding={false}>
@@ -192,9 +195,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 <a className="btn btn-sm btn-dark" href="#" onClick={viewSqlQuery(operation)}>
                   SQL Query
                 </a>
-                <a className="btn btn-sm btn-dark" href="#">
-                  Export to CSV
-                </a>
+                <Form action={`${api.routes.EXPORT}${operation.get('id')}/`} method="POST">
+                  <Form.Control type="hidden" name="token" value={token} />
+                  <Button type="submit" variant="dark" size="sm">
+                    Export to CSV
+                  </Button>
+                </Form>
               </OperationsTableRowActions>
             </OperationsTableRow>
           ))}
