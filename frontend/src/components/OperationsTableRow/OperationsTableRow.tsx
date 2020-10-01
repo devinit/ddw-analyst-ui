@@ -32,19 +32,13 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (p
     return a.get('source');
   });
 
-  fetchSource(sourceId.get(0) as number)
-    .then((response) => {
-      if (response.status === 201 || response.status === 200) {
-        if (!response.data.hasOwnProperty('error')) {
-          setSource(response.data.source);
-        }
-      } else {
-        console.log(`response not 201 ${JSON.stringify(response.data)}`);
+  fetchSource(sourceId.get(0) as number).then((response) => {
+    if (response.status === 201 || response.status === 200) {
+      if (!response.data.hasOwnProperty('error')) {
+        setSource(response.data.source);
       }
-    })
-    .catch((error) => {
-      console.log(`response error ${JSON.stringify(error)}`);
-    });
+    }
+  });
 
   return (
     <div className="dataset-row p-3 border-bottom">
