@@ -24,6 +24,7 @@ services:
       - FTSPASS
       - DJANGO_DEV
       - DJANGO_SECRET_KEY
+      - EMAIL_HOST_PASSWORD
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
   nginx:
     image: nginx:latest
