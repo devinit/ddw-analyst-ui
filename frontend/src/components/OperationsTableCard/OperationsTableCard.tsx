@@ -262,7 +262,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   );
 };
 
-OperationsTableCard.defaultProps = { offset: 0 };
+OperationsTableCard.defaultProps = { offset: 0, showMyQueries: true };
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (
   dispatch,
