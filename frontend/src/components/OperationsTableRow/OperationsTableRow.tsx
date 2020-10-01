@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { DatasetRowItem } from '../DatasetRowItem';
 import { OperationsTableRowActions } from '../OperationsTableRowActions';
 import { OperationStepMap } from '../../types/operations';
@@ -21,24 +21,28 @@ export interface OperationsTableRowProps {
 export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (props) => {
   const [source, setSource] = React.useState('');
 
+  const sourceId = props.operation_steps.map((a) => {
+    return a.get('source');
+  });
+
+  useEffect(() => {
+    if (sourceId.get(0)) {
+      fetchSource(sourceId.get(0) as number).then((response) => {
+        if (response.status === 201 || response.status === 200) {
+          if (!response.data.hasOwnProperty('error')) {
+            setSource(response.data.source);
+          }
+        }
+      });
+    }
+  }, []);
+
   const renderActions = (): React.ReactNode =>
     React.Children.map(props.children, (child) => {
       if (React.isValidElement(child) && child.type === OperationsTableRowActions) {
         return child;
       }
     });
-
-  const sourceId = props.operation_steps.map((a) => {
-    return a.get('source');
-  });
-
-  fetchSource(sourceId.get(0) as number).then((response) => {
-    if (response.status === 201 || response.status === 200) {
-      if (!response.data.hasOwnProperty('error')) {
-        setSource(response.data.source);
-      }
-    }
-  });
 
   return (
     <div className="dataset-row p-3 border-bottom">
