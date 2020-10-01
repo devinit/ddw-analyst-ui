@@ -67,9 +67,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   const fetchQueries = (mine = false) => {
     const loading = props.operations.get('loading') as boolean;
-    console.log(`Loading is ${loading}`);
     if (!loading) {
-      console.log(`Mine is ${mine}`);
       props.actions.fetchOperations({
         limit: props.limit,
         offset: 0,
@@ -124,7 +122,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    console.log(JSON.stringify(operation.get('operation_query')));
     setInfo(operation.get('operation_query') as string);
   };
 
