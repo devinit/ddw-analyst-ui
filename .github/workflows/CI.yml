@@ -3,105 +3,113 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       node-version: [12.x]
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
 
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Use Node.js ${{ matrix.node-version }}
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: ${{ matrix.node-version }}
-  #   - name: Set up Python 3.x
-  #     uses: actions/setup-python@v2
-  #     with:
-  #       python-version: '3.x'
-  #       architecture: 'x64'
-  #   - name: Install dependencies
-  #     run: |
-  #       npm config set '@bit:registry' https://node.bit.dev
-  #       npm install --ignore-scripts
-  #       npm install -g codecov
-  #       pip3 install --user codecov
-  #   - name: Run docker build
-  #     run: |
-  #       docker volume create --name=metadata
-  #       docker-compose up -d --build
-  #   - name: Run tests
-  #     run: |
-  #       npm run lint
-  #       npm run coverage
-  #     env:
-  #       CI: true
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
+
+    - name: Install dependencies
+      run: |
+        npm config set '@bit:registry' https://node.bit.dev
+        npm install --ignore-scripts
+        npm install -g codecov
+        pip3 install --user codecov
+
+    - name: Run docker build
+      run: |
+        docker volume create --name=metadata
+        docker-compose up -d --build
+
+    - name: Run tests
+      run: |
+        npm run lint
+        npm run coverage
+      env:
+        CI: true
+
   deploy:
-    # needs: [test]
+    needs: [test]
     runs-on: ubuntu-latest
     if:
       contains('
         refs/heads/develop
-        refs/heads/feature/deploy-to-actions
       ', github.ref) || startsWith(github.ref, 'refs/tags/v')
+
     steps:
     - uses: actions/checkout@v2
     - name: Set env for develop branch
       if: endsWith(github.ref, '/develop')
       run: |
         echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
-        echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
+        echo "::set-env name=USERNAME::${{ secrets.DEV_USER }}"
 
-    # - name: Set env for master branch
-    #   if: endsWith(github.ref, '/master')
-    #   run: |
-    #     echo "::set-env name=HOST::${{ secrets.PROD_HOST }}"
-    #     echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
-
-    - name: Set env for test branch
+    - name: Set env for release branch
       if: startsWith(github.ref, 'refs/tags/v')
-      # if: endsWith(github.ref, '/feature/deploy-to-actions')
       run: |
-        echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
-        echo "::set-env name=USERNAME::${{ secrets.USERNAME }}"
+        echo "::set-env name=HOST::${{ secrets.PROD_HOST }}"
+        echo "::set-env name=USERNAME::${{ secrets.PROD_USER }}"
 
-    - name: Get the version
+    - name: Get the release version
       if: startsWith(github.ref, 'refs/tags/v')
       id: get_version
       run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
 
     - name: copy deploy script to server
-      if: startsWith(github.ref, 'refs/tags/v')
-      # if: endsWith(github.ref, '/feature/deploy-to-actions')
+      if: endsWith(github.ref, '/develop')
       uses: appleboy/scp-action@master
       env:
         HOST: ${{ env.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
+        USERNAME: ${{ env.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.KEY }}
+      with:
+        source: "deploy_script.sh"
+        target: "."
+
+    - name: copy deploy script to server
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ env.HOST }}
+        USERNAME: ${{ env.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.KEY }}
       with:
         source: "deploy.sh"
         target: "."
 
-    # - name: copy deploy script to server
-    #   if: endsWith(github.ref, '/master')
-    #   uses: appleboy/scp-action@master
-    #   env:
-    #     HOST: ${{ env.HOST }}
-    #     USERNAME: ${{ secrets.USERNAME }}
-    #     PORT: ${{ secrets.PORT }}
-    #     KEY: ${{ secrets.KEY }}
-    #   with:
-    #     source: "deploy.sh"
-    #     target: "."
-
     - name: ssh into remote dev server
-      # if: endsWith(github.ref, '/feature/deploy-to-actions')
+      if: endsWith(github.ref, '/develop')
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.HOST }}
+        username: ${{ env.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          chmod 700 "deploy_script.sh"
+          ./deploy_script.sh
+
+    - name: ssh into remote production server
       if: startsWith(github.ref, 'refs/tags/v')
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.HOST }}
-        username: ${{ secrets.USERNAME }}
+        username: ${{ env.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         script: |
@@ -109,23 +117,11 @@ jobs:
           chmod 700 "deploy.sh"
           ./deploy.sh $version
 
-    # - name: ssh into remote production server
-    #   if: startsWith(github.ref, 'refs/tags/v')
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ env.HOST }}
-    #     username: ${{ secrets.USERNAME }}
-    #     key: ${{ secrets.KEY }}
-    #     port: ${{ secrets.PORT }}
-    #     script: |
-    #       chmod 700 deploy.sh
-    #       ./deploy.sh
-
     - name: Build JS
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.HOST }}
-        username: ${{ secrets.USERNAME }}
+        username: ${{ env.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         script: |
