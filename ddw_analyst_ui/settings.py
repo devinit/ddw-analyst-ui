@@ -205,6 +205,23 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'devinitautomailer@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
+# Disable allowed host emails to admin
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+    },
+    'loggers': {
+        'django.security.DisallowedHost': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+    },
+}
+
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:
