@@ -199,10 +199,10 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                     View Data
                   </a>
                 </OverlayTrigger>
-                <a className="btn btn-sm btn-dark" href="#" onClick={viewSqlQuery(operation)}>
+                <a className="btn btn-sm btn-dark" onClick={viewSqlQuery(operation)}>
                   SQL Query
                 </a>
-                <a className="btn btn-sm btn-dark" href="#" onClick={onClickExportCsv(operation)}>
+                <a className="btn btn-sm btn-dark" onClick={onClickExportCsv(operation)}>
                   Export to CSV
                 </a>
               </OperationsTableRowActions>
