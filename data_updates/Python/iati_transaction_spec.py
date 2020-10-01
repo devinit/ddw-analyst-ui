@@ -734,8 +734,11 @@ class IatiFlat(object):
                     percentage = percentage.replace("%", "")
                 if percentage is None:
                     percentage = ""
-                vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else "99"
                 code = attribs['code'] if 'code' in attrib_keys else ""
+                if len(code) == 5:
+                    vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else "1"
+                else:
+                    vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else "99"
                 sector_code_list.append(code)
                 sector_percentage_list.append(percentage)
                 sector_vocabulary_list.append(vocab)
@@ -835,8 +838,11 @@ class IatiFlat(object):
                             percentage = percentage.replace("%", "")
                         if percentage is None:
                             percentage = ""
-                        vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else "99"
                         code = attribs['code'] if 'code' in attrib_keys else ""
+                        if len(code) == 5:
+                            vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else "1"
+                        else:
+                            vocab = attribs['vocabulary'] if 'vocabulary' in attrib_keys else "99"
                         transaction_sector_code_list.append(code)
                         transaction_sector_percentage_list.append(percentage)
                         transaction_sector_vocabulary_list.append(vocab)
@@ -848,13 +854,6 @@ class IatiFlat(object):
                         x_sector_code_list = sector_code_list.copy()
                         x_sector_percentage_list = sector_percentage_list.copy()
                         x_sector_vocabulary_list = sector_vocabulary_list.copy()
-                    for j in range(0, len(x_sector_code_list)):
-                        x_sector_code = x_sector_code_list[j]
-                        x_sector_vocabulary = x_sector_vocabulary_list[j]
-                        if x_sector_vocabulary == "" and len(x_sector_code) == 5:
-                            x_sector_vocabulary_list[j] = "1"
-                        elif x_sector_vocabulary == "":
-                            x_sector_vocabulary_list[j] = "97"
 
                     transaction_type_code = default_first(transaction.xpath("transaction-type/@code"))
                     transaction_date_iso_date = default_first(transaction.xpath("transaction-date/@iso-date"))
