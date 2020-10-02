@@ -5,7 +5,6 @@ import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import styled from 'styled-components';
 import * as operationsActions from '../../actions/operations';
 import { OperationsState } from '../../reducers/operations';
 import { ReduxStore } from '../../store';
@@ -43,12 +42,6 @@ const getSourceDatasetsLink = (
   `${
     mine ? api.routes.FETCH_MY_SOURCE_DATASETS : api.routes.FETCH_SOURCE_DATASETS
   }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
-
-const StyledContent = styled.p`
-  white-space: pre-line;
-  max-height: 300px;
-  overflow-y: auto;
-`;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
@@ -223,8 +216,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         <Card.Body className="p-0">{renderOperations(operations, showMyQueries)}</Card.Body>
         <Card.Footer className="d-block">{renderPagination()}</Card.Footer>
 
-        <BasicModal show={!!info} onHide={onModalHide}>
-          <StyledContent>{info}</StyledContent>
+        <BasicModal show={!!info} onHide={onModalHide} className="query-modal">
+          <code>{info}</code>
         </BasicModal>
       </Card>
     </>
