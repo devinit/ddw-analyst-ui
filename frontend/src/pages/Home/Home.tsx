@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
@@ -9,6 +9,8 @@ import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import * as pageActions from './actions';
 import { homeReducerId, HomeState } from './reducers';
+import { useSources } from '../../hooks';
+import { SourcesContext } from '../../context';
 
 interface ActionProps {
   actions: typeof operationsActions & typeof pageActions;
@@ -19,21 +21,23 @@ interface ReduxState {
 }
 type HomeProps = ActionProps & ReduxState & RouteComponentProps;
 
-class Home extends React.Component<HomeProps> {
-  render() {
-    return (
-      <Row>
-        <Col>
+const Home: FunctionComponent<HomeProps> = (props) => {
+  const sources = useSources({ limit: 200, offset: 0 });
+
+  return (
+    <Row>
+      <Col>
+        <SourcesContext.Provider value={{ sources }}>
           <OperationsTableCard
-            limit={this.props.page.getIn(['operations', 'limit'])}
-            offset={this.props.page.getIn(['operations', 'offset'])}
+            limit={props.page.getIn(['operations', 'limit'])}
+            offset={props.page.getIn(['operations', 'offset'])}
             showMyQueries
           />
-        </Col>
-      </Row>
-    );
-  }
-}
+        </SourcesContext.Provider>
+      </Col>
+    </Row>
+  );
+};
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
   dispatch,
