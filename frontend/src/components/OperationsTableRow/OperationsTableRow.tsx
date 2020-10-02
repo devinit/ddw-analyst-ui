@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { List } from 'immutable';
 import moment from 'moment';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
+import { SourcesContext } from '../../context';
 import { OperationMap, OperationStepMap } from '../../types/operations';
 import { OperationsTableRowActions } from '../OperationsTableRowActions';
-import { fetchSource } from './utils';
 
 export interface OperationsTableRowProps {
   operation: OperationMap;
@@ -17,21 +17,19 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = ({
   ...props
 }) => {
   const [source, setSource] = React.useState('');
+  const { sources } = useContext(SourcesContext);
 
   useEffect(() => {
-    const sourceId = (operation.get('operation_steps') as List<OperationStepMap>).map((a) =>
-      a.get('source'),
-    );
-    if (sourceId.get(0)) {
-      fetchSource(sourceId.get(0) as number).then((response) => {
-        if (response.status === 201 || response.status === 200) {
-          if (!response.data.hasOwnProperty('error')) {
-            setSource(response.data.source);
-          }
-        }
-      });
+    const source = (operation.get('operation_steps') as List<OperationStepMap>)
+      .map((a) => a.get('source'))
+      .first<string>();
+    if (source) {
+      const matchingSource = sources.find((src) => src.get('id') === source);
+      if (matchingSource) {
+        setSource(matchingSource.get('source') as string);
+      }
     }
-  }, []);
+  }, [sources]);
 
   const renderActions = (): React.ReactNode =>
     React.Children.map(props.children, (child) => {
