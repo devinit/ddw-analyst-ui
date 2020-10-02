@@ -11,30 +11,21 @@ exports[`OperationsTableRow does not render non-action children 1`] = `
       className="dataset-row-title h4"
     >
       My Test Dataset
-       
     </div>
-    <div
+    <p
       className="mb-2"
     >
-       
-    </div>
+      My Dataset Description
+    </p>
     <div
       className="dataset-row-actions mb-1"
-    >
-       
-    </div>
+    />
     <div
       className="h6 dataset-row-footer"
     >
-      Updated
-       
+      Updated 
       9 months ago
-       by 
-      <span>
-         
-         
-      </span>
-      from 
+       from 
       <span
         className="text-uppercase text-danger"
       >
@@ -56,17 +47,15 @@ exports[`OperationsTableRow renders actions when provided 1`] = `
       className="dataset-row-title h4"
     >
       My Test Dataset
-       
     </div>
-    <div
+    <p
       className="mb-2"
     >
-       
-    </div>
+      My Dataset Description
+    </p>
     <div
       className="dataset-row-actions mb-1"
     >
-       
       <button
         type="button"
       >
@@ -76,15 +65,9 @@ exports[`OperationsTableRow renders actions when provided 1`] = `
     <div
       className="h6 dataset-row-footer"
     >
-      Updated
-       
+      Updated 
       9 months ago
-       by 
-      <span>
-         
-         
-      </span>
-      from 
+       from 
       <span
         className="text-uppercase text-danger"
       >
@@ -106,30 +89,21 @@ exports[`OperationsTableRow renders correctly with the default props 1`] = `
       className="dataset-row-title h4"
     >
       My Test Dataset
-       
     </div>
-    <div
+    <p
       className="mb-2"
     >
-       
-    </div>
+      My Dataset Description
+    </p>
     <div
       className="dataset-row-actions mb-1"
-    >
-       
-    </div>
+    />
     <div
       className="h6 dataset-row-footer"
     >
-      Updated
-       
+      Updated 
       9 months ago
-       by 
-      <span>
-         
-         
-      </span>
-      from 
+       from 
       <span
         className="text-uppercase text-danger"
       >

@@ -2,20 +2,23 @@
  * @jest-environment jsdom
  */
 import { render } from '@testing-library/react';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import 'jest-styled-components';
 import React from 'react';
 import * as TestRenderer from 'react-test-renderer';
+import { Operation, OperationMap } from '../../../types/operations';
 import OperationsTableRowActions from '../../OperationsTableRowActions';
 import { OperationsTableRow, OperationsTableRowProps } from '../OperationsTableRow';
 
-const props: OperationsTableRowProps = {
-  count: 2,
+const operation: Partial<Operation> = {
   name: 'My Test Dataset',
-  updatedOn: new Date('2020-01-01').toISOString(),
+  description: 'My Dataset Description',
   updated_on: new Date('2020-01-02').toISOString(),
-  isDraft: false,
+  is_draft: false,
   operation_steps: List(),
+};
+const props: OperationsTableRowProps = {
+  operation: Map(operation) as OperationMap,
 };
 
 describe('OperationsTableRow', () => {
@@ -47,23 +50,21 @@ describe('OperationsTableRow', () => {
     expect(renderer).toMatchSnapshot();
   });
 
-  test('that is a draft renders a draft badge of warning variant', () => {
-    const { getByTestId } = render(<OperationsTableRow {...props} isDraft></OperationsTableRow>, {
-      container: document.createElement('tbody'),
-    });
+  test('that is a configured to show a draft badge renders a draft badge of warning variant for draft operations', () => {
+    const { getByTestId } = render(
+      <OperationsTableRow
+        operation={Map({ ...operation, is_draft: true }) as OperationMap}
+        showDraftBadge
+      />,
+    );
     const badge = getByTestId('draft-span');
 
     expect(badge.classList).toContain('badge-warning');
     expect(badge.innerHTML).toBe('Draft');
   });
 
-  test('that is not a draft renders a published badge of danger variant', () => {
-    const { queryByTestId } = render(
-      <OperationsTableRow {...props} isDraft={false}></OperationsTableRow>,
-      {
-        container: document.createElement('tbody'),
-      },
-    );
+  test('that is not a draft does not render a draft badge', () => {
+    const { queryByTestId } = render(<OperationsTableRow {...props} showDraftBadge />);
     const badge = queryByTestId('draft-span');
 
     expect(badge).toBeNull();
