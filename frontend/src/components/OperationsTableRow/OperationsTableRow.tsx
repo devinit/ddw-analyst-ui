@@ -1,31 +1,27 @@
+import classNames from 'classnames';
 import { List } from 'immutable';
-import React, { FunctionComponent, useEffect } from 'react';
-import { DatasetRowItem } from '../DatasetRowItem';
-import { OperationsTableRowActions } from '../OperationsTableRowActions';
-import { OperationStepMap } from '../../types/operations';
-import { fetchSource } from './utils';
 import moment from 'moment';
+import React, { FunctionComponent, useEffect } from 'react';
+import { OperationMap, OperationStepMap } from '../../types/operations';
+import { OperationsTableRowActions } from '../OperationsTableRowActions';
+import { fetchSource } from './utils';
 
 export interface OperationsTableRowProps {
-  count: number;
-  name: string;
-  updatedOn: string;
-  isDraft: boolean;
-  classNames?: string;
-  description?: string;
-  user?: string;
-  updated_on: string;
-  operation_steps: List<OperationStepMap>;
+  operation: OperationMap;
+  showDraftBadge?: boolean;
 }
 
-export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (props) => {
+export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = ({
+  operation,
+  showDraftBadge,
+  ...props
+}) => {
   const [source, setSource] = React.useState('');
 
-  const sourceId = props.operation_steps.map((a) => {
-    return a.get('source');
-  });
-
   useEffect(() => {
+    const sourceId = (operation.get('operation_steps') as List<OperationStepMap>).map((a) =>
+      a.get('source'),
+    );
     if (sourceId.get(0)) {
       fetchSource(sourceId.get(0) as number).then((response) => {
         if (response.status === 201 || response.status === 200) {
@@ -47,24 +43,25 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = (p
   return (
     <div className="dataset-row p-3 border-bottom">
       <div className="col-md-12">
-        <DatasetRowItem text={props.name} addClass="dataset-row-title h4">
-          {props.isDraft ? (
-            <span data-testid="draft-span" className="badge badge-warning align-middle">
+        <div className="dataset-row-title h4">
+          {operation.get('name')}
+          {showDraftBadge && operation.get('is_draft') ? (
+            <span data-testid="draft-span" className="badge badge-warning align-middle ml-2">
               Draft
             </span>
           ) : null}
-        </DatasetRowItem>
-        <DatasetRowItem addClass="mb-2" text={props.description}></DatasetRowItem>
+        </div>
+        <p className={classNames('mb-2', { 'd-none': !operation.get('description') })}>
+          {operation.get('description')}
+        </p>
 
-        <DatasetRowItem addClass="dataset-row-actions mb-1">{renderActions()}</DatasetRowItem>
+        <div className="dataset-row-actions mb-1">{renderActions()}</div>
 
-        <DatasetRowItem addClass="h6 dataset-row-footer" text="Updated">
-          {moment(props.updated_on).fromNow()}
-          {` by `}
-          <span> {props.user} </span>
-          {`from `}
+        <div className="h6 dataset-row-footer">
+          Updated {moment(operation.get('updated_on') as string).fromNow()}
+          {` from `}
           <span className="text-uppercase text-danger">{source}</span>
-        </DatasetRowItem>
+        </div>
       </div>
     </div>
   );

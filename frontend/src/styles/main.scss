@@ -303,7 +303,7 @@ th .material-icons {
 
     .dataset-row-footer {
       font-weight: normal;
-      text-transform: capitalize;
+      text-transform: none;
 
       span {
         font-weight: 500;
@@ -325,6 +325,10 @@ th .material-icons {
 
     &:hover .dataset-row-actions {
       display: block;
+
+      form {
+        display: inline-block;
+      }
     }
   }
 }
