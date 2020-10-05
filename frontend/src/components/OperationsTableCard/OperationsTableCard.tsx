@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Card, FormControl, OverlayTrigger, Popover, Form, Button } from 'react-bootstrap';
+import { Button, Card, Form, FormControl, OverlayTrigger, Popover } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -13,6 +13,7 @@ import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { BasicModal } from '../BasicModal';
+import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
@@ -97,10 +98,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const onViewData = (operation: OperationMap) => (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
+  const onViewData = (operation: OperationMap) => {
     props.actions.setOperation(operation);
     props.history.push(`/queries/data/${operation.get('id')}`);
   };
@@ -112,10 +110,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     setInfo(operation.get('operation_query') as string);
   };
 
-  const onEditOperation = (operation: OperationMap) => (
-    event: React.MouseEvent<HTMLAnchorElement>,
-  ) => {
-    event.preventDefault();
+  const onEditOperation = (operation: OperationMap) => {
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
 
@@ -124,26 +119,16 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       return operations.map((operation, index) => (
         <OperationsTableRow key={index} operation={operation} showDraftBadge={showMyQueries}>
           <OperationsTableRowActions>
-            {allowEdit ? (
-              <a
-                className="btn btn-sm btn-dark"
-                href={`/queries/build/${operation.get('id') as number}/`}
-                onClick={onEditOperation(operation)}
-              >
-                Edit
-              </a>
-            ) : null}
+            <DatasetActionLink operation={operation} show={allowEdit} onClick={onEditOperation}>
+              Edit
+            </DatasetActionLink>
             <OverlayTrigger
               placement="top"
               overlay={<Popover id="view">View Dataset Data</Popover>}
             >
-              <a
-                className="btn btn-sm btn-dark"
-                href={`/queries/data/${operation.get('id')}/`}
-                onClick={onViewData(operation)}
-              >
+              <DatasetActionLink operation={operation} action="data" onClick={onViewData}>
                 View Data
-              </a>
+              </DatasetActionLink>
             </OverlayTrigger>
             <Button variant="dark" size="sm" onClick={onViewSQLQuery(operation)}>
               SQL Query
