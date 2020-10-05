@@ -28,7 +28,12 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
     localForage.getItem<string>(localForageKeys.API_KEY).then((_token) => setToken(_token));
   }, []);
   useEffect(() => {
-    const url = `${api.routes.SOURCES}?limit=${options.limit}&offset=${options.offset}&search=${options.search}`;
+    if (!token) {
+      return;
+    }
+    const url = `${api.routes.SOURCES}?limit=${options.limit}&offset=${options.offset}&search=${
+      options.search || ''
+    }`;
     axios
       .request({
         url: options.link || url,
@@ -52,7 +57,7 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
         );
         setSources(fromJS([]));
       });
-  }, [token, options]);
+  }, [token, options.limit, options.offset, options.search]);
 
   return sources;
 };

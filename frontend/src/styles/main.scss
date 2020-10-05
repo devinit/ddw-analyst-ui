@@ -303,10 +303,11 @@ th .material-icons {
 
     .dataset-row-footer {
       font-weight: normal;
-      text-transform: capitalize;
+      text-transform: none;
 
       span {
         font-weight: 500;
+        text-transform: capitalize;
       }
     }
 
@@ -325,6 +326,16 @@ th .material-icons {
 
     &:hover .dataset-row-actions {
       display: block;
+
+      form {
+        display: inline-block;
+      }
     }
+  }
+}
+
+.query-modal {
+  code {
+    color: inherit;
   }
 }

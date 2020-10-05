@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Card, FormControl, Nav, OverlayTrigger, Popover, Tab } from 'react-bootstrap';
+import { Button, Card, Form, FormControl, OverlayTrigger, Popover } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -12,7 +12,8 @@ import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
-import { OperationsTable } from '../OperationsTable';
+import { BasicModal } from '../BasicModal';
+import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
@@ -28,6 +29,7 @@ interface ComponentProps extends RouteComponentProps {
   offset: number;
   links?: LinksMap;
   sourceID?: number;
+  showMyQueries?: boolean;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
 
@@ -43,8 +45,10 @@ const getSourceDatasetsLink = (
   }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
-  const [showMyQueries, setShowMyQueries] = useState(true);
+  const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
+  const [info, setInfo] = useState('');
+  const onModalHide = () => setInfo('');
 
   useEffect(() => {
     fetchQueries(showMyQueries);
@@ -94,66 +98,52 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const viewData = (operation: OperationMap) => (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    const id = operation.get('id');
+  const onViewData = (operation: OperationMap) => {
     props.actions.setOperation(operation);
-    props.history.push(`/queries/data/${id}`);
+    props.history.push(`/queries/data/${operation.get('id')}`);
   };
 
-  const onEditOperation = (operation: OperationMap) => (
-    event: React.MouseEvent<HTMLAnchorElement | HTMLTableRowElement, MouseEvent>,
+  const onViewSQLQuery = (operation: OperationMap) => (
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
+    setInfo(operation.get('operation_query') as string);
+  };
+
+  const onEditOperation = (operation: OperationMap) => {
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
 
-  const renderOperationsTable = (operations: List<OperationMap>, allowEdit = false) => {
-    const EditAction = ({ operation }: { operation: OperationMap }) => (
-      <a
-        className="btn btn-link btn-danger"
-        href={`/queries/build/${operation.get('id') as number}/`}
-        onClick={onEditOperation(operation)}
-      >
-        Edit
-      </a>
-    );
-
+  const renderOperations = (operations: List<OperationMap>, allowEdit = false) => {
     if (operations && operations.count()) {
-      return (
-        <OperationsTable>
-          {operations.map((operation, index) => (
-            <OperationsTableRow
-              key={index}
-              count={index + 1}
-              name={operation.get('name') as string}
-              updatedOn={operation.get('updated_on') as string}
-              isDraft={operation.get('is_draft') as boolean}
+      return operations.map((operation, index) => (
+        <OperationsTableRow key={index} operation={operation} showDraftBadge={showMyQueries}>
+          <OperationsTableRowActions>
+            <DatasetActionLink operation={operation} show={allowEdit} onClick={onEditOperation}>
+              Edit
+            </DatasetActionLink>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Popover id="view">View Dataset Data</Popover>}
             >
-              <OperationsTableRowActions>
-                <OverlayTrigger
-                  placement="top"
-                  overlay={<Popover id="view">View Operation Data</Popover>}
-                >
-                  <a
-                    className="btn btn-link btn-danger"
-                    href={`/queries/data/${operation.get('id')}`}
-                    onClick={viewData(operation)}
-                  >
-                    View Data
-                  </a>
-                </OverlayTrigger>
-                {allowEdit ? <EditAction operation={operation} /> : null}
-              </OperationsTableRowActions>
-            </OperationsTableRow>
-          ))}
-        </OperationsTable>
-      );
+              <DatasetActionLink operation={operation} action="data" onClick={onViewData}>
+                View Data
+              </DatasetActionLink>
+            </OverlayTrigger>
+            <Button variant="dark" size="sm" onClick={onViewSQLQuery(operation)}>
+              SQL Query
+            </Button>
+            <Form action={`${api.routes.EXPORT}${operation.get('id')}/`} method="POST">
+              <Button type="submit" variant="dark" size="sm">
+                Export to CSV
+              </Button>
+            </Form>
+          </OperationsTableRowActions>
+        </OperationsTableRow>
+      ));
     }
 
-    return <div className="mt-3">No results found</div>;
+    return <div className="px-4 pb-3">No datasets found</div>;
   };
 
   const onPageChange = (page: { selected: number }): void => {
@@ -193,55 +183,33 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const loading = props.operations.get('loading') as boolean;
 
   return (
-    <React.Fragment>
+    <>
       <Dimmer active={loading} inverted>
         <Loader content="Loading" />
       </Dimmer>
-      <Tab.Container defaultActiveKey="myQueries">
-        <Card>
-          <Card.Body>
-            <Nav variant="pills" className="nav-pills-danger" role="tablist">
-              <Nav.Item onClick={() => fetchQueries(true)}>
-                <Nav.Link eventKey="myQueries">My Datasets</Nav.Link>
-              </Nav.Item>
-              <Nav.Item onClick={() => fetchQueries()}>
-                <Nav.Link eventKey="otherQueries">Published Datasets</Nav.Link>
-              </Nav.Item>
-            </Nav>
-            <Tab.Content>
-              <Tab.Pane eventKey="myQueries">
-                <FormControl
-                  placeholder="Search ..."
-                  className="w-25"
-                  value={searchQuery}
-                  onChange={onSearchChange}
-                  onKeyDown={onSearch}
-                  data-testid="sources-table-search"
-                />
-                {renderOperationsTable(operations, true)}
-                {renderPagination()}
-              </Tab.Pane>
-              <Tab.Pane eventKey="otherQueries">
-                <FormControl
-                  placeholder="Search ..."
-                  className="w-25"
-                  value={searchQuery}
-                  onChange={onSearchChange}
-                  onKeyDown={onSearch}
-                  data-testid="sources-table-search"
-                />
-                {renderOperationsTable(operations)}
-                {renderPagination()}
-              </Tab.Pane>
-            </Tab.Content>
-          </Card.Body>
-        </Card>
-      </Tab.Container>
-    </React.Fragment>
+      <Card className="dataset-list">
+        <Card.Body>
+          <FormControl
+            placeholder="Search ..."
+            className="w-25"
+            value={searchQuery}
+            onChange={onSearchChange}
+            onKeyDown={onSearch}
+            data-testid="sources-table-search"
+          />
+        </Card.Body>
+        <Card.Body className="p-0">{renderOperations(operations, showMyQueries)}</Card.Body>
+        <Card.Footer className="d-block">{renderPagination()}</Card.Footer>
+
+        <BasicModal show={!!info} onHide={onModalHide} className="query-modal">
+          <code>{info}</code>
+        </BasicModal>
+      </Card>
+    </>
   );
 };
 
-OperationsTableCard.defaultProps = { offset: 0 };
+OperationsTableCard.defaultProps = { offset: 0, showMyQueries: true };
 
 const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (
   dispatch,
@@ -254,7 +222,7 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   };
 };
 
-const connector = withRouter<ComponentProps, any>(
+const connector = withRouter<ComponentProps, any>( // eslint-disable-line @typescript-eslint/no-explicit-any
   connect(mapStateToProps, mapDispatchToProps)(OperationsTableCard),
 );
 

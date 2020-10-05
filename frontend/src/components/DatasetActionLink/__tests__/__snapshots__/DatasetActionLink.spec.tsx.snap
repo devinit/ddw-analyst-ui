@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DatasetActionLink renders correctly with the default props 1`] = `
+<a
+  className="btn btn-sm btn-dark"
+  data-testid="dataset-action"
+  href="/queries/build/23/"
+  onClick={[Function]}
+/>
+`;

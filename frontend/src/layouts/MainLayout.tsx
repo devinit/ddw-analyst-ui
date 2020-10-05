@@ -14,10 +14,11 @@ import { AccountModal } from '../components/AccountModal';
 import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
-import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncDataSourceQueries } from '../pages/DataSourceQueries';
+import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncDataUpdate } from '../pages/DataUpdate';
 import { AsyncHome } from '../pages/Home';
+import { AsyncPublishedDatasets } from '../pages/PublishedDatasets/AsyncLoader';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
 import { AsyncQueryData } from '../pages/QueryData';
 import { AsyncScheduledEvents } from '../pages/ScheduledEvents';
@@ -96,7 +97,16 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   to="/"
                   single
                   icon="home"
-                  textNormal="Datasets"
+                  textNormal="My Datasets"
+                  onClick={this.setActiveRoute}
+                />
+              </Sidebar.Item>
+              <Sidebar.Item active={this.state.activeRoute === '/datasets/'}>
+                <Sidebar.Link
+                  to="/datasets/"
+                  single
+                  icon="table_chart"
+                  textNormal="Published Datasets"
                   onClick={this.setActiveRoute}
                 />
               </Sidebar.Item>
@@ -154,7 +164,12 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
             <div className="navbar-wrapper">
               <NavbarMinimise />
               <Navbar.Brand href="/">
-                <Route path="/" exact component={(): ReactElement => <span>Home</span>} />
+                <Route path="/" exact component={(): ReactElement => <span>My Datasets</span>} />
+                <Route
+                  path="/datasets"
+                  exact
+                  component={(): ReactElement => <span>Published Datasets</span>}
+                />
                 <Route
                   path="/sources"
                   exact
@@ -210,6 +225,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
           <AdminLayout.Content>
             <Switch>
               <Route path="/" exact component={AsyncHome} />
+              <Route path="/datasets" exact component={AsyncPublishedDatasets} />
               <Route path="/sources" exact component={AsyncDataSources} />
               <Route path="/queries/build" exact component={AsyncQueryBuilder} />
               <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
