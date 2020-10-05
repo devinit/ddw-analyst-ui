@@ -26,7 +26,7 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = ({
     if (source) {
       const matchingSource = sources.find((src) => src.get('id') === source);
       if (matchingSource) {
-        setSource(matchingSource.get('source') as string);
+        setSource(matchingSource.get('indicator') as string);
       }
     }
   }, [sources]);
