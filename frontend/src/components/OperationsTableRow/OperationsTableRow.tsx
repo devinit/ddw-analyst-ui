@@ -11,6 +11,8 @@ export interface OperationsTableRowProps {
   showDraftBadge?: boolean;
 }
 
+const extractNameFromEmail = (email: string) => email.split('@')[0].split('.').join(' ');
+
 export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = ({
   operation,
   showDraftBadge,
@@ -57,6 +59,12 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = ({
 
         <div className="h6 dataset-row-footer">
           Updated {moment(operation.get('updated_on') as string).fromNow()}
+          {operation.get('user') ? (
+            <>
+              {' by '}
+              <span>{extractNameFromEmail((operation.get('user') as string) || '')}</span>
+            </>
+          ) : null}
           {` from `}
           <span className="text-uppercase text-danger">{source}</span>
         </div>
