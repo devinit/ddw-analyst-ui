@@ -16,6 +16,7 @@ def generate_aliases(apps, schema_editor):
     operations = Operation.objects.all()
 
     for operation in operations:
+        data_column_keys = []
         try:
             operation.operationdatacolumnalias_set.all().delete()
             count, data = query.query_table(operation, 1, 0, estimate_count=True)
@@ -30,7 +31,7 @@ def generate_aliases(apps, schema_editor):
                 alias.save()
         except:
             first_step = operation.operationstep_set.order_by('step_id')[0]
-            if first_step:
+            if first_step and data_column_keys:
                 columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
 
                 for column in columns:
