@@ -11,6 +11,6 @@ def operation_post_save(sender, instance=None, created=False, **kwargs):
     if instance:
         if instance.count_rows:
             count.delay(instance.id)
-        aliases.delay(instance.id)
+            aliases.delay(instance.id)
 
 request_finished.connect(operation_post_save, dispatch_uid="operation__post_save")
