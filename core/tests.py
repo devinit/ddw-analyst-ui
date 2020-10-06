@@ -41,7 +41,7 @@ class TestRestFramework(TestCase):
     fixtures = ['test_data']
 
     def setUp(self):
-        signals.post_save.disconnect(sender=Operation, dispatch_uid='count_operation_rows');
+        signals.post_save.disconnect(sender=Operation, dispatch_uid='operation__post_save');
 
         self.user = User.objects.create_user(TEST_USER, 'test@test.test', TEST_PASS)
         self.superuser = User.objects.create_superuser(TEST_SUPERUSER, 'test@test.test', TEST_SUPERPASS)
