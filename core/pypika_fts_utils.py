@@ -21,20 +21,16 @@ class TableQueryBuilder(pypika_utils.QueryBuilder):
             self.current_query = pypika_utils.Query.from_(self.current_dataset)
 
     def delete(self, condition=None):
-
         return pypika_utils.Query.from_(self.current_dataset).delete().get_sql()
 
     def insert(self, data, columns=None):
-
         return pypika_utils.Query.into(self.current_dataset).insert(*data).get_sql()
 
     def create_table_from_query(self, table_name: str, schema_name: str) -> str:
-
         # CREATE TABLE table_name AS query
         select = self.current_query
         table = pypika_utils.Table(table_name, schema_name)
-        create_table = pypika_utils.Query.create_table(
-            table).as_select(select).get_sql()
+        create_table = pypika_utils.Query.create_table(table).as_select(select).get_sql()
         return create_table
 
     def delete_table(self, table_name: str, schema_name: str) -> str:

@@ -20,8 +20,7 @@ DATABASES = {
         'HOST': 'db',
         'PORT': 5432,
         'OPTIONS': {
-            # Add future non-public schemas here
-            'options': '-c search_path=repo,archives,dataset'
+            'options': '-c search_path=repo,archives,dataset' # Add future non-public schemas here
         },
         'TEST': {
             'MIRROR': 'default'
