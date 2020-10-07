@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, ReactNode, useContext } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { Table } from 'react-bootstrap';
 import { ScheduledEventContext } from '../../pages/ScheduledEvents';
 import { ScheduledEvent } from '../../types/scheduledEvents';
@@ -17,18 +17,6 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
     return props.currentPage === 1 ? index + 1 : (props.currentPage - 1) * props.pageLimit + 1;
   };
 
-  const renderRows = (): ReactNode =>
-    props.events.map((event: ScheduledEvent, index: number) => {
-      return (
-        <ScheduledEventsTableRow
-          key={event.id}
-          id={getRowNumber(index)}
-          event={event}
-          classNames={classNames({ 'table-danger': activeEvent && activeEvent.id === event.id })}
-        />
-      );
-    });
-
   return (
     <Table responsive striped>
       <thead>
@@ -42,7 +30,20 @@ export const ScheduledEventsTable: FunctionComponent<ScheduledEventTableProps> =
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>{renderRows()}</tbody>
+      <tbody>
+        {props.events.map((event: ScheduledEvent, index: number) => {
+          return (
+            <ScheduledEventsTableRow
+              key={event.id}
+              id={getRowNumber(index)}
+              event={event}
+              classNames={classNames({
+                'table-danger': activeEvent && activeEvent.id === event.id,
+              })}
+            />
+          );
+        })}
+      </tbody>
     </Table>
   );
 };

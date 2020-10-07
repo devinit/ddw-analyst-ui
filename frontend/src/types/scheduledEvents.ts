@@ -5,7 +5,7 @@ export interface ScheduledEvent {
   enabled: boolean;
   interval: number;
   interval_type: string;
-  repeat: string;
+  repeat: boolean;
   start_date: string;
 }
 

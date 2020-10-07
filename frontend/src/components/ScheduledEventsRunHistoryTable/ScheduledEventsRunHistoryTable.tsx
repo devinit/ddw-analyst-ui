@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import styled from 'styled-components';
 import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
@@ -21,16 +21,6 @@ export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRun
   const [info, setInfo] = useState('');
   const onViewLogs = (logs: string): void => setInfo(logs);
   const onModalHide = () => setInfo('');
-  const renderRows = (): ReactNode =>
-    props.data
-      ? props.data.map((history: ScheduledEventRunHistory, index: number) => (
-          <ScheduledEventsRunHistoryTableRow
-            key={index}
-            history={history}
-            onViewLogs={onViewLogs}
-          />
-        ))
-      : null;
 
   return (
     <Table responsive striped>
@@ -42,7 +32,15 @@ export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRun
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>{renderRows()}</tbody>
+      <tbody>
+        {props.data.map((history: ScheduledEventRunHistory, index: number) => (
+          <ScheduledEventsRunHistoryTableRow
+            key={index}
+            history={history}
+            onViewLogs={onViewLogs}
+          />
+        ))}
+      </tbody>
       <BasicModal show={!!info} onHide={onModalHide}>
         <StyledContent>{info}</StyledContent>
       </BasicModal>
