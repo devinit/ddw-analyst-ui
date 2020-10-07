@@ -27,13 +27,11 @@ class NullIf(Function):
 def text_search(field, search_ilike):
     if "|" in search_ilike:  # User is trying to search for multiple strings
         search_ilikes = search_ilike.split("|")
-        text_searches = [text_search(field, search_ilike_child)
-                         for search_ilike_child in search_ilikes]
+        text_searches = [text_search(field, search_ilike_child) for search_ilike_child in search_ilikes]
         return reduce(operator.or_, text_searches)
     if "&" in search_ilike:
         search_ilikes = search_ilike.split("&")
-        text_searches = [text_search(field, search_ilike_child)
-                         for search_ilike_child in search_ilikes]
+        text_searches = [text_search(field, search_ilike_child) for search_ilike_child in search_ilikes]
         return reduce(operator.and_, text_searches)
     return field.ilike(search_ilike)
 
@@ -79,8 +77,7 @@ class QueryBuilder:
             self.initial_table_name = query_steps.first().source.active_mirror_name
             self.initial_schema_name = query_steps.first().source.schema
 
-        self.current_dataset = Table(
-            self.initial_table_name, schema=self.initial_schema_name)
+        self.current_dataset = Table(self.initial_table_name, schema=self.initial_schema_name)
         self.current_query = Query.from_(self.current_dataset)
 
         for query_step in query_steps:
@@ -103,13 +100,11 @@ class QueryBuilder:
         agg_func = getattr(pypika_fn, agg_func_name)
         group_by = [getattr(self.current_dataset, col) for col in group_by]
         select_by = group_by.copy()
-        current_operational_column = getattr(
-            self.current_dataset, operational_column)
+        current_operational_column = getattr(self.current_dataset, operational_column)
 
         operational_alias = "_".join([operational_column, agg_func_name])
 
-        select_by.append(
-            agg_func(current_operational_column, alias=operational_alias))
+        select_by.append(agg_func(current_operational_column, alias=operational_alias))
 
         self.select(select_by)
         self.current_query = self.current_query.groupby(*group_by)
@@ -133,8 +128,7 @@ class QueryBuilder:
             tmp_query = window_(getattr(self.current_dataset, term))
         elif window_fn in term_analytics:
             try:
-                tmp_query = window_(term=getattr(
-                    self.current_dataset, term), **kwargs)
+                tmp_query = window_(term=getattr(self.current_dataset, term), **kwargs)
             except TypeError:  # Term is an integer, like with NTile
                 tmp_query = window_(term=term, **kwargs)
         else:
@@ -143,20 +137,17 @@ class QueryBuilder:
 
         if over:
             for over_elem in over:
-                tmp_query = tmp_query.over(
-                    getattr(self.current_dataset, over_elem))
+                tmp_query = tmp_query.over(getattr(self.current_dataset, over_elem))
 
         if order_by:
             for order in order_by:
-                tmp_query = tmp_query.orderby(
-                    getattr(self.current_dataset, order))
+                tmp_query = tmp_query.orderby(getattr(self.current_dataset, order))
 
         if columns:
             self.current_query = self.current_query.select(
                 *[getattr(self.current_dataset, col_elem) for col_elem in columns], tmp_query)
         else:
-            self.current_query = self.current_query.select(
-                self.current_dataset.star, tmp_query)
+            self.current_query = self.current_query.select(self.current_dataset.star, tmp_query)
 
         self.current_dataset = self.current_query
         return self
@@ -196,11 +187,9 @@ class QueryBuilder:
         }
         trans_func = multi_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_columns[0], trans_func_name])
-        select_by = [getattr(self.current_dataset, operational_column)
-                     for operational_column in operational_columns]
+        select_by = [getattr(self.current_dataset, operational_column) for operational_column in operational_columns]
         self.current_query = self.current_query.select(
-            self.current_dataset.star, trans_func(
-                select_by).as_(operational_alias)
+            self.current_dataset.star, trans_func(select_by).as_(operational_alias)
         )
 
         self.current_dataset = self.current_query
@@ -244,16 +233,11 @@ class QueryBuilder:
         table1 = self.current_dataset
         table2 = Table(table_name, schema=schema_name)
         if columns_x and columns_y:
-            joined_table1_columns = [join_on_item[0]
-                                     for join_on_item in join_on.items()]
-            joined_table2_columns = [join_on_item[1]
-                                     for join_on_item in join_on.items()]
-            unjoined_table1_columns = [
-                col for col in columns_x if col not in joined_table1_columns]
-            unjoined_table2_columns = [
-                col for col in columns_y if col not in joined_table2_columns]
-            common_unjoined_columns = list(
-                set(unjoined_table1_columns) & set(unjoined_table2_columns))
+            joined_table1_columns = [join_on_item[0] for join_on_item in join_on.items()]
+            joined_table2_columns = [join_on_item[1] for join_on_item in join_on.items()]
+            unjoined_table1_columns = [col for col in columns_x if col not in joined_table1_columns]
+            unjoined_table2_columns = [col for col in columns_y if col not in joined_table2_columns]
+            common_unjoined_columns = list(set(unjoined_table1_columns) & set(unjoined_table2_columns))
             uncommon_table2_unjoined_columns = [getattr(
                 table2, col) for col in unjoined_table2_columns if col not in common_unjoined_columns]
 
@@ -261,14 +245,12 @@ class QueryBuilder:
             # And all of the unjoined, unaliased unique columns from Table2
             select_on += uncommon_table2_unjoined_columns
             # And all of the unjoined, aliased common columns from 2
-            select_on += [getattr(table2, col).as_("{}_{}".format(col, suffix_y))
-                          for col in common_unjoined_columns]
+            select_on += [getattr(table2, col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]
         else:
             select_on = [table1.star] + [table2.star]
 
         self.current_query = self.current_query.join(table2, how=join_how_value).on(
-            reduce(operator.and_, [operator.eq(
-                getattr(table1, k), getattr(table2, v)) for k, v in join_on.items()])
+            reduce(operator.and_, [operator.eq(getattr(table1, k), getattr(table2, v)) for k, v in join_on.items()])
         ).select(
             *select_on
         )
@@ -281,8 +263,7 @@ class QueryBuilder:
         if columns:
             self.current_query = self.current_query.select(*columns)
         else:
-            self.current_query = self.current_query.select(
-                self.current_dataset.star)
+            self.current_query = self.current_query.select(self.current_dataset.star)
         self.current_dataset = self.current_query
         return self
 
