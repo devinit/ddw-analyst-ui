@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
 import { OperationsState } from '../../reducers/operations';
+import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
@@ -23,6 +24,7 @@ interface ActionProps {
 }
 interface ReduxState {
   operations: OperationsState;
+  user: UserState;
 }
 interface ComponentProps extends RouteComponentProps {
   limit: number;
@@ -116,31 +118,35 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   const renderOperations = (operations: List<OperationMap>, allowEdit = false) => {
     if (operations && operations.count()) {
-      return operations.map((operation, index) => (
-        <OperationsTableRow key={index} operation={operation} showDraftBadge={showMyQueries}>
-          <OperationsTableRowActions>
-            <DatasetActionLink operation={operation} show={allowEdit} onClick={onEditOperation}>
-              Edit
-            </DatasetActionLink>
-            <OverlayTrigger
-              placement="top"
-              overlay={<Popover id="view">View Dataset Data</Popover>}
-            >
-              <DatasetActionLink operation={operation} action="data" onClick={onViewData}>
-                View Data
+      return operations.map((operation, index) => {
+        const showEdit = allowEdit || props.user.get('username') === operation.get('user');
+
+        return (
+          <OperationsTableRow key={index} operation={operation} showDraftBadge={showMyQueries}>
+            <OperationsTableRowActions>
+              <DatasetActionLink operation={operation} show={showEdit} onClick={onEditOperation}>
+                Edit
               </DatasetActionLink>
-            </OverlayTrigger>
-            <Button variant="dark" size="sm" onClick={onViewSQLQuery(operation)}>
-              SQL Query
-            </Button>
-            <Form action={`${api.routes.EXPORT}${operation.get('id')}/`} method="POST">
-              <Button type="submit" variant="dark" size="sm">
-                Export to CSV
+              <OverlayTrigger
+                placement="top"
+                overlay={<Popover id="view">View Dataset Data</Popover>}
+              >
+                <DatasetActionLink operation={operation} action="data" onClick={onViewData}>
+                  View Data
+                </DatasetActionLink>
+              </OverlayTrigger>
+              <Button variant="dark" size="sm" onClick={onViewSQLQuery(operation)}>
+                SQL Query
               </Button>
-            </Form>
-          </OperationsTableRowActions>
-        </OperationsTableRow>
-      ));
+              <Form action={`${api.routes.EXPORT}${operation.get('id')}/`} method="POST">
+                <Button type="submit" variant="dark" size="sm">
+                  Export to CSV
+                </Button>
+              </Form>
+            </OperationsTableRowActions>
+          </OperationsTableRow>
+        );
+      });
     }
 
     return <div className="px-4 pb-3">No datasets found</div>;
@@ -219,6 +225,7 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, ComponentProps> = (
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {
     operations: reduxStore.get('operations') as OperationsState,
+    user: reduxStore.get('user') as UserState,
   };
 };
 
