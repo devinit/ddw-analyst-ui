@@ -272,7 +272,7 @@ class ThemeDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class OperationList(generics.ListCreateAPIView):
     """
-    This view should return a list of all the operations that are not for the currently authenticated user.
+    This view should return a list of the published operations, including those for the currently authenticated user.
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
@@ -286,10 +286,7 @@ class OperationList(generics.ListCreateAPIView):
         """
         Filters to return the operations that are not for the currently authenticated user.
         """
-        if self.request.user.is_authenticated:
-            return Operation.objects.filter(~Q(user=self.request.user) & Q(is_draft=False)).order_by('-updated_on')
-        else:
-            return Operation.objects.filter(Q(is_draft=False)).order_by('-updated_on')
+        return Operation.objects.filter(Q(is_draft=False)).order_by('-updated_on')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
