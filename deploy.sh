@@ -25,13 +25,7 @@ docker-compose build
 docker-compose down --remove-orphans
 docker-compose up -d
 
-echo "Building JS"
-
-npm ci
-
-npm run build
-
-docker-compose exec web python manage.py migrate
+docker-compose exec -T web python manage.py migrate
 
 echo "Setting up rabbitmq user and permissions"
 

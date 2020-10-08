@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { Card, Table } from 'react-bootstrap';
-import { WizardContext } from '../../pages/DataUpdate/DataUpdate';
+import { WizardContext } from '../../pages/DataUpdate';
 import { CSVMappingTableRow } from './CSVMappingTableRow';
 import { getDefaultColumnMapping } from './utils';
 

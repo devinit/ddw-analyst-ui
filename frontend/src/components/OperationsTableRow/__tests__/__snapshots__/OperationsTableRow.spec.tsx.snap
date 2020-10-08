@@ -1,91 +1,115 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`OperationsTableRow does not render non-action children 1`] = `
-.c0 {
-  display: block !important;
-}
-
-<tr
-  data-testid="operations-table-row"
+<div
+  className="dataset-row p-3 border-bottom"
 >
-  <td>
-    My Test Dataset
-  </td>
-  <td>
-    Wed Jan 01 2020
-  </td>
-  <td>
-    <span
-      className="badge badge-danger"
-      data-testid="op-table-row-badge"
+  <div
+    className="col-md-12"
+  >
+    <div
+      className="dataset-row-title h4"
     >
-      Published
-    </span>
-  </td>
-  <td
-    className="c0 td-actions text-right"
-  />
-</tr>
+      My Test Dataset
+    </div>
+    <p
+      className="mb-2"
+    >
+      My Dataset Description
+    </p>
+    <div
+      className="dataset-row-actions mb-1"
+    />
+    <div
+      className="h6 dataset-row-footer"
+    >
+      Updated 
+      9 months ago
+       from 
+      <span
+        className="text-uppercase text-danger"
+      >
+        
+      </span>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`OperationsTableRow renders actions when provided 1`] = `
-.c0 {
-  display: block !important;
-}
-
-<tr
-  data-testid="operations-table-row"
+<div
+  className="dataset-row p-3 border-bottom"
 >
-  <td>
-    My Test Dataset
-  </td>
-  <td>
-    Wed Jan 01 2020
-  </td>
-  <td>
-    <span
-      className="badge badge-danger"
-      data-testid="op-table-row-badge"
-    >
-      Published
-    </span>
-  </td>
-  <td
-    className="c0 td-actions text-right"
+  <div
+    className="col-md-12"
   >
-    <button
-      type="button"
+    <div
+      className="dataset-row-title h4"
     >
-      Click Me
-    </button>
-  </td>
-</tr>
+      My Test Dataset
+    </div>
+    <p
+      className="mb-2"
+    >
+      My Dataset Description
+    </p>
+    <div
+      className="dataset-row-actions mb-1"
+    >
+      <button
+        type="button"
+      >
+        Click Me
+      </button>
+    </div>
+    <div
+      className="h6 dataset-row-footer"
+    >
+      Updated 
+      9 months ago
+       from 
+      <span
+        className="text-uppercase text-danger"
+      >
+        
+      </span>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`OperationsTableRow renders correctly with the default props 1`] = `
-.c0 {
-  display: block !important;
-}
-
-<tr
-  data-testid="operations-table-row"
+<div
+  className="dataset-row p-3 border-bottom"
 >
-  <td>
-    My Test Dataset
-  </td>
-  <td>
-    Wed Jan 01 2020
-  </td>
-  <td>
-    <span
-      className="badge badge-danger"
-      data-testid="op-table-row-badge"
+  <div
+    className="col-md-12"
+  >
+    <div
+      className="dataset-row-title h4"
     >
-      Published
-    </span>
-  </td>
-  <td
-    className="c0 td-actions text-right"
-  />
-</tr>
+      My Test Dataset
+    </div>
+    <p
+      className="mb-2"
+    >
+      My Dataset Description
+    </p>
+    <div
+      className="dataset-row-actions mb-1"
+    />
+    <div
+      className="h6 dataset-row-footer"
+    >
+      Updated 
+      9 months ago
+       from 
+      <span
+        className="text-uppercase text-danger"
+      >
+        
+      </span>
+    </div>
+  </div>
+</div>
 `;

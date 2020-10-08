@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ScheduledEventsTable should match snapshot 1`] = `
+<div>
+  <div
+    class="table-responsive"
+  >
+    <table
+      class="table table-striped"
+    >
+      <thead>
+        <tr>
+          <th
+            class="text-center"
+          >
+            #
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Description
+          </th>
+          <th>
+            Enabled
+          </th>
+          <th>
+            Start Date
+          </th>
+          <th>
+            Interval
+          </th>
+          <th>
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class=""
+          data-testid="sche-events-table-row"
+        >
+          <td
+            class="text-center"
+          >
+            1
+          </td>
+          <td>
+            event1
+          </td>
+          <td />
+          <td>
+            <div
+              class="togglebutton"
+            >
+              <label
+                class="enabled"
+              >
+                <input
+                  checked=""
+                  disabled=""
+                  type="checkbox"
+                />
+                <span
+                  class="toggle"
+                />
+              </label>
+            </div>
+          </td>
+          <td>
+            January 1, 2020
+             at
+             
+            12:00 AM
+          </td>
+          <td>
+            Every 5 undefined
+          </td>
+          <td>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              data-testid="sche-events-table-btn"
+              type="button"
+            >
+              Run Now
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

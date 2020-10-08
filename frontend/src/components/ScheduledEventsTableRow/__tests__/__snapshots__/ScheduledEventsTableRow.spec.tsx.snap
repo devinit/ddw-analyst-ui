@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ScheduledEventsTableRow should take a snapshot 1`] = `
+<tr
+  data-testid="sche-events-table-row"
+  onClick={[Function]}
+>
+  <td
+    className="text-center"
+  >
+    1
+  </td>
+  <td>
+    event1
+  </td>
+  <td />
+  <td>
+    <div
+      className="togglebutton"
+    >
+      <label
+        className="enabled"
+      >
+        <input
+          defaultChecked={true}
+          disabled={true}
+          type="checkbox"
+        />
+        <span
+          className="toggle"
+        />
+      </label>
+    </div>
+  </td>
+  <td>
+    January 1, 2020
+     at
+     
+    12:00 AM
+  </td>
+  <td>
+    Every 2 Seconds
+  </td>
+  <td>
+    <button
+      className="btn btn-outline-danger btn-sm"
+      data-testid="sche-events-table-btn"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Run Now
+    </button>
+  </td>
+</tr>
+`;

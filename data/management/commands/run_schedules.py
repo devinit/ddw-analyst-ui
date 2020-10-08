@@ -2,7 +2,9 @@ import json
 from datetime import date, datetime, timedelta
 import calendar
 import datetime as dtime
+import multiprocessing
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 from django.http import HttpResponse, StreamingHttpResponse
@@ -58,12 +60,53 @@ class Command(BaseCommand):
 
     def run_and_update_schedule(self, schedule, runInstance):
         try:
+            expected_runtime = 7200 # 7200 seconds or 2 hours
+
+            #Get average running time of all successfull run instances
+            average_instance_runtime_in_seconds = self.calculateAverageInstanceRuntime(schedule)
+
+            if average_instance_runtime_in_seconds is not None:
+                expected_runtime = average_instance_runtime_in_seconds
+            elif schedule.expected_runtime and schedule.expected_runtime_type in 'min':
+                expected_runtime = schedule.expected_runtime * 60
+            elif schedule.expected_runtime and schedule.expected_runtime_type in 'sec':
+                expected_runtime = schedule.expected_runtime
+            elif schedule.expected_runtime and schedule.expected_runtime_type in 'hrs':
+                expected_runtime = schedule.expected_runtime * 60 * 60
+
             #Run the script
-            update_response = self.execute_script(schedule.script_name)
+            parent_conn, child_conn = multiprocessing.Pipe()
+            p = multiprocessing.Process(target=self.execute_script, args=(schedule.script_name, child_conn,))
+
+            #Start process
+            p.start()
+
+            #wait until process runs longer than timeout
+            p.join(timeout=expected_runtime)
+
+            #If process is still running after timeout, send emails and wait till it completes
+            if p.is_alive():
+                #Send email notifications for delayed schedule
+                schedule.send_emails(
+                    "Delayed Schedule",
+                    "{} has been running for more than {} seconds.".format(schedule.script_name, expected_runtime),
+                    [user[1] for user in settings.ADMINS]
+                )
+
+                #Wait for schedule to complete
+                p.join()
+
+            #Receive data from executed script
+            update_response = parent_conn.recv()
 
             #Check if script run was a success/fail and update run instance
             if update_response['return_code'] != 0:
                 self.update_run_instance(runInstance, 'e', update_response['message'])
+                schedule.send_emails(
+                    "Schedule failed with an error",
+                    "{} failed with the following error - {}.".format(schedule.script_name, update_response['message']),
+                    [user[1] for user in settings.ADMINS]
+                )
                 self.stdout.write('Script execution failed for ' + schedule.script_name)
             else:
                 self.update_run_instance(runInstance, 'c')
@@ -76,7 +119,7 @@ class Command(BaseCommand):
             self.update_run_instance(runInstance, 'e', 'An unexpected error occured while executing the script ... please contact the administrator')
             self.create_next_run_instance(schedule, make_aware(datetime.now()))
 
-    def execute_script(self, script_name):
+    def execute_script(self, script_name, child_conn):
         post_status = status.HTTP_200_OK
         executor = ScriptExecutor(script_name)
         stream = executor.stream()
@@ -103,7 +146,8 @@ class Command(BaseCommand):
             response_data['message'] = 'Script execution failed:\n\n' + logs
             response_data['return_code'] = item
 
-        return response_data
+        child_conn.send(response_data)
+        child_conn.close()
 
     def create_next_run_instance(self, schedule, last_rundate, start_date=None):
         if schedule.repeat:
@@ -135,3 +179,15 @@ class Command(BaseCommand):
             return last_rundate + relativedelta(months=+interval)
         elif interval_type and interval_type in 'yrs':
             return last_rundate + relativedelta(years=+interval)
+
+    def calculateAverageInstanceRuntime(self, schedule):
+        instances = ScheduledEventRunInstance.objects.filter(
+            Q(scheduled_event=schedule.id) & Q(status='c')
+        )
+        timedeltas = []
+        if instances:
+            for instance in instances:
+                timedeltas.append(instance.ended_at - instance.start_at)
+            average_timedelta = sum(timedeltas, timedelta(0)) / len(timedeltas)
+            return int(average_timedelta.total_seconds())
+        return None

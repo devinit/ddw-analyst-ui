@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ScheduledEventsRunHistoryTableRow should match snapshot 1`] = `
+<tbody>
+  <tr>
+    <td>
+      <span
+        class="badge badge-secondary"
+      >
+        PENDING
+      </span>
+    </td>
+    <td>
+      January 1, 2020 12:00 AM
+    </td>
+    <td
+      data-testid="history-end-date"
+    />
+    <td>
+      <button
+        class="btn-danger btn btn-link btn-sm"
+        data-testid="logs-button"
+        type="button"
+      >
+        <i
+          class="material-icons"
+          data-testid="info-trigger"
+        >
+          info
+        </i>
+         
+        <span>
+          Logs
+        </span>
+      </button>
+    </td>
+  </tr>
+</tbody>
+`;

@@ -26,6 +26,24 @@ numeric_index = list(
     "dac1_current"=c("donor_code","part_code")
 )
 
+btree_index = list(
+  "iati_transactions"=c(
+    "iati_identifier",
+    "x_transaction_year",
+    "x_yyyymm",
+    "x_sector_code",
+    "x_dac3_sector",
+    "x_recipient",
+    "x_recipient_code",
+    "x_recipient_type",
+    "reporting_org_type_code",
+    "transaction_type_code",
+    "x_sector_number",
+    "x_recipient_number",
+    "x_vocabulary_number"
+    )
+)
+
 drv = dbDriver("PostgreSQL")
 con = dbConnect(drv,
                 dbname=db.dbname
@@ -33,6 +51,9 @@ con = dbConnect(drv,
                 ,password=db.password
                 ,host=db.host
                 ,port=db.port)
+# con = dbConnect(drv,
+#                 dbname="analyst_ui"
+#                 ,user="postgres")
 
 
 table_names = names(text_index)
@@ -70,6 +91,24 @@ for(table_name in table_names){
 
     dbSendQuery(con,sql_query)   
     
+}
+
+table_names = names(btree_index)
+
+for(table_name in table_names){
+  columns_to_index = btree_index[[table_name]]
+  for(column_to_index in columns_to_index){
+    pr_sql_query = paste0("drop index repo.",table_name,"_btree_idx")
+    sql_query = paste0("create index ",table_name,"_btree_idx on repo.", table_name," using btree (",column_to_index,")")
+    
+    tryCatch({
+      dbSendQuery(con,pr_sql_query)
+    },error = function(e){
+      
+    })
+    
+    dbSendQuery(con,sql_query)   
+  }
 }
 
 dbCommit(con)
