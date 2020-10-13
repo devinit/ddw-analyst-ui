@@ -11,9 +11,9 @@ urlpatterns = [
     path('users/', core_views.UserList.as_view()),
     path('users/<int:pk>/', core_views.UserDetail.as_view()),
     path('tags/', core_views.TagList.as_view()),
-    path('tags/<int:pk>/', core_views.TagDetail.as_view()), # TODO: deprecate endpoint
+    path('tags/<int:pk>/', core_views.TagDetail.as_view()),
     path('operation_steps/', core_views.OperationStepList.as_view()), # TODO: deprecate endpoint
-    path('operation_steps/<int:pk>/', core_views.OperationStepDetail.as_view()),
+    path('operation_steps/<int:pk>/', core_views.OperationStepDetail.as_view()), # TODO: deprecate endpoint
     path('reviews/', core_views.ReviewList.as_view()),
     path('reviews/<int:pk>/', core_views.ReviewDetail.as_view()),
     path('operations/', core_views.OperationList.as_view()), # TODO: deprecate endpoint
