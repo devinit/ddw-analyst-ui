@@ -27,7 +27,7 @@ table.quote = c("repo",table.name)
 # Load data, removing na strings
 data_url = "https://www.imf.org/~/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.ashx"
 download.file(data_url,"/tmp/weo.csv")
-weo = read.csv("/tmp/weo.csv",sep="\t",na.strings=c("","n/a","--"),fileEncoding = "utf-16",encoding="utf-16")
+weo = read.csv("/tmp/weo.csv",sep="\t",na.strings=c("","n/a","--"),fileEncoding = "utf-16")
 weo$X = NULL
 weo = subset(weo,WEO.Country.Code!="International Monetary Fund, World Economic Outlook Database, October 2020")
 
