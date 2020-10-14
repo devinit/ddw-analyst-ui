@@ -18,9 +18,10 @@ from rest_framework.utils import model_meta
 
 from core import query
 from core.const import DEFAULT_LIMIT_COUNT
-from core.models import (Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
-                        ScheduledEventRunInstance, Sector, Source,
-                        SourceColumnMap, Tag, Theme, UpdateHistory)
+from core.models import (
+    Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
+    ScheduledEventRunInstance, Sector, Source, SourceColumnMap, Tag,
+    Theme, UpdateHistory, FrozenData, SavedQueryData)
 
 
 class DataSerializer(serializers.BaseSerializer):
@@ -89,6 +90,7 @@ class DataSerializer(serializers.BaseSerializer):
         except:
             return data
 
+
 class TagSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
 
@@ -146,7 +148,8 @@ class OperationSerializer(serializers.ModelSerializer):
     operation_steps = OperationStepSerializer(source='operationstep_set', many=True)
     reviews = ReviewSerializer(source='review_set', many=True, read_only=True)
     id = serializers.ReadOnlyField(source='pk')
-    aliases = OperationDataColumnAliasSerializer(source='operationdatacolumnalias_set', many=True, read_only=True)
+    aliases = OperationDataColumnAliasSerializer(
+        source='operationdatacolumnalias_set', many=True, read_only=True)
 
     class Meta:
         model = Operation
@@ -384,7 +387,8 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
     def is_due_to_run_in_5minutes(self, scheduled_event):
         time_threshold = timezone.now() + relativedelta(minutes=5)
         queryset = ScheduledEventRunInstance.objects.filter(
-            (Q(scheduled_event=scheduled_event.id) & Q(start_at__lt=time_threshold) & Q(status='p'))
+            (Q(scheduled_event=scheduled_event.id) & Q(
+                start_at__lt=time_threshold) & Q(status='p'))
         )
         if queryset.exists():
             return queryset.earliest('id')
@@ -398,3 +402,35 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
         if due_instance:
             return due_instance
         return ScheduledEventRunInstance.objects.create(**validated_data)
+
+
+class FrozenDataSerializer(serializers.ModelSerializer):
+    frozen_db_table = serializers.ReadOnlyField()
+
+    class Meta:
+        model = FrozenData
+        fields = (
+            'id',
+            'parent_db_table',
+            'frozen_db_table',
+            'completed',
+            'active',
+            'comment'
+        )
+
+
+class SavedQueryDataSerializer(serializers.ModelSerializer):
+    full_query = serializers.ReadOnlyField()
+    saved_query_db_table = serializers.ReadOnlyField()
+
+    class Meta:
+        model = SavedQueryData
+        fields = (
+            'id',
+            'active',
+            'operation',
+            'full_query',
+            'saved_query_db_table',
+            'completed',
+            'comment'
+        )

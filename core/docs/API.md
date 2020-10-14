@@ -61,3 +61,53 @@
 
 11. Return details of source selected by id;<br>
     GET - https://ddw.devinit.org/api/sources/[SOURCE_ID]/
+
+12. Return list of Frozen Data<br>
+    GET - https://ddw.devinit.org/api/frozendata/ returns listing of frozen data<br>
+
+13. Create new frozen data<br>
+    POST - https://ddw.devinit.org/api/frozendata/<br>
+
+    Request Body:<br>
+
+        {
+          "parent_db_table":"[TABLE_NAME]",
+          "completed":"p", // options include p (pending), r (running), c (completed), e (errored)
+          "active":true,
+          "comment": ""
+        }
+
+
+
+14. Details of Frozen Data selected by ID<br>
+    GET - https://ddw.devinit.org/api/frozendata/[FROZENDATA_ID]/ returns details of frozen data<br>
+
+15. Delete frozen data
+    DELETE - https://ddw.devinit.org/api/frozendata/[FROZENDATA_ID]/<br>
+
+16. Return list of Saved Query Data<br>
+    GET - https://ddw.devinit.org/api/savedquerysets/ returns listing of Saved Query Data<br>
+
+17. Create new saved query data
+    POST - https://ddw.devinit.org/api/savedquerysets/<br>
+
+    Request Body:<br>
+
+        {
+          "operation":"[OPERATION_ID]",
+          "completed":"p", // options include p (pending), r (running), c (completed), e (errored)
+          "active":true,
+          "comment": ""
+        }
+
+18. Details of Saved Query Data selected by ID<br>
+    GET - https://ddw.devinit.org/api/savedqueryset/[SAVEDQUERYDATA_ID]/ returns details of saved query data<br>
+
+19. Delete saved query data
+    DELETE - https://ddw.devinit.org/api/savedqueryset/[SAVEDQUERYDATA_ID]/<br>
+
+20. Download Frozen Data<br>
+    GET - https://ddw.devinit.org/api/tables/download/[FROZEN_TABLE_NAME]/archives/<br>
+
+21. Download Saved Query Set Data<br>
+    GET - https://ddw.devinit.org/api/tables/download/[QUERY_SET_DB_TABLE]/dataset/<br>

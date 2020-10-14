@@ -96,7 +96,8 @@ class QueryBuilder:
     def aggregate(self, group_by, agg_func_name, operational_column):
         self.current_query = Query.from_(self.current_dataset)
 
-        agg_func = getattr(pypika_fn, agg_func_name)  # https://pypika.readthedocs.io/en/latest/api/pypika.functions.html e.g. Sum, Count, Avg
+        # https://pypika.readthedocs.io/en/latest/api/pypika.functions.html e.g. Sum, Count, Avg
+        agg_func = getattr(pypika_fn, agg_func_name)
         group_by = [getattr(self.current_dataset, col) for col in group_by]
         select_by = group_by.copy()
         current_operational_column = getattr(self.current_dataset, operational_column)
@@ -131,7 +132,8 @@ class QueryBuilder:
             except TypeError:  # Term is an integer, like with NTile
                 tmp_query = window_(term=term, **kwargs)
         else:
-            raise Exception('window_fn was not found in predefined window functions.')
+            raise Exception(
+                'window_fn was not found in predefined window functions.')
 
         if over:
             for over_elem in over:
@@ -142,7 +144,8 @@ class QueryBuilder:
                 tmp_query = tmp_query.orderby(getattr(self.current_dataset, order))
 
         if columns:
-            self.current_query = self.current_query.select(*[getattr(self.current_dataset, col_elem) for col_elem in columns], tmp_query)
+            self.current_query = self.current_query.select(
+                *[getattr(self.current_dataset, col_elem) for col_elem in columns], tmp_query)
         else:
             self.current_query = self.current_query.select(self.current_dataset.star, tmp_query)
 
@@ -161,9 +164,11 @@ class QueryBuilder:
             "gt": operator.gt,
             "text_search": text_search
         }
-        filter_operations = [filter_mapping[filter["func"]](getattr(self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
+        filter_operations = [filter_mapping[filter["func"]](getattr(
+            self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
-        self.current_query = self.current_query.select(self.current_dataset.star).where(filter_operations_or)
+        self.current_query = self.current_query.select(
+            self.current_dataset.star).where(filter_operations_or)
 
         self.current_dataset = self.current_query
         return self
@@ -204,7 +209,8 @@ class QueryBuilder:
         trans_func = scalar_transform_mapping[trans_func_name]
         operational_alias = "_".join([operational_column, trans_func_name])
         self.current_query = self.current_query.select(
-            self.current_dataset.star, trans_func(getattr(self.current_dataset, operational_column), operational_value).as_(operational_alias)
+            self.current_dataset.star, trans_func(getattr(
+                self.current_dataset, operational_column), operational_value).as_(operational_alias)
         )
 
         self.current_dataset = self.current_query
@@ -232,11 +238,14 @@ class QueryBuilder:
             unjoined_table1_columns = [col for col in columns_x if col not in joined_table1_columns]
             unjoined_table2_columns = [col for col in columns_y if col not in joined_table2_columns]
             common_unjoined_columns = list(set(unjoined_table1_columns) & set(unjoined_table2_columns))
-            uncommon_table2_unjoined_columns = [getattr(table2, col) for col in unjoined_table2_columns if col not in common_unjoined_columns]
+            uncommon_table2_unjoined_columns = [getattr(
+                table2, col) for col in unjoined_table2_columns if col not in common_unjoined_columns]
 
             select_on = [table1.star]  # All of the columns from table1
-            select_on += uncommon_table2_unjoined_columns  # And all of the unjoined, unaliased unique columns from Table2
-            select_on += [getattr(table2, col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]  # And all of the unjoined, aliased common columns from 2
+            # And all of the unjoined, unaliased unique columns from Table2
+            select_on += uncommon_table2_unjoined_columns
+            # And all of the unjoined, aliased common columns from 2
+            select_on += [getattr(table2, col).as_("{}_{}".format(col, suffix_y)) for col in common_unjoined_columns]
         else:
             select_on = [table1.star] + [table2.star]
 
@@ -267,7 +276,8 @@ class QueryBuilder:
 
     def get_sql(self, limit=DEFAULT_LIMIT_COUNT, offset=0):
         if limit == 0:
-            limit = "0"  # Pypika refused to allow limit 0 unless it's a string...
+            # Pypika refused to allow limit 0 unless it's a string...
+            limit = "0"
         final_query = self.current_query.get_sql()
         if self.limit_regex.match(final_query):
             return final_query

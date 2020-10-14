@@ -115,6 +115,12 @@ Configure a cronjob to run the `run-schedules.sh` script which in turn runs the 
 
     * * * * * /root/run-schedules.sh >/root/cron-logs.txt 2>&1
 
+### Freeze/Unfreeze and Save Queryset features
+Make sure the following schemas are created;
+
+- `archives` i.e `CREATE SCHEMA archives;`
+- `dataset` i.e `CREATE SCHEMA dataset;`
+
 ### FTS Precode feature set up and use
 On first run (i.e if you have used a database dump without FTS Precoded tables included or a clean DB set up) run the following scripts;
 1. `docker-compose exec web data_updates/manual_data.sh`

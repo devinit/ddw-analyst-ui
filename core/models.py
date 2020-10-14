@@ -96,7 +96,8 @@ class Operation(BaseEntity):
     tags = models.ManyToManyField(Tag)
     is_draft = models.BooleanField(default=True)
     row_count = models.IntegerField(blank=True, null=True)
-    count_rows = models.BooleanField(default=False) # controls whether to count rows in the post_save signal
+    # controls whether to count rows in the post_save signal
+    count_rows = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -223,9 +224,11 @@ class ScheduledEvent(BaseEntity):
     start_date = models.DateTimeField(null=False, blank=False)
     repeat = models.BooleanField(default=False)
     interval = models.BigIntegerField(blank=True, null=True)
-    interval_type = models.CharField(max_length=3, choices=interval_type_choices, null=True, blank=True)
+    interval_type = models.CharField(
+        max_length=3, choices=interval_type_choices, null=True, blank=True)
     expected_runtime = models.BigIntegerField(blank=True, null=True)
-    expected_runtime_type = models.CharField(max_length=3, choices=expected_runtime_type_choices, null=True, blank=True)
+    expected_runtime_type = models.CharField(
+        max_length=3, choices=expected_runtime_type_choices, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -254,3 +257,34 @@ class ScheduledEventRunInstance(BaseEntity):
     def __str__(self):
         return self.scheduled_event.name + ' - ' + self.status
 
+
+class FrozenData(BaseEntity):
+    """Stores table names for "frozen" data"""
+    status_choices = (
+        ('p', 'Pending'),
+        ('r', 'Running'),
+        ('c', 'Completed'),
+        ('e', 'Errored'),
+    )
+
+    parent_db_table = models.CharField(max_length=200, null=False)
+    frozen_db_table = models.CharField(max_length=200, null=False)
+    status = models.CharField(max_length=1, choices=status_choices, default='p')
+    active = models.BooleanField(default=True)
+    comment = models.CharField(max_length=200, null=False)
+
+
+class SavedQueryData(BaseEntity):
+    """Borrows heavily from FrozenData to store query sets """
+    status_choices = (
+        ('p', 'Pending'),
+        ('r', 'Running'),
+        ('c', 'Completed'),
+        ('e', 'Errored'),
+    )
+    saved_query_db_table = models.CharField(max_length=200, null=True)
+    active = models.BooleanField(default=True)
+    operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
+    full_query = models.TextField(null=False)
+    status = models.CharField(max_length=1, choices=status_choices, default='p')
+    comment = models.CharField(max_length=200, null=False)

@@ -37,6 +37,7 @@ urlpatterns = [
     path('execute_update/', core_views.streaming_script_execute),
     path('tables/update/<str:table_name>/', core_views.UpdateTableAPI.as_view()),
     path('tables/download/<str:table_name>/', core_views.streaming_tables_export_view),
+    path('tables/download/<str:table_name>/<str:schema>/', core_views.streaming_tables_export_view),
     # v2 endpoints for handling queries & datasets
     path('datasets/', core_views.OperationList.as_view()),
     path('datasets/mine/', core_views.UserOperationList.as_view()),
@@ -44,6 +45,11 @@ urlpatterns = [
     path('dataset/preview/', core_views.PreviewOperationData.as_view()),
     path('dataset/data/<int:pk>/', core_views.ViewData.as_view()),
     path('dataset/alias/<int:pk>/', core_views.OperationColumnAlias.as_view()),
+    # For handling saving query sets, and freezing data
+    path('savedquerysets/', core_views.SavedQueryDataList.as_view()),
+    path('savedqueryset/<int:pk>/', core_views.SavedQueryDataDetail.as_view()),
+    path('frozendata/', core_views.FrozenDataList.as_view()),
+    path('frozendata/<int:pk>/', core_views.FrozenDataDetail.as_view()),
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'
