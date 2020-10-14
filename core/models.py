@@ -269,7 +269,7 @@ class FrozenData(BaseEntity):
 
     parent_db_table = models.CharField(max_length=200, null=False)
     frozen_db_table = models.CharField(max_length=200, null=False)
-    completed = models.CharField(max_length=1, choices=status_choices, default='p')
+    status = models.CharField(max_length=1, choices=status_choices, default='p')
     active = models.BooleanField(default=True)
     comment = models.CharField(max_length=200, null=False)
 
@@ -286,5 +286,5 @@ class SavedQueryData(BaseEntity):
     active = models.BooleanField(default=True)
     operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
     full_query = models.TextField(null=False)
-    completed = models.CharField(max_length=1, choices=status_choices, default='p')
+    status = models.CharField(max_length=1, choices=status_choices, default='p')
     comment = models.CharField(max_length=200, null=False)
