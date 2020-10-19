@@ -36,6 +36,7 @@ btree_index = list(
     "x_recipient",
     "x_recipient_code",
     "x_recipient_type",
+    "x_recipient_vocabulary",
     "reporting_org_type_code",
     "transaction_type_code",
     "x_sector_number",
