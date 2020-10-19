@@ -448,9 +448,6 @@ fts_precoded,Deflators,Deflators,Deflators,N,Deflators
 fts_precoded,amountDeflated,amountDeflated,Amount deflated,N,Amount deflated
 fts_precoded,amountDeflatedMillions,amountDeflatedMillions,Amount deflated millions,N,Amount deflated millions
 iati_transactions,x_aid_type,x_aid_type,Aid Type,C,Aid Type - Calculated
-iati_transactions,x_country,x_country,Country,C,Country Name - Calculated
-iati_transactions,x_country_code,x_country_code,Calculated Country Code,C,Country Code - Calculated
-iati_transactions,x_country_percentage,x_country_percentage,Calculated Country Percentage,C,Country Percentage - Calculated
 iati_transactions,x_covid,x_covid,X Covid flag,C,Covid flag - Calculated
 iati_transactions,x_currency,x_currency,Calculated Currency,C,Currency - Calculated
 iati_transactions,x_dac_aid_type_code,x_dac_aid_type_code,Calculated DAC Aid Type Code,C,DAC Aid Type Code - Calculated
@@ -514,6 +511,7 @@ iati_transactions,x_recipient_number,x_recipient_number,x_recipient_number,N,Rec
 iati_transactions,x_recipient_code,x_recipient_code,x_recipient_code,C,Recipient Code
 iati_transactions,x_recipient,x_recipient,x_recipient,C,Recipient Name
 iati_transactions,x_recipient_percentage,x_recipient_percentage,x_recipient_percentage,C,Recipient Percentage
+iati_transactions,x_recipient_vocabulary,x_recipient_vocabulary,x_recipient_vocabulary,C,Recipient Vocabulary
 iati_transactions,x_recipient_type,x_recipient_type,x_recipient_type,C,Recipient Type
 iati_transactions,x_recipient_transaction_value,x_recipient_transaction_value,x_recipient_transaction_value,N,Recipient Transaction Value
 iati_transactions,x_recipient_transaction_value_usd,x_recipient_transaction_value_usd,x_recipient_transaction_value_usd,N,Recipient Transaction Value USD
