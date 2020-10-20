@@ -1,5 +1,5 @@
 // import { List } from 'immutable';
-import React, { FunctionComponent, ReactNode, useEffect } from 'react';
+import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { fetchDataSourceHistory } from '../../pages/DataSourceHistory/utils';
@@ -7,6 +7,8 @@ import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
 import * as localForage from 'localforage';
 import { localForageKeys } from '../../utils';
+import { SourceHistoryListItem } from '../SourceHistoryListItem';
+import { FrozenData } from '../SourceHistoryListItem/utils';
 
 interface ComponentProps {
   activeSource?: SourceMap;
@@ -16,12 +18,25 @@ interface ComponentProps {
 }
 
 export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
+  const [history, setHistory] = useState<FrozenData[]>([]);
   useEffect(() => {
     if (!props.loading && props.activeSource) {
       fetchDataSourceHistory(props.activeSource.get('id') as number, {
         limit: props.limit,
         offset: props.offset,
       });
+      setHistory([
+        {
+          description: 'Testing history card item',
+          user: 'edwin.magezi@devinit.org',
+          created_on: new Date('August 19, 2018 23:15:30').toISOString(),
+        } as FrozenData,
+        {
+          description: 'Second test ... 234',
+          user: 'edwin.magezi@devinit.org',
+          created_on: new Date('August 19, 2018 23:15:30').toISOString(),
+        } as FrozenData,
+      ]);
     }
 
     return function cleanup() {
@@ -36,6 +51,16 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
         offset: page.selected * props.limit,
       });
     }
+  };
+
+  const renderRows = () => {
+    if (history && history.length) {
+      return history.map((frozenData, index) => (
+        <SourceHistoryListItem key={index} item={frozenData} />
+      ));
+    }
+
+    return null;
   };
 
   const renderPagination = (): ReactNode => {
@@ -55,11 +80,9 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       <Dimmer active={props.loading} inverted>
         <Loader content="Loading" />
       </Dimmer>
-      <Card>
-        <Card.Body>
-          Table Goes Here
-          {renderPagination()}
-        </Card.Body>
+      <Card className="dataset-list">
+        <Card.Body>{renderRows()}</Card.Body>
+        <Card.Footer className="d-block">{renderPagination()}</Card.Footer>
       </Card>
     </React.Fragment>
   );
