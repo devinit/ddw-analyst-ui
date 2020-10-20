@@ -20,6 +20,7 @@ const operation: Partial<Operation> = {
 const props: OperationsTableRowProps = {
   operation: Map(operation) as OperationMap,
 };
+jest.mock('moment', () => () => ({ fromNow: () => '9 months ago' }));
 
 describe('OperationsTableRow', () => {
   test('renders correctly with the default props', () => {
