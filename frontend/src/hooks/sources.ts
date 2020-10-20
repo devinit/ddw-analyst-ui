@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { APIResponse } from '../types/api';
 import { Source, SourceMap } from '../types/sources';
 import { api, localForageKeys } from '../utils';
-
 interface Options {
   limit: number;
   offset: number;
@@ -60,4 +59,50 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
   }, [token, options.limit, options.offset, options.search]);
 
   return sources;
+};
+
+export const useSource = (id: number, fetch = false): SourceMap => {
+  const [source, setSource] = useState<SourceMap>(fromJS({}));
+
+  const fetchSource = () =>
+    axios
+      .request({
+        url: `${api.routes.SOURCES}${id}`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(({ status, data, statusText }: AxiosResponse<Source>) => {
+        if (status === 200 && data) {
+          const activeSource = fromJS(data);
+          setSource(activeSource);
+        } else if (status === 401) {
+          console.log('Failed to fetch source: ', statusText);
+          setSource(fromJS({}));
+        }
+      })
+      .catch((error) => {
+        console.log(
+          `Failed to fetch source: ${error.response.status} ${error.response.statusText}`,
+        );
+        setSource(fromJS([]));
+      });
+  useEffect(() => {
+    if (fetch) {
+      fetchSource();
+    } else {
+      localForage
+        .getItem<Source | undefined>(localForageKeys.ACTIVE_SOURCE)
+        .then((activeSource) => {
+          if (activeSource && activeSource.id === id) {
+            setSource(fromJS(activeSource));
+          } else {
+            fetchSource();
+          }
+        });
+    }
+  }, [id]);
+
+  return source;
 };
