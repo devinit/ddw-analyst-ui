@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { Row } from 'react-bootstrap';
 import { useParams } from 'react-router';
-import { SourcesHistoryTableCard } from '../../components/SourcesHistoryTableCard';
+import { SourceHistoryCard } from '../../components/SourceHistoryCard';
 import { useSource } from '../../hooks';
 
 const DataSourceHistory: FunctionComponent = (): ReactElement => {
@@ -10,7 +10,7 @@ const DataSourceHistory: FunctionComponent = (): ReactElement => {
 
   return (
     <Row>
-      <SourcesHistoryTableCard activeSource={source} limit={10} offset={0} loading={!source} />
+      <SourceHistoryCard activeSource={source} limit={10} offset={0} loading={!source} />
     </Row>
   );
 };

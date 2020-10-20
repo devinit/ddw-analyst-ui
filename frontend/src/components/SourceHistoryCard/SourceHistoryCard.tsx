@@ -15,11 +15,7 @@ interface ComponentProps {
   offset: number;
 }
 
-export const SourcesHistoryTableCard: FunctionComponent<ComponentProps> = (props) => {
-  if (props.activeSource) {
-    console.log(props.activeSource.toJS());
-  }
-
+export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
   useEffect(() => {
     if (!props.loading && props.activeSource) {
       fetchDataSourceHistory(props.activeSource.get('id') as number, {
@@ -69,7 +65,7 @@ export const SourcesHistoryTableCard: FunctionComponent<ComponentProps> = (props
   );
 };
 
-SourcesHistoryTableCard.defaultProps = {
+SourceHistoryCard.defaultProps = {
   limit: 10,
   offset: 0,
 };
