@@ -386,6 +386,39 @@ class ViewSourceDatasets(APIView):
             return Response(serializer.data)
 
 
+class ViewSourceHistory(APIView):
+    """
+    Get all FrozenData instances attached to a specific data source
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    # queryset = FrozenData.objects.all()
+    serializer_class = FrozenDataSerializer
+
+    def get_queryset(self, pk, request):
+        try:
+            source = Source.objects.get(id=pk)
+            history = FrozenData.objects.filter(
+                parent_db_table=source.active_mirror_name).order_by('-created_on').distinct()
+            return history
+        except Source.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        datasets = self.get_queryset(pk, request)
+        limit = self.request.query_params.get('limit', None)
+        offset = self.request.query_params.get('offset', None)
+        if limit is not None or offset is not None:
+            pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+            paginator = pagination_class()
+            page = paginator.paginate_queryset(datasets, request)
+            serializer = FrozenDataSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            serializer = FrozenDataSerializer(datasets, many=True)
+            return Response(serializer.data)
+
+
 class ViewUserSourceDatasets(APIView):
     """
     Get all datasets belonging to a specific data source and user
