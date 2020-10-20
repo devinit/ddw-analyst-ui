@@ -18,5 +18,6 @@ export const api = {
     DOWNLOAD_TABLE: '/api/tables/download/',
     FETCH_SOURCE_DATASETS: '/api/source/datasets/',
     FETCH_MY_SOURCE_DATASETS: '/api/source/datasets/mine/',
+    FETCH_SOURCE_HISTORY: '/api/source/history/',
   },
 };

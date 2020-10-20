@@ -27,6 +27,7 @@ import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
 import { api, localForageKeys } from '../utils';
+import { AsyncDataSourceHistory } from '../pages/DataSourceHistory';
 
 interface ActionProps {
   actions: typeof UserActions & typeof TokenActions & typeof ModalActions;
@@ -191,6 +192,10 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   path="/source/datasets/:id/"
                   component={(): ReactElement => <span>Source Datasets</span>}
                 />
+                <Route
+                  path="/source/history/:id/"
+                  component={(): ReactElement => <span>Source History</span>}
+                />
               </Navbar.Brand>
             </div>
 
@@ -233,6 +238,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/queries/data/:id" exact component={AsyncQueryData} />
               <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
               <Route path="/source/datasets/:id" exact component={AsyncDataSourceQueries} />
+              <Route path="/source/history/:id" exact component={AsyncDataSourceHistory} />
             </Switch>
             <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
               {ModalContent ? <ModalContent /> : null}
