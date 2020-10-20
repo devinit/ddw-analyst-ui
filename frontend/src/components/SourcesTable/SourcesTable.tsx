@@ -23,6 +23,10 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
     setActiveSource(source);
     setShowModal(true);
   };
+  const onShowHistory = (source: SourceMap) => {
+    setActiveSource(source);
+    history.push(`/source/history/${source.get('id') as string}`);
+  };
   const onHideModal = () => setShowModal(false);
 
   const renderRows = (sources: List<SourceMap>, activeSource?: SourceMap) => {
@@ -33,6 +37,7 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
           source={source}
           onShowDatasets={onShowDatasets}
           onShowMetadata={onShowMetadata}
+          onShowHistory={onShowHistory}
         />
       ));
     }

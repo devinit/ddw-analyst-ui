@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import styled from 'styled-components';
 import React, { FunctionComponent } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { SourceMap } from '../../types/sources';
@@ -7,7 +8,12 @@ export interface SourcesTableRowProps {
   source: SourceMap;
   onShowDatasets: (source: SourceMap) => void;
   onShowMetadata: (source: SourceMap) => void;
+  onShowHistory: (source: SourceMap) => void;
 }
+
+const StyledTD = styled.td`
+  width: 30%;
+`;
 
 export const SourcesTableRow: FunctionComponent<SourcesTableRowProps> = ({ source, ...props }) => {
   return (
@@ -21,7 +27,7 @@ export const SourcesTableRow: FunctionComponent<SourcesTableRowProps> = ({ sourc
         </span>
       </td>
       <td>{new Date(source.get('last_updated_on') as string).toDateString()}</td>
-      <td>
+      <StyledTD>
         <ButtonGroup>
           <Button
             variant="dark"
@@ -39,8 +45,16 @@ export const SourcesTableRow: FunctionComponent<SourcesTableRowProps> = ({ sourc
           >
             Datasets
           </Button>
+          <Button
+            variant="dark"
+            size="sm"
+            onClick={() => props.onShowHistory(source)}
+            data-testid="sources-table-history-button"
+          >
+            History
+          </Button>
         </ButtonGroup>
-      </td>
+      </StyledTD>
     </tr>
   );
 };
