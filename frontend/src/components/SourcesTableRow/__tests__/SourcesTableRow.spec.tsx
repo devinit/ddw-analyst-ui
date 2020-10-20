@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+import 'jest-styled-components';
 import { fireEvent, render } from '@testing-library/react';
 import { Map } from 'immutable';
 import * as React from 'react';
@@ -61,5 +62,5 @@ test('history button responds to click events', () => {
 
   fireEvent.click(getByTestId('sources-table-history-button'));
 
-  expect(props.onShowDatasets).toHaveBeenCalled();
+  expect(props.onShowHistory).toHaveBeenCalled();
 });
