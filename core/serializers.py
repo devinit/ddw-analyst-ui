@@ -413,7 +413,7 @@ class FrozenDataSerializer(serializers.ModelSerializer):
             'id',
             'parent_db_table',
             'frozen_db_table',
-            'completed',
+            'status',
             'active',
             'comment'
         )
@@ -431,6 +431,6 @@ class SavedQueryDataSerializer(serializers.ModelSerializer):
             'operation',
             'full_query',
             'saved_query_db_table',
-            'completed',
+            'status',
             'comment'
         )
