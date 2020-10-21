@@ -5,4 +5,5 @@ export interface FrozenData {
   description: string;
   created_on: string;
   user: string;
+  status: string;
 }

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React, { FunctionComponent } from 'react';
+import { status, statusClasses } from '../../utils/status';
 import { FrozenData } from './utils';
 
 interface ComponentProps {
@@ -20,6 +21,7 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item 
           Created {moment(item.created_on).fromNow()}
           {' by '}
           <span>{extractNameFromEmail(item.user || '')}</span>
+          <span className={`badge ml-2 ${statusClasses[item.status]}`}>{status[item.status]}</span>
         </div>
       </div>
     </div>
