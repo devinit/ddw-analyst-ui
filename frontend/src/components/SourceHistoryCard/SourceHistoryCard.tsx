@@ -49,8 +49,12 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
     };
   }, []);
 
-  const onCreateFrozenData = () => {
+  const onClickFreezeButton = () => {
     setShowFrozenDataForm(true);
+  };
+  const onCreateFrozenData = (frozenData: FrozenData) => {
+    setHistory([frozenData].concat(history));
+    setShowFrozenDataForm(false);
   };
 
   const onPageChange = (page: { selected: number }): void => {
@@ -91,7 +95,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       </Dimmer>
       <Card className="dataset-list">
         <Card.Header className={classNames({ 'd-none': !props.source })}>
-          <Button size="sm" variant="danger" onClick={onCreateFrozenData}>
+          <Button size="sm" variant="danger" onClick={onClickFreezeButton}>
             Freeze Current Version
           </Button>
         </Card.Header>
@@ -108,6 +112,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
           <Modal.Body>
             <FrozenDataForm
               source={props.source.toJS() as Source}
+              onSave={onCreateFrozenData}
               onCancel={() => setShowFrozenDataForm(false)}
             />
           </Modal.Body>
