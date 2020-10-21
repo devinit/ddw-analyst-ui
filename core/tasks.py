@@ -33,9 +33,15 @@ def create_table_archive(id):
             frozen_data.status = 'c'
             frozen_data.save()
             return { "status": "success" }
+        elif create_result[0]['result'] == 'error':
+            frozen_data.status = 'e'
+            frozen_data.logs = 'Failed to create table archive: ' + create_result[0]['message']
+            frozen_data.save()
+            return { "status": "failed", "result": create_result[0]['message'] }
         else:
             frozen_data.status = 'e'
             frozen_data.logs = 'Failed to create table archive: ' + json.dumps(create_result)
+            frozen_data.save()
             return { "status": "failed", "result": json.dumps(create_result) }
     except FrozenData.DoesNotExist:
         return { "status": "errored", "result": id }
