@@ -274,6 +274,12 @@ class FrozenData(BaseEntity):
     description = models.CharField(max_length=200, null=False)
     logs = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        status = [choice[1] for choice in self.status_choices if choice[0] == self.status]
+        if self.frozen_db_table:
+            return self.frozen_db_table + ' - ' + status[0]
+        return self.parent_db_table + ' - ' + status[0]
+
 
 class SavedQueryData(BaseEntity):
     """Borrows heavily from FrozenData to store query sets """
