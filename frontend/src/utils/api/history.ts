@@ -1,6 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
-import { api, localForageKeys } from '../../../utils';
+import { localForageKeys, api } from '..';
+import { FrozenData } from '../../components/SourceHistoryListItem/utils';
 
 const BASEPATH = api.routes.FETCH_SOURCE_HISTORY;
 
@@ -35,4 +36,19 @@ export const fetchDataSourceHistory = async (
     `${BASEPATH}${id}?limit=${options.limit || 10}&offset=${options.offset || 0}`,
     { headers },
   );
+};
+
+export const createFrozenData = async (data: FrozenData): Promise<AxiosResponse> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const response = await axios.request({
+    url: api.routes.FROZEN_DATA,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `token ${token}`,
+    },
+    data,
+  });
+
+  return response;
 };

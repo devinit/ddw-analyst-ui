@@ -1,17 +1,19 @@
-// import { List } from 'immutable';
-import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
-import { Dimmer, Loader } from 'semantic-ui-react';
-import { fetchDataSourceHistory } from '../../pages/DataSourceHistory/utils';
-import { SourceMap } from '../../types/sources';
-import { PaginationRow } from '../PaginationRow';
+import classNames from 'classnames';
 import * as localForage from 'localforage';
+import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
+import { Button, Card, Modal } from 'react-bootstrap';
+import { Dimmer, Loader } from 'semantic-ui-react';
+import { Source, SourceMap } from '../../types/sources';
 import { localForageKeys } from '../../utils';
+import { fetchDataSourceHistory } from '../../utils/api/history';
+import { BasicModal, ModalMessage } from '../BasicModal';
+import { FrozenDataForm } from '../FrozenDataForm';
+import { PaginationRow } from '../PaginationRow';
 import { SourceHistoryListItem } from '../SourceHistoryListItem';
 import { FrozenData } from '../SourceHistoryListItem/utils';
 
 interface ComponentProps {
-  activeSource?: SourceMap;
+  source: SourceMap;
   loading: boolean;
   limit: number;
   offset: number;
@@ -19,12 +21,15 @@ interface ComponentProps {
 
 export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
   const [history, setHistory] = useState<FrozenData[]>([]);
+  const [modalMessage, setModalMessage] = useState('');
+  const [showFrozenDataForm, setShowFrozenDataForm] = useState(false);
   useEffect(() => {
-    if (!props.loading && props.activeSource) {
-      fetchDataSourceHistory(props.activeSource.get('id') as number, {
+    if (!props.loading) {
+      fetchDataSourceHistory(props.source.get('id') as number, {
         limit: props.limit,
         offset: props.offset,
       });
+      // TODO: fetch actual history
       setHistory([
         {
           description: 'Testing history card item',
@@ -44,9 +49,13 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
     };
   }, []);
 
+  const onCreateFrozenData = () => {
+    setShowFrozenDataForm(true);
+  };
+
   const onPageChange = (page: { selected: number }): void => {
-    if (props.activeSource) {
-      fetchDataSourceHistory(props.activeSource.get('id') as number, {
+    if (props.source) {
+      fetchDataSourceHistory(props.source.get('id') as number, {
         limit: props.limit,
         offset: page.selected * props.limit,
       });
@@ -81,8 +90,32 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
         <Loader content="Loading" />
       </Dimmer>
       <Card className="dataset-list">
-        <Card.Body>{renderRows()}</Card.Body>
+        <Card.Header className={classNames({ 'd-none': !props.source })}>
+          <Button size="sm" variant="danger" onClick={onCreateFrozenData}>
+            Freeze Current Version
+          </Button>
+        </Card.Header>
+        <Card.Body className="p-0">{renderRows()}</Card.Body>
         <Card.Footer className="d-block">{renderPagination()}</Card.Footer>
+
+        <Modal show={showFrozenDataForm} size="lg" onHide={() => setShowFrozenDataForm(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Freeze Current Version of{' '}
+              <span className="text-danger">{props.source.get('source')}</span>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <FrozenDataForm
+              source={props.source.toJS() as Source}
+              onCancel={() => setShowFrozenDataForm(false)}
+            />
+          </Modal.Body>
+        </Modal>
+
+        <BasicModal show={!!modalMessage} onHide={() => setModalMessage('')}>
+          {modalMessage ? <ModalMessage message={modalMessage} /> : null}
+        </BasicModal>
       </Card>
     </React.Fragment>
   );
