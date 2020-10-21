@@ -272,6 +272,7 @@ class FrozenData(BaseEntity):
     status = models.CharField(max_length=1, choices=status_choices, default='p')
     active = models.BooleanField(default=True)
     description = models.CharField(max_length=200, null=False)
+    logs = models.TextField(blank=True, null=True)
 
 
 class SavedQueryData(BaseEntity):
