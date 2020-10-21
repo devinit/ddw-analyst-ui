@@ -4,8 +4,9 @@
 import codecs
 import csv
 import json
-
+import datetime
 import dateutil.parser
+
 from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -16,8 +17,10 @@ from django.http import Http404, HttpResponse, StreamingHttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
+
 from rest_framework import exceptions, filters, generics, permissions, status
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
@@ -40,7 +43,7 @@ from core.serializers import (DataSerializer, OperationSerializer,
 from data.db_manager import fetch_data, update_table_from_tuple, run_query
 from core.pypika_utils import QueryBuilder
 from data_updates.utils import ScriptExecutor, list_update_scripts
-import datetime
+from core.tasks import create_table_archive
 
 
 class ListUpdateScripts(APIView):
@@ -791,17 +794,9 @@ class FrozenDataList(APIView):
             parent_db_table = serializer.validated_data.get('parent_db_table')
             frozen_db_table = "archive_" + parent_db_table + \
                 datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-            serializer.save(user=self.request.user,
-                            frozen_db_table=frozen_db_table)
-            # Consider doing the below six lines via cron to improve response time
-            query_builder = TableQueryBuilder(parent_db_table, "repo")
-            create_query = query_builder.select().create_table_from_query(
-                frozen_db_table, "archives")
-            create_result = run_query(create_query)
-            if create_result[0]['result'] == 'success':
-                serializer.save(completed='c')
-            else:
-                return HttpResponse(json.dumps(create_result), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            serializer.save(user=request.user, frozen_db_table=frozen_db_table)
+            create_table_archive.delay(serializer.instance.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -824,8 +819,7 @@ class FrozenDataDetail(APIView):
 
     def put(self, request, pk, format=None):
         frozen_data = self.get_object(pk)
-        serializer = FrozenDataSerializer(
-            frozen_data, data=request.data, partial=True)
+        serializer = FrozenDataSerializer(frozen_data, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
