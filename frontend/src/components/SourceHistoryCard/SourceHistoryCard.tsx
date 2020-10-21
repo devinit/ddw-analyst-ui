@@ -28,20 +28,11 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       fetchDataSourceHistory(props.source.get('id') as number, {
         limit: props.limit,
         offset: props.offset,
+      }).then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          setHistory(response.data.results);
+        }
       });
-      // TODO: fetch actual history
-      setHistory([
-        {
-          description: 'Testing history card item',
-          user: 'edwin.magezi@devinit.org',
-          created_on: new Date('August 19, 2018 23:15:30').toISOString(),
-        } as FrozenData,
-        {
-          description: 'Second test ... 234',
-          user: 'edwin.magezi@devinit.org',
-          created_on: new Date('August 19, 2018 23:15:30').toISOString(),
-        } as FrozenData,
-      ]);
     }
 
     return function cleanup() {
@@ -62,6 +53,10 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       fetchDataSourceHistory(props.source.get('id') as number, {
         limit: props.limit,
         offset: page.selected * props.limit,
+      }).then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          setHistory(response.data.results);
+        }
       });
     }
   };

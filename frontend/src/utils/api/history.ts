@@ -5,16 +5,11 @@ import { FrozenData } from '../../components/SourceHistoryListItem/utils';
 
 const BASEPATH = api.routes.FETCH_SOURCE_HISTORY;
 
-export interface ResultData {
-  id: number;
-  name: string;
-  updated_on: string;
-  is_draft: boolean;
-  operation_query: string;
-}
-
 export interface QueryResult {
-  data: Array<ResultData>;
+  count: number;
+  next: number | null;
+  previous: number | null;
+  results: Array<FrozenData>;
 }
 
 interface FetchOptions {
@@ -25,7 +20,7 @@ interface FetchOptions {
 export const fetchDataSourceHistory = async (
   id: number,
   options: FetchOptions = { limit: 10, offset: 0 },
-): Promise<QueryResult> => {
+): Promise<AxiosResponse<QueryResult>> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   const headers = {
     'Content-Type': 'application/json',
