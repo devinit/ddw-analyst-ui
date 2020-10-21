@@ -61,10 +61,17 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
   return sources;
 };
 
-export const useSource = (id: number, fetch = false): SourceMap => {
-  const [source, setSource] = useState<SourceMap>(fromJS({}));
+interface UseSourceResult {
+  source?: SourceMap;
+  loading: boolean;
+}
 
-  const fetchSource = () =>
+export const useSource = (id: number, fetch = false): UseSourceResult => {
+  const [source, setSource] = useState<SourceMap | undefined>(fromJS({}));
+  const [loading, setLoading] = useState(false);
+
+  const fetchSource = () => {
+    setLoading(true);
     axios
       .request({
         url: `${api.routes.SOURCES}${id}`,
@@ -77,17 +84,22 @@ export const useSource = (id: number, fetch = false): SourceMap => {
         if (status === 200 && data) {
           const activeSource = fromJS(data);
           setSource(activeSource);
+          setLoading(false);
         } else if (status === 401) {
           console.log('Failed to fetch source: ', statusText);
-          setSource(fromJS({}));
+          setSource(undefined);
+          setLoading(false);
         }
       })
       .catch((error) => {
         console.log(
           `Failed to fetch source: ${error.response.status} ${error.response.statusText}`,
         );
-        setSource(fromJS([]));
+        setSource(undefined);
+        setLoading(false);
       });
+  };
+
   useEffect(() => {
     if (fetch) {
       fetchSource();
@@ -97,6 +109,7 @@ export const useSource = (id: number, fetch = false): SourceMap => {
         .then((activeSource) => {
           if (activeSource && activeSource.id === id) {
             setSource(fromJS(activeSource));
+            setLoading(false);
           } else {
             fetchSource();
           }
@@ -104,5 +117,5 @@ export const useSource = (id: number, fetch = false): SourceMap => {
     }
   }, [id]);
 
-  return source;
+  return { loading, source };
 };
