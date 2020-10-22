@@ -318,6 +318,12 @@ th .material-icons {
         padding-left: 10px;
         padding-right: 10px;
       }
+
+      &.float {
+        position: absolute;
+        right: 0;
+        top: 25%;
+      }
     }
 
     &:hover {

@@ -47,3 +47,17 @@ export const createFrozenData = async (data: FrozenData): Promise<AxiosResponse>
 
   return response;
 };
+
+export const deleteFrozeData = async (id: number): Promise<AxiosResponse> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const response = await axios.request({
+    url: `${api.routes.FROZEN_DATA}${id}`,
+    method: 'delete',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `token ${token}`,
+    },
+  });
+
+  return response;
+};

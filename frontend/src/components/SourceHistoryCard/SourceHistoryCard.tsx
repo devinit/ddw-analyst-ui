@@ -54,11 +54,14 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       });
     }
   };
+  const onDelete = (frozenData: FrozenData): void => {
+    setHistory(history.filter((item) => item.id !== frozenData.id));
+  };
 
   const renderRows = () => {
     if (history && history.length) {
       return history.map((frozenData, index) => (
-        <SourceHistoryListItem key={index} item={frozenData} />
+        <SourceHistoryListItem key={index} item={frozenData} onDelete={onDelete} />
       ));
     }
 

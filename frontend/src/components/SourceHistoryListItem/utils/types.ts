@@ -1,4 +1,5 @@
 export interface FrozenData {
+  id: number;
   parent_db_table: string;
   frozen_db_table: string | null;
   active: boolean;

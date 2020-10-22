@@ -407,6 +407,7 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
 class FrozenDataSerializer(serializers.ModelSerializer):
     frozen_db_table = serializers.ReadOnlyField()
     user = serializers.ReadOnlyField(source='user.username')
+    created_on = serializers.ReadOnlyField()
 
     class Meta:
         model = FrozenData
@@ -417,7 +418,8 @@ class FrozenDataSerializer(serializers.ModelSerializer):
             'status',
             'active',
             'description',
-            'user'
+            'user',
+            'created_on'
         )
 
 
