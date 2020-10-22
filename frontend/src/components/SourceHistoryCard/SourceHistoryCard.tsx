@@ -1,10 +1,8 @@
 import classNames from 'classnames';
-import * as localForage from 'localforage';
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Button, Card, Modal } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { Source, SourceMap } from '../../types/sources';
-import { localForageKeys } from '../../utils';
 import { fetchDataSourceHistory } from '../../utils/api/history';
 import { BasicModal, ModalMessage } from '../BasicModal';
 import { FrozenDataForm } from '../FrozenDataForm';
@@ -24,7 +22,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
   const [modalMessage, setModalMessage] = useState('');
   const [showFrozenDataForm, setShowFrozenDataForm] = useState(false);
   useEffect(() => {
-    if (!props.loading) {
+    if (!props.loading && props.source.get('id')) {
       fetchDataSourceHistory(props.source.get('id') as number, {
         limit: props.limit,
         offset: props.offset,
@@ -34,10 +32,6 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
         }
       });
     }
-
-    return function cleanup() {
-      localForage.removeItem(localForageKeys.ACTIVE_SOURCE);
-    };
   }, []);
 
   const onClickFreezeButton = () => {
@@ -90,6 +84,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       </Dimmer>
       <Card className="dataset-list">
         <Card.Header className={classNames({ 'd-none': !props.source })}>
+          <h4>{props.source.get('indicator')}</h4>
           <Button size="sm" variant="danger" onClick={onClickFreezeButton}>
             Freeze Current Version
           </Button>
