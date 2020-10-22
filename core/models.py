@@ -13,7 +13,8 @@ class BaseEntity(models.Model):
     Gives every other model a field for the date it was created and the date it was updated."""
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(
+        User, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         abstract = True
@@ -70,7 +71,8 @@ class SourceColumnMap(BaseEntity):
         ("C", "Character"),
         ("N", "Numeric")
     )
-    data_type = models.CharField(max_length=1, choices=DATA_TYPE_CHOICES, blank=True, null=True)
+    data_type = models.CharField(
+        max_length=1, choices=DATA_TYPE_CHOICES, blank=True, null=True)
     source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
@@ -98,6 +100,7 @@ class Operation(BaseEntity):
     row_count = models.IntegerField(blank=True, null=True)
     # controls whether to count rows in the post_save signal
     count_rows = models.BooleanField(default=False)
+    is_sub_query = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -121,6 +124,7 @@ class OperationStep(BaseEntity):
     query_func = models.TextField(blank=True, null=True)
     query_kwargs = models.TextField(blank=True, null=True)
     source = models.ForeignKey(Source, models.SET_NULL, blank=True, null=True)
+    sub_query = models.ForeignKey(Operation, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
@@ -144,7 +148,8 @@ class OperationDataColumnAlias(models.Model):
 
 class Review(BaseEntity):
     """A model to allow users to review other queries?"""
-    operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
+    operation = models.ForeignKey(
+        Operation, models.DO_NOTHING, blank=True, null=True)
     rating = models.SmallIntegerField()
     comment = models.TextField(blank=True, null=True)
 
@@ -179,8 +184,10 @@ class AuditLogEntry(models.Model):
     )
 
     timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
-    action = models.PositiveSmallIntegerField(choices=action_choices, blank=True, null=True)
+    user = models.ForeignKey(
+        User, blank=True, null=True, on_delete=models.SET_NULL)
+    action = models.PositiveSmallIntegerField(
+        choices=action_choices, blank=True, null=True)
     object_id = models.BigIntegerField(blank=True, null=True)
     object_str = models.CharField(max_length=255)
     object_ctype = models.CharField(max_length=255)
@@ -234,7 +241,8 @@ class ScheduledEvent(BaseEntity):
         return self.name
 
     def send_emails(self, subject, message, recipient_list):
-        message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
+        message_payload = (
+            subject, message, settings.EMAIL_HOST_USER, recipient_list)
         send_mass_mail((message_payload, ), fail_silently=False)
 
 
@@ -248,10 +256,12 @@ class ScheduledEventRunInstance(BaseEntity):
         ('e', 'Errored'),
         ('s', 'Skipped'),
     )
-    scheduled_event = models.ForeignKey(ScheduledEvent, on_delete=models.CASCADE)
+    scheduled_event = models.ForeignKey(
+        ScheduledEvent, on_delete=models.CASCADE)
     start_at = models.DateTimeField(null=False, blank=False)
     ended_at = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=1, choices=status_choices, default='p')
+    status = models.CharField(
+        max_length=1, choices=status_choices, default='p')
     logs = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -269,7 +279,8 @@ class FrozenData(BaseEntity):
 
     parent_db_table = models.CharField(max_length=200, null=False)
     frozen_db_table = models.CharField(max_length=200, null=False)
-    status = models.CharField(max_length=1, choices=status_choices, default='p')
+    status = models.CharField(
+        max_length=1, choices=status_choices, default='p')
     active = models.BooleanField(default=True)
     description = models.CharField(max_length=200, null=False)
     logs = models.TextField(blank=True, null=True)
@@ -293,6 +304,7 @@ class SavedQueryData(BaseEntity):
     active = models.BooleanField(default=True)
     operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
     full_query = models.TextField(null=False)
+<<<<<<< HEAD
     status = models.CharField(max_length=1, choices=status_choices, default='p')
     description = models.CharField(max_length=200, null=False)
     logs = models.TextField(blank=True, null=True)
@@ -302,3 +314,8 @@ class SavedQueryData(BaseEntity):
         if self.saved_query_db_table:
             return self.saved_query_db_table + ' - ' + status[0]
         return self.operation.name + ' - ' + status[0]
+=======
+    status = models.CharField(
+        max_length=1, choices=status_choices, default='p')
+    comment = models.CharField(max_length=200, null=False)
+>>>>>>> Update Models to cater for sub-queries
