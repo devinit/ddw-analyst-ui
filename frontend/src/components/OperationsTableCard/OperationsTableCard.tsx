@@ -249,6 +249,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
             </Col>
             <Col xs="6">
               <Dropdown
+                clearable
                 placeholder="Select Data Source"
                 fluid
                 search
