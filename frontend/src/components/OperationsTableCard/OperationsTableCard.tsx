@@ -62,7 +62,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [info, setInfo] = useState('');
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
-  // const { sources } = useContext(SourcesContext);
   const { sources } = useContext(SourcesContext);
 
   useEffect(() => {
@@ -70,7 +69,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   }, []);
 
   useEffect(() => {
-    console.log(`OperationTableCard ${sources}`);
     const values = Array.from(sources, (source) => {
       return {
         text: `${source.get('indicator')}`,
