@@ -236,30 +236,28 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       </Dimmer>
       <Card className="dataset-list">
         <Card.Body>
-          <Form.Group>
-            <FormControl
-              placeholder="Search ..."
-              className="w-25"
-              value={searchQuery}
-              onChange={onSearchChange}
-              onKeyDown={onSearch}
-              data-testid="sources-table-search"
-            />
-          </Form.Group>
-          <Form.Group>
-            <Row>
-              <Col sm={4}>
-                <Dropdown
-                  placeholder="Select Data Source"
-                  fluid
-                  search
-                  selection
-                  options={dropDownValues}
-                  onChange={onChange}
-                />
-              </Col>
-            </Row>
-          </Form.Group>
+          <Row>
+            <Col xs="6">
+              <FormControl
+                placeholder="Search ..."
+                className="w-100"
+                value={searchQuery}
+                onChange={onSearchChange}
+                onKeyDown={onSearch}
+                data-testid="sources-table-search"
+              />
+            </Col>
+            <Col xs="6">
+              <Dropdown
+                placeholder="Select Data Source"
+                fluid
+                search
+                selection
+                options={dropDownValues}
+                onChange={onChange}
+              />
+            </Col>
+          </Row>
         </Card.Body>
         <Card.Body className="p-0">{renderOperations(operations, showMyQueries)}</Card.Body>
         <Card.Footer className="d-block">{renderPagination()}</Card.Footer>
