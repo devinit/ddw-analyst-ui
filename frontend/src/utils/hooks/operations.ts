@@ -4,7 +4,13 @@ import * as localForage from 'localforage';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { api, localForageKeys } from '..';
 import { setToken } from '../../actions/token';
-import { OperationData, OperationDataList, OperationStep, Operation } from '../../types/operations';
+import {
+  Operation,
+  OperationData,
+  OperationDataList,
+  OperationMap,
+  OperationStep,
+} from '../../types/operations';
 
 interface OperationDataHookOptions {
   payload: DatasetDataPayload;
@@ -114,4 +120,63 @@ export const useOperationData = (
   }, [payload]);
 
   return { data, dataLoading, options, error, setOptions };
+};
+
+interface UseOperationResult {
+  operation?: OperationMap;
+  loading: boolean;
+}
+
+export const useOperation = (id: number, fetch = false): UseOperationResult => {
+  const [operation, setOperation] = useState<OperationMap | undefined>(fromJS({}));
+  const [loading, setLoading] = useState(false);
+
+  const fetchOperation = () => {
+    setLoading(true);
+    axios
+      .request({
+        url: `${api.routes.SINGLE_DATASET}${id}`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(({ status, data, statusText }: AxiosResponse<Operation>) => {
+        if (status === 200 && data) {
+          const activeOperation = fromJS(data);
+          setOperation(activeOperation);
+          setLoading(false);
+        } else if (status === 401) {
+          console.log('Failed to fetch operation: ', statusText);
+          setOperation(undefined);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log(
+          `Failed to fetch operation: ${error.response.status} ${error.response.statusText}`,
+        );
+        setOperation(undefined);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (fetch) {
+      fetchOperation();
+    } else {
+      localForage
+        .getItem<Operation | undefined>(localForageKeys.ACTIVE_OPERATION)
+        .then((activeOperation) => {
+          if (activeOperation && activeOperation.id === id) {
+            setOperation(fromJS(activeOperation));
+            setLoading(false);
+          } else {
+            fetchOperation();
+          }
+        });
+    }
+  }, [id]);
+
+  return { loading, operation };
 };
