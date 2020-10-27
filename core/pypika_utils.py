@@ -16,7 +16,7 @@ from pypika import JoinType
 from pypika.terms import Function
 
 from core.const import DEFAULT_LIMIT_COUNT
-from core.models import Source
+from core.models import Source, Operation
 
 
 class NullIf(Function):
@@ -87,6 +87,9 @@ class QueryBuilder:
             else:
                 query_func = getattr(self, query_step.query_func)
                 kwargs = query_step.query_kwargs
+            if not isinstance(query_step['sub_query'], type(None)):
+                self.sub_query = QueryBuilder(operation=query_step.sub_query)
+                self.sub_query_pending = True
             if isinstance(kwargs, type(None)):
                 self = query_func()
             else:
@@ -262,8 +265,10 @@ class QueryBuilder:
         self.current_query = Query.from_(self.current_dataset)
         if columns:
             self.current_query = self.current_query.select(*columns)
+            self.number_of_columns = len(columns)
         else:
             self.current_query = self.current_query.select(self.current_dataset.star)
+            self.number_of_columns = 0 # Means all columns selected, and we shall not use it in subqueries
         self.current_dataset = self.current_query
         return self
 
@@ -286,3 +291,17 @@ class QueryBuilder:
 
     def get_sql_without_limit(self):
         return self.current_query.get_sql()
+
+    def sub_query(self, sub_query_args):
+        query_two = QueryBuilder(operation=Operation.objects.get(pk=sub_query_args[0]["value"]))
+        sql_func = sub_query_args[0]["func"]
+        sql_field = sub_query_args[0]["field"]
+        # JOIN, IN, EXISTS,
+        if sql_func == "JOIN" and self.number_of_columns == query_two.number_of_columns:
+            self.current_query = self.current_query + query_two.current_query
+        elif sql_func == "IN" and query_two.number_of_columns == 1:
+            self.current_query = getattr(self.current_query, sql_field).isin(query_two)
+        else sql_func == "EXISTS":
+            self.current_query
+        self.current_dataset = self.current_query
+        return self
