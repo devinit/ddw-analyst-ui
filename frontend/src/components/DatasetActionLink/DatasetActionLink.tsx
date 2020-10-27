@@ -5,19 +5,19 @@ interface ComponentProps {
   operation: OperationMap;
   show?: boolean;
   path?: string;
-  action?: 'edit' | 'data';
+  action?: 'edit' | 'data' | 'history';
   onClick?: (operation: OperationMap) => void;
 }
 
 const DatasetActionLink: FunctionComponent<ComponentProps> = (props) => {
   if (props.show) {
     const onClick = (event: MouseEvent<HTMLAnchorElement>) => {
-      event.preventDefault();
       if (props.onClick) {
+        event.preventDefault();
         props.onClick(props.operation);
       }
     };
-    const action = props.action === 'edit' ? 'build' : 'data';
+    const action = props.action === 'edit' ? 'build' : props.action;
     const href = props.path || `/queries/${action}/${props.operation.get('id') as number}/`;
 
     return (
