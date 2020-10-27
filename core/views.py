@@ -905,3 +905,34 @@ class SavedQueryDataDetail(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(delete_result, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ViewDatasetHistory(APIView):
+    """
+    Get all SavedQueryData instances attached to a specific operation
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    serializer_class = SavedQueryDataSerializer
+
+    def get_queryset(self, pk, request):
+        try:
+            operation = Operation.objects.get(id=pk)
+            history = SavedQueryData.objects.filter(operation=operation).order_by('-created_on').distinct()
+            return history
+        except Operation.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        history = self.get_queryset(pk, request)
+        limit = self.request.query_params.get('limit', None)
+        offset = self.request.query_params.get('offset', None)
+        if limit is not None or offset is not None:
+            pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+            paginator = pagination_class()
+            page = paginator.paginate_queryset(history, request)
+            serializer = SavedQueryDataSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            serializer = SavedQueryDataSerializer(history, many=True)
+            return Response(serializer.data)

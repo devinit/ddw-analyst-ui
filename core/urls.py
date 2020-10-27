@@ -43,6 +43,7 @@ urlpatterns = [
     path('datasets/', core_views.OperationList.as_view()),
     path('datasets/mine/', core_views.UserOperationList.as_view()),
     path('dataset/<int:pk>/', core_views.OperationDetail.as_view()),
+    path('dataset/history/<int:pk>/', core_views.ViewDatasetHistory.as_view()),
     path('dataset/preview/', core_views.PreviewOperationData.as_view()),
     path('dataset/data/<int:pk>/', core_views.ViewData.as_view()),
     path('dataset/alias/<int:pk>/', core_views.OperationColumnAlias.as_view()),
