@@ -5,6 +5,7 @@ export const localForageKeys = {
   API_KEY: 'API_KEY',
   USER: 'USER',
   ACTIVE_SOURCE: 'ACTIVE_SOURCE',
+  ACTIVE_OPERATION: 'ACTIVE_OPERATION',
 };
 
 export type LocalForageActiveSource = [number, Source];

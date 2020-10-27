@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { List, Map, fromJS } from 'immutable';
+import { History } from 'history';
+import { fromJS, List, Map } from 'immutable';
+import localForage from 'localforage';
 import { Action, Reducer } from 'redux';
 import { Operation, OperationMap } from '../types/operations';
-import { History } from 'history';
+import { localForageKeys } from '../utils';
 
 export interface OperationsAction extends Action {
   operations?: Operation[];
@@ -65,6 +67,8 @@ export const operationsReducer: Reducer<OperationsState, OperationsAction> = (
     return state.set('loading', false);
   }
   if (action.type === SET_ACTIVE_OPERATION) {
+    localForage.setItem(localForageKeys.ACTIVE_OPERATION, action.activeOperation);
+
     return state.set('activeOperation', action.activeOperation).set('loading', false);
   }
 

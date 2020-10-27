@@ -6,6 +6,7 @@ export const api = {
     SOURCES: '/api/sources/',
     DATASETS: '/api/datasets/',
     MY_DATASETS: '/api/datasets/mine/',
+    FETCH_DATASET_HISTORY: '/api/dataset/history/',
     SINGLE_DATASET: '/api/dataset/',
     DATASET_ALIAS: '/api/dataset/alias/',
     PREVIEW_SINGLE_DATASET: '/api/dataset/preview/',

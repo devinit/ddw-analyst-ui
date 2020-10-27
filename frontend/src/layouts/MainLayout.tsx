@@ -14,6 +14,7 @@ import { AccountModal } from '../components/AccountModal';
 import { AdminLayout } from '../components/AdminLayout';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
+import { AsyncDataSourceHistory } from '../pages/DataSourceHistory';
 import { AsyncDataSourceQueries } from '../pages/DataSourceQueries';
 import { AsyncDataSources } from '../pages/DataSources';
 import { AsyncDataUpdate } from '../pages/DataUpdate';
@@ -21,13 +22,13 @@ import { AsyncHome } from '../pages/Home';
 import { AsyncPublishedDatasets } from '../pages/PublishedDatasets/AsyncLoader';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
 import { AsyncQueryData } from '../pages/QueryData';
+import { AsyncQueryHistory } from '../pages/QueryHistory/AsyncLoader';
 import { AsyncScheduledEvents } from '../pages/ScheduledEvents';
 import { ModalState } from '../reducers/modal';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
 import { api, localForageKeys } from '../utils';
-import { AsyncDataSourceHistory } from '../pages/DataSourceHistory';
 
 interface ActionProps {
   actions: typeof UserActions & typeof TokenActions & typeof ModalActions;
@@ -234,6 +235,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/sources" exact component={AsyncDataSources} />
               <Route path="/queries/build" exact component={AsyncQueryBuilder} />
               <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
+              <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
               <Route path="/update" exact component={AsyncDataUpdate} />
               <Route path="/queries/data/:id" exact component={AsyncQueryData} />
               <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />

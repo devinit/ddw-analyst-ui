@@ -1,15 +1,17 @@
 import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
-import { localForageKeys, api } from '..';
+import { api, localForageKeys } from '..';
 import { FrozenData } from '../../components/SourceHistoryListItem/utils';
+import { SavedQueryData } from '../../components/DatasetHistoryCard/utils/types';
 
-const BASEPATH = api.routes.FETCH_SOURCE_HISTORY;
+const SOURCE_HISTORY_BASEPATH = api.routes.FETCH_SOURCE_HISTORY;
+const OPERATION_HISTORY_BASEPATH = api.routes.FETCH_DATASET_HISTORY;
 
-export interface QueryResult {
+export interface QueryResult<T = FrozenData> {
   count: number;
   next: number | null;
   previous: number | null;
-  results: Array<FrozenData>;
+  results: Array<T>;
 }
 
 interface FetchOptions {
@@ -28,7 +30,7 @@ export const fetchDataSourceHistory = async (
   };
 
   return await axios(
-    `${BASEPATH}${id}?limit=${options.limit || 10}&offset=${options.offset || 0}`,
+    `${SOURCE_HISTORY_BASEPATH}${id}?limit=${options.limit || 10}&offset=${options.offset || 0}`,
     { headers },
   );
 };
@@ -60,4 +62,20 @@ export const deleteFrozeData = async (id: number): Promise<AxiosResponse> => {
   });
 
   return response;
+};
+
+export const fetchOperationHistory = async (
+  id: number,
+  options: FetchOptions = { limit: 10, offset: 0 },
+): Promise<AxiosResponse<QueryResult<SavedQueryData>>> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `token ${token}`,
+  };
+
+  return await axios(
+    `${OPERATION_HISTORY_BASEPATH}${id}?limit=${options.limit || 10}&offset=${options.offset || 0}`,
+    { headers },
+  );
 };
