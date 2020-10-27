@@ -124,7 +124,6 @@ class OperationStep(BaseEntity):
     query_func = models.TextField(blank=True, null=True)
     query_kwargs = models.TextField(blank=True, null=True)
     source = models.ForeignKey(Source, models.SET_NULL, blank=True, null=True)
-    sub_query = models.ForeignKey(Operation, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
