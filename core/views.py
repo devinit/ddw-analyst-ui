@@ -360,6 +360,28 @@ class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OperationSerializer
 
 
+class SubqueryOperationList(generics.ListAPIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+
+    queryset = Operation.objects.all()
+    serializer_class = OperationSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'description')
+
+    def get_queryset(self):
+        """
+        Filters to return the operations that are subqueries
+        """
+        mine = self.kwargs.get('mine', False)
+        if mine:
+            return Operation.objects.filter( ~Q(user=self.request.user)
+             & Q(is_draft=False) & Q(is_sub_query=True)).order_by('-updated_on')
+        return Operation.objects.filter(Q(is_draft=False) & Q(is_sub_query=True)).order_by('-updated_on')
+
+
 class ViewSourceDatasets(APIView):
     """
     Get all published datasets attached to a specific data source, including those belonging to the current user

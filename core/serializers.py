@@ -172,6 +172,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'aliases',
             'alias_creation_status',
             'logs',
+            'is_sub_query',
         )
 
     def create(self, validated_data):
