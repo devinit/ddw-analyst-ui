@@ -43,7 +43,7 @@ from core.serializers import (DataSerializer, OperationSerializer,
 from data.db_manager import fetch_data, update_table_from_tuple, run_query
 from core.pypika_utils import QueryBuilder
 from data_updates.utils import ScriptExecutor, list_update_scripts
-from core.tasks import create_table_archive
+from core.tasks import create_dataset_archive, create_table_archive
 
 
 class ListUpdateScripts(APIView):
@@ -860,11 +860,7 @@ class SavedQueryDataList(APIView):
             serializer.save(user=self.request.user, full_query=sql,
                             saved_query_db_table=saved_query_db_table)
 
-            create_query = query_builder.create_table_from_query(
-                saved_query_db_table, "dataset")
-            create_result = run_query(create_query)
-            if create_result[0]['result'] == 'success':
-                serializer.save(completed='c')
+            create_dataset_archive.delay(serializer.instance.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

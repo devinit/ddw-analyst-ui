@@ -6,7 +6,7 @@ from ddw_analyst_ui.celery import app
 from core.pypika_utils import QueryBuilder
 from core.pypika_fts_utils import TableQueryBuilder
 from data.db_manager import count_rows, run_query
-from core.models import FrozenData, Operation
+from core.models import FrozenData, Operation, SavedQueryData
 
 @app.task(bind=False)
 def count_operation_rows(id):
@@ -42,6 +42,31 @@ def create_table_archive(id):
             frozen_data.status = 'e'
             frozen_data.logs = 'Failed to create table archive: ' + json.dumps(create_result)
             frozen_data.save()
+            return { "status": "failed", "result": json.dumps(create_result) }
+    except FrozenData.DoesNotExist:
+        return { "status": "errored", "result": id }
+
+
+@app.task(bind=False)
+def create_dataset_archive(id):
+    try:
+        query_data = SavedQueryData.objects.get(id=id)
+        query_builder = TableQueryBuilder(query_data.saved_query_db_table, "repo", operation=query_data.operation)
+        create_query = query_builder.create_table_from_query(query_data.saved_query_db_table, "archives")
+        create_result = run_query(create_query)
+        if create_result[0]['result'] == 'success':
+            query_data.status = 'c'
+            query_data.save()
+            return { "status": "success" }
+        elif create_result[0]['result'] == 'error':
+            query_data.status = 'e'
+            query_data.logs = 'Failed to create dataset archive: ' + create_result[0]['message']
+            query_data.save()
+            return { "status": "failed", "result": create_result[0]['message'] }
+        else:
+            query_data.status = 'e'
+            query_data.logs = 'Failed to create dataset archive: ' + json.dumps(create_result)
+            query_data.save()
             return { "status": "failed", "result": json.dumps(create_result) }
     except FrozenData.DoesNotExist:
         return { "status": "errored", "result": id }

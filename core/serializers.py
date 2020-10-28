@@ -426,6 +426,7 @@ class FrozenDataSerializer(serializers.ModelSerializer):
 class SavedQueryDataSerializer(serializers.ModelSerializer):
     full_query = serializers.ReadOnlyField()
     saved_query_db_table = serializers.ReadOnlyField()
+    user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = SavedQueryData
@@ -436,5 +437,7 @@ class SavedQueryDataSerializer(serializers.ModelSerializer):
             'full_query',
             'saved_query_db_table',
             'status',
-            'description'
+            'description',
+            'user',
+            'created_on',
         )
