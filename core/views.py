@@ -842,7 +842,7 @@ class SavedQueryDataList(APIView):
     """ List all SavedQueryData or create a new one"""
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get(self, request, format=None):
         saved_query_data = SavedQueryData.objects.all()
@@ -868,7 +868,7 @@ class SavedQueryDataList(APIView):
 class SavedQueryDataDetail(APIView):
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_object(self, pk):
         try:

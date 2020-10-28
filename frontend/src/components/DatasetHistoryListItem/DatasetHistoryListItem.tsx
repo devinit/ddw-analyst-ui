@@ -5,6 +5,8 @@ import { deleteSavedQueryData } from '../../utils/history';
 import { status, statusClasses } from '../../utils/status';
 import { SavedQueryData } from '../DatasetHistoryCard/utils/types';
 import { BasicModal } from '../BasicModal';
+import { api } from '../../utils';
+import { target } from 'glamor';
 
 interface ComponentProps {
   item: SavedQueryData;
@@ -41,6 +43,19 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = ({ item
             <Button variant="dark" size="sm" onClick={toggleShowLogs}>
               <i className="material-icons">info</i> Logs
             </Button>
+          ) : null}
+          {item.status === 'c' ? (
+            <a
+              href={`${api.routes.DOWNLOAD_SAVED_QUERYSET.replace(
+                '{table}',
+                item.saved_query_db_table,
+              )}`}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-dark btn-sm"
+            >
+              Download
+            </a>
           ) : null}
           <Button variant="danger" size="sm" onClick={onDelete}>
             <i className="material-icons">delete</i>{' '}

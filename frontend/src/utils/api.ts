@@ -23,5 +23,6 @@ export const api = {
     FROZEN_DATA: '/api/frozendata/',
     SAVED_QUERYSETS: '/api/savedquerysets/',
     SINGLE_SAVED_QUERYSET: '/api/savedqueryset/',
+    DOWNLOAD_SAVED_QUERYSET: '/api/tables/download/{table}/dataset/',
   },
 };
