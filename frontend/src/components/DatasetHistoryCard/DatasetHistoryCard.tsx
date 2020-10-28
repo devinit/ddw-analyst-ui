@@ -2,11 +2,12 @@ import classNames from 'classnames';
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Button, Card, Modal } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { OperationMap } from '../../types/operations';
+import { Operation, OperationMap } from '../../types/operations';
 import { fetchOperationHistory } from '../../utils/api/history';
 import { BasicModal, ModalMessage } from '../BasicModal';
 import { DatasetHistoryListItem } from '../DatasetHistoryListItem';
 import { PaginationRow } from '../PaginationRow';
+import { SavedQueryDataForm } from '../SavedQueryDataForm';
 import { SavedQueryData } from './utils/types';
 
 interface ComponentProps {
@@ -102,7 +103,13 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
               <span className="text-danger">{props.dataset.get('name')}</span>
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>From Goes Here</Modal.Body>
+          <Modal.Body>
+            <SavedQueryDataForm
+              operation={props.dataset.toJS() as Operation}
+              onSave={onCreateSavedQuery}
+              onCancel={() => setShowSavedQueryForm(false)}
+            />
+          </Modal.Body>
         </Modal>
 
         <BasicModal show={!!modalMessage} onHide={() => setModalMessage('')}>

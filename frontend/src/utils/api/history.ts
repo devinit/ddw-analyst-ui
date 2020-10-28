@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
 import { api, localForageKeys } from '..';
@@ -78,4 +79,19 @@ export const fetchOperationHistory = async (
     `${OPERATION_HISTORY_BASEPATH}${id}?limit=${options.limit || 10}&offset=${options.offset || 0}`,
     { headers },
   );
+};
+
+export const createSavedQueryData = async (data: SavedQueryData): Promise<AxiosResponse> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const response = await axios.request({
+    url: api.routes.SAVED_QUERYSETS,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `token ${token}`,
+    },
+    data,
+  });
+
+  return response;
 };
