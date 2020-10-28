@@ -38,7 +38,6 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
     setShowSavedQueryForm(true);
   };
   const onCreateSavedQuery = (savedQuery: SavedQueryData) => {
-    // TODO: rename to SavedQuery
     setHistory([savedQuery].concat(history));
     setShowSavedQueryForm(false);
   };
