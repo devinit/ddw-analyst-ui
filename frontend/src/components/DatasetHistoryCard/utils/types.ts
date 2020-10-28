@@ -8,4 +8,5 @@ export interface SavedQueryData {
   created_on: string;
   user: string;
   status: string;
+  logs: string | null;
 }

@@ -440,4 +440,5 @@ class SavedQueryDataSerializer(serializers.ModelSerializer):
             'description',
             'user',
             'created_on',
+            'logs',
         )
