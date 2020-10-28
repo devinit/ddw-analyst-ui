@@ -5,7 +5,7 @@ import { Alert, Button, Col, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Source } from '../../types/sources';
 import { FrozenData } from '../SourceHistoryListItem/utils';
-import { createFrozenData } from '../../utils/api/history';
+import { createFrozenData } from '../../utils/history';
 
 interface FrozenDataFormProps {
   source: Source;

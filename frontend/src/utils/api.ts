@@ -22,5 +22,6 @@ export const api = {
     FETCH_SOURCE_HISTORY: '/api/source/history/',
     FROZEN_DATA: '/api/frozendata/',
     SAVED_QUERYSETS: '/api/savedquerysets/',
+    SINGLE_SAVED_QUERYSET: '/api/savedqueryset/',
   },
 };

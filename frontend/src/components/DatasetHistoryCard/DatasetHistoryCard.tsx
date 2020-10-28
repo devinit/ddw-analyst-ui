@@ -3,7 +3,7 @@ import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react'
 import { Button, Card, Modal } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { Operation, OperationMap } from '../../types/operations';
-import { fetchOperationHistory } from '../../utils/api/history';
+import { fetchOperationHistory } from '../../utils/history';
 import { BasicModal, ModalMessage } from '../BasicModal';
 import { DatasetHistoryListItem } from '../DatasetHistoryListItem';
 import { PaginationRow } from '../PaginationRow';

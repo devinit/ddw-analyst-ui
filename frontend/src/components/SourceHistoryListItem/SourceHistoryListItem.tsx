@@ -3,7 +3,7 @@ import React, { FunctionComponent, useState } from 'react';
 import { status, statusClasses } from '../../utils/status';
 import { FrozenData } from './utils';
 import { Button } from 'react-bootstrap';
-import { deleteFrozeData } from '../../utils/api/history';
+import { deleteFrozeData } from '../../utils/history';
 
 interface ComponentProps {
   item: FrozenData;

@@ -4,7 +4,7 @@ import React, { FunctionComponent, useState } from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Operation } from '../../types/operations';
-import { createSavedQueryData } from '../../utils/api/history';
+import { createSavedQueryData } from '../../utils/history';
 import { SavedQueryData } from '../DatasetHistoryCard/utils/types';
 
 interface FrozenDataFormProps {

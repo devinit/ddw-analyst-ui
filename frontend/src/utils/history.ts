@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
-import { api, localForageKeys } from '..';
-import { FrozenData } from '../../components/SourceHistoryListItem/utils';
-import { SavedQueryData } from '../../components/DatasetHistoryCard/utils/types';
+import { api, localForageKeys } from '.';
+import { FrozenData } from '../components/SourceHistoryListItem/utils';
+import { SavedQueryData } from '../components/DatasetHistoryCard/utils/types';
 
 const SOURCE_HISTORY_BASEPATH = api.routes.FETCH_SOURCE_HISTORY;
 const OPERATION_HISTORY_BASEPATH = api.routes.FETCH_DATASET_HISTORY;
@@ -91,6 +91,20 @@ export const createSavedQueryData = async (data: SavedQueryData): Promise<AxiosR
       Authorization: `token ${token}`,
     },
     data,
+  });
+
+  return response;
+};
+
+export const deleteSavedQueryData = async (id: number): Promise<AxiosResponse> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const response = await axios.request({
+    url: `${api.routes.SINGLE_SAVED_QUERYSET}${id}`,
+    method: 'delete',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `token ${token}`,
+    },
   });
 
   return response;

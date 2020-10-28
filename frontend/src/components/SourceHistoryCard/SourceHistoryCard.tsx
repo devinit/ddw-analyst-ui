@@ -3,7 +3,7 @@ import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react'
 import { Button, Card, Modal } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { Source, SourceMap } from '../../types/sources';
-import { fetchDataSourceHistory } from '../../utils/api/history';
+import { fetchDataSourceHistory } from '../../utils/history';
 import { BasicModal, ModalMessage } from '../BasicModal';
 import { FrozenDataForm } from '../FrozenDataForm';
 import { PaginationRow } from '../PaginationRow';

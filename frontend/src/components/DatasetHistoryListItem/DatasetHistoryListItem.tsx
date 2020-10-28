@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, { FunctionComponent, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { deleteSavedQueryData } from '../../utils/history';
 import { status, statusClasses } from '../../utils/status';
 import { SavedQueryData } from '../DatasetHistoryCard/utils/types';
 
@@ -11,13 +12,17 @@ interface ComponentProps {
 
 const extractNameFromEmail = (email: string) => email.split('@')[0].split('.').join(' ');
 
-export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = ({ item }) => {
+export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = ({ item, ...props }) => {
   const [deleteStatus, setDeleteStatus] = useState<'default' | 'confirm'>('default');
   const onDelete = () => {
     if (deleteStatus === 'default') {
       setDeleteStatus('confirm');
     } else {
-      // TODO: Delete Saved Query Data
+      deleteSavedQueryData(item.id).then((response) => {
+        if (response.status === 204 && props.onDelete) {
+          props.onDelete(item);
+        }
+      });
     }
   };
 
