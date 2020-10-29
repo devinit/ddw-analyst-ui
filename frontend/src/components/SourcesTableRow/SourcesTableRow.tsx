@@ -51,7 +51,7 @@ export const SourcesTableRow: FunctionComponent<SourcesTableRowProps> = ({ sourc
             onClick={() => props.onShowHistory(source)}
             data-testid="sources-table-history-button"
           >
-            History
+            Versions
           </Button>
         </ButtonGroup>
       </StyledTD>

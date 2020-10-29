@@ -149,7 +149,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 </Button>
               </Form>
               <DatasetActionLink operation={operation} action="history" onClick={onViewHistory}>
-                History
+                Versions
               </DatasetActionLink>
             </OperationsTableRowActions>
           </OperationsTableRow>
