@@ -26,7 +26,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
     if (!props.loading && props.source.get('id')) {
       fetchDataSourceHistory(props.source.get('id') as number, {
         limit: props.limit,
-        offset: selectedPage * props.limit,
+        offset: selectedPage === 1 ? 0 : selectedPage * props.limit,
       }).then((response) => {
         if (response.status === 200 || response.status === 201) {
           setHistory(response.data.results);
