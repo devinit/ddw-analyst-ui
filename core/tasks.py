@@ -52,7 +52,7 @@ def create_dataset_archive(id):
     try:
         query_data = SavedQueryData.objects.get(id=id)
         query_builder = TableQueryBuilder(query_data.saved_query_db_table, "repo", operation=query_data.operation)
-        create_query = query_builder.create_table_from_query(query_data.saved_query_db_table, "archives")
+        create_query = query_builder.create_table_from_query(query_data.saved_query_db_table, "dataset")
         create_result = run_query(create_query)
         if create_result[0]['result'] == 'success':
             query_data.status = 'c'
