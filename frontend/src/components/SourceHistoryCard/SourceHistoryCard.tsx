@@ -103,7 +103,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
           <Modal.Header closeButton>
             <Modal.Title>
               Freeze Current Version of{' '}
-              <span className="text-danger">{props.source.get('source')}</span>
+              <span className="text-danger">{props.source.get('indicator')}</span>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
