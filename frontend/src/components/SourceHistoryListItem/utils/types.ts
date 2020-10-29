@@ -7,4 +7,5 @@ export interface FrozenData {
   created_on: string;
   user: string;
   status: string;
+  logs: string | null;
 }

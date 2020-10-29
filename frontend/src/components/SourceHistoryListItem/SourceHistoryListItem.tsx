@@ -4,6 +4,7 @@ import { status, statusClasses } from '../../utils/status';
 import { FrozenData } from './utils';
 import { Button } from 'react-bootstrap';
 import { deleteFrozeData } from '../../utils/history';
+import { BasicModal } from '../BasicModal';
 
 interface ComponentProps {
   item: FrozenData;
@@ -14,6 +15,7 @@ const extractNameFromEmail = (email: string) => email.split('@')[0].split('.').j
 
 export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item, ...props }) => {
   const [deleteStatus, setDeleteStatus] = useState<'default' | 'confirm'>('default');
+  const [showLogs, setShowLogs] = useState(false);
   const onDelete = () => {
     if (deleteStatus === 'default') {
       setDeleteStatus('confirm');
@@ -25,6 +27,9 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item,
       });
     }
   };
+  const toggleShowLogs = (): void => {
+    setShowLogs(!showLogs);
+  };
 
   return (
     <div className="dataset-row p-3 border-bottom">
@@ -32,6 +37,9 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item,
         <div className="dataset-row-title h4">{item.description}</div>
 
         <div className="dataset-row-actions float mb-1">
+          <Button variant="danger" size="sm" onClick={onDelete}>
+            <i className="material-icons">info</i> Info
+          </Button>
           <Button variant="danger" size="sm" onClick={onDelete}>
             <i className="material-icons">delete</i>{' '}
             {deleteStatus === 'default' ? 'Delete' : 'Confirm Delete'}
@@ -45,6 +53,9 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item,
           <span className={`badge ml-2 ${statusClasses[item.status]}`}>{status[item.status]}</span>
         </div>
       </div>
+      <BasicModal show={showLogs} onHide={toggleShowLogs}>
+        {item.logs}
+      </BasicModal>
     </div>
   );
 };

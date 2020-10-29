@@ -419,7 +419,8 @@ class FrozenDataSerializer(serializers.ModelSerializer):
             'active',
             'description',
             'user',
-            'created_on'
+            'created_on',
+            'logs',
         )
 
 
