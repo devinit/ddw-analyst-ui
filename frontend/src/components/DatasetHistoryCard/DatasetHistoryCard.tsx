@@ -19,6 +19,7 @@ interface ComponentProps {
 
 export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => {
   const [history, setHistory] = useState<SavedQueryData[]>([]);
+  const [count, setCount] = useState(0);
   const [modalMessage, setModalMessage] = useState('');
   const [showSavedQueryForm, setShowSavedQueryForm] = useState(false);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -30,6 +31,7 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
       }).then((response) => {
         if (response.status === 200 || response.status === 201) {
           setHistory(response.data.results);
+          setCount(response.data.count || response.data.results.length);
         }
       });
     }
@@ -67,7 +69,7 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
         <PaginationRow
           pageRangeDisplayed={2}
           limit={props.limit}
-          count={1} // TODO: add actual count
+          count={count}
           pageCount={Math.ceil(1 / props.limit)}
           onPageChange={onPageChange}
         />
