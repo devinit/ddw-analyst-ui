@@ -21,18 +21,19 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
   const [history, setHistory] = useState<SavedQueryData[]>([]);
   const [modalMessage, setModalMessage] = useState('');
   const [showSavedQueryForm, setShowSavedQueryForm] = useState(false);
+  const [selectedPage, setSelectedPage] = useState(1);
   useEffect(() => {
     if (!props.loading && props.dataset.get('id')) {
       fetchOperationHistory(props.dataset.get('id') as number, {
         limit: props.limit,
-        offset: props.offset,
+        offset: selectedPage * props.offset,
       }).then((response) => {
         if (response.status === 200 || response.status === 201) {
           setHistory(response.data.results);
         }
       });
     }
-  }, []);
+  }, [selectedPage]);
 
   const onClickFreezeButton = () => {
     setShowSavedQueryForm(true);
@@ -41,17 +42,9 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
     setHistory([savedQuery].concat(history));
     setShowSavedQueryForm(false);
   };
-
   const onPageChange = (page: { selected: number }): void => {
     if (props.dataset) {
-      fetchOperationHistory(props.dataset.get('id') as number, {
-        limit: props.limit,
-        offset: page.selected * props.limit,
-      }).then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          setHistory(response.data.results);
-        }
-      });
+      setSelectedPage(page.selected);
     }
   };
   const onDelete = (frozenData: SavedQueryData): void => {
