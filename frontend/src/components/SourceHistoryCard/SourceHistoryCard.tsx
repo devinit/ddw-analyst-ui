@@ -77,7 +77,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       );
     }
 
-    return <h4 className="pl-1 pb-2">No results</h4>;
+    return <h5 className="pl-1 pb-2">No results</h5>;
   };
 
   return (
