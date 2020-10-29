@@ -21,18 +21,19 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
   const [history, setHistory] = useState<FrozenData[]>([]);
   const [modalMessage, setModalMessage] = useState('');
   const [showFrozenDataForm, setShowFrozenDataForm] = useState(false);
+  const [selectedPage, setSelectedPage] = useState(1);
   useEffect(() => {
     if (!props.loading && props.source.get('id')) {
       fetchDataSourceHistory(props.source.get('id') as number, {
         limit: props.limit,
-        offset: props.offset,
+        offset: selectedPage * props.limit,
       }).then((response) => {
         if (response.status === 200 || response.status === 201) {
           setHistory(response.data.results);
         }
       });
     }
-  }, []);
+  }, [selectedPage]);
 
   const onClickFreezeButton = () => {
     setShowFrozenDataForm(true);
@@ -44,14 +45,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
 
   const onPageChange = (page: { selected: number }): void => {
     if (props.source) {
-      fetchDataSourceHistory(props.source.get('id') as number, {
-        limit: props.limit,
-        offset: page.selected * props.limit,
-      }).then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          setHistory(response.data.results);
-        }
-      });
+      setSelectedPage(page.selected);
     }
   };
   const onDelete = (frozenData: FrozenData): void => {

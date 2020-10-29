@@ -26,7 +26,7 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
     if (!props.loading && props.dataset.get('id')) {
       fetchOperationHistory(props.dataset.get('id') as number, {
         limit: props.limit,
-        offset: selectedPage * props.offset,
+        offset: selectedPage * props.limit,
       }).then((response) => {
         if (response.status === 200 || response.status === 201) {
           setHistory(response.data.results);
