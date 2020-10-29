@@ -21,6 +21,7 @@ export const api = {
     FETCH_MY_SOURCE_DATASETS: '/api/source/datasets/mine/',
     FETCH_SOURCE_HISTORY: '/api/source/history/',
     FROZEN_DATA: '/api/frozendata/',
+    DOWNLOAD_FROZEN_DATA: '/api/tables/download/{table}/archives/',
     SAVED_QUERYSETS: '/api/savedquerysets/',
     SINGLE_SAVED_QUERYSET: '/api/savedqueryset/',
     DOWNLOAD_SAVED_QUERYSET: '/api/tables/download/{table}/dataset/',

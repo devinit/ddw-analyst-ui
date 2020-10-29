@@ -5,6 +5,7 @@ import { deleteFrozeData, fetchFrozenData } from '../../utils/history';
 import { status, statusClasses } from '../../utils/status';
 import { BasicModal } from '../BasicModal';
 import { FrozenData } from './utils';
+import { api } from '../../utils';
 
 interface ComponentProps {
   item: FrozenData;
@@ -58,6 +59,16 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
             <Button variant="dark" size="sm" onClick={toggleShowLogs}>
               <i className="material-icons">info</i> Info
             </Button>
+          ) : null}
+          {item.status === 'c' && item.frozen_db_table ? (
+            <a
+              href={`${api.routes.DOWNLOAD_FROZEN_DATA.replace('{table}', item.frozen_db_table)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-dark btn-sm"
+            >
+              Download
+            </a>
           ) : null}
           <Button variant="danger" size="sm" onClick={onDelete}>
             <i className="material-icons">delete</i>{' '}
