@@ -19,17 +19,6 @@ from core.const import DEFAULT_LIMIT_COUNT
 from core.models import Source, Operation
 
 
-FILTER_MAPPING = {
-            "lt": operator.lt,
-            "le": operator.le,
-            "eq": operator.eq,
-            "ne": operator.ne,
-            "ge": operator.ge,
-            "gt": operator.gt,
-            "text_search": text_search
-        }
-
-
 class NullIf(Function):
     def __init__(self, term, condition, **kwargs):
         super(NullIf, self).__init__('NULLIF', term, condition, **kwargs)
@@ -45,6 +34,17 @@ def text_search(field, search_ilike):
         text_searches = [text_search(field, search_ilike_child) for search_ilike_child in search_ilikes]
         return reduce(operator.and_, text_searches)
     return field.ilike(search_ilike)
+
+
+FILTER_MAPPING = {
+            "lt": operator.lt,
+            "le": operator.le,
+            "eq": operator.eq,
+            "ne": operator.ne,
+            "ge": operator.ge,
+            "gt": operator.gt,
+            "text_search": text_search
+        }
 
 
 def concat(field, args):
@@ -315,7 +315,7 @@ class QueryBuilder:
             self.current_query = self.current_query.where(getattr(self.current_query, sql_field).isin(query_two))
         elif(sub_query_args[0]["func"] in FILTER_MAPPING.keys()):
             filter_op = FILTER_MAPPING[sub_query_args[0]["func"]]
-            self.current_query = self.current_query.where((getattr(self.current_query, sql_field) filter_op query_two))
+            self.current_query = self.current_query.where(filter_op(getattr(self.current_query, sql_field), query_two))
 
         self.current_dataset = self.current_query
         return self
