@@ -37,7 +37,7 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item,
         <div className="dataset-row-title h4">{item.description}</div>
 
         <div className="dataset-row-actions float mb-1">
-          <Button variant="danger" size="sm" onClick={onDelete}>
+          <Button variant="dark" size="sm" onClick={toggleShowLogs}>
             <i className="material-icons">info</i> Info
           </Button>
           <Button variant="danger" size="sm" onClick={onDelete}>
