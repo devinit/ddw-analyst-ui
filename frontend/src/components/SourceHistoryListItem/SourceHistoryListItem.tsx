@@ -37,9 +37,11 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item,
         <div className="dataset-row-title h4">{item.description}</div>
 
         <div className="dataset-row-actions float mb-1">
-          <Button variant="dark" size="sm" onClick={toggleShowLogs}>
-            <i className="material-icons">info</i> Info
-          </Button>
+          {item.logs ? (
+            <Button variant="dark" size="sm" onClick={toggleShowLogs}>
+              <i className="material-icons">info</i> Info
+            </Button>
+          ) : null}
           <Button variant="danger" size="sm" onClick={onDelete}>
             <i className="material-icons">delete</i>{' '}
             {deleteStatus === 'default' ? 'Delete' : 'Confirm Delete'}
