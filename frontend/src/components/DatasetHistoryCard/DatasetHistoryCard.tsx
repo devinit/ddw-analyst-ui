@@ -69,15 +69,19 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
   };
 
   const renderPagination = (): ReactNode => {
-    return (
-      <PaginationRow
-        pageRangeDisplayed={2}
-        limit={props.limit}
-        count={1} // TODO: add actual count
-        pageCount={Math.ceil(1 / props.limit)}
-        onPageChange={onPageChange}
-      />
-    );
+    if (history && history.length) {
+      return (
+        <PaginationRow
+          pageRangeDisplayed={2}
+          limit={props.limit}
+          count={1} // TODO: add actual count
+          pageCount={Math.ceil(1 / props.limit)}
+          onPageChange={onPageChange}
+        />
+      );
+    }
+
+    return <h4 className="pl-1 pb-2">No results</h4>;
   };
 
   return (
