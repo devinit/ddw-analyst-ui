@@ -68,5 +68,5 @@ def create_dataset_archive(id):
             query_data.logs = 'Failed to create dataset archive: ' + json.dumps(create_result)
             query_data.save()
             return { "status": "failed", "result": json.dumps(create_result) }
-    except FrozenData.DoesNotExist:
+    except SavedQueryData.DoesNotExist:
         return { "status": "errored", "result": id }
