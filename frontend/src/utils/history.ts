@@ -81,6 +81,16 @@ export const fetchOperationHistory = async (
   );
 };
 
+export const fetchSavedQueryData = async (id: number): Promise<AxiosResponse<SavedQueryData>> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `token ${token}`,
+  };
+
+  return await axios(`${api.routes.SINGLE_SAVED_QUERYSET}${id}`, { headers });
+};
+
 export const createSavedQueryData = async (data: SavedQueryData): Promise<AxiosResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   const response = await axios.request({
