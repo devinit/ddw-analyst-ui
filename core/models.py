@@ -123,7 +123,6 @@ class OperationStep(BaseEntity):
     description = models.TextField(blank=True, null=True)
     query_func = models.TextField(blank=True, null=True)
     query_kwargs = models.TextField(blank=True, null=True)
-    source = models.ForeignKey(Source, models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return self.name

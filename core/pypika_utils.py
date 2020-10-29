@@ -19,6 +19,17 @@ from core.const import DEFAULT_LIMIT_COUNT
 from core.models import Source, Operation
 
 
+FILTER_MAPPING = {
+            "lt": operator.lt,
+            "le": operator.le,
+            "eq": operator.eq,
+            "ne": operator.ne,
+            "ge": operator.ge,
+            "gt": operator.gt,
+            "text_search": text_search
+        }
+
+
 class NullIf(Function):
     def __init__(self, term, condition, **kwargs):
         super(NullIf, self).__init__('NULLIF', term, condition, **kwargs)
@@ -294,14 +305,17 @@ class QueryBuilder:
 
     def sub_query(self, sub_query_args):
         query_two = QueryBuilder(operation=Operation.objects.get(pk=sub_query_args[0]["value"]))
+        # self.current_query = Query.from_(self.current_dataset)
         sql_func = sub_query_args[0]["func"]
         sql_field = sub_query_args[0]["field"]
-        # JOIN, IN, EXISTS,
-        if sql_func == "JOIN" and self.number_of_columns == query_two.number_of_columns:
-            self.current_query = self.current_query + query_two.current_query
+        # JOIN, IN
+        if sql_func == "UNION" and self.number_of_columns == query_two.number_of_columns:
+            self.current_query = (self.current_query + query_two.current_query)
         elif sql_func == "IN" and query_two.number_of_columns == 1:
-            self.current_query = getattr(self.current_query, sql_field).isin(query_two)
-        else sql_func == "EXISTS":
-            self.current_query
+            self.current_query = self.current_query.where(getattr(self.current_query, sql_field).isin(query_two))
+        elif(sub_query_args[0]["func"] in FILTER_MAPPING.keys()):
+            filter_op = FILTER_MAPPING[sub_query_args[0]["func"]]
+            self.current_query = self.current_query.where((getattr(self.current_query, sql_field) filter_op query_two))
+
         self.current_dataset = self.current_query
         return self
