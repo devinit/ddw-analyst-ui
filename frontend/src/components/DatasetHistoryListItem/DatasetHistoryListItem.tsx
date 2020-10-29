@@ -6,7 +6,6 @@ import { status, statusClasses } from '../../utils/status';
 import { SavedQueryData } from '../DatasetHistoryCard/utils/types';
 import { BasicModal } from '../BasicModal';
 import { api } from '../../utils';
-import { target } from 'glamor';
 
 interface ComponentProps {
   item: SavedQueryData;
