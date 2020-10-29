@@ -36,6 +36,16 @@ export const fetchDataSourceHistory = async (
   );
 };
 
+export const fetchFrozenData = async (id: number): Promise<AxiosResponse<FrozenData>> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `token ${token}`,
+  };
+
+  return await axios(`${api.routes.FROZEN_DATA}${id}`, { headers });
+};
+
 export const createFrozenData = async (data: FrozenData): Promise<AxiosResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   const response = await axios.request({

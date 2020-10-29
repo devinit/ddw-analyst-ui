@@ -1,10 +1,10 @@
 import moment from 'moment';
-import React, { FunctionComponent, useState } from 'react';
-import { status, statusClasses } from '../../utils/status';
-import { FrozenData } from './utils';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { deleteFrozeData } from '../../utils/history';
+import { deleteFrozeData, fetchFrozenData } from '../../utils/history';
+import { status, statusClasses } from '../../utils/status';
 import { BasicModal } from '../BasicModal';
+import { FrozenData } from './utils';
 
 interface ComponentProps {
   item: FrozenData;
@@ -13,9 +13,24 @@ interface ComponentProps {
 
 const extractNameFromEmail = (email: string) => email.split('@')[0].split('.').join(' ');
 
-export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item, ...props }) => {
+export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) => {
+  const [item, setItem] = useState(props.item);
   const [deleteStatus, setDeleteStatus] = useState<'default' | 'confirm'>('default');
   const [showLogs, setShowLogs] = useState(false);
+  const [fetching, setFetching] = useState(false);
+  useEffect(() => setItem(props.item), [props.item]);
+  useEffect(() => {
+    if (fetching) {
+      fetchFrozenData(item.id)
+        .then((results) => {
+          if (results.status === 200) {
+            setItem(results.data);
+          }
+          setFetching(false);
+        })
+        .catch((error) => console.log(error.message));
+    }
+  }, [fetching]);
   const onDelete = () => {
     if (deleteStatus === 'default') {
       setDeleteStatus('confirm');
@@ -27,9 +42,8 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item,
       });
     }
   };
-  const toggleShowLogs = (): void => {
-    setShowLogs(!showLogs);
-  };
+  const toggleShowLogs = (): void => setShowLogs(!showLogs);
+  const onRefresh = (): void => setFetching(true);
 
   return (
     <div className="dataset-row p-3 border-bottom">
@@ -37,6 +51,9 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = ({ item,
         <div className="dataset-row-title h4">{item.description}</div>
 
         <div className="dataset-row-actions float mb-1">
+          <Button variant="dark" size="sm" onClick={onRefresh}>
+            <i className="material-icons">refresh</i>
+          </Button>
           {item.logs ? (
             <Button variant="dark" size="sm" onClick={toggleShowLogs}>
               <i className="material-icons">info</i> Info
