@@ -5,6 +5,7 @@ import { DropdownItemProps } from 'semantic-ui-react';
 import { FilterMap, OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
+import { FilterGroup } from '../FilterGroup';
 import { FilterItem } from '../FilterItem';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
@@ -44,7 +45,20 @@ export class FilterQueryBuilder extends React.Component<
         {this.renderFilters(this.props.filters)}
         <Button variant="danger" size="sm" onClick={this.addFilter} hidden={!this.props.editable}>
           <i className="material-icons mr-1">add</i>
-          Add Filter
+          OR Filter
+        </Button>
+        <Button variant="danger" size="sm" onClick={this.addFilter} hidden={!this.props.editable}>
+          <i className="material-icons mr-1">add</i>
+          AND Filter
+        </Button>
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={this.addFilterGroup}
+          hidden={!this.props.editable}
+        >
+          <i className="material-icons mr-1">add</i>
+          Create Group
         </Button>
         <Button
           variant="secondary"
@@ -103,17 +117,23 @@ export class FilterQueryBuilder extends React.Component<
 
   private renderFilters(filters?: List<FilterMap>) {
     if (filters) {
-      return filters.map((filter, index) => (
-        <FilterItem
-          editable={this.props.editable}
-          key={index}
-          columns={this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-          operations={this.operations}
-          filter={filter}
-          onUpdate={(filtr: FilterMap) => this.onUpdateItem(filtr, index)}
-          onDelete={() => this.onDeleteItem(index)}
-        />
-      ));
+      console.log(`Render filters ${JSON.stringify(filters)}`);
+
+      return filters.map((filter, index) =>
+        filter.get('filter_type') === 'item' ? (
+          <FilterItem
+            editable={this.props.editable}
+            key={index}
+            columns={this.state.selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
+            operations={this.operations}
+            filter={filter}
+            onUpdate={(filtr: FilterMap) => this.onUpdateItem(filtr, index)}
+            onDelete={() => this.onDeleteItem(index)}
+          />
+        ) : (
+          <FilterGroup key={index} onDelete={() => this.onDeleteItem(index)} filter={filter} />
+        ),
+      );
     }
 
     return null;
@@ -121,7 +141,21 @@ export class FilterQueryBuilder extends React.Component<
 
   private addFilter = () => {
     if (this.props.onUpdateFilters) {
-      const filter: FilterMap = Map({} as any);
+      const filter: FilterMap = Map({ filter_type: 'item' } as any);
+      if (this.props.filters) {
+        const filters = this.props.filters.push(filter);
+        this.props.onUpdateFilters(JSON.stringify(Map({ filters } as any).toJS()));
+      } else {
+        const filters = Map({ filters: List([filter]) }).toJS();
+        this.props.onUpdateFilters(JSON.stringify(filters));
+      }
+    }
+  };
+
+  private addFilterGroup = () => {
+    if (this.props.onUpdateFilters) {
+      const filter: FilterMap = Map({ filter_type: 'group' } as any);
+      console.log(`Groups ${JSON.stringify(filter)}`);
       if (this.props.filters) {
         const filters = this.props.filters.push(filter);
         this.props.onUpdateFilters(JSON.stringify(Map({ filters } as any).toJS()));
