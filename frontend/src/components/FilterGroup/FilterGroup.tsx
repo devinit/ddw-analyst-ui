@@ -27,7 +27,8 @@ export const FilterGroup: FunctionComponent<FilterGroupProps> = ({ filter, onDel
     onDelete(filter);
   };
 
-  const onDeleteItem = (index) => {
+  const onDeleteItem = (index: number) => {
+    console.log(index);
     // onDelete(filter);
   };
 
@@ -42,6 +43,8 @@ export const FilterGroup: FunctionComponent<FilterGroupProps> = ({ filter, onDel
   };
 
   const onUpdateItem = (filter: FilterMap, index: number) => {
+    console.log(index);
+    console.log(JSON.stringify(filter));
     // if (filters && this.props.onUpdateFilters) {
     //   const filters = this.props.filters.set(index, filter);
     //   this.props.onUpdateFilters(JSON.stringify(Map({ filters } as any).toJS()));
