@@ -7,13 +7,19 @@ export interface Filter {
   field: string;
   value: string | number;
   func: 'lt' | 'le' | 'eq' | 'gt' | 'ge' | 'text_search' | 'ne';
+  filter_type?: 'item' | 'group';
+}
+export interface FilterGroup {
+  values: Filter[];
+  filter_type?: 'item' | 'group';
 }
 export type FilterMap = Map<keyof Filter, Filter[keyof Filter]>;
+export type FilterGroupMap = Map<keyof FilterGroup, FilterGroup[keyof FilterGroup]>;
 export interface ErroredFilter extends Filter {
   error: { [P in keyof Filter]: string };
 }
 export type ErroredFilterMap = Map<keyof ErroredFilter, ErroredFilter[keyof ErroredFilter]>;
-export interface Filters<T = Filter[] | ErroredFilter[]> {
+export interface Filters<T = Filter[] | ErroredFilter[] | FilterGroup[]> {
   filters: T;
 }
 export interface Operation {
