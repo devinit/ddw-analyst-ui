@@ -91,7 +91,7 @@ exports[`renders correctly when the sources are updated 1`] = `
                 data-testid="sources-table-history-button"
                 type="button"
               >
-                History
+                Versions
               </button>
             </div>
           </td>
@@ -136,7 +136,7 @@ exports[`renders correctly when the sources are updated 1`] = `
                 data-testid="sources-table-history-button"
                 type="button"
               >
-                History
+                Versions
               </button>
             </div>
           </td>
@@ -181,7 +181,7 @@ exports[`renders correctly when the sources are updated 1`] = `
                 data-testid="sources-table-history-button"
                 type="button"
               >
-                History
+                Versions
               </button>
             </div>
           </td>
@@ -263,7 +263,7 @@ exports[`renders correctly with default props 1`] = `
               onClick={[Function]}
               type="button"
             >
-              History
+              Versions
             </button>
           </div>
         </td>
@@ -314,7 +314,7 @@ exports[`renders correctly with default props 1`] = `
               onClick={[Function]}
               type="button"
             >
-              History
+              Versions
             </button>
           </div>
         </td>

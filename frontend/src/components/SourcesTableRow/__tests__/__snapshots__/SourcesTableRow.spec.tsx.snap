@@ -51,7 +51,7 @@ exports[`renders correctly with the default props 1`] = `
         onClick={[Function]}
         type="button"
       >
-        History
+        Versions
       </button>
     </div>
   </td>
