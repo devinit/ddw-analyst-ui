@@ -26,6 +26,10 @@ exports[`renders an empty table if no sources are provided 1`] = `
 `;
 
 exports[`renders correctly when the sources are updated 1`] = `
+.c0 {
+  width: 30%;
+}
+
 <div>
   <div
     class="table-responsive"
@@ -61,7 +65,9 @@ exports[`renders correctly when the sources are updated 1`] = `
           <td>
             Sun Aug 19 2018
           </td>
-          <td>
+          <td
+            class="c0"
+          >
             <div
               class="btn-group"
               role="group"
@@ -79,6 +85,13 @@ exports[`renders correctly when the sources are updated 1`] = `
                 type="button"
               >
                 Datasets
+              </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-history-button"
+                type="button"
+              >
+                Versions
               </button>
             </div>
           </td>
@@ -97,7 +110,9 @@ exports[`renders correctly when the sources are updated 1`] = `
           <td>
             Sun Aug 19 2018
           </td>
-          <td>
+          <td
+            class="c0"
+          >
             <div
               class="btn-group"
               role="group"
@@ -115,6 +130,13 @@ exports[`renders correctly when the sources are updated 1`] = `
                 type="button"
               >
                 Datasets
+              </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-history-button"
+                type="button"
+              >
+                Versions
               </button>
             </div>
           </td>
@@ -133,7 +155,9 @@ exports[`renders correctly when the sources are updated 1`] = `
           <td>
             Sun Aug 19 2018
           </td>
-          <td>
+          <td
+            class="c0"
+          >
             <div
               class="btn-group"
               role="group"
@@ -152,6 +176,13 @@ exports[`renders correctly when the sources are updated 1`] = `
               >
                 Datasets
               </button>
+              <button
+                class="btn btn-dark btn-sm"
+                data-testid="sources-table-history-button"
+                type="button"
+              >
+                Versions
+              </button>
             </div>
           </td>
         </tr>
@@ -162,6 +193,10 @@ exports[`renders correctly when the sources are updated 1`] = `
 `;
 
 exports[`renders correctly with default props 1`] = `
+.c0 {
+  width: 30%;
+}
+
 <div
   className="table-responsive"
 >
@@ -196,7 +231,9 @@ exports[`renders correctly with default props 1`] = `
         <td>
           Sun Aug 19 2018
         </td>
-        <td>
+        <td
+          className="c0"
+        >
           <div
             className="btn-group"
             role="group"
@@ -218,6 +255,15 @@ exports[`renders correctly with default props 1`] = `
               type="button"
             >
               Datasets
+            </button>
+            <button
+              className="btn btn-dark btn-sm"
+              data-testid="sources-table-history-button"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Versions
             </button>
           </div>
         </td>
@@ -236,7 +282,9 @@ exports[`renders correctly with default props 1`] = `
         <td>
           Sun Aug 19 2018
         </td>
-        <td>
+        <td
+          className="c0"
+        >
           <div
             className="btn-group"
             role="group"
@@ -258,6 +306,15 @@ exports[`renders correctly with default props 1`] = `
               type="button"
             >
               Datasets
+            </button>
+            <button
+              className="btn btn-dark btn-sm"
+              data-testid="sources-table-history-button"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Versions
             </button>
           </div>
         </td>

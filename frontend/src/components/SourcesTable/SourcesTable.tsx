@@ -1,8 +1,10 @@
 import { List } from 'immutable';
+import * as localForage from 'localforage';
 import React, { FunctionComponent, useState } from 'react';
-import { Modal, Table, Alert } from 'react-bootstrap';
+import { Alert, Modal, Table } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { SourceMap } from '../../types/sources';
+import { localForageKeys } from '../../utils';
 import { SourceDetailsTab } from '../SourceDetailsTab';
 import { SourcesTableRow } from '../SourcesTableRow';
 
@@ -23,6 +25,11 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
     setActiveSource(source);
     setShowModal(true);
   };
+  const onShowHistory = (source: SourceMap) => {
+    setActiveSource(source);
+    localForage.setItem(localForageKeys.ACTIVE_SOURCE, source.toJS());
+    history.push(`/source/history/${source.get('id') as string}`);
+  };
   const onHideModal = () => setShowModal(false);
 
   const renderRows = (sources: List<SourceMap>, activeSource?: SourceMap) => {
@@ -33,6 +40,7 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
           source={source}
           onShowDatasets={onShowDatasets}
           onShowMetadata={onShowMetadata}
+          onShowHistory={onShowHistory}
         />
       ));
     }

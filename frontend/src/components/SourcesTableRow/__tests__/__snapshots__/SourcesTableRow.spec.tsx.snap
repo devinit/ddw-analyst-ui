@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly with the default props 1`] = `
+.c0 {
+  width: 30%;
+}
+
 <tr
   data-testid="sources-table-row"
 >
@@ -15,7 +19,9 @@ exports[`renders correctly with the default props 1`] = `
   <td>
     Sun Aug 19 2018
   </td>
-  <td>
+  <td
+    className="c0"
+  >
     <div
       className="btn-group"
       role="group"
@@ -37,6 +43,15 @@ exports[`renders correctly with the default props 1`] = `
         type="button"
       >
         Datasets
+      </button>
+      <button
+        className="btn btn-dark btn-sm"
+        data-testid="sources-table-history-button"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Versions
       </button>
     </div>
   </td>

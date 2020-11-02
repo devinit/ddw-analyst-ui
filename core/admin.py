@@ -13,7 +13,9 @@ from core.models import (
     SourceColumnMap,
     Tag,
     Theme,
-    UpdateHistory
+    UpdateHistory,
+    FrozenData,
+    SavedQueryData,
 )
 
 
@@ -34,3 +36,5 @@ admin.site.register(UpdateHistory)
 admin.site.register(AuditLogEntry, AuditLogEntryAdmin)
 admin.site.register(ScheduledEvent)
 admin.site.register(ScheduledEventRunInstance)
+admin.site.register(FrozenData)
+admin.site.register(SavedQueryData)

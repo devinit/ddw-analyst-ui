@@ -52,7 +52,7 @@ def update_table_from_tuple(queries, database="datasets"):
         except ProgrammingError as sql_e:
             results = [
                 {
-                    "result": "error" ,
+                    "result": "error",
                     "message": str(sql_e),
                 }
             ]
@@ -72,6 +72,34 @@ def update_table_from_tuple(queries, database="datasets"):
                 {
                     "result": "error",
                     "message": str(sql_error) + " " + queries[1],
+                }
+            ]
+        except Exception as e:
+            results = [
+                {
+                    "result": "error",
+                    "message": str(e),
+                }
+            ]
+        return results
+
+
+def run_query(query, database="datasets"):
+    with connections[database].cursor() as create_cursor:
+        try:
+            create_cursor.execute(query)
+            connections[database].commit()
+            results = [
+                {
+                    "result": "success",
+                    "message": "Successfully created",
+                }
+            ]
+        except ProgrammingError as sql_error:
+            results = [
+                {
+                    "result": "error",
+                    "message": str(sql_error) + " " + query,
                 }
             ]
         except Exception as e:

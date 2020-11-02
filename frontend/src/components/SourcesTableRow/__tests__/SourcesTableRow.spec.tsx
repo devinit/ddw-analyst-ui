@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+import 'jest-styled-components';
 import { fireEvent, render } from '@testing-library/react';
 import { Map } from 'immutable';
 import * as React from 'react';
@@ -16,6 +17,7 @@ const props: SourcesTableRowProps = {
   }) as SourceMap,
   onShowDatasets: jest.fn(),
   onShowMetadata: jest.fn(),
+  onShowHistory: jest.fn(),
 };
 
 test('renders correctly with the default props', () => {
@@ -48,4 +50,17 @@ test('dataset button responds to click events', () => {
   fireEvent.click(getByTestId('sources-table-dataset-button'));
 
   expect(props.onShowDatasets).toHaveBeenCalled();
+});
+
+test('history button responds to click events', () => {
+  const table = document.createElement('table');
+  const tableBody = document.createElement('tbody');
+  table.appendChild(tableBody);
+  const { getByTestId } = render(<SourcesTableRow {...props} />, {
+    container: document.body.appendChild(tableBody),
+  });
+
+  fireEvent.click(getByTestId('sources-table-history-button'));
+
+  expect(props.onShowHistory).toHaveBeenCalled();
 });

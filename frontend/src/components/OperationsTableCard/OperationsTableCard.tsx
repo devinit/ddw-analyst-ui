@@ -105,6 +105,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     props.history.push(`/queries/data/${operation.get('id')}`);
   };
 
+  const onViewHistory = (operation: OperationMap) => {
+    props.actions.setOperation(operation);
+    props.history.push(`/queries/history/${operation.get('id')}`);
+  };
+
   const onViewSQLQuery = (operation: OperationMap) => (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -143,6 +148,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                   Export to CSV
                 </Button>
               </Form>
+              <DatasetActionLink operation={operation} action="history" onClick={onViewHistory}>
+                Versions
+              </DatasetActionLink>
             </OperationsTableRowActions>
           </OperationsTableRow>
         );
