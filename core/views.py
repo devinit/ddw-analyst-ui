@@ -4,8 +4,9 @@
 import codecs
 import csv
 import json
-
+import datetime
 import dateutil.parser
+
 from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -16,8 +17,10 @@ from django.http import Http404, HttpResponse, StreamingHttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
+
 from rest_framework import exceptions, filters, generics, permissions, status
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
@@ -40,7 +43,7 @@ from core.serializers import (DataSerializer, OperationSerializer,
 from data.db_manager import fetch_data, update_table_from_tuple, run_query
 from core.pypika_utils import QueryBuilder
 from data_updates.utils import ScriptExecutor, list_update_scripts
-import datetime
+from core.tasks import create_dataset_archive, create_table_archive
 
 
 class ListUpdateScripts(APIView):
@@ -383,6 +386,39 @@ class ViewSourceDatasets(APIView):
             return paginator.get_paginated_response(serializer.data)
         else:
             serializer = OperationSerializer(datasets, many=True)
+            return Response(serializer.data)
+
+
+class ViewSourceHistory(APIView):
+    """
+    Get all FrozenData instances attached to a specific data source
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    # queryset = FrozenData.objects.all()
+    serializer_class = FrozenDataSerializer
+
+    def get_queryset(self, pk, request):
+        try:
+            source = Source.objects.get(id=pk)
+            history = FrozenData.objects.filter(
+                parent_db_table=source.active_mirror_name).order_by('-created_on').distinct()
+            return history
+        except Source.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        datasets = self.get_queryset(pk, request)
+        limit = self.request.query_params.get('limit', None)
+        offset = self.request.query_params.get('offset', None)
+        if limit is not None or offset is not None:
+            pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+            paginator = pagination_class()
+            page = paginator.paginate_queryset(datasets, request)
+            serializer = FrozenDataSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            serializer = FrozenDataSerializer(datasets, many=True)
             return Response(serializer.data)
 
 
@@ -758,17 +794,9 @@ class FrozenDataList(APIView):
             parent_db_table = serializer.validated_data.get('parent_db_table')
             frozen_db_table = "archive_" + parent_db_table + \
                 datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-            serializer.save(user=self.request.user,
-                            frozen_db_table=frozen_db_table)
-            # Consider doing the below six lines via cron to improve response time
-            query_builder = TableQueryBuilder(parent_db_table, "repo")
-            create_query = query_builder.select().create_table_from_query(
-                frozen_db_table, "archives")
-            create_result = run_query(create_query)
-            if create_result[0]['result'] == 'success':
-                serializer.save(completed='c')
-            else:
-                return HttpResponse(json.dumps(create_result), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            serializer.save(user=request.user, frozen_db_table=frozen_db_table)
+            create_table_archive.delay(serializer.instance.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -791,8 +819,7 @@ class FrozenDataDetail(APIView):
 
     def put(self, request, pk, format=None):
         frozen_data = self.get_object(pk)
-        serializer = FrozenDataSerializer(
-            frozen_data, data=request.data, partial=True)
+        serializer = FrozenDataSerializer(frozen_data, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -815,7 +842,7 @@ class SavedQueryDataList(APIView):
     """ List all SavedQueryData or create a new one"""
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get(self, request, format=None):
         saved_query_data = SavedQueryData.objects.all()
@@ -833,11 +860,7 @@ class SavedQueryDataList(APIView):
             serializer.save(user=self.request.user, full_query=sql,
                             saved_query_db_table=saved_query_db_table)
 
-            create_query = query_builder.create_table_from_query(
-                saved_query_db_table, "dataset")
-            create_result = run_query(create_query)
-            if create_result[0]['result'] == 'success':
-                serializer.save(completed='c')
+            create_dataset_archive.delay(serializer.instance.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -845,7 +868,7 @@ class SavedQueryDataList(APIView):
 class SavedQueryDataDetail(APIView):
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_object(self, pk):
         try:
@@ -878,3 +901,34 @@ class SavedQueryDataDetail(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(delete_result, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ViewDatasetHistory(APIView):
+    """
+    Get all SavedQueryData instances attached to a specific operation
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    serializer_class = SavedQueryDataSerializer
+
+    def get_queryset(self, pk, request):
+        try:
+            operation = Operation.objects.get(id=pk)
+            history = SavedQueryData.objects.filter(operation=operation).order_by('-created_on').distinct()
+            return history
+        except Operation.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        history = self.get_queryset(pk, request)
+        limit = self.request.query_params.get('limit', None)
+        offset = self.request.query_params.get('offset', None)
+        if limit is not None or offset is not None:
+            pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+            paginator = pagination_class()
+            page = paginator.paginate_queryset(history, request)
+            serializer = SavedQueryDataSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            serializer = SavedQueryDataSerializer(history, many=True)
+            return Response(serializer.data)

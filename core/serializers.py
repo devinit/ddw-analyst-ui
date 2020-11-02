@@ -406,6 +406,8 @@ class ScheduledEventRunInstanceSerializer(serializers.ModelSerializer):
 
 class FrozenDataSerializer(serializers.ModelSerializer):
     frozen_db_table = serializers.ReadOnlyField()
+    user = serializers.ReadOnlyField(source='user.username')
+    created_on = serializers.ReadOnlyField()
 
     class Meta:
         model = FrozenData
@@ -413,15 +415,19 @@ class FrozenDataSerializer(serializers.ModelSerializer):
             'id',
             'parent_db_table',
             'frozen_db_table',
-            'completed',
+            'status',
             'active',
-            'comment'
+            'description',
+            'user',
+            'created_on',
+            'logs',
         )
 
 
 class SavedQueryDataSerializer(serializers.ModelSerializer):
     full_query = serializers.ReadOnlyField()
     saved_query_db_table = serializers.ReadOnlyField()
+    user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = SavedQueryData
@@ -431,6 +437,9 @@ class SavedQueryDataSerializer(serializers.ModelSerializer):
             'operation',
             'full_query',
             'saved_query_db_table',
-            'completed',
-            'comment'
+            'status',
+            'description',
+            'user',
+            'created_on',
+            'logs',
         )
