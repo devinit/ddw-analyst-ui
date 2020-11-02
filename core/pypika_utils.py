@@ -13,7 +13,9 @@ from pypika import Table
 from pypika import analytics as an
 from pypika import functions as pypika_fn
 from pypika import JoinType
+from pypika.terms import PseudoColumn
 from pypika.terms import Function
+from pypika.terms import Field
 
 from core.const import DEFAULT_LIMIT_COUNT
 from core.models import Source, Operation
@@ -23,6 +25,9 @@ class NullIf(Function):
     def __init__(self, term, condition, **kwargs):
         super(NullIf, self).__init__('NULLIF', term, condition, **kwargs)
 
+class PsqlExists(Function):
+    def __init__(self, sub_query, negate=False):
+        super(PsqlExists, self).__init__('NOT EXISTS', sub_query.get_sql()) if negate else super(PsqlExists, self).__init__('EXISTS', sub_query.get_sql())
 
 def text_search(field, search_ilike):
     if "|" in search_ilike:  # User is trying to search for multiple strings
@@ -169,16 +174,7 @@ class QueryBuilder:
     def filter(self, filters):
         self.current_query = Query.from_(self.current_dataset)
 
-        filter_mapping = {
-            "lt": operator.lt,
-            "le": operator.le,
-            "eq": operator.eq,
-            "ne": operator.ne,
-            "ge": operator.ge,
-            "gt": operator.gt,
-            "text_search": text_search
-        }
-        filter_operations = [filter_mapping[filter["func"]](getattr(
+        filter_operations = [FILTER_MAPPING[filter["func"]](getattr(
             self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
         self.current_query = self.current_query.select(
@@ -303,19 +299,34 @@ class QueryBuilder:
     def get_sql_without_limit(self):
         return self.current_query.get_sql()
 
-    def sub_query(self, sub_query_args):
+    def exists(self, args):
+        left_table_name = args[0]["left_table"]
+        left_column_name = args[0]["left_column"]
+        right_table_name = args[0]["right_table"]
+        right_column_name = args[0]["right_column"]
+        pseudo = PseudoColumn(1)
+        left_table, right_table = Tables(left_table_name, right_table_name)
+        left_hand_field = Field(left_column_name, table=left_table)
+        left_sql = left_hand_field.get_sql(with_namespace=True)
+        right_hand_field = Field(right_column_name, table=right_table)
+        right_sql = right_hand_field.get_sql(with_namespace=True)
+        filter_op = FILTER_MAPPING[args[0]["func"]]
+        sub_query = Query.from_(left_table_name).select(pseudo).where(filter_op(left_hand_field, right_hand_field))
+        self.current_query = self.current_query.where(PsqlExists(sub_query))
+
+    def operator_or_where_clause_sub_query(self, sub_query_args):
         query_two = QueryBuilder(operation=Operation.objects.get(pk=sub_query_args[0]["value"]))
         # self.current_query = Query.from_(self.current_dataset)
         sql_func = sub_query_args[0]["func"]
-        sql_field = sub_query_args[0]["field"]
-        # JOIN, IN
+        table_field = sub_query_args[0]["field"]
+        # UNION, IN
         if sql_func == "UNION" and self.number_of_columns == query_two.number_of_columns:
             self.current_query = (self.current_query + query_two.current_query)
         elif sql_func == "IN" and query_two.number_of_columns == 1:
-            self.current_query = self.current_query.where(getattr(self.current_query, sql_field).isin(query_two))
+            self.current_query = self.current_query.where(getattr(self.current_query, table_field).isin(query_two))
         elif(sub_query_args[0]["func"] in FILTER_MAPPING.keys()):
             filter_op = FILTER_MAPPING[sub_query_args[0]["func"]]
-            self.current_query = self.current_query.where(filter_op(getattr(self.current_query, sql_field), query_two))
+            self.current_query = self.current_query.where(filter_op(getattr(self.current_query, table_field), query_two))
 
         self.current_dataset = self.current_query
         return self
