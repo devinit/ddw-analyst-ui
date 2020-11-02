@@ -268,8 +268,16 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def select(self, columns=None, groupby=None):
+    def generate_sub_query_as_column(sub_query_id):
+        operation = Operation.objects.get(pk=sub_query_id)
+        sub_query = QueryBuilder(operation=operation)
+        return sub_query.current_query
+
+    def select(self, columns=None, groupby=None, sub_queries_as_columns=None):
         self.current_query = Query.from_(self.current_dataset)
+        if sub_queries_as_columns:
+            sub_queries = map(generate_sub_query_as_column, sub_queries_as_columns)
+            columns = columns.extend(sub_queries)
         if columns:
             self.current_query = self.current_query.select(*columns)
             self.number_of_columns = len(columns)
@@ -313,6 +321,7 @@ class QueryBuilder:
         filter_op = FILTER_MAPPING[args[0]["func"]]
         sub_query = Query.from_(left_table_name).select(pseudo).where(filter_op(left_hand_field, right_hand_field))
         self.current_query = self.current_query.where(PsqlExists(sub_query))
+
 
     def operator_or_where_clause_sub_query(self, sub_query_args):
         query_two = QueryBuilder(operation=Operation.objects.get(pk=sub_query_args[0]["value"]))
