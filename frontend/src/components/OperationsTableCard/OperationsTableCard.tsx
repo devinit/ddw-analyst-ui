@@ -199,6 +199,21 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     });
   };
 
+  const onFilterByDataSource = (
+    _event: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps,
+  ) => {
+    const { value } = data;
+    props.actions.fetchOperations({
+      limit: props.limit,
+      offset: 0,
+      search: searchQuery,
+      mine: showMyQueries,
+      link:
+        (value as string) && getSourceDatasetsLink(value as number, showMyQueries, props.limit, 0),
+    });
+  };
+
   const renderPagination = () => {
     const count = props.operations.get('count') as number;
 
@@ -215,17 +230,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    const { value } = data;
-    props.actions.fetchOperations({
-      limit: props.limit,
-      offset: 0,
-      search: searchQuery,
-      mine: showMyQueries,
-      link: getSourceDatasetsLink(value as number, showMyQueries, props.limit, 0),
-    });
-  };
-
   const operations = props.operations.get('operations') as List<OperationMap>;
   const loading = props.operations.get('loading') as boolean;
 
@@ -237,7 +241,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       <Card className="dataset-list">
         <Card.Body>
           <Row>
-            <Col xs="6">
+            <Col xs="6" lg="4" md="6">
               <FormControl
                 placeholder="Search ..."
                 className="w-100"
@@ -247,15 +251,15 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 data-testid="sources-table-search"
               />
             </Col>
-            <Col xs="6">
+            <Col xs="6" lg="4" md="6">
               <Dropdown
                 clearable
-                placeholder="Select Data Source"
+                placeholder="Filter by data source"
                 fluid
                 search
                 selection
                 options={dropDownValues}
-                onChange={onChange}
+                onChange={onFilterByDataSource}
               />
             </Col>
           </Row>
