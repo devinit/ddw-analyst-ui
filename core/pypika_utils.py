@@ -285,6 +285,7 @@ class QueryBuilder:
 
         if columns:
             for col_index in range(len(columns)):
+                # If column value is numeric, then that's a sub-query
                 if str(columns[col_index]).isnumeric():
                     columns[col_index] = self.generate_sub_query_as_column(columns[col_index])
             self.current_query = self.current_query.select(*columns)
@@ -315,19 +316,29 @@ class QueryBuilder:
     def get_sql_without_limit(self):
         return self.current_query.get_sql()
 
-    def exists(self, args):
-        left_source = Source.objects.get(pk=args[0]['left_source'])
-        left_column_name = args[0]["left_column"]
-        right_source = Source.objects.get(pk=args[0]['right_source'])
-        right_column_name = args[0]["right_column"]
-        pseudo = PseudoColumn(1)
-        left_table, right_table = Tables(left_source.active_mirror_name, right_source.active_mirror_name)
+    def sub_query_across_tables(self, filters):
+        left_source = Source.objects.get(pk=filters[0]['left_source'])
+        left_column_name = filters[0]["left_field"]
+        right_source = Source.objects.get(pk=filters[0]['right_source'])
+        right_column_name = filters[0]["right_field"]
+        left_table = Table(left_source.active_mirror_name, left_source.schema)
+        right_table = Table(right_source.active_mirror_name, right_source.schema)
         left_hand_field = Field(left_column_name, table=left_table)
         left_sql = left_hand_field.get_sql(with_namespace=True)
         right_hand_field = Field(right_column_name, table=right_table)
         right_sql = right_hand_field.get_sql(with_namespace=True)
         filter_op = FILTER_MAPPING[args[0]["func"]]
-        sub_query = Query.from_(left_table_name).select(pseudo).where(filter_op(left_hand_field, right_hand_field))
+        return filter_op(left_hand_field, right_hand_field)
+
+
+    def select_sub_query(self, filters):
+        self.current_query = self.current_query.where(self.sub_query_across_tables(filters))
+
+    def exists(self, filters):
+        pseudo = PseudoColumn(1)
+        left_source = Source.objects.get(pk=filters[0]['left_source'])
+        left_table = Table(left_source.active_mirror_name, left_source.schema)
+        sub_query = Query.from_(left_table).select(pseudo).where(self.sub_query_across_tables(filters))
         self.current_query = self.current_query.where(PsqlExists(sub_query))
 
 
