@@ -82,6 +82,7 @@ class QueryBuilder:
     def __init__(self, operation=None, operation_steps=None, source=None):
 
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
+        self.selected = False
 
         if operation_steps:
             query_steps = sorted(operation_steps, key=itemgetter('step_id'))
@@ -103,14 +104,20 @@ class QueryBuilder:
             else:
                 query_func = getattr(self, query_step.query_func)
                 kwargs = query_step.query_kwargs
-            if not isinstance(query_step['sub_query'], type(None)):
-                self.sub_query = QueryBuilder(operation=query_step.sub_query)
-                self.sub_query_pending = True
             if isinstance(kwargs, type(None)):
                 self = query_func()
             else:
                 query_kwargs_json = json.loads(kwargs)
                 self = query_func(**query_kwargs_json)
+            #else:
+            #    other_funcs.append([query_func, kwargs])
+        # We now run all the others stored in other_funcs list
+        #for other_func in other_funcs:
+        #    if isinstance(other_func[1], type(None))
+        #        self = other_func[0]()
+        #    else:
+        #        self = other_func[0](**json.loads(other_func[1]))
+
 
     def aggregate(self, group_by, agg_func_name, operational_column):
         self.current_query = Query.from_(self.current_dataset)
@@ -269,16 +276,17 @@ class QueryBuilder:
         return self
 
     def generate_sub_query_as_column(sub_query_id):
-        operation = Operation.objects.get(pk=sub_query_id)
+        operation = Operation.objects.get(pk=int(sub_query_id))
         sub_query = QueryBuilder(operation=operation)
         return sub_query.current_query
 
-    def select(self, columns=None, groupby=None, sub_queries_as_columns=None):
+    def select(self, columns=None, groupby=None):
         self.current_query = Query.from_(self.current_dataset)
-        if sub_queries_as_columns:
-            sub_queries = map(generate_sub_query_as_column, sub_queries_as_columns)
-            columns = columns.extend(sub_queries)
+
         if columns:
+            for col_index in range(len(columns)):
+                if str(columns[col_index]).isnumeric():
+                    columns[col_index] = self.generate_sub_query_as_column(columns[col_index])
             self.current_query = self.current_query.select(*columns)
             self.number_of_columns = len(columns)
         else:
@@ -308,12 +316,12 @@ class QueryBuilder:
         return self.current_query.get_sql()
 
     def exists(self, args):
-        left_table_name = args[0]["left_table"]
+        left_source = Source.objects.get(pk=args[0]['left_source'])
         left_column_name = args[0]["left_column"]
-        right_table_name = args[0]["right_table"]
+        right_source = Source.objects.get(pk=args[0]['right_source'])
         right_column_name = args[0]["right_column"]
         pseudo = PseudoColumn(1)
-        left_table, right_table = Tables(left_table_name, right_table_name)
+        left_table, right_table = Tables(left_source.active_mirror_name, right_source.active_mirror_name)
         left_hand_field = Field(left_column_name, table=left_table)
         left_sql = left_hand_field.get_sql(with_namespace=True)
         right_hand_field = Field(right_column_name, table=right_table)
