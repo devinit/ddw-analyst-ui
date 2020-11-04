@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile_pg
     volumes:
       - metadata:/var/lib/postgresql/data
+    networks:
+      - ddw_net
   web:
     build:
       context: .
@@ -26,6 +28,8 @@ services:
     command: bash -c "export DJANGO_DEV='True' && python manage.py runserver 0.0.0.0:80"
     ports:
       - "80:80"
+    networks:
+      - ddw_net
 
   rabbitmq:
     image: rabbitmq:latest
@@ -35,6 +39,8 @@ services:
       - 5672:5672
       - 15672:15672
     restart: always
+    networks:
+      - ddw_net
 
   celery:
     build: .
@@ -44,7 +50,15 @@ services:
       - rabbitmq
     environment:
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
+    networks:
+      - ddw_net
 
 volumes:
   metadata:
     external: true
+networks:
+  ddw_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.22.0.0/16
