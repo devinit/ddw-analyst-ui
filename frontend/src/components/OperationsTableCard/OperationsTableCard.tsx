@@ -1,11 +1,21 @@
 import { List } from 'immutable';
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Button, Card, Form, FormControl, OverlayTrigger, Popover } from 'react-bootstrap';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  FormControl,
+  OverlayTrigger,
+  Popover,
+  Row,
+} from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
+import { SourcesContext } from '../../context';
 import { OperationsState } from '../../reducers/operations';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
@@ -50,11 +60,23 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
   const [info, setInfo] = useState('');
+  const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
+  const { sources } = useContext(SourcesContext);
 
   useEffect(() => {
     fetchQueries(showMyQueries);
   }, []);
+
+  useEffect(() => {
+    const values = Array.from(sources, (source) => {
+      return {
+        text: `${source.get('indicator')}`,
+        value: source.get('id'),
+      };
+    });
+    setDropDownValues(values as DropdownItemProps[]);
+  }, [sources]);
 
   const fetchQueries = (mine = false) => {
     const loading = props.operations.get('loading') as boolean;
@@ -177,6 +199,21 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     });
   };
 
+  const onFilterByDataSource = (
+    _event: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps,
+  ) => {
+    const { value } = data;
+    props.actions.fetchOperations({
+      limit: props.limit,
+      offset: 0,
+      search: searchQuery,
+      mine: showMyQueries,
+      link:
+        (value as string) && getSourceDatasetsLink(value as number, showMyQueries, props.limit, 0),
+    });
+  };
+
   const renderPagination = () => {
     const count = props.operations.get('count') as number;
 
@@ -203,14 +240,29 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       </Dimmer>
       <Card className="dataset-list">
         <Card.Body>
-          <FormControl
-            placeholder="Search ..."
-            className="w-25"
-            value={searchQuery}
-            onChange={onSearchChange}
-            onKeyDown={onSearch}
-            data-testid="sources-table-search"
-          />
+          <Row>
+            <Col xs="6" lg="4" md="6">
+              <FormControl
+                placeholder="Search ..."
+                className="w-100"
+                value={searchQuery}
+                onChange={onSearchChange}
+                onKeyDown={onSearch}
+                data-testid="sources-table-search"
+              />
+            </Col>
+            <Col xs="6" lg="4" md="6">
+              <Dropdown
+                clearable
+                placeholder="Filter by data source"
+                fluid
+                search
+                selection
+                options={dropDownValues}
+                onChange={onFilterByDataSource}
+              />
+            </Col>
+          </Row>
         </Card.Body>
         <Card.Body className="p-0">{renderOperations(operations, showMyQueries)}</Card.Body>
         <Card.Footer className="d-block">{renderPagination()}</Card.Footer>
