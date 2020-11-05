@@ -111,3 +111,157 @@
 
 21. Download Saved Query Set Data<br>
     GET - https://ddw.devinit.org/api/tables/download/[QUERY_SET_DB_TABLE]/dataset/<br>
+
+22. Get Current User's Sub-queries<br>
+    GET - https://ddw.devinit.org/api/datasets/subqueries/mine/<br>
+
+23. Get all sub-queries<br>
+    GET - https://ddw.devinit.org/api/datasets/subqueries/<br>
+
+
+24. Changes to Queries:<br>
+    Added a flag to differentiate sub-queries from other queries<br>
+    Payload to create a query will therefore change to:<br>
+  {
+    "name":"testing Subquery to Pass None Draft",
+    "description":"Subquery testing",
+    "is_sub_query": true,
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"country_name\"]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":30
+            },
+            {
+                "step_id":2,
+                "query_func":"filter",
+                "query_kwargs":"{\"filters\":[{\"field\":\"country_code\",\"func\":\"eq\",\"value\":\"918\"}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+
+Creating a sub-query for use in a SELECT clause and EXISTS operator <br>
+
+{
+    "name":"testing Subquery to Pass None Draft",
+    "description":"Subquery testing",
+    "is_sub_query": true,
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"country_code\"]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":30
+            },
+            {
+                "step_id":2,
+                "query_func":"filter",
+                "query_kwargs":"{\"select_sub_query\":[{\"left_source\":23,\"left_field\":\"flow_name\",\"func\":\"eq\",\"right_source\":21,\"right_field\":\"tewgrwgr\"}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+
+To create a SELECT query with a sub-qeury as part of it's columns e.g <br>
+
+  {
+    "name":"testing Subquery to Pass None Draft",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"country_code\",\"country_name\",\"iso3\", 4325]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":30
+            },
+            {
+                "step_id":2,
+                "query_func":"filter",
+                "query_kwargs":"{\"filters\":[{\"field\":\"country_code\",\"func\":\"eq\",\"value\":\"918\"}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+
+Note the last column is an integer, which represents the id of the sub-query. The qub-query can be in any position as the user so wishes <br>
+
+
+Using a sub-query in IN operator <br>
+
+{
+    "name":"testing Subquery to Pass None Draft",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"country_code\"]}",
+                "name":"Select",
+                "description":"Select using sub-query and IN operator",
+                "source":30
+            },
+            {
+                "step_id":2,
+                "query_func":"operator_or_where_clause_sub_query",
+                "query_kwargs":"{\"filters\":[{\"field\":\"flow_name\",\"func\":\"IN\",\"value\":21}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+Note that the value in the filters holds the ID of the sub-query to be used by the IN operator. The sub-query must also be returning one column strictly<br>
+
+
+Using a sub-query in UNION operator <br>
+
+{
+    "name":"testing Subquery to Pass None Draft",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"country_code\"]}",
+                "name":"Select",
+                "description":"Select using sub-query and UNION operator",
+                "source":30
+            },
+            {
+                "step_id":2,
+                "query_func":"operator_or_where_clause_sub_query",
+                "query_kwargs":"{\"filters\":[{\"field\":\"flow_name\",\"func\":\"UNION\",\"value\":21}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+
+Note that the columns in the sub-query and main query here must be same number and similar in data types.
+
+We have left the "source" variable in all steps made up of new query_funcs for backwards compatibility
