@@ -316,7 +316,7 @@ class QueryBuilder:
     def get_sql_without_limit(self):
         return self.current_query.get_sql()
 
-    def sub_query_across_tables(self, filters):
+    def filter_across_tables(self, filters):
         left_source = Source.objects.get(pk=filters[0]['left_source'])
         left_column_name = filters[0]["left_field"]
         right_source = Source.objects.get(pk=filters[0]['right_source'])
@@ -332,14 +332,16 @@ class QueryBuilder:
 
 
     def select_sub_query(self, filters):
-        self.current_query = self.current_query.where(self.sub_query_across_tables(filters))
+        self.current_query = self.current_query.where(self.filter_across_tables(filters))
+        return self
 
     def exists(self, filters):
         pseudo = PseudoColumn(1)
         left_source = Source.objects.get(pk=filters[0]['left_source'])
         left_table = Table(left_source.active_mirror_name, left_source.schema)
-        sub_query = Query.from_(left_table).select(pseudo).where(self.sub_query_across_tables(filters))
+        sub_query = Query.from_(left_table).select(pseudo).where(self.filter_across_tables(filters))
         self.current_query = self.current_query.where(PsqlExists(sub_query))
+        return self
 
 
     def operator_or_where_clause_sub_query(self, sub_query_args):
