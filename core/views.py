@@ -361,8 +361,7 @@ class ViewSourceDatasets(APIView):
         try:
             if self.request.user.is_authenticated:
                 operations = Operation.objects.filter(
-                    Q(user=self.request.user) & Q(
-                        operationstep__source=pk) & Q(is_draft=False)
+                    Q(operationstep__source=pk) & Q(is_draft=False)
                 ).order_by('-updated_on').distinct()
             else:
                 operations = Operation.objects.filter(
