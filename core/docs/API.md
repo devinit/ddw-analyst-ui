@@ -167,9 +167,9 @@ Creating a sub-query for use in a SELECT clause and EXISTS operator <br>
             },
             {
                 "step_id":2,
-                "query_func":"filter",
-                "query_kwargs":"{\"select_sub_query\":[{\"left_source\":23,\"left_field\":\"flow_name\",\"func\":\"eq\",\"right_source\":21,\"right_field\":\"tewgrwgr\"}]}",
-                "name":"Filter them",
+                "query_func":"select_sub_query",
+                "query_kwargs":"{\"filters\":[{\"left_source\":1,\"left_field\":\"recipient_code\",\"func\":\"eq\",\"right_source\":30,\"right_field\":\"country_code\"}]}",
+                "name":"Compare Source with End",
                 "description":"Filtering now",
                 "source":30
             }
