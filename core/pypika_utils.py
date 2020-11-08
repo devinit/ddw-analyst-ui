@@ -327,7 +327,7 @@ class QueryBuilder:
         left_sql = left_hand_field.get_sql(with_namespace=True)
         right_hand_field = Field(right_column_name, table=right_table)
         right_sql = right_hand_field.get_sql(with_namespace=True)
-        filter_op = FILTER_MAPPING[args[0]["func"]]
+        filter_op = FILTER_MAPPING[filters[0]["func"]]
         return filter_op(left_hand_field, right_hand_field)
 
 
