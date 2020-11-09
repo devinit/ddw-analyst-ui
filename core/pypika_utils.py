@@ -179,7 +179,7 @@ class QueryBuilder:
         return self
 
     def filter(self, filters):
-        self.current_query = Query.from_(self.current_dataset)
+        # self.current_query = Query.from_(self.current_dataset)
 
         filter_operations = [FILTER_MAPPING[filter["func"]](getattr(
             self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
@@ -187,9 +187,11 @@ class QueryBuilder:
         if self.selected:
             self.current_query = self.current_query.where(filter_operations_or)
         else:
+            self.current_query = Query.from_(self.current_dataset)
             self.current_query = self.current_query.select(self.current_dataset).where(filter_operations_or)
+            self.selected = True
 
-        self.current_dataset = self.current_query
+        # self.current_dataset = self.current_query
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
@@ -296,7 +298,7 @@ class QueryBuilder:
         else:
             self.current_query = self.current_query.select(self.current_dataset.star)
             self.number_of_columns = 0 # Means all columns selected, and we shall not use it in subqueries
-        self.current_dataset = self.current_query
+        # self.current_dataset = self.current_query
         return self
 
     def count_sql(self, estimate=True):
@@ -356,10 +358,10 @@ class QueryBuilder:
         if sql_func == "UNION" and self.number_of_columns == query_two.number_of_columns:
             self.current_query = (self.current_query + query_two.current_query)
         elif sql_func == "IN" and query_two.number_of_columns == 1:
-            self.current_query = self.current_query.where(getattr(self.current_query, table_field).isin(query_two))
+            self.current_query = self.current_query.where(getattr(self.current_dataset, table_field).isin(query_two))
         elif(sub_query_args[0]["func"] in FILTER_MAPPING.keys()):
             filter_op = FILTER_MAPPING[sql_func]
-            self.current_query = self.current_query.where(filter_op(getattr(self.current_query, table_field), query_two))
+            self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two))
 
-        self.current_dataset = self.current_query
+        # self.current_dataset = self.current_query
         return self
