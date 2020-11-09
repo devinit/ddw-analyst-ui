@@ -184,8 +184,10 @@ class QueryBuilder:
         filter_operations = [FILTER_MAPPING[filter["func"]](getattr(
             self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
-        self.current_query = self.current_query.select(
-            self.current_dataset.star).where(filter_operations_or)
+        if self.selected:
+            self.current_query = self.current_query.where(filter_operations_or)
+        else:
+            self.current_query = self.current_query.select(self.current_dataset).where(filter_operations_or)
 
         self.current_dataset = self.current_query
         return self
@@ -275,13 +277,14 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def generate_sub_query_as_column(sub_query_id):
+    def generate_sub_query_as_column(self, sub_query_id):
         operation = Operation.objects.get(pk=int(sub_query_id))
         sub_query = QueryBuilder(operation=operation)
         return sub_query.current_query
 
     def select(self, columns=None, groupby=None):
         self.current_query = Query.from_(self.current_dataset)
+        self.selected = True
 
         if columns:
             for col_index in range(len(columns)):
@@ -336,7 +339,7 @@ class QueryBuilder:
         return self
 
     def exists(self, filters):
-        pseudo = PseudoColumn(1)
+        pseudo = PseudoColumn("1")
         left_source = Source.objects.get(pk=filters[0]['left_source'])
         left_table = Table(left_source.active_mirror_name, left_source.schema)
         sub_query = Query.from_(left_table).select(pseudo).where(self.filter_across_tables(filters))
@@ -344,18 +347,18 @@ class QueryBuilder:
         return self
 
 
-    def operator_or_where_clause_sub_query(self, sub_query_args):
-        query_two = QueryBuilder(operation=Operation.objects.get(pk=sub_query_args[0]["value"]))
+    def operator_or_where_clause_sub_query(self, filters):
+        query_two = QueryBuilder(operation=Operation.objects.get(pk=filters[0]["value"]))
         # self.current_query = Query.from_(self.current_dataset)
-        sql_func = sub_query_args[0]["func"]
-        table_field = sub_query_args[0]["field"]
+        sql_func = filters[0]["func"]
+        table_field = filters[0]["field"]
         # UNION, IN
         if sql_func == "UNION" and self.number_of_columns == query_two.number_of_columns:
             self.current_query = (self.current_query + query_two.current_query)
         elif sql_func == "IN" and query_two.number_of_columns == 1:
             self.current_query = self.current_query.where(getattr(self.current_query, table_field).isin(query_two))
         elif(sub_query_args[0]["func"] in FILTER_MAPPING.keys()):
-            filter_op = FILTER_MAPPING[sub_query_args[0]["func"]]
+            filter_op = FILTER_MAPPING[sql_func]
             self.current_query = self.current_query.where(filter_op(getattr(self.current_query, table_field), query_two))
 
         self.current_dataset = self.current_query
