@@ -178,8 +178,8 @@ Creating a sub-query for use in a SELECT clause and EXISTS operator <br>
 
 To create a SELECT query with a sub-qeury as part of it's columns e.g <br>
 
-  {
-    "name":"testing Subquery to Pass None Draft",
+{
+    "name":"Sub-query Select",
     "description":"Subquery testing",
     "is_draft": false,
     "operation_steps":
@@ -187,29 +187,56 @@ To create a SELECT query with a sub-qeury as part of it's columns e.g <br>
             {
                 "step_id":1,
                 "query_func":"select",
-                "query_kwargs":"{\"columns\":[\"country_code\",\"country_name\",\"iso3\", 4325]}",
+                "query_kwargs":"{\"columns\":[\"donor_code\",\"recipient_code\",\"recipient_name\", 11]}",
                 "name":"Select",
                 "description":"Select all CRS ISO Codes",
-                "source":30
+                "source":1
             },
             {
                 "step_id":2,
                 "query_func":"filter",
-                "query_kwargs":"{\"filters\":[{\"field\":\"country_code\",\"func\":\"eq\",\"value\":\"918\"}]}",
+                "query_kwargs":"{\"filters\":[{\"field\":\"region_code\",\"func\":\"eq\",\"value\":\"10010\"}]}",
                 "name":"Filter them",
                 "description":"Filtering now",
-                "source":30
+                "source":1
             }
         ]
 }
 
-Note the last column is an integer, which represents the id of the sub-query. The qub-query can be in any position as the user so wishes <br>
+Creating a sub-query that uses the EXISTS operator
+
+{
+    "name":"Sub-query Select",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"donor_code\",\"recipient_code\",\"recipient_name\"]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":1
+            },
+            {
+                "step_id":2,
+                "query_func":"exists",
+                "query_kwargs":"{\"filters\":[{\"left_source\":30,\"left_field\":\"country_code\",\"func\":\"eq\",\"right_source\":1,\"right_field\":\"recipient_code\"}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":1
+            }
+        ]
+}
+
+Note the last column (in the select step) is an integer, which represents the id of the sub-query. The qub-query can be in any position as the user so wishes <br>
 
 
 Using a sub-query in IN operator <br>
 
 {
-    "name":"testing Subquery to Pass None Draft",
+    "name":"testing Subquery IN",
     "description":"Subquery testing",
     "is_draft": false,
     "operation_steps":
@@ -217,21 +244,22 @@ Using a sub-query in IN operator <br>
             {
                 "step_id":1,
                 "query_func":"select",
-                "query_kwargs":"{\"columns\":[\"country_code\"]}",
+                "query_kwargs":"{\"columns\":[\"recipient_name\"]}",
                 "name":"Select",
                 "description":"Select using sub-query and IN operator",
-                "source":30
+                "source":1
             },
             {
                 "step_id":2,
                 "query_func":"operator_or_where_clause_sub_query",
-                "query_kwargs":"{\"filters\":[{\"field\":\"flow_name\",\"func\":\"IN\",\"value\":21}]}",
+                "query_kwargs":"{\"filters\":[{\"field\":\"donor_code\",\"func\":\"IN\",\"value\":17}]}",
                 "name":"Filter them",
                 "description":"Filtering now",
-                "source":30
+                "source":1
             }
         ]
 }
+
 Note that the value in the filters holds the ID of the sub-query to be used by the IN operator. The sub-query must also be returning one column strictly<br>
 
 
