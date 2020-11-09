@@ -37,6 +37,7 @@ const schema = Yup.object().shape({
 const queries = [
   { key: 'select', icon: 'check', text: 'Select', value: 'select' },
   { key: 'filter', icon: 'filter', text: 'Filter', value: 'filter' },
+  { key: 'advanced', icon: 'rocket', text: 'Advanced Filter', value: 'advanced' },
   { key: 'join', icon: 'chain', text: 'Join', value: 'join' },
   { key: 'aggregate', icon: 'rain', text: 'Aggregate', value: 'aggregate' },
   { key: 'scalar_transform', icon: 'magic', text: 'Scalar Transform', value: 'scalar_transform' },
@@ -89,6 +90,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
 
   const onUpdateOptions = (options: string) => {
     const step = props.step.set('query_kwargs', options);
+    console.log(JSON.stringify(step));
     props.onUpdateStep(step, props.editing);
   };
 
@@ -96,6 +98,9 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
     const query = step.get('query_func');
     if (query === 'filter') {
       return validateFilter(step);
+    }
+    if (query === 'advanced') {
+      return validateAdvanced(step);
     }
     if (query === 'select') {
       return validateSelect(step);
@@ -142,6 +147,20 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
       return valid;
     } else {
       setAlerts({ query_func: 'At least one filter is required!' });
+
+      return false;
+    }
+  };
+
+  const validateAdvanced = (step: OperationStepMap) => {
+    const options = step.get('query_kwargs') as string;
+    const advanced_query: string = options ? options : '';
+    if (advanced_query.length) {
+      const valid = true;
+
+      return valid;
+    } else {
+      setAlerts({ query_func: 'At least one query filter is required!' });
 
       return false;
     }
