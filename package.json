@@ -132,6 +132,7 @@
     "semantic-ui-react": "^0.88.2",
     "string-similarity": "^4.0.4",
     "styled-components": "^5.2.3",
+    "tokenizr": "^1.6.4",
     "yup": "^0.29.1"
   },
   "lint-staged": {
