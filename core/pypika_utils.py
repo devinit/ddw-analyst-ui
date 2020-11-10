@@ -26,8 +26,8 @@ class NullIf(Function):
         super(NullIf, self).__init__('NULLIF', term, condition, **kwargs)
 
 class PsqlExists(Function):
-    def __init__(self, sub_query, negate=False):
-        super(PsqlExists, self).__init__('NOT EXISTS', sub_query.get_sql()) if negate else super(PsqlExists, self).__init__('EXISTS', sub_query.get_sql())
+    def __init__(self, sub_query, negate=False, is_aggregate=True):
+        super(PsqlExists, self).__init__('NOT EXISTS', sub_query, is_aggregate=is_aggregate) if negate else super(PsqlExists, self).__init__('EXISTS', sub_query, is_aggregate=is_aggregate)
 
 def text_search(field, search_ilike):
     if "|" in search_ilike:  # User is trying to search for multiple strings
@@ -355,13 +355,14 @@ class QueryBuilder:
         sql_func = filters[0]["func"]
         table_field = filters[0]["field"]
         # UNION, IN
-        if sql_func == "UNION" and self.number_of_columns == query_two.number_of_columns:
-            self.current_query = (self.current_query + query_two.current_query)
+        if sql_func == "UNION":
+            query_one = QueryBuilder(operation=Operation.objects.get(pk=table_field)).current_query if str(table_field).isnumeric() else self.current_query
+            self.current_query = (query_one + query_two.current_query)
         elif sql_func == "IN" and query_two.number_of_columns == 1:
-            self.current_query = self.current_query.where(getattr(self.current_dataset, table_field).isin(query_two))
-        elif(sub_query_args[0]["func"] in FILTER_MAPPING.keys()):
+            self.current_query = self.current_query.where(getattr(self.current_dataset, table_field).isin(query_two.current_query))
+        elif(sql_func in FILTER_MAPPING.keys()):
             filter_op = FILTER_MAPPING[sql_func]
-            self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two))
+            self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two.current_query))
 
         # self.current_dataset = self.current_query
         return self
