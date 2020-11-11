@@ -148,7 +148,7 @@
         ]
 }
 
-Creating a sub-query for use in a SELECT clause and EXISTS operator <br>
+Creating a sub-query for use in a SELECT clause column <br>
 
 {
     "name":"testing Subquery to Pass None Draft",
@@ -203,7 +203,10 @@ To create a SELECT query with a sub-qeury as part of it's columns e.g <br>
         ]
 }
 
-Creating a sub-query that uses the EXISTS operator
+
+Note the last column (in the select step) is an integer, which represents the id of the sub-query. The qub-query can be in any position as the user so wishes <br>
+
+Using a sub-query that uses the EXISTS operator <br>
 
 {
     "name":"Sub-query Select",
@@ -230,7 +233,7 @@ Creating a sub-query that uses the EXISTS operator
         ]
 }
 
-Note the last column (in the select step) is an integer, which represents the id of the sub-query. The qub-query can be in any position as the user so wishes <br>
+Note that for NOT EXISTS, we use the notexits as the query_func in step 2, and everything else is the same.<br>
 
 
 Using a sub-query in IN operator <br>
@@ -262,6 +265,8 @@ Using a sub-query in IN operator <br>
 
 Note that the value in the filters holds the ID of the sub-query to be used by the IN operator. The sub-query must also be returning one column strictly<br>
 
+For NOT IN, we use the NOTIN in step two as the func.<br>
+
 
 Using a sub-query in UNION operator <br>
 
@@ -290,6 +295,51 @@ Using a sub-query in UNION operator <br>
         ]
 }
 
-Note that the columns in the sub-query and main query here must be same number and similar in data types.
+{
+    "name":"Testing UNION with two sub-query IDs",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"operator_or_where_clause_sub_query",
+                "query_kwargs":"{\"filters\":[{\"field\":22,\"func\":\"UNION\",\"value\":21}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
 
-We have left the "source" variable in all steps made up of new query_funcs for backwards compatibility
+Note that the columns in the sub-query and main query here must be same number and similar in data types.<br>
+<br>
+We have left the "source" variable in all steps made up of new query_funcs for backwards compatibility<br>
+
+Using a sub-query in a WHERE clause to compare with column in current dataset<br>
+{
+    "name":"Sub-query for where compare with column",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"donor_code\"]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":1
+            },
+            {
+                "step_id":2,
+                "query_func":"operator_or_where_clause_sub_query",
+                "query_kwargs":"{\"filters\":[{\"field\":\"donor_code\",\"func\":\"eq\",\"value\":\"27\"}]}",
+                "name":"Compare Source with End",
+                "description":"Filtering now",
+                "source":1
+            }
+        ]
+}
+
+Here value is numeric and represents the sub-query we shall compare the column against
