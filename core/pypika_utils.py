@@ -340,13 +340,16 @@ class QueryBuilder:
         self.current_query = self.current_query.where(self.filter_across_tables(filters))
         return self
 
-    def exists(self, filters):
+    def exists(self, filters, negate=False):
         pseudo = PseudoColumn("1")
         left_source = Source.objects.get(pk=filters[0]['left_source'])
         left_table = Table(left_source.active_mirror_name, left_source.schema)
         sub_query = Query.from_(left_table).select(pseudo).where(self.filter_across_tables(filters))
-        self.current_query = self.current_query.where(PsqlExists(sub_query))
+        self.current_query = self.current_query.where(PsqlExists(sub_query, negate=negate))
         return self
+
+    def notexists(self, filters, negate=True):
+        return self.exists(filters, negate)
 
 
     def operator_or_where_clause_sub_query(self, filters):
@@ -360,6 +363,8 @@ class QueryBuilder:
             self.current_query = (query_one + query_two.current_query)
         elif sql_func == "IN" and query_two.number_of_columns == 1:
             self.current_query = self.current_query.where(getattr(self.current_dataset, table_field).isin(query_two.current_query))
+        elif sql_func == "NOTIN" and query_two.number_of_columns == 1:
+            self.current_query = self.current_query.where(getattr(self.current_dataset, table_field).isin(query_two.current_query).negate())
         elif(sql_func in FILTER_MAPPING.keys()):
             filter_op = FILTER_MAPPING[sql_func]
             self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two.current_query))
