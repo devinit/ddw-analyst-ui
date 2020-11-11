@@ -303,7 +303,6 @@ class SavedQueryData(BaseEntity):
     active = models.BooleanField(default=True)
     operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
     full_query = models.TextField(null=False)
-<<<<<<< HEAD
     status = models.CharField(max_length=1, choices=status_choices, default='p')
     description = models.CharField(max_length=200, null=False)
     logs = models.TextField(blank=True, null=True)
@@ -313,8 +312,3 @@ class SavedQueryData(BaseEntity):
         if self.saved_query_db_table:
             return self.saved_query_db_table + ' - ' + status[0]
         return self.operation.name + ' - ' + status[0]
-=======
-    status = models.CharField(
-        max_length=1, choices=status_choices, default='p')
-    comment = models.CharField(max_length=200, null=False)
->>>>>>> Update Models to cater for sub-queries
