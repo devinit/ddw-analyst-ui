@@ -1,6 +1,7 @@
 import Tokenizr from 'tokenizr';
+import { Set } from 'immutable';
 
-export const parseAdvancedQueryString = (options: string): any => {
+export const parseAdvancedQueryString = (options: string, columns: Set<string>): any => {
   const advancedFilters: any = [];
   let filters: any = [];
   let expression: any = {};
@@ -9,6 +10,10 @@ export const parseAdvancedQueryString = (options: string): any => {
   let parenthesis = '';
   let bracketFilters: any = [];
   let parenthesisType = '';
+  const columnValidation: any = {};
+
+  const isColumnValid = validateTableColumn('region_c', columns);
+  console.log(`isColumnValid ${isColumnValid}`);
 
   const lexer = new Tokenizr();
 
@@ -48,6 +53,8 @@ export const parseAdvancedQueryString = (options: string): any => {
   });
 
   lexer.input(options);
+
+  //Create JSON fields from advanced users query string
   lexer.tokens().forEach((token) => {
     // console.log(`token ${JSON.stringify(token)}`);
     if (token.type === 'AND|OR') {
@@ -65,7 +72,12 @@ export const parseAdvancedQueryString = (options: string): any => {
 
     if (token.type === 'table_column') {
       expression = {};
-      expression['field'] = token.value;
+      const tableColumn = token.value.startsWith('x_') ? token.value.substr(2) : token.value;
+      expression['field'] = tableColumn;
+
+      if (validateTableColumn(tableColumn, columns) === undefined) {
+        columnValidation[tableColumn] = tableColumn;
+      }
     } else if (token.type === 'operato') {
       operators.push(token.value);
       expression['func'] = token.value;
@@ -84,21 +96,16 @@ export const parseAdvancedQueryString = (options: string): any => {
 
       operators = [];
 
-      // console.log(`Parenthesis ${parenthesis}`);
       if (parenthesis === '(' && andOR === 'OR') {
-        // console.log(`Open Or parenthesis ${parenthesis}`);
         for (let index = 0; index < filters.length; index++) {
           bracketFilters.push(filters[index]);
         }
         filters = [];
       } else if (parenthesis === '(' && andOR === 'AND') {
-        // console.log(`Open AND parenthesis ${parenthesis}`);
         for (let index = 0; index < filters.length; index++) {
           bracketFilters.push([filters[index]]);
         }
-        // console.log(`filters ${JSON.stringify(filters)}`);
-        // console.log(`bracketFilters ${JSON.stringify(bracketFilters)}`);
-        // console.log(`Parenthesis type ${parenthesisType}`);
+
         filters = [];
       } else if (andOR === 'AND') {
         for (let index = 0; index < filters.length; index++) {
@@ -121,20 +128,22 @@ export const parseAdvancedQueryString = (options: string): any => {
       }
       bracketFilters = [];
     } else if (parenthesis === ')' && parenthesisType === 'OR') {
-      // console.log(`bracketFilters ${JSON.stringify(bracketFilters)}`);
       if (bracketFilters.length > 0) {
         advancedFilters.push({
           or_brackets: bracketFilters,
         });
       }
-      // console.log(`Full full ${JSON.stringify(advancedFilters)}`);
-      bracketFilters = [];
-    }
 
-    if (token.type === 'EOF') {
-      // console.log(JSON.stringify(advancedFilters));
+      bracketFilters = [];
     }
   });
 
-  return advancedFilters;
+  return {
+    filterJSON: advancedFilters,
+    validation: Object.keys(columnValidation).join(', '),
+  };
+};
+
+const validateTableColumn = (columnName: string, columns: Set<string>) => {
+  return columns.find((col) => col === columnName);
 };

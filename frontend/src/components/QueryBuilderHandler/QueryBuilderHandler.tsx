@@ -7,7 +7,7 @@ import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
 import { ReduxStore } from '../../store';
 import { Filters, OperationStepMap, WindowOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString } from '../../utils';
+import { formatString, getStepSelectableColumns } from '../../utils';
 import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
 import { BasicTextarea } from '../BasicTextarea';
 import FilterQueryBuilder from '../FilterQueryBuilder';
@@ -145,13 +145,11 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
     }
     if (query === 'advanced') {
       const columns = source.get('columns') as ColumnList;
-      console.log(`Advanced columns ${JSON.stringify(columns)}`);
+      const selectableColumns = getStepSelectableColumns(step, steps, columns) as Set<string>;
 
       const onTextareaChange = (options: string) => {
-        const query = parseAdvancedQueryString(options);
-
-        console.log(JSON.stringify(query));
-        onUpdateOptions(JSON.stringify(query));
+        const queryObject = parseAdvancedQueryString(options, selectableColumns);
+        onUpdateOptions(JSON.stringify(queryObject));
       };
 
       return <BasicTextarea onChange={onTextareaChange} alerts={alerts} />;

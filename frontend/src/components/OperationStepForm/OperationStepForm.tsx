@@ -154,13 +154,21 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
 
   const validateAdvanced = (step: OperationStepMap) => {
     const options = step.get('query_kwargs') as string;
-    const advanced_query: string = options ? options : '';
-    if (advanced_query.length) {
-      const valid = true;
+    const advanced_query: any = options ? JSON.parse(options) : [];
+    console.log(advanced_query);
 
-      return valid;
+    if (advanced_query['validation'].length > 0) {
+      setAlerts({
+        error: `These columns donot exist: ${advanced_query['validation']}`,
+      });
+
+      return false;
+    } else if (advanced_query) {
+      return true;
     } else {
-      setAlerts({ query_func: 'At least one query filter is required!' });
+      setAlerts({
+        error: 'At least one query filter is required, please prefix columns with "x_"',
+      });
 
       return false;
     }
