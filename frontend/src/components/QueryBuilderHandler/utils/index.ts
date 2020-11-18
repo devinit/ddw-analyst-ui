@@ -12,9 +12,6 @@ export const parseAdvancedQueryString = (options: string, columns: Set<string>):
   let parenthesisType = '';
   const columnValidation: any = {};
 
-  const isColumnValid = validateTableColumn('region_c', columns);
-  console.log(`isColumnValid ${isColumnValid}`);
-
   const lexer = new Tokenizr();
 
   //Match table columns with 'x_' prefix
@@ -82,17 +79,9 @@ export const parseAdvancedQueryString = (options: string, columns: Set<string>):
       operators.push(token.value);
       expression['func'] = token.value;
     } else if (token.type === 'column_value') {
-      expression['value'] = token.value.toString();
+      expression['value'] = removeQuotes(token.value).toString();
 
-      if (operators.length === 2) {
-        const expressionOne = { ...expression, func: operators[0] };
-        const expressionTwo = { ...expression, func: operators[1] };
-
-        filters.push(expressionOne);
-        filters.push(expressionTwo);
-      } else {
-        filters.push(expression);
-      }
+      filters.push({ ...expression, func: mapComparisonOperators(operators) });
 
       operators = [];
 
@@ -145,5 +134,26 @@ export const parseAdvancedQueryString = (options: string, columns: Set<string>):
 };
 
 const validateTableColumn = (columnName: string, columns: Set<string>) => {
-  return columns.find((col) => col === columnName);
+  const col = columns.find((col) => col === columnName);
+
+  return col;
+};
+
+const mapComparisonOperators = (operators: string[]) => {
+  const operatorMap: any = {
+    '>=': 'ge',
+    '=>': 'ge',
+    '<=': 'le',
+    '=<': 'le',
+    '<': 'lt',
+    '>': 'gt',
+    '=': 'eq',
+    '!=': 'ne',
+  };
+
+  return operatorMap[operators.join('')];
+};
+
+const removeQuotes = (str: string) => {
+  return str.replace(/['"]+/g, '');
 };
