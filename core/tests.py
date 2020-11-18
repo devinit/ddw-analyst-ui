@@ -181,7 +181,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_filter(self):
-        expected = 'SELECT * FROM "public"."crs_current" WHERE "year">=1973 OR "short_description" ILIKE '%sector%' OR "short_description" ILIKE '%wheat%''
+        expected = 'SELECT * FROM "public"."crs_current" WHERE "year">=1973 OR "short_description" ILIKE \'%sector%\' OR "short_description" ILIKE \'%wheat%\''
         OperationStep.objects.create(
             operation=self.op,
             step_id=2,
@@ -392,7 +392,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_avg_aggregate(self):
-        expected = 'SELECT "sq0"."year",AVG("sq0"."usd_commitment") "usd_commitment_Avg" FROM (SELECT * FROM "public"."crs_current") "sq0" GROUP BY "sq0"."year"'
+        expected = 'SELECT "year",AVG("usd_commitment") "usd_commitment_Avg" FROM "public"."crs_current" GROUP BY "year"'
 
         OperationStep.objects.create(
             operation=self.op,
@@ -419,7 +419,7 @@ class TestPypikaUtils(TestCase):
         self.assertEqual(query.build_query(operation=self.op, offset=10)[1], expected)
 
     def test_can_perform_scalar_transform(self):
-        expected = 'SELECT *,"short_description" ILIKE '%wheat%' "short_description_text_search" FROM "public"."crs_current"'
+        expected = 'SELECT *,"short_description" ILIKE \'%wheat%\' "short_description_text_search" FROM "public"."crs_current"'
 
         OperationStep.objects.create(
             operation=self.op,
