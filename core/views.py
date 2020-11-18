@@ -347,7 +347,7 @@ class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ViewSourceDatasets(APIView):
     """
-    Get all published datasets attached to a specific data source, but not belonging the current user
+    Get all published datasets attached to a specific data source, including those belonging to the current user
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (
@@ -361,8 +361,7 @@ class ViewSourceDatasets(APIView):
         try:
             if self.request.user.is_authenticated:
                 operations = Operation.objects.filter(
-                    ~Q(user=self.request.user) & Q(
-                        operationstep__source=pk) & Q(is_draft=False)
+                    Q(operationstep__source=pk) & Q(is_draft=False)
                 ).order_by('-updated_on').distinct()
             else:
                 operations = Operation.objects.filter(
