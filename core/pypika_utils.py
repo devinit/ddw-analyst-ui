@@ -173,6 +173,120 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
+    def advanced(self, filters):
+        self.current_query = Query.from_(self.current_dataset)
+        and_querys = []
+        or_querys = []
+        or_brackets_and_querys = []
+        or_brackets_or_querys = []
+        and_brackets_and_querys = []
+        and_brackets_or_querys = []
+        combined_query = ''
+        queries = {}
+
+        filter_mapping = {
+            "lt": operator.lt,
+            "le": operator.le,
+            "eq": operator.eq,
+            "ne": operator.ne,
+            "ge": operator.ge,
+            "gt": operator.gt,
+            "text_search": text_search
+        }
+
+        for filter in filters:
+            if type(filter) is list:
+                query_filter = filter_mapping[filter[0]["func"]](getattr(
+                    self.current_dataset, filter[0]["field"]), filter[0]["value"])
+                and_querys.append(query_filter)
+                queries['and_it'] = and_querys
+            elif type(filter) is dict:
+                if "or_brackets" in filter:
+                    for filter in filter["or_brackets"]:
+                        if type(filter) is list:
+                            query_filter = filter_mapping[filter[0]["func"]](getattr(
+                                self.current_dataset, filter[0]["field"]), filter[0]["value"])
+                            or_brackets_and_querys.append(query_filter)
+                            queries['or_brackets_and'] = or_brackets_and_querys
+                        elif type(filter) is dict:
+                            query_filter = filter_mapping[filter["func"]](getattr(
+                                self.current_dataset, filter["field"]), filter["value"])
+                            or_brackets_or_querys.append(query_filter)
+                            queries['or_brackets_or'] = or_brackets_or_querys
+
+                    if "or_brackets_and" in queries and "or_brackets_or" in queries:
+                        or_query_string = reduce(operator.or_, queries['or_brackets_or'])
+                        and_query_string = reduce(operator.and_, queries['or_brackets_and'])
+                        queries['or_brackets'] = operator.or_(and_query_string, or_query_string)
+                    elif "or_brackets_and" in queries:
+                        and_query_string = reduce(operator.and_, queries['or_brackets_and'])
+                        queries['or_brackets'] = and_query_string
+                    elif "or_brackets_or" in queries:
+                        or_query_string = reduce(operator.or_, queries['or_brackets_or'])
+                        queries['or_brackets'] = or_query_string
+
+                elif "and_brackets" in filter:
+                    for filter in filter["and_brackets"]:
+                        if type(filter) is list:
+                            query_filter = filter_mapping[filter[0]["func"]](getattr(
+                                self.current_dataset, filter[0]["field"]), filter[0]["value"])
+                            and_brackets_and_querys.append(query_filter)
+                            queries['and_brackets_and'] = and_brackets_and_querys
+                        elif type(filter) is dict:
+                            query_filter = filter_mapping[filter["func"]](getattr(
+                                self.current_dataset, filter["field"]), filter["value"])
+                            and_brackets_or_querys.append(query_filter)
+                            queries['and_brackets_or'] = and_brackets_or_querys
+
+                    if "and_brackets_and" in queries and "and_brackets_or" in queries:
+                        or_query_string = reduce(operator.or_, queries['and_brackets_or'])
+                        and_query_string = reduce(operator.and_, queries['and_brackets_and'])
+                        queries['and_brackets'] = operator.and_(or_query_string, and_query_string)
+                    elif "and_brackets_and" in queries:
+                        and_query_string = reduce(operator.and_, queries['and_brackets_and'])
+                        queries['and_brackets'] = and_query_string
+                    elif "and_brackets_or" in queries:
+                        or_query_string = reduce(operator.or_, queries['or_brackets_or'])
+                        queries['and_brackets'] = or_query_string
+
+                else:
+                    query_filter = filter_mapping[filter["func"]](getattr(
+                        self.current_dataset, filter["field"]), filter["value"])
+                    or_querys.append(query_filter)
+                    queries['or_it'] = or_querys
+
+                if "and_brackets" in queries and "or_brackets" in queries:
+                    queries['brackets'] = operator.or_(queries['and_brackets'], queries['or_brackets'])
+                elif "and_brackets" in queries:
+                    queries['brackets'] = queries['and_brackets']
+                elif "or_brackets" in queries:
+                    queries['brackets'] = queries['or_brackets']
+
+            if "or_it" in queries and "and_it" in queries:
+                or_query_string = reduce(operator.or_, queries['or_it'])
+                and_query_string = reduce(operator.and_, queries['and_it'])
+                queries['and_or'] = operator.or_(and_query_string, or_query_string)
+            elif "and_it" in queries:
+                and_query_string = reduce(operator.and_, queries['and_it'])
+                queries['and_or'] = and_query_string
+            elif "or_it" in queries:
+                or_query_string = reduce(operator.and_, queries['or_it'])
+                queries['and_or'] = or_query_string
+
+        if "and_brackets" in queries:
+            combined_query = operator.and_(queries['and_or'], queries['brackets'])
+        else:
+            combined_query = operator.or_(queries['and_or'], queries['brackets'])
+
+        print('combined_query')
+        print(combined_query)
+
+        self.current_query = self.current_query.select(
+            self.current_dataset.star).where(combined_query)
+
+        self.current_dataset = self.current_query
+        return self
+
     def multi_transform(self, trans_func_name, operational_columns):
         if not isinstance(operational_columns, list):
             raise ValueError("Expecting a list of operational columns")

@@ -155,7 +155,6 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
   const validateAdvanced = (step: OperationStepMap) => {
     const options = step.get('query_kwargs') as string;
     const advanced_query: any = options ? JSON.parse(options) : [];
-    console.log(advanced_query);
 
     if (advanced_query['validation'].length > 0) {
       setAlerts({
@@ -276,6 +275,12 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
         value,
       }));
       step = step.set('query_kwargs', JSON.stringify({ filters: filtersWithoutErrors }));
+    }
+
+    if (query === 'advanced') {
+      const queryObject = options ? JSON.parse(options) : { filters: [] };
+      console.log(`In process advanced step: ${JSON.stringify(queryObject['filterJSON'])}`);
+      step = step.set('query_kwargs', JSON.stringify({ filters: queryObject['filterJSON'] }));
     }
 
     return step.withMutations((_step) =>
