@@ -15,7 +15,7 @@ import { JoinQueryBuilder } from '../JoinQueryBuilder';
 import { SelectQueryBuilder } from '../SelectQueryBuilder';
 import { TransformQueryBuilder } from '../TransformQueryBuilder';
 import { WindowQueryBuilder } from '../WindowQueryBuilder';
-import { parseAdvancedQueryString } from './utils';
+import { parseTextFilterString } from './utils';
 
 interface ComponentProps {
   alerts?: { [key: string]: string };
@@ -143,12 +143,13 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
         />
       );
     }
-    if (query === 'advanced') {
+    if (query === 'text_filter') {
       const columns = source.get('columns') as ColumnList;
       const selectableColumns = getStepSelectableColumns(step, steps, columns) as Set<string>;
 
       const onTextareaChange = (options: string) => {
-        const queryObject = parseAdvancedQueryString(options, selectableColumns);
+        const queryObject = parseTextFilterString(options, selectableColumns);
+        console.log(`onTextareaChange: ${JSON.stringify(queryObject['filterJSON'])}`);
         onUpdateOptions(JSON.stringify(queryObject));
       };
 

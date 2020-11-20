@@ -37,7 +37,7 @@ const schema = Yup.object().shape({
 const queries = [
   { key: 'select', icon: 'check', text: 'Select', value: 'select' },
   { key: 'filter', icon: 'filter', text: 'Filter', value: 'filter' },
-  { key: 'advanced', icon: 'rocket', text: 'Advanced Filter', value: 'advanced' },
+  { key: 'text_filter', icon: 'filter', text: 'Text Filter', value: 'text_filter' },
   { key: 'join', icon: 'chain', text: 'Join', value: 'join' },
   { key: 'aggregate', icon: 'rain', text: 'Aggregate', value: 'aggregate' },
   { key: 'scalar_transform', icon: 'magic', text: 'Scalar Transform', value: 'scalar_transform' },
@@ -99,8 +99,8 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
     if (query === 'filter') {
       return validateFilter(step);
     }
-    if (query === 'advanced') {
-      return validateAdvanced(step);
+    if (query === 'text_filter') {
+      return validateTextFilter(step);
     }
     if (query === 'select') {
       return validateSelect(step);
@@ -152,7 +152,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
     }
   };
 
-  const validateAdvanced = (step: OperationStepMap) => {
+  const validateTextFilter = (step: OperationStepMap) => {
     const options = step.get('query_kwargs') as string;
     const advanced_query: any = options ? JSON.parse(options) : [];
 
@@ -277,9 +277,9 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
       step = step.set('query_kwargs', JSON.stringify({ filters: filtersWithoutErrors }));
     }
 
-    if (query === 'advanced') {
+    if (query === 'text_filter') {
       const queryObject = options ? JSON.parse(options) : { filters: [] };
-      console.log(`In process advanced step: ${JSON.stringify(queryObject['filterJSON'])}`);
+      console.log(`In process text_filter step: ${JSON.stringify(queryObject['filterJSON'])}`);
       step = step.set('query_kwargs', JSON.stringify({ filters: queryObject['filterJSON'] }));
     }
 
