@@ -1,7 +1,7 @@
 import Tokenizr from 'tokenizr';
 import { Set } from 'immutable';
 
-export const parseAdvancedQueryString = (options: string, columns: Set<string>): any => {
+export const parseTextFilterString = (options: string, columns: Set<string>): any => {
   const advancedFilters: any = [];
   let filters: any = [];
   let expression: any = {};
@@ -51,7 +51,7 @@ export const parseAdvancedQueryString = (options: string, columns: Set<string>):
 
   lexer.input(options);
 
-  //Create JSON fields from advanced users query string
+  //Create JSON fields from text filters query string
   lexer.tokens().forEach((token) => {
     // console.log(`token ${JSON.stringify(token)}`);
     if (token.type === 'AND|OR') {
