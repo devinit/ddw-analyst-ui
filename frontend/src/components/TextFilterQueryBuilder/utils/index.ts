@@ -1,16 +1,43 @@
 import Tokenizr from 'tokenizr';
 import { Set } from 'immutable';
 
-export const parseTextFilterString = (options: string, columns: Set<string>): any => {
-  const advancedFilters: any = [];
-  let filters: any = [];
-  let expression: any = {};
-  let operators: any = [];
+type ComparisonOperators = '=' | '>' | '<' | '>=' | '<=' | '!=' | '=>' | '=<';
+type StringOperators = 'lt' | 'le' | 'eq' | 'gt' | 'ge' | 'text_search' | 'ne';
+interface TextFilter {
+  field?: string;
+  value?: string | number;
+  func?: StringOperators;
+}
+
+type ComparisonMap = {
+  [key in ComparisonOperators]: StringOperators;
+};
+
+interface OrBracket {
+  or_brackets: TextFilterArray[];
+}
+
+interface AndBracket {
+  and_brackets: TextFilterArray[];
+}
+
+type TextFilterArray = TextFilter[] | TextFilter | OrBracket | AndBracket;
+
+interface ParsedTextFilter {
+  filterJSON: TextFilterArray[];
+  validation: string;
+}
+
+export const parseTextFilterString = (options: string, columns: Set<string>): ParsedTextFilter => {
+  const advancedFilters: TextFilterArray[] = [];
+  let bracketFilters: TextFilterArray[] = [];
+  let operators: ComparisonOperators[] = [];
+  let filters: TextFilter[] = [];
+  let expression: TextFilter = {};
   let andOR = '';
   let parenthesis = '';
-  let bracketFilters: any = [];
   let parenthesisType = '';
-  const columnValidation: any = {};
+  const columnValidation: { [key: string]: string } = {};
 
   const lexer = new Tokenizr();
 
@@ -20,7 +47,7 @@ export const parseTextFilterString = (options: string, columns: Set<string>): an
   });
 
   //Match sql comparison operators
-  lexer.rule(/(=|>|<|>=|<|<=|<>)/, (ctx) => {
+  lexer.rule(/(=|>|<|>=|<|<=|!=)/, (ctx) => {
     ctx.accept('operato');
   });
 
@@ -53,7 +80,6 @@ export const parseTextFilterString = (options: string, columns: Set<string>): an
 
   //Create JSON fields from text filters query string
   lexer.tokens().forEach((token) => {
-    // console.log(`token ${JSON.stringify(token)}`);
     if (token.type === 'AND|OR') {
       andOR = token.value;
     }
@@ -139,8 +165,8 @@ const validateTableColumn = (columnName: string, columns: Set<string>) => {
   return col;
 };
 
-const mapComparisonOperators = (operators: string[]) => {
-  const operatorMap: any = {
+const mapComparisonOperators = (operators: ComparisonOperators[]): StringOperators => {
+  const operatorMap: ComparisonMap = {
     '>=': 'ge',
     '=>': 'ge',
     '<=': 'le',
@@ -151,7 +177,7 @@ const mapComparisonOperators = (operators: string[]) => {
     '!=': 'ne',
   };
 
-  return operatorMap[operators.join('')];
+  return operatorMap[operators.join('') as ComparisonOperators];
 };
 
 const removeQuotes = (str: string) => {
