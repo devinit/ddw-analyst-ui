@@ -7,15 +7,14 @@ import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
 import { ReduxStore } from '../../store';
 import { Filters, OperationStepMap, WindowOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
-import { formatString, getStepSelectableColumns } from '../../utils';
+import { formatString } from '../../utils';
 import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
-import { BasicTextarea } from '../BasicTextarea';
 import FilterQueryBuilder from '../FilterQueryBuilder';
 import { JoinQueryBuilder } from '../JoinQueryBuilder';
 import { SelectQueryBuilder } from '../SelectQueryBuilder';
+import { TextFilterQueryBuilder } from '../TextFilterQueryBuilder';
 import { TransformQueryBuilder } from '../TransformQueryBuilder';
 import { WindowQueryBuilder } from '../WindowQueryBuilder';
-import { parseTextFilterString } from './utils';
 
 interface ComponentProps {
   alerts?: { [key: string]: string };
@@ -144,16 +143,15 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
       );
     }
     if (query === 'text_filter') {
-      const columns = source.get('columns') as ColumnList;
-      const selectableColumns = getStepSelectableColumns(step, steps, columns) as Set<string>;
-
-      const onTextareaChange = (options: string) => {
-        const queryObject = parseTextFilterString(options, selectableColumns);
-        console.log(`onTextareaChange: ${JSON.stringify(queryObject['filterJSON'])}`);
-        onUpdateOptions(JSON.stringify(queryObject));
-      };
-
-      return <BasicTextarea onChange={onTextareaChange} alerts={alerts} />;
+      return (
+        <TextFilterQueryBuilder
+          source={source}
+          step={step}
+          steps={steps}
+          onUpdateTextarea={onUpdateOptions}
+          alerts={alerts}
+        />
+      );
     }
     if (query === 'select') {
       const { columns } = options ? JSON.parse(options) : { columns: [] }; // TODO: specify type
