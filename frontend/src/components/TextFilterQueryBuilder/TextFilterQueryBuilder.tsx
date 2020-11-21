@@ -4,7 +4,7 @@ import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns } from '../../utils';
 import { BasicTextarea } from '../BasicTextarea';
-import { parseTextFilterString } from '../QueryBuilderHandler/utils';
+import { parseTextFilterString } from './utils';
 
 interface TextFilterQueryBuilder {
   alerts: { [key: string]: string } | undefined;
