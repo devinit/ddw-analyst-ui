@@ -14,8 +14,8 @@ export const parseTextFilterString = (options: string, columns: Set<string>): an
 
   const lexer = new Tokenizr();
 
-  //Match table columns with 'x_' prefix
-  lexer.rule(/\bx_[a-zA-Z_][a-zA-Z0-9_]*/, (ctx) => {
+  //Match table columns with 'col_' prefix
+  lexer.rule(/\bcol_[a-zA-Z_][a-zA-Z0-9_]*/, (ctx) => {
     ctx.accept('table_column');
   });
 
@@ -69,7 +69,7 @@ export const parseTextFilterString = (options: string, columns: Set<string>): an
 
     if (token.type === 'table_column') {
       expression = {};
-      const tableColumn = token.value.startsWith('x_') ? token.value.substr(2) : token.value;
+      const tableColumn = token.value.startsWith('col_') ? token.value.substr(4) : token.value;
       expression['field'] = tableColumn;
 
       if (validateTableColumn(tableColumn, columns) === undefined) {
