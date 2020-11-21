@@ -90,7 +90,6 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
 
   const onUpdateOptions = (options: string) => {
     const step = props.step.set('query_kwargs', options);
-    console.log(JSON.stringify(step));
     props.onUpdateStep(step, props.editing);
   };
 
@@ -279,7 +278,6 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
 
     if (query === 'text_filter') {
       const queryObject = options ? JSON.parse(options) : { filters: [] };
-      console.log(`In process text_filter step: ${JSON.stringify(queryObject['filterJSON'])}`);
       step = step.set('query_kwargs', JSON.stringify({ filters: queryObject['filterJSON'] }));
     }
 
