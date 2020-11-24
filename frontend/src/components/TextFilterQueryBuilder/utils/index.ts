@@ -3,30 +3,41 @@ import { Set } from 'immutable';
 
 type ComparisonOperators = '=' | '>' | '<' | '>=' | '<=' | '!=' | '=>' | '=<';
 type StringOperators = 'lt' | 'le' | 'eq' | 'gt' | 'ge' | 'text_search' | 'ne';
-interface TextFilter {
+export interface TextFilter {
   field?: string;
   value?: string | number;
   func?: StringOperators;
 }
 
-type ComparisonMap = {
+export type ComparisonMap = {
   [key in ComparisonOperators]: StringOperators;
 };
 
-interface OrBracket {
+export interface OrBracket {
   or_brackets: TextFilterArray[];
 }
 
-interface AndBracket {
+export interface AndBracket {
   and_brackets: TextFilterArray[];
 }
 
-type TextFilterArray = TextFilter[] | TextFilter | OrBracket | AndBracket;
+export type TextFilterArray = TextFilter[] | TextFilter | OrBracket | AndBracket;
 
 interface ParsedTextFilter {
   filterJSON: TextFilterArray[];
   validation: string;
 }
+
+const operatorMap: ComparisonMap = {
+  '>=': 'ge',
+  '=>': 'ge',
+  '<=': 'le',
+  '=<': 'le',
+  '<': 'lt',
+  '>': 'gt',
+  '=': 'eq',
+  '!=': 'ne',
+};
 
 export const parseTextFilterString = (options: string, columns: Set<string>): ParsedTextFilter => {
   const advancedFilters: TextFilterArray[] = [];
@@ -165,19 +176,89 @@ const validateTableColumn = (columnName: string, columns: Set<string>) => {
   return col;
 };
 
-const mapComparisonOperators = (operators: ComparisonOperators[]): StringOperators => {
-  const operatorMap: ComparisonMap = {
-    '>=': 'ge',
-    '=>': 'ge',
-    '<=': 'le',
-    '=<': 'le',
-    '<': 'lt',
-    '>': 'gt',
-    '=': 'eq',
-    '!=': 'ne',
-  };
+export const getTextFilterString = (
+  format: string,
+  filters: any,
+  textFilterString: string,
+): string => {
+  let openParenthesis = '';
+  let closeParenthesis = '';
 
+  for (let index = 0; index < filters.length; index++) {
+    const element = filters[index];
+    openParenthesis = index === 0 ? '(' : '';
+    closeParenthesis = index === filters.length - 1 ? ')' : '';
+
+    if (Array.isArray(element)) {
+      const operator = textFilterString.length > 0 ? 'AND' : '';
+      if (format === 'or_brackets') {
+        const bracketOperator = index === 0 ? 'OR' : 'AND';
+        textFilterString = `${textFilterString} ${bracketOperator} ${openParenthesis}col_${
+          element[0]['field']
+        }${reverseMapComparisonOperators(element[0]['func'])}'${
+          element[0]['value']
+        }'${closeParenthesis}`;
+      } else if (format === 'and_brackets') {
+        textFilterString = `${textFilterString} ${operator} ${openParenthesis}col_${
+          element[0]['field']
+        }${reverseMapComparisonOperators(element[0]['func'])}'${
+          element[0]['value']
+        }'${closeParenthesis}`;
+      } else {
+        textFilterString = `${textFilterString} ${operator} col_${
+          element[0]['field']
+        }${reverseMapComparisonOperators(element[0]['func'])}'${element[0]['value']}'`;
+      }
+    } else if (typeof element === 'object' && element !== null) {
+      const operator = textFilterString.length > 0 ? 'OR' : '';
+      if (element.hasOwnProperty('or_brackets')) {
+        textFilterString = getTextFilterString(
+          'or_brackets',
+          element['or_brackets'],
+          textFilterString,
+        );
+      } else if (element.hasOwnProperty('and_brackets')) {
+        textFilterString = getTextFilterString(
+          'and_brackets',
+          element['and_brackets'],
+          textFilterString,
+        );
+      } else {
+        if (format === 'or_brackets') {
+          textFilterString = `${textFilterString} ${operator} ${openParenthesis}col_${
+            element['field']
+          }${reverseMapComparisonOperators(element['func'])}'${
+            element['value']
+          }'${closeParenthesis}`;
+        } else if (format === 'and_brackets') {
+          const bracketOperator = index === 0 ? 'AND' : 'OR';
+          textFilterString = `${textFilterString} ${bracketOperator} ${openParenthesis}col_${
+            element['field']
+          }${reverseMapComparisonOperators(element['func'])}'${
+            element['value']
+          }'${closeParenthesis}`;
+        } else {
+          textFilterString = `${textFilterString} ${operator} col_${
+            element['field']
+          }${reverseMapComparisonOperators(element['func'])}'${element['value']}'`;
+        }
+      }
+    }
+  }
+
+  return textFilterString;
+};
+
+const mapComparisonOperators = (operators: ComparisonOperators[]): StringOperators => {
   return operatorMap[operators.join('') as ComparisonOperators];
+};
+
+export const reverseMapComparisonOperators = (operator: string | undefined): string | undefined => {
+  for (const key in operatorMap) {
+    if (operatorMap[key as ComparisonOperators] === operator) {
+      return key;
+    }
+  }
 };
 
 const removeQuotes = (str: string) => {

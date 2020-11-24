@@ -3,13 +3,15 @@ import { Form } from 'react-bootstrap';
 import { FormControlElement } from '../../types/bootstrap';
 
 interface BasicTextareaProps {
+  alerts?: { [key: string]: string } | undefined;
+  defaultValue?: string;
   label?: string;
   onChange: (options: string) => void;
-  alerts?: { [key: string]: string } | undefined;
 }
 
 export const BasicTextarea: FunctionComponent<BasicTextareaProps> = ({
   alerts,
+  defaultValue,
   onChange,
   label,
 }) => {
@@ -20,7 +22,12 @@ export const BasicTextarea: FunctionComponent<BasicTextareaProps> = ({
   return (
     <Form.Group>
       <Form.Label className="bmd-label-floating">{label}</Form.Label>
-      <Form.Control name="description" as="textarea" onChange={onTextareaChange} />
+      <Form.Control
+        name="description"
+        as="textarea"
+        onChange={onTextareaChange}
+        defaultValue={defaultValue}
+      />
       <Form.Control.Feedback type="invalid" className="d-block invalid-feedback">
         {alerts && alerts.error}
       </Form.Control.Feedback>
