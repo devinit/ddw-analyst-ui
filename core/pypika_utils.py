@@ -201,8 +201,10 @@ class QueryBuilder:
 
         if "and_brackets" in computed_queries:
             combined_query = operator.and_(computed_queries['and_or'], computed_queries['brackets'])
-        else:
+        elif "or_brackets" in computed_queries:
             combined_query = operator.or_(computed_queries['and_or'], computed_queries['brackets'])
+        else:
+            combined_query = computed_queries['and_or']
 
         self.current_query = self.current_query.select(
             self.current_dataset.star).where(combined_query)
@@ -228,7 +230,6 @@ class QueryBuilder:
                     self.and_querys.append(query_filter)
                     self.queries['and_it'] = self.and_querys
             elif type(filter) is dict:
-                print(filter)
                 if "or_brackets" in filter:
                     self.parse_text_filters(
                         filter["or_brackets"],
