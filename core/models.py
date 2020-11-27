@@ -13,8 +13,7 @@ class BaseEntity(models.Model):
     Gives every other model a field for the date it was created and the date it was updated."""
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
-    user = models.ForeignKey(
-        User, blank=True, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         abstract = True
@@ -71,8 +70,7 @@ class SourceColumnMap(BaseEntity):
         ("C", "Character"),
         ("N", "Numeric")
     )
-    data_type = models.CharField(
-        max_length=1, choices=DATA_TYPE_CHOICES, blank=True, null=True)
+    data_type = models.CharField(max_length=1, choices=DATA_TYPE_CHOICES, blank=True, null=True)
     source = models.ForeignKey(Source, models.PROTECT, blank=True, null=True)
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
@@ -163,8 +161,7 @@ class OperationDataColumnAlias(models.Model):
 
 class Review(BaseEntity):
     """A model to allow users to review other queries?"""
-    operation = models.ForeignKey(
-        Operation, models.DO_NOTHING, blank=True, null=True)
+    operation = models.ForeignKey(Operation, models.DO_NOTHING, blank=True, null=True)
     rating = models.SmallIntegerField()
     comment = models.TextField(blank=True, null=True)
 
@@ -199,10 +196,8 @@ class AuditLogEntry(models.Model):
     )
 
     timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    user = models.ForeignKey(
-        User, blank=True, null=True, on_delete=models.SET_NULL)
-    action = models.PositiveSmallIntegerField(
-        choices=action_choices, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    action = models.PositiveSmallIntegerField(choices=action_choices, blank=True, null=True)
     object_id = models.BigIntegerField(blank=True, null=True)
     object_str = models.CharField(max_length=255)
     object_ctype = models.CharField(max_length=255)
@@ -275,8 +270,7 @@ class ScheduledEventRunInstance(BaseEntity):
         ScheduledEvent, on_delete=models.CASCADE)
     start_at = models.DateTimeField(null=False, blank=False)
     ended_at = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(
-        max_length=1, choices=status_choices, default='p')
+    status = models.CharField(max_length=1, choices=status_choices, default='p')
     logs = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -294,8 +288,7 @@ class FrozenData(BaseEntity):
 
     parent_db_table = models.CharField(max_length=200, null=False)
     frozen_db_table = models.CharField(max_length=200, null=False)
-    status = models.CharField(
-        max_length=1, choices=status_choices, default='p')
+    status = models.CharField(max_length=1, choices=status_choices, default='p')
     active = models.BooleanField(default=True)
     description = models.CharField(max_length=200, null=False)
     logs = models.TextField(blank=True, null=True)
