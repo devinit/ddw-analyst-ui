@@ -42,14 +42,14 @@ def text_search(field, search_ilike):
 
 
 FILTER_MAPPING = {
-            "lt": operator.lt,
-            "le": operator.le,
-            "eq": operator.eq,
-            "ne": operator.ne,
-            "ge": operator.ge,
-            "gt": operator.gt,
-            "text_search": text_search
-        }
+    "lt": operator.lt,
+    "le": operator.le,
+    "eq": operator.eq,
+    "ne": operator.ne,
+    "ge": operator.ge,
+    "gt": operator.gt,
+    "text_search": text_search
+}
 
 
 def concat(field, args):
