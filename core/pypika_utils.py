@@ -109,14 +109,6 @@ class QueryBuilder:
             else:
                 query_kwargs_json = json.loads(kwargs)
                 self = query_func(**query_kwargs_json)
-            #else:
-            #    other_funcs.append([query_func, kwargs])
-        # We now run all the others stored in other_funcs list
-        #for other_func in other_funcs:
-        #    if isinstance(other_func[1], type(None))
-        #        self = other_func[0]()
-        #    else:
-        #        self = other_func[0](**json.loads(other_func[1]))
 
 
     def aggregate(self, group_by, agg_func_name, operational_column):
@@ -179,8 +171,6 @@ class QueryBuilder:
         return self
 
     def filter(self, filters):
-        # self.current_query = Query.from_(self.current_dataset)
-
         filter_operations = [FILTER_MAPPING[filter["func"]](getattr(
             self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
@@ -191,7 +181,6 @@ class QueryBuilder:
             self.current_query = self.current_query.select(self.current_dataset).where(filter_operations_or)
             self.selected = True
 
-        # self.current_dataset = self.current_query
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
@@ -298,7 +287,7 @@ class QueryBuilder:
         else:
             self.current_query = self.current_query.select(self.current_dataset.star)
             self.number_of_columns = 0 # Means all columns selected, and we shall not use it in subqueries
-        # self.current_dataset = self.current_query
+
         return self
 
     def count_sql(self, estimate=True):
@@ -354,7 +343,6 @@ class QueryBuilder:
 
     def operator_or_where_clause_sub_query(self, filters):
         query_two = QueryBuilder(operation=Operation.objects.get(pk=filters[0]["value"]))
-        # self.current_query = Query.from_(self.current_dataset)
         sql_func = filters[0]["func"]
         table_field = filters[0]["field"]
         # UNION, IN
@@ -369,5 +357,4 @@ class QueryBuilder:
             filter_op = FILTER_MAPPING[sql_func]
             self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two.current_query))
 
-        # self.current_dataset = self.current_query
         return self
