@@ -37,7 +37,7 @@ const schema = Yup.object().shape({
 const queries = [
   { key: 'select', icon: 'check', text: 'Select', value: 'select' },
   { key: 'filter', icon: 'filter', text: 'Filter', value: 'filter' },
-  { key: 'text_filter', icon: 'filter', text: 'Text Filter', value: 'text_filter' },
+  { key: 'advanced_filter', icon: 'filter', text: 'Advanced Filter', value: 'advanced_filter' },
   { key: 'join', icon: 'chain', text: 'Join', value: 'join' },
   { key: 'aggregate', icon: 'rain', text: 'Aggregate', value: 'aggregate' },
   { key: 'scalar_transform', icon: 'magic', text: 'Scalar Transform', value: 'scalar_transform' },
@@ -98,7 +98,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
     if (query === 'filter') {
       return validateFilter(step);
     }
-    if (query === 'text_filter') {
+    if (query === 'advanced_filter') {
       return validateTextFilter(step);
     }
     if (query === 'select') {
@@ -276,7 +276,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
       step = step.set('query_kwargs', JSON.stringify({ filters: filtersWithoutErrors }));
     }
 
-    if (query === 'text_filter') {
+    if (query === 'advanced_filter') {
       const queryObject = options ? JSON.parse(options) : { filters: [] };
       step = step.set('query_kwargs', JSON.stringify({ filters: queryObject['filterJSON'] }));
     }

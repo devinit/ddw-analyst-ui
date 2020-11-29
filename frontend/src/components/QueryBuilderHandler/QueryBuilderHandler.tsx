@@ -142,7 +142,7 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
         />
       );
     }
-    if (query === 'text_filter') {
+    if (query === 'advanced_filter') {
       return (
         <TextFilterQueryBuilder
           source={source}
