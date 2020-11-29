@@ -173,7 +173,7 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def text_filter(self, filters):
+    def advanced_filter(self, filters):
         self.current_query = Query.from_(self.current_dataset)
         self.and_querys = []
         self.or_querys = []
