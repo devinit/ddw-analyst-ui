@@ -1,9 +1,11 @@
 import { List, Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
+import { Form } from 'react-bootstrap';
+import { FormControlElement } from '../../types/bootstrap';
 import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns } from '../../utils';
-import { BasicTextarea } from '../BasicTextarea';
 import { getTextFilterString, parseTextFilterString } from './utils';
 
 interface TextFilterQueryBuilder {
@@ -29,24 +31,27 @@ export const TextFilterQueryBuilder: FunctionComponent<TextFilterQueryBuilder> =
     setDefaultValue(getTextFilterString('normal', filters ? filters : [], ''));
   });
 
-  const onTextareaChange = (options: string) => {
+  const onTextareaChange = (event: ChangeEvent<FormControlElement>) => {
     const columns = source.get('columns') as ColumnList;
     const selectableColumns = getStepSelectableColumns(step, steps, columns) as Set<string>;
-    const queryObject = parseTextFilterString(options, selectableColumns);
-    console.log(`onTextareaChange: ${JSON.stringify(queryObject['filterJSON'])}`);
+    const queryObject = parseTextFilterString(event.currentTarget.value, selectableColumns);
     onUpdateTextarea(JSON.stringify(queryObject));
   };
 
-  const textareaLabel = 'Fill in your query below:';
-
   return (
     <>
-      <BasicTextarea
-        label={textareaLabel}
-        onChange={onTextareaChange}
-        alerts={alerts}
-        defaultValue={defaultValue}
-      />
+      <Form.Group>
+        <Form.Label className="bmd-label-floating">{'Fill in your query below:'}</Form.Label>
+        <Form.Control
+          name="description"
+          as="textarea"
+          onChange={onTextareaChange}
+          defaultValue={defaultValue}
+        />
+        <Form.Control.Feedback type="invalid" className="d-block invalid-feedback">
+          {alerts && alerts.error}
+        </Form.Control.Feedback>
+      </Form.Group>
     </>
   );
 };
