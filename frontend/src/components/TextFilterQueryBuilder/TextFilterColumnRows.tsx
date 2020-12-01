@@ -19,6 +19,7 @@ export const TextFilterColumnRows: FunctionComponent<TextFilterColumnRows> = ({ 
   return (
     <tr>
       <td>{column}</td>
+      <td>{`col_${column}`}</td>
       <td>
         <Button variant="outline-secondary" size="sm" onClick={copyColumnName(column)}>
           {isCopied ? `Copied` : 'Copy'}

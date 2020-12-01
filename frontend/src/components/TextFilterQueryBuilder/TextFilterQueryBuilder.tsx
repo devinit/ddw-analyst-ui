@@ -59,6 +59,7 @@ export const TextFilterQueryBuilder: FunctionComponent<TextFilterQueryBuilder> =
           <thead>
             <tr>
               <th>Column Name</th>
+              <th>Expected Format</th>
               <th>-</th>
             </tr>
           </thead>
