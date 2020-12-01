@@ -170,6 +170,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'created_on',
             'updated_on',
             'aliases',
+            'is_sub_query'
         )
 
     def create(self, validated_data):

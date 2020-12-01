@@ -111,3 +111,235 @@
 
 21. Download Saved Query Set Data<br>
     GET - https://ddw.devinit.org/api/tables/download/[QUERY_SET_DB_TABLE]/dataset/<br>
+
+22. Get Current User's Sub-queries<br>
+    GET - https://ddw.devinit.org/api/datasets/subqueries/mine/<br>
+
+23. Get all sub-queries<br>
+    GET - https://ddw.devinit.org/api/datasets/subqueries/<br>
+
+
+24. Changes to Queries:<br>
+    Added a flag to differentiate sub-queries from other queries<br>
+    Payload to create a query will therefore change to:<br>
+  {
+    "name":"testing Subquery to Pass None Draft",
+    "description":"Subquery testing",
+    "is_sub_query": true,
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"country_name\"]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":30
+            },
+            {
+                "step_id":2,
+                "query_func":"filter",
+                "query_kwargs":"{\"filters\":[{\"field\":\"country_code\",\"func\":\"eq\",\"value\":\"918\"}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+
+Creating a sub-query for use in a SELECT clause column <br>
+
+{
+    "name":"testing Subquery to Pass None Draft",
+    "description":"Subquery testing",
+    "is_sub_query": true,
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"country_code\"]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":30
+            },
+            {
+                "step_id":2,
+                "query_func":"select_sub_query",
+                "query_kwargs":"{\"filters\":[{\"left_source\":1,\"left_field\":\"recipient_code\",\"func\":\"eq\",\"right_source\":30,\"right_field\":\"country_code\"}]}",
+                "name":"Compare Source with End",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+
+To create a SELECT query with a sub-qeury as part of it's columns e.g <br>
+
+{
+    "name":"Sub-query Select",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"donor_code\",\"recipient_code\",\"recipient_name\", 11]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":1
+            },
+            {
+                "step_id":2,
+                "query_func":"filter",
+                "query_kwargs":"{\"filters\":[{\"field\":\"region_code\",\"func\":\"eq\",\"value\":\"10010\"}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":1
+            }
+        ]
+}
+
+
+Note the last column (in the select step) is an integer, which represents the id of the sub-query. The qub-query can be in any position as the user so wishes <br>
+
+Using a sub-query that uses the EXISTS operator <br>
+
+{
+    "name":"Sub-query Select",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"donor_code\",\"recipient_code\",\"recipient_name\"]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":1
+            },
+            {
+                "step_id":2,
+                "query_func":"exists",
+                "query_kwargs":"{\"filters\":[{\"left_source\":30,\"left_field\":\"country_code\",\"func\":\"eq\",\"right_source\":1,\"right_field\":\"recipient_code\"}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":1
+            }
+        ]
+}
+
+Note that for NOT EXISTS, we use the notexits as the query_func in step 2, and everything else is the same.<br>
+
+
+Using a sub-query in IN operator <br>
+
+{
+    "name":"testing Subquery IN",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"recipient_name\"]}",
+                "name":"Select",
+                "description":"Select using sub-query and IN operator",
+                "source":1
+            },
+            {
+                "step_id":2,
+                "query_func":"operator_or_where_clause_sub_query",
+                "query_kwargs":"{\"filters\":[{\"field\":\"donor_code\",\"func\":\"IN\",\"value\":17}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":1
+            }
+        ]
+}
+
+Note that the value in the filters holds the ID of the sub-query to be used by the IN operator. The sub-query must also be returning one column strictly<br>
+
+For NOT IN, we use the NOTIN in step two as the func.<br>
+
+
+Using a sub-query in UNION operator <br>
+
+{
+    "name":"testing Subquery to Pass None Draft",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"country_code\"]}",
+                "name":"Select",
+                "description":"Select using sub-query and UNION operator",
+                "source":30
+            },
+            {
+                "step_id":2,
+                "query_func":"operator_or_where_clause_sub_query",
+                "query_kwargs":"{\"filters\":[{\"field\":\"flow_name\",\"func\":\"UNION\",\"value\":21}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+
+{
+    "name":"Testing UNION with two sub-query IDs",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"operator_or_where_clause_sub_query",
+                "query_kwargs":"{\"filters\":[{\"field\":22,\"func\":\"UNION\",\"value\":21}]}",
+                "name":"Filter them",
+                "description":"Filtering now",
+                "source":30
+            }
+        ]
+}
+
+Note that the columns in the sub-query and main query here must be same number and similar in data types.<br>
+<br>
+We have left the "source" variable in all steps made up of new query_funcs for backwards compatibility<br>
+
+Using a sub-query in a WHERE clause to compare with column in current dataset<br>
+{
+    "name":"Sub-query for where compare with column",
+    "description":"Subquery testing",
+    "is_draft": false,
+    "operation_steps":
+        [
+            {
+                "step_id":1,
+                "query_func":"select",
+                "query_kwargs":"{\"columns\":[\"donor_code\"]}",
+                "name":"Select",
+                "description":"Select all CRS ISO Codes",
+                "source":1
+            },
+            {
+                "step_id":2,
+                "query_func":"operator_or_where_clause_sub_query",
+                "query_kwargs":"{\"filters\":[{\"field\":\"donor_code\",\"func\":\"eq\",\"value\":\"27\"}]}",
+                "name":"Compare Source with End",
+                "description":"Filtering now",
+                "source":1
+            }
+        ]
+}
+
+Here value is numeric and represents the sub-query we shall compare the column against

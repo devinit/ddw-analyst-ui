@@ -13,16 +13,21 @@ from pypika import Table
 from pypika import analytics as an
 from pypika import functions as pypika_fn
 from pypika import JoinType
+from pypika.terms import PseudoColumn
 from pypika.terms import Function
+from pypika.terms import Field
 
 from core.const import DEFAULT_LIMIT_COUNT
-from core.models import Source
+from core.models import Source, Operation
 
 
 class NullIf(Function):
     def __init__(self, term, condition, **kwargs):
         super(NullIf, self).__init__('NULLIF', term, condition, **kwargs)
 
+class PsqlExists(Function):
+    def __init__(self, sub_query, negate=False, is_aggregate=True):
+        super(PsqlExists, self).__init__('NOT EXISTS', sub_query, is_aggregate=is_aggregate) if negate else super(PsqlExists, self).__init__('EXISTS', sub_query, is_aggregate=is_aggregate)
 
 def text_search(field, search_ilike):
     if "|" in search_ilike:  # User is trying to search for multiple strings
@@ -34,6 +39,17 @@ def text_search(field, search_ilike):
         text_searches = [text_search(field, search_ilike_child) for search_ilike_child in search_ilikes]
         return reduce(operator.and_, text_searches)
     return field.ilike(search_ilike)
+
+
+FILTER_MAPPING = {
+    "lt": operator.lt,
+    "le": operator.le,
+    "eq": operator.eq,
+    "ne": operator.ne,
+    "ge": operator.ge,
+    "gt": operator.gt,
+    "text_search": text_search
+}
 
 
 def concat(field, args):
@@ -66,6 +82,7 @@ class QueryBuilder:
     def __init__(self, operation=None, operation_steps=None, source=None):
 
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
+        self.selected = False
 
         if operation_steps:
             query_steps = sorted(operation_steps, key=itemgetter('step_id'))
@@ -92,6 +109,7 @@ class QueryBuilder:
             else:
                 query_kwargs_json = json.loads(kwargs)
                 self = query_func(**query_kwargs_json)
+
 
     def aggregate(self, group_by, agg_func_name, operational_column):
         self.current_query = Query.from_(self.current_dataset)
@@ -153,24 +171,16 @@ class QueryBuilder:
         return self
 
     def filter(self, filters):
-        self.current_query = Query.from_(self.current_dataset)
-
-        filter_mapping = {
-            "lt": operator.lt,
-            "le": operator.le,
-            "eq": operator.eq,
-            "ne": operator.ne,
-            "ge": operator.ge,
-            "gt": operator.gt,
-            "text_search": text_search
-        }
-        filter_operations = [filter_mapping[filter["func"]](getattr(
+        filter_operations = [FILTER_MAPPING[filter["func"]](getattr(
             self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
-        self.current_query = self.current_query.select(
-            self.current_dataset.star).where(filter_operations_or)
+        if self.selected:
+            self.current_query = self.current_query.where(filter_operations_or)
+        else:
+            self.current_query = Query.from_(self.current_dataset)
+            self.current_query = self.current_query.select(self.current_dataset).where(filter_operations_or)
+            self.selected = True
 
-        self.current_dataset = self.current_query
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
@@ -258,13 +268,26 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
+    def generate_sub_query_as_column(self, sub_query_id):
+        operation = Operation.objects.get(pk=int(sub_query_id))
+        sub_query = QueryBuilder(operation=operation)
+        return sub_query.current_query
+
     def select(self, columns=None, groupby=None):
         self.current_query = Query.from_(self.current_dataset)
+        self.selected = True
+
         if columns:
+            for col_index in range(len(columns)):
+                # If column value is numeric, then that's a sub-query
+                if str(columns[col_index]).isnumeric():
+                    columns[col_index] = self.generate_sub_query_as_column(columns[col_index])
             self.current_query = self.current_query.select(*columns)
+            self.number_of_columns = len(columns)
         else:
             self.current_query = self.current_query.select(self.current_dataset.star)
-        self.current_dataset = self.current_query
+            self.number_of_columns = 0 # Means all columns selected, and we shall not use it in subqueries
+
         return self
 
     def count_sql(self, estimate=True):
@@ -286,3 +309,52 @@ class QueryBuilder:
 
     def get_sql_without_limit(self):
         return self.current_query.get_sql()
+
+    def filter_across_tables(self, filters):
+        left_source = Source.objects.get(pk=filters[0]['left_source'])
+        left_column_name = filters[0]["left_field"]
+        right_source = Source.objects.get(pk=filters[0]['right_source'])
+        right_column_name = filters[0]["right_field"]
+        left_table = Table(left_source.active_mirror_name, left_source.schema)
+        right_table = Table(right_source.active_mirror_name, right_source.schema)
+        left_hand_field = Field(left_column_name, table=left_table)
+        left_sql = left_hand_field.get_sql(with_namespace=True)
+        right_hand_field = Field(right_column_name, table=right_table)
+        right_sql = right_hand_field.get_sql(with_namespace=True)
+        filter_op = FILTER_MAPPING[filters[0]["func"]]
+        return filter_op(left_hand_field, right_hand_field)
+
+
+    def select_sub_query(self, filters):
+        self.current_query = self.current_query.where(self.filter_across_tables(filters))
+        return self
+
+    def exists(self, filters, negate=False):
+        pseudo = PseudoColumn("1")
+        left_source = Source.objects.get(pk=filters[0]['left_source'])
+        left_table = Table(left_source.active_mirror_name, left_source.schema)
+        sub_query = Query.from_(left_table).select(pseudo).where(self.filter_across_tables(filters))
+        self.current_query = self.current_query.where(PsqlExists(sub_query, negate=negate))
+        return self
+
+    def notexists(self, filters, negate=True):
+        return self.exists(filters, negate)
+
+
+    def operator_or_where_clause_sub_query(self, filters):
+        query_two = QueryBuilder(operation=Operation.objects.get(pk=filters[0]["value"]))
+        sql_func = filters[0]["func"]
+        table_field = filters[0]["field"]
+        # UNION, IN
+        if sql_func == "UNION":
+            query_one = QueryBuilder(operation=Operation.objects.get(pk=table_field)).current_query if str(table_field).isnumeric() else self.current_query
+            self.current_query = (query_one + query_two.current_query)
+        elif sql_func == "IN" and query_two.number_of_columns == 1:
+            self.current_query = self.current_query.where(getattr(self.current_dataset, table_field).isin(query_two.current_query))
+        elif sql_func == "NOTIN" and query_two.number_of_columns == 1:
+            self.current_query = self.current_query.where(getattr(self.current_dataset, table_field).isin(query_two.current_query).negate())
+        elif(sql_func in FILTER_MAPPING.keys()):
+            filter_op = FILTER_MAPPING[sql_func]
+            self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two.current_query))
+
+        return self

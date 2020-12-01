@@ -98,6 +98,7 @@ class Operation(BaseEntity):
     row_count = models.IntegerField(blank=True, null=True)
     # controls whether to count rows in the post_save signal
     count_rows = models.BooleanField(default=False)
+    is_sub_query = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
