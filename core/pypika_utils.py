@@ -194,7 +194,7 @@ class QueryBuilder:
             "text_search": text_search
         }
 
-        computed_queries = self.parse_text_filters(
+        computed_queries = self.parse_advanced_filters(
             filters,
             None
         )
@@ -212,7 +212,7 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def parse_text_filters(
+    def parse_advanced_filters(
         self,
         filters,
         bracket_type):
@@ -231,12 +231,12 @@ class QueryBuilder:
                     self.queries['and_it'] = self.and_querys
             elif type(filter) is dict:
                 if "or_brackets" in filter:
-                    self.parse_text_filters(
+                    self.parse_advanced_filters(
                         filter["or_brackets"],
                         "or_brackets"
                     )
                 elif "and_brackets" in filter:
-                    self.parse_text_filters(
+                    self.parse_advanced_filters(
                         filter["and_brackets"],
                         "and_brackets"
                     )
