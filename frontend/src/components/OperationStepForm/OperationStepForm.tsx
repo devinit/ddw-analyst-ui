@@ -165,7 +165,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
       return true;
     } else {
       setAlerts({
-        error: 'At least one query filter is required, please prefix columns with "x_"',
+        error: 'At least one query filter is required, please prefix columns with "col_"',
       });
 
       return false;
