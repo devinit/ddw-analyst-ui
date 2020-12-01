@@ -235,8 +235,7 @@ class ScheduledEvent(BaseEntity):
         return self.name
 
     def send_emails(self, subject, message, recipient_list):
-        message_payload = (
-            subject, message, settings.EMAIL_HOST_USER, recipient_list)
+        message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
         send_mass_mail((message_payload, ), fail_silently=False)
 
 
@@ -250,8 +249,7 @@ class ScheduledEventRunInstance(BaseEntity):
         ('e', 'Errored'),
         ('s', 'Skipped'),
     )
-    scheduled_event = models.ForeignKey(
-        ScheduledEvent, on_delete=models.CASCADE)
+    scheduled_event = models.ForeignKey(ScheduledEvent, on_delete=models.CASCADE)
     start_at = models.DateTimeField(null=False, blank=False)
     ended_at = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=1, choices=status_choices, default='p')
