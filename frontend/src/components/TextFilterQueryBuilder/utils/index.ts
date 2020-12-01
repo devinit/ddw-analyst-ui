@@ -53,7 +53,7 @@ export const parseTextFilterString = (options: string, columns: Set<string>): Pa
   const lexer = new Tokenizr();
 
   //Match table columns with 'col_' prefix
-  lexer.rule(/\bcol_[a-zA-Z_][a-zA-Z0-9_]*/, (ctx) => {
+  lexer.rule(/\bcol_[a-zA-Z_][a-zA-Z0-9_.]*/, (ctx) => {
     ctx.accept('table_column');
   });
 
