@@ -4,7 +4,6 @@ coverage>=4.5.3
 codecov>=2.0.15
 celery==4.4.7
 Django==3.1
-django-celery==3.3.1
 djangorestframework>=3.11.0
 django-rest-knox>=4.1.0
 django-filter>=2.2.0
