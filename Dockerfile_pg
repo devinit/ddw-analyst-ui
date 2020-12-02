@@ -1,5 +1,5 @@
 # start with a base image
-FROM postgres
+FROM postgres:12.5
 LABEL maintainer="akmiller01 <Alex Miller, alex.miller@devinit.org>"
 
 # New users
