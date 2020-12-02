@@ -791,7 +791,7 @@ class IatiFlat(object):
             participating_org_type = "|".join(participating_org_type_list)
             participating_org_role = "|".join(participating_org_role_list)
             participating_org_narrative = "|".join(participating_org_narrative_list)
-            collaboration_type_code =  activity.xpath("collaboration-type/@code")
+            collaboration_type_code =  default_first(activity.xpath("collaboration-type/@code"))
             collaboration_type = recode_if_not_none(collaboration_type_code, self.dictionaries["collaboration_type"])
 
             child_tags = [child.tag for child in activity.getchildren()]
