@@ -72,7 +72,7 @@ def update_table_from_tuple(queries, database="datasets"):
             results = [
                 {
                     "result": "error",
-                    "message": str(sql_error) + " " + queries[1],
+                    "message": str(sql_error),
                 }
             ]
         except Exception as e:
@@ -100,7 +100,7 @@ def run_query(query, database="datasets"):
             results = [
                 {
                     "result": "error",
-                    "message": str(sql_error) + " " + query,
+                    "message": str(sql_error),
                 }
             ]
         except Exception as e:
