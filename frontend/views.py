@@ -34,6 +34,12 @@ def datasets(request):
 
 def advanced_query_builder(request):
     if settings.DEBUG:
-        return render(request, 'frontend/designs/advanced-query-builder.html')
+        sources = [
+            ('Financial Tracking System (FTS)',['id', 'amountUSD', 'budgetYear']),
+            'OECD DAC1',
+            'OECD Creditor Reporting System (CRS)',
+        ]
+
+        return render(request, 'frontend/designs/advanced-query-builder.html', { 'sources': sources })
 
     raise Http404()

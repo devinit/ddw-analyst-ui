@@ -8,7 +8,7 @@
 
     <div class="main-panel">
       <!-- Navbar -->
-      {% with title='Datasets'  %}
+      {% with title='Advanced Query Builder'  %}
         {% include 'frontend/designs/includes/navbar.html' %}
       {% endwith %}
       <!-- End Navbar -->
@@ -16,7 +16,15 @@
         <div class="container-fluid">
           <div class="card">
             <div class="card-body">
-              Content Goes Here
+              <label>Data Source(s)</label>
+              <div class="row">
+                <select class="selectpicker col-md-8" data-size="12" data-style="select-with-transition" multiple title="Select Data Sources">
+                  <option disabled>Select one or more data sources</option>
+                  <option value="fts">Financial Tracking System (FTS)</option>
+                  <option value="dac">OECD DAC1</option>
+                  <option value="crs">OECD Creditor Reporting System (CRS)</option>
+                </select>
+              </div>
             </div>
             <div class="card-footer d-block">
 
@@ -31,4 +39,5 @@
 
 {% block footer-assets %}
   {{ block.super }}
+  <script src={% static '/frontend/assets/js/plugins/bootstrap-selectpicker.js' %}></script>
 {% endblock footer-assets %}
