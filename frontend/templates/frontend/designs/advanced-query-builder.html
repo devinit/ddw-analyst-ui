@@ -1,0 +1,34 @@
+{% extends 'frontend/index.html' %}
+{% load static %}
+
+
+{% block content %}
+  <div class="wrapper ">
+    {% include 'frontend/designs/includes/sidebar.html' with active='dataset-ui' %}
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      {% with title='Datasets'  %}
+        {% include 'frontend/designs/includes/navbar.html' %}
+      {% endwith %}
+      <!-- End Navbar -->
+      <div class="content pt-0">
+        <div class="container-fluid">
+          <div class="card">
+            <div class="card-body">
+              Content Goes Here
+            </div>
+            <div class="card-footer d-block">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      {% comment %} Footer Goes Here {% endcomment %}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block footer-assets %}
+  {{ block.super }}
+{% endblock footer-assets %}

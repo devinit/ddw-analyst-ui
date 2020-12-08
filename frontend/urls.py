@@ -24,5 +24,6 @@ urlpatterns = [
     path('designs/scheduled-events/', views.scheduled_events),
     path('designs/update-data-source/', views.update_data_source),
     path('designs/datasets/', views.datasets),
+    path('designs/advanced-query-builder/', views.advanced_query_builder),
     path('scheduledevents/', views.index),
 ]

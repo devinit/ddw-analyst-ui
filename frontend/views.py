@@ -31,3 +31,9 @@ def datasets(request):
             'World Development Indicators (WDI)'
         ]
         return render(request, 'frontend/designs/datasets.html', { 'sources': sources })
+
+def advanced_query_builder(request):
+    if settings.DEBUG:
+        return render(request, 'frontend/designs/advanced-query-builder.html')
+
+    raise Http404()
