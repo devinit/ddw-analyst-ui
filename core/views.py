@@ -931,3 +931,27 @@ class ViewDatasetHistory(APIView):
         else:
             serializer = SavedQueryDataSerializer(history, many=True)
             return Response(serializer.data)
+
+
+class EstimateQueryTime(APIView):
+    """
+    Preview data from executing the operation query.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+
+    def get_queryset(self, pk):
+        try:
+            operation = Operation.objects.get(id=pk)
+            return operation
+        except Operation.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        operation = self.get_queryset(pk)
+        estimate = query.querytime_estimate(
+            operation_steps=operation.operationstep_set.order_by('step_id').all()
+        )
+        return estimate
+
