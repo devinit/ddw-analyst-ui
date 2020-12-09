@@ -957,7 +957,7 @@ class ViewDatasetHistory(APIView):
 
 class EstimateQueryTime(APIView):
     """
-    Preview data from executing the operation query.
+    Estimate the operation query time.
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (
