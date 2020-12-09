@@ -126,11 +126,11 @@ def analyse_query(query, database="datasets"):
                 raw_res = list(raw_result)
                 time_event, = re.findall('time: ([\d\.]+) ms', raw_res[0])
                 time_in_ms += float(time_event)
-            total_time = float(time_in_ms/ms_in_one_second)
+            time_in_seconds = float(time_in_ms/ms_in_one_second)
             results = [
                 {
                     "result": "success",
-                    "message": total_time
+                    "message": time_in_seconds
                 }
             ]
         except ProgrammingError as sql_error:
