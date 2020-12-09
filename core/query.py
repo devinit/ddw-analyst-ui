@@ -18,4 +18,4 @@ def query_table(operation=None, limit=None, offset=None, estimate_count=None, op
     return fetch_data(queries)
 
 def querytime_estimate(operation=None, operation_steps=None):
-    return QueryBuilder(operation=operation, operation_steps=operation_steps).get_sql(limit, offset)
+    return QueryBuilder(operation=operation, operation_steps=operation_steps).get_sql_without_limit()
