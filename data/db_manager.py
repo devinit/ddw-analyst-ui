@@ -124,7 +124,7 @@ def analyse_query(query, database="datasets"):
             # We get last two i.e planning time and execution time
             for raw_result in raw_results[-2]:
                 raw_res = list(raw_result)
-                time_event, = re.findall('time: ([\d\.]+) ms', raw_res[0])
+                time_event, = re.findall('Time: ([\d\.]+) ms', raw_res[0])
                 time_in_ms += float(time_event)
             time_in_seconds = float(time_in_ms/ms_in_one_second)
             results = [
