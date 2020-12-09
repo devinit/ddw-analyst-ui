@@ -950,8 +950,6 @@ class EstimateQueryTime(APIView):
 
     def get(self, request, pk):
         operation = self.get_queryset(pk)
-        estimate = query.querytime_estimate(
-            operation_steps=operation.operationstep_set.order_by('step_id').all()
-        )
-        return estimate
+        estimate = query.querytime_estimate(operation=operation)
+        return Response(estimate)
 
