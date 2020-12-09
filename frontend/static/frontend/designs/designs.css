@@ -47,3 +47,15 @@ th .material-icons {
 .filter-option {
   text-transform: capitalize;
 }
+
+.bootstrap-select .dropdown-menu {
+  z-index: 2000;
+}
+
+.query > select {
+  border: none;
+  padding-top: 18px;
+  border-bottom: 1px solid #eee;
+  margin-right: 5px;
+  color: #3c4858!important;
+}

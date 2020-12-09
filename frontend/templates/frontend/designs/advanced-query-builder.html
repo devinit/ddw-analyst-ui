@@ -1,6 +1,10 @@
 {% extends 'frontend/index.html' %}
 {% load static %}
 
+{% block header-assets %}
+  {{block.super}}
+  <link rel="stylesheet" href="{% static 'frontend/designs/designs.css' %}" />
+{% endblock header-assets %}
 
 {% block content %}
   <div class="wrapper ">
@@ -18,12 +22,32 @@
             <div class="card-body">
               <label>Data Source(s)</label>
               <div class="row">
-                <select class="selectpicker col-md-8" data-size="12" data-style="select-with-transition" multiple title="Select Data Sources">
+                <select id="source-selector" class="selectpicker col-lg-5 col-md-8 col-sm-3" data-size="12" data-style="select-with-transition" multiple title="Select Data Sources">
                   <option disabled>Select one or more data sources</option>
                   <option value="fts">Financial Tracking System (FTS)</option>
                   <option value="dac">OECD DAC1</option>
                   <option value="crs">OECD Creditor Reporting System (CRS)</option>
                 </select>
+              </div>
+              <div class="row" id="query-wrapper">
+                <div class="query col-md-12 d-inline-flex" id="query-sentence"></div>
+                <div class="col-lg-5 col-md-6 col-sm-3">
+                  <select class="selectpicker" data-size="7" data-style="select-with-transition" title="Single Select"  id="clause-picker">
+                    <option disabled selected>Select Clause</option>
+                    <option value="columns" data-followers="columns,where,inner-join,outer-join">Columns</option>
+                    <option value="as">As</option>
+                    <option value="avg">Average</option>
+                    <option value="sum">Sum</option>
+                    <option value="select" data-followers="where">Select (sub-query)</option>
+                    <option value="where" data-followers="and,or,brackets,group-by,having,order-by">Where</option>
+                    <option value="inner-join" data-followers="on">Inner Join</option>
+                    <option value="outer-join" data-followers="on">Outer Join</option>
+                    <option value="on" data-followers="where">On</option>
+                    <option value="and">And</option>
+                    <option value="or" >Or</option>
+                    <option value="brackets">Brackets</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div class="card-footer d-block">
@@ -39,5 +63,93 @@
 
 {% block footer-assets %}
   {{ block.super }}
-  <script src={% static '/frontend/assets/js/plugins/bootstrap-selectpicker.js' %}></script>
+  <script src="{% static '/frontend/assets/js/plugins/bootstrap-selectpicker.js' %}"></script>
+  <script>
+    window.onload = function() {
+      const clauses = [
+        { key: 'select', caption: 'Select (sub-query)', followers: ['columns'] },
+        { key: 'columns', caption: 'Columns', followers: ['columns', 'where', 'inner-join', 'outer-join'] },
+        { key: 'as', caption: 'As' },
+        { key: 'avg', caption: 'Average' },
+        { key: 'inner-join', caption: 'Inner Join', followers: ['on'] },
+        { key: 'outer-join', caption: 'Outer Join', followers: ['on'] },
+        { key: 'on', caption: 'On', followers: ['where'] },
+        { key: 'where', caption: 'Where', followers: ['and', 'or', 'brackets', 'group-by', 'having', 'order-by'] },
+        { key: 'exists', caption: 'Exists' },
+        { key: 'not-exists', caption: 'Not Exists' },
+        { key: 'and', caption: 'And' },
+        { key: 'or', caption: 'Or' },
+        { key: 'brackets', caption: 'Brackets' },
+        { key: 'group-by', caption: 'Group By' },
+        { key: 'having', caption: 'Having' },
+        { key: 'order-by', caption: 'Order By' },
+      ];
+      const sourceSelector = document.getElementById('source-selector');
+      const queryWrapper = document.getElementById('query-wrapper');
+      const clausePicker = document.getElementById('clause-picker');
+      const querySentence = document.getElementById('query-sentence');
+
+      const createColumnSelector = function() {
+        const select = document.createElement('select');
+        select.classList.add('form-select','form-select-sm');
+        select.setAttribute('data-style', 'select-with-transition');
+        select.setAttribute('data-title', 'Select Column(s)');
+        const columns = [
+          { label: 'All', value: 'all' },
+          { label: 'Amount USD', value: 'amountUSD' },
+          { label: 'Budget Year', value: 'budgetYear' },
+          { label: 'Description', value: 'description' }
+        ];
+        // const defaultOption = document.createElement('option');
+        columns.forEach(column => {
+          const option = document.createElement('option');
+          option.setAttribute('value', column.value);
+          option.innerHTML = column.label;
+          select.append(option);
+        });
+
+        querySentence.append(select);
+        clausePicker.selectedIndex = 1
+      }
+
+      const updateClauseSelector = function(selectedClause) {
+        if (selectedClause) {
+          const supportedClauses = clauses.find(c => c.key === selectedClause).followers;
+          if (supportedClauses) {
+            showClauses(supportedClauses);
+          }
+        }
+      }
+
+      const showClauses = function(_clauses) {
+        const clausePickerWrapper = clausePicker.parentElement;
+        const button = clausePickerWrapper.querySelector('.dropdown-toggle');
+        button.addEventListener('click', function(event) {
+          const listItems = clausePickerWrapper.querySelector('.dropdown-menu.inner').children;
+          const visibleClauses = clauses.filter(c => _clauses.includes(c.key)).map(c => c.caption);
+          Array.prototype.forEach.call(listItems, function(item) {
+            const text = item.querySelector('.text').innerHTML;
+            if (!visibleClauses.includes(text)) {
+              item.classList.add('d-none');
+            } else {
+              item.classList.remove('d-none');
+            }
+          })
+        })
+      }
+
+      if (clausePicker) {
+        // show default clauses
+        showClauses(['columns']);
+        clausePicker.addEventListener('change', function(event) {
+          const { value } = event.target;
+          updateClauseSelector(value);
+          if (value === 'columns') {
+            createColumnSelector();
+          }
+        });
+      }
+    }
+
+  </script>
 {% endblock footer-assets %}
