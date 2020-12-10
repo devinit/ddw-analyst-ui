@@ -9,9 +9,7 @@ WORKDIR /src
 # install dependencies
 RUN apt-get update
 RUN apt-get install -y net-tools
-# Downgrade pip to be able to install all our dependencies
-# Remove below line when a version of django-celery that supports celery 4.4.7 is released
-RUN pip install pip==20.2.4
+
 RUN pip install -r requirements.txt
 
 # R dependencies

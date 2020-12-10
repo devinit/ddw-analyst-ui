@@ -1,5 +1,6 @@
 from django.db import connections
 from django.db.utils import ProgrammingError
+import re
 
 
 def fetch_data(queries, database="datasets"):
@@ -71,7 +72,7 @@ def update_table_from_tuple(queries, database="datasets"):
             results = [
                 {
                     "result": "error",
-                    "message": str(sql_error) + " " + queries[1],
+                    "message": str(sql_error),
                 }
             ]
         except Exception as e:
@@ -99,7 +100,43 @@ def run_query(query, database="datasets"):
             results = [
                 {
                     "result": "error",
-                    "message": str(sql_error) + " " + query,
+                    "message": str(sql_error),
+                }
+            ]
+        except Exception as e:
+            results = [
+                {
+                    "result": "error",
+                    "message": str(e),
+                }
+            ]
+        return results
+
+
+def analyse_query(query, database="datasets"):
+    with connections[database].cursor() as analyse_cursor:
+        try:
+            analyse_query = "EXPLAIN ANALYZE {}".format(query)
+            analyse_cursor.execute(analyse_query)
+            raw_results = list(analyse_cursor.fetchall())
+            time_in_ms = 0.0
+            ms_in_one_second = 1000000.0
+            # We get last two i.e planning time and execution time
+            for raw_result in raw_results[-2]:
+                time_event, = re.findall('Time: ([\d\.]+) ms', raw_result)
+                time_in_ms += float(time_event)
+            # time_in_seconds = float(time_in_ms/ms_in_one_second)
+            results = [
+                {
+                    "result": "success",
+                    "message": time_in_ms
+                }
+            ]
+        except ProgrammingError as sql_error:
+            results = [
+                {
+                    "result": "error",
+                    "message": str(sql_error),
                 }
             ]
         except Exception as e:
