@@ -123,8 +123,7 @@ def analyse_query(query, database="datasets"):
             ms_in_one_second = 1000000.0
             # We get last two i.e planning time and execution time
             for raw_result in raw_results[-2]:
-                raw_res = list(raw_result)
-                time_event, = re.findall('Time: ([\d\.]+) ms', raw_res[0])
+                time_event, = re.findall('Time: ([\d\.]+) ms', raw_result)
                 time_in_ms += float(time_event)
             time_in_seconds = float(time_in_ms/ms_in_one_second)
             results = [
