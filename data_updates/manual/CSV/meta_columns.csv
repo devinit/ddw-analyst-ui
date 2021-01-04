@@ -519,11 +519,11 @@ iati_transactions,x_recipient_type,x_recipient_type,x_recipient_type,C,Recipient
 iati_transactions,x_recipient_transaction_value,x_recipient_transaction_value,x_recipient_transaction_value,N,Recipient Transaction Value
 iati_transactions,x_recipient_transaction_value_usd,x_recipient_transaction_value_usd,x_recipient_transaction_value_usd,N,Recipient Transaction Value USD
 iati_transactions,x_sector_number,x_sector_number,x_sector_number,N,Sector Number
-iati_publishers,reporting_org_ref,reporting_org_ref,Reporting Organisation Reference Code,C,Reporting org ref
-iati_publishers,reporting_org_narrative,reporting_org_narrative,Reporting Organisation Narrative,C,Reporting org narrative
-iati_publishers,x_di_org_type,x_di_org_type,DI Organisation Type,C,DI Organisation Type - Calculated
-iati_publishers,x_di_realtime_status,x_di_realtime_status,DI Realtime Data Satus,C,DI Realtime Status - Calculated
-iati_publishers,reporting_org_type_code,reporting_org_type_code,Reporting Organisation Type Code,N,Reporting org type code
-iati_publishers,x_reporting_org_type,x_reporting_org_type,X Reporting Organisation Type,C,Reporting Organisation Type - Calculated
-iati_publishers,org_hq,org_hq,Organisation Headquarters,C,Organisation Headquarters
-iati_publishers,registry_id,registry_id,Registry ID,C,Registry ID
+iati_publishers,reporting_org_ref,reporting_org_ref,Reporting Organisation Reference Code,C,Reporting Organisation Reference Code
+iati_publishers,country_or_org_name,country_or_org_name,Country or Organisation Name,C,Country or Organisation Name
+iati_publishers,specific_country_name,specific_country_name,Specific Country Name,C,Specific Country Name
+iati_publishers,org_type,org_type,Organisation Type,C,Organisation Type
+iati_publishers,disbursements_score,disbursements_score,Disbursements Score,N,Disbursements Score
+iati_publishers,commitments_score,commitments_score,Commitments Score,N,Commitments Score
+iati_publishers,disbursements_score_notes,disbursements_score_notes,Disbursements Score Notes,C,Disbursements Score Notes
+iati_publishers,commitments_score_notes,commitments_score_notes,Commitments Score Notes,C,Commitments Score Notes
