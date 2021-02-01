@@ -1,5 +1,5 @@
 from core.pypika_utils import QueryBuilder
-from data.db_manager import fetch_data
+from data.db_manager import fetch_data, analyse_query
 
 def build_query(operation=None, steps=None, limit=None, offset=None, estimate_count=None):
     """Build an SQL query"""
@@ -16,3 +16,7 @@ def query_table(operation=None, limit=None, offset=None, estimate_count=None, op
     offset = offset or 0
     queries = build_query(operation, steps=operation_steps, limit=limit, offset=offset, estimate_count=estimate_count)
     return fetch_data(queries)
+
+def querytime_estimate(operation=None, operation_steps=None):
+    query = QueryBuilder(operation=operation, operation_steps=operation_steps).get_sql_without_limit()
+    return analyse_query(query)
