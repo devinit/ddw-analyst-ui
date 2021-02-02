@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '!brp5jw6nf-2f*=6=s$$@2he&!y+x*2gkhb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEV', 'False') == 'True'
 
-ALLOWED_HOSTS = ['.devinit.org', 'localhost', '127.0.0.1', '178.62.4.75']
+ALLOWED_HOSTS = ['.devinit.org', 'localhost', '127.0.0.1', '167.99.86.10']
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -193,6 +193,8 @@ WEBPACK_LOADER = {
 QUERY_TABLES = [
     'fts_codenames', 'fts_privatemoney', 'fts_dacregion', 'fts_donorscountryid', 'fts_recipientcodename', 'fts_ngotype', 'fts_deliverychannels',
     'fts_recipientcountryid', 'fts_odaeligible', 'fts_destinationcountryid', 'fts_incomegroups', 'fts_deflators', 'fts_isos', 'fts_privatemoney',
+    'oecd_crs_aid_type_ref', 'oecd_crs_channel_map', 'oecd_crs_sector_itep_map', 'oecd_crs_donor_type_ref',
+    'dac5_current_isos', 'dac2b_current_isos', 'dac2a_current_isos', 'dac1_current_isos', 'crs_current_regisos', 'crs_current_isos',
 ]
 
 # Celery
