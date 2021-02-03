@@ -40,6 +40,8 @@ def text_search(field, search_ilike):
         return reduce(operator.and_, text_searches)
     return field.ilike(search_ilike)
 
+def is_in(field, values):
+    return field.isin(values)
 
 FILTER_MAPPING = {
     "lt": operator.lt,
@@ -48,7 +50,8 @@ FILTER_MAPPING = {
     "ne": operator.ne,
     "ge": operator.ge,
     "gt": operator.gt,
-    "text_search": text_search
+    "text_search": text_search,
+    "is_in": is_in
 }
 
 
