@@ -108,7 +108,10 @@ class QueryBuilder:
                 self = query_func()
             else:
                 query_kwargs_json = json.loads(kwargs)
-                self = query_func(**query_kwargs_json)
+                if query_step.query_func == 'filter':
+                    self = query_func(source=query_step.source, **query_kwargs_json)
+                else:
+                    self = query_func(**query_kwargs_json)
 
 
     def aggregate(self, group_by, agg_func_name, operational_column):
@@ -170,9 +173,10 @@ class QueryBuilder:
         self.current_dataset = self.current_query
         return self
 
-    def filter(self, filters):
+    def filter(self, filters, source=None):
+        table = self.current_dataset if source is None else Table(source.active_mirror_name)
         filter_operations = [FILTER_MAPPING[filter["func"]](getattr(
-            self.current_dataset, filter["field"]), filter["value"]) for filter in filters]
+            table, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
         if self.selected:
             self.current_query = self.current_query.where(filter_operations_or)
