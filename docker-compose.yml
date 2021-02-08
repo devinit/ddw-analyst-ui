@@ -33,7 +33,7 @@ services:
   spotlights:
     build:
       context: .
-      dockerfile: Dockerfile_external_api
+      dockerfile: Dockerfile_spotlights_api
     expose:
       - "8000"
     depends_on:

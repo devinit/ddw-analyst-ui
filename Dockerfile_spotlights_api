@@ -1,0 +1,23 @@
+# FROM node:9-alpine@sha256:1fbcd77d0eb2af765d24ae4758b5a94b0d55c6002a15a4431d55795a449ebd3d as clone
+FROM node:12-alpine as clone
+
+RUN apk update && apk add git
+RUN git clone https://github.com/devinit/ddw-external-api.git
+
+# End of intermediate build step
+
+# FROM node:9-alpine@sha256:1fbcd77d0eb2af765d24ae4758b5a94b0d55c6002a15a4431d55795a449ebd3d as api-release
+FROM node:12-alpine as api-release
+MAINTAINER vagrant <Chris Wakibi, chrisw@devinit.org>
+
+RUN mkdir /src
+COPY --from=clone /ddw-external-api /src/ddw-external-api
+COPY ./config/spotlights/db.conf /src/ddw-external-api/src/db.conf
+WORKDIR /src/ddw-external-api
+
+# The below fixes an issue with Github CI
+# RUN npm config set unsafe-perm true
+# update npm and install dependencies
+RUN npm i -g npm && npm install --silent
+
+CMD npm run prod
