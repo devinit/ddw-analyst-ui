@@ -5,4 +5,7 @@ cd $working_directory
 cp -f  /etc/letsencrypt/live/ddw.devinit.org/privkey.pem /root/ddw-analyst-ui/ssl/
 cp -f /etc/letsencrypt/live/ddw.devinit.org/fullchain.pem /root/ddw-analyst-ui/ssl/
 
+cp -f  /etc/letsencrypt/live/api.devinit.org/privkey.pem /root/ddw-analyst-ui/ssl/spotlights_privkey.pem
+cp -f /etc/letsencrypt/live/api.devinit.org/fullchain.pem /root/ddw-analyst-ui/ssl/spotlights_fullchain.pem
+
 command docker-compose exec ddw-analyst-ui_nginx_1 nginx reload
