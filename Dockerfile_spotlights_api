@@ -15,9 +15,6 @@ COPY --from=clone /ddw-external-api /src/ddw-external-api
 COPY ./config/spotlights/db.conf /src/ddw-external-api/src/db.conf
 WORKDIR /src/ddw-external-api
 
-# The below fixes an issue with Github CI
-# RUN npm config set unsafe-perm true
-# update npm and install dependencies
-RUN npm i -g npm && npm install --silent
+RUN npm install
 
 CMD npm run prod
