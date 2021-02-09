@@ -1,6 +1,6 @@
 {
   "name": "ddw-analyst-ui",
-  "version": "2.3.0",
+  "version": "2.5.0",
   "description": "The new and improved DDW Analyst UI interface",
   "main": "index.js",
   "scripts": {
@@ -103,7 +103,7 @@
     "@bit/devinit.analyst-ui.components.social-line": "0.0.3",
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "formik": "^2.1.4",
     "glamor": "^2.20.40",

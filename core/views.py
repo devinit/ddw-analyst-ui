@@ -347,7 +347,7 @@ class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ViewSourceDatasets(APIView):
     """
-    Get all published datasets attached to a specific data source, but not belonging the current user
+    Get all published datasets attached to a specific data source, including those belonging to the current user
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = (
@@ -361,8 +361,7 @@ class ViewSourceDatasets(APIView):
         try:
             if self.request.user.is_authenticated:
                 operations = Operation.objects.filter(
-                    ~Q(user=self.request.user) & Q(
-                        operationstep__source=pk) & Q(is_draft=False)
+                    Q(operationstep__source=pk) & Q(is_draft=False)
                 ).order_by('-updated_on').distinct()
             else:
                 operations = Operation.objects.filter(
@@ -932,3 +931,25 @@ class ViewDatasetHistory(APIView):
         else:
             serializer = SavedQueryDataSerializer(history, many=True)
             return Response(serializer.data)
+
+
+class EstimateQueryTime(APIView):
+    """
+    Estimate the operation query time.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+
+    def get_queryset(self, pk):
+        try:
+            operation = Operation.objects.get(id=pk)
+            return operation
+        except Operation.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        operation = self.get_queryset(pk)
+        estimate = query.querytime_estimate(operation=operation)
+        return Response(estimate)
+
