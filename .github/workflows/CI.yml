@@ -44,10 +44,10 @@ jobs:
   deploy:
     needs: [test]
     runs-on: ubuntu-latest
-    if: false
-      # contains('
-      #   refs/heads/develop
-      # ', github.ref) || startsWith(github.ref, 'refs/tags/v')
+    if:
+      contains('
+        refs/heads/develop
+      ', github.ref) || startsWith(github.ref, 'refs/tags/v')
 
     steps:
     - uses: actions/checkout@v2
