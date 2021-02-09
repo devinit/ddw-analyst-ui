@@ -55,17 +55,14 @@ jobs:
     - name: Set env for develop branch
       if: endsWith(github.ref, '/fix/auto-deploy')
       run: |
-        echo "::set-env name=HOST::${{ secrets.DEV_HOST }}"
-        echo "::set-env name=USERNAME::${{ secrets.DEV_USER }}"
-
-    - name: Skip subsequent steps
-      run: exit 1
+        echo "HOST=${{ secrets.DEV_HOST }}" >> $GITHUB_ENV
+        echo "USERNAME=${{ secrets.DEV_USER }}" >> $GITHUB_ENV
 
     - name: Set env for release branch
       if: startsWith(github.ref, 'refs/tags/v')
       run: |
-        echo "::set-env name=HOST::${{ secrets.PROD_HOST }}"
-        echo "::set-env name=USERNAME::${{ secrets.PROD_USER }}"
+        echo "HOST=${{ secrets.PROD_HOST }}" >> $GITHUB_ENV
+        echo "USERNAME=${{ secrets.PROD_USER }}" >> $GITHUB_ENV
 
     - name: Get the release version
       if: startsWith(github.ref, 'refs/tags/v')
@@ -83,6 +80,9 @@ jobs:
       with:
         source: "deploy_script.sh"
         target: "."
+
+    - name: Skip subsequent steps
+      run: exit 1
 
     - name: copy deploy script to server
       if: startsWith(github.ref, 'refs/tags/v')
