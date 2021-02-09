@@ -195,6 +195,7 @@ QUERY_TABLES = [
     'fts_recipientcountryid', 'fts_odaeligible', 'fts_destinationcountryid', 'fts_incomegroups', 'fts_deflators', 'fts_isos', 'fts_privatemoney',
     'oecd_crs_aid_type_ref', 'oecd_crs_channel_map', 'oecd_crs_sector_itep_map', 'oecd_crs_donor_type_ref',
     'dac5_current_isos', 'dac2b_current_isos', 'dac2a_current_isos', 'dac1_current_isos', 'crs_current_regisos', 'crs_current_isos',
+    'iati_publishers'
 ]
 
 # Celery
