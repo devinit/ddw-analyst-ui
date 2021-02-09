@@ -31,12 +31,12 @@ describe('The Login Page', () => {
     it('successfully performs a login action and logs out', () => {
       cy.visit('/');
       cy.wait(200);
-      cy.fixture('users').then(users => {
-        const admin = users.find(user => user.role === 'admin');
+      cy.fixture('users').then((users) => {
+        const admin = users.find((user) => user.role === 'admin');
 
         if (admin) {
           cy.get('input[name=username]').type(admin.username);
-          cy.get('input[name=password]').type(admin.email);
+          cy.get('input[name=password]').type(admin.password);
           cy.get('button[type=submit]').click();
           cy.url().should('not.include', '/login');
 
