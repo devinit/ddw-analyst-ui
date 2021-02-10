@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 services:
   db:
@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile_pg
     volumes:
       - metadata:/var/lib/postgresql/data
+    networks:
+      - ddw_net
   web:
     build:
       context: .
@@ -26,6 +28,18 @@ services:
       - DJANGO_SECRET_KEY
       - EMAIL_HOST_PASSWORD
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
+    networks:
+      - ddw_net
+  spotlights:
+    build:
+      context: .
+      dockerfile: Dockerfile_spotlights_api
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    networks:
+      - ddw_net
   nginx:
     image: nginx:latest
     ports:
@@ -39,6 +53,8 @@ services:
       - ./ssl:/etc/ssl/
     depends_on:
       - web
+    networks:
+      - ddw_net
 
   rabbitmq:
     image: rabbitmq:latest
@@ -48,6 +64,8 @@ services:
       - 5672:5672
       - 15672:15672
     restart: always
+    networks:
+      - ddw_net
 
   celery:
     build: .
@@ -57,7 +75,15 @@ services:
       - rabbitmq
     environment:
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
+    networks:
+      - ddw_net
 
 volumes:
   metadata:
     external: true
+networks:
+  ddw_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.22.0.0/16
