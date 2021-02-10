@@ -16,7 +16,7 @@ describe('The Data Sources Page', () => {
     cy.url().should('include', '/sources');
   });
 
-  xit('renders the sources in a data table', () => {
+  it('renders the sources in a data table', () => {
     cy.visit('/sources');
     cy.get('.sources-table').find('tbody').find('tr').should('have.length.greaterThan', 0);
   });
