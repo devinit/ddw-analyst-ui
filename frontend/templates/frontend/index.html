@@ -1,50 +1,50 @@
 {% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-T99M3S2');</script>
-<!-- End Google Tag Manager -->
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>DDW Analyst UI</title>
-  <!--     Fonts and icons     -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'frontend/assets/css/material-dashboard.min.css' %}" />
-  {% render_bundle 'main' 'css' 'DEFAULT' %}
-  {% block header-assets %}{% endblock header-assets %}
-</head>
-<body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T99M3S2"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+  <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T99M3S2');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>DDW Analyst UI</title>
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/material-dashboard.min.css' %}" />
+    {% render_bundle 'main' 'css' 'DEFAULT' %}
+    {% block header-assets %}{% endblock header-assets %}
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T99M3S2"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     {% block content %}
       <div id="app" class="app"><!-- React --></div>
     {% endblock content %}
-</body>
-{% load static %}
+  </body>
+  {% load static %}
 
-{% block footer-assets %}
-  <script src="{% static 'frontend/assets/js/core/jquery.min.js' %}"></script>
-  <script src="{% static 'frontend/assets/js/core/popper.min.js' %}"></script>
-  <script src="{% static 'frontend/assets/js/core/bootstrap-material-design.min.js' %}"></script>
-  <script src="{% static 'frontend/assets/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
-  <script src="{% static 'frontend/assets/js/material-dashboard.min.js' %}"></script>
-{% endblock footer-assets %}
-{% render_bundle 'main' 'js' 'DEFAULT' %}
+  {% block footer-assets %}
+    <script src="{% static 'frontend/assets/js/core/jquery.min.js' %}"></script>
+    <script src="{% static 'frontend/assets/js/core/popper.min.js' %}"></script>
+    <script src="{% static 'frontend/assets/js/core/bootstrap-material-design.min.js' %}"></script>
+    <script src="{% static 'frontend/assets/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
+    <script src="{% static 'frontend/assets/js/material-dashboard.min.js' %}"></script>
+  {% endblock footer-assets %}
+  {% render_bundle 'main' 'js' 'DEFAULT' %}
 
-  {% if DEBUG %}
-    <script src="//localhost:35729/livereload.js"></script>
-  {% endif %}
-</body>
+    {% if DEBUG %}
+      <script src="//localhost:35729/livereload.js"></script>
+    {% endif %}
+  </body>
 </html>
