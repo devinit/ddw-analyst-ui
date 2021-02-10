@@ -1,0 +1,9 @@
+{
+  "baseUrl": "https://staging-ddw.devinit.org",
+  "fixturesFolder": "frontend/cypress/fixtures",
+  "integrationFolder": "frontend/cypress/integration",
+  "pluginsFile": "frontend/cypress/plugins/index.js",
+  "screenshotOnRunFailure": false,
+  "video": false,
+  "supportFile": "frontend/cypress/support/index.js"
+}

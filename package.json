@@ -16,7 +16,8 @@
     "lint": "eslint 'frontend/src/**/*.{ts,tsx}' --quiet && tsc --noEmit",
     "coverage": "NODE_ENV=test jest --coverage && codecov && docker-compose run web python3 -m coverage run manage.py test --settings=ddw_analyst_ui.docker_test_settings && docker-compose run web python3 -m coverage xml && python3 -m codecov",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "cy:run-ci": "cypress run --config-file cypress.ci.json"
   },
   "repository": {
     "type": "git",
