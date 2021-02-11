@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 import '@testing-library/jest-dom/extend-expect';
+import 'jest-styled-components';
 import React from 'react';
 import * as TestRenderer from 'react-test-renderer';
 import { WizardNavigation } from '../WizardNavigation';
