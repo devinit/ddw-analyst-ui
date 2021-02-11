@@ -21,33 +21,18 @@ describe('The Data Sources Page', () => {
     cy.get('.sources-table').find('tbody').find('tr').should('have.length.greaterThan', 0);
   });
 
-  xit('renders a 3 item tab to show the details of a selected source', () => {
-    cy.visit('/sources');
-    cy.get('.source-details').find('.nav-item').should('have.length', 3);
-  });
-
-  xdescribe('sources table', () => {
-    it('has the first item selected by default', () => {
+  describe('sources table', () => {
+    it('shows each row with action buttons', () => {
       cy.visit('/sources');
-      cy.get('.sources-table')
-        .find('tbody')
-        .find('tr')
-        .first()
-        .should('have.class', 'table-danger');
-    });
-
-    it('updates the details tab when a table row is clicked', () => {
-      cy.visit('/sources');
-      // FIXME: find a better way to write this test
-      cy.get('.source-columns-table')
-        .find('tbody')
-        .find('tr')
-        .then((columns) => {
-          cy.get('.sources-table').find('tbody').find('tr').last().click();
-          cy.get('.source-columns-table')
-            .find('tbody')
-            .find('tr')
-            .should('not.have.length', columns.length);
+      cy.get('[data-testid=sources-table-row]')
+        .find('td')
+        .find('div')
+        .find('button')
+        .then((buttons) => {
+          const actionButtonsCountPerRow = 3;
+          cy.get('[data-testid=sources-table-row]').then((rows) => {
+            expect(buttons.length).to.equal(rows.length * actionButtonsCountPerRow);
+          });
         });
     });
   });
