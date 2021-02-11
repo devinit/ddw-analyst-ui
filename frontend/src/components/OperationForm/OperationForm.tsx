@@ -93,7 +93,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
     if (!confirmDelete) {
       setConfirmDelete(true);
       setTimeoutId(
-        setTimeout(() => {
+        window.setTimeout(() => {
           setConfirmDelete(false);
         }, 3000),
       );

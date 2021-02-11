@@ -266,7 +266,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
     if (!confirmDeleteStep) {
       setConfirmDeleteStep(true);
       setTimeoutId(
-        setTimeout(() => {
+        window.setTimeout(() => {
           setConfirmDeleteStep(false);
         }, 3000),
       );
