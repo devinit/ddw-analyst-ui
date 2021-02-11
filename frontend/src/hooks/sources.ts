@@ -24,7 +24,9 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
   const [token, setToken] = useState('');
   const [sources, setSources] = useState<List<SourceMap>>(fromJS([]));
   useEffect(() => {
-    localForage.getItem<string>(localForageKeys.API_KEY).then((_token) => setToken(_token));
+    localForage.getItem<string>(localForageKeys.API_KEY).then((_token) => {
+      if (_token) setToken(_token);
+    });
   }, []);
   useEffect(() => {
     if (!token) {
