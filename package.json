@@ -25,7 +25,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run lint && npm test",
+      "pre-push": "npm test",
       "pre-commit": "lint-staged"
     }
   },
@@ -135,6 +135,6 @@
     "yup": "^0.29.1"
   },
   "lint-staged": {
-    "frontend/src/**/*.{ts,tsx}": "eslint --cache --fix"
+    "frontend/src/**/*.{ts,tsx}": "eslint --cache --fix && tsc --noEmit"
   }
 }
