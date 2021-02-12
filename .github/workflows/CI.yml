@@ -29,11 +29,6 @@ jobs:
         npm install -g codecov
         pip3 install --user codecov
 
-    - name: Run docker build
-      run: |
-        docker volume create --name=metadata
-        docker-compose up -d --build
-
     - name: Run tests
       run: |
         npm run lint
@@ -41,8 +36,19 @@ jobs:
       env:
         CI: true
 
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run docker build
+      run: |
+        docker volume create --name=metadata
+        docker-compose up -d --build
+      env:
+        CI: true
+
   deploy:
-    needs: [test]
+    needs: [docker]
     runs-on: ubuntu-latest
     if:
       contains('
