@@ -135,11 +135,10 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
       this.props.fetchSources({ limit: 1000 });
     }
     const columns = this.props.source.get('columns') as ColumnList;
-    const columnsSet = getStepSelectableColumns(
-      this.props.step,
-      this.props.steps,
-      columns,
-    ) as Set<string>;
+    // eslint-disable-next-line prettier/prettier
+    const columnsSet = getStepSelectableColumns(this.props.step, this.props.steps, columns) as Set<
+      string
+    >;
     const selectableColumns = columnsSet.count()
       ? QueryBuilderHandler.getSelectOptionsFromColumns(columnsSet, columns)
       : [];
