@@ -114,12 +114,12 @@ class Command(BaseCommand):
 
             # This makes sure the next runtime is calculated from the time the last one was run i.e current time
             updated_runtime = self.update_next_runtime_to_previous_start_time(schedule, runInstance.start_at, make_aware(datetime.now()))
-            actual_runtime = self.is_updated_runtime_less_than_expected_runtime(updated_runtime, runInstance, schedule)
+            actual_runtime = self.get_most_recent_of_updated_runtime_or_expected_runtime(updated_runtime, runInstance, schedule)
             self.create_next_run_instance(schedule, actual_runtime)
         except:
             self.update_run_instance(runInstance, 'e', 'An unexpected error occured while executing the script ... please contact the administrator')
             updated_runtime = self.update_next_runtime_to_previous_start_time(schedule, runInstance.start_at, make_aware(datetime.now()))
-            actual_runtime = self.is_updated_runtime_less_than_expected_runtime(updated_runtime, runInstance, schedule)
+            actual_runtime = self.get_most_recent_of_updated_runtime_or_expected_runtime(updated_runtime, runInstance, schedule)
             self.create_next_run_instance(schedule, actual_runtime)
 
     def update_next_runtime_to_previous_start_time(self, schedule, instance_start_date, current_date_time):
@@ -135,7 +135,7 @@ class Command(BaseCommand):
         )
         return updated_runtime
 
-    def is_updated_runtime_less_than_expected_runtime(self, updated_runtime, current_runInstance, schedule):
+    def get_most_recent_of_updated_runtime_or_expected_runtime(self, updated_runtime, current_runInstance, schedule):
         if schedule.expected_runtime and schedule.expected_runtime_type in ('sec', 'min', 'hrs'):
             expected_runtime = self.calculate_next_runtime(
                 current_runInstance.start_at,
