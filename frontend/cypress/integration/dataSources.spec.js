@@ -19,21 +19,22 @@ describe('The Data Sources Page', () => {
   it('renders the sources in a data table', () => {
     cy.visit('/sources');
     cy.get('.sources-table').find('tbody').find('tr').should('have.length.greaterThan', 0);
+    cy.get('.sources-table').find('tbody').find('tr').should('have.length.lessThan', 11);
   });
 
   describe('sources table', () => {
     it('shows each row with action buttons', () => {
       cy.visit('/sources');
       cy.get('[data-testid=sources-table-row]')
-        .find('td')
-        .find('div')
-        .find('button')
-        .then((buttons) => {
-          const actionButtonsCountPerRow = 3;
-          cy.get('[data-testid=sources-table-row]').then((rows) => {
-            expect(buttons.length).to.equal(rows.length * actionButtonsCountPerRow);
+        .then((rows) => {
+          cy.get('[data-testid=source-table-row-actions]').then((actions) => {
+            expect(rows.length).to.equal(actions.length);
           });
         });
     });
+
+    xit('actions buttons function properly', () => {
+      // TODO: add test
+    })
   });
 });

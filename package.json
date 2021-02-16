@@ -136,6 +136,6 @@
     "yup": "^0.29.1"
   },
   "lint-staged": {
-    "frontend/src/**/*.{ts,tsx}": "eslint --cache --fix && tsc --noEmit"
+    "frontend/src/**/*.{ts,tsx}": "eslint --cache --fix"
   }
 }
