@@ -27,7 +27,7 @@ export const SourcesTableRow: FunctionComponent<SourcesTableRowProps> = ({ sourc
         </span>
       </td>
       <td>{new Date(source.get('last_updated_on') as string).toDateString()}</td>
-      <StyledTD>
+      <StyledTD data-testid="source-table-row-actions">
         <ButtonGroup>
           <Button
             variant="dark"

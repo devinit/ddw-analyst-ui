@@ -67,6 +67,7 @@ exports[`renders correctly when the sources are updated 1`] = `
           </td>
           <td
             class="c0"
+            data-testid="source-table-row-actions"
           >
             <div
               class="btn-group"
@@ -112,6 +113,7 @@ exports[`renders correctly when the sources are updated 1`] = `
           </td>
           <td
             class="c0"
+            data-testid="source-table-row-actions"
           >
             <div
               class="btn-group"
@@ -157,6 +159,7 @@ exports[`renders correctly when the sources are updated 1`] = `
           </td>
           <td
             class="c0"
+            data-testid="source-table-row-actions"
           >
             <div
               class="btn-group"
@@ -233,6 +236,7 @@ exports[`renders correctly with default props 1`] = `
         </td>
         <td
           className="c0"
+          data-testid="source-table-row-actions"
         >
           <div
             className="btn-group"
@@ -284,6 +288,7 @@ exports[`renders correctly with default props 1`] = `
         </td>
         <td
           className="c0"
+          data-testid="source-table-row-actions"
         >
           <div
             className="btn-group"

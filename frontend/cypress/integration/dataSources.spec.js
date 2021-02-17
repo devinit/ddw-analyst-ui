@@ -2,10 +2,10 @@
 
 describe('The Data Sources Page', () => {
   beforeEach(() => {
-    cy.fixture('users').then(users => {
-      const { username, email } = users.find(user => user.role === 'admin');
+    cy.fixture('users').then((users) => {
+      const { username, password } = users.find((user) => user.role === 'admin');
 
-      cy.login(username, email);
+      cy.login(username, password);
     });
   });
 
@@ -19,26 +19,22 @@ describe('The Data Sources Page', () => {
   it('renders the sources in a data table', () => {
     cy.visit('/sources');
     cy.get('.sources-table').find('tbody').find('tr').should('have.length.greaterThan', 0);
-  });
-
-  it('renders a 3 item tab to show the details of a selected source', () => {
-    cy.visit('/sources');
-    cy.get('.source-details').find('.nav-item').should('have.length', 3);
+    cy.get('.sources-table').find('tbody').find('tr').should('have.length.lessThan', 11);
   });
 
   describe('sources table', () => {
-    it('has the first item selected by default', () => {
+    it('shows each row with action buttons', () => {
       cy.visit('/sources');
-      cy.get('.sources-table').find('tbody').find('tr').first().should('have.class', 'table-danger');
+      cy.get('[data-testid=sources-table-row]')
+        .then((rows) => {
+          cy.get('[data-testid=source-table-row-actions]').then((actions) => {
+            expect(rows.length).to.equal(actions.length);
+          });
+        });
     });
 
-    it('updates the details tab when a table row is clicked', () => {
-      cy.visit('/sources');
-      // FIXME: find a better way to write this test
-      cy.get('.source-columns-table').find('tbody').find('tr').then(columns => {
-        cy.get('.sources-table').find('tbody').find('tr').last().click();
-        cy.get('.source-columns-table').find('tbody').find('tr').should('not.have.length', columns.length);
-      });
-    });
+    xit('actions buttons function properly', () => {
+      // TODO: add test
+    })
   });
 });

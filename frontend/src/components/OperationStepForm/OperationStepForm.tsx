@@ -266,7 +266,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
     if (!confirmDeleteStep) {
       setConfirmDeleteStep(true);
       setTimeoutId(
-        setTimeout(() => {
+        window.setTimeout(() => {
           setConfirmDeleteStep(false);
         }, 3000),
       );
@@ -367,6 +367,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
                     data: DropdownProps,
                   ) => onSelectQuery(data, setFieldValue)}
                   disabled={!props.editable}
+                  data-testid="qb-step-select-query"
                 />
                 <Form.Control.Feedback
                   type="invalid"
@@ -388,7 +389,13 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
             </Col>
 
             <Col md={12} className="mt-3">
-              <Button variant="dark" hidden={!props.onClose} size="sm" onClick={props.onClose}>
+              <Button
+                variant="dark"
+                hidden={!props.onClose}
+                size="sm"
+                onClick={props.onClose}
+                data-testid="qb-step-close-button"
+              >
                 Close
               </Button>
               <Button
@@ -398,10 +405,17 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
                 onClick={onDeleteStep}
                 hidden={!props.editable}
                 size="sm"
+                data-testid="qb-step-submit-button"
               >
                 {`${confirmDeleteStep ? 'Confirm ' : ''}Delete Step`}
               </Button>
-              <Button variant="danger" type="submit" hidden={!props.editable} size="sm">
+              <Button
+                variant="danger"
+                type="submit"
+                hidden={!props.editable}
+                size="sm"
+                data-testid="qb-step-preview-button"
+              >
                 {props.editing ? 'Edit Step' : 'Save Step'}
               </Button>
             </Col>

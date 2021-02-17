@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  test:
+  test-typescript:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,17 +16,46 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Set up Python 3.x
-      uses: actions/setup-python@v2
+    - uses: actions/cache@v2
       with:
-        python-version: '3.x'
-        architecture: 'x64'
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
 
     - name: Install dependencies
       run: |
         npm config set '@bit:registry' https://node.bit.dev
         npm install --ignore-scripts
         npm install -g codecov
+
+    - name: Run tests
+      run: |
+        npm run lint
+        npm run coverage:ts
+      env:
+        CI: true
+
+  test-python:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
+
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
         pip3 install --user codecov
 
     - name: Run docker build
@@ -36,13 +65,12 @@ jobs:
 
     - name: Run tests
       run: |
-        npm run lint
-        npm run coverage
+        npm run coverage:py
       env:
         CI: true
 
   deploy:
-    needs: [test]
+    needs: [test-typescript,test-python]
     runs-on: ubuntu-latest
     if:
       contains('
@@ -128,3 +156,35 @@ jobs:
           cd ~/ddw-analyst-ui
           npm ci
           npm run build
+
+  end-to-end:
+    needs: [test-typescript]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: |
+        npm config set '@bit:registry' https://node.bit.dev
+        npm ci
+
+    - name: Run end-to-end tests
+      run: |
+        npm run cy:run-ci
+      env:
+        CI: true
