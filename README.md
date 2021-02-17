@@ -150,8 +150,9 @@ NOTE:
 
 This is set up to run with [Cypress](https://www.cypress.io/), and only locally at the moment.
 
-1. Setup test users as specified in the `frontend/cypress/fixtures/users.json` file, with the password as the email
-2. Run `npm run cy:run` for headless tests and `npm run cy:open` for interactive tests in a browser.
+1. Update the `baseUrl` option in the `cypress.json` file to one that suits your current need
+2. Setup test users as specified in the `frontend/cypress/fixtures/users.json` file
+3. Run `npm run cy:run` for headless tests and `npm run cy:open` for interactive tests in a browser.
 
 ### Postman Setup for API Testing
 
