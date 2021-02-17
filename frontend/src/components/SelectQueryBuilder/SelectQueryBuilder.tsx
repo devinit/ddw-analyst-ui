@@ -66,14 +66,27 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           )}
           onChange={onChange}
           disabled={!props.editable}
+          data-testid="qb-select-columns"
         />
       </Form.Group>
       <Form.Group>
-        <Button variant="danger" size="sm" onClick={onSelectAll} hidden={!props.editable}>
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={onSelectAll}
+          hidden={!props.editable}
+          data-testid="qb-select-all-button"
+        >
           <i className="material-icons mr-1">check_box</i>
           Select All
         </Button>
-        <Button variant="danger" size="sm" onClick={onDeselectAll} hidden={!props.editable}>
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={onDeselectAll}
+          hidden={!props.editable}
+          data-testid="qb-select-none-button"
+        >
           <i className="material-icons mr-1">check_box_outline_blank</i>
           Deselect All
         </Button>

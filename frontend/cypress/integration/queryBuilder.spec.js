@@ -16,7 +16,7 @@ describe('The Query Builder', () => {
     cy.url().should('include', '/queries/build');
   });
 
-  xit('has a button to add a step', () => {
+  xit('with an active data source has a button to add a step', () => {
     // TODO: create test
   });
 
