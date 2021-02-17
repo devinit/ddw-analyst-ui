@@ -42,7 +42,13 @@ export class FilterQueryBuilder extends React.Component<
     return (
       <div>
         {this.renderFilters(this.props.filters)}
-        <Button variant="danger" size="sm" onClick={this.addFilter} hidden={!this.props.editable}>
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={this.addFilter}
+          hidden={!this.props.editable}
+          data-testid="qb-filter-add-button"
+        >
           <i className="material-icons mr-1">add</i>
           Add Filter
         </Button>
@@ -51,6 +57,7 @@ export class FilterQueryBuilder extends React.Component<
           size="sm"
           onClick={this.toggleInfo}
           hidden={!this.props.editable}
+          data-testid="qb-filter-info-button"
         >
           <i className="material-icons">info</i>
         </Button>

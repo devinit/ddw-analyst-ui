@@ -133,6 +133,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           onClick={onAddStep}
           disabled={!!activeStep || props.disabled}
           hidden={!editable}
+          data-testid="qb-add-step-button"
         >
           <i className="material-icons mr-1">add</i>
           Add Step

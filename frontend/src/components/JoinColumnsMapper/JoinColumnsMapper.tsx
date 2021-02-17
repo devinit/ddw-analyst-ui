@@ -48,6 +48,7 @@ export class JoinColumnsMapper extends React.Component<
             onChange={this.onSelectColumn}
             defaultValue={primaryColumn}
             disabled={!this.props.editable}
+            data-testid="qb-join-primary-column-select"
           />
         </Col>
 
@@ -68,11 +69,17 @@ export class JoinColumnsMapper extends React.Component<
             onChange={this.onSelectColumn}
             defaultValue={secondaryColumn}
             disabled={!this.props.editable}
+            data-testid="qb-join-secondary-column-select"
           />
         </Col>
 
         <Col lg={1}>
-          <Button variant="link" className="btn-just-icon" onClick={this.onDelete}>
+          <Button
+            variant="link"
+            className="btn-just-icon"
+            onClick={this.onDelete}
+            data-testid="qb-join-delete-mapping"
+          >
             <i className="material-icons">delete</i>
           </Button>
         </Col>

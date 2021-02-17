@@ -72,6 +72,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
               value={this.props.joinType}
               onChange={this.onChange}
               disabled={!this.props.editable}
+              data-testid="qb-join-type"
             />
             <Form.Control.Feedback
               type="invalid"
@@ -97,6 +98,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
               value={sourceID as string | undefined}
               onChange={this.onChange}
               disabled={!this.props.editable}
+              data-testid="qb-join-dataset-select"
             />
             <Form.Control.Feedback
               type="invalid"
@@ -121,6 +123,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
             size="sm"
             onClick={this.addMapping}
             hidden={!this.props.editable}
+            data-testid="qb-join-add-mapping-button"
           >
             <i className="material-icons mr-1">add</i>
             Add Mapping
