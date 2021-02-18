@@ -21,6 +21,7 @@ exports[`renders correctly with the default props 1`] = `
   </td>
   <td
     className="c0"
+    data-testid="source-table-row-actions"
   >
     <div
       className="btn-group"

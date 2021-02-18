@@ -13,24 +13,23 @@ import { Base64 } from 'js-base64';
 // -- This is a parent command --
 Cypress.Commands.add('login', (email, password) => {
   cy.request({
-      url: '/api/auth/login/',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${Base64.encode(`${email}:${password}`)}`
-      }
-    })
-    .then(({body, status}) => {
-      expect(status).to.eq(200);
-      expect(body).to.have.property('token');
-      expect(body).to.have.property('user');
-      const localStorarePrefix = 'ddw-analyst-ui/ddw_store/';
+    url: '/api/auth/login/',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Basic ${Base64.encode(`${email}:${password}`)}`,
+    },
+  }).then(({ body, status }) => {
+    expect(status).to.eq(200);
+    expect(body).to.have.property('token');
+    expect(body).to.have.property('user');
+    const localStorarePrefix = 'ddw-analyst-ui/ddw_store/';
 
-      window.localStorage.setItem(`${localStorarePrefix}API_KEY`, JSON.stringify(body.token));
-      window.localStorage.setItem(`${localStorarePrefix}USER`, JSON.stringify(body.user));
+    window.localStorage.setItem(`${localStorarePrefix}API_KEY`, JSON.stringify(body.token));
+    window.localStorage.setItem(`${localStorarePrefix}USER`, JSON.stringify(body.user));
 
-      return body;
-    });
+    return body;
+  });
 });
 //
 //

@@ -40,6 +40,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             defaultValue={filter.get('field') as string}
             error={!!(errors && errors.get('field'))}
             disabled={!this.props.editable}
+            data-testid="qb-filter-select-column"
           />
           <Form.Control.Feedback
             type="invalid"
@@ -60,6 +61,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             defaultValue={this.props.filter.get('func') as string}
             error={!!(errors && errors.get('func'))}
             disabled={!this.props.editable}
+            data-testid="qb-filter-select-operation"
           />
           <Form.Control.Feedback
             type="invalid"
@@ -102,6 +104,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             className="btn-just-icon"
             onClick={this.onDelete}
             hidden={!this.props.editable}
+            data-testid="qb-filter-delete-button"
           >
             <i className="material-icons">delete</i>
           </Button>

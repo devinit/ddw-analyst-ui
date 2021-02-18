@@ -113,11 +113,37 @@ class Command(BaseCommand):
                 self.stdout.write('Script ran successfully for ' + schedule.script_name)
 
             # This makes sure the next runtime is calculated from the time the last one was run i.e current time
-            current_date_time = make_aware(datetime.now())
-            self.create_next_run_instance(schedule, current_date_time)
+            next_runtime = self.get_next_runtime(schedule, runInstance.start_at)
+            actual_runtime = self.get_most_recent_of_next_runtime_or_expected_runtime(next_runtime, runInstance, schedule)
+            self.create_next_run_instance(schedule, actual_runtime)
         except:
             self.update_run_instance(runInstance, 'e', 'An unexpected error occured while executing the script ... please contact the administrator')
-            self.create_next_run_instance(schedule, make_aware(datetime.now()))
+            next_runtime = self.get_next_runtime(schedule, runInstance.start_at)
+            actual_runtime = self.get_most_recent_of_next_runtime_or_expected_runtime(next_runtime, runInstance, schedule)
+            self.create_next_run_instance(schedule, actual_runtime)
+
+    def get_next_runtime(self, schedule, instance_start_date):
+        next_runtime = self.calculate_next_runtime(
+            instance_start_date,
+            schedule.interval,
+            schedule.interval_type
+        )
+        return next_runtime
+
+    def get_most_recent_of_next_runtime_or_expected_runtime(self, next_runtime, current_runInstance, schedule):
+        if schedule.expected_runtime and schedule.expected_runtime_type in ('sec', 'min', 'hrs'):
+            expected_runtime = self.calculate_next_runtime(
+                current_runInstance.start_at,
+                schedule.expected_runtime,
+                schedule.expected_runtime_type
+            )
+            if next_runtime < expected_runtime:
+                return expected_runtime
+            else:
+                return next_runtime
+        else:
+            return next_runtime
+
 
     def execute_script(self, script_name, child_conn):
         post_status = status.HTTP_200_OK
@@ -154,11 +180,7 @@ class Command(BaseCommand):
             #Create future run instance if schedule has been repeated
             nextRunInstance = ScheduledEventRunInstance(
                 scheduled_event = schedule,
-                start_at = self.calculate_next_runtime(
-                    last_rundate,
-                    schedule.interval,
-                    schedule.interval_type
-                ) if not start_date else start_date,
+                start_at = last_rundate if not start_date else start_date,
                 status = 'p'
             )
             nextRunInstance.save()

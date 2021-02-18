@@ -35,7 +35,11 @@ function setup_rabbitmq {
       sleep 10
   done
 
-  docker-compose exec -T rabbitmq rabbitmqctl add_user admin ddw_analyst_ui
+  until docker-compose exec -T rabbitmq rabbitmqctl add_user admin ddw_analyst_ui; do
+      echo "Rabbit has not fully started - sleeping"
+      sleep 10
+  done
+
   docker-compose exec -T rabbitmq rabbitmqctl add_vhost myvhost
   docker-compose exec -T rabbitmq rabbitmqctl set_permissions -p myvhost admin ".*" ".*" ".*"
 }

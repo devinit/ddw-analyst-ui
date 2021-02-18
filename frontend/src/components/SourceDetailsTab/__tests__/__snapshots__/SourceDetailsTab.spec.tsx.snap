@@ -38,7 +38,6 @@ exports[`renders correctly with default props 1`] = `
             data-rb-event-key="columns"
             href="#"
             role="tab"
-            tabindex="-1"
           >
             Columns
           </a>
@@ -52,7 +51,6 @@ exports[`renders correctly with default props 1`] = `
             data-rb-event-key="history"
             href="#"
             role="tab"
-            tabindex="-1"
           >
             Update History
           </a>

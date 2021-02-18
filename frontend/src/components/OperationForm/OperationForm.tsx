@@ -93,7 +93,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
     if (!confirmDelete) {
       setConfirmDelete(true);
       setTimeoutId(
-        setTimeout(() => {
+        window.setTimeout(() => {
           setConfirmDelete(false);
         }, 3000),
       );
@@ -169,12 +169,13 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
 
           {props.children}
 
-          <Dropdown hidden={!!values.id && !props.editable}>
+          <Dropdown hidden={!!values.id && !props.editable} data-testid="qb-dropdown-buttons">
             <Button
               variant="danger"
               disabled={!props.valid || !isValid || isSubmitting || props.processing}
               onClick={onSuccess()}
               size="sm"
+              data-testid="qb-save-button"
             >
               {props.processing ? 'Saving ...' : 'Save'}
             </Button>
@@ -185,6 +186,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               size="sm"
               hidden={!props.onPreview}
               disabled={!props.valid}
+              data-testid="qb-preview-button"
             >
               {props.previewing ? 'Close Preview' : 'Preview'}
             </Button>
@@ -194,18 +196,29 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               id="operation-form-actions"
               size="sm"
               disabled={!props.valid || !isValid || isSubmitting || props.processing}
+              data-testid="qb-dropdown-toggle-button"
             />
             <Dropdown.Menu className="transition-none">
-              <Dropdown.Item eventKey="1" onClick={onSuccess(true)}>
+              <Dropdown.Item
+                eventKey="1"
+                onClick={onSuccess(true)}
+                data-testid="qb-save-preview-item"
+              >
                 {props.processing ? 'Saving ...' : 'Save & Preview'}
               </Dropdown.Item>
-              <Dropdown.Item eventKey="2" hidden={!values.id} onClick={onDuplicate}>
+              <Dropdown.Item
+                eventKey="2"
+                hidden={!values.id}
+                onClick={onDuplicate}
+                data-testid="qb-duplicate-item"
+              >
                 Make a Copy
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey="3"
                 onClick={props.onReset}
                 hidden={!props.onReset || !!(values.id && !props.editable)}
+                data-testid="qb-refresh-item"
               >
                 Refresh
               </Dropdown.Item>
@@ -216,6 +229,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               onClick={onDelete}
               size="sm"
               hidden={!!values.id && !props.editable}
+              data-testid="qb-delete-button"
             >
               {`${confirmDelete ? 'Confirm ' : ''}Delete Dataset`}
             </Button>

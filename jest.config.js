@@ -9,7 +9,7 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.jest.json',
+      tsconfig: 'tsconfig.jest.json',
     },
   },
   // The glob patterns Jest uses to detect test files

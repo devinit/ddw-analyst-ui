@@ -59,6 +59,7 @@ export class AggregateQueryBuilder extends React.Component<
               value={this.props.function}
               onChange={this.onChange}
               disabled={!this.props.editable}
+              data-testid="qb-aggregate-function-select"
             />
             <Form.Control.Feedback
               type="invalid"
