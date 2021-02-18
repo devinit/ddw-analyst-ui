@@ -51,7 +51,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 4. Migrate the database. `python manage.py migrate`
 5. Load test data from a fixture like so `python manage.py loaddata test_data` `python manage.py loaddata --database=datasets test_datasets`
 6. Create a superuser. `python manage.py createsuperuser`
-7. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
+7. Add the bit registry to npm config to install bit dependencies ``npm config set @bit:registry https://node.bitsrc.io
 8. Install frontend dependencies `npm install`
 9. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
 10. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
@@ -64,7 +64,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
         docker volume rm metadata
 2. Create a persistent dev volume:
-
+docker volume rm metadata
         docker volume create --name=metadata
 
 3. Create a self-signed certificate:
