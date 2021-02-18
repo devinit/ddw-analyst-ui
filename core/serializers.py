@@ -170,6 +170,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'created_on',
             'updated_on',
             'aliases',
+            'alias_creation_status'
         )
 
     def create(self, validated_data):
@@ -229,6 +230,8 @@ class OperationSerializer(serializers.ModelSerializer):
 
     def create_operation_data_aliases(self, operation):
         count, data = query.query_table(operation, 1, 0, estimate_count=True)
+        operation.alias_creation_status = 'p'
+        operation.save()
         try:
             data_column_keys = data[0].keys()
             first_step = operation.get_operation_steps()[0]
@@ -237,11 +240,16 @@ class OperationSerializer(serializers.ModelSerializer):
                 matching = columns.filter(name=column).first()
                 alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
                 alias.save()
+                operation.alias_creation_status = 'd'
+                operation.save()
         except: # FIXME: handle specific errors
-            pass
+            operation.alias_creation_status = 'e'
+            operation.save()
 
     def update_operation_data_aliases(self, operation):
         count, data = query.query_table(operation, 1, 0, estimate_count=True)
+        operation.alias_creation_status = 'p'
+        operation.save()
         try:
             data_column_keys = data[0].keys()
             first_step = operation.get_operation_steps()[0]
@@ -254,8 +262,11 @@ class OperationSerializer(serializers.ModelSerializer):
                     matching = columns.filter(name=column).first()
                     alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
                     alias.save()
+                    operation.alias_creation_status = 'd'
+                    operation.save()
         except: # FIXME: handle specific errors
-            pass
+            operation.alias_creation_status = 'e'
+            operation.save()
 
     def create_operation_alias(self, operation, column_name, column_alias):
         return OperationDataColumnAlias.objects.create(
