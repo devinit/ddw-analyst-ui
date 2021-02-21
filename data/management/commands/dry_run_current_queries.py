@@ -107,7 +107,7 @@ class RunCurrentQueries(BaseCommand):
         if columns:
             for column in columns:
                 if column in old_cols:
-                print('Column {} is used by above query'.format(column))
+                    print('Column {} is used by above query'.format(column))
 
     def aggregate(self, group_by, agg_func_name, operational_column, old_cols=[]):
         if operational_column in old_cols:
