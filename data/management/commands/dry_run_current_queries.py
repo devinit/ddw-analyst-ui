@@ -6,7 +6,7 @@ from core.models import Operation, Source
 from core.pypika_utils import QueryBuilder
 from data.db_manager import analyse_query
 
-class TestCurrentQueries(BaseCommand):
+class RunCurrentQueries(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('active_mirror_name', type=str, help='Table name where the columns belong')
@@ -24,7 +24,7 @@ class TestCurrentQueries(BaseCommand):
         for query in queries:
             sql = QueryBuilder(operation=query).get_sql(limit=2)
             results = analyse_query(sql)
-            if results[0]['result'] == success:
+            if results[0]['result'] == 'success':
                 continue
             else:
                 print(sql)
@@ -101,7 +101,7 @@ class TestCurrentQueries(BaseCommand):
     def multi_transform(self, trans_func_name, operational_columns, old_cols=[]):
         for operational_column in operational_columns:
             if operational_column in old_cols:
-            print('Column {} is used by above query'.format(operational_column))
+                print('Column {} is used by above query'.format(operational_column))
 
     def window(self, window_fn, term=None, over=None, order_by=None, columns=None, old_cols=[], **kwargs):
         if columns:
