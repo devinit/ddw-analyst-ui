@@ -8,8 +8,13 @@ from data.db_manager import analyse_query
 
 class TestCurrentQueries(BaseCommand):
 
+    def add_arguments(self, parser):
+        parser.add_argument('active_mirror_name', type=str, help='Table name where the columns belong')
+        parser.add_argument('old_cols', nargs='+', type=str, help='List of old column names')
+
     def handle(self, *args, **kwargs):
-        pass
+        source = kwargs['active_mirror_name']
+        old_cols = kwargs['old_cols']
 
     def getAllQueries(self):
         return Operation.objects.all()
