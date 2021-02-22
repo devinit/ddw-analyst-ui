@@ -100,7 +100,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(column_x)))
                 input('Press Enter to continue...')
         for column_y in columns_y:
-            if column_x in right_cols:
+            if column_y in right_cols:
                 changed_cols.append(column_y)
                 self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(column_y)))
                 input('Press Enter to continue...')
