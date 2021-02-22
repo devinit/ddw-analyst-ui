@@ -6,13 +6,15 @@ from core.models import Operation, Source
 from core.pypika_utils import QueryBuilder
 from data.db_manager import analyse_query
 
-class RunCurrentQueries(BaseCommand):
+import json
+
+class Command(BaseCommand):
 
     def add_arguments(self, parser):
         # parser.add_argument('active_mirror_name', type=str, help='Table name where the columns belong')
         parser.add_argument('old_cols', nargs='+', type=str, help='List of old column names')
         parser.add_argument('-t', '--table', type=str, help='Table name where the columns belong')
-        parser.add_argument('-a', '--all', type=str, help='Used if you want to run test on all current queries')
+        parser.add_argument('-a', '--all', action='store_true', help='Used if you want to run test on all current queries')
 
     def handle(self, *args, **kwargs):
         source = kwargs['table']
@@ -28,24 +30,20 @@ class RunCurrentQueries(BaseCommand):
     def checkAllQueries(self):
         queries = Operation.objects.all()
         for query in queries:
+            print(query.id)
             sql = QueryBuilder(operation=query).get_sql(limit=2)
             results = analyse_query(sql)
             if results[0]['result'] == 'success':
                 continue
             else:
-                print(sql)
-                print("Failed for Operation {} - {} with error {}".format(query.id, query.name, results[0]['error']))
-
-    def getSourceByActiveMirrorName(self, active_mirror_name):
-        return Source.objects.filter(active_mirror_name=active_mirror_name)
+                self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(query.id, query.name, results[0]['error'])))
 
     def checkQueriesBySource(self, source, old_cols):
         queries = Operation.objects.all()
         for query in queries:
-            print('Checking Query {} - {}'.format(query.id, query.name))
+            self.stdout.write(self.style.SUCCESS('Checking Query {} - {}'.format(query.id, query.name)))
             steps = query.operationstep_set.order_by('step_id').all()
             for step in steps:
-                # current_source = Source.objects.get(pk=step.source)
                 query_func = step.query_func
                 query_function = getattr(self, query_func)
                 kwargs = json.loads(step.query_kwargs)
@@ -53,9 +51,9 @@ class RunCurrentQueries(BaseCommand):
                     if source == kwargs['table_name']:
                         query_function(**kwargs, right_cols=old_cols)
 
-                current_source = Source.objects.get(pk=step.source)
+                current_source = step.source.active_mirror_name
 
-                if source == current_source.active_mirror_name:
+                if source == current_source:
                     query_function(**kwargs, old_cols=old_cols)
 
     def filter(self, filters, old_cols=[]):
@@ -65,7 +63,7 @@ class RunCurrentQueries(BaseCommand):
         for filter in filters:
             if filter['field'] in old_cols:
                 changed_cols.append(filter['field'])
-                print('Column {} is used by above query'.format(filter['field']))
+                self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(filter['field'])))
         return changed_cols
 
     def select(self, columns=None, old_cols=[]):
@@ -75,7 +73,7 @@ class RunCurrentQueries(BaseCommand):
         for column in columns:
             if column in old_cols:
                 changed_cols.append(column)
-                print('Column {} is used by above query'.format(column))
+                self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(column)))
         return changed_cols
 
     def join(self, table_name, schema_name, join_on, join_how="full", columns_x=None, columns_y=None, suffix_y="2", old_cols=[], right_cols=[]):
@@ -83,34 +81,34 @@ class RunCurrentQueries(BaseCommand):
         for k, v in join_on.items():
             if k in old_cols:
                 changed_cols.append(k)
-                print('Column {} is used by above query'.format(k))
+                self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(k)))
             if v in right_cols:
                 changed_cols.append(v)
-                print('Column {} is used by above query'.format(v))
+                self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(v)))
         for column_x in columns_x:
             if column_x in old_cols:
                 changed_cols.append(column_x)
-                print('Column {} is used by above query'.format(column_x))
+                self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(column_x)))
         for column_y in columns_y:
             if column_x in right_cols:
                 changed_cols.append(column_y)
-                print('Column {} is used by above query'.format(column_y))
+                self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(column_y)))
 
     def scalar_transform(self, trans_func_name, operational_column, operational_value, old_cols=[]):
         if operational_column in old_cols:
-            print('Column {} is used by above query'.format(operational_column))
+            self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(operational_column)))
 
     def multi_transform(self, trans_func_name, operational_columns, old_cols=[]):
         for operational_column in operational_columns:
             if operational_column in old_cols:
-                print('Column {} is used by above query'.format(operational_column))
+                self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(operational_column)))
 
     def window(self, window_fn, term=None, over=None, order_by=None, columns=None, old_cols=[], **kwargs):
         if columns:
             for column in columns:
                 if column in old_cols:
-                    print('Column {} is used by above query'.format(column))
+                    self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(column)))
 
     def aggregate(self, group_by, agg_func_name, operational_column, old_cols=[]):
         if operational_column in old_cols:
-            print('Column {} is used by above query'.format(operational_column))
+            self.stdout.write(self.style.ERROR('Column {} is used by above query'.format(operational_column)))
