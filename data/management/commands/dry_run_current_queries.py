@@ -9,18 +9,24 @@ from data.db_manager import analyse_query
 class RunCurrentQueries(BaseCommand):
 
     def add_arguments(self, parser):
-        parser.add_argument('active_mirror_name', type=str, help='Table name where the columns belong')
+        # parser.add_argument('active_mirror_name', type=str, help='Table name where the columns belong')
         parser.add_argument('old_cols', nargs='+', type=str, help='List of old column names')
+        parser.add_argument('-t', '--table', type=str, help='Table name where the columns belong')
+        parser.add_argument('-a', '--all', type=str, help='Used if you want to run test on all current queries')
 
     def handle(self, *args, **kwargs):
-        source = kwargs['active_mirror_name']
+        source = kwargs['table']
         old_cols = kwargs['old_cols']
+        all = kwargs['all']
 
-    def getAllQueries(self):
-        return Operation.objects.all()
+        if all:
+            self.checkAllQueries()
+
+        if source and len(old_cols) > 0:
+            self.checkQueriesBySource(source, old_cols)
 
     def checkAllQueries(self):
-        queries = self.getAllQueries()
+        queries = Operation.objects.all()
         for query in queries:
             sql = QueryBuilder(operation=query).get_sql(limit=2)
             results = analyse_query(sql)
@@ -30,15 +36,11 @@ class RunCurrentQueries(BaseCommand):
                 print(sql)
                 print("Failed for Operation {} - {} with error {}".format(query.id, query.name, results[0]['error']))
 
-
-    def getQueriesBySource(self, source):
-        return Operation.objects.filter(source=source)
-
     def getSourceByActiveMirrorName(self, active_mirror_name):
         return Source.objects.filter(active_mirror_name=active_mirror_name)
 
     def checkQueriesBySource(self, source, old_cols):
-        queries = self.getAllQueries()
+        queries = Operation.objects.all()
         for query in queries:
             print('Checking Query {} - {}'.format(query.id, query.name))
             steps = query.operationstep_set.order_by('step_id').all()
