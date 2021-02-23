@@ -19,36 +19,33 @@ describe('The Query Builder', () => {
   it('that is not a draft requires both a name and description', () => {
     // Visit query builder type name and choose datasource
     cy.visit('/queries/build');
-    cy.get('[name="name"]').focus().type('Test')
-    cy.get('.search').eq(1).click({force: true})
-    cy.wait(3000)
-    cy.get('.search').eq(1).type('crs iso codes{enter}')
+    cy.get('[name="name"]').focus().type('My Test Dataset');
+    cy.get('[name="description"]').focus().type('My Test Dataset Description');
+    cy.get('.search').eq(1).click({ force: true });
+    cy.wait(5000);
+    cy.get('.search').eq(1).type('CRS ISO Codes{enter}');
 
     // Add step
-    cy.get('[data-testid="qb-add-step-button"]').click()
+    cy.get('[data-testid="qb-add-step-button"]').click();
 
     // Fill in create step form
-    cy.get('[name="name"]').eq(1).type('Test')
-    cy.get('[name="description"]').eq(1).type('Test2')
-    cy.get('[data-testid="qb-step-select-query"]').type('select{enter}')
-    cy.get('[data-testid="qb-select-columns"]').type('code{enter}')
-    cy.get('[data-testid="qb-select-columns"]').type('name{enter}{esc}')
+    cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+    cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+    cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+    cy.get('[data-testid="qb-select-columns"]').type('code{enter}');
+    cy.get('[data-testid="qb-select-columns"]').type('name{enter}{esc}');
 
     // Save create step
-    cy.get('[data-testid="qb-step-preview-button"]').click()
+    cy.get('[data-testid="qb-step-preview-button"]').click();
 
     // For published dataset, check that is_draft is not checked
-    cy.get('.form-check-input').should('not.be.checked')
+    cy.get('.form-check-input').should('not.be.checked');
 
     // Check that validation for name cannot be seen
-    cy.contains('Name is required').should('not.be.visible')
+    cy.contains('Name is required').should('not.be.visible');
 
-    // Check that validation for description can be seen
-    cy.contains('Description is Required').should('be.visible')
-
-    // Check that query description is empty
-    cy.get('[name="description"]').should('have.value', '')
-
+    // Check that validation for description cannot be seen
+    cy.contains('Description is required').should('not.be.visible');
   });
 
   xit('with an active data source has a button to add a step', () => {
