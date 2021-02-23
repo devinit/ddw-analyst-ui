@@ -41,11 +41,8 @@ describe('The Query Builder', () => {
     // For published dataset, check that is_draft is not checked
     cy.get('.form-check-input').should('not.be.checked');
 
-    // Check that validation for name cannot be seen
-    cy.contains('Name is required').should('not.be.visible');
-
-    // Check that validation for description cannot be seen
-    cy.contains('Description is required').should('not.be.visible');
+    // Check that all validation elements are hidden
+    cy.get('.invalid-feedback').should('not.be.visible');
   });
 
   xit('with an active data source has a button to add a step', () => {
