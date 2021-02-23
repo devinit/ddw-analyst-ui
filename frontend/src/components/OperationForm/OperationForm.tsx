@@ -28,7 +28,7 @@ const schema = Yup.object().shape({
   description: Yup.string().when('is_draft', {
     is: true,
     then: Yup.string(),
-    otherwise: Yup.string().required('Description is Required'),
+    otherwise: Yup.string().required('Description is required'),
   }),
   is_draft: Yup.bool(),
 });
