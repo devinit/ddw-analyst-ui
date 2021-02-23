@@ -28,7 +28,7 @@ const schema = Yup.object().shape({
   description: Yup.string().when('is_draft', {
     is: true,
     then: Yup.string(),
-    otherwise: Yup.string().required('Description is Required'),
+    otherwise: Yup.string().required('Description is required'),
   }),
   is_draft: Yup.bool(),
 });
@@ -118,7 +118,13 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const values: Partial<Operation> = props.operation ? props.operation.toJS() : {};
 
   return (
-    <Formik validationSchema={schema} initialValues={values} onSubmit={onSuccess()} validateOnMount>
+    <Formik
+      enableReinitialize={true}
+      validationSchema={schema}
+      initialValues={values}
+      onSubmit={onSuccess()}
+      validateOnMount
+    >
       {({ errors, isSubmitting, isValid, setFieldValue }: FormikProps<Operation>) => (
         <Form className="form" noValidate data-testid="operation-form">
           <Alert variant="danger" hidden={!props.alert}>

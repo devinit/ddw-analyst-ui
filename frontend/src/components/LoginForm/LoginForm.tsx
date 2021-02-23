@@ -36,7 +36,7 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
     alerts: {},
   };
   private schema = Yup.object().shape({
-    username: Yup.string().required('Username is required!'),
+    username: Yup.string().required('Email is required!'),
     password: Yup.string().required('Password is required!'),
   });
 
