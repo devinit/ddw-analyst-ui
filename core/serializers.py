@@ -276,13 +276,13 @@ class OperationSerializer(serializers.ModelSerializer):
             raise AliasUpdateError()
 
     def create_operation_alias(self, operation, column_name, column_alias):
-        # if not column_alias:
-        #     name_array = column_name.split('_')
-        #     capitalized_name_array = []
-        #     for word in name_array:
-        #         capitalized_word = word.capitalize()
-        #         capitalized_name_array.append(capitalized_word)
-        #     column_alias = ' '.join(capitalized_name_array)
+        if not column_alias:
+            name_array = column_name.split('_')
+            capitalized_name_array = []
+            for word in name_array:
+                capitalized_word = word.capitalize()
+                capitalized_name_array.append(capitalized_word)
+            column_alias = ' '.join(capitalized_name_array)
 
         return OperationDataColumnAlias.objects.create(
             operation=operation, column_name=column_name, column_alias=column_alias)

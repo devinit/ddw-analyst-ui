@@ -173,7 +173,6 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           data,
         })
         .then((response: AxiosResponse<Operation>) => {
-          console.log(response.data)
           if (response.status === 200 || response.status === 201) {
             props.actions.operationSaved(true);
             if (preview) {
@@ -185,11 +184,6 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         })
         .catch((error) => {
           props.actions.operationSaved(false);
-          console.log(error.response.data)
-          // if(error.response.data.CODE === 1){
-          //   setAlertMessage('The creation of column aliases for this dataset was interrupted. Please save this dataset again to generate new aliases')
-          //   return
-          // }
           if(error.response.data.error_code === 'e'){
             setAlertMessage('An error occured while creating column aliases for this dataset. Please save this dataset again to generate new aliases')
             return
