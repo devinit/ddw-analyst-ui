@@ -243,8 +243,7 @@ class OperationSerializer(serializers.ModelSerializer):
                 alias.save()
                 operation.alias_creation_status = 'd'
                 operation.save()
-                print(operation.alias_creation_status)
-        except: # FIXME: handle specific errors
+        except:
             operation.alias_creation_status = 'e'
             operation.save()
 
@@ -260,20 +259,25 @@ class OperationSerializer(serializers.ModelSerializer):
             OperationDataColumnAlias.objects.filter(operation=operation).exclude(column_name__in=data_column_keys).delete()
             for column in data_column_keys:
                 existing_alias = OperationDataColumnAlias.objects.filter(operation=operation, column_name=column).first()
-                    
                 if not existing_alias:
                     matching = columns.filter(name=column).first()
                     alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
                     alias.save()
                     operation.alias_creation_status = 'd'
                     operation.save()
-        except: # FIXME: handle specific errors
+        except:
             operation.alias_creation_status = 'e'
             operation.save()
 
     def create_operation_alias(self, operation, column_name, column_alias):
         if not column_alias:
-            // TODO: generate alias from column name
+            name_array = column_name.split('_')
+            capitalized_name_array = []
+            for word in name_array:
+                capitalized_word = word.capitalize()
+                capitalized_name_array.append(capitalized_word)
+            column_alias = ' '.join(capitalized_name_array)
+
         return OperationDataColumnAlias.objects.create(
             operation=operation, column_name=column_name, column_alias=column_alias)
 
