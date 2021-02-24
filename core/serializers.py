@@ -14,6 +14,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.utils.timezone import make_aware
 from rest_framework import pagination, serializers
+from rest_framework.response import Response
 from rest_framework.utils import model_meta
 
 from core import query
@@ -22,7 +23,7 @@ from core.models import (
     Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
     ScheduledEventRunInstance, Sector, Source, SourceColumnMap, Tag,
     Theme, UpdateHistory, FrozenData, SavedQueryData)
-
+from core.errors import AliasCreationError, AliasUpdateError
 
 class DataSerializer(serializers.BaseSerializer):
     """
@@ -186,9 +187,11 @@ class OperationSerializer(serializers.ModelSerializer):
         operation.operation_query = query.build_query(operation=operation)
         operation.count_rows = True
         operation.save()
-        self.create_operation_data_aliases(operation)
-
-        return operation
+        try:
+            self.create_operation_data_aliases(operation)
+            return operation
+        except AliasCreationError:
+            raise AliasCreationError({'error_code': operation.alias_creation_status})
 
     def update(self, instance, validated_data):
         info = model_meta.get_field_info(instance)
@@ -224,9 +227,11 @@ class OperationSerializer(serializers.ModelSerializer):
         instance.operation_query = query.build_query(operation=instance)
         instance.count_rows = True
         instance.save()
-        self.update_operation_data_aliases(instance)
-
-        return instance
+        try:
+            self.update_operation_data_aliases(instance)
+            return instance
+        except AliasUpdateError:
+            raise AliasUpdateError({'error_code': instance.alias_creation_status})
 
     def create_operation_data_aliases(self, operation):
         count, data = query.query_table(operation, 1, 0, estimate_count=True)
@@ -239,13 +244,13 @@ class OperationSerializer(serializers.ModelSerializer):
             for column in data_column_keys:
                 matching = columns.filter(name=column).first()
                 alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
-                print(matching)
                 alias.save()
                 operation.alias_creation_status = 'd'
                 operation.save()
         except:
             operation.alias_creation_status = 'e'
             operation.save()
+            raise AliasCreationError()
 
     def update_operation_data_aliases(self, operation):
         count, data = query.query_table(operation, 1, 0, estimate_count=True)
@@ -268,15 +273,16 @@ class OperationSerializer(serializers.ModelSerializer):
         except:
             operation.alias_creation_status = 'e'
             operation.save()
+            raise AliasUpdateError()
 
     def create_operation_alias(self, operation, column_name, column_alias):
-        if not column_alias:
-            name_array = column_name.split('_')
-            capitalized_name_array = []
-            for word in name_array:
-                capitalized_word = word.capitalize()
-                capitalized_name_array.append(capitalized_word)
-            column_alias = ' '.join(capitalized_name_array)
+        # if not column_alias:
+        #     name_array = column_name.split('_')
+        #     capitalized_name_array = []
+        #     for word in name_array:
+        #         capitalized_word = word.capitalize()
+        #         capitalized_name_array.append(capitalized_word)
+        #     column_alias = ' '.join(capitalized_name_array)
 
         return OperationDataColumnAlias.objects.create(
             operation=operation, column_name=column_name, column_alias=column_alias)

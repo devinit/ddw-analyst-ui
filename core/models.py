@@ -104,7 +104,7 @@ class Operation(BaseEntity):
     row_count = models.IntegerField(blank=True, null=True)
     # controls whether to count rows in the post_save signal
     count_rows = models.BooleanField(default=False)
-    alias_creation_status = models.TextField(default='d', choices=alias_status_choices)
+    alias_creation_status = models.TextField(default='d', choices=alias_status_choices, blank=True)
 
     def __str__(self):
         return self.name
