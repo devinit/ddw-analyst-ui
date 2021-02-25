@@ -111,6 +111,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   icon="table_chart"
                   textNormal="Published Datasets"
                   onClick={this.setActiveRoute}
+                  data-testid="sidebar-link-published-datasets"
                 />
               </Sidebar.Item>
               <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
