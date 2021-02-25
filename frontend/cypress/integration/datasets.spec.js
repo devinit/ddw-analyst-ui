@@ -11,11 +11,25 @@ describe('The Datasets Pages', () => {
 
   // TODO: run each test for both my datasets & published datasets
 
-  xit('should be navigated to from the sidebar', () => {
+  it('that are published should be navigated to from the sidebar', () => {
     cy.visit('/');
     cy.url().should('not.include', '/login');
-    // cy.get('[data-testid=sidebar-link-query-builder]').click();
-    // cy.url().should('include', '/queries/build');
+    cy.get('[data-testid=sidebar-link-published-datasets]').click();
+    cy.url().should('include', '/datasets');
+  });
+
+  it('renders its own help menu', () => {
+    cy.visit('/');
+    cy.get('[id=help-nav-dropdown]').click();
+    cy.get('.dropdown-menu.show').then((menu) => {
+      expect(menu.children.length).to.be.greaterThan(0);
+    });
+    // run same test for published datasets
+    cy.visit('/datasets');
+    cy.get('[id=help-nav-dropdown]').click();
+    cy.get('.dropdown-menu.show').then((menu) => {
+      expect(menu.children.length).to.be.greaterThan(0);
+    });
   });
 
   xit('shows a list of paginated datasets', () => {
