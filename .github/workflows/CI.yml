@@ -1,9 +1,10 @@
-name: CI
+name: DDW CI
 
 on: [push, pull_request]
 
 jobs:
   test-typescript:
+    name: 'Test Typescript'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,6 +38,7 @@ jobs:
         CI: true
 
   test-python:
+    name: 'Test Python'
     runs-on: ubuntu-latest
 
     steps:
@@ -70,6 +72,7 @@ jobs:
         CI: true
 
   deploy:
+    name: 'Deploy'
     needs: [test-typescript,test-python]
     runs-on: ubuntu-latest
     if:
@@ -158,6 +161,7 @@ jobs:
           npm run build
 
   end-to-end:
+    name: 'Cypress End-to-End'
     needs: [deploy]
     runs-on: ubuntu-latest
     strategy:

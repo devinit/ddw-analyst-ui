@@ -16,7 +16,7 @@ describe('The Login Page', () => {
       cy.visit('/login');
       cy.wait(200);
       cy.get('button[type=submit]').click();
-      cy.get('.invalid-feedback').contains('Username is required');
+      cy.get('.invalid-feedback').contains('Email is required');
       cy.get('.invalid-feedback').contains('Password is required');
     });
 

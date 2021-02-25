@@ -16,6 +16,35 @@ describe('The Query Builder', () => {
     cy.url().should('include', '/queries/build');
   });
 
+  it('that is not a draft requires both a name and description', () => {
+    // Visit query builder type name and choose datasource
+    cy.visit('/queries/build');
+    cy.get('[name="name"]').focus().type('My Test Dataset');
+    cy.get('[name="description"]').focus().type('My Test Dataset Description');
+    cy.get('.search').eq(1).click({ force: true });
+    cy.wait(5000);
+    cy.get('.search').eq(1).type('CRS ISO Codes{enter}');
+
+    // Add step
+    cy.get('[data-testid="qb-add-step-button"]').click();
+
+    // Fill in create step form
+    cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+    cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+    cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+    cy.get('[data-testid="qb-select-columns"]').type('code{enter}');
+    cy.get('[data-testid="qb-select-columns"]').type('name{enter}{esc}');
+
+    // Save create step
+    cy.get('[data-testid="qb-step-preview-button"]').click();
+
+    // For published dataset, check that is_draft is not checked
+    cy.get('.form-check-input').should('not.be.checked');
+
+    // Check that all validation elements are hidden
+    cy.get('.invalid-feedback').should('not.be.visible');
+  });
+
   xit('with an active data source has a button to add a step', () => {
     // TODO: create test
   });
