@@ -25,16 +25,15 @@ describe('The Data Sources Page', () => {
   describe('sources table', () => {
     it('shows each row with action buttons', () => {
       cy.visit('/sources');
-      cy.get('[data-testid=sources-table-row]')
-        .then((rows) => {
-          cy.get('[data-testid=source-table-row-actions]').then((actions) => {
-            expect(rows.length).to.equal(actions.length);
-          });
+      cy.get('[data-testid=sources-table-row]').then((rows) => {
+        cy.get('[data-testid=source-table-row-actions]').then((actions) => {
+          expect(rows.length).to.equal(actions.length);
         });
+      });
     });
 
     xit('actions buttons function properly', () => {
       // TODO: add test
-    })
+    });
   });
 });
