@@ -237,43 +237,51 @@ class OperationSerializer(serializers.ModelSerializer):
         count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
         operation.save()
-        try:
-            data_column_keys = data[0].keys()
-            first_step = operation.get_operation_steps()[0]
-            columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
-            for column in data_column_keys:
-                matching = columns.filter(name=column).first()
-                alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
-                alias.save()
-                operation.alias_creation_status = 'd'
-                operation.save()
-        except:
-            operation.alias_creation_status = 'e'
-            operation.save()
-            raise AliasCreationError()
-
-    def update_operation_data_aliases(self, operation):
-        count, data = query.query_table(operation, 1, 0, estimate_count=True)
-        operation.alias_creation_status = 'p'
-        operation.save()
-        try:
-            data_column_keys = data[0].keys()
-            first_step = operation.get_operation_steps()[0]
-            columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
-            # delete obsolete aliases
-            OperationDataColumnAlias.objects.filter(operation=operation).exclude(column_name__in=data_column_keys).delete()
-            for column in data_column_keys:
-                existing_alias = OperationDataColumnAlias.objects.filter(operation=operation, column_name=column).first()
-                if not existing_alias:
+        if data:
+            try:
+                data_column_keys = data.keys() if isinstance(data, dict) else data[0].keys()
+                first_step = operation.get_operation_steps()[0]
+                columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+                for column in data_column_keys:
                     matching = columns.filter(name=column).first()
                     alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
                     alias.save()
                     operation.alias_creation_status = 'd'
                     operation.save()
-        except:
-            operation.alias_creation_status = 'e'
+            except:
+                operation.alias_creation_status = 'e'
+                operation.save()
+                raise AliasCreationError()
+        else:
+            operation.alias_creation_status = 'd'
             operation.save()
-            raise AliasUpdateError()
+
+    def update_operation_data_aliases(self, operation):
+        count, data = query.query_table(operation, 1, 0, estimate_count=True)
+        operation.alias_creation_status = 'p'
+        operation.save()
+        if data:
+            try:
+                data_column_keys = data.keys() if isinstance(data, dict) else data[0].keys()
+                first_step = operation.get_operation_steps()[0]
+                columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+                # delete obsolete aliases
+                OperationDataColumnAlias.objects.filter(operation=operation).exclude(column_name__in=data_column_keys).delete()
+                for column in data_column_keys:
+                    existing_alias = OperationDataColumnAlias.objects.filter(operation=operation, column_name=column).first()
+                    if not existing_alias:
+                        matching = columns.filter(name=column).first()
+                        alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
+                        alias.save()
+                        operation.alias_creation_status = 'd'
+                        operation.save()
+            except:
+                operation.alias_creation_status = 'e'
+                operation.save()
+                raise AliasUpdateError()
+        else:
+            operation.alias_creation_status = 'd'
+            operation.save()
 
     def create_operation_alias(self, operation, column_name, column_alias):
         if not column_alias:
