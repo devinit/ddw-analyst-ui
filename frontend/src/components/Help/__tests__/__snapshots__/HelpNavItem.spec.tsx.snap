@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpNavItem renders correctly 1`] = `
+<div
+  aria-labelledby="navbarDropdownHelp"
+  className="dropdown nav-item"
+  onKeyDown={[Function]}
+>
+  <a
+    aria-expanded={false}
+    aria-haspopup={true}
+    className="dropdown-toggle nav-link"
+    data-cy="help"
+    href="#"
+    id="nav-dropdown"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+  >
+    <i
+      className="material-icons"
+    >
+      help
+    </i>
+    <p
+      className="d-lg-none d-md-block"
+    >
+      Help
+    </p>
+  </a>
+</div>
+`;
