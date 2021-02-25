@@ -173,20 +173,25 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           data,
         })
         .then((response: AxiosResponse<Operation>) => {
-          if (response.status === 200 || response.status === 201) {
-            props.actions.operationSaved(true);
-            if (preview) {
-              props.history.push(`/queries/data/${response.data.id}/`);
-            } else {
-              props.history.push('/');
+          if (response.data.alias_creation_status !== 'p') {
+            if (response.status === 200 || response.status === 201) {
+              props.actions.operationSaved(true);
+              if (preview) {
+                props.history.push(`/queries/data/${response.data.id}/`);
+              } else {
+                props.history.push('/');
+              }
             }
           }
+          setAlertMessage(
+            'There was an interruption while creating column aliases. Please save the dataset again',
+          );
         })
         .catch((error) => {
           props.actions.operationSaved(false);
           if (error.response.data.error_code === 'e') {
             setAlertMessage(
-              'An error occured while creating column aliases for this dataset. Please save this dataset again to generate new aliases',
+              'An error occured while creating column aliases for this dataset. Please contact your administrator',
             );
 
             return;
