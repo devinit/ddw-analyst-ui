@@ -184,9 +184,12 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         })
         .catch((error) => {
           props.actions.operationSaved(false);
-          if(error.response.data.error_code === 'e'){
-            setAlertMessage('An error occured while creating column aliases for this dataset. Please save this dataset again to generate new aliases')
-            return
+          if (error.response.data.error_code === 'e') {
+            setAlertMessage(
+              'An error occured while creating column aliases for this dataset. Please save this dataset again to generate new aliases',
+            );
+
+            return;
           }
           setAlertMessage('An unknown error occured - please contact your administrator');
         });
