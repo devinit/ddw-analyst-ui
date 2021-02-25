@@ -108,7 +108,7 @@ export const queryBuilderHelpMenuLinks: MenuLink[] = [
     addDividerAfter: true,
   },
   {
-    caption: 'Create/Edit Dataset View',
+    caption: 'Create/Edit Dataset',
     url: `${BASE_URL}1j10m46dLY-zb5Mee4JWncTGeOsf2o8oChSN90ZUu8vk/edit#heading=h.tfpa8t26iluz`,
   },
   {
