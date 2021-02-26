@@ -12,9 +12,7 @@ from dateutil.relativedelta import *
 from django.contrib.auth.models import Permission, User
 from django.db.models import Q
 from django.utils import timezone
-from django.utils.timezone import make_aware
-from rest_framework import pagination, serializers
-from rest_framework.response import Response
+from rest_framework import serializers
 from rest_framework.utils import model_meta
 
 from core import query
