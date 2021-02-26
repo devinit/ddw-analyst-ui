@@ -102,6 +102,11 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const setActiveOperationByID = (id: string) => {
     const operation = props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
     if (operation) {
+      if (operation.get('alias_creation_status') === 'p') {
+        setAlertMessage(
+          'There was interruption while creating column aliases for this dataset. Please save the dataset again',
+        );
+      }
       props.actions.setActiveOperation(operation);
       fetchActiveSourceByOperation(operation);
     } else {
@@ -173,19 +178,14 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           data,
         })
         .then((response: AxiosResponse<Operation>) => {
-          if (response.data.alias_creation_status !== 'p') {
-            if (response.status === 200 || response.status === 201) {
-              props.actions.operationSaved(true);
-              if (preview) {
-                props.history.push(`/queries/data/${response.data.id}/`);
-              } else {
-                props.history.push('/');
-              }
+          if (response.status === 200 || response.status === 201) {
+            props.actions.operationSaved(true);
+            if (preview) {
+              props.history.push(`/queries/data/${response.data.id}/`);
+            } else {
+              props.history.push('/');
             }
           }
-          setAlertMessage(
-            'There was an interruption while creating column aliases. Please save the dataset again',
-          );
         })
         .catch((error) => {
           props.actions.operationSaved(false);
