@@ -88,7 +88,7 @@ class Operation(BaseEntity):
     """
         This is the base model on which a query is built. It stores all of the meta-data for a query
     """
-    alias_status_choices = (
+    ALIAS_STATUS_CHOICES = (
         ('d', 'Done'),
         ('p', 'Pending'),
         ('e', 'Error'),
@@ -104,7 +104,7 @@ class Operation(BaseEntity):
     row_count = models.IntegerField(blank=True, null=True)
     # controls whether to count rows in the post_save signal
     count_rows = models.BooleanField(default=False)
-    alias_creation_status = models.TextField(default='d', choices=alias_status_choices, blank=True)
+    alias_creation_status = models.CharField(default='d', choices=ALIAS_STATUS_CHOICES, blank=True, max_length=1)
 
     def __str__(self):
         return self.name
