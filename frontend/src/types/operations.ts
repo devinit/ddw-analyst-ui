@@ -17,7 +17,7 @@ export interface Filters<T = Filter[] | ErroredFilter[]> {
   filters: T;
 }
 export interface Operation {
-  alias_creation_status: string;
+  alias_creation_status: 'p' | 'd' | 'e';
   id: number;
   name: string;
   description: string;
