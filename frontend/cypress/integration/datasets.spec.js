@@ -21,15 +21,24 @@ describe('The Datasets Pages', () => {
   it('renders its own help menu', () => {
     cy.visit('/');
     cy.get('[id=help-nav-dropdown]').click();
-    cy.get('.dropdown-menu.show').then((menu) => {
-      expect(menu.children.length).to.be.greaterThan(0);
-    });
+    const checkLinks = (links) => {
+      Array.prototype.forEach.call(links, (link, index) => {
+        if (index === links.length - 1) {
+          expect(link.href).to.equal('https://github.com/devinit/ddw-analyst-ui/issues/new');
+          expect(link.innerHTML).to.equal('Report Issue');
+        } else {
+          if (index === 0) {
+            expect(link.innerHTML).to.equal('About Page');
+          }
+          expect(link.href).to.contain('docs.google');
+        }
+      });
+    };
+    cy.get('.dropdown-menu.show .nav-link').should('have.length.greaterThan', 0).then(checkLinks);
     // run same test for published datasets
     cy.visit('/datasets');
     cy.get('[id=help-nav-dropdown]').click();
-    cy.get('.dropdown-menu.show').then((menu) => {
-      expect(menu.children.length).to.be.greaterThan(0);
-    });
+    cy.get('.dropdown-menu.show .nav-link').should('have.length.greaterThan', 0).then(checkLinks);
   });
 
   xit('shows a list of paginated datasets', () => {

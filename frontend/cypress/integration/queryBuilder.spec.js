@@ -16,6 +16,26 @@ describe('The Query Builder', () => {
     cy.url().should('include', '/queries/build');
   });
 
+  it('renders its own help menu', () => {
+    cy.visit('/queries/build');
+    cy.get('[id=help-nav-dropdown]').click();
+    cy.get('.dropdown-menu.show .nav-link')
+      .should('have.length.greaterThan', 0)
+      .then((links) => {
+        Array.prototype.forEach.call(links, (link, index) => {
+          if (index === links.length - 1) {
+            expect(link.href).to.equal('https://github.com/devinit/ddw-analyst-ui/issues/new');
+            expect(link.innerHTML).to.equal('Report Issue');
+          } else {
+            if (index === 0) {
+              expect(link.innerHTML).to.equal('About Page');
+            }
+            expect(link.href).to.contain('docs.google');
+          }
+        });
+      });
+  });
+
   it('that is not a draft requires both a name and description', () => {
     // Visit query builder type name and choose datasource
     cy.visit('/queries/build');
