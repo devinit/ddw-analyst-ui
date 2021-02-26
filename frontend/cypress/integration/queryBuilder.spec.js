@@ -69,6 +69,43 @@ describe('The Query Builder', () => {
     // TODO: create test
   });
 
+  it('can delete a filter', () => {
+    // Visit query builder type name and choose datasource
+    cy.visit('/queries/build');
+    cy.get('[name="name"]').focus().type('My Test Dataset');
+    cy.get('[name="description"]').focus().type('My Test Dataset Description');
+    cy.get('.search').eq(1).click({ force: true });
+    cy.wait(5000);
+    cy.get('.search').eq(1).type('CRS ISO codes{enter}{esc}');
+
+    // Add step
+    cy.get('[data-testid="qb-add-step-button"]').click();
+
+    // Fill create query step form
+    cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+    cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+    cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}filter{enter}');
+    
+    // Add first filter
+    cy.get('[data-testid="qb-filter-add-button"]').click();
+    cy.get('[data-testid="qb-filter-select-column"]>input').eq(0).click({force: true}).type('{downarrow}Country code{enter}');
+    cy.get('[data-testid="qb-filter-select-operation"]').click({force: true}).type('{downarrow}{enter}{esc}');
+    cy.get('[name="value"]').type('2');
+
+    // Add second filter
+    cy.get('[data-testid="qb-filter-add-button"]').click();
+    cy.get('[data-testid="qb-filter-select-column"]').eq(1).click({force: true}).type('{downarrow}Country name{downarrow}');
+    cy.get('[data-testid="qb-filter-select-operation"]').eq(1).click({force: true}).type('{downarrow}{enter}{esc}');
+    cy.get('[name="value"]').eq(1).type('3');
+
+    // Delete first filter
+    cy.get('[data-testid="qb-filter-delete-button"]').eq(0).click();
+    
+    // Check that first filter is not visible
+    cy.contains('Country code').should('not.be.visible');
+
+  });
+
   xdescribe('SELECT step', () => {
     xit('can select and deselect a column', () => {
       // TODO: create test
