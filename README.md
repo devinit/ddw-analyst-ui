@@ -148,7 +148,9 @@ NOTE:
 
 ### End-To-End Testing
 
-This is set up to run with [Cypress](https://www.cypress.io/), and only locally at the moment.
+This is set up to run with [Cypress](https://www.cypress.io/).
+
+To test locally:
 
 1. Update the `baseUrl` option in the `cypress.json` file to one that suits your current need
 2. Setup test users as specified in the `frontend/cypress/fixtures/users.json` file
