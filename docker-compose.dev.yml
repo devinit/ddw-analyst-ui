@@ -39,6 +39,10 @@ services:
       - 5672:5672
       - 15672:15672
     restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=ddw_analyst_ui
+      - RABBITMQ_DEFAULT_VHOST=myvhost
     networks:
       - ddw_net
 
