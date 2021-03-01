@@ -26,24 +26,3 @@ docker-compose down --remove-orphans
 docker-compose up -d
 
 docker-compose exec -T web python manage.py migrate
-
-echo "Setting up rabbitmq user and permissions"
-
-function setup_rabbitmq {
-  until docker-compose exec -T rabbitmq rabbitmqctl start_app; do
-      echo "Rabbit is unavailable - sleeping"
-      sleep 10
-  done
-
-  until docker-compose exec -T rabbitmq rabbitmqctl add_user admin ddw_analyst_ui; do
-      echo "Rabbit has not fully started - sleeping"
-      sleep 10
-  done
-
-  docker-compose exec -T rabbitmq rabbitmqctl add_vhost myvhost
-  docker-compose exec -T rabbitmq rabbitmqctl set_permissions -p myvhost admin ".*" ".*" ".*"
-}
-
-setup_rabbitmq
-
-docker-compose restart
