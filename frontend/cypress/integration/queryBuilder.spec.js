@@ -65,6 +65,10 @@ describe('The Query Builder', () => {
     cy.get('.invalid-feedback').should('not.be.visible');
   });
 
+  xit('that encountered an error or interruption during alias creation shows a warning', () => {
+    // TODO: add test
+  });
+
   xit('with an active data source has a button to add a step', () => {
     // TODO: create test
   });
