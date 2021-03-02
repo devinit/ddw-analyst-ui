@@ -108,6 +108,10 @@ export const queryBuilderHelpMenuLinks: MenuLink[] = [
     addDividerAfter: true,
   },
   {
+    caption: 'What you should see',
+    url: `${BASE_URL}1j10m46dLY-zb5Mee4JWncTGeOsf2o8oChSN90ZUu8vk/edit#heading=h.qh2cyayhbzpz`,
+  },
+  {
     caption: 'Create/Edit Dataset',
     url: `${BASE_URL}1j10m46dLY-zb5Mee4JWncTGeOsf2o8oChSN90ZUu8vk/edit#heading=h.tfpa8t26iluz`,
   },
