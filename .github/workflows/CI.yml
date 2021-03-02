@@ -73,7 +73,7 @@ jobs:
 
     - name: Import CSVs
       run: |
-        docker-compose exec web python3 manage.py update_csv_files
+        docker-compose exec -T web python3 manage.py update_csv_files
 
     - name: Run tests
       run: |
