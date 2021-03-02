@@ -343,3 +343,61 @@ Using a sub-query in a WHERE clause to compare with column in current dataset<br
 }
 
 Here value is numeric and represents the sub-query we shall compare the column against
+<br>
+
+25. Using an array in WHERE IN Clause
+Instead of repeating the same field name, func and value in a filter step, we can simply use WHERE IN and provide the values we want to compare against as an array. See below for illustration
+
+    "operation_steps":[
+      {
+         "query_kwargs":"{\"filters\":[
+              {
+                \"field\":\"reporting_org_ref\",\"func\":\"eq\",\"value\":\"GB-GOV-1\"
+              },
+              {
+                \"field\":\"reporting_org_ref\",\"func\":\"eq\",\"value\":\"GB-GOV-2\"
+              },
+              {
+                \"field\":\"reporting_org_ref\",\"func\":\"eq\",\"value\":\"GB-GOV-3\"
+              }
+            ]
+          }",
+         "name":" Publishers GB-GOV-   1-3",
+         "step_id":1,
+         "source":55,
+         "query_func":"filter",
+         "description":""
+      },
+      {
+         "query_kwargs":"{\"filters\":[{\"field\":\"x_transaction_year\",\"func\":\"ge\",\"value\":\"2020\"}]}",
+         "name":"Year >= 2020",
+         "step_id":2,
+         "source":55,
+         "query_func":"filter",
+         "description":""
+      }
+    ]
+
+<br>
+The above can be re-written as below;
+    "operation_steps":[
+      {
+         "query_kwargs":"{\"filters\":[{\"field\":\"reporting_org_ref\",\"func\":\"is_in\",\"value\":[\"GB-GOV-1\", \"GB-GOV-2\", \"GB-GOV-3\"]}]
+          }",
+         "name":" Publishers GB-GOV-   1-3",
+         "step_id":1,
+         "source":55,
+         "query_func":"filter",
+         "description":""
+      },
+      {
+         "query_kwargs":"{\"filters\":[{\"field\":\"x_transaction_year\",\"func\":\"ge\",\"value\":\"2020\"}]}",
+         "name":"Year >= 2020",
+         "step_id":2,
+         "source":55,
+         "query_func":"filter",
+         "description":""
+      }
+    ]
+
+Note how the fields were the same, and the func was "eq"
