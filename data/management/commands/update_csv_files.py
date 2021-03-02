@@ -2,12 +2,14 @@ from django.core.management.base import BaseCommand, CommandError
 from github import Github
 import urllib.request
 from django.conf import settings
+import os
 
 
 class Command(BaseCommand):
     help = 'Downloads CSV files from git repo'
 
     def handle(self, *args, **options):
+        cwd = os.getcwd()
         try:
             g = Github(settings.GITHUB_TOKEN)
 
@@ -20,7 +22,7 @@ class Command(BaseCommand):
                 else:
                     self.stdout.write("Fetching {}".format(file_content.path), ending='\n')
                     self.stdout.flush()
-                    urllib.request.urlretrieve(file_content.download_url, "./data_updates/"+file_content.path)
+                    urllib.request.urlretrieve(file_content.download_url, cwd+"/data_updates/"+file_content.path)
             
         except Exception as e:
             raise CommandError(e)
