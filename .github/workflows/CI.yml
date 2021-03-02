@@ -64,6 +64,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip3 install --user codecov
+        pip3 install -r requirements.txt
 
     - name: Run docker build
       run: |
