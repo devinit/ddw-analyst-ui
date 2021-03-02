@@ -73,8 +73,7 @@ jobs:
 
     - name: Import CSVs
       run: |
-        pwd
-        docker-compose exec -T web python3 manage.py update_csv_files
+        /home/runner/work/ddw-analyst-ui/ddw-analyst-ui/data_updates/update_csv_files.sh
 
     - name: Run tests
       run: |
