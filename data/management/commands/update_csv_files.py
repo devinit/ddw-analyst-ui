@@ -18,6 +18,8 @@ class Command(BaseCommand):
                 if file_content.type == "dir":
                     contents.extend(repo.get_contents(file_content.path))
                 else:
+                    self.stdout.write("Fetching {}".format(file_content.path), ending='\n')
+                    self.stdout.flush()
                     urllib.request.urlretrieve(file_content.download_url, "./data_updates/"+file_content.path)
             
         except Exception as e:
