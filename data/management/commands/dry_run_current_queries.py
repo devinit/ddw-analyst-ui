@@ -1,6 +1,7 @@
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 
 from core.models import Operation, Source
 from core.pypika_utils import QueryBuilder
@@ -16,29 +17,37 @@ class Command(BaseCommand):
         parser.add_argument('old_cols', nargs='+', type=str, help='List of old column names')
         parser.add_argument('-t', '--table', type=str, help='Table name where the columns belong')
         parser.add_argument('-a', '--all', action='store_true', help='Used if you want to run test on all current queries')
+        parser.add_argument('-s', '--sub-queries', action='store_true', help='Used if you want to include sub-queries separately. Note that this may cause incorrect behavior as sub-queries were designed to run as part of the parent query to which they belong')
 
     def handle(self, *args, **kwargs):
         source = kwargs['table']
         old_cols = kwargs['old_cols']
         all = kwargs['all']
+        exclude_sub_queries = False if kwargs['sub_queries'] else True
 
         if all:
-            self.checkAllQueries()
+            self.checkAllQueries(exclude_sub_queries=exclude_sub_queries)
 
         if source and len(old_cols) > 0:
             self.checkQueriesBySource(source, old_cols)
 
-    def checkAllQueries(self):
-        queries = Operation.objects.all()
+    def checkAllQueries(self, exclude_sub_queries=True):
+        queries = Operation.objects.filter(Q(is_sub_query=False)) if exclude_sub_queries else Operation.objects.all()
         for query in queries:
             print(query.id)
-            sql = QueryBuilder(operation=query).get_sql(limit=2)
-            results = analyse_query(sql)
-            if results[0]['result'] == 'success':
-                continue
-            else:
-                self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(query.id, query.name, results[0]['error'])))
-                input('Press Enter to continue...')
+            try:
+                sql = QueryBuilder(operation=query).get_sql(limit=2)
+                self.stdout.write(self.style.SQL("{}".format(sql)))
+                results = analyse_query(sql)
+                if results[0]['result'] == 'success':
+                    continue
+                else:
+                    self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(query.id, query.name, results[0]['message'])))
+                    input('Press Enter to continue...')
+            except AttributeError as error:
+                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with error {}'.format(query.id, query.name, error)))
+            except TypeError as error:
+                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with error {}'.format(query.id, query.name, error)))
 
     def checkQueriesBySource(self, source, old_cols):
         queries = Operation.objects.all()
