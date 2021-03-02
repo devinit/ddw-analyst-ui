@@ -50,19 +50,29 @@ Cypress.Commands.add('fillStepForm', () => {
   cy.get('[name="name"]').eq(1).type('Dataset Step Test');
   cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
   cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}filter{enter}');
-  
+
   // Add first filter
   cy.get('[data-testid="qb-filter-add-button"]').click();
-  cy.get('[data-testid="qb-filter-select-column"]>input').eq(0).click({force: true}).type('{downarrow}Country code{enter}');
-  cy.get('[data-testid="qb-filter-select-operation"]').click({force: true}).type('{downarrow}{enter}{esc}');
+  cy.get('[data-testid="qb-filter-select-column"]>input')
+    .eq(0)
+    .click({ force: true })
+    .type('{downarrow}Country code{enter}');
+  cy.get('[data-testid="qb-filter-select-operation"]')
+    .click({ force: true })
+    .type('{downarrow}{enter}{esc}');
   cy.get('[name="value"]').type('2');
 
   // Add second filter
   cy.get('[data-testid="qb-filter-add-button"]').click();
-  cy.get('[data-testid="qb-filter-select-column"]').eq(1).click({force: true}).type('{downarrow}Country name{downarrow}');
-  cy.get('[data-testid="qb-filter-select-operation"]').eq(1).click({force: true}).type('{downarrow}{enter}{esc}');
+  cy.get('[data-testid="qb-filter-select-column"]')
+    .eq(1)
+    .click({ force: true })
+    .type('{downarrow}Country name{downarrow}');
+  cy.get('[data-testid="qb-filter-select-operation"]')
+    .eq(1)
+    .click({ force: true })
+    .type('{downarrow}{enter}{esc}');
   cy.get('[name="value"]').eq(1).type('3');
-
 });
 
 //
