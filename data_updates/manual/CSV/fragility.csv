@@ -1,0 +1,147 @@
+country_name,di_id,iso3,fragile_2018
+Afghanistan,AF,AFG,Extremely fragile
+Albania,AL,ALB,Not fragile
+Algeria,DZ,DZA,Not fragile
+Angola,AO,AGO,Fragile
+Antigua and Barbuda,AG,ATG,Not fragile
+Argentina,AR,ARG,Not fragile
+Armenia,AM,ARM,Not fragile
+Azerbaijan,AZ,AZE,Not fragile
+Bangladesh,BD,BGD,Fragile
+Belarus,BY,BLR,Not fragile
+Belize,BZ,BLZ,Not fragile
+Benin,BJ,BEN,Not fragile
+Bhutan,BT,BTN,Not fragile
+Bolivia,BO,BOL,Not fragile
+Bosnia and Herzegovina,BA,BIH,Not fragile
+Botswana,BW,BWA,Not fragile
+Brazil,BR,BRA,Not fragile
+Burkina Faso,BF,BFA,Fragile
+Burundi,BI,BDI,Extremely fragile
+Cambodia,KH,KHM,Not fragile
+Cameroon,CM,CMR,Fragile
+Cabo Verde,CV,CPV,Not fragile
+Central African Republic,CF,CAF,Extremely fragile
+Chad,TD,TCD,Extremely fragile
+Chile,CL,CHL,Not fragile
+China (People's Republic of),CN,CHN,Not fragile
+Colombia,CO,COL,Not fragile
+Comoros,KM,COM,Fragile
+Democratic Republic of the Congo,CD,COD,Extremely fragile
+Congo,CG,COG,Fragile
+Cook Islands,CK,COK,Not fragile
+Costa Rica,CR,CRI,Not fragile
+Côte d'Ivoire,CI,CIV,Fragile
+Cuba,CU,CUB,Not fragile
+Djibouti,DJ,DJI,Fragile
+Dominica,DM,DMA,Not fragile
+Dominican Republic,DO,DOM,Not fragile
+Ecuador,EC,ECU,Not fragile
+Egypt,EG,EGY,Fragile
+El Salvador,SV,SLV,Not fragile
+Equatorial Guinea,GQ,GNQ,Fragile
+Eritrea,ER,ERI,Extremely fragile
+Ethiopia,ET,ETH,Extremely fragile
+Fiji,FJ,FJI,Not fragile
+Gabon,GA,GAB,Not fragile
+Gambia,GM,GMB,Fragile
+Georgia,GE,GEO,Not fragile
+Ghana,GH,GHA,Not fragile
+Grenada,GD,GRD,Not fragile
+Guatemala,GT,GTM,Fragile
+Guinea,GN,GIN,Fragile
+Guinea-Bissau,GW,GNB,Fragile
+Guyana,GY,GUY,Not fragile
+Haiti,HT,HTI,Extremely fragile
+Honduras,HN,HND,Fragile
+India,IN,IND,Not fragile
+Indonesia,ID,IDN,Not fragile
+Iran,IR,IRN,Fragile
+Iraq,IQ,IRQ,Extremely fragile
+Jamaica,JM,JAM,Not fragile
+Jordan,JO,JOR,Not fragile
+Kazakhstan,KZ,KAZ,Not fragile
+Kenya,KE,KEN,Fragile
+Kiribati,KI,KIR,Not fragile
+Democratic People's Republic of Korea,KP,PRK,Fragile
+Kosovo,XK,XKX,Not fragile
+Kyrgyzstan,KG,KGZ,Not fragile
+Lao People's Democratic Republic,LA,LAO,Fragile
+Lebanon,LB,LBN,Not fragile
+Lesotho,LS,LSO,Not fragile
+Liberia,LR,LBR,Fragile
+Libya,LY,LBY,Fragile
+Former Yugoslav Republic of Macedonia,MK,MKD,Not fragile
+Madagascar,MG,MDG,Fragile
+Malawi,MW,MWI,Fragile
+Malaysia,MY,MYS,Not fragile
+Maldives,MV,MDV,Not fragile
+Mali,ML,MLI,Extremely fragile
+Marshall Islands,MH,MHL,Not fragile
+Mauritania,MR,MRT,Fragile
+Mauritius,MU,MUS,Not fragile
+Mexico,MX,MEX,Not fragile
+Micronesia,FM,FSM,Not fragile
+Moldova,MD,MDA,Not fragile
+Mongolia,MN,MNG,Not fragile
+Montenegro,ME,MNE,Not fragile
+Montserrat,MS,MSR,Not fragile
+Morocco,MA,MAR,Not fragile
+Mozambique,MZ,MOZ,Fragile
+Myanmar,MM,MMR,Fragile
+Namibia,NA,NAM,Not fragile
+Nauru,NR,NRU,Not fragile
+Nepal,NP,NPL,Fragile
+Nicaragua,NI,NIC,Not fragile
+Niger,NE,NER,Fragile
+Nigeria,NG,NGA,Fragile
+Niue,NU,NIU,Not fragile
+Pakistan,PK,PAK,Fragile
+Palau,PW,PLW,Not fragile
+Panama,PA,PAN,Not fragile
+Papua New Guinea,PG,PNG,Fragile
+Paraguay,PY,PRY,Not fragile
+Peru,PE,PER,Not fragile
+Philippines,PH,PHL,Not fragile
+Rwanda,RW,RWA,Fragile
+Samoa,WS,WSM,Not fragile
+Sao Tome and Principe,ST,STP,Not fragile
+Senegal,SN,SEN,Not fragile
+Serbia,RS,SRB,Not fragile
+Seychelles,SC,SYC,Not fragile
+Sierra Leone,SL,SLE,Fragile
+Solomon Islands,SB,SLB,Fragile
+Somalia,SO,SOM,Extremely fragile
+South Africa,ZA,ZAF,Not fragile
+South Sudan,SS,SSD,Extremely fragile
+Sri Lanka,LK,LKA,Not fragile
+Saint Helena,SH,SHN,Not fragile
+Saint Lucia,LC,LCA,Not fragile
+Saint Vincent and the Grenadines,VC,VCT,Not fragile
+Sudan,SD,SDN,Extremely fragile
+Suriname,SR,SUR,Not fragile
+Swaziland,SZ,SWZ,Fragile
+Syrian Arab Republic,SY,SYR,Extremely fragile
+Tajikistan,TJ,TJK,Fragile
+Tanzania,TZ,TZA,Fragile
+Thailand,TH,THA,Not fragile
+Timor-Leste,TL,TLS,Fragile
+Togo,TG,TGO,Not fragile
+Tokelau,TK,TKL,Not fragile
+Tonga,TO,TON,Not fragile
+Tunisia,TN,TUN,Not fragile
+Turkey,TR,TUR,Not fragile
+Turkmenistan,TM,TKM,Not fragile
+Tuvalu,TV,TUV,Not fragile
+Uganda,UG,UGA,Fragile
+Ukraine,UA,UKR,Not fragile
+Uruguay,UY,URY,Not fragile
+Uzbekistan,UZ,UZB,Not fragile
+Vanuatu,VU,VUT,Not fragile
+Venezuela,VE,VEN,Fragile
+Viet Nam,VN,VNM,Not fragile
+Wallis and Futuna,WF,WLF,Not fragile
+West Bank and Gaza Strip,PS,PSE,Fragile
+Yemen,YE,YEM,Extremely fragile
+Zambia,ZM,ZMB,Fragile
+Zimbabwe,ZW,ZWE,Fragile

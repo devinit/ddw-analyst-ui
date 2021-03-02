@@ -1,0 +1,390 @@
+channel_parent_category_code,channel_id_code,year_added,acronym_eng,oecd_channel_name,oecd_channel_parent_name,oecd_aggregated_channel,coefficient_for_core_contributions,general_contributions_reported_as_type_of_aid,mcd_major_channel_of_delivery,references_notes
+10000,10000,,,Public sector institutions,Public sector institutions,Public sector institutions,,,,
+11000,11000,,,Donor Government,Donor Government,Public sector institutions,,,,
+11000,11001,2018,,Central Government,Donor Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1
+11000,11002,2018,,Local Government,Donor Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1
+11000,11003,2018,,Public corporations,Donor Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1
+11000,11004,2018,,Other public entities in donor country,Donor Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1
+12000,12000,,,Recipient Government,Recipient Government,Public sector institutions,,,,
+12000,12001,2018,,Central Government,Recipient Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1
+12000,12002,2018,,Local Government,Recipient Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1
+12000,12003,2018,,Public corporations,Recipient Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1
+12000,12004,2018,,Other public entities in recipient country,Recipient Government,Public sector institutions,,,MCD,DCD/DAC/STAT(2015)14/REV1
+13000,13000,,,Third Country Government (Delegated co-operation),Third Country Government (Delegated co-operation),Public sector institutions,,,,
+20000,20000,,,Non-Governmental Organisations and Civil Society,Non-Governmental Organisations and Civil Society,Non-Governmental Organisations and Civil Society,,,,
+21000,21000,,,International NGO,International NGO,Non-Governmental Organisations and Civil Society,,,,
+21000,21045,2018,AMREF,African Medical and Research Foundation ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,Added:  DCD/DAC/STAT(2008)10
+21000,21046,2018,ACORD,Agency for Cooperation and Research in Development ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+21000,21001,2018,AGID,Association of Geoscientists for International Development ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,
+21000,21063,2018,CI,Conservation International,International NGO,Non-Governmental Organisations and Civil Society,79,B01,MCD,Added:  DCD/DAC/STAT(2017)13
+21000,21005,2018,CUTS,Consumer Unity and Trust Society International ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2005)9
+21000,21029,2018,MSF,Doctors Without Borders,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,Added:  DCD/DAC/STAT(2002)3
+21000,47035,2018,ENDA,Environmental Development Action in the Third World ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.  
+21000,21007,2018,ELCI,Environmental Liaison Centre International ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+21000,21503,2018,FHI360,Family Health International 360,International NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+21000,21011,2018,GCE,Global Campaign for Education ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+21000,21013,2018,HAI,Health Action International ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2000)4
+21000,21024,2018,IPS,"Inter Press Service, International Association ",International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+21000,21038,2018,,International Alert,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2007)7
+21000,21057,2018,ICTJ,International Centre for Transitional Justice,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+21000,21016,2018,ICRC,International Committee of the Red Cross ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,
+21000,21044,2018,ICCIDD,International Council for the Control of Iodine Deficiency Disorders,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Reclassified:  DCD/DAC/STAT(2008)10
+21000,21018,2018,IFRCRCS,International Federation of Red Cross and Red Crescent Societies ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,Reviewed and confirmed the channel category classification:  DCD/DAC/STAT(2012)9.  Added:  DCD/DAC/STAT(2001)9
+21000,21020,2018,,International HIV/AIDS Alliance ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,Added:  DCD/DAC/STAT(2003)2
+21000,21022,2018,INAFI,International Network for Alternative Financial Institutions ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+21000,21042,2018,Interpeace,International Peacebuilding Alliance,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,"Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Renamed:  DCD/DAC/STAT(2008)5, Added:  DCD/DAC/STAT(2006)15 Replaces WSP International"
+21000,21023,2018,IPPF,International Planned Parenthood Federation ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,
+21000,21061,2018,IRCT,International Rehabilitation Council for Torture Victims,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2011)16
+21000,21504,2018,IRD,International Relief and Development,International NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+21000,21506,2018,IRC,International Rescue Committee,International NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+21000,21034,2018,UNION,International Union Against Tuberculosis and Lung Disease ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,Renamed:  DCD/DAC/STAT(2004)3
+21000,21053,2018,,"IPAS-Protecting Women's Health, Advancing Women's Reproductive Rights",International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+21000,21054,2018,LPI,Life and Peace Institute,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+21000,21501,2018,OXFAM-I,OXFAM International,International NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+21000,21507,2018,PACT,Pact World,International NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+21000,21031,2018,PANOS,PANOS Institute ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+21000,21032,2018,PSI,Population Services International ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,MCD,Added:  DCD/DAC/STAT(2003)2
+21000,21505,2018,,Save the Children,International NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+21000,21041,2018,SID,Society for International Development,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2006)15
+21000,21062,2018,TNC,The Nature Conservancy,International NGO,Non-Governmental Organisations and Civil Society,12,B01,MCD,Added:  DCD/DAC/STAT(2015)20
+21000,21036,2018,WUS,World University Service ,International NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.
+21000,21502,2018,,World Vision,International NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+21000,21064,2020,CHAI,"Clinton Health Access Initiative, Inc. ",International NGO,Non-Governmental Organisations and Civil Society,100,B01,,Added: DCD/DAC/STAT(2019)34 
+22000,22000,,,Donor country-based NGO,Donor country-based NGO,Non-Governmental Organisations and Civil Society,,,,
+22000,21047,2018,,AgriCord,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+22000,21060,2018,APT,Association for the Prevention of Torture,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2011)16
+22000,21006,2018,,Development Gateway Foundation ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,
+22000,21049,2018,ECDPM,European Centre for Development Policy Management ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+22000,21008,2018,Eurostep,Eurostep ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2005)9
+22000,47042,2018,FIT,Foundation for International Training ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Change of channel category:  DCD/DAC/STAT(2012)6/REV1
+22000,21050,2018,,Geneva Call,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,
+22000,21014,2018,HURIDOCS,Human Rights Information and Documentation Systems ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2000)4
+22000,21015,2018,ICRA,International Catholic Rural Association ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.
+22000,21058,2018,ICG,International Crisis Group,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added: DCD/DAC/STAT(2010)5
+22000,21019,2018,IFS,International Federation of Settlements and Neighbourhood Centres ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.
+22000,21025,2018,ISC,International Seismological Centre ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.
+22000,21026,2018,ISHR,International Service for Human Rights ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2000)4
+22000,21040,2018,IWTC,International Women's Tribune Centre,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2007)7 and  DCD/DAC/STAT(2008)10
+22000,21027,2018,ITF,ITF Enhancing Human Security ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Renamed:  DCD/DAC/STAT(2017)13.  Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+22000,22501,2018,OXFAM,OXFAM - provider country office,Donor country-based NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+22000,22502,2018,,Save the Children - donor country office,Donor country-based NGO,Non-Governmental Organisations and Civil Society,Not assessed,B01,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+22000,21033,2018,TI,Transparency International ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.
+22000,21037,2018,WWB,Women's World Banking,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+22000,21035,2018,OMCT,World Organisation Against Torture ,Donor country-based NGO,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2000)4  Replaces WOAT
+23000,23000,,,Developing country-based NGO ,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,,,,
+23000,21059,2018,ASF,Africa Solidarity Fund,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Change of channel category (formerly channel code 46001 under Regional Development Banks): DCD/DAC/STAT(2010)5
+23000,21048,2018,AAU,Association of African Universities,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+23000,21010,2018,FAWE,Forum for African Women Educationalists ,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+23000,21051,2018,ISPEC,Institut Supérieur Panafricaine d'Economie Coopérative,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+23000,21028,2018,IUEF,International University Exchange Fund - IUEF Stip. in Africa and Latin America,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  
+23000,21003,2018,CLASCO,Latin American Council for Social Sciences ,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  
+23000,23501,2018,,National Red Cross and Red Crescent Societies,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,,B01,MCD,Added as part of the Channel Pilot:  DCD/DAC/STAT(2017)13
+23000,21030,2018,PAID,Pan African Institute for Development,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  
+23000,21055,2018,RATN,Regional AIDS Training Network,Developing country-based NGO ,Non-Governmental Organisations and Civil Society,100,B01,Not MCD,Not a major channel of delivery:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+30000,30000,,,Public-Private Partnerships and Networks,Public-Private Partnerships and Networks,Public-Private Partnerships and Networks,,,,
+31000,31000,,,Public-Private Partnership (PPP),Public-Private Partnership (PPP),Public-Private Partnerships and Networks,,,,
+31000,30008,2018,,Cities Alliance,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2006)15
+31000,31006,2018,CEPI,Coalition for Epidemic Preparedness Innovations,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,Not MCD,ODA-eligible but not added to Annex 2 List; channel code created in single table [DCD/DAC/STAT(2018)35].
+31000,30016,2018,EFSE,European Fund for Southeast Europe,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2012)9
+31000,30007,2018,GAID,Global Alliance for ICT and Development,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2007)7
+31000,30001,2018,GAIN,Global Alliance for Improved Nutrition ,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2003)2
+31000,30012,2018,GCPF,Global Climate Partnership Fund,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added: DCD/DAC/STAT(2010)5
+31000,47043,2018,,Global Crop Diversity Trust ,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Renamed:  DCD/DAC/STAT(2005)9
+31000,30015,2018,GEEREF,Global Energy Efficiency and Renewable Energy Fund,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,"Change of channel category (formerly 42006 under EU Institutions): DCD/DAC/STAT(2010)5.  Moved from ""Other Multilateral Institutions"" and code 47114 deleted. Now under EC as stated in DCD/DAC/STAT(2008)10; Added:  DCD/DAC/STAT(2008)10"
+31000,30003,2018,GeSCI,Global e-Schools and Communities Initiative ,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2005)9
+31000,30004,2018,GWP,Global Water Partnership ,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2004)3
+31000,30005,2018,IAVI,International AIDS Vaccine Initiative ,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2003)2
+31000,30006,2018,IPM,International Partnership on Microbicides ,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2003)2
+31000,30011,2018,IUCN,International Union for the Conservation of Nature,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Reclassified:  DCD/DAC/STAT(2008)10 
+31000,30013,2018,MEF,Microfinance Enhancement Facility,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added: DCD/DAC/STAT(2010)5
+31000,30014,2018,REGMIFA,"Regional Micro, Small and Medium Enterprise Investment Fund for Sub-Saharan Africa",Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added: DCD/DAC/STAT(2010)5
+31000,21056,2018,REEEP,Renewable Energy and Energy Efficiency Partnership,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Channel category changed:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2008)10
+31000,30017,2018,SANAD,"SANAD Fund for Micro, Small and Medium Enterprises",Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2012)9
+31000,30009,2018,SAS,Small Arms Survey,Public-Private Partnership (PPP),Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2007)7
+32000,32000,,,Network,Network,Public-Private Partnerships and Networks,,,,
+32000,47010,2018,CAPAM,Commonwealth Agency for Public Administration and Management ,Network,Public-Private Partnerships and Networks,100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.  Added:  DCD/DAC/STAT(2012)6/REV1
+32000,47028,2018,CPTM,Commonwealth Partnership for Technical Management ,Network,Public-Private Partnerships and Networks,100,B01,MCD,Changed channel category:  Summary Record of 2012 WP-STAT meeting.
+32000,21043,2018,AWEPA,European Parliamentarians for Africa,Network,Public-Private Partnerships and Networks,100,B01,MCD,Channel category changed:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2006)15
+32000,31004,2018,EITI,Extractive Industries Transparency Initiative International Secretariat,Network,Public-Private Partnerships and Networks,100,B01,MCD,Added: DCD/DAC/STAT(2010)5
+32000,31001,2018,GDN,Global Development Network,Network,Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2007)7
+32000,31002,2018,GKP,Global Knowledge Partnership,Network,Public-Private Partnerships and Networks,100,B01,MCD,Added:  DCD/DAC/STAT(2005)9
+32000,21017,2018,ICTSD,International Centre for Trade and Sustainable Development ,Network,Public-Private Partnerships and Networks,100,B01,MCD,Channel category changed:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2005)9
+32000,31003,2018,ILC,International Land Coalition,Network,Public-Private Partnerships and Networks,100,B01,MCD,Added: DCD/DAC/STAT(2010)5
+32000,31005,2018,PNoWB,Parliamentary Network on the World Bank,Network,Public-Private Partnerships and Networks,100,B01,Not MCD,"Not a major channel of delivery, channel category changed:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2010)5"
+40000,40000,,,Multilateral Organisations,Multilateral Organisations,Multilateral Organisations,,,,
+41000,41000,,,"United Nations agency, fund or commission (UN)","United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,,,,
+41000,41147,2018,CERF,Central Emergency Response Fund,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2011)16
+41000,41101,2018,UNCCD,Convention to Combat Desertification ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2008)5
+41000,41102,2018,DLCO-EA,Desert Locust Control Organisation for Eastern Africa ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41106,2018,ESCAP,Economic and Social Commission for Asia and the Pacific ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41105,2018,ESCWA,Economic and Social Commission for Western Asia,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2006)15
+41000,41103,2018,ECA,Economic Commission for Africa ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41104,2018,ECLAC,Economic Commission for Latin America and the Caribbean,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2006)15
+41000,41301,2018,FAO,Food and Agricultural Organisation,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,83,B02,MCD,Coefficient increased from 51%:  DCD/DAC/STAT(2019)17.  Request to increase coefficient to 66% was rejected by WP-STAT: DCD/DAC/STAT(2010)5.  Coefficient agreed:  DCD/DAC/STAT(2003)2
+41000,41318,2018,GM,Global Mechanism,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2015)22
+41000,41312,2018,IAEA-Assessed,International Atomic Energy Agency - assessed contributions,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,33,B02,MCD,Added:  DCD/DAC/STAT(2009)6
+41000,41107,2018,IAEA-TCF,International Atomic Energy Agency (Contributions to Technical Cooperation Fund Only),"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2008)10
+41000,41108,2018,IFAD,International Fund for Agricultural Development ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41302,2018,ILO-Assessed,International Labour Organisation - Assessed Contributions,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,60,B02,MCD,Coefficient increased from 15%: DCD/DAC/STAT(2010)5
+41000,41144,2018,ILO-RBSA,International Labour Organisation - Regular Budget Supplementary Account,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added: DCD/DAC/STAT(2010)5
+41000,41145,2018,IMO-TCF,International Maritime Organization - Technical Co-operation Fund,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41303,2018,ITU,International Telecommunications Union,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,18,B02,MCD,
+41000,41110,2018,UNAIDS,Joint United Nations Programme on HIV/AIDS ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41320,2018,UN-TBLDC,Technology Bank for Least Developed Countries,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2018)35
+41000,41305,2018,UN,United Nations,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,18,B02,MCD,Coefficient increased from 12%: DCD/DAC/STAT(2013)12; Renamed:  DCD/DAC/STAT(2008)5
+41000,41111,2018,UNCDF,United Nations Capital Development Fund ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2001)6
+41000,41122,2018,UNICEF,United Nations Children's Fund ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41112,2018,UNCTAD,United Nations Conference on Trade and Development ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41142,2018,UNDEF,United Nations Democracy Fund,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added: DCD/DAC/STAT(2008)10
+41000,41135,2018,UNV,United Nations Volunteers ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41306,2018,UPU,Universal Postal Union ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,16,B02,MCD,Coefficient agreed:  DCD/DAC/STAT(2003)2
+41000,41503,2018,UN-CBPF,UN-led Country-based Pooled Funds,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,,B03,MCD,Added as part of the Channel Pilot:  DCD/DAC/STAT(2017)13
+41000,41140,2018,WFP,World Food Programme ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41310,2018,UNDPKO,"United Nations Department of Peacekeeping Operations [only MINURSO, MINUSCA, MINUSMA, MINUJUSTH, MONUSCO, UNAMID, UNIFIL, UNISFA, UNMIK, UNMIL, UNMISS, UNOCI]. Report contributions mission by mission in CRS++.","United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,15,B02,MCD,List of eligible operations adjusted to reflect MINUJUSTH as a follow-on mission to MINUSTAH which terminated in 2017 (updated 2019).  Revised coefficient (increased from 7%):  DCD/DAC(2017)24.  MINUSCA added:  DCD/DAC/STAT(2015)20. Coefficient increased from 6%: DCD/DAC/STAT/RD(2013)1/RD6. Coefficient reviewed and confirmed:  DCD/DAC/STAT(2012)3. Coefficient decreased from 7% and name updated: DCD/DAC/STAT(2010)9. Revised to exclude certain missions: DCD/DAC/STAT(2009)8; Renamed:  DCD/DAC/STAT(2008)5.  Coefficient agreed:  DCD/DAC/STAT(2007)8 and DCD/DAC/STAT(2006)4.
+41000,41148,2018,UNDPA-SZA,"United Nations Department of Political Affairs, Trust Fund in Support of Political Affairs","United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41114,2018,UNDP,United Nations Development Programme ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41314,2018,UNECE,United Nations Economic Commission for Europe (extrabudgetary contributions only),"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,89,B02,MCD,Added: DCD/DAC/STAT(2009)6
+41000,41304,2018,UNESCO,"United Nations Educational, Scientific and Cultural Organisation","United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,60,B02,MCD,Coefficient increased from 44%: DCD/DAC/STAT(2010)5   Revised coefficient agreed from 25%: DCD/DAC/STAT(2009)6
+41000,41146,2018,UNWOMEN,United Nations Entity for Gender Equality and the Empowerment of Women,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2011)16
+41000,41116,2018,UNEP,United Nations Environment Programme ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41316,2018,UNFCCC,United Nations Framework Convention on Climate Change ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,61,B02,MCD,
+41000,41313,2018,OHCHR,United Nations High Commissioner for Human Rights (extrabudgetary contributions only),"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,88,B02,MCD,Revised coefficient:  DCD/DAC/STAT(2017)13.  Added: DCD/DAC/STAT(2009)6
+41000,41120,2018,UN Habitat,United Nations Human Settlement Programme ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2004)3
+41000,41123,2018,UNIDO,United Nations Industrial Development Organisation ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41125,2018,UNITAR,United Nations Institute for Training and Research ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41315,2018,UNISDR,United Nations International Strategy for Disaster Reduction,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,75,B02,MCD,Added: DCD/DAC/STAT(2010)5
+41000,41126,2018,UNMAS,United Nations Mine Action Service ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2002)3
+41000,41502,2018,UNOPS,United Nations Office for Project Services,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,Not assessed,Not applicable,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+41000,41127,2018,UNOCHA,United Nations Office of Co-ordination of Humanitarian Affairs ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2006)15
+41000,41121,2018,UNHCR,United Nations Office of the United Nations High Commissioner for Refugees ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41128,2018,UNODC,United Nations Office on Drugs and Crime ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2008)5
+41000,41311,2018,PBF Window 1,United Nations Peacebuilding Fund (Window One:  Flexible Contributions Only),"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,89,B02,MCD,Coefficient increased from 80%: DCD/DAC/STAT(2010)3. Added: DCD/DAC/STAT(2008)10
+41000,41141,2018,PBF Window 2,United Nations Peacebuilding Fund (Window Two:  Restricted Contributions Only),"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added: DCD/DAC/STAT(2008)10
+41000,41119,2018,UNFPA,United Nations Population Fund ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2008)5
+41000,41501,2018,UN-REDD,United Nations Reducing Emissions from Deforestation and Forest Degradation,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,Not assessed,B03,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+41000,41130,2018,UNRWA,United Nations Relief and Works Agency for Palestine Refugees in the Near East,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2008)5
+41000,41129,2018,UNRISD,United Nations Research Institute for Social Development ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2008)5
+41000,41133,2018,UNSIA,United Nations Special Initiative on Africa ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41131,2018,UNSSC,United Nations System Staff College ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed Acronym:  DCD/DAC/STAT(2008)5  Renamed:  DCD/DAC/STAT(2003)2
+41000,41132,2018,UNSCN,United Nations System Standing Committee on Nutrition ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2003)2
+41000,41134,2018,UNU,United Nations University (including Endowment Fund) ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41137,2018,UNVFTC,United Nations Voluntary Fund for Technical Co-operation in the Field of Human Rights,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41138,2018,UNVFVT,United Nations Voluntary Fund for Victims of Torture ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2003)2
+41000,41136,2018,UNVFD,United Nations Voluntary Fund on Disability ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2001)6
+41000,41307,2018,WHO-Assessed,World Health Organisation - assessed contributions,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,76,B02,MCD,Revised coefficient agreed: DCD/DAC/STAT(2009)6; Coefficient agreed:  DCD/DAC/STAT(2003)2
+41000,41143,2018,WHO-CVCA,World Health Organisation - core voluntary contributions account,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,
+41000,41308,2018,WIPO,World Intellectual Property Organisation ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,3,B02,MCD,Coefficient agreed:  DCD/DAC/STAT(2003)2
+41000,41309,2018,WMO,World Meteorological Organisation ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,4,B02,MCD,Coefficient agreed:  DCD/DAC/STAT(2003)2
+41000,41319,2018,UNWTO,World Tourism Organization,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,89,B02,Not MCD,Added:  DCD/DAC/STAT(2017)13
+41000,47066,2018,IOM,International Organisation for Migration ,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Change of Channel Category:  DCD/DAC/STAT(2019)17
+41000,41149,2018,UNDCO,United Nations Development Coordination Office,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2019)17
+41000,41150,2018,UNIDIR,United Nations Institute for Disarmament Research,"United Nations Agency, Fund Or Commission (UN)",Multilateral Organisations,27,B02,Not MCD,Added:  DCD/DAC/STAT(2019)17
+42000,42000,,,European Union Institution (EU),European Union Institution (EU),Multilateral Organisations,,,,
+42000,42001,2018,EC,European Commission - Development Share of Budget,European Union Institution (EU),Multilateral Organisations,100,B02,MCD,
+42000,42003,2018,EDF,European Commission - European Development Fund,European Union Institution (EU),Multilateral Organisations,100,B02,MCD,
+42000,42004,2018,EIB,European Investment Bank ,European Union Institution (EU),Multilateral Organisations,100,B02,MCD,"Use this code for reporting i) interest subsidies provided to soften the terms of loans administered by the EIB - classified as multilateral ODA and ii) contributions to EIB administered trust funds (FEMIP, NIF, EPTATF, EU AITF and ERI Fund) which are classified as bilateral ODA [cf. DCD/DAC/STAT(2011)16 and DCD/DAC/STAT(2018)35].  Capital subscriptions to the EIB are not reportable.  "
+43000,43000,,,International Monetary Fund (IMF),International Monetary Fund (IMF),Multilateral Organisations,,,,
+43000,43006,2018,IMF-CCR,Catastrophe Containment and Relief Trust,International Monetary Fund (IMF),Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2016)23/REV1
+43000,43005,2018,IMF-PCDR,International Monetary Fund - Post-Catastrophe Debt Relief Trust,International Monetary Fund (IMF),Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2011)16
+43000,43002,2018,IMF-PRG-HIPC,"International Monetary Fund - Poverty Reduction and Growth - Heavily Indebted Poor Countries Debt Relief Initiative Trust Fund [includes HIPC, Extended Credit Facility (ECF), and ECF-HIPC sub-accounts] ",International Monetary Fund (IMF),Multilateral Organisations,100,B02,MCD,Acronym and title amended: DCD/DAC/STAT(2010)5
+43000,43004,2018,IMF-PRG-MDRI,International Monetary Fund - Poverty Reduction and Growth - Multilateral Debt Relief Initiative Trust,International Monetary Fund (IMF),Multilateral Organisations,100,B02,MCD,
+43000,43001,2018,IMF-PRGT,International Monetary Fund - Poverty Reduction and Growth Trust ,International Monetary Fund (IMF),Multilateral Organisations,100,B02,MCD,Acronym and title amended: DCD/DAC/STAT(2010)5
+43000,43003,2018,IMF-EPCA-ENDA,International Monetary Fund - Subsidization of Emergency Post Conflict Assistance/Emergency Assistance for Natural Disasters for PRGT-eligible members,International Monetary Fund (IMF),Multilateral Organisations,100,B02,MCD,Acronym and title amended: DCD/DAC/STAT(2010)5  Added:  DCD/DAC/STAT(2006)15
+44000,44000,,,World Bank Group (WB),World Bank Group (WB),Multilateral Organisations,,,,
+44000,44006,2018,AMCs,Advance Market Commitments,World Bank Group (WB),Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2007)10
+44000,44001,2018,IBRD,International Bank for Reconstruction and Development ,World Bank Group (WB),Multilateral Organisations,100,B02,MCD,
+44000,44002,2018,IDA,International Development Association ,World Bank Group (WB),Multilateral Organisations,100,B02,MCD,
+44000,44003,2018,IDA-HIPC,International Development Association - Heavily Indebted Poor Countries Debt Initiative Trust Fund ,World Bank Group (WB),Multilateral Organisations,100,B02,MCD,
+44000,44007,2018,IDA-MDRI,International Development Association - Multilateral Debt Relief Initiative,World Bank Group (WB),Multilateral Organisations,100,B02,MCD,Added: DCD/DAC/STAT(2008)10
+44000,44004,2018,IFC,International Finance Corporation ,World Bank Group (WB),Multilateral Organisations,100,B02,MCD,
+44000,44005,2018,MIGA,Multilateral Investment Guarantee Agency ,World Bank Group (WB),Multilateral Organisations,100,B02,MCD,
+45000,45000,,,World Trade Organisation,World Trade Organisation,Multilateral Organisations,,,,
+45000,45002,2018,WTO-ACWL,World Trade Organisation - Advisory Centre on WTO Law,World Trade Organisation,Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2006)15
+45000,45003,2018,WTO-DDAGTF,World Trade Organisation - Doha Development Agenda Global Trust Fund ,World Trade Organisation,Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2003)2
+45000,45001,2018,WTO-ITC,World Trade Organisation - International Trade Centre ,World Trade Organisation,Multilateral Organisations,100,B02,MCD,
+46000,46000,,,Regional Development Bank,Regional Development Bank,Multilateral Organisations,,,,
+46000,46002,2018,Afr.DB,African Development Bank,Regional Development Bank,Multilateral Organisations,100,B02,MCD,"Revised to exclude the words ""ordinary capital"": DCD/DAC/STAT(2009)6."
+46000,46003,2018,Afr.DF,African Development Fund ,Regional Development Bank,Multilateral Organisations,100,B02,MCD,
+46000,46022,2018,Afreximbank,African Export Import Bank,Regional Development Bank,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2013)12
+46000,46008,2018,CAF,Development Bank of Latin America,Regional Development Bank,Multilateral Organisations,100,B02,MCD,Renamed Development Bank of Latin America (previously Andean Development Corporation) (updated 2019).
+47000,47027,2018,CP ,Colombo Plan,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Renamed:  DCD/DAC/STAT(2007)7
+46000,46004,2018,AsDB,Asian Development Bank,Regional Development Bank,Multilateral Organisations,100,B02,MCD,"Revised to exclude the words ""ordinary capital"": DCD/DAC/STAT(2009)6."
+46000,46005,2018,AsDF,Asian Development Fund ,Regional Development Bank,Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2011)16.
+46000,46026,2018,AIIB,Asian Infrastructure Investment Bank,Regional Development Bank,Multilateral Organisations,85,B02,MCD,Added:  DCD/DAC/STAT(2017)13
+46000,46006,2018,BSTDB,Black Sea Trade and Development Bank,Regional Development Bank,Multilateral Organisations,61,B02,MCD,Revised coefficient and placement - code 47124 deleted: DCD/DAC/STAT(2009)6. Revised placement June 2008.  Added: DCD/DAC/STAT(2005)9.  For reference see DCD/DAC/STAT/A(2004)1/RD14.
+46000,46009,2018,CDB,Caribbean Development Bank ,Regional Development Bank,Multilateral Organisations,100,B02,MCD,
+46000,46020,2018,BDEAC,Central African States Development Bank,Regional Development Bank,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2011)16
+46000,46007,2018,CABEI,Central American Bank for Economic Integration ,Regional Development Bank,Multilateral Organisations,100,B02,MCD,
+46000,46024,2018,CEB,Council of Europe Development Bank,Regional Development Bank,Multilateral Organisations,18,B02,MCD,Added:  DCD/DAC/STAT(2014)4
+46000,46023,2018,PTA Bank,Eastern and Southern African Trade and Development Bank,Regional Development Bank,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2013)12
+46000,46015,2018,EBRD,European Bank for Reconstruction and Development,Regional Development Bank,Multilateral Organisations,43,B02,MCD,Added DCD/DAC/STAT(2010)5
+46000,46018,2018,EBRD-ETC,European Bank for Reconstruction and Development - Early Transition Countries Fund,Regional Development Bank,Multilateral Organisations,100,B02,MCD,
+46000,46017,2018,EBRD TFs - All Countries,European Bank for Reconstruction and Development - technical co-operation and special funds (all EBRD countries of operations),Regional Development Bank,Multilateral Organisations,43,B02,MCD,Added DCD/DAC/STAT(2010)5
+46000,46016,2018,EBRD TFs - ODA Countries Only,European Bank for Reconstruction and Development - technical co-operation and special funds (ODA-eligible countries only),Regional Development Bank,Multilateral Organisations,100,B02,MCD,Added DCD/DAC/STAT(2010)5
+46000,46019,2018,EBRD-WBJTF,European Bank for Reconstruction and Development - Western Balkans Joint Trust Fund,Regional Development Bank,Multilateral Organisations,100,B02,MCD,Change of name and channel category (formerly code 47126 Other multilateral institutions) DCD/DAC/STAT(2010)5.  Added:  DCD/DAC/STAT(2007)7  (Incorrectly classified as a Regional Bank - 46014.  Corrected June 2008)
+46000,46013,2018,IDB FSO,"Inter-American Development Bank, Fund for Special Operations ",Regional Development Bank,Multilateral Organisations,100,B02,MCD,"Named updated after consulation with IDB, June 2012."
+46000,46012,2018,IDB,"Inter-American Development Bank, Inter-American Investment Corporation and Multilateral Investment Fund ",Regional Development Bank,Multilateral Organisations,100,B02,MCD,"Revised to exclude the words ""ordinary capital"": DCD/DAC/STAT(2009)6. Added:  DCD/DAC/STAT(2003)2"
+46000,46025,2018,IsDB,Islamic Development Bank,Regional Development Bank,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2014)4
+46000,46021,2018,BOAD,West African Development Bank,Regional Development Bank,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2011)16
+46000,46027,2020,FONPLATA,Financial Fund for the Development of the River Plate Basin,Regional Development Bank,Multilateral Organisations,75,B02,,Added: DCD/DAC/STAT(2019)34 
+47000,47000,,,Other multilateral institution,Other multilateral institution,Multilateral Organisations,,,,
+47000,47111,2018,,Adaptation Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47009,2018,CAMES,African and Malagasy Council for Higher Education ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47001,2018,ACBF,African Capacity Building Foundation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2001)6
+47000,47137,2018,ARC,African Risk Capacity Group,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2014)4
+47000,47141,2018,ATAF,African Tax Administration Forum,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2015)20
+47000,47005,2018,AU,African Union (excluding peacekeeping facilities) ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2003)2
+47000,21002,2018,AITIC,Agency for International Trade Information and Co-operation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Channel category changed:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2004)3
+47000,47002,2018,APO,Asian Productivity Organisation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47109,2018,APEC ASF,Asia-Pacific Economic Cooperation Support Fund (except contributions tied to counter-terrorism activities),Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2006)15
+47000,47068,2018,APFIC,Asia-Pacific Fishery Commission,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Renamed:  DCD/DAC/STAT(2006)15
+47000,47003,2018,ASEAN,Association of South East Asian Nations: Economic Co-operation ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,
+47000,47011,2018,CARICOM,Caribbean Community Secretariat ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2005)9
+47000,47012,2018,CAREC,Caribbean Epidemiology Centre ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Renamed:  DCD/DAC/STAT(2008)5
+47000,47145,2018,CEF,Center of Excellence in Finance,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2017)13
+47000,47112,2018,CEI-Climate Fund,Central European Initiative - Special Fund for Climate and Environmental Protection,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47015,2018,CGIAR,CGIAR Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Code previously used for Consultative Group on International Agricultural Research (CGIAR) which changed governance structure and involved into the CGIAR Fund: DCD/DAC/STAT(2012)6/REV1.  Renamed:  DCD/DAC/STAT(2008)5.  Added:  DCD/DAC/STAT(2004)3
+47000,47134,2018,CTF,Clean Technology Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2013)9
+47000,47105,2018,CFC,Common Fund for Commodities ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2002)3
+47000,47013,2018,CF,Commonwealth Foundation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47025,2018,COL,Commonwealth of Learning ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47132,2018,,Commonwealth Secretariat (ODA-eligible contributions only),Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,"Added:  Summary Record of 2012 WP-STAT meeting.  Includes contributions to the Commonwealth Fund for Technical Co-operation (CFTC), Commonwealth Media Development Fund (CMDF), Commonwealth Small States Office (CSSO) and the Commonwealth Youth Programme (CYP)."
+47000,47026,2018,CPLP,Community of Portuguese Speaking Countries ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2005)9
+47000,47022,2018,CITES,Convention on International Trade in Endangered Species of Wild Flora and Fauna,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47138,2018,CoE,Council of Europe,Other multilateral institution,Multilateral Organisations,40,B02,MCD,Added:  DCD/DAC/STAT(2014)4
+47000,47037,2018,EROPA,Eastern-Regional Organisation of Public Administration ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47113,2018,CEMAC,Economic and Monetary Community of Central Africa ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47034,2018,ECOWAS,Economic Community of West African States ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2003)2
+47000,47036,2018,EPPO,European and Mediterranean Plant Protection Organisation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47400,2018,,European Space Agency (ESA) programme "Space in support of International Development Aid" ,Other multilateral institution,Multilateral Organisations,100,B03,Not MCD,ODA-eligible but not added to Annex 2 List; channel code created in single table [DCD/DAC/STAT(2018)35].
+47000,47504,2018,FCPF,Forest Carbon Partnership Facility ,Other multilateral institution,Multilateral Organisations,Not assessed,B03,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+47000,47040,2018,FFA,Forum Fisheries Agency ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Renamed:  DCD/DAC/STAT(2008)5
+47000,47106,2018,DCAF,Geneva Centre for the Democratic Control of Armed Forces,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2007)7.  For reference see also DCD/DAC/STAT(2006)15.
+47000,47123,2018,GICHD,Geneva International Centre for Humanitarian Demining ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Reclassified:  DCD/DAC/STAT(2006)15  Added:  DCD/DAC/STAT(2003)2
+47000,47503,2018,GAFSP,Global Agriculture and Food Security Program,Other multilateral institution,Multilateral Organisations,Not assessed,B03,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+47000,47122,2018,GAVI,Global Alliance for Vaccines and Immunization ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Reclassified:  DCD/DAC/STAT(2008)10  Added:  DCD/DAC/STAT(2003)2
+47000,47143,2018,GCERF,Global Community Engagement and Resilience Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2016)23/REV1
+47000,47129,2018,GEF-LDCF,Global Environment Facility - Least Developed Countries Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added: DCD/DAC/STAT(2010)5
+47000,47130,2018,GEF-SCCF,Global Environment Facility - Special Climate Change Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added: DCD/DAC/STAT(2010)5
+47000,47044,2018,GEF,Global Environment Facility Trust Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Coefficient increased from 96%: DCD/DAC/STAT(2010)5.  Coefficient updated:  DCD/DAC/STAT(2008)10    Coefficient agreed:  DCD/DAC/STAT(2003)2
+47000,47502,2018,GFDRR,Global Fund for Disaster Risk Reduction,Other multilateral institution,Multilateral Organisations,Not assessed,B03,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+47000,47045,2018,Global Fund,"Global Fund to Fight AIDS, Tuberculosis and Malaria ",Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2003)2
+47000,47136,2018,GGGI,Global Green Growth Institute,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2013)12
+47000,47501,2018,GPE,Global Partnership for Education,Other multilateral institution,Multilateral Organisations,Not assessed,B03,Not MCD,Added as part of the Channel Pilot: DCD/DAC/STAT(2014)9.
+47000,41317,2018,GCF,Green Climate Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Channel category changed:  DCD/DAC/STAT(2016)23/REV1; Added:  DCD/DAC/STAT(2015)20
+47000,47116,2018,IF,Integrated Framework for Trade-Related Technical Assistance to Least Developed Countries,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47061,2018,IICA,Inter-American Institute for Co-operation on Agriculture ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47065,2018,IOC,Intergovernmental Oceanographic Commission ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47067,2018,IPCC,Intergovernmental Panel on Climate Change ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47019,2018,CIHEAM,International Centre for Advanced Mediterranean Agronomic Studies ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47050,2018,ICAC,International Cotton Advisory Committee ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47059,2018,IDLO,International Development Law Organisation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Renamed:  DCD/DAC/STAT(2006)15
+47000,30010,2018,UNITAID,International drug purchase facility,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)1.  Added:  DCD/DAC/STAT(2007)7
+47000,47107,2018,IFFIm,International Finance Facility for Immunisation,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2007)10
+47000,47058,2018,IDEA,International Institute for Democracy and Electoral Assistance ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2003)2
+47000,47064,2018,INBAR,International Network for Bamboo and Rattan ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2005)9
+47000,47046,2018,OIF,International Organisation of the Francophonie,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2007)7
+47000,47144,2018,IRENA,International Renewable Energy Agency,Other multilateral institution,Multilateral Organisations,66,B02,MCD,Added:  DCD/DAC/STAT(2016)23/REV1
+47000,47073,2018,ITTO,International Tropical Timber Organisation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2002)3
+47000,47074,2018,IVI,International Vaccine Institute ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,"Renamed:  DCD/DAC/STAT(2001)6 (Supressed the notation ""core budget contributions only"".)"
+47000,47076,2018,JSCA,Justice Studies Centre of the Americas ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2005)9
+47000,47127,2018,OLADE,Latin-American Energy Organisation,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added: DCD/DAC/STAT(2009)6
+47000,47077,2018,MRC,Mekong River Commission ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2003)2
+47000,47078,2018,Montreal Protocol,Multilateral Fund for the Implementation of the Montreal Protocol ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2003)2
+47000,47117,2018,NEPAD,New Partnership for Africa's Development,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47128,2018,NDF,Nordic Development Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added: DCD/DAC/STAT(2010)5
+47000,47081,2018,OECD-Dev. Centre,OECD Development Centre ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2004)3
+47000,47142,2018,OFID,OPEC Fund for International Development,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2015)20
+47000,47080,2018,OECD,Organisation for Economic Co-operation and Development (Contributions to special funds for Technical Co-operation Activities Only) ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47079,2018,OAS,Organisation of American States ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,
+47000,47082,2018,OECS,Organisation of Eastern Caribbean States ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2005)9
+47000,47140,2018,OEI,"Organisation of Ibero-American States for Education, Science and Culture",Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2014)4
+47000,47110,2018,BSEC,Organisation of the Black Sea Economic Cooperation,Other multilateral institution,Multilateral Organisations,78,B02,Not MCD,Added:  DCD/DAC/STAT(2007)7.  For reference see DCD/DAC/STAT(2006)15.
+47000,47131,2018,OSCE,Organization for Security and Co-operation in Europe,Other multilateral institution,Multilateral Organisations,74,B02,MCD,Added:  DCD/DAC/STAT(2011)18
+47000,47087,2018,PIFS,Pacific Islands Forum Secretariat ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47097,2018,SPREP,Pacific Regional Environment Programme ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Renamed:  DCD/DAC/STAT(2006)15
+47000,47083,2018,PAHO,Pan-American Health Organisation ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,
+47000,47084,2018,PAIGH,Pan-American Institute of Geography and History ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47086,2018,PIDG,Private Infrastructure Development Group ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2003)2
+47000,47118,2018,CREFIAF,Regional Organisation for the Strengthening of Supreme Audit Institutions of Francophone Sub-Saharan Countries,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47119,2018,OSS,Sahara and Sahel Observatory,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47029,2018,SWAC,Sahel and West Africa Club ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Renamed:  DCD/DAC/STAT(2008)5
+47000,47096,2018,SPC,Secretariat of the Pacific Community ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Renamed:  DCD/DAC/STAT(2008)5
+47000,47120,2018,SAARC,South Asian Association for Regional Cooperation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47092,2018,SEAFDC,South East Asian Fisheries Development Centre ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47093,2018,SEAMEO,South East Asian Ministers of Education ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47095,2018,SPBEA,South Pacific Board for Educational Assessment ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2001)6
+47000,47089,2018,SADC,Southern African Development Community ,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2003)2
+47000,47135,2018,SCF,Strategic Climate Fund,Other multilateral institution,Multilateral Organisations,100,B02,MCD,Added:  DCD/DAC/STAT(2013)9
+47000,47121,2018,UCLGA,United Cities and Local Governments of Africa,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2008)10
+47000,47098,2018,UNPO,Unrepresented Nations and Peoples' Organisation ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,
+47000,47100,2018,WAMU,West African Monetary Union ,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2003)2
+47000,47139,2018,WCO CCF,World Customs Organization Customs Co-operation Fund,Other multilateral institution,Multilateral Organisations,100,B02,Not MCD,Added:  DCD/DAC/STAT(2014)4
+47000,47146,2018,IIB,International Investment Bank (IIB),Other multilateral institution,Multilateral Organisations,29,B02,Not MCD,Added:  DCD/DAC/STAT(2019)17
+47000,47102,2020,,World Customs Organization (WCO),Other multilateral institution,Multilateral Organisations,,,,
+47000,47148,2020,OIE,World Organisation for Animal Health,Other multilateral institution,Multilateral Organisations,61,B02,Not MCD,Added: DCD/DAC/STAT(2019)34
+51000,51000,,,"University, college or other teaching institution, research institute or think?tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",,,,
+51000,47101,2018,WARDA,Africa Rice Centre,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Renamed:  DCD/DAC/STAT(2006)15 Renamed:  DCD/DAC/STAT(2008)10
+51000,47069,2018,,Bioversity International,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Renamed:  DCD/DAC/STAT(2008)5
+51000,47018,2018,CIFOR,Centre for International Forestry Research ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.  Added:  DCD/DAC/STAT(2004)3
+51000,21004,2018,CODESRIA,Council for the Development of Economic and Social Research in Africa ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,Not MCD,"Not a major channel of delivery, channel category changed:  DCD/DAC/STAT(2011)7/REV1.  "
+51000,47041,2018,FFTC,Food and Fertilizer Technology Centre ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,21009,2018,FARA,Forum for Agricultural Research in Africa ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,Not MCD,"Not a major channel of delivery, channel category changed:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2005)9"
+51000,47047,2018,IAI,International African Institute ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47051,2018,ICARDA,International Centre for Agricultural Research in Dry Areas ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47055,2018,ICRA,International Centre for Development Oriented Research in Agriculture ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Added:  DCD/DAC/STAT(2001)6
+51000,47053,2018,"ICDDR,B","International Centre for Diarrhoeal Disease Research, Bangladesh","University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Renamed:  DCD/DAC/STAT(2011)16.  Renamed:  DCD/DAC/STAT(2006)15
+51000,47017,2018,CIAT,International Centre for Tropical Agriculture ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47054,2018,ICIPE,International Centre of Insect Physiology and Ecology ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47057,2018,ICRISAT,International Crop Research for Semi-Arid Tropics ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,51001,2018,IFPRI,International Food Policy Research Institute,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Added:  DCD/DAC/STAT(2014)4
+51000,21021,2018,IIED,International Institute for Environment and Development ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,Not MCD,"Not a major channel of delivery, channel category changed:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2005)9"
+51000,21039,2018,IISD,International Institute for Sustainable Development,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,Not MCD,"Not a major channel of delivery, channel category changed:  DCD/DAC/STAT(2011)7/REV1.  Added:  DCD/DAC/STAT(2007)7"
+51000,47062,2018,IITA,International Institute of Tropical Agriculture ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47063,2018,ILRI,International Livestock Research Institute ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Result of a merger between the International Centre for Livestock in Africa (ILCA) and the International Laboratory for Research on Animal Diseases (ILRAD):  DCD/DAC/STAT(2002)3.
+51000,47020,2018,CIMMYT,International Maize and Wheat Improvement Centre ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.  Added:  DCD/DAC/STAT(2004)3
+51000,47021,2018,CIP,International Potato Centre ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47070,2018,IRRI,International Rice Research Institute ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47071,2018,ISTA,International Seed Testing Association ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47075,2018,IWMI,International Water Management Institute ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Added:  DCD/DAC/STAT(2004)3
+51000,47099,2018,USP,University of the South Pacific ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47056,2018,ICRAF,World AgroForestry Centre,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Renamed:  DCD/DAC/STAT(2006)15
+51000,47103,2018,WMU,World Maritime University ,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.
+51000,47008,2018,AVRDC,World Vegetable Centre,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1.  Renamed:  DCD/DAC/STAT(2006)15
+51000,47104,2018,WorldFish Centre,WorldFish Centre,"University, College Or Other Teaching Institution, Research Institute Or Think?Tank","University, College Or Other Teaching Institution, Research Institute Or Think?Tank",100,B01,MCD,Change of Channel Category:  DCD/DAC/STAT(2012)6/REV1. Added:  DCD/DAC/STAT(2004)3
+60000,60000,,,Private sector institution,Private sector institution,Private sector institution,,,,
+61000,61000,,,Private sector in provider country,Private sector in provider country,Private sector institution,,,,
+61000,61001,2018,,Banks (deposit taking corporations),Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+61000,61003,2018,,Investment funds and other collective investment institutions,Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+61000,61004,2018,,"Holding companies, trusts and Special Purpose Vehicles",Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+61000,61005,2018,,Insurance Corporations,Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+61000,61006,2018,,Pension Funds,Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+61000,61007,2018,,Other financial corporations,Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+61000,61008,2018,,Exporters,Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+61000,61009,2018,,Other non-financial corporations,Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+61000,61010,2018,,Retail investors,Private sector in provider country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62000,,,Private sector in recipient country,Private sector in recipient country,Private sector institution,,,,
+62000,62001,2018,,Banks (deposit taking corporations except Micro Finance Institutions),Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62002,2018,,Micro Finance Institutions (deposit and non-deposit),Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62003,2018,,Investment funds and other collective investment institutions,Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62004,2018,,"Holding companies, trusts and Special Purpose Vehicles",Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62005,2018,,Insurance Corporations,Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62006,2018,,Pension Funds,Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62007,2018,,Other financial corporations,Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62008,2018,,Importers/Exporters,Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62009,2018,,Other non-financial corporations,Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+62000,62010,2018,,Retail investors,Private sector in recipient country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63000,,,Private sector in third country,Private sector in third country,Private sector institution,,,,
+63000,63001,2018,,Banks (deposit taking corporations except Micro Finance Institutions),Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63002,2018,,Micro Finance Institutions (deposit and non-deposit),Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63003,2018,,Investment funds and other collective investment institutions,Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63004,2018,,"Holding companies, trusts and Special Purpose Vehicles",Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63005,2018,,Insurance Corporations,Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63006,2018,,Pension Funds,Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63007,2018,,Other financial corporations,Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63008,2018,,Exporters,Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63009,2018,,Other non-financial corporations,Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+63000,63010,2018,,Retail investors,Private sector in third country,Private sector institution,,,,DCD/DAC/STAT(2018)9/ADD1/FINAL; DCD/DAC/STAT(2016)20/REV
+90000,90000,,,Other,Other,Other,,,,
+50000,50000,,,Other,Other,Other,,,,
+50000,52000,,,Other,Other,Other,,,,

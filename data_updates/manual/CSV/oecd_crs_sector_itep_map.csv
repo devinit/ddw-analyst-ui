@@ -1,0 +1,55 @@
+oecd_sector_code,oecd_sector_name,itep_sector,aggregated_sector,humanitarian_and_development
+100,Social Infrastructure & Services,Other social services,Social Infrastructure and Services,Development
+110,Education,Education,Social Infrastructure and Services,Development
+111,"Education, Level Unspecified",Education,Social Infrastructure and Services,Development
+112,Basic Education,Education,Social Infrastructure and Services,Development
+113,Secondary Education,Education,Social Infrastructure and Services,Development
+114,Post-Secondary Education,Education,Social Infrastructure and Services,Development
+120,Health,Health,Social Infrastructure and Services,Development
+121,"Health, General",Health,Social Infrastructure and Services,Development
+122,Basic Health,Health,Social Infrastructure and Services,Development
+123,Non-communicable diseases (NCDs),Health,Social Infrastructure and Services,Development
+130,Population Policies/Programmes & Reproductive Health,Health,Social Infrastructure and Services,Development
+140,Water Supply & Sanitation,Water & sanitation,Social Infrastructure and Services,Development
+150,Government & Civil Society,Governance & security,Social Infrastructure and Services,Development
+151,Government & Civil Society-general,Governance & security,Social Infrastructure and Services,Development
+152,"Conflict, Peace & Security",Governance & security,Social Infrastructure and Services,Development
+160,Other Social Infrastructure & Services,Other social services,Social Infrastructure and Services,Development
+200,Economic Infrastructure & Services,Infrastructure,Economic Infrastructure and services,Development
+210,Transport & Storage,Infrastructure,Economic Infrastructure and services,Development
+220,Communications,Infrastructure,Economic Infrastructure and services,Development
+230,Energy,Infrastructure,Economic Infrastructure and services,Development
+231,Energy Policy,Infrastructure,Economic Infrastructure and services,Development
+232,"Energy generation, renewable sources",Infrastructure,Economic Infrastructure and services,Development
+233,"Energy generation, non-renewable sources",Infrastructure,Economic Infrastructure and services,Development
+234,Hybrid energy plants,Infrastructure,Economic Infrastructure and services,Development
+235,Nuclear energy plants,Infrastructure,Economic Infrastructure and services,Development
+236,Energy distribution,Infrastructure,Economic Infrastructure and services,Development
+240,Banking & Financial Services,Business & industry,Economic Infrastructure and services,Development
+250,Business & Other Services,Business & industry,Economic Infrastructure and services,Development
+300,Production Sectors,Business & industry,Production sectors,Development
+310,"Agriculture, Forestry, Fishing",Agriculture & food security,Production sectors,Development
+311,Agriculture,Agriculture & food security,Production sectors,Development
+312,Forestry,Agriculture & food security,Production sectors,Development
+313,Fishing,Agriculture & food security,Production sectors,Development
+320,"Industry, Mining, Construction",Business & industry,Production sectors,Development
+321,Industry,Business & industry,Production sectors,Development
+322,Mineral Resources & Mining,Business & industry,Production sectors,Development
+323,Construction,Business & industry,Production sectors,Development
+330,Trade Policies & Regulations,Business & industry,Production sectors,Development
+331,Trade Policies & Regulations,Business & industry,Production sectors,Development
+332,Tourism,Business & industry,Production sectors,Development
+400,Multi-Sector / Cross-Cutting,Other,Multi-Sector / Cross-Cutting,Development
+410,General Environment Protection,Environment,Multi-Sector / Cross-Cutting,Development
+430,Other Multisector,Other,Multi-Sector / Cross-Cutting,Development
+500,Commodity Aid / General Programme Assistance,Other,Commodity Aid / General Programme Assistance,Development
+510,General Budget Support,General budget support,Commodity Aid / General Programme Assistance,Development
+520,Development Food Assistance,Agriculture & food security,Commodity Aid / General Programme Assistance,Development
+530,Other Commodity Assistance,Other,Commodity Aid / General Programme Assistance,Development
+600,Action Relating to Debt,Debt relief,Action Relating to Debt,Development
+720,Emergency Response,Humanitarian,Humanitarian Aid,Humanitarian
+730,Reconstruction Relief & Rehabilitation,Humanitarian,Humanitarian Aid,Humanitarian
+740,Disaster Prevention & Preparedness,Humanitarian,Humanitarian Aid,Humanitarian
+910,Administrative Costs of Donors,Other,Administrative Costs of Donors,Development
+930,Refugees in Donor Countries,Other,Refugees in Donor Countries,Development
+998,Unallocated / Unspecified,Other,Unallocated / Unspecified,Development

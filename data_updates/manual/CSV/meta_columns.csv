@@ -1,0 +1,531 @@
+active_mirror_name,col_name,col_source_name,col_description,data_type,col_alias
+cblb,country_name,country_name,Country name,C,Country name
+cblb,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+cblb,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+cblb,cblb,cblb,Country Being Left Behind (1 = True),N,Country Being Left Behind
+PovCalNetSmy,isInterpolated,isInterpolated,Data is interpolated between survey years,N,Is Interpolated
+PovCalNetSmy,useMicroData,useMicroData,Whether the data is based on unit observations (1) or grouped observations (0),N,Use Micro Data
+PovCalNetSmy,CountryCode,CountryCode,Country code,C,Country code
+PovCalNetSmy,CountryName,CountryName,Country name,C,Country name
+PovCalNetSmy,RegionCode,RegionCode,World Bank region code,C,Region Code
+PovCalNetSmy,CoverageType,CoverageType,"Survey type (Rural, Urban, National, Aggregate)",C,Coverage Type
+PovCalNetSmy,RequestYear,RequestYear,Standardized data year,N,Request Year
+PovCalNetSmy,DataYear,DataYear,Survey data year,N,Data Year
+PovCalNetSmy,DataType,DataType,"Survey of income (i), consumption (c), or combined (x)",C,Data Type
+PovCalNetSmy,PPP,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP,N,Ppp
+PovCalNetSmy,PovertyLine,PovertyLine,Poverty line in PPP,N,Poverty Line
+PovCalNetSmy,Mean,Mean,Mean consumption/income of the economy,N,Mean
+PovCalNetSmy,HeadCount,HeadCount,Percent of population under poverty line,N,Head Count
+PovCalNetSmy,PovGap,PovGap,The ratio of the average income under the poverty line to the poverty line,N,Pov Gap
+PovCalNetSmy,PovGapSqr,PovGapSqr,Squared Poverty Gap Index - a measure of poverty severity,N,Pov Gap Sqr
+PovCalNetSmy,Watts,Watts,Watts poverty index - a measure of depth of poverty,N,Watts
+PovCalNetSmy,Gini,Gini,Gini coefficient - a measure of inequality,N,Gini
+PovCalNetSmy,Median,Median,Median consumption/income of the economy,N,Median
+PovCalNetSmy,pr.mld,pr.mld,Mean log deviation - a measure of inequality,N,Pr.mld
+PovCalNetSmy,Polarization,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median,N,Polarization
+PovCalNetSmy,ReqYearPopulation,ReqYearPopulation,Population of the country in the standardized data year,N,Req Year Population
+PovCalNetSmy,SvyInfoID,SvyInfoID,Survey identification code,C,Survey identification code
+PovCalNetSmy,Decile1,Decile1,Percent of total consumption/income owned by the bottom 10%,N,Decile 1
+PovCalNetSmy,Decile2,Decile2,Percent of total consumption/income owned by those between the 10% and 20% percentiles,N,Decile 2
+PovCalNetSmy,Decile3,Decile3,Percent of total consumption/income owned by those between the 20% and 30% percentiles,N,Decile 3
+PovCalNetSmy,Decile4,Decile4,Percent of total consumption/income owned by those between the 30% and 40% percentiles,N,Decile 4
+PovCalNetSmy,Decile5,Decile5,Percent of total consumption/income owned by those between the 40% and 50% percentiles,N,Decile 5
+PovCalNetSmy,Decile6,Decile6,Percent of total consumption/income owned by those between the 50% and 60% percentiles,N,Decile 6
+PovCalNetSmy,Decile7,Decile7,Percent of total consumption/income owned by those between the 60% and 70% percentiles,N,Decile 7
+PovCalNetSmy,Decile8,Decile8,Percent of total consumption/income owned by those between the 70% and 80% percentiles,N,Decile 8
+PovCalNetSmy,Decile9,Decile9,Percent of total consumption/income owned by those between the 80% and 90% percentiles,N,Decile 9
+PovCalNetSmy,Decile10,Decile10,Percent of total consumption/income owned by the top 10%,N,Decile 10
+PovCalNetAgg,requestYear,requestYear,Standarized data year,N,Request Year
+PovCalNetAgg,regionTitle,regionTitle,Region name,C,Region name
+PovCalNetAgg,regionCID,regionCID,Region code,C,Region code
+PovCalNetAgg,povertyLine,povertyLine,Poverty line in PPP,N,Poverty Line
+PovCalNetAgg,mean,mean,Mean consumption/income of the economy,N,Mean
+PovCalNetAgg,hc,hc,Percent of population under the poverty line,N,Hc
+PovCalNetAgg,pg,pg,The ratio of the average income under the poverty line to the poverty line,N,Pg
+PovCalNetAgg,p2,p2,Squared Poverty Gap Index - a measure of poverty severity,N,P2
+PovCalNetAgg,population,population,Population of the country in the standardized data year,N,Population
+PovCalNetP20,isInterpolated,isInterpolated,Data is interpolated between survey years,N,Is Interpolated
+PovCalNetP20,useMicroData,useMicroData,Whether the data is based on unit observations (1) or grouped observations (0),N,Use Micro Data
+PovCalNetP20,CountryCode,CountryCode,Country code,C,Country code
+PovCalNetP20,CountryName,CountryName,Country name,C,Country name
+PovCalNetP20,RegionCode,RegionCode,World Bank region code,C,Region Code
+PovCalNetP20,CoverageType,CoverageType,"Survey type (Rural, Urban, National, Aggregate)",C,Coverage Type
+PovCalNetP20,RequestYear,RequestYear,Standardized data year,N,Request Year
+PovCalNetP20,DataYear,DataYear,Survey data year,N,Data Year
+PovCalNetP20,DataType,DataType,"Survey of income (i), consumption (c), or combined (x)",C,Data Type
+PovCalNetP20,PPP,PPP,Purchasing Power Parity conversion factor used to convert from 2011 LCU to 2011 PPP,N,Ppp
+PovCalNetP20,PovertyLine,PovertyLine,Poverty line in PPP,N,Poverty Line
+PovCalNetP20,Mean,Mean,Mean consumption/income of the economy,N,Mean
+PovCalNetP20,HeadCount,HeadCount,Percent of population under poverty line,N,Head Count
+PovCalNetP20,PovGap,PovGap,The ratio of the average income under the poverty line to the poverty line,N,Pov Gap
+PovCalNetP20,PovGapSqr,PovGapSqr,Squared Poverty Gap Index - a measure of poverty severity,N,Pov Gap Sqr
+PovCalNetP20,Watts,Watts,Watts poverty index - a measure of depth of poverty,N,Watts
+PovCalNetP20,Gini,Gini,Gini coefficient - a measure of inequality,N,Gini
+PovCalNetP20,Median,Median,Median consumption/income of the economy,N,Median
+PovCalNetP20,pr.mld,pr.mld,Mean log deviation - a measure of inequality,N,Pr.mld
+PovCalNetP20,Polarization,Polarization,Wolfson Polarisation Index - a measure of consumption/income polarisation around the median,N,Polarization
+PovCalNetP20,ReqYearPopulation,ReqYearPopulation,Population of the country in the standardized data year,N,Req Year Population
+PovCalNetP20,SvyInfoID,SvyInfoID,Survey identification code,C,Survey identification code
+PovCalNetP20,Decile1,Decile1,Percent of total consumption/income owned by the bottom 10%,N,Decile 1
+PovCalNetP20,Decile2,Decile2,Percent of total consumption/income owned by those between the 10% and 20% percentiles,N,Decile 2
+PovCalNetP20,Decile3,Decile3,Percent of total consumption/income owned by those between the 20% and 30% percentiles,N,Decile 3
+PovCalNetP20,Decile4,Decile4,Percent of total consumption/income owned by those between the 30% and 40% percentiles,N,Decile 4
+PovCalNetP20,Decile5,Decile5,Percent of total consumption/income owned by those between the 40% and 50% percentiles,N,Decile 5
+PovCalNetP20,Decile6,Decile6,Percent of total consumption/income owned by those between the 50% and 60% percentiles,N,Decile 6
+PovCalNetP20,Decile7,Decile7,Percent of total consumption/income owned by those between the 60% and 70% percentiles,N,Decile 7
+PovCalNetP20,Decile8,Decile8,Percent of total consumption/income owned by those between the 70% and 80% percentiles,N,Decile 8
+PovCalNetP20,Decile9,Decile9,Percent of total consumption/income owned by those between the 80% and 90% percentiles,N,Decile 9
+PovCalNetP20,Decile10,Decile10,Percent of total consumption/income owned by the top 10%,N,Decile 10
+PovCalNetDist,i,i,Population percentile index (maximum varies by survey),N,I
+PovCalNetDist,P,P,Cumulative percentile of population,N,P
+PovCalNetDist,L,L,Cumulative percent of consumption/income,N,L
+PovCalNetDist,svy,svy,Survey code comprised of a 3 digit country code and a 1 digit coverage type code,C,Svy
+PovCalNetDist,country_code,country_code,Country code,C,Country code
+PovCalNetDist,year,year,Survey year,N,Survey year
+ldcs,country_name,country_name,Country name,C,Country name
+ldcs,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+ldcs,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+ldcs,ldc,ldc,Least developed country (1 = True),N,Least developed country
+fragility,country_name,country_name,Country name,C,Country name
+fragility,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+fragility,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+fragility,fragile_2018,fragile_2018,Fragility status in 2018,N,Fragility status in 2018
+historical_income_groupings,country_name,country_name,Country name,C,Country name
+historical_income_groupings,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+historical_income_groupings,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+historical_income_groupings,year,year,Year,N,Year
+historical_income_groupings,income_group,income_group,World Bank income grouping,C,World Bank income grouping
+oecd_regions,country_name,country_name,Country name,C,Country name
+oecd_regions,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+oecd_regions,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+oecd_regions,region_name,region_name,Region name,C,Region name
+oecd_regions,region_code,region_code,Region code,C,Region code
+oecd_regions,oda_eligible_2014_2017,oda_eligible_2014_2017,ODA eligibility 2014-2017 (1 = True),N,ODA eligibility 2014-17
+oecd_regions,oda_eligible_2018_2019,oda_eligible_2018_2019,ODA eligibility 2018-2019 (1 = True),N,ODA eligibility 2018-19
+oecd_regions,oda_eligible_2020,oda_eligible_2020,ODA eligibility 2020 (1 = True),N,ODA eligibility 2020
+developing_countries,country_name,country_name,Country name,C,Country name
+developing_countries,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+developing_countries,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+developing_countries,oda_eligible_2014_2017,oda_eligible_2014_2017,ODA eligibility 2014-2017 (1 = True),N,ODA eligibility 2014-17
+developing_countries,oda_eligible_2018_2019,oda_eligible_2018_2019,ODA eligibility 2018-2019 (1 = True),N,ODA eligibility 2018-19
+developing_countries,oda_eligible_2020,oda_eligible_2020,ODA eligibility 2020 (1 = True),N,ODA eligibility 2020
+di_deflators_2016,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+di_deflators_2016,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+di_deflators_2016,country_name,country_name,Country name,C,Country name
+di_deflators_2016,dac_marker,dac_marker,Country is a member of the OECD DAC,N,Dac marker
+di_deflators_2016,eu_marker,eu_marker,Country is a member of the EU,N,Eu marker
+di_deflators_2016,year,year,Year,N,Year
+di_deflators_2016,value,value,Deflator multiplier,N,Deflator multiplier
+di_deflators_2017,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+di_deflators_2017,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+di_deflators_2017,country_name,country_name,Country name,C,Country name
+di_deflators_2017,dac_marker,dac_marker,Country is a member of the OECD DAC,N,Dac marker
+di_deflators_2017,eu_marker,eu_marker,Country is a member of the EU,N,Eu marker
+di_deflators_2017,year,year,Year,N,Year
+di_deflators_2017,value,value,Deflator multiplier,N,Deflator multiplier
+wdi,country_name,country_name,Country name,C,Country name
+wdi,country_code,country_code,Country code,C,Country code
+wdi,indicator_name,indicator_name,Indicator name,C,Indicator name
+wdi,indicator_code,indicator_code,Indicator code,C,Indicator code
+wdi,year,year,Year,N,Year
+wdi,value,value,Value,N,Value
+crs_current,year,year,Year,N,Year
+crs_current,donor_code,donor_code,Donor Code,N,Donor Code
+crs_current,donor_name,donor_name,Donor Name,C,Donor Name
+crs_current,agency_code,agency_code,Agency Code,N,Agency Code
+crs_current,agency_name,agency_name,Agency Name,C,Agency Name
+crs_current,crs_id,crs_id,CRS ID,C,CRS ID
+crs_current,project_number,project_number,Project Number,C,Project Number
+crs_current,initial_report,initial_report,Initial Report,N,Initial Report
+crs_current,recipient_code,recipient_code,Recipient Code,N,Recipient Code
+crs_current,recipient_name,recipient_name,Recipient Name,C,Recipient Name
+crs_current,region_code,region_code,Region Code,N,Region Code
+crs_current,region_name,region_name,Region Name,C,Region Name
+crs_current,income_group_code,income_group_code,Income Group Code,N,Income Group Code
+crs_current,income_group_name,income_group_name,Income Group Name,C,Income Group Name
+crs_current,flow_code,flow_code,Flow Code,N,Flow Code
+crs_current,flow_name,flow_name,Flow Name,C,Flow Name
+crs_current,bilateral_multilateral,bilateral_multilateral,Bilateral Multilateral,N,Bilateral Multilateral
+crs_current,category,category,Category,N,Category
+crs_current,finance_type,finance_type,Finance Type,N,Finance Type
+crs_current,aid_type,aid_type,Aid Type,C,Aid Type
+crs_current,usd_commitment,usd_commitment,USD Commitment,N,USD Commitment
+crs_current,usd_disbursement,usd_disbursement,USD Disbursement,N,USD Disbursement
+crs_current,usd_received,usd_received,USD Received,N,USD Received
+crs_current,usd_commitment_deflated,usd_commitment_deflated,USD Commitment Deflated,N,USD Commitment Deflated
+crs_current,usd_disbursement_deflated,usd_disbursement_deflated,USD Disbursement Deflated,N,USD Disbursement Deflated
+crs_current,usd_received_deflated,usd_received_deflated,USD Received Deflated,N,USD Received Deflated
+crs_current,usd_adjustment,usd_adjustment,USD Adjustment,N,USD Adjustment
+crs_current,usd_adjustment_deflated,usd_adjustment_deflated,USD Adjustment Deflated,N,USD Adjustment Deflated
+crs_current,usd_amount_untied,usd_amount_untied,USD Amount Untied,N,USD Amount Untied
+crs_current,usd_amount_partial_tied,usd_amount_partial_tied,USD Amount Partial Tied,N,USD Amount Partial Tied
+crs_current,usd_amount_tied,usd_amount_tied,USD Amount Tied,N,USD Amount Tied
+crs_current,usd_amount_untied_deflated,usd_amount_untied_deflated,USD Amount Untied Deflated,N,USD Amount Untied Deflated
+crs_current,usd_amount_partial_tied_deflated,usd_amount_partial_tied_deflated,USD Amount Partial Tied Deflated,N,USD Amount Partial Tied Deflated
+crs_current,usd_amount_tied_deflated,usd_amount_tied_deflated,USD Amount Tied Deflated,N,USD Amount Tied Deflated
+crs_current,usd_irtc,usd_irtc,USD Irtc,N,USD Irtc
+crs_current,usd_expert_commitment,usd_expert_commitment,USD Expert Commitment,N,USD Expert Commitment
+crs_current,usd_expert_extended,usd_expert_extended,USD Expert Extended,N,USD Expert Extended
+crs_current,usd_export_credit,usd_export_credit,USD Export Credit,N,USD Export Credit
+crs_current,currency_code,currency_code,Currency Code,N,Currency Code
+crs_current,commitment_national,commitment_national,Commitment National,N,Commitment National
+crs_current,disbursement_national,disbursement_national,Disbursement National,N,Disbursement National
+crs_current,grant_equivalent,grant_equivalent,Grant Equivalent,N,Grant Equivalent
+crs_current,usd_grant_equivalent,usd_grant_equivalent,USD Grant Equivalent,N,USD Grant Equivalent
+crs_current,short_description,short_description,Short Description,C,Short Description
+crs_current,project_title,project_title,Project Title,C,Project Title
+crs_current,purpose_code,purpose_code,Purpose Code,N,Purpose Code
+crs_current,purpose_name,purpose_name,Purpose Name,C,Purpose Name
+crs_current,sector_code,sector_code,Sector Code,N,Sector Code
+crs_current,sector_name,sector_name,Sector Name,C,Sector Name
+crs_current,channel_code,channel_code,Channel Code,N,Channel Code
+crs_current,channel_name,channel_name,Channel Name,C,Channel Name
+crs_current,channel_reported_name,channel_reported_name,Channel Reported Name,C,Channel Reported Name
+crs_current,channel_parent_category,channel_parent_category,Channel Parent Category,N,Channel Parent Category
+crs_current,geography,geography,Geography,C,Geography
+crs_current,expected_start_date,expected_start_date,Expected Start Date,C,Expected Start Date
+crs_current,completion_date,completion_date,Completion Date,C,Completion Date
+crs_current,long_description,long_description,Long Description,C,Long Description
+crs_current,gender,gender,Gender,N,Gender
+crs_current,environment,environment,Environment,N,Environment
+crs_current,trade,trade,Trade,N,Trade
+crs_current,pdgg,pdgg,Participatory Democracy and Good Governance,N,Participatory Democracy and Good Governance
+crs_current,ftc,ftc,Free-standing Technical Co-operation,N,Free-standing Technical Co-operation
+crs_current,pba,pba,Programme Based Approach,N,Programme Based Approach
+crs_current,investment_project,investment_project,Investment Project,N,Investment Project
+crs_current,associated_finance,associated_finance,Associated Finance,N,Associated Finance
+crs_current,biodiversity,biodiversity,Biodiversity,N,Biodiversity
+crs_current,climate_mitigation,climate_mitigation,Climate Mitigation,N,Climate Mitigation
+crs_current,climate_adaptation,climate_adaptation,Climate Adaptation,N,Climate Adaptation
+crs_current,desertification,desertification,Desertification,N,Desertification
+crs_current,commitment_date,commitment_date,Commitment Date,C,Commitment Date
+crs_current,type_repayment,type_repayment,Type Repayment,N,Type Repayment
+crs_current,number_repayment,number_repayment,Number Repayment,N,Number Repayment
+crs_current,interest_1,interest_1,Interest 1,C,Interest 1
+crs_current,interest_2,interest_2,Interest 2,N,Interest 2
+crs_current,repay_date_1,repay_date_1,Repay Date 1,C,Repay Date 1
+crs_current,repay_date_2,repay_date_2,Repay Date 2,C,Repay Date 2
+crs_current,usd_interest,usd_interest,USD Interest,N,USD Interest
+crs_current,usd_outstanding,usd_outstanding,USD Outstanding,N,USD Outstanding
+crs_current,usd_arrears_principal,usd_arrears_principal,USD Arrears Principal,N,USD Arrears Principal
+crs_current,usd_arrears_interest,usd_arrears_interest,USD Arrears Interest,N,USD Arrears Interest
+crs_current,rmnch,rmnch,"Reproductive, Maternal, Newborn and Child Health",N,"Reproductive, Maternal, Newborn and Child Health"
+crs_current,budget_identifier,budget_identifier,Budget Identifier,N,Budget Identifier
+crs_current,capital_expenditure,capital_expenditure,Capital Expenditure,N,Capital Expenditure
+crs_current,sdg_focus,sdg_focus,SDG Focus,C,SDG Focus
+crs_current,drr,drr,Disaster Risk Reduction,N,Disaster Risk Reduction
+crs_current,nutrition,nutrition,Nutrition,N,Nutrition
+crs_current,disability,disability,Disability,N,Disability
+crs_current,psi_flag,psi_flag,Private Sector Instrument (PSI) Flag,N,Private Sector Instrument (PSI) Flag
+crs_current,psi_add_type,psi_add_type,PSI Additionality Type,N,PSI Additionality Type
+crs_current,psi_add_assess,psi_add_assess,PSI Additionality Assessment,C,PSI Additionality Assessment
+crs_current,psi_add_dev_obj,psi_add_dev_obj,PSI Additionality Development Objective,C,PSI Additionality Development Objective
+dac1_current,donor_code,donor_code,Donor Code,N,Donor Code
+dac1_current,donor_name,donor_name,Donor Name,C,Donor Name
+dac1_current,part_code,part_code,Part Code,N,Part Code
+dac1_current,part_name,part_name,Part Name,C,Part Name
+dac1_current,aid_type_code,aid_type_code,Aid Type Code,N,Aid Type Code
+dac1_current,aid_type_name,aid_type_name,Aid Type Name,C,Aid Type Name
+dac1_current,flows,flows,Flows,N,Flows
+dac1_current,fund_flows,fund_flows,Fund Flows,C,Fund Flows
+dac1_current,amount_type_code,amount_type_code,Amount Type Code,C,Amount Type Code
+dac1_current,amount_type_name,amount_type_name,Amount Type Name,C,Amount Type Name
+dac1_current,time,time,Time,N,Time
+dac1_current,year,year,Year,N,Year
+dac1_current,value,value,Value,N,Value
+dac1_current,flags,flags,Flags,C,Flags
+dac2a_current,recipient_code,recipient_code,Recipient Code,N,Recipient Code
+dac2a_current,recipient_name,recipient_name,Recipient Name,C,Recipient Name
+dac2a_current,donor_code,donor_code,Donor Code,N,Donor Code
+dac2a_current,donor_name,donor_name,Donor Name,C,Donor Name
+dac2a_current,part_code,part_code,Part Code,N,Part Code
+dac2a_current,part_name,part_name,Part Name,C,Part Name
+dac2a_current,aid_type_code,aid_type_code,Aid Type Code,N,Aid Type Code
+dac2a_current,aid_type_name,aid_type_name,Aid Type Name,C,Aid Type Name
+dac2a_current,data_type,data_type,Data Type,C,Data Type
+dac2a_current,amount_type,amount_type,Amount Type,C,Amount Type
+dac2a_current,time,time,Time,N,Time
+dac2a_current,year,year,Year,N,Year
+dac2a_current,value,value,Value,N,Value
+dac2a_current,flags,flags,Flags,C,Flags
+dac2b_current,recipient_code,recipient_code,Recipient Code,N,Recipient Code
+dac2b_current,recipient_name,recipient_name,Recipient Name,C,Recipient Name
+dac2b_current,donor_code,donor_code,Donor Code,N,Donor Code
+dac2b_current,donor_name,donor_name,Donor Name,C,Donor Name
+dac2b_current,part_code,part_code,Part Code,N,Part Code
+dac2b_current,part_name,part_name,Part Name,C,Part Name
+dac2b_current,aid_type_code,aid_type_code,Aid Type Code,N,Aid Type Code
+dac2b_current,aid_type_name,aid_type_name,Aid Type Name,C,Aid Type Name
+dac2b_current,data_type,data_type,Data Type,C,Data Type
+dac2b_current,amount_type,amount_type,Amount Type,C,Amount Type
+dac2b_current,time,time,Time,N,Time
+dac2b_current,year,year,Year,N,Year
+dac2b_current,value,value,Value,N,Value
+dac2b_current,flags,flags,Flags,C,Flags
+dac5_current,donor_code,donor_code,Donor Code,N,Donor Code
+dac5_current,donor_name,donor_name,Donor Name,C,Donor Name
+dac5_current,sector_code,sector_code,Sector Code,N,Sector Code
+dac5_current,sector_name,sector_name,Sector Name,C,Sector Name
+dac5_current,aid_type_code,aid_type_code,Aid Type Code,N,Aid Type Code
+dac5_current,aid_type_name,aid_type_name,Aid Type Name,C,Aid Type Name
+dac5_current,amount_type_code,amount_type_code,Amount Type Code,C,Amount Type Code
+dac5_current,amount_type_name,amount_type_name,Amount Type Name,C,Amount Type Name
+dac5_current,time,time,Time,N,Time
+dac5_current,year,year,Year,N,Year
+dac5_current,value,value,Value,N,Value
+dac5_current,flags,flags,Flags,C,Flags
+weo,WEO.Country.Code,WEO.Country.Code,WEO Country Code,C,WEO Country Code
+weo,ISO,ISO,ISO,C,ISO
+weo,WEO.Subject.Code,WEO.Subject.Code,WEO Subject Code,C,WEO Subject Code
+weo,Country,Country,Country,C,Country
+weo,Subject.Descriptor,Subject.Descriptor,Subject Descriptor,C,Subject Descriptor
+weo,Subject.Notes,Subject.Notes,Subject Notes,C,Subject Notes
+weo,Units,Units,Units,C,Units
+weo,Scale,Scale,Scale,C,Scale
+weo,Country.Series.specific.Notes,Country.Series.specific.Notes,Country Series specific Notes,C,Country Series specific Notes
+weo,Estimates.Start.After,Estimates.Start.After,Estimates Start After,N,Estimates Start After
+weo,value,value,Value,N,Value
+weo,year,year,Year,N,Year
+fts,id,id,ID,N,ID
+fts,amountUSD,amountUSD,Amount USD,N,Amount USD
+fts,budgetYear,budgetYear,Budget Year,N,Budget Year
+fts,description,description,Description,C,Description
+fts,flowType,flowType,Flow type,C,Flow type
+fts,newMoney,newMoney,New money,C,New money
+fts,originalAmount,originalAmount,Original amount,N,Original amount
+fts,originalCurrency,originalCurrency,Original currency,C,Original currency
+fts,method,method,Method,C,Method
+fts,status,status,Status,C,Status
+fts,boundary,boundary,Boundary,C,Boundary
+fts,onBoundary,onBoundary,On boundary,C,On boundary
+fts,Donor,Donor,Donor (Source organisation name),C,Donor (Source organisation name)
+fts,source_Location_name,source_Location_name,Source location name,C,Source location name
+fts,source_iso3,source_iso3,Source ISO Alpha 3,C,Source ISO Alpha 3
+fts,source_UsageYear_name,source_UsageYear_name,Source usage year,C,Source usage year
+fts,Recipient.Organization,Recipient.Organization,Recipient Organization (Destination organisation name),C,Recipient Organization (Destination organisation name)
+fts,destination_GlobalCluster_name,destination_GlobalCluster_name,Destination global cluster name,C,Destination global cluster name
+fts,Destination.Country,Destination.Country,Destination Country (Destination location name),C,Destination Country (Destination location name)
+fts,destination_iso3,destination_iso3,Destination ISO Alpha 3,C,Destination ISO Alpha 3
+fts,destination_UsageYear_name,destination_UsageYear_name,Destination usage year,C,Destination usage year
+fts,destination_Plan_name,destination_Plan_name,Destination plan name,C,Destination plan name
+fts,destination_Project_name,destination_Project_name,Destination project name,C,Destination project name
+fts,parentFlowId,parentFlowId,Parent flow ID,N,Parent flow ID
+fts,grandBargainEarmarkingType,grandBargainEarmarkingType,Grand Bargain earmarking type,C,Grand Bargain earmarking type
+fts,source_Plan_id,source_Plan_id,Source plan ID,C,Source plan ID
+fts,source_Plan_name,source_Plan_name,Source plan name,C,Source plan name
+fts,destination_Cluster_name,destination_Cluster_name,Destination cluster name,C,Destination cluster name
+fts,destination_Emergency_name,destination_Emergency_name,Destination emergency name,C,Destination emergency name
+fts,exchangeRate,exchangeRate,Exchange rate,N,Exchange rate
+fts,source_Emergency_name,source_Emergency_name,Source emergency name,C,Source emergency name
+fts,source_GlobalCluster_name,source_GlobalCluster_name,Source global cluster name,C,Source global cluster name
+all_resource_flows,id,id,Row ID,C,Row ID
+all_resource_flows,year,year,Year,N,Year
+all_resource_flows,country_name,country_name,Country name,C,Country name
+all_resource_flows,iso2,iso2,ISO Alpha 2,C,ISO Alpha 2
+all_resource_flows,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+all_resource_flows,flow_direction,flow_direction,Flow direction,C,Flow direction
+all_resource_flows,flow_type,flow_type,Flow type,C,Flow type
+all_resource_flows,flow_name,flow_name,Flow name,C,Flow name
+all_resource_flows,value_2016,value_2016,Value (constant 2016 USD),N,Value (constant 2016 USD)
+all_resource_flows,value_2017,value_2017,Value (constant 2017 USD),N,Value (constant 2017 USD)
+fts_isos,country_name,country_name,Country name,C,Country name
+fts_isos,country_code,country_code,Country code,C,Country code
+fts_isos,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+dac5_current_isos,country_name,country_name,Country name,C,Country name
+dac5_current_isos,country_code,country_code,Country code,C,Country code
+dac5_current_isos,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+dac2b_current_isos,country_name,country_name,Country name,C,Country name
+dac2b_current_isos,country_code,country_code,Country code,C,Country code
+dac2b_current_isos,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+dac2a_current_isos,country_name,country_name,Country name,C,Country name
+dac2a_current_isos,country_code,country_code,Country code,C,Country code
+dac2a_current_isos,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+dac1_current_isos,country_name,country_name,Country name,C,Country name
+dac1_current_isos,country_code,country_code,Country code,C,Country code
+dac1_current_isos,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+crs_current_regisos,region_name,region_name,Region name,C,Region name
+crs_current_regisos,region_code,region_code,Region code,C,Region code
+crs_current_isos,country_name,country_name,Country name,C,Country name
+crs_current_isos,country_code,country_code,Country code,C,Country code
+crs_current_isos,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+wdi_isos,country_name,country_name,Country name,C,Country name
+wdi_isos,country_code,country_code,Country code,C,Country code
+wdi_isos,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+PovCalNetDist_isos,country_name,country_name,Country name,C,Country name
+PovCalNetDist_isos,country_code,country_code,Country code,C,Country code
+PovCalNetSmy_regisos,region_name,region_name,Region name,C,Region name
+PovCalNetSmy_regisos,region_code,region_code,Region code,C,Region code
+PovCalNetSmy_isos,country_name,country_name,Country name,C,Country name
+PovCalNetSmy_isos,country_code,country_code,Country code,C,Country code
+PovCalNetP20_regisos,region_name,region_name,Region name,C,Region name
+PovCalNetP20_regisos,region_code,region_code,Region code,C,Region code
+PovCalNetP20_isos,country_name,country_name,Country name,C,Country name
+PovCalNetP20_isos,country_code,country_code,Country code,C,Country code
+PovCalNetAgg_regisos,region_name,region_name,Region name,C,Region name
+PovCalNetAgg_regisos,region_code,region_code,Region code,C,Region code
+non_grant_revenue,di_id,di_id,ISO Alpha 2,C,ISO Alpha 2
+non_grant_revenue,iso3,iso3,ISO Alpha 3,C,ISO Alpha 3
+non_grant_revenue,country_name,country_name,Country name,C,Country name
+non_grant_revenue,year,year,Year,N,Year
+non_grant_revenue,budget_type,budget_type,Budget type,C,Budget type
+non_grant_revenue,l2,l2,Budget level 2,C,Budget level 2
+non_grant_revenue,value_current_ncu,value_current_ncu,Value (current national currency unit),N,Value (current national currency unit)
+non_grant_revenue,value_current_usd,value_current_usd,Value (current USD),N,Value (current USD)
+non_grant_revenue,value_usd_constant_2016,value_usd_constant_2016,Value constant 2016 USD,N,Value constant 2016 USD
+non_grant_revenue,value_usd_constant_2017,value_usd_constant_2017,Value constant 2017 USD,N,Value constant 2017 USD
+oecd_crs_aid_type_ref,aid_type_code,aid_type_code,Aid type code,C,Aid type code
+oecd_crs_aid_type_ref,aid_type_parent_code,aid_type_parent_code,Aid type parent code,C,Aid type parent code
+oecd_crs_aid_type_ref,aid_type_parent_name,aid_type_parent_name,Aid type parent name,C,Aid type parent name
+oecd_crs_aid_type_ref,aid_type_name,aid_type_name,Aid type name,C,Aid type name
+oecd_crs_aid_type_ref,aid_type_description,aid_type_description,Aid type description,C,Aid type description
+oecd_crs_aid_type_ref,aid_type_di_name,aid_type_di_name,Aid type DI name,C,Aid type DI name
+oecd_crs_aid_type_ref,transfer_aid,transfer_aid,Transfer Aid,C,Transfer Aid
+oecd_crs_channel_map,channel_parent_category_code,channel_parent_category_code,Channel Parent Category code,N,Channel Parent Category code
+oecd_crs_channel_map,channel_id_code,channel_id_code,Channel ID code,N,Channel ID code
+oecd_crs_channel_map,year_added,year_added,Year added,N,Year added
+oecd_crs_channel_map,acronym_eng,acronym_eng,Acronym (ENG),C,Acronym (ENG)
+oecd_crs_channel_map,oecd_channel_name,oecd_channel_name,OECD channel name,C,OECD channel name
+oecd_crs_channel_map,oecd_channel_parent_name,oecd_channel_parent_name,OECD channel parent name,C,OECD channel parent name
+oecd_crs_channel_map,oecd_aggregated_channel,oecd_aggregated_channel,OECD aggregated channel,C,OECD aggregated channel
+oecd_crs_channel_map,coefficient_for_core_contributions,coefficient_for_core_contributions,Coefficient for core contributions,C,Coefficient for core contributions
+oecd_crs_channel_map,general_contributions_reported_as_type_of_aid,general_contributions_reported_as_type_of_aid,General contributions reported as type of aid:,C,General contributions reported as type of aid:
+oecd_crs_channel_map,mcd_major_channel_of_delivery,mcd_major_channel_of_delivery,MCD (Major Channel of Delivery),C,MCD (Major Channel of Delivery)
+oecd_crs_channel_map,references_notes,references_notes,References/Notes,C,References/Notes
+oecd_crs_sector_itep_map,oecd_sector_code,oecd_sector_code,OECD sector code,N,OECD sector code
+oecd_crs_sector_itep_map,oecd_sector_name,oecd_sector_name,OECD sector name,C,OECD sector name
+oecd_crs_sector_itep_map,itep_sector,itep_sector,ITEP sector,C,ITEP sector
+oecd_crs_sector_itep_map,aggregated_sector,aggregated_sector,Aggregated sector,C,Aggregated sector
+oecd_crs_sector_itep_map,humanitarian_and_development,humanitarian_and_development,Humanitarian and Development,C,Humanitarian and Development
+oecd_crs_donor_type_ref,donor_code,donor_code,Donor code,N,Donor code
+oecd_crs_donor_type_ref,donor_name,donor_name,Donor name,C,Donor name
+oecd_crs_donor_type_ref,donor_type,donor_type,Donor type,C,Donor type
+oecd_crs_donor_type_ref,donor_dac_and_multi,donor_dac_and_multi,Donor DAC and multi,C,Donor DAC and multi
+fts_precoded,id,id,ID,N,ID
+fts_precoded,amountUSD,amountUSD,Amount USD,N,Amount USD
+fts_precoded,budgetYear,budgetYear,Budget Year,N,Budget Year
+fts_precoded,description,description,Description,C,Description
+fts_precoded,flowType,flowType,Flow type,C,Flow type
+fts_precoded,newMoney,newMoney,New money,C,New money
+fts_precoded,originalAmount,originalAmount,Original amount,N,Original amount
+fts_precoded,originalCurrency,originalCurrency,Original currency,C,Original currency
+fts_precoded,method,method,Method,C,Method
+fts_precoded,status,status,Status,C,Status
+fts_precoded,boundary,boundary,Boundary,C,Boundary
+fts_precoded,onBoundary,onBoundary,On boundary,C,On boundary
+fts_precoded,Donor,Donor,Donor (Source organisation name),C,Donor (Source organisation name)
+fts_precoded,source_Location_name,source_Location_name,Source location name,C,Source location name
+fts_precoded,source_iso3,source_iso3,Source ISO Alpha 3,C,Source ISO Alpha 3
+fts_precoded,source_UsageYear_name,source_UsageYear_name,Source usage year,C,Source usage year
+fts_precoded,Recipient.Organization,Recipient.Organization,Recipient Organization (Destination organisation name),C,Recipient Organization (Destination organisation name)
+fts_precoded,destination_GlobalCluster_name,destination_GlobalCluster_name,Destination global cluster name,C,Destination global cluster name
+fts_precoded,Destination.Country,Destination.Country,Destination Country (Destination location name),C,Destination Country (Destination location name)
+fts_precoded,destination_iso3,destination_iso3,Destination ISO Alpha 3,C,Destination ISO Alpha 3
+fts_precoded,destination_UsageYear_name,destination_UsageYear_name,Destination usage year,C,Destination usage year
+fts_precoded,destination_Plan_name,destination_Plan_name,Destination plan name,C,Destination plan name
+fts_precoded,destination_Project_name,destination_Project_name,Destination project name,C,Destination project name
+fts_precoded,parentFlowId,parentFlowId,Parent flow ID,N,Parent flow ID
+fts_precoded,grandBargainEarmarkingType,grandBargainEarmarkingType,Grand Bargain earmarking type,C,Grand Bargain earmarking type
+fts_precoded,source_Plan_id,source_Plan_id,Source plan ID,C,Source plan ID
+fts_precoded,source_Plan_name,source_Plan_name,Source plan name,C,Source plan name
+fts_precoded,destination_Cluster_name,destination_Cluster_name,Destination cluster name,C,Destination cluster name
+fts_precoded,destination_Emergency_name,destination_Emergency_name,Destination emergency name,C,Destination emergency name
+fts_precoded,exchangeRate,exchangeRate,Exchange rate,N,Exchange rate
+fts_precoded,source_Emergency_name,source_Emergency_name,Source emergency name,C,Source emergency name
+fts_precoded,source_GlobalCluster_name,source_GlobalCluster_name,Source global cluster name,C,Source global cluster name
+fts_precoded,codename,codename,Codename,C,Codename
+fts_precoded,privatemoney,privatemoney,Private money,C,Private money
+fts_precoded,Region,Region,Region,C,Region
+fts_precoded,donorcountryid,donorcountryid,Donor country ID,C,Donor country ID
+fts_precoded,recipientcodename,recipientcodename,Recipient codename,C,Recipient codename
+fts_precoded,ngotype,ngotype,NGO type,C,NGO type
+fts_precoded,deliverychannels,deliverychannels,Delivery channels,C,Delivery channels
+fts_precoded,recipientcountryid,recipientcountryid,Recipient country ID,C,Recipient country ID
+fts_precoded,odaeligible,odaeligible,ODA eligible,C,ODA eligible
+fts_precoded,destinationcountryid,destinationcountryid,Destination country ID,C,Destination country ID
+fts_precoded,incomegroups,incomegroups,Income groups,C,Income groups
+fts_precoded,domesticresponse,domesticresponse,Domestic response,C,Domestic response
+fts_precoded,Deflators,Deflators,Deflators,N,Deflators
+fts_precoded,amountDeflated,amountDeflated,Amount deflated,N,Amount deflated
+fts_precoded,amountDeflatedMillions,amountDeflatedMillions,Amount deflated millions,N,Amount deflated millions
+iati_transactions,x_aid_type,x_aid_type,Aid Type,C,Aid Type - Calculated
+iati_transactions,x_country,x_country,Country,C,Country Name - Calculated
+iati_transactions,x_country_code,x_country_code,Calculated Country Code,C,Country Code - Calculated
+iati_transactions,x_country_percentage,x_country_percentage,Calculated Country Percentage,C,Country Percentage - Calculated
+iati_transactions,x_covid,x_covid,X Covid flag,C,Covid flag - Calculated
+iati_transactions,x_currency,x_currency,Calculated Currency,C,Currency - Calculated
+iati_transactions,x_dac_aid_type_code,x_dac_aid_type_code,Calculated DAC Aid Type Code,C,DAC Aid Type Code - Calculated
+iati_transactions,x_dac3_sector_code,x_dac3_sector_code,Calculated DAC3 Sector Code,C,DAC3 Sector Code - Calculated
+iati_transactions,x_dac3_sector,x_dac3_sector,DAC3 Sector Name,C,DAC3 Sector Name
+iati_transactions,x_vocabulary_number,x_vocabulary_number,Sector Vocabulary Number,N,Sector Vocabulary Number
+iati_transactions,description_narrative,description_narrative,Description Narrative,C,Description Narrative
+iati_transactions,x_di_sector,x_di_sector,DI Sector Name,C,DI Sector Name
+iati_transactions,x_finance_type,x_finance_type,Finance Type,C,Finance Type Name - Calculated
+iati_transactions,x_finance_type_code,x_finance_type_code,Calculated Finance Type Code,C,Finance Type Code - Calculated
+iati_transactions,x_flow_type_code,x_flow_type_code,Calculated Flow Type Code,C,Flow Type Code - Calculated
+iati_transactions,humanitarian,humanitarian,Humanitarian,C,Humanitarian
+iati_transactions,x_hum_appeal_code,x_hum_appeal_code,Calculated Humanitarian Appeal Code,C,Humanitarian Appeal Code - Calculated
+iati_transactions,x_hum_emergency_code,x_hum_emergency_code,Calculated Humanitarian Emergency Code,C,Humanitarian Emergency Code - Calculated
+iati_transactions,humanitarian_scope_narrative,humanitarian_scope_narrative,Humanitarian Scope Narrative,C,Humanitarian Scope Narrative
+iati_transactions,iati_identifier,iati_identifier,IATI Identifier,C,IATI Identifier
+iati_transactions,package_id,package_id,IATI Registry Package ID,C,IATI Registry Package ID
+iati_transactions,last_modified,last_modified,Last modified timestamp,C,Last modified timestamp
+iati_transactions,x_mod_aid_type_code,x_mod_aid_type_code,Calculated Mod Aid Type Code,C,Mod Aid Type Code - Calculated
+iati_transactions,x_mod_aid_type_vocabulary,x_mod_aid_type_vocabulary,Calulated Mod Aid Type Vocabulary,C,Mod Aid Type Vocabulary - Calculated
+iati_transactions,participating_org_narrative,participating_org_narrative,Participating Organisation Narrative,C,Participating Organisation Narrative
+iati_transactions,participating_org_ref,participating_org_ref,Participating Organisation Reference,C,Participating Organisation Reference
+iati_transactions,participating_org_role,participating_org_role,Participating Organisation Role,C,Participating Organisation Role
+iati_transactions,participating_org_type,participating_org_type,Participating Organisation Type,C,Participating Organisation Type
+iati_transactions,reporting_org_narrative,reporting_org_narrative,Reporting Organisation Narrative,C,Reporting Organisation Narrative
+iati_transactions,reporting_org_secondary_reporter,reporting_org_secondary_reporter,Reporting Organisation Secondary Reporter,C,Reporting Organisation Secondary Reporter
+iati_transactions,x_reporting_org_type,x_reporting_org_type,Reporting Organisation Type,C,Reporting Organisation Type Name - Calculated
+iati_transactions,reporting_org_type_code,reporting_org_type_code,Reporting Organisation Type Code,C,Reporting Organisation Type Code
+iati_transactions,reporting_org_ref,reporting_org_ref,Reporting Organsation Reference,C,Reporting Organsation Reference
+iati_transactions,x_sector_code,x_sector_code,Calculated Sector Code,C,Sector Code - Calculated
+iati_transactions,x_sector_percentage,x_sector_percentage,Calculated Sector Percentage,C,Sector Percentage - Calculated
+iati_transactions,x_sector_vocabulary,x_sector_vocabulary,Calculated Sector Vocabulary,C,Sector Vocabulary - Calculated
+iati_transactions,tag_code,tag_code,Tag Code,C,Tag Code
+iati_transactions,tag_narrative,tag_narrative,Tag Narrative,C,Tag Narrative
+iati_transactions,tag_vocabulary,tag_vocabulary,Tag Vocabulary,C,Tag Vocabulary
+iati_transactions,x_tied_status_code,x_tied_status_code,Calculated Tied Status Code,C,Tied Status Code - Calculated
+iati_transactions,title_narrative,title_narrative,Title Narrative,C,Title Narrative
+iati_transactions,x_transaction_date,x_transaction_date,Calculated Transaction Date,C,Transaction Date - Calculated
+iati_transactions,transaction_description_narrative,transaction_description_narrative,Transaction Description Narrative,C,Transaction Description Narrative
+iati_transactions,collaboration_type,collaboration_type,Collaboration Type,C,Collaboration Type
+iati_transactions,transaction_disbursement_channel_code,transaction_disbursement_channel_code,Transaction Disbursement Channel Code,C,Transaction Disbursement Channel Code
+iati_transactions,transaction_humanitarian,transaction_humanitarian,Transaction Humanitarian,C,Transaction Humanitarian
+iati_transactions,x_transaction_number,x_transaction_number,Calculated Transaction Number,N,Transaction Number - Calculated
+iati_transactions,transaction_provider_org_narrative,transaction_provider_org_narrative,Transaction Provider Organisation Narrative,C,Transaction Provider Organisation Narrative
+iati_transactions,transaction_provider_org_provider_activity_id,transaction_provider_org_provider_activity_id,Transaction Provider Organisation Provider Activity ID,C,Transaction Provider Organisation Provider Activity ID
+iati_transactions,transaction_provider_org_ref,transaction_provider_org_ref,Transaction Provider Organisation Reference,C,Transaction Provider Organisation Reference
+iati_transactions,transaction_provider_org_type,transaction_provider_org_type,Transaction Provider Organisation Type,C,Transaction Provider Organisation Type
+iati_transactions,transaction_receiver_org_narrative,transaction_receiver_org_narrative,Transaction Receiver Organisation Narrative,C,Transaction Receiver Organisation Narrative
+iati_transactions,transaction_receiver_org_receiver_activity_id,transaction_receiver_org_receiver_activity_id,Transaction Receiver Organisatio Receiver Activity IdD,C,Transaction Receiver Organisation Receiver Activity ID
+iati_transactions,transaction_receiver_org_ref,transaction_receiver_org_ref,Transaction Receiver Organisation Reference,C,Transaction Receiver Organisation Reference
+iati_transactions,transaction_receiver_org_type,transaction_receiver_org_type,Transaction Receiver Organisation Type,C,Transaction Receiver Organisation Type
+iati_transactions,transaction_ref,transaction_ref,Transaction Reference,C,Transaction Reference
+iati_transactions,x_transaction_type,x_transaction_type,Transaction Type,C,Transaction Type
+iati_transactions,transaction_type_code,transaction_type_code,Transaction Type Code,C,Transaction Type Code
+iati_transactions,x_transaction_value,x_transaction_value,Calculated Transaction Value,N,Transaction Value - Calculated
+iati_transactions,x_transaction_value_usd,x_transaction_value_usd,Calulated Transaction Value USD,N,Transaction Value USD - Calculated
+iati_transactions,x_transaction_year,x_transaction_year,Calculated Transaction Year,N,Transaction Year - Calculated
+iati_transactions,x_yyyymm,x_yyyymm,YYYYMM year and month,C,YYYYMM year and month
+iati_transactions,x_original_transaction_value,x_original_transaction_value,x_original_transaction_value,N,Original Transaction Value
+iati_transactions,x_original_transaction_value_usd,x_original_transaction_value_usd,x_original_transaction_value_usd,N,Original Transaction Value USD
+iati_transactions,x_recipient_number,x_recipient_number,x_recipient_number,N,Recipient Number
+iati_transactions,x_recipient_code,x_recipient_code,x_recipient_code,C,Recipient Code
+iati_transactions,x_recipient,x_recipient,x_recipient,C,Recipient Name
+iati_transactions,x_recipient_percentage,x_recipient_percentage,x_recipient_percentage,C,Recipient Percentage
+iati_transactions,x_recipient_type,x_recipient_type,x_recipient_type,C,Recipient Type
+iati_transactions,x_recipient_transaction_value,x_recipient_transaction_value,x_recipient_transaction_value,N,Recipient Transaction Value
+iati_transactions,x_recipient_transaction_value_usd,x_recipient_transaction_value_usd,x_recipient_transaction_value_usd,N,Recipient Transaction Value USD
+iati_transactions,x_sector_number,x_sector_number,x_sector_number,N,Sector Number
+iati_transactions,dac_policy_marker_code,dac_policy_marker_code,dac_policy_marker_code,C,DAC Policy Marker Code
+iati_transactions,dac_policy_marker_significance,dac_policy_marker_significance,dac_policy_marker_significance,C,DAC Policy Marker Significance
+iati_publishers,reporting_org_ref,reporting_org_ref,Reporting Organisation Reference Code,C,Reporting Organisation Reference Code
+iati_publishers,country_or_org_name,country_or_org_name,Country or Organisation Name,C,Country or Organisation Name
+iati_publishers,specific_country_name,specific_country_name,Specific Country Name,C,Specific Country Name
+iati_publishers,org_type,org_type,Organisation Type,C,Organisation Type
+iati_publishers,disbursements_score,disbursements_score,Disbursements Score,N,Disbursements Score
+iati_publishers,commitments_score,commitments_score,Commitments Score,N,Commitments Score
+iati_publishers,disbursements_score_notes,disbursements_score_notes,Disbursements Score Notes,C,Disbursements Score Notes
+iati_publishers,commitments_score_notes,commitments_score_notes,Commitments Score Notes,C,Commitments Score Notes

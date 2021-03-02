@@ -1,0 +1,162 @@
+donor_code,donor_name,donor_type,donor_dac_and_multi
+1,Austria,DAC,DAC and multi
+2,Belgium,DAC,DAC and multi
+3,Denmark,DAC,DAC and multi
+4,France,DAC,DAC and multi
+5,Germany,DAC,DAC and multi
+6,Italy,DAC,DAC and multi
+7,Netherlands,DAC,DAC and multi
+8,Norway,DAC,DAC and multi
+9,Portugal,DAC,DAC and multi
+10,Sweden,DAC,DAC and multi
+11,Switzerland,DAC,DAC and multi
+12,United Kingdom,DAC,DAC and multi
+18,Finland,DAC,DAC and multi
+20,Iceland,DAC,DAC and multi
+21,Ireland,DAC,DAC and multi
+22,Luxembourg,DAC,DAC and multi
+30,Cyprus,Non-DAC,Non-DAC
+40,Greece,DAC,DAC and multi
+45,Malta,Non-DAC,Non-DAC
+50,Spain,DAC,DAC and multi
+55,Turkey,Non-DAC,Non-DAC
+61,Slovenia,DAC,DAC and multi
+62,Croatia,Non-DAC,Non-DAC
+68,Czech Republic,DAC,DAC and multi
+69,Slovak Republic,DAC,DAC and multi
+70,Liechtenstein,Non-DAC,Non-DAC
+72,Bulgaria,Non-DAC,Non-DAC
+75,Hungary,DAC,DAC and multi
+76,Poland,DAC,DAC and multi
+77,Romania,Non-DAC,Non-DAC
+82,Estonia,Non-DAC,Non-DAC
+83,Latvia,Non-DAC,Non-DAC
+84,Lithuania,Non-DAC,Non-DAC
+87,Russia,Non-DAC,Non-DAC
+104,Nordic Development Fund,Multilateral,DAC and multi
+130,Algeria,Non-DAC,Non-DAC
+133,Libya,Non-DAC,Non-DAC
+301,Canada,DAC,DAC and multi
+302,United States,DAC,DAC and multi
+358,Mexico,Non-DAC,Non-DAC
+543,Iraq,Non-DAC,Non-DAC
+546,Israel,Non-DAC,Non-DAC
+552,Kuwait,Non-DAC,Non-DAC
+561,Qatar,Non-DAC,Non-DAC
+566,Saudi Arabia,Non-DAC,Non-DAC
+576,United Arab Emirates,Non-DAC,Non-DAC
+611,Azerbaijan,Non-DAC,Non-DAC
+613,Kazakhstan,Non-DAC,Non-DAC
+701,Japan,DAC,DAC and multi
+732,Chinese Taipei,Non-DAC,Non-DAC
+742,Korea,DAC,DAC and multi
+764,Thailand,Non-DAC,Non-DAC
+765,Timor-Leste,Non-DAC,Non-DAC
+801,Australia,DAC,DAC and multi
+807,UNEP,Multilateral,DAC and multi
+811,Global Environment Facility,Multilateral,DAC and multi
+812,Montreal Protocol,Multilateral,DAC and multi
+820,New Zealand,DAC,DAC and multi
+901,International Bank for Reconstruction and Development,Multilateral,DAC and multi
+902,Multilateral Investment Guarantee Agency,Multilateral,DAC and multi
+903,International Finance Corporation,Multilateral,DAC and multi
+905,International Development Association,Multilateral,DAC and multi
+906,Caribbean Development Bank,Multilateral,DAC and multi
+907,International Monetary Fund,Multilateral,DAC and multi
+909,Inter-American Development Bank,Multilateral,DAC and multi
+912,IDB Special Fund,Multilateral,DAC and multi
+913,African Development Bank,Multilateral,DAC and multi
+914,African Development Fund,Multilateral,DAC and multi
+915,Asian Development Bank,Multilateral,DAC and multi
+916,AsDB Special Funds,Multilateral,DAC and multi
+918,EU Institutions,Multilateral,DAC and multi
+921,Arab Fund (AFESD),Multilateral,DAC and multi
+923,UN Peacebuilding Fund,Multilateral,DAC and multi
+926,Council of Europe,Multilateral,DAC and multi
+928,World Health Organisation,Multilateral,DAC and multi
+932,Food and Agriculture Organisation,Multilateral,DAC and multi
+940,International Labour Organisation,Multilateral,DAC and multi
+944,International Atomic Energy Agency,Multilateral,DAC and multi
+948,UNECE,Multilateral,DAC and multi
+951,OPEC Fund for International Development,Multilateral,DAC and multi
+952,OAPEC,Multilateral,DAC and multi
+953,Arab Bank for Economic Development in Africa,Multilateral,DAC and multi
+954,Special Arab Aid Fund for Africa,Multilateral,DAC and multi
+956,IMF Trust Fund,Multilateral,DAC and multi
+958,IMF (Concessional Trust Funds),Multilateral,DAC and multi
+959,UNDP,Multilateral,DAC and multi
+960,UNTA,Multilateral,DAC and multi
+963,UNICEF,Multilateral,DAC and multi
+964,UNRWA,Multilateral,DAC and multi
+966,WFP,Multilateral,DAC and multi
+967,UNHCR,Multilateral,DAC and multi
+971,UNAIDS,Multilateral,DAC and multi
+974,UNFPA,Multilateral,DAC and multi
+976,Islamic Development Bank,Multilateral,DAC and multi
+978,OSCE,Multilateral,DAC and multi
+979,Islamic Monetary Fund,Multilateral,DAC and multi
+980,Arab Fund for Technical Assistance to African and Arab Countries,Multilateral,DAC and multi
+981,Black Sea Trade & Development Bank,Multilateral,DAC and multi
+982,GODE,Multilateral,DAC and multi
+983,Other Arab Agencies,Multilateral,DAC and multi
+988,IFAD,Multilateral,DAC and multi
+990,European Bank for Reconstruction and Development,Multilateral,DAC and multi
+992,UN AGENCIES,Multilateral,DAC and multi
+997,Global Partnership for Education,Multilateral,DAC and multi
+1011,Climate Investment Funds,Multilateral,DAC and multi
+1012,Adaptation Fund,Multilateral,DAC and multi
+1013,Council of Europe Development Bank,Multilateral,DAC and multi
+1014,Private Infrastructure Development Group,Multilateral,DAC and multi
+1015,Development Bank of Latin America,Multilateral,DAC and multi
+1016,Green Climate Fund,Multilateral,DAC and multi
+1017,Credit Guarantee and Investment Facility,Multilateral,DAC and multi
+1018,Global Energy Efficiency and Renewable Energy Fund,Multilateral,DAC and multi
+1019,IDB Invest,Multilateral,DAC and multi
+1020,Central Emergency Response Fund,Multilateral,DAC and multi
+1023,World Tourism Organisation,Multilateral,DAC and multi
+1024,Asian Infrastructure Investment Bank,Multilateral,DAC and multi
+1025,Center of Excellence in Finance,Multilateral,DAC and multi
+1037,International Investment Bank,Multilateral,DAC and multi
+1038,UN Institute for Disarmament Research,Multilateral,DAC and multi
+1311,Global Alliance for Vaccines and Immunization,Multilateral,DAC and multi
+1312,Global Fund,Multilateral,DAC and multi
+1313,Global Green Growth Institute,Multilateral,DAC and multi
+1601,Bill & Melinda Gates Foundation,Private,Private
+1602,Dutch Postcode Lottery,Private,Private
+1603,Swedish Postcode Lottery,Private,Private
+1604,People's Postcode Lottery,Private,Private
+1605,MetLife Foundation,Private,Private
+1606,MasterCard Foundation,Private,Private
+1607,Grameen Crédit Agricole Foundation,Private,Private
+1608,IKEA Foundation,Private,Private
+1609,Bernard van Leer Foundation,Private,Private
+1610,MAVA Foundation,Private,Private
+1611,Oak Foundation,Private,Private
+1612,H&M Foundation,Private,Private
+1613,C&A Foundation,Private,Private
+1614,Charity Projects Ltd (Comic Relief),Private,Private
+1615,Children's Investment Fund Foundation,Private,Private
+1616,Gatsby Charitable Foundation,Private,Private
+1617,Conrad N. Hilton Foundation,Private,Private
+1618,David & Lucile Packard Foundation,Private,Private
+1619,John D. & Catherine T. MacArthur Foundation,Private,Private
+1620,Carnegie Corporation of New York,Private,Private
+1621,Michael & Susan Dell Foundation,Private,Private
+1622,"Omidyar Network Fund, Inc.",Private,Private
+1623,Rockefeller Foundation,Private,Private
+1624,William & Flora Hewlett Foundation,Private,Private
+1625,Arcus Foundation,Private,Private
+1626,Gordon and Betty Moore Foundation,Private,Private
+1627,Ford Foundation,Private,Private
+1628,Wellcome Trust,Private,Private
+1629,UBS Optimus Foundation,Private,Private
+1630,World Diabetes Foundation,Private,Private
+1631,McKnight Foundation,Private,Private
+1632,Citi Foundation,Private,Private
+1633,LEGO Foundation,Private,Private
+1634,Norwegian Postcode Lottery,Private,Private
+1635,BBVA Microfinance Foundation,Private,Private
+1636,Jacobs Foundation,Private,Private
+1637,Arcadia Fund,Private,Private
+1638,Margaret A. Cargill Foundation,Private,Private
+1639,La Caixa Banking Foundation,Private,Private

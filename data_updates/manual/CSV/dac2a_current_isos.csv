@@ -1,0 +1,389 @@
+country_name,country_code,iso3
+CEEC/NIS Unspecified,79,
+States Ex-Yugoslavia unspecified,88,
+"Europe, regional",89,
+Other Multilateral (Part II),98,
+CEEC Unspecified,101,
+NIS Unspecified,102,
+MADCT Unspecified,105,
+"North of Sahara, regional",189,
+East African Community,237,
+"South of Sahara, regional",289,
+"Africa, regional",298,
+"West Indies, regional",380,
+"North & Central America, regional",389,
+"South America, regional",489,
+"America, regional",498,
+"Middle East, regional",589,
+"Central Asia, regional",619,
+Indus Basin,650,
+"South Asia, regional",679,
+"South & Central Asia, regional",689,
+Hong Kong (China),735,
+Macau (China),748,
+Mekong Delta Project,752,
+"Far East Asia, regional",789,
+"Asia, regional",798,
+Other Regional Banks,816,
+IFC,903,
+GEF (Part II),878,
+IDA,905,
+"Oceania, regional",889,
+Other World Bank (AMCs),900,
+IBRD,901,
+MIGA,902,
+IDA-MDRI,904,
+IMF,907,
+Caribbean Dev. Bank,906,
+IDB,909,
+EC,917,
+CABEI,910,
+IDB Special Oper. Fund,912,
+Af. D B,913,
+African Dev. Fund,914,
+Asian Dev. Bank,915,
+AsDB Special Funds,916,
+EDF,918,
+EIB,919,
+WFP,966,
+Other EU institutions,927,
+UNDP,959,
+UNICEF,963,
+UNRWA,964,
+UNHCR,967,
+UNFPA,974,
+Other UN,975,
+IFAD,988,
+Other Multilateral,989,
+EBRD,990,
+CEC FOR CEEC/NIS,996,
+"Developing countries, unspecified",9998,
+"Africa, Total",10001,
+"North of Sahara, Total",10002,
+"South of Sahara, Total",10003,
+"America, Total",10004,
+"North & Central America, Total",10005,
+"South America, Total",10006,
+"Asia, Total",10007,
+"Far East Asia, Total",10008,
+"South & Central Asia, Total",10009,
+"Europe, Total",10010,
+"Middle East, Total",10011,
+"Oceania, Total",10012,
+"CEEC, Total",10013,
+"NIS, Total",10014,
+"LDCs, Total",10016,
+"Other LICs, Total",10017,
+"LMICs, Total",10018,
+"UMICs, Total",10019,
+Part I Unallocated by income,10024,
+"MADCTs, Total",10025,
+"Part II Countries, Total",10026,
+"HIPCs, Total",10030,
+"ACP Countries, Total",10040,
+"Club du Sahel, Total",10041,
+WorldBank Low income countries,10045,
+WorldBank Lower-middle income countries,10046,
+WorldBank Upper-middle income countries,10047,
+WorldBank High income countries,10048,
+"Developing Countries, Total",10100,
+Countries not classified by the World Bank,10049,
+"All Multilateral Recipients, Total",10150,
+"All Recipients, Total",10200,
+"Land-Locked countries, Total",10201,
+"Small island states, Total",10202,
+"Fragile states, Total",10203,
+International Development Association [IDA],905,
+EU Institutions,918,
+UNTA,960,
+Islamic Development Bank [IsDB],976,
+"DAC Countries, Total",20001,
+"Multilaterals, Total",20002,
+"G7 Countries, Total",20003,
+"DAC EU Members + EC, Total",20004,
+"Official Donors, Total",20005,
+"Non-DAC Countries, Total",20006,
+Other donor countries,20007,
+"DAC EU Members, Total",20011,
+"World Bank Group, Total",20012,
+Other Multilaterals,20018,
+"United Nations, Total",20021,
+"Regional Development Banks, Total",20022,
+"World Bank, Total",20033,
+Global Environment Facility [GEF],811,
+Montreal Protocol,812,
+World Health Organisation [WHO],928,
+Food and Agriculture Organisation [FAO],932,
+International Labour Organisation [ILO],940,
+International Atomic Energy Agency [IAEA],944,
+OPEC Fund for International Development [OFID],951,
+UNAIDS,971,
+Climate Investment Funds [CIF],1011,
+Council of Europe Development Bank [CEB],1013,
+Center of Excellence in Finance [CEF],1025,
+Global Fund,1312,
+Bill & Melinda Gates Foundation,1601,
+MetLife Foundation,1605,
+Bernard van Leer Foundation,1609,
+MAVA Foundation,1610,
+Oak Foundation,1611,
+C&A Foundation,1613,
+Conrad N. Hilton Foundation,1617,
+William & Flora Hewlett Foundation,1624,
+Arcus Foundation,1625,
+Ford Foundation,1627,
+"Other Multilateral, Total",20034,
+"Private Donors, Total",21600,
+OSCE,978,
+European Bank for Reconstruction and Development [EBRD],990,
+UNECE,948,
+UN Peacebuilding Fund [UNPBF],923,
+Global Alliance for Vaccines and Immunization [GAVI],1311,
+World Tourism Organisation [UNWTO],1023,
+Grameen Crdit Agricole Foundation,1607,
+IMF (Concessional Trust Funds),958,
+"International Monetary Fund, Total",20013,
+"Omidyar Network Fund, Inc.",1622,
+Wellcome Trust,1628,
+Dutch Postcode Lottery,1602,
+"United Postcode Lotteries, Total",20035,
+African Development Bank [AfDB],913,
+African Development Fund [AfDF],914,
+Arab Fund (AFESD),921,
+"African Development Bank, Total",20016,
+Central Emergency Response Fund [CERF],1020,
+International Bank for Reconstruction and Development [IBRD],901,
+Adaptation Fund,1012,
+Global Green Growth Institute [GGGI],1313,
+MasterCard Foundation,1606,
+Nordic Development Fund [NDF],104,
+Charity Projects Ltd (Comic Relief),1614,
+John D. & Catherine T. MacArthur Foundation,1619,
+Swedish Postcode Lottery,1603,
+People's Postcode Lottery,1604,
+H&M Foundation,1612,
+David & Lucile Packard Foundation,1618,
+Michael & Susan Dell Foundation,1621,
+Arab Bank for Economic Development in Africa [BADEA],953,
+Gatsby Charitable Foundation,1616,
+Children's Investment Fund Foundation,1615,
+UNEP,807,
+Carnegie Corporation of New York,1620,
+Caribbean Development Bank [CarDB],906,
+Inter-American Development Bank [IDB],909,
+"Inter-American Development Bank, Total",20014,
+Gordon and Betty Moore Foundation,1626,
+Asian Development Bank [AsDB],915,
+"Asian Development Bank, Total",20015,
+International Finance Corporation [IFC],903,
+Aruba,373,ABW
+Afghanistan,625,AFG
+Angola,225,AGO
+Anguilla,376,AIA
+Albania,71,ALB
+Netherlands Antilles,361,ANT
+United Arab Emirates,576,ARE
+Argentina,425,ARG
+Armenia,610,ARM
+Antigua and Barbuda,377,ATG
+Australia,801,AUS
+Austria,1,AUT
+Azerbaijan,611,AZE
+Burundi,228,BDI
+Belgium,2,BEL
+Benin,236,BEN
+Burkina Faso,287,BFA
+Bangladesh,666,BGD
+Bulgaria,72,BGR
+Bahrain,530,BHR
+Bahamas,328,BHS
+Bosnia and Herzegovina,64,BIH
+Belarus,86,BLR
+Belize,352,BLZ
+Bermuda,331,BMU
+Bolivia,428,BOL
+Brazil,431,BRA
+Barbados,329,BRB
+Brunei Darussalam,725,BRN
+Bhutan,630,BTN
+Botswana,227,BWA
+Central African Republic,231,CAF
+Canada,301,CAN
+Switzerland,11,CHE
+Chile,434,CHL
+China (People's Republic of),730,CHN
+Cte d'Ivoire,247,CIV
+Cameroon,229,CMR
+Democratic Republic of the Congo,235,COD
+Congo,234,COG
+Cook Islands,831,COK
+Colombia,437,COL
+Comoros,233,COM
+Cabo Verde,230,CPV
+Costa Rica,336,CRI
+Cuba,338,CUB
+Cayman Islands,386,CYM
+Cyprus,30,CYP
+Czech Republic,68,CZE
+Germany,5,DEU
+Djibouti,274,DJI
+Dominica,378,DMA
+Denmark,3,DNK
+Dominican Republic,340,DOM
+Algeria,130,DZA
+Ecuador,440,ECU
+Egypt,142,EGY
+Eritrea,271,ERI
+Spain,50,ESP
+Estonia,82,EST
+Ethiopia,238,ETH
+Finland,18,FIN
+Fiji,832,FJI
+France,4,FRA
+Micronesia,860,FSM
+Gabon,239,GAB
+United Kingdom,12,GBR
+Georgia,612,GEO
+Ghana,241,GHA
+Gibraltar,35,GIB
+Guinea,243,GIN
+Gambia,240,GMB
+Guinea-Bissau,244,GNB
+Equatorial Guinea,245,GNQ
+Greece,40,GRC
+Grenada,381,GRD
+Guatemala,347,GTM
+Guyana,446,GUY
+Honduras,351,HND
+Croatia,62,HRV
+Haiti,349,HTI
+Hungary,75,HUN
+Indonesia,738,IDN
+India,645,IND
+Ireland,21,IRL
+Iran,540,IRN
+Iraq,543,IRQ
+Iceland,20,ISL
+Israel,546,ISR
+Italy,6,ITA
+Jamaica,354,JAM
+Jordan,549,JOR
+Japan,701,JPN
+Kazakhstan,613,KAZ
+Kenya,248,KEN
+Kyrgyzstan,614,KGZ
+Cambodia,728,KHM
+Kiribati,836,KIR
+Saint Kitts and Nevis,382,KNA
+Korea,742,KOR
+Kuwait,552,KWT
+Lao People's Democratic Republic,745,LAO
+Lebanon,555,LBN
+Liberia,251,LBR
+Libya,133,LBY
+Saint Lucia,383,LCA
+Liechtenstein,70,LIE
+Sri Lanka,640,LKA
+Lesotho,249,LSO
+Lithuania,84,LTU
+Luxembourg,22,LUX
+Latvia,83,LVA
+Morocco,136,MAR
+Moldova,93,MDA
+Madagascar,252,MDG
+Maldives,655,MDV
+Mexico,358,MEX
+Marshall Islands,859,MHL
+North Macedonia,66,MKD
+Mali,255,MLI
+Malta,45,MLT
+Myanmar,635,MMR
+Montenegro,65,MNE
+Mongolia,753,MNG
+Northern Mariana Islands,858,MNP
+Mozambique,259,MOZ
+Mauritania,256,MRT
+Montserrat,385,MSR
+Mauritius,257,MUS
+Malawi,253,MWI
+Malaysia,751,MYS
+Mayotte,258,MYT
+Namibia,275,NAM
+New Caledonia,850,NCL
+Niger,260,NER
+Nigeria,261,NGA
+Nicaragua,364,NIC
+Niue,856,NIU
+Netherlands,7,NLD
+Norway,8,NOR
+Nepal,660,NPL
+Nauru,845,NRU
+New Zealand,820,NZL
+Oman,558,OMN
+Pakistan,665,PAK
+Panama,366,PAN
+Peru,454,PER
+Philippines,755,PHL
+Palau,861,PLW
+Papua New Guinea,862,PNG
+Poland,76,POL
+Democratic People's Republic of Korea,740,PRK
+Portugal,9,PRT
+Paraguay,451,PRY
+West Bank and Gaza Strip,550,PSE
+French Polynesia,840,PYF
+Qatar,561,QAT
+Romania,77,ROU
+Russia,87,RUS
+Rwanda,266,RWA
+Saudi Arabia,566,SAU
+Sudan,278,SDN
+Senegal,269,SEN
+Singapore,761,SGP
+Saint Helena,276,SHN
+Solomon Islands,866,SLB
+Sierra Leone,272,SLE
+El Salvador,342,SLV
+Somalia,273,SOM
+Serbia,63,SRB
+South Sudan,279,SSD
+Sao Tome and Principe,268,STP
+Suriname,457,SUR
+Slovak Republic,69,SVK
+Slovenia,61,SVN
+Sweden,10,SWE
+Eswatini,280,SWZ
+Seychelles,270,SYC
+Syrian Arab Republic,573,SYR
+Turks and Caicos Islands,387,TCA
+Chad,232,TCD
+Togo,283,TGO
+Thailand,764,THA
+Tajikistan,615,TJK
+Tokelau,868,TKL
+Turkmenistan,616,TKM
+Timor-Leste,765,TLS
+Tonga,870,TON
+Trinidad and Tobago,375,TTO
+Tunisia,139,TUN
+Turkey,55,TUR
+Tuvalu,872,TUV
+Chinese Taipei,732,TWN
+Tanzania,282,TZA
+Uganda,285,UGA
+Ukraine,85,UKR
+Uruguay,460,URY
+United States,302,USA
+Uzbekistan,617,UZB
+Saint Vincent and the Grenadines,384,VCT
+Venezuela,463,VEN
+British Virgin Islands,388,VGB
+Viet Nam,769,VNM
+Vanuatu,854,VUT
+Wallis and Futuna,876,WLF
+Samoa,880,WSM
+Kosovo,57,XKX
+Yemen,580,YEM
+South Africa,218,ZAF
+Zambia,288,ZMB
+Zimbabwe,265,ZWE

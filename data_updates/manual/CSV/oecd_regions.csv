@@ -1,0 +1,147 @@
+iso3,country_name,region_code,region_name,di_id,oda_eligible_2014_2017,oda_eligible_2018_2019,oda_eligible_2020
+AFG,Afghanistan,south-central-asia,South & Central Asia,AF,1,1,1
+ALB,Albania,europe,Europe,AL,1,1,1
+DZA,Algeria,north-of-sahara,North Africa,DZ,1,1,1
+AGO,Angola,south-of-sahara,Sub-Saharan Africa,AO,1,1,1
+ATG,Antigua and Barbuda,north-central-america,North & Central America,AG,1,1,1
+ARG,Argentina,south-america,South America,AR,1,1,1
+ARM,Armenia,south-central-asia,South & Central Asia,AM,1,1,1
+AZE,Azerbaijan,south-central-asia,South & Central Asia,AZ,1,1,1
+BGD,Bangladesh,south-central-asia,South & Central Asia,BD,1,1,1
+BLR,Belarus,europe,Europe,BY,1,1,1
+BLZ,Belize,north-central-america,North & Central America,BZ,1,1,1
+BEN,Benin,south-of-sahara,Sub-Saharan Africa,BJ,1,1,1
+BTN,Bhutan,south-central-asia,South & Central Asia,BT,1,1,1
+BOL,Bolivia,south-america,South America,BO,1,1,1
+BIH,Bosnia and Herzegovina,europe,Europe,BA,1,1,1
+BWA,Botswana,south-of-sahara,Sub-Saharan Africa,BW,1,1,1
+BRA,Brazil,south-america,South America,BR,1,1,1
+BFA,Burkina Faso,south-of-sahara,Sub-Saharan Africa,BF,1,1,1
+BDI,Burundi,south-of-sahara,Sub-Saharan Africa,BI,1,1,1
+KHM,Cambodia,far-east-asia,East Asia,KH,1,1,1
+CMR,Cameroon,south-of-sahara,Sub-Saharan Africa,CM,1,1,1
+CPV,Cabo Verde,south-of-sahara,Sub-Saharan Africa,CV,1,1,1
+CAF,Central African Republic,south-of-sahara,Sub-Saharan Africa,CF,1,1,1
+TCD,Chad,south-of-sahara,Sub-Saharan Africa,TD,1,1,1
+CHL,Chile,south-america,South America,CL,1,,
+CHN,China (People's Republic of),far-east-asia,East Asia,CN,1,1,1
+COL,Colombia,south-america,South America,CO,1,1,1
+COM,Comoros,south-of-sahara,Sub-Saharan Africa,KM,1,1,1
+COD,Democratic Republic of the Congo,south-of-sahara,Sub-Saharan Africa,CD,1,1,1
+COG,Congo,south-of-sahara,Sub-Saharan Africa,CG,1,1,1
+COK,Cook Islands,oceania,Oceania,CK,1,1,
+CRI,Costa Rica,north-central-america,North & Central America,CR,1,1,1
+CIV,Côte d'Ivoire,south-of-sahara,Sub-Saharan Africa,CI,1,1,1
+CUB,Cuba,north-central-america,North & Central America,CU,1,1,1
+DJI,Djibouti,south-of-sahara,Sub-Saharan Africa,DJ,1,1,1
+DMA,Dominica,north-central-america,North & Central America,DM,1,1,1
+DOM,Dominican Republic,north-central-america,North & Central America,DO,1,1,1
+ECU,Ecuador,south-america,South America,EC,1,1,1
+EGY,Egypt,north-of-sahara,North Africa,EG,1,1,1
+SLV,El Salvador,north-central-america,North & Central America,SV,1,1,1
+GNQ,Equatorial Guinea,south-of-sahara,Sub-Saharan Africa,GQ,1,1,1
+ERI,Eritrea,south-of-sahara,Sub-Saharan Africa,ER,1,1,1
+ETH,Ethiopia,south-of-sahara,Sub-Saharan Africa,ET,1,1,1
+FJI,Fiji,oceania,Oceania,FJ,1,1,1
+GAB,Gabon,south-of-sahara,Sub-Saharan Africa,GA,1,1,1
+GMB,Gambia,south-of-sahara,Sub-Saharan Africa,GM,1,1,1
+GEO,Georgia,south-central-asia,South & Central Asia,GE,1,1,1
+GHA,Ghana,south-of-sahara,Sub-Saharan Africa,GH,1,1,1
+GRD,Grenada,north-central-america,North & Central America,GD,1,1,1
+GTM,Guatemala,north-central-america,North & Central America,GT,1,1,1
+GIN,Guinea,south-of-sahara,Sub-Saharan Africa,GN,1,1,1
+GNB,Guinea-Bissau,south-of-sahara,Sub-Saharan Africa,GW,1,1,1
+GUY,Guyana,south-america,South America,GY,1,1,1
+HTI,Haiti,north-central-america,North & Central America,HT,1,1,1
+HND,Honduras,north-central-america,North & Central America,HN,1,1,1
+IND,India,south-central-asia,South & Central Asia,IN,1,1,1
+IDN,Indonesia,far-east-asia,East Asia,ID,1,1,1
+IRN,Iran,middle-east,Middle East,IR,1,1,1
+IRQ,Iraq,middle-east,Middle East,IQ,1,1,1
+JAM,Jamaica,north-central-america,North & Central America,JM,1,1,1
+JOR,Jordan,middle-east,Middle East,JO,1,1,1
+KAZ,Kazakhstan,south-central-asia,South & Central Asia,KZ,1,1,1
+KEN,Kenya,south-of-sahara,Sub-Saharan Africa,KE,1,1,1
+KIR,Kiribati,oceania,Oceania,KI,1,1,1
+PRK,Democratic People's Republic of Korea,far-east-asia,East Asia,KP,1,1,1
+XKX,Kosovo,europe,Europe,XK,1,1,1
+KGZ,Kyrgyzstan,south-central-asia,South & Central Asia,KG,1,1,1
+LAO,Lao People's Democratic Republic,far-east-asia,East Asia,LA,1,1,1
+LBN,Lebanon,middle-east,Middle East,LB,1,1,1
+LSO,Lesotho,south-of-sahara,Sub-Saharan Africa,LS,1,1,1
+LBR,Liberia,south-of-sahara,Sub-Saharan Africa,LR,1,1,1
+LBY,Libya,north-of-sahara,North Africa,LY,1,1,1
+MKD,North Macedonia,europe,Europe,MK,1,1,1
+MDG,Madagascar,south-of-sahara,Sub-Saharan Africa,MG,1,1,1
+MWI,Malawi,south-of-sahara,Sub-Saharan Africa,MW,1,1,1
+MYS,Malaysia,far-east-asia,East Asia,MY,1,1,1
+MDV,Maldives,south-central-asia,South & Central Asia,MV,1,1,1
+MLI,Mali,south-of-sahara,Sub-Saharan Africa,ML,1,1,1
+MHL,Marshall Islands,oceania,Oceania,MH,1,1,1
+MRT,Mauritania,south-of-sahara,Sub-Saharan Africa,MR,1,1,1
+MUS,Mauritius,south-of-sahara,Sub-Saharan Africa,MU,1,1,1
+MEX,Mexico,north-central-america,North & Central America,MX,1,1,1
+FSM,Micronesia,oceania,Oceania,FM,1,1,1
+MDA,Moldova,europe,Europe,MD,1,1,1
+MNG,Mongolia,far-east-asia,East Asia,MN,1,1,1
+MNE,Montenegro,europe,Europe,ME,1,1,1
+MSR,Montserrat,north-central-america,North & Central America,MS,1,1,1
+MAR,Morocco,north-of-sahara,North Africa,MA,1,1,1
+MOZ,Mozambique,south-of-sahara,Sub-Saharan Africa,MZ,1,1,1
+MMR,Myanmar,south-central-asia,South & Central Asia,MM,1,1,1
+NAM,Namibia,south-of-sahara,Sub-Saharan Africa,NA,1,1,1
+NRU,Nauru,oceania,Oceania,NR,1,1,1
+NPL,Nepal,south-central-asia,South & Central Asia,NP,1,1,1
+NIC,Nicaragua,north-central-america,North & Central America,NI,1,1,1
+NER,Niger,south-of-sahara,Sub-Saharan Africa,NE,1,1,1
+NGA,Nigeria,south-of-sahara,Sub-Saharan Africa,NG,1,1,1
+NIU,Niue,oceania,Oceania,NU,1,1,1
+PAK,Pakistan,south-central-asia,South & Central Asia,PK,1,1,1
+PLW,Palau,oceania,Oceania,PW,1,1,1
+PAN,Panama,north-central-america,North & Central America,PA,1,1,1
+PNG,Papua New Guinea,oceania,Oceania,PG,1,1,1
+PRY,Paraguay,south-america,South America,PY,1,1,1
+PER,Peru,south-america,South America,PE,1,1,1
+PHL,Philippines,far-east-asia,East Asia,PH,1,1,1
+RWA,Rwanda,south-of-sahara,Sub-Saharan Africa,RW,1,1,1
+WSM,Samoa,oceania,Oceania,WS,1,1,1
+STP,Sao Tome and Principe,south-of-sahara,Sub-Saharan Africa,ST,1,1,1
+SEN,Senegal,south-of-sahara,Sub-Saharan Africa,SN,1,1,1
+SRB,Serbia,europe,Europe,RS,1,1,1
+SYC,Seychelles,south-of-sahara,Sub-Saharan Africa,SC,1,,
+SLE,Sierra Leone,south-of-sahara,Sub-Saharan Africa,SL,1,1,1
+SLB,Solomon Islands,oceania,Oceania,SB,1,1,1
+SOM,Somalia,south-of-sahara,Sub-Saharan Africa,SO,1,1,1
+ZAF,South Africa,south-of-sahara,Sub-Saharan Africa,ZA,1,1,1
+SSD,South Sudan,south-of-sahara,Sub-Saharan Africa,SS,1,1,1
+LKA,Sri Lanka,south-central-asia,South & Central Asia,LK,1,1,1
+SHN,Saint Helena,south-of-sahara,Sub-Saharan Africa,SH,1,1,1
+LCA,Saint Lucia,north-central-america,North & Central America,LC,1,1,1
+VCT,Saint Vincent and the Grenadines,north-central-america,North & Central America,VC,1,1,1
+SDN,Sudan,south-of-sahara,Sub-Saharan Africa,SD,1,1,1
+SUR,Suriname,south-america,South America,SR,1,1,1
+SWZ,Eswatini,south-of-sahara,Sub-Saharan Africa,SZ,1,1,1
+SYR,Syrian Arab Republic,middle-east,Middle East,SY,1,1,1
+TJK,Tajikistan,south-central-asia,South & Central Asia,TJ,1,1,1
+TZA,Tanzania,south-of-sahara,Sub-Saharan Africa,TZ,1,1,1
+THA,Thailand,far-east-asia,East Asia,TH,1,1,1
+TLS,Timor-Leste,far-east-asia,East Asia,TL,1,1,1
+TGO,Togo,south-of-sahara,Sub-Saharan Africa,TG,1,1,1
+TKL,Tokelau,oceania,Oceania,TK,1,1,1
+TON,Tonga,oceania,Oceania,TO,1,1,1
+TUN,Tunisia,north-of-sahara,North Africa,TN,1,1,1
+TUR,Turkey,europe,Europe,TR,1,1,1
+TKM,Turkmenistan,south-central-asia,South & Central Asia,TM,1,1,1
+TUV,Tuvalu,oceania,Oceania,TV,1,1,1
+UGA,Uganda,south-of-sahara,Sub-Saharan Africa,UG,1,1,1
+UKR,Ukraine,europe,Europe,UA,1,1,1
+URY,Uruguay,south-america,South America,UY,1,,
+UZB,Uzbekistan,south-central-asia,South & Central Asia,UZ,1,1,1
+VUT,Vanuatu,oceania,Oceania,VU,1,1,1
+VEN,Venezuela,south-america,South America,VE,1,1,1
+VNM,Viet Nam,far-east-asia,East Asia,VN,1,1,1
+WLF,Wallis and Futuna,oceania,Oceania,WF,1,1,1
+PSE,West Bank and Gaza Strip,middle-east,Middle East,PS,1,1,1
+YEM,Yemen,middle-east,Middle East,YE,1,1,1
+ZMB,Zambia,south-of-sahara,Sub-Saharan Africa,ZM,1,1,1
+ZWE,Zimbabwe,south-of-sahara,Sub-Saharan Africa,ZW,1,1,1

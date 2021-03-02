@@ -1,0 +1,13 @@
+filename,indicator,indicator_acronym,source,source_acronym,source_url,download_path,last_updated_on,schema,storage_type,active_mirror_name,description,tags
+fts_codenames.csv,FTS dependency codenames,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_codenames,FTS dependency codenames,humanitarian
+fts_dacregion.csv,FTS dependency DAC region,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_dacregion,FTS dependency DAC region,humanitarian
+fts_deflators.csv,FTS dependency deflators,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_deflators,FTS dependency deflators,humanitarian
+fts_deliverychannels.csv,FTS dependency delivery channels,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_deliverychannels,FTS dependency delivery channels,humanitarian
+fts_destinationcountryid.csv,FTS dependency destination country ID,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_destinationcountryid,FTS dependency destination country ID,humanitarian
+fts_donorscountryid.csv,FTS dependency donors country ID,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_donorscountryid,FTS dependency donors country ID,humanitarian
+fts_incomegroups.csv,FTS dependency income groups,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_incomegroups,FTS dependency income groups,humanitarian
+fts_ngotype.csv,FTS dependency NGO type,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_ngotype,FTS dependency NGO type,humanitarian
+fts_odaeligible.csv,FTS dependency ODA eligible,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_odaeligible,FTS dependency ODA eligible,humanitarian
+fts_privatemoney.csv,FTS dependency private money,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_privatemoney,FTS dependency private money,humanitarian
+fts_recipientcodename.csv,FTS dependency recipient codename,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_recipientcodename,FTS dependency recipient codename,humanitarian
+fts_recipientcountryid.csv,FTS dependency recipient country ID,,Development Initiatives,DI,,,28/05/2020,repo,schema,fts_recipientcountryid,FTS dependency recipient country ID,humanitarian

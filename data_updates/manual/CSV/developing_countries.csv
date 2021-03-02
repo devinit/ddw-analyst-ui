@@ -1,0 +1,147 @@
+iso3,country_name,di_id,oda_eligible_2014_2017,oda_eligible_2018_2019,oda_eligible_2020
+AFG,Afghanistan,AF,1,1,1
+ALB,Albania,AL,1,1,1
+DZA,Algeria,DZ,1,1,1
+AGO,Angola,AO,1,1,1
+ATG,Antigua and Barbuda,AG,1,1,1
+ARG,Argentina,AR,1,1,1
+ARM,Armenia,AM,1,1,1
+AZE,Azerbaijan,AZ,1,1,1
+BGD,Bangladesh,BD,1,1,1
+BLR,Belarus,BY,1,1,1
+BLZ,Belize,BZ,1,1,1
+BEN,Benin,BJ,1,1,1
+BTN,Bhutan,BT,1,1,1
+BOL,Bolivia,BO,1,1,1
+BIH,Bosnia and Herzegovina,BA,1,1,1
+BWA,Botswana,BW,1,1,1
+BRA,Brazil,BR,1,1,1
+BFA,Burkina Faso,BF,1,1,1
+BDI,Burundi,BI,1,1,1
+KHM,Cambodia,KH,1,1,1
+CMR,Cameroon,CM,1,1,1
+CPV,Cabo Verde,CV,1,1,1
+CAF,Central African Republic,CF,1,1,1
+TCD,Chad,TD,1,1,1
+CHL,Chile,CL,1,,
+CHN,China (People's Republic of),CN,1,1,1
+COL,Colombia,CO,1,1,1
+COM,Comoros,KM,1,1,1
+COD,Democratic Republic of the Congo,CD,1,1,1
+COG,Congo,CG,1,1,1
+COK,Cook Islands,CK,1,1,
+CRI,Costa Rica,CR,1,1,1
+CIV,Côte d'Ivoire,CI,1,1,1
+CUB,Cuba,CU,1,1,1
+DJI,Djibouti,DJ,1,1,1
+DMA,Dominica,DM,1,1,1
+DOM,Dominican Republic,DO,1,1,1
+ECU,Ecuador,EC,1,1,1
+EGY,Egypt,EG,1,1,1
+SLV,El Salvador,SV,1,1,1
+GNQ,Equatorial Guinea,GQ,1,1,1
+ERI,Eritrea,ER,1,1,1
+ETH,Ethiopia,ET,1,1,1
+FJI,Fiji,FJ,1,1,1
+GAB,Gabon,GA,1,1,1
+GMB,Gambia,GM,1,1,1
+GEO,Georgia,GE,1,1,1
+GHA,Ghana,GH,1,1,1
+GRD,Grenada,GD,1,1,1
+GTM,Guatemala,GT,1,1,1
+GIN,Guinea,GN,1,1,1
+GNB,Guinea-Bissau,GW,1,1,1
+GUY,Guyana,GY,1,1,1
+HTI,Haiti,HT,1,1,1
+HND,Honduras,HN,1,1,1
+IND,India,IN,1,1,1
+IDN,Indonesia,ID,1,1,1
+IRN,Iran,IR,1,1,1
+IRQ,Iraq,IQ,1,1,1
+JAM,Jamaica,JM,1,1,1
+JOR,Jordan,JO,1,1,1
+KAZ,Kazakhstan,KZ,1,1,1
+KEN,Kenya,KE,1,1,1
+KIR,Kiribati,KI,1,1,1
+PRK,Democratic People's Republic of Korea,KP,1,1,1
+XKX,Kosovo,XK,1,1,1
+KGZ,Kyrgyzstan,KG,1,1,1
+LAO,Lao People's Democratic Republic,LA,1,1,1
+LBN,Lebanon,LB,1,1,1
+LSO,Lesotho,LS,1,1,1
+LBR,Liberia,LR,1,1,1
+LBY,Libya,LY,1,1,1
+MKD,North Macedonia,MK,1,1,1
+MDG,Madagascar,MG,1,1,1
+MWI,Malawi,MW,1,1,1
+MYS,Malaysia,MY,1,1,1
+MDV,Maldives,MV,1,1,1
+MLI,Mali,ML,1,1,1
+MHL,Marshall Islands,MH,1,1,1
+MRT,Mauritania,MR,1,1,1
+MUS,Mauritius,MU,1,1,1
+MEX,Mexico,MX,1,1,1
+FSM,Micronesia,FM,1,1,1
+MDA,Moldova,MD,1,1,1
+MNG,Mongolia,MN,1,1,1
+MNE,Montenegro,ME,1,1,1
+MSR,Montserrat,MS,1,1,1
+MAR,Morocco,MA,1,1,1
+MOZ,Mozambique,MZ,1,1,1
+MMR,Myanmar,MM,1,1,1
+NAM,Namibia,NA,1,1,1
+NRU,Nauru,NR,1,1,1
+NPL,Nepal,NP,1,1,1
+NIC,Nicaragua,NI,1,1,1
+NER,Niger,NE,1,1,1
+NGA,Nigeria,NG,1,1,1
+NIU,Niue,NU,1,1,1
+PAK,Pakistan,PK,1,1,1
+PLW,Palau,PW,1,1,1
+PAN,Panama,PA,1,1,1
+PNG,Papua New Guinea,PG,1,1,1
+PRY,Paraguay,PY,1,1,1
+PER,Peru,PE,1,1,1
+PHL,Philippines,PH,1,1,1
+RWA,Rwanda,RW,1,1,1
+WSM,Samoa,WS,1,1,1
+STP,Sao Tome and Principe,ST,1,1,1
+SEN,Senegal,SN,1,1,1
+SRB,Serbia,RS,1,1,1
+SYC,Seychelles,SC,1,,
+SLE,Sierra Leone,SL,1,1,1
+SLB,Solomon Islands,SB,1,1,1
+SOM,Somalia,SO,1,1,1
+ZAF,South Africa,ZA,1,1,1
+SSD,South Sudan,SS,1,1,1
+LKA,Sri Lanka,LK,1,1,1
+SHN,Saint Helena,SH,1,1,1
+LCA,Saint Lucia,LC,1,1,1
+VCT,Saint Vincent and the Grenadines,VC,1,1,1
+SDN,Sudan,SD,1,1,1
+SUR,Suriname,SR,1,1,1
+SWZ,Eswatini,SZ,1,1,1
+SYR,Syrian Arab Republic,SY,1,1,1
+TJK,Tajikistan,TJ,1,1,1
+TZA,Tanzania,TZ,1,1,1
+THA,Thailand,TH,1,1,1
+TLS,Timor-Leste,TL,1,1,1
+TGO,Togo,TG,1,1,1
+TKL,Tokelau,TK,1,1,1
+TON,Tonga,TO,1,1,1
+TUN,Tunisia,TN,1,1,1
+TUR,Turkey,TR,1,1,1
+TKM,Turkmenistan,TM,1,1,1
+TUV,Tuvalu,TV,1,1,1
+UGA,Uganda,UG,1,1,1
+UKR,Ukraine,UA,1,1,1
+URY,Uruguay,UY,1,,
+UZB,Uzbekistan,UZ,1,1,1
+VUT,Vanuatu,VU,1,1,1
+VEN,Venezuela,VE,1,1,1
+VNM,Viet Nam,VN,1,1,1
+WLF,Wallis and Futuna,WF,1,1,1
+PSE,West Bank and Gaza Strip,PS,1,1,1
+YEM,Yemen,YE,1,1,1
+ZMB,Zambia,ZM,1,1,1
+ZWE,Zimbabwe,ZW,1,1,1
