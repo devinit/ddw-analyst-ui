@@ -1,17 +1,15 @@
 from django.core.management.base import BaseCommand, CommandError
-from core.models import Source, UpdateHistory
-import json
 from github import Github
-# import urllib2
 import urllib.request
+from django.conf import settings
 
 
 class Command(BaseCommand):
-    help = 'Downloads updated CSV files from git repo'
+    help = 'Downloads CSV files from git repo'
 
     def handle(self, *args, **options):
         try:
-            g = Github("b53b02ac10a5f73e6c9ea4bdb7ad2cc2533fa09c")
+            g = Github(settings.GITHUB_TOKEN)
 
             repo = g.get_repo("devinit/ddw-data-update-configs")
             contents = repo.get_contents("manual")

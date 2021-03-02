@@ -201,6 +201,9 @@ QUERY_TABLES = [
 # Celery
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 
+# Git Token
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
