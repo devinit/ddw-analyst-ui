@@ -12,6 +12,7 @@ import * as TokenActions from '../actions/token';
 import * as UserActions from '../actions/user';
 import { AccountModal } from '../components/AccountModal';
 import { AdminLayout } from '../components/AdminLayout';
+import { HelpNavItem } from '../components/Help';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
 import { AsyncDataSourceHistory } from '../pages/DataSourceHistory';
@@ -110,6 +111,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   icon="table_chart"
                   textNormal="Published Datasets"
                   onClick={this.setActiveRoute}
+                  data-testid="sidebar-link-published-datasets"
                 />
               </Sidebar.Item>
               <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
@@ -224,6 +226,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
+                <HelpNavItem />
               </Nav>
             </Navbar.Collapse>
           </Navbar>
