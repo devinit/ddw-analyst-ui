@@ -65,6 +65,10 @@ jobs:
         docker volume create --name=metadata2
         docker-compose up -d --build
 
+    - name: Import CSVs
+      run: |
+        python manage.py update_csv_files
+
     - name: Run tests
       run: |
         npm run coverage:py
