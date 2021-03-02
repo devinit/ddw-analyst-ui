@@ -177,6 +177,10 @@ jobs:
     name: 'Cypress End-to-End'
     needs: [deploy]
     runs-on: ubuntu-latest
+    if:
+      contains('
+        refs/heads/develop
+      ', github.ref) || endsWith(github.ref, '-beta')
     strategy:
       matrix:
         node-version: [12.x]
