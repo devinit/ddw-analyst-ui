@@ -72,7 +72,7 @@ jobs:
 
     - name: Import CSVs
       run: |
-        python manage.py update_csv_files
+        python3 manage.py update_csv_files
 
     - name: Run tests
       run: |
