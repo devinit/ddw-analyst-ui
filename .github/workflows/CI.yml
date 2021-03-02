@@ -56,6 +56,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
 
+    - name: Create and start virtual environment
+      run: |
+        python3 -m venv venv
+        source venv/bin/activate
+
     - name: Install dependencies
       run: |
         pip3 install --user codecov
