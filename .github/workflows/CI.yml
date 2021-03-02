@@ -2,10 +2,6 @@ name: DDW CI
 
 on: [push, pull_request]
 
-defaults:
-  run:
-    working-directory: ./src
-
 jobs:
   test-typescript:
     name: 'Test Typescript'
