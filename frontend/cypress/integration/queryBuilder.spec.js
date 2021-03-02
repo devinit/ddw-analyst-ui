@@ -93,13 +93,12 @@ describe('The Query Builder', () => {
 
       // Delete first filter
       cy.get('[data-testid="qb-filter-delete-button"]').eq(0).click();
-      
+
       // Check that first filter is not visible
       cy.contains('Country code').should('not.be.visible');
 
       // Check that second filter is visible
       cy.contains('Country name').should('be.visible');
-      
     });
 
     it('shows information on filter options', () => {
@@ -125,11 +124,10 @@ describe('The Query Builder', () => {
       cy.fillStepForm();
 
       // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]').click()
+      cy.get('[data-testid="qb-step-preview-button"]').click();
 
       // Check that we now have 1 filter
       cy.get('.list-group').find('.list-group-item').should('have.length', 1);
-      
     });
   });
 
