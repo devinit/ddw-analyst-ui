@@ -111,7 +111,7 @@ class Operation(BaseEntity):
         Default structure:
         {"type": "[error, warning, info]", "message": "", ""}
     """
-    logs = models.JSONField(blank=True, null=True, default=dict({}))
+    logs = models.JSONField(blank=True, null=True, default=dict)
 
     def __str__(self):
         return self.name
@@ -136,7 +136,7 @@ class OperationStep(BaseEntity):
     query_kwargs = models.TextField(blank=True, null=True)
     source = models.ForeignKey(Source, models.SET_NULL, blank=True, null=True)
     # check operation for info on logs field
-    logs = models.JSONField(blank=True, null=True)
+    logs = models.JSONField(blank=True, null=True, default=dict)
 
     def __str__(self):
         return self.name
