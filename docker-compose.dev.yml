@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile_pg
     volumes:
-      - metadata:/var/lib/postgresql/data
+      - metadata2:/var/lib/postgresql/data
     networks:
       - ddw_net
   web:
@@ -58,7 +58,7 @@ services:
       - ddw_net
 
 volumes:
-  metadata:
+  metadata2:
     external: true
 networks:
   ddw_net:
