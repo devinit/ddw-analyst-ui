@@ -4,7 +4,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: Dockerfile_pg_dev
+      dockerfile: Dockerfile_pg
     volumes:
       - metadata:/var/lib/postgresql/data
     networks:
