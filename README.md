@@ -19,6 +19,17 @@ The new and improved DDW Analyst UI interface
 11. Bundle frontend code and collect static files `npm run build`
 12. Restart the app. `docker-compose restart`
 
+### Import CSV Files
+
+1. Manually run management command to download csv files:
+
+        docker-compose exec web python manage.py update_csv_files
+
+2. Create a scheduled event to periodically download updates from the git repo. The bash script is ‘update_csv_files.sh’ :
+
+3. The git hub repo hosting the file is at https://github.com/devinit/ddw-data-update-configs
+
+
 ### Development Database
 
 To create a test development DB, for local development (e.g. virtualenv steps below)
