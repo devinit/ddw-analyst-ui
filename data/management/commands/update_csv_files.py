@@ -18,10 +18,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('path', nargs='?', type=str, default=settings.CSV_FILES_FOLDER)
+        parser.add_argument('--validate', action='store_true', help='Validate changes & alert affected objects')
 
     def handle(self, *args, **options):
         cwd = os.getcwd()
         destination_path = '{}{}'.format(cwd, LOCAL_DATA_PATH)
+
         try:
             g = Github(settings.GITHUB_TOKEN)
 
@@ -36,7 +38,7 @@ class Command(BaseCommand):
                     self.stdout.flush()
                     urllib.request.urlretrieve(file_content.download_url, destination_path + file_content.path)
 
-                    if COLUMNS_META_FILE_NAME in file_content.path:
+                    if options['validate'] and COLUMNS_META_FILE_NAME in file_content.path:
                         self.stdout.write("Checking columns...", ending='\n')
                         self.check_column_mapping(options["path"])
         except Exception as e:
