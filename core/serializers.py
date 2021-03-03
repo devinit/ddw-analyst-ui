@@ -66,7 +66,6 @@ class DataSerializer(serializers.BaseSerializer):
         Return data with column name aliases instead of database names
         """
         try:
-            first_step = self.operation.get_operation_steps()[0]
             data_column_keys = data[0].keys()
             aliases = OperationDataColumnAlias.objects.filter(operation=self.operation)
             column_names = [column.column_name for column in aliases]
@@ -116,7 +115,8 @@ class OperationStepSerializer(serializers.ModelSerializer):
             'source',
             'source_name',
             'created_on',
-            'updated_on'
+            'updated_on',
+            'logs',
         )
 
 
@@ -170,6 +170,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'updated_on',
             'aliases',
             'alias_creation_status'
+            'logs',
         )
 
     def create(self, validated_data):
