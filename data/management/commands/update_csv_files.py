@@ -9,6 +9,9 @@ from core.models import SourceColumnMap
 
 
 COLUMNS_META_FILE_NAME = 'meta_columns.csv'
+GITHUB_REPO = 'devinit/ddw-data-update-configs'
+DATA_FOLDER = 'manual'
+LOCAL_DATA_PATH = '/data_updates/'
 
 class Command(BaseCommand):
     help = 'Downloads CSV files from git repo'
@@ -18,11 +21,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         cwd = os.getcwd()
+        destination_path = '{}{}'.format(cwd, LOCAL_DATA_PATH)
         try:
             g = Github(settings.GITHUB_TOKEN)
 
-            repo = g.get_repo("devinit/ddw-data-update-configs")
-            contents = repo.get_contents("manual")
+            repo = g.get_repo(GITHUB_REPO)
+            contents = repo.get_contents(DATA_FOLDER)
             while contents:
                 file_content = contents.pop(0)
                 if file_content.type == "dir":
@@ -30,7 +34,7 @@ class Command(BaseCommand):
                 else:
                     self.stdout.write("Fetching {}".format(file_content.path), ending='\n')
                     self.stdout.flush()
-                    urllib.request.urlretrieve(file_content.download_url, cwd+"/data_updates/"+file_content.path)
+                    urllib.request.urlretrieve(file_content.download_url, destination_path + file_content.path)
 
                     if COLUMNS_META_FILE_NAME in file_content.path:
                         self.check_column_mapping(options["path"])
