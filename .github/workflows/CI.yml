@@ -62,7 +62,7 @@ jobs:
 
     - name: Run docker build
       run: |
-        docker volume create --name=metadata
+        docker volume create --name=metadata2
         docker-compose up -d --build
 
     - name: Run tests
