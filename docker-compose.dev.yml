@@ -24,6 +24,7 @@ services:
       - FTSPASS
       - DJANGO_DEV
       - DJANGO_SECRET_KEY
+      - GITHUB_TOKEN
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
     command: bash -c "export DJANGO_DEV='True' && python manage.py runserver 0.0.0.0:80"
     ports:
