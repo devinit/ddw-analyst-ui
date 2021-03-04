@@ -102,7 +102,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const setActiveOperationByID = (id: string) => {
     const operation = props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
     if (operation) {
-      if (operation.get('alias_creation_status') === 'p') {
+      if (operation.get('alias_creation_status') !== 'd') {
         setAlertMessage(
           'There was interruption while creating column aliases for this dataset. Please save the dataset again',
         );
@@ -345,6 +345,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onClose={onAlertClose}
                 className="mb-4"
                 dismissible
+                data-testid="qb-alert"
               >
                 <span className="d-inline-flex">
                   <i className="material-icons mr-2 text-danger">error</i>
