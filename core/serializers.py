@@ -169,7 +169,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'created_on',
             'updated_on',
             'aliases',
-            'alias_creation_status'
+            'alias_creation_status',
             'logs',
         )
 
