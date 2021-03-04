@@ -65,6 +65,19 @@ describe('The Query Builder', () => {
     cy.get('.invalid-feedback').should('not.be.visible');
   });
 
+  it('that encountered an error or interruption during alias creation shows a warning', () => {
+    // Mock datasets route
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/datasets/mine/', datasets);
+    });
+
+    cy.visit('/');
+    cy.get('[data-testid="dataset-action"]').first().click({ force: true });
+    cy.get('[data-testid="qb-alert"] p').contains(
+      'There was interruption while creating column aliases for this dataset. Please save the dataset again',
+    );
+  });
+
   xit('with an active data source has a button to add a step', () => {
     // TODO: create test
   });

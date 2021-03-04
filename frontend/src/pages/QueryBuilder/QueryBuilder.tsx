@@ -102,6 +102,11 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const setActiveOperationByID = (id: string) => {
     const operation = props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
     if (operation) {
+      if (operation.get('alias_creation_status') !== 'd') {
+        setAlertMessage(
+          'There was interruption while creating column aliases for this dataset. Please save the dataset again',
+        );
+      }
       props.actions.setActiveOperation(operation);
       fetchActiveSourceByOperation(operation);
     } else {
@@ -182,8 +187,15 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
             }
           }
         })
-        .catch(() => {
+        .catch((error) => {
           props.actions.operationSaved(false);
+          if (error.response.data.error_code === 'e') {
+            setAlertMessage(
+              'An error occured while creating column aliases for this dataset. Please contact your administrator',
+            );
+
+            return;
+          }
           setAlertMessage('An unknown error occured - please contact your administrator');
         });
     }
@@ -333,6 +345,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onClose={onAlertClose}
                 className="mb-4"
                 dismissible
+                data-testid="qb-alert"
               >
                 <span className="d-inline-flex">
                   <i className="material-icons mr-2 text-danger">error</i>
