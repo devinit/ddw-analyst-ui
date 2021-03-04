@@ -44,6 +44,7 @@ export interface OperationStep {
   source: number;
   created_on: string;
   updated_on: string;
+  logs: Record<string, unknown>;
 }
 export type OperationStepMap = Map<keyof OperationStep, OperationStep[keyof OperationStep]>;
 export interface OperationDataAPIResponse {

@@ -107,7 +107,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const handleOperationLogs = (operation: OperationMap) => {
     const logs = operation.get('logs') as Map<string, string | number | []> | null;
-    if (logs && (logs.get('type') || logs.get('message'))) {
+    if (logs?.get('type') || logs?.get('message')) {
       if (logs.get('message') === OBSOLETE_COLUMNS_LOG_MESSAGE) {
         const columns = logs.get('columns') as string[];
         const steps = logs.get('steps') as number[];
