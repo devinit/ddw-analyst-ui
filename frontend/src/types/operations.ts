@@ -31,6 +31,7 @@ export interface Operation {
   updated_on: string;
   user: string;
   aliases: OperationColumn[] | List<OperationColumnMap>;
+  logs: Record<string, unknown>;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {
