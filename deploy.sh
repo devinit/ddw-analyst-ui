@@ -32,3 +32,7 @@ docker-compose down --remove-orphans
 docker-compose up -d
 
 docker-compose exec -T web python manage.py migrate
+
+echo "Fetch CSV Files"
+
+docker-compose exec -T web python manage.py update_csv_files --validate
