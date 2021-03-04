@@ -6,8 +6,8 @@ The new and improved DDW Analyst UI interface
 
 ### Docker Deployment
 
-1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata`
-2. Create a persistent dev volume `docker volume create --name=metadata`
+1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata2`
+2. Create a persistent dev volume `docker volume create --name=metadata2`
 3. Create a self-signed certificate `mkdir -p ssl && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem`
 4. Build your app `docker-compose up --build -d`
 5. Migrate the database. `docker-compose exec web python manage.py migrate`
@@ -62,10 +62,10 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
         docker-compose down
 
-        docker volume rm metadata
+        docker volume rm metadata2
 2. Create a persistent dev volume:
-docker volume rm metadata
-        docker volume create --name=metadata
+
+        docker volume create --name=metadata2
 
 3. Create a self-signed certificate:
 
@@ -97,7 +97,7 @@ docker volume rm metadata
 
         docker-compose exec web python manage.py createsuperuser
 
-9. Add the bit registry to npm config to install bit dependencies:
+9.  Add the bit registry to npm config to install bit dependencies:
 
         npm config set @bit:registry https://node.bitsrc.io
 
