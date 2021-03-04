@@ -175,6 +175,16 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   };
 
+  const resetOperationLogs = (
+    operation: OperationMap,
+    steps: List<OperationStepMap>,
+  ): [OperationMap, List<OperationStepMap>] => {
+    const updatedOperation = operation.set('logs', {});
+    const updatedSteps = steps.map((step) => step.set('logs', {}));
+
+    return [updatedOperation, updatedSteps];
+  };
+
   const onSaveOperation = (preview = false) => {
     props.actions.savingOperation();
     const steps = props.page.get('steps') as List<OperationStepMap>;
@@ -184,8 +194,12 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
     const id = operation.get('id');
     const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
+    const [updatedOperation, updatedSteps] = resetOperationLogs(operation, steps);
 
-    const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
+    const data: Operation = {
+      ...(updatedOperation.toJS() as Operation),
+      operation_steps: updatedSteps.toJS(),
+    };
     if (props.token) {
       axios
         .request({
@@ -361,7 +375,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
             <StyledCardBody>
               <Alert
                 variant="dark"
-                show={!!alertMessages}
+                show={!!alertMessages.length}
                 onClose={onAlertClose}
                 className="mb-4 mt-4 alert-with-icon"
                 data-testid="qb-alert"
