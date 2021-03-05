@@ -272,8 +272,9 @@ class OperationSerializer(serializers.ModelSerializer):
                         matching = columns.filter(name=column).first()
                         alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
                         alias.save()
-                        operation.alias_creation_status = 'd'
-                        operation.save()
+
+                operation.alias_creation_status = 'd'
+                operation.save()
             except:
                 operation.alias_creation_status = 'e'
                 operation.save()
