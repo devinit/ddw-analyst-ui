@@ -68,11 +68,13 @@ describe('The Query Builder', () => {
   it('that encountered an error or interruption during alias creation shows a warning', () => {
     // Mock datasets route
     cy.fixture('datasets').then((datasets) => {
-      cy.intercept('api/datasets/mine/', datasets);
+      const aliasPendingDataset = datasets.results.find(
+        (dataset) => (dataset.alias_creation_status = 'p'),
+      );
+      cy.intercept('api/dataset/1/', aliasPendingDataset);
     });
 
-    cy.visit('/');
-    cy.get('[data-testid="dataset-action"]').first().click({ force: true });
+    cy.visit('/queries/build/1/');
     cy.get('[data-testid="qb-alert"] p').contains(
       'There was interruption while creating column aliases for this dataset. Please save the dataset again',
     );
