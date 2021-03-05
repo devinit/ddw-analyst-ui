@@ -196,6 +196,9 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
             >
               {props.previewing ? 'Close Preview' : 'Preview'}
             </Button>
+            <Button variant="dark" onClick={onDuplicate} size="sm" data-testid="qb-duplicate-item">
+              Make a Copy
+            </Button>
             <Dropdown.Toggle
               split
               variant="danger"
@@ -211,14 +214,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
                 data-testid="qb-save-preview-item"
               >
                 {props.processing ? 'Saving ...' : 'Save & Preview'}
-              </Dropdown.Item>
-              <Dropdown.Item
-                eventKey="2"
-                hidden={!values.id}
-                onClick={onDuplicate}
-                data-testid="qb-duplicate-item"
-              >
-                Make a Copy
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey="3"
