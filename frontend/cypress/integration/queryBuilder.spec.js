@@ -78,6 +78,18 @@ describe('The Query Builder', () => {
     );
   });
 
+  it('that has logs displays them in an alert', () => {
+    // Mock datasets route
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/dataset/2/', datasets.results[1]);
+    });
+
+    cy.visit('/queries/build/2/');
+    cy.get('[data-testid="qb-alert"] p')
+      .first()
+      .contains(`Columns donor_code, donor_name used in steps 1 are obsolete.`);
+  });
+
   xit('with an active data source has a button to add a step', () => {
     // TODO: create test
   });
