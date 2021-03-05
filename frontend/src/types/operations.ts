@@ -16,8 +16,10 @@ export type ErroredFilterMap = Map<keyof ErroredFilter, ErroredFilter[keyof Erro
 export interface Filters<T = Filter[] | ErroredFilter[]> {
   filters: T;
 }
+
+export type AliasCreationStatus = 'p' | 'e' | 'd';
 export interface Operation {
-  alias_creation_status: 'p' | 'd' | 'e';
+  alias_creation_status: AliasCreationStatus;
   id: number;
   name: string;
   description: string;

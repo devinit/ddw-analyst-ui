@@ -18,6 +18,7 @@ import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import {
+  AliasCreationStatus,
   Operation,
   OperationDataList,
   OperationDataMap,
@@ -107,6 +108,9 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const handleOperationLogs = (operation: OperationMap) => {
     const logs = operation.get('logs') as Map<string, string | number | []> | null;
+    const aliasCreationStatus = operation.get(
+      'alias_creation_status',
+    ) as AliasCreationStatus | null;
     if (logs?.get('type') || logs?.get('message')) {
       if (logs.get('message') === OBSOLETE_COLUMNS_LOG_MESSAGE) {
         const columns = logs.get('columns') as string[];
@@ -116,7 +120,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           'NB: This warning will be cleared on save',
         ]);
       }
-    } else if (operation.get('alias_creation_status') !== 'd') {
+    } else if (aliasCreationStatus && aliasCreationStatus !== 'd') {
       setAlertMessages([
         'There was interruption while creating column aliases for this dataset. Please save the dataset again',
       ]);
