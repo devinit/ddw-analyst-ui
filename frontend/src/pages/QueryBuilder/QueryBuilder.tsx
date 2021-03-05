@@ -116,17 +116,16 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           'NB: This warning will be cleared on save',
         ]);
       }
+    } else if (operation.get('alias_creation_status') !== 'd') {
+      setAlertMessages([
+        'There was interruption while creating column aliases for this dataset. Please save the dataset again',
+      ]);
     }
   };
 
   const setActiveOperationByID = (id: string) => {
     const operation = props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
     if (operation) {
-      if (operation.get('alias_creation_status') !== 'd') {
-        setAlertMessages([
-          'There was interruption while creating column aliases for this dataset. Please save the dataset again',
-        ]);
-      }
       props.actions.setActiveOperation(operation);
       fetchActiveSourceByOperation(operation);
     } else {
