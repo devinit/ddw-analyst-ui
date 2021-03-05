@@ -120,7 +120,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           'NB: This warning will be cleared on save',
         ]);
       }
-    } else if (aliasCreationStatus && aliasCreationStatus !== 'd') {
+    } else if (aliasCreationStatus && aliasCreationStatus.toLowerCase() !== 'd') {
       setAlertMessages([
         'There was interruption while creating column aliases for this dataset. Please save the dataset again',
       ]);
