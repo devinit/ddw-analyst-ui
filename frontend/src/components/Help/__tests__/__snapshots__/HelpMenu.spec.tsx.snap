@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpMenu renders correctly with the required link properties 1`] = `
+Array [
+  .c0 {
+  text-transform: capitalize !important;
+}
+
+.c0.disabled {
+  opacity: 0.6;
+}
+
+<a
+    className="c0 nav-link"
+    href="https://staging-ddw.devinit.org"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    target="_blank"
+  >
+    Item 1
+  </a>,
+  .c0 {
+  text-transform: capitalize !important;
+}
+
+.c0.disabled {
+  opacity: 0.6;
+}
+
+<a
+    className="c0 nav-link"
+    href="https://ddw.devinit.org"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    target="_blank"
+  >
+    Item 2
+  </a>,
+]
+`;

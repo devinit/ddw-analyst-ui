@@ -43,10 +43,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.x
+    - name: Set up Python 3.7
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.7'
         architecture: 'x64'
 
     - uses: actions/cache@v2
@@ -64,6 +64,10 @@ jobs:
       run: |
         docker volume create --name=metadata2
         docker-compose up -d --build
+
+    - name: Import CSVs
+      run: |
+        docker-compose exec -T web python3 manage.py update_csv_files
 
     - name: Run tests
       run: |
@@ -99,7 +103,7 @@ jobs:
       id: get_version
       run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
 
-    - name: copy deploy script to server
+    - name: copy deploy scripts to dev server
       if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta')
       uses: appleboy/scp-action@master
       env:
@@ -108,10 +112,10 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.KEY }}
       with:
-        source: "deploy_script.sh"
+        source: "deploy_script.sh,deploy.sh"
         target: "."
 
-    - name: copy deploy script to server
+    - name: copy deploy script to production server
       if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-beta')
       uses: appleboy/scp-action@master
       env:
@@ -123,8 +127,8 @@ jobs:
         source: "deploy.sh"
         target: "."
 
-    - name: ssh into remote dev server
-      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta')
+    - name: ssh into remote dev server for develop branch
+      if: endsWith(github.ref, '/develop')
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.HOST }}
@@ -134,6 +138,19 @@ jobs:
         script: |
           chmod 700 "deploy_script.sh"
           ./deploy_script.sh
+
+    - name: ssh into remote dev server for beta tag
+      if: endsWith(github.ref, '-beta')
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.HOST }}
+        username: ${{ env.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          version=$(echo ${{ steps.get_version.outputs.VERSION }} | cut -c 2-)
+          chmod 700 "deploy.sh"
+          ./deploy.sh $version
 
     - name: ssh into remote production server
       if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-beta')
@@ -164,6 +181,10 @@ jobs:
     name: 'Cypress End-to-End'
     needs: [deploy]
     runs-on: ubuntu-latest
+    if:
+      contains('
+        refs/heads/develop
+      ', github.ref) || endsWith(github.ref, '-beta')
     strategy:
       matrix:
         node-version: [12.x]

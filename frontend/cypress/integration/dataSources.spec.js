@@ -25,16 +25,35 @@ describe('The Data Sources Page', () => {
   describe('sources table', () => {
     it('shows each row with action buttons', () => {
       cy.visit('/sources');
-      cy.get('[data-testid=sources-table-row]')
-        .then((rows) => {
-          cy.get('[data-testid=source-table-row-actions]').then((actions) => {
-            expect(rows.length).to.equal(actions.length);
-          });
+      cy.get('[data-testid=sources-table-row]').then((rows) => {
+        cy.get('[data-testid=source-table-row-actions]').then((actions) => {
+          expect(rows.length).to.equal(actions.length);
         });
+      });
     });
 
     xit('actions buttons function properly', () => {
       // TODO: add test
-    })
+    });
+  });
+
+  it('renders its own help menu', () => {
+    cy.visit('/sources');
+    cy.get('[id=help-nav-dropdown]').click();
+    cy.get('.dropdown-menu.show .nav-link')
+      .should('have.length.greaterThan', 0)
+      .then((links) => {
+        Array.prototype.forEach.call(links, (link, index) => {
+          if (index === links.length - 1) {
+            expect(link.href).to.equal('https://github.com/devinit/ddw-analyst-ui/issues/new');
+            expect(link.innerHTML).to.equal('Report Issue');
+          } else {
+            if (index === 0) {
+              expect(link.innerHTML).to.equal('About Page');
+            }
+            expect(link.href).to.contain('docs.google');
+          }
+        });
+      });
   });
 });

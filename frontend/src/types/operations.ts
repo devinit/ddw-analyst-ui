@@ -16,7 +16,10 @@ export type ErroredFilterMap = Map<keyof ErroredFilter, ErroredFilter[keyof Erro
 export interface Filters<T = Filter[] | ErroredFilter[]> {
   filters: T;
 }
+
+export type AliasCreationStatus = 'p' | 'e' | 'd';
 export interface Operation {
+  alias_creation_status: AliasCreationStatus;
   id: number;
   name: string;
   description: string;
@@ -30,6 +33,7 @@ export interface Operation {
   updated_on: string;
   user: string;
   aliases: OperationColumn[] | List<OperationColumnMap>;
+  logs: Record<string, unknown>;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {
@@ -42,6 +46,7 @@ export interface OperationStep {
   source: number;
   created_on: string;
   updated_on: string;
+  logs: Record<string, unknown>;
 }
 export type OperationStepMap = Map<keyof OperationStep, OperationStep[keyof OperationStep]>;
 export interface OperationDataAPIResponse {

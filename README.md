@@ -6,8 +6,8 @@ The new and improved DDW Analyst UI interface
 
 ### Docker Deployment
 
-1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata`
-2. Create a persistent dev volume `docker volume create --name=metadata`
+1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata2`
+2. Create a persistent dev volume `docker volume create --name=metadata2`
 3. Create a self-signed certificate `mkdir -p ssl && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem`
 4. Build your app `docker-compose up --build -d`
 5. Migrate the database. `docker-compose exec web python manage.py migrate`
@@ -18,6 +18,17 @@ The new and improved DDW Analyst UI interface
 10. Install frontend dependencies `npm install`
 11. Bundle frontend code and collect static files `npm run build`
 12. Restart the app. `docker-compose restart`
+
+### Import CSV Files
+
+1. Manually run management command to download csv files:
+
+        docker-compose exec web python manage.py update_csv_files
+
+2. Create a scheduled event to periodically download updates from the git repo. The bash script is `update_csv_files.sh`
+
+3. The git hub repo with csv files can be found [here](https://github.com/devinit/ddw-data-update-configs)
+
 
 ### Development Database
 
@@ -51,7 +62,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 4. Migrate the database. `python manage.py migrate`
 5. Load test data from a fixture like so `python manage.py loaddata test_data` `python manage.py loaddata --database=datasets test_datasets`
 6. Create a superuser. `python manage.py createsuperuser`
-7. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
+7. Add the bit registry to npm config to install bit dependencies ``npm config set @bit:registry https://node.bitsrc.io
 8. Install frontend dependencies `npm install`
 9. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
 10. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
@@ -62,10 +73,10 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
         docker-compose down
 
-        docker volume rm metadata
+        docker volume rm metadata2
 2. Create a persistent dev volume:
 
-        docker volume create --name=metadata
+        docker volume create --name=metadata2
 
 3. Create a self-signed certificate:
 
@@ -97,7 +108,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
         docker-compose exec web python manage.py createsuperuser
 
-9. Add the bit registry to npm config to install bit dependencies:
+9.  Add the bit registry to npm config to install bit dependencies:
 
         npm config set @bit:registry https://node.bitsrc.io
 
@@ -148,7 +159,9 @@ NOTE:
 
 ### End-To-End Testing
 
-This is set up to run with [Cypress](https://www.cypress.io/), and only locally at the moment.
+This is set up to run with [Cypress](https://www.cypress.io/).
+
+To test locally:
 
 1. Update the `baseUrl` option in the `cypress.json` file to one that suits your current need
 2. Setup test users as specified in the `frontend/cypress/fixtures/users.json` file
