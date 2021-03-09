@@ -123,6 +123,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           onChange={onSelectSource}
           value={activeSource ? (activeSource.get('id') as string) : undefined}
           disabled={!editable || props.disabled}
+          data-testid="active-data-source"
         />
       </div>
 
