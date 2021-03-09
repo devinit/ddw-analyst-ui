@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='operation',
             name='alias_creation_status',
-            field=models.TextField(choices=[('Done', 'Done'), ('Pending', 'Pending'), ('Error', 'Error')], default='Done'),
+            field=models.TextField(choices=[('d', 'Done'), ('p', 'Pending'), ('e', 'Error')], default='d'),
         ),
     ]

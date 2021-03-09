@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Alert, Card, Col, Row, Tab } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
@@ -18,6 +18,7 @@ import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import {
+  AliasCreationStatus,
   Operation,
   OperationDataList,
   OperationDataMap,
@@ -64,12 +65,13 @@ const StyledCardBody = styled(Card.Body)`
     padding-left: 15px;
   }
 `;
+const OBSOLETE_COLUMNS_LOG_MESSAGE = 'Obsolete Columns'; // eslint-disable-line @typescript-eslint/naming-convention
 
 const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [showPreview, setShowPreview] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [previewData, setPreviewData] = useState<List<OperationDataMap>>(List());
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertMessages, setAlertMessages] = useState<string[]>([]);
 
   useEffect(() => {
     const { id } = props.match.params;
@@ -85,6 +87,11 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       props.actions.resetQueryBuilderState();
     };
   }, []);
+  useEffect(() => {
+    if (props.activeOperation) {
+      handleOperationLogs(props.activeOperation);
+    }
+  }, [props.activeOperation]);
 
   const updatePreviewState = (data: OperationDataList, show: boolean, loading: boolean): void => {
     setPreviewData(data);
@@ -99,14 +106,30 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     return !operation || !operation.get('id') || user === operation.get('user') || isSuperUser;
   };
 
+  const handleOperationLogs = (operation: OperationMap) => {
+    const logs = operation.get('logs') as Map<string, string | number | []> | null;
+    const aliasCreationStatus = operation.get(
+      'alias_creation_status',
+    ) as AliasCreationStatus | null;
+    if (logs?.get('type') || logs?.get('message')) {
+      if (logs.get('message') === OBSOLETE_COLUMNS_LOG_MESSAGE) {
+        const columns = logs.get('columns') as string[];
+        const steps = logs.get('steps') as number[];
+        setAlertMessages([
+          `Columns ${columns.join(', ')} used in steps ${steps.join(', ')} are obsolete.`,
+          'NB: This warning will be cleared on save',
+        ]);
+      }
+    } else if (aliasCreationStatus && aliasCreationStatus.toLowerCase() !== 'd') {
+      setAlertMessages([
+        'There was interruption while creating column aliases for this dataset. Please save the dataset again',
+      ]);
+    }
+  };
+
   const setActiveOperationByID = (id: string) => {
     const operation = props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
     if (operation) {
-      if (operation.get('alias_creation_status') !== 'd') {
-        setAlertMessage(
-          'There was interruption while creating column aliases for this dataset. Please save the dataset again',
-        );
-      }
       props.actions.setActiveOperation(operation);
       fetchActiveSourceByOperation(operation);
     } else {
@@ -155,6 +178,16 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   };
 
+  const resetOperationLogs = (
+    operation: OperationMap,
+    steps: List<OperationStepMap>,
+  ): [OperationMap, List<OperationStepMap>] => {
+    const updatedOperation = operation.set('logs', {});
+    const updatedSteps = steps.map((step) => step.set('logs', {}));
+
+    return [updatedOperation, updatedSteps];
+  };
+
   const onSaveOperation = (preview = false) => {
     props.actions.savingOperation();
     const steps = props.page.get('steps') as List<OperationStepMap>;
@@ -164,8 +197,12 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
     const id = operation.get('id');
     const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
+    const [updatedOperation, updatedSteps] = resetOperationLogs(operation, steps);
 
-    const data: Operation = { ...(operation.toJS() as Operation), operation_steps: steps.toJS() };
+    const data: Operation = {
+      ...(updatedOperation.toJS() as Operation),
+      operation_steps: updatedSteps.toJS(),
+    };
     if (props.token) {
       axios
         .request({
@@ -190,13 +227,13 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         .catch((error) => {
           props.actions.operationSaved(false);
           if (error.response.data.error_code === 'e') {
-            setAlertMessage(
+            setAlertMessages([
               'An error occured while creating column aliases for this dataset. Please contact your administrator',
-            );
+            ]);
 
             return;
           }
-          setAlertMessage('An unknown error occured - please contact your administrator');
+          setAlertMessages(['An unknown error occured - please contact your administrator']);
         });
     }
   };
@@ -222,7 +259,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     fetchOperationDataPreview(operation.toJS() as Operation, steps.toJS()).then((results) => {
       setLoadingPreview(false);
       if (results.error) {
-        setAlertMessage(`Error: ${results.error}`);
+        setAlertMessages([`Error: ${results.error}`]);
       } else {
         updatePreviewState(fromJS(results.data), true, false);
       }
@@ -318,7 +355,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   };
 
   const onAlertClose = (): void => {
-    setAlertMessage('');
+    setAlertMessages(['']);
   };
 
   const { activeSource, page } = props;
@@ -341,15 +378,23 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
             <StyledCardBody>
               <Alert
                 variant="dark"
-                show={!!alertMessage}
+                show={!!alertMessages.length}
                 onClose={onAlertClose}
-                className="mb-4"
-                dismissible
+                className="mb-4 mt-4 alert-with-icon"
                 data-testid="qb-alert"
               >
-                <span className="d-inline-flex">
-                  <i className="material-icons mr-2 text-danger">error</i>
-                  <p className="p-1">{alertMessage}</p>
+                <i className="material-icons mr-2 text-danger" data-notify="icon">
+                  error
+                </i>
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                  <i className="material-icons">close</i>
+                </button>
+                <span>
+                  {alertMessages.map((message, index) => (
+                    <p key={`${index}`} className="mb-2">
+                      {message}
+                    </p>
+                  ))}
                 </span>
               </Alert>
               {renderOperationForm()}
