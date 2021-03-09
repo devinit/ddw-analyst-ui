@@ -293,7 +293,6 @@ class QueryBuilder:
             self.number_of_columns = len(columns)
         else:
             self.current_query = self.current_query.select(self.current_dataset.star)
-            print(self.current_query)
             self.number_of_columns = 0 # Means all columns selected, and we shall not use it in subqueries
 
         return self
