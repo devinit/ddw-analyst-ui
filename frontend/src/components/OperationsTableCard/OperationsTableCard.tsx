@@ -143,6 +143,10 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
 
+  const onDuplicate = (operation: OperationMap) => {
+    props.history.push(`/queries/build/${operation.get('id') as number}/`);
+  };
+
   const renderOperations = (operations: List<OperationMap>, allowEdit = false) => {
     if (operations && operations.count()) {
       return operations.map((operation, index) => {
@@ -162,6 +166,14 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                   View Data
                 </DatasetActionLink>
               </OverlayTrigger>
+              <Button
+                variant="dark"
+                size="sm"
+                data-testid="qb-duplicate-item"
+                onClick={() => onDuplicate(operation)}
+              >
+                Make a Copy
+              </Button>
               <Button variant="dark" size="sm" onClick={onViewSQLQuery(operation)}>
                 SQL Query
               </Button>
