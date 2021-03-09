@@ -143,6 +143,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               onFocus={setFocusedField}
               onBlur={resetFocus}
               disabled={!!values.id && !props.editable}
+              data-testid="op-name-field"
             />
             <Form.Control.Feedback type="invalid">
               {errors.name ? errors.name : null}
@@ -160,6 +161,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               onBlur={resetFocus}
               value={values.description ? values.description.toString() : ''}
               disabled={!!values.id && !props.editable}
+              data-testid="op-description-field"
             />
             <Form.Control.Feedback type="invalid">
               {errors.description ? errors.description : null}
