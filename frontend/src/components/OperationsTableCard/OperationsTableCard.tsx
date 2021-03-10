@@ -172,7 +172,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               <Button
                 variant="dark"
                 size="sm"
-                data-testid="qb-duplicate-item"
+                data-testid="dataset-duplicate"
                 onClick={() => onDuplicate(operation)}
               >
                 Make a Copy
