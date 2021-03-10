@@ -183,11 +183,11 @@ describe('The Query Builder', () => {
   });
 
   it('makes a copy of a dataset', () => {
-    cy.fixture('copyDataset').then((dataset) => {
-      cy.intercept('api/datasets/mine/', dataset);
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/datasets/mine/', datasets);
     });
     cy.visit('/');
-    cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
+    cy.get('[data-testid="dataset-duplicate"]').eq(1).click({ force: true });
     cy.get('[data-testid="qb-duplicate-item"]').click();
     cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test two');
     cy.get('[data-testid="op-description-field"]').should('have.value', 'This is it');
