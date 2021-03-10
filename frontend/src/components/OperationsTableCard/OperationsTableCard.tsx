@@ -28,6 +28,7 @@ import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
+import { useCopy } from '../../context/operationCopy';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -63,6 +64,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
+  const { setIsCopy } = useCopy();
 
   useEffect(() => {
     fetchQueries(showMyQueries);
@@ -144,6 +146,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const onDuplicate = (operation: OperationMap) => {
+    setIsCopy(true);
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
 
