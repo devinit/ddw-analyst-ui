@@ -17,22 +17,25 @@ class Command(BaseCommand):
     help = 'Downloads CSV files from git repo'
 
     def add_arguments(self, parser):
+        parser.add_argument('-b', '--branch', type=str, default='master', help='Branch we shall load CSVs from')
         parser.add_argument('path', nargs='?', type=str, default=settings.CSV_FILES_FOLDER)
         parser.add_argument('--validate', action='store_true', help='Validate changes & alert affected objects')
 
     def handle(self, *args, **options):
         cwd = os.getcwd()
         destination_path = '{}{}'.format(cwd, LOCAL_DATA_PATH)
+        branch_name = options['branch']
 
         try:
             g = Github(settings.GITHUB_TOKEN)
 
             repo = g.get_repo(GITHUB_REPO)
-            contents = repo.get_contents(DATA_FOLDER)
+            branch = repo.get_branch(branch=branch_name)
+            contents = repo.get_contents(DATA_FOLDER, ref=branch.commit.sha)
             while contents:
                 file_content = contents.pop(0)
                 if file_content.type == "dir":
-                    contents.extend(repo.get_contents(file_content.path))
+                    contents.extend(repo.get_contents(file_content.path, ref=branch.commit.sha))
                 else:
                     self.stdout.write("Fetching {}".format(file_content.path), ending='\n')
                     self.stdout.flush()
