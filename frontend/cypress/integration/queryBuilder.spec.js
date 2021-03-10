@@ -187,7 +187,7 @@ describe('The Query Builder', () => {
       cy.intercept('api/datasets/mine/', dataset);
     });
     cy.visit('/');
-    cy.get('[data-testid="dataset-action"]').first().click({ force: true });
+    cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
     cy.get('[data-testid="qb-duplicate-item"]').click();
     cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test two');
     cy.get('[data-testid="op-description-field"]').should('have.value', 'This is it');
