@@ -7,6 +7,7 @@ import { Alert, Button, Dropdown, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Operation, OperationMap } from '../../types/operations';
 import { CheckBox } from '../CheckBox';
+import { useCopy } from '../../context/operationCopy';
 
 interface OperationFormProps {
   operation?: OperationMap;
@@ -37,6 +38,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const [hasFocus, setHasFocus] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [timeoutId, setTimeoutId] = useState(0);
+  const { isCopy } = useCopy();
 
   const getFormGroupClasses = (fieldName: string, value?: string | number) => {
     return classNames('bmd-form-group', {
@@ -198,9 +200,16 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
             >
               {props.previewing ? 'Close Preview' : 'Preview'}
             </Button>
-            <Button variant="dark" onClick={onDuplicate} size="sm" data-testid="qb-duplicate-item">
-              Make a Copy
-            </Button>
+            {isCopy ? (
+              <Button
+                variant="dark"
+                onClick={onDuplicate}
+                size="sm"
+                data-testid="qb-duplicate-item"
+              >
+                Make a Copy
+              </Button>
+            ) : null}
             <Dropdown.Toggle
               split
               variant="danger"
