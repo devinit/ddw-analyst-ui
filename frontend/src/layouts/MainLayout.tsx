@@ -30,7 +30,6 @@ import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
 import { api, localForageKeys } from '../utils';
-import { CopyProvider } from '../context/operationCopy';
 
 interface ActionProps {
   actions: typeof UserActions & typeof TokenActions & typeof ModalActions;
@@ -233,21 +232,19 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
           </Navbar>
 
           <AdminLayout.Content>
-            <CopyProvider>
-              <Switch>
-                <Route path="/" exact component={AsyncHome} />
-                <Route path="/datasets" exact component={AsyncPublishedDatasets} />
-                <Route path="/sources" exact component={AsyncDataSources} />
-                <Route path="/queries/build" exact component={AsyncQueryBuilder} />
-                <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
-                <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
-                <Route path="/update" exact component={AsyncDataUpdate} />
-                <Route path="/queries/data/:id" exact component={AsyncQueryData} />
-                <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
-                <Route path="/source/datasets/:id" exact component={AsyncDataSourceQueries} />
-                <Route path="/source/history/:id" exact component={AsyncDataSourceHistory} />
-              </Switch>
-            </CopyProvider>
+            <Switch>
+              <Route path="/" exact component={AsyncHome} />
+              <Route path="/datasets" exact component={AsyncPublishedDatasets} />
+              <Route path="/sources" exact component={AsyncDataSources} />
+              <Route path="/queries/build" exact component={AsyncQueryBuilder} />
+              <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
+              <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
+              <Route path="/update" exact component={AsyncDataUpdate} />
+              <Route path="/queries/data/:id" exact component={AsyncQueryData} />
+              <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
+              <Route path="/source/datasets/:id" exact component={AsyncDataSourceQueries} />
+              <Route path="/source/history/:id" exact component={AsyncDataSourceHistory} />
+            </Switch>
             <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
               {ModalContent ? <ModalContent /> : null}
             </Modal>
