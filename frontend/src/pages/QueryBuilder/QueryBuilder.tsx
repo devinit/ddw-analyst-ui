@@ -141,11 +141,6 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     props.actions.setActiveOperation(operation, true);
   };
 
-  const onDuplicateOperation = (operation: OperationMap) => {
-    onUpdateOperation(operation);
-    props.history.push('/queries/build');
-  };
-
   const onDeleteOperation = (operation: OperationMap) => {
     const operationID = operation.get('id') as string | undefined;
     if (operationID) {
@@ -292,7 +287,6 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         editable={editable}
         valid={steps.count() > 0}
         onUpdateOperation={onUpdateOperation}
-        onDuplicateOperation={onDuplicateOperation}
         onSuccess={onSaveOperation}
         onPreview={onTogglePreview}
         previewing={showPreview}

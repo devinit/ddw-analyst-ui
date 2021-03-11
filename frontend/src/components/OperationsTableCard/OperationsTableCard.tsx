@@ -28,7 +28,6 @@ import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
-import { useCopy } from '../../context/operationCopy';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -64,7 +63,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
-  const { setIsCopy } = useCopy();
 
   useEffect(() => {
     fetchQueries(showMyQueries);
@@ -145,9 +143,22 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
 
+  const onUpdateOperation = (operation: OperationMap) => {
+    props.actions.setOperation(operation, true);
+  };
+
+  const onDuplicateOperation = (operation: OperationMap) => {
+    onUpdateOperation(operation);
+    props.history.push('/queries/build/');
+  };
+
   const onDuplicate = (operation: OperationMap) => {
-    setIsCopy(true);
-    props.history.push(`/queries/build/${operation.get('id') as number}/`);
+    if (operation) {
+      const operationTwo = operation.withMutations((opn) =>
+        opn.delete('id').set('name', `Copy of ${opn.get('name')}`),
+      );
+      onDuplicateOperation(operationTwo);
+    }
   };
 
   const renderOperations = (operations: List<OperationMap>, allowEdit = false) => {
