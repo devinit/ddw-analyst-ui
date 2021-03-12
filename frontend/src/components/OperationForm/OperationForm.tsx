@@ -7,6 +7,7 @@ import { Alert, Button, Dropdown, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Operation, OperationMap } from '../../types/operations';
 import { CheckBox } from '../CheckBox';
+
 interface OperationFormProps {
   operation?: OperationMap;
   editable?: boolean;

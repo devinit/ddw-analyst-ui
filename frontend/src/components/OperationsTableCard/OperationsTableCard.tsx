@@ -143,21 +143,17 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
 
-  const onUpdateOperation = (operation: OperationMap) => {
-    props.actions.setOperation(operation, true);
-  };
-
   const onDuplicateOperation = (operation: OperationMap) => {
-    onUpdateOperation(operation);
+    props.actions.setOperation(operation, true);
     props.history.push('/queries/build/');
   };
 
   const onDuplicate = (operation: OperationMap) => {
     if (operation) {
-      const operationTwo = operation.withMutations((opn) =>
+      const duplicateOperation = operation.withMutations((opn) =>
         opn.delete('id').set('name', `Copy of ${opn.get('name')}`),
       );
-      onDuplicateOperation(operationTwo);
+      onDuplicateOperation(duplicateOperation);
     }
   };
 
