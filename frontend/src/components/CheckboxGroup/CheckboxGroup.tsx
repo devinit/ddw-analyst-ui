@@ -53,6 +53,7 @@ const CheckboxGroup: FunctionComponent<SelectQueryBuilderProps> = (props) => {
             label={text}
             value={value as string}
             onChange={onChange}
+            className={'selectColumnCheckbox'}
           />
         </Form.Field>
       ))}
