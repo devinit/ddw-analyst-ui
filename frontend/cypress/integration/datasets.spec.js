@@ -89,6 +89,6 @@ describe('The Datasets Pages', () => {
     cy.get('[data-testid="active-data-source"]')
       .children()
       .eq(1)
-      .contains('International Offical Finance');
+      .contains('OECD Creditor Reporting System');
   });
 });
