@@ -91,4 +91,19 @@ describe('The Datasets Pages', () => {
       .eq(1)
       .contains('Countries Being Left Behind');
   });
+
+  it('makes a copy of a published dataset', () => {
+    cy.fixture('publishedDatasets').then((datasets) => {
+      cy.intercept('api/datasets/', datasets);
+    });
+    cy.visit('/datasets/');
+    cy.get('[data-testid="dataset-duplicate"]').click({ force: true });
+    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test Four');
+    cy.get('[data-testid="op-description-field"]').should('have.value', 'This is it');
+    cy.get('.form-check-input').should('not.be.checked');
+    cy.get('[data-testid="active-data-source"]')
+      .children()
+      .eq(1)
+      .contains('Countries Being Left Behind');
+  });
 });
