@@ -95,6 +95,7 @@ lower.destinationcountrytype = unique(data[,c("destinationcountrytype","lower.de
 data$deflatortype <- paste(data$donorcountryid,data$source_UsageYear_name)
 data$deflatortype[is.na(data$deflatortype)] <- FALSE
 deflatortype = unique(data[,c("deflatortype"),drop=F])
+current_year <- format(Sys.Date(), "%Y")
 
 #Merge to create new column "Code name" based on donor name
 codename <- dbReadTable(con, c("repo","fts_codenames"))
@@ -102,6 +103,7 @@ codename$lower.Donor <- lowerConv(codename$Donor)
 codename <- codename[!duplicated(codename$Donor),]
 codename <- join(codename, lower.Donor, by='lower.Donor', type='full', match='first')
 codename$lower.Donor = NULL
+codename$year[is.na(codename$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_codenames"), value = codename, row.names = F, overwrite = T)
 
 #Merge to create new column "Private money" based on donor name
@@ -110,6 +112,7 @@ privatemoney$lower.Donor <- lowerConv(privatemoney$Donor)
 privatemoney <- privatemoney[!duplicated(privatemoney$Donor),]
 privatemoney <- join(privatemoney, lower.Donor, by='lower.Donor', type='full', match='first')
 privatemoney$lower.Donor = NULL
+privatemoney$year[is.na(privatemoney$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_privatemoney"), value = privatemoney, row.names = F, overwrite = T)
 
 #Merge to create new column "Donor DAC region" based on donor name
@@ -118,6 +121,7 @@ donordacregion$lower.Donor <- lowerConv(donordacregion$Donor)
 donordacregion <- donordacregion[!duplicated(donordacregion$Donor),]
 donordacregion <- join(donordacregion, lower.Donor, by='lower.Donor', type='full', match='first')
 donordacregion$lower.Donor = NULL
+donordacregion$year[is.na(donordacregion$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_dacregion"), value = donordacregion, row.names = F, overwrite = T)
 
 #Merge to create new column "Donor Country ID" based on donor name
@@ -126,6 +130,7 @@ donorscountryid$lower.Donor <- lowerConv(donorscountryid$Donor)
 donorscountryid <- donorscountryid[!duplicated(donorscountryid$Donor),]
 donorscountryid <- join(donorscountryid, lower.Donor, by='lower.Donor', type='full', match='first')
 donorscountryid$lower.Donor = NULL
+donorscountryid$year[is.na(donorscountryid$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_donorscountryid"), value = donorscountryid, row.names = F, overwrite = T)
 
 #Merge to create new column "Appealing agency code name" based on recipient organisation name
@@ -134,6 +139,7 @@ recipientcodename$lower.Recipient.Organization <- lowerConv(recipientcodename$Re
 recipientcodename <- recipientcodename[!duplicated(recipientcodename$Recipient.Organization),]
 recipientcodename <- join(recipientcodename, lower.Recipient.Organization, by='lower.Recipient.Organization', type='full', match='first')
 recipientcodename$lower.Recipient.Organization = NULL
+recipientcodename$year[is.na(recipientcodename$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_recipientcodename"), value = recipientcodename, row.names = F, overwrite = T)
 
 #Merge to create new column "Recip Org NGO type" based on recipient organisation name
@@ -142,6 +148,7 @@ ngotype$lower.Recipient.Organization <- lowerConv(ngotype$Recipient.Organization
 ngotype <- ngotype[!duplicated(ngotype$Recipient.Organization),]
 ngotype <- join(ngotype, lower.Recipient.Organization, by='lower.Recipient.Organization', type='full', match='first')
 ngotype$lower.Recipient.Organization = NULL
+ngotype$year[is.na(ngotype$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_ngotype"), value = ngotype, row.names = F, overwrite = T)
 
 #Merge to create new column "Channels of delivery" based on recipient organisation name
@@ -150,6 +157,7 @@ deliverychannels$lower.Recipient.Organization <- lowerConv(deliverychannels$Reci
 deliverychannels <- deliverychannels[!duplicated(deliverychannels$Recipient.Organization),]
 deliverychannels <- join(deliverychannels, lower.Recipient.Organization, by='lower.Recipient.Organization', type='full', match='first')
 deliverychannels$lower.Recipient.Organization = NULL
+deliverychannels$year[is.na(deliverychannels$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_deliverychannels"), value = deliverychannels, row.names = F, overwrite = T)
 
 #Merge to create new column "Recipient country ID" based on recipient organisation name
@@ -158,6 +166,7 @@ recipientcountryid$lower.Recipient.Organization <- lowerConv(recipientcountryid$
 recipientcountryid <- recipientcountryid[!duplicated(recipientcountryid$Recipient.Organization),]
 recipientcountryid <- join(recipientcountryid, lower.Recipient.Organization, by='lower.Recipient.Organization', type='full', match='first')
 recipientcountryid$lower.Recipient.Organization = NULL
+recipientcountryid$year[is.na(recipientcountryid$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_recipientcountryid"), value = recipientcountryid, row.names = F, overwrite = T)
 
 #Merge to create new column "ODA eligible" based on destination country
@@ -166,6 +175,7 @@ odaeligible$lower.Destination.Country <- lowerConv(odaeligible$Destination.Count
 odaeligible <- odaeligible[!duplicated(odaeligible$Destination.Country),]
 odaeligible <- join(odaeligible, lower.Destination.Country, by='lower.Destination.Country', type='full', match='all')
 odaeligible$lower.Destination.Country = NULL
+odaeligible$year[is.na(odaeligible$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_odaeligible"), value = odaeligible, row.names = F, overwrite = T)
 
 #Merge to create new column "Destination country ID" based on destination country
@@ -174,6 +184,7 @@ destinationcountryid$lower.Destination.Country <- lowerConv(destinationcountryid
 destinationcountryid <- destinationcountryid[!duplicated(destinationcountryid$Destination.Country),]
 destinationcountryid <- join(destinationcountryid, lower.Destination.Country, by='lower.Destination.Country', type='full', match='all')
 destinationcountryid$lower.Destination.Country = NULL
+destinationcountryid$year[is.na(destinationcountryid$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_destinationcountryid"), value = destinationcountryid, row.names = F, overwrite = T)
 
 
@@ -183,11 +194,13 @@ incomegroups$lower.destinationcountrytype <- lowerConv(incomegroups$destinationc
 incomegroups <- incomegroups[!duplicated(incomegroups$destinationcountrytype),]
 incomegroups <- join(incomegroups, lower.destinationcountrytype, by='lower.destinationcountrytype', type='full', match='all')
 incomegroups$lower.destinationcountrytype = NULL
+incomegroups$year[is.na(incomegroups$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_incomegroups"), value = incomegroups, row.names = F, overwrite = T)
 
 #Merge to create new column "Deflator" based on Deflator type
 deflators <- dbReadTable(con, c("repo", "fts_deflators"))
 deflators <- join(deflators, deflatortype, by='deflatortype', type='full', match='all')
+deflators$year[is.na(deflators$year)] <- current_year
 dbWriteTable(con, name = c("repo","fts_deflators"), value = deflators, row.names = F, overwrite = T)
 
 dbDisconnect(con)
