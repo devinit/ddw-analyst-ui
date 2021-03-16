@@ -10,6 +10,7 @@ class TestRobotTxt(TestCase):
         assert response['content-type'] == 'text/plain'
         lines = response.content.decode().splitlines()
         assert lines[0] == 'User-Agent: *'
+        assert lines[1] == 'Disallow: /api/*'
 
     def test_post_disallowed(self):
         client = APIClient()
