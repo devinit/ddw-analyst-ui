@@ -181,8 +181,4 @@ describe('The Query Builder', () => {
   xit('previews a dataset', () => {
     // TODO: create test
   });
-
-  xit('makes a copy of a dataset', () => {
-    // TODO: create test
-  });
 });

@@ -17,7 +17,6 @@ interface OperationFormProps {
   previewing?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
   onDeleteOperation?: (operation: OperationMap) => void;
-  onDuplicateOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
   onPreview?: () => void;
   onReset?: () => void;
@@ -106,15 +105,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
     }
   };
 
-  const onDuplicate = () => {
-    if (props.operation && props.onDuplicateOperation) {
-      const operation = props.operation.withMutations((opn) =>
-        opn.delete('id').set('name', `Copy of ${opn.get('name')}`),
-      );
-      props.onDuplicateOperation(operation);
-    }
-  };
-
   const values: Partial<Operation> = props.operation ? props.operation.toJS() : {};
 
   return (
@@ -143,6 +133,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               onFocus={setFocusedField}
               onBlur={resetFocus}
               disabled={!!values.id && !props.editable}
+              data-testid="op-name-field"
             />
             <Form.Control.Feedback type="invalid">
               {errors.name ? errors.name : null}
@@ -160,6 +151,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               onBlur={resetFocus}
               value={values.description ? values.description.toString() : ''}
               disabled={!!values.id && !props.editable}
+              data-testid="op-description-field"
             />
             <Form.Control.Feedback type="invalid">
               {errors.description ? errors.description : null}
@@ -211,14 +203,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
                 data-testid="qb-save-preview-item"
               >
                 {props.processing ? 'Saving ...' : 'Save & Preview'}
-              </Dropdown.Item>
-              <Dropdown.Item
-                eventKey="2"
-                hidden={!values.id}
-                onClick={onDuplicate}
-                data-testid="qb-duplicate-item"
-              >
-                Make a Copy
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey="3"

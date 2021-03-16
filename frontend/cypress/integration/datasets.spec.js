@@ -76,4 +76,41 @@ describe('The Datasets Pages', () => {
       // TODO: create test
     });
   });
+
+  it('makes a copy of my dataset', () => {
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/datasets/mine/', datasets);
+    });
+    cy.visit('/');
+    cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
+    cy.url().should('include', '/queries/build');
+    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
+    cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
+    cy.get('.form-check-input').should('be.checked');
+    cy.get('[data-testid="active-data-source"]')
+      .children()
+      .eq(1)
+      .contains('Countries Being Left Behind');
+  });
+
+  it('makes a copy of a published dataset', () => {
+    cy.fixture('datasets').then((datasets) => {
+      datasets.results = datasets.results.map((dataset) => {
+        dataset.is_draft = false;
+
+        return dataset;
+      });
+      cy.intercept('api/datasets/', datasets);
+    });
+    cy.visit('/datasets/');
+    cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
+    cy.url().should('include', '/queries/build');
+    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
+    cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
+    cy.get('.form-check-input').should('not.be.checked');
+    cy.get('[data-testid="active-data-source"]')
+      .children()
+      .eq(1)
+      .contains('Countries Being Left Behind');
+  });
 });
