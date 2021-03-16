@@ -47,14 +47,6 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
   return (
     <React.Fragment>
       <Form.Group>
-        <Form.Label className="bmd-label-floating">Columns</Form.Label>
-        <CheckboxGroup
-          options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-          selectedOptions={props.columns}
-          onUpdateOptions={props.onUpdateColumns}
-        />
-      </Form.Group>
-      <Form.Group>
         <Button
           variant="danger"
           size="sm"
@@ -75,6 +67,14 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           <i className="material-icons mr-1">check_box_outline_blank</i>
           Deselect All
         </Button>
+      </Form.Group>
+      <Form.Group>
+        <Form.Label className="bmd-label-floating">Columns</Form.Label>
+        <CheckboxGroup
+          options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
+          selectedOptions={props.columns}
+          onUpdateOptions={props.onUpdateColumns}
+        />
       </Form.Group>
     </React.Fragment>
   );
