@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'social_django',
     'rest_social_auth',
     'knox',
-    'webpack_loader'
+    'webpack_loader',
+    'ddw_analyst_ui',
 ]
 
 REST_FRAMEWORK = {
