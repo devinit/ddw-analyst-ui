@@ -1,18 +1,19 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Form, Checkbox, CheckboxProps, DropdownItemProps, Segment } from 'semantic-ui-react';
+import { Checkbox, CheckboxProps, DropdownItemProps, Form, Segment } from 'semantic-ui-react';
+import styled from 'styled-components';
 
-interface SelectQueryBuilderProps {
+interface ComponentProps {
   options: DropdownItemProps[];
   selectedOptions?: string[];
   onUpdateOptions?: (options: string) => void;
 }
 
-const segment_style = {
-  height: 350,
-  overflowY: 'scroll',
-};
+const StyledSegment = styled(Segment)`
+  height: 350;
+  overflowy: 'scroll';
+`;
 
-const CheckboxGroup: FunctionComponent<SelectQueryBuilderProps> = (props) => {
+const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   const [checkboxes, addCheckboxes] = useState<string[] | undefined>(
     props.selectedOptions && props.selectedOptions.length > 0 ? props.selectedOptions : [],
   );
@@ -22,30 +23,24 @@ const CheckboxGroup: FunctionComponent<SelectQueryBuilderProps> = (props) => {
     }
   }, [checkboxes]);
 
-  const onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: CheckboxProps) => {
-    let updatedCheckboxes: string[] | undefined = [];
-    if (data.checked) {
-      updatedCheckboxes = checkboxes?.concat(data.value as string);
-    } else {
-      updatedCheckboxes = checkboxes?.filter((checkbox) => {
-        return checkbox !== data.value;
-      });
-    }
+  const onChange = (
+    _event: React.SyntheticEvent<HTMLElement, Event>,
+    data: CheckboxProps,
+  ): void => {
+    const updatedCheckboxes: string[] | undefined = data.checked
+      ? checkboxes?.concat(data.value as string)
+      : checkboxes?.filter((checkbox) => checkbox !== data.value);
     addCheckboxes(updatedCheckboxes);
   };
 
-  const isChecked = (value: string) => {
-    if (props.selectedOptions && props.selectedOptions.length > 0) {
-      const item = props.selectedOptions.find((c: string) => c === value);
-
-      return item ? true : false;
-    } else {
-      return false;
-    }
+  const isChecked = (value: string): boolean => {
+    return props.selectedOptions && props.selectedOptions.length > 0
+      ? !!props.selectedOptions.find((c: string) => c === value)
+      : false;
   };
 
   return (
-    <Segment style={segment_style}>
+    <StyledSegment>
       {props.options.map(({ key, text, value }) => (
         <Form.Field key={key}>
           <Checkbox
@@ -57,7 +52,7 @@ const CheckboxGroup: FunctionComponent<SelectQueryBuilderProps> = (props) => {
           />
         </Form.Field>
       ))}
-    </Segment>
+    </StyledSegment>
   );
 };
 
