@@ -38,7 +38,7 @@ describe('The Query Builder', () => {
 
   it('that is not a draft requires both a name and description', () => {
     // Visit query builder type in name and choose datasource
-    cy.get('[data-testid=sidebar-link-query-builder]').click();
+    cy.visit('/queries/build');
     cy.get('[name="name"]').focus().type('My Test Dataset');
     cy.get('[name="description"]').focus().type('My Test Dataset Description');
     cy.get('.search').eq(1).click({ force: true });
@@ -52,8 +52,10 @@ describe('The Query Builder', () => {
     cy.get('[name="name"]').eq(1).type('Dataset Step Test');
     cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
     cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
-    cy.get('[data-testid="qb-select-columns"]').type('code{enter}');
-    cy.get('[data-testid="qb-select-columns"]').type('name{enter}{esc}');
+
+    // Check the first and second checkbox
+    cy.get('.selectColumnCheckbox > input').eq(0).check({force: true});
+    cy.get('.selectColumnCheckbox > input').eq(1).check({force: true});
 
     // Save create step
     cy.get('[data-testid="qb-step-preview-button"]').click();
