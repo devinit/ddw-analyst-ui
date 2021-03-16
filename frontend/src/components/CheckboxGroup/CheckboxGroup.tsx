@@ -39,18 +39,38 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
       : false;
   };
 
+  const groupIntoRows = (options: DropdownItemProps[]): DropdownItemProps[][] => {
+    const rows: DropdownItemProps[][] = [];
+    const maxPerRow = 3;
+    for (let index = 0; index < options.length; index++) {
+      const option = options[index];
+      const latestRow = rows[rows.length - 1];
+      if (index % maxPerRow && latestRow?.length < maxPerRow) {
+        latestRow.push(option);
+      } else {
+        rows.push([option]);
+      }
+    }
+
+    return rows;
+  };
+
   return (
     <StyledSegment>
-      {props.options.map(({ key, text, value }) => (
-        <Form.Field key={key}>
-          <Checkbox
-            checked={isChecked(value as string)}
-            label={text}
-            value={value as string}
-            onChange={onChange}
-            className={'selectColumnCheckbox'}
-          />
-        </Form.Field>
+      {groupIntoRows(props.options).map((row, index) => (
+        <div key={`${index}`} className="row">
+          {row.map(({ key, text, value }) => (
+            <Form.Field key={key} className="col-md-4">
+              <Checkbox
+                checked={isChecked(value as string)}
+                label={text}
+                value={value as string}
+                onChange={onChange}
+                className={'selectColumnCheckbox'}
+              />
+            </Form.Field>
+          ))}
+        </div>
       ))}
     </StyledSegment>
   );
