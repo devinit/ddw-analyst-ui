@@ -77,14 +77,14 @@ describe('The Datasets Pages', () => {
     });
   });
 
-  it('makes a copy of a dataset', () => {
+  it('makes a copy of my dataset', () => {
     cy.fixture('datasets').then((datasets) => {
       cy.intercept('api/datasets/mine/', datasets);
     });
     cy.visit('/');
-    cy.get('[data-testid="dataset-duplicate"]').eq(2).click({ force: true });
-    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test Three');
-    cy.get('[data-testid="op-description-field"]').should('have.value', 'This is it');
+    cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
+    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
+    cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
     cy.get('.form-check-input').should('be.checked');
     cy.get('[data-testid="active-data-source"]')
       .children()
@@ -93,13 +93,18 @@ describe('The Datasets Pages', () => {
   });
 
   it('makes a copy of a published dataset', () => {
-    cy.fixture('publishedDatasets').then((datasets) => {
+    cy.fixture('datasets').then((datasets) => {
+      datasets.results = datasets.results.map((dataset) => {
+        dataset.is_draft = false;
+
+        return dataset;
+      });
       cy.intercept('api/datasets/', datasets);
     });
     cy.visit('/datasets/');
-    cy.get('[data-testid="dataset-duplicate"]').click({ force: true });
-    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test Four');
-    cy.get('[data-testid="op-description-field"]').should('have.value', 'This is it');
+    cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
+    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
+    cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
     cy.get('.form-check-input').should('not.be.checked');
     cy.get('[data-testid="active-data-source"]')
       .children()
