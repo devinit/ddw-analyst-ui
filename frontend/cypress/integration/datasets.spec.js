@@ -83,6 +83,7 @@ describe('The Datasets Pages', () => {
     });
     cy.visit('/');
     cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
+    cy.url().should('include', '/queries/build');
     cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
     cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
     cy.get('.form-check-input').should('be.checked');
@@ -103,6 +104,7 @@ describe('The Datasets Pages', () => {
     });
     cy.visit('/datasets/');
     cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
+    cy.url().should('include', '/queries/build');
     cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
     cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
     cy.get('.form-check-input').should('not.be.checked');
