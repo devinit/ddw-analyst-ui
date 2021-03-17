@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import { Router } from 'react-router';
@@ -95,10 +96,13 @@ test('calls the onClick function only when one is specified', () => {
     <Router history={history}>
       <SidebarLink to="link" icon="home" onClick={onClickProp} />
     </Router>,
-  ).toJSON();
+  );
+  const instance = renderer.root;
 
-  if (renderer) {
-    renderer.props.onClick(new CustomEvent('click'));
+  if (instance) {
+    (instance.children[0] as TestRenderer.ReactTestInstance).props.onClick(
+      new CustomEvent('click'),
+    );
     expect(onClickProp).toBeCalledTimes(1);
   }
 });
@@ -106,29 +110,27 @@ test('calls the onClick function only when one is specified', () => {
 test('navigates to the link when one is specified', () => {
   const history = createBrowserHistory();
   history.push = jest.fn();
-  const renderer = TestRenderer.create(
+  const testID = 'sidebar-link';
+  render(
     <Router history={history}>
-      <SidebarLink to="link" icon="home" />
+      <SidebarLink to="link" icon="home" data-testid={testID} />
     </Router>,
-  ).toJSON();
+  );
+  fireEvent.click(screen.getByTestId(testID));
 
-  if (renderer) {
-    renderer.props.onClick(new CustomEvent('click'));
-    expect(history.push).toBeCalledWith('link');
-  }
+  expect(history.push).toBeCalledWith('link');
 });
 
 test('does not navigate when a # link is passed', () => {
   const history = createBrowserHistory();
   history.push = jest.fn();
-  const renderer = TestRenderer.create(
+  const testID = 'sidebar-link';
+  render(
     <Router history={history}>
-      <SidebarLink to="#link" icon="home" />
+      <SidebarLink to="#link" icon="home" data-testid={testID} />
     </Router>,
-  ).toJSON();
+  );
+  fireEvent.click(screen.getByTestId(testID));
 
-  if (renderer) {
-    renderer.props.onClick(new CustomEvent('click'));
-    expect(history.push).not.toBeCalled();
-  }
+  expect(history.push).not.toBeCalled();
 });
