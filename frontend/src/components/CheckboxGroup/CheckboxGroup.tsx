@@ -1,8 +1,12 @@
+import { List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Checkbox, CheckboxProps, DropdownItemProps, Form, Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { Filters, OperationStepMap } from '../../types/operations';
+import { BasicModal } from '../BasicModal';
 
 interface ComponentProps {
+  steps?: List<OperationStepMap>;
   options: DropdownItemProps[];
   selectedOptions?: string[];
   onUpdateOptions?: (options: string) => void;
@@ -17,6 +21,9 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   const [checkboxes, addCheckboxes] = useState<string[] | undefined>(
     props.selectedOptions && props.selectedOptions.length > 0 ? props.selectedOptions : [],
   );
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>('');
+
   useEffect(() => {
     if (props.onUpdateOptions) {
       props.onUpdateOptions(JSON.stringify({ columns: checkboxes }));
@@ -31,12 +38,37 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
       ? checkboxes?.concat(data.value as string)
       : checkboxes?.filter((checkbox) => checkbox !== data.value);
     addCheckboxes(updatedCheckboxes);
+    validateCheckboxOptions(data.value as string, data.checked);
   };
 
   const isChecked = (value: string): boolean => {
     return props.selectedOptions && props.selectedOptions.length > 0
       ? !!props.selectedOptions.find((c: string) => c === value)
       : false;
+  };
+
+  const validateCheckboxOptions = (
+    checkboxValue: string,
+    checkboxState: boolean | undefined,
+  ): void => {
+    const { steps } = props;
+    steps &&
+      steps.map((step) => {
+        const options = step.get('query_kwargs') as string;
+        const { filters }: Filters = options ? JSON.parse(options) : { filters: [] };
+        filters.flat().reduce(function (result, filter) {
+          if (filter && filter.field === checkboxValue && !checkboxState) {
+            setShowModal(true);
+            setModalMessage(
+              `Notice that ${filter.field
+                .split('_')
+                .join(' ')} is used in a filter step, deselecting it here may break this query.`,
+            );
+          }
+
+          return result;
+        }, []);
+      });
   };
 
   const groupIntoRows = (options: DropdownItemProps[]): DropdownItemProps[][] => {
@@ -55,24 +87,33 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     return rows;
   };
 
+  const toggleShowModal = () => {
+    setShowModal(false);
+  };
+
   return (
-    <StyledSegment>
-      {groupIntoRows(props.options).map((row, index) => (
-        <div key={`${index}`} className="row">
-          {row.map(({ key, text, value }) => (
-            <Form.Field key={key} className="col-md-4">
-              <Checkbox
-                checked={isChecked(value as string)}
-                label={text}
-                value={value as string}
-                onChange={onChange}
-                className={'selectColumnCheckbox'}
-              />
-            </Form.Field>
-          ))}
-        </div>
-      ))}
-    </StyledSegment>
+    <>
+      <BasicModal show={showModal} onHide={toggleShowModal}>
+        {modalMessage}
+      </BasicModal>
+      <StyledSegment>
+        {groupIntoRows(props.options).map((row, index) => (
+          <div key={`${index}`} className="row">
+            {row.map(({ key, text, value }) => (
+              <Form.Field key={key} className="col-md-4">
+                <Checkbox
+                  checked={isChecked(value as string)}
+                  label={text}
+                  value={value as string}
+                  onChange={onChange}
+                  className={'selectColumnCheckbox'}
+                />
+              </Form.Field>
+            ))}
+          </div>
+        ))}
+      </StyledSegment>
+    </>
   );
 };
 
