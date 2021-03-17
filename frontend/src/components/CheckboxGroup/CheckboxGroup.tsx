@@ -9,8 +9,8 @@ interface ComponentProps {
 }
 
 const StyledSegment = styled(Segment)`
-  height: 350;
-  overflowy: 'scroll';
+  max-height: 350px;
+  overflow-y: scroll;
 `;
 
 const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
