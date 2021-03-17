@@ -47,29 +47,29 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
   return (
     <React.Fragment>
       <Form.Group>
-        <Button
-          variant="danger"
-          size="sm"
-          onClick={onSelectAll}
-          hidden={!props.editable}
-          data-testid="qb-select-all-button"
-        >
-          <i className="material-icons mr-1">check_box</i>
-          Select All
-        </Button>
-        <Button
-          variant="danger"
-          size="sm"
-          onClick={onDeselectAll}
-          hidden={!props.editable}
-          data-testid="qb-select-none-button"
-        >
-          <i className="material-icons mr-1">check_box_outline_blank</i>
-          Deselect All
-        </Button>
-      </Form.Group>
-      <Form.Group>
         <Form.Label className="bmd-label-floating">Columns</Form.Label>
+        <Form.Row>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onSelectAll}
+            hidden={!props.editable}
+            data-testid="qb-select-all-button"
+          >
+            <i className="material-icons mr-1">check_box</i>
+            Select All
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onDeselectAll}
+            hidden={!props.editable}
+            data-testid="qb-select-none-button"
+          >
+            <i className="material-icons mr-1">check_box_outline_blank</i>
+            Deselect All
+          </Button>
+        </Form.Row>
         <CheckboxGroup
           options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
           selectedOptions={props.columns}
