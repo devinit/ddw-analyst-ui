@@ -71,6 +71,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           </Button>
         </Form.Row>
         <CheckboxGroup
+          steps={props.steps}
           options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
           selectedOptions={props.columns}
           onUpdateOptions={props.onUpdateColumns}
