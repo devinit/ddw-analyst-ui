@@ -86,6 +86,7 @@ codename <- dbReadTable(con, c("repo","fts_codenames"))
 codename$lower.Donor <- lowerConv(codename$Donor)
 codename <- codename[!duplicated(codename$Donor),]
 codename$Donor <- NULL
+codename$year <- NULL
 data$lower.Donor <- lowerConv(data$Donor)
 data$lower.Recipient.Organization <- lowerConv(data$Recipient.Organization)
 
@@ -97,6 +98,7 @@ privatemoney <- dbReadTable(con, c("repo", "fts_privatemoney"))
 privatemoney$lower.Donor <- lowerConv(privatemoney$Donor)
 privatemoney <- privatemoney[!duplicated(privatemoney$Donor),]
 privatemoney$Donor <- NULL
+privatemoney$year <- NULL
 data <- join(data, privatemoney, by='lower.Donor', type='left', match='first')
 
 #Merge to create new column "Donor DAC region" based on donor name
@@ -104,6 +106,7 @@ donordacregion <- dbReadTable(con, c("repo", "fts_dacregion"))
 donordacregion$lower.Donor <- lowerConv(donordacregion$Donor)
 donordacregion <- donordacregion[!duplicated(donordacregion$Donor),]
 donordacregion$Donor <- NULL
+donordacregion$year <- NULL
 data <- join(data, donordacregion, by='lower.Donor', type='left', match='first')
 
 #Merge to create new column "Donor Country ID" based on donor name
@@ -111,13 +114,15 @@ donorscountryid <- dbReadTable(con, c("repo", "fts_donorscountryid"))
 donorscountryid$lower.Donor <- lowerConv(donorscountryid$Donor)
 donorscountryid <- donorscountryid[!duplicated(donorscountryid$Donor),]
 donorscountryid$Donor <- NULL
+donorscountryid$year <- NULL
 data <- join(data, donorscountryid, by='lower.Donor', type='left', match='first')
 
 #Merge to create new column "Appealing agency code name" based on recipient organisation name
 recipientcodename <- dbReadTable(con, c("repo", "fts_recipientcodename"))
 recipientcodename$lower.Recipient.Organization <- lowerConv(recipientcodename$Recipient.Organization)
 recipientcodename <- recipientcodename[!duplicated(recipientcodename$Recipient.Organization),]
-recipientcodename$Recipient.Organization <- NULL 
+recipientcodename$Recipient.Organization <- NULL
+recipientcodename$year <- NULL
 data <- join(data, recipientcodename, by='lower.Recipient.Organization', type='left', match='first')
 
 #Merge to create new column "Recip Org NGO type" based on recipient organisation name
@@ -125,6 +130,7 @@ ngotype <- dbReadTable(con, c("repo", "fts_ngotype"))
 ngotype$lower.Recipient.Organization <- lowerConv(ngotype$Recipient.Organization)
 ngotype <- ngotype[!duplicated(ngotype$Recipient.Organization),]
 ngotype$Recipient.Organization <- NULL
+ngotype$year <- NULL
 data <- join(data, ngotype, by='lower.Recipient.Organization', type='left', match='first')
 
 #Merge to create new column "Channels of delivery" based on recipient organisation name
@@ -132,6 +138,7 @@ deliverychannels <- dbReadTable(con, c("repo", "fts_deliverychannels"))
 deliverychannels$lower.Recipient.Organization <- lowerConv(deliverychannels$Recipient.Organization)
 deliverychannels <- deliverychannels[!duplicated(deliverychannels$Recipient.Organization),]
 deliverychannels$Recipient.Organization <- NULL
+deliverychannels$year <- NULL
 data <- join(data, deliverychannels, by='lower.Recipient.Organization', type='left', match='first')
 
 #Merge to create new column "Recipient country ID" based on recipient organisation name
@@ -139,6 +146,7 @@ recipientcountryid <- dbReadTable(con, c("repo", "fts_recipientcountryid"))
 recipientcountryid$lower.Recipient.Organization <- lowerConv(recipientcountryid$Recipient.Organization)
 recipientcountryid <- recipientcountryid[!duplicated(recipientcountryid$Recipient.Organization),]
 recipientcountryid$Recipient.Organization <- NULL
+recipientcountryid$year <- NULL
 data <- join(data, recipientcountryid, by='lower.Recipient.Organization', type='left', match='first')
 
 #Merge to create new column "ODA eligible" based on destination country
@@ -146,14 +154,16 @@ odaeligible <- dbReadTable(con, c("repo", "fts_odaeligible"))
 data$lower.Destination.Country <- lowerConv(data$Destination.Country)
 odaeligible$lower.Destination.Country <- lowerConv(odaeligible$Destination.Country)
 odaeligible <- odaeligible[!duplicated(odaeligible$Destination.Country),]
-odaeligible$Destination.Country <- NULL 
+odaeligible$Destination.Country <- NULL
+odaeligible$year <- NULL
 data <- join(data, odaeligible, by='lower.Destination.Country', type='left', match='all')
 
 #Merge to create new column "Destination country ID" based on destination country
 destinationcountryid <- dbReadTable(con, c("repo", "fts_destinationcountryid"))
 destinationcountryid$lower.Destination.Country <- lowerConv(destinationcountryid$Destination.Country)
 destinationcountryid <- destinationcountryid[!duplicated(destinationcountryid$Destination.Country),]
-destinationcountryid$Destination.Country <- NULL 
+destinationcountryid$Destination.Country <- NULL
+destinationcountryid$year <- NULL
 data <- join(data, destinationcountryid, by='lower.Destination.Country', type='left', match='all')
 
 #Create new column "Destination country type"
@@ -165,10 +175,11 @@ incomegroups <- dbReadTable(con, c("repo", "fts_incomegroups"))
 data$lower.destinationcountrytype <- lowerConv(data$destinationcountrytype)
 incomegroups$lower.destinationcountrytype <- lowerConv(incomegroups$destinationcountrytype)
 incomegroups <- incomegroups[!duplicated(incomegroups$destinationcountrytype),]
-incomegroups$destinationcountrytype <- NULL 
+incomegroups$destinationcountrytype <- NULL
+incomegroups$year <- NULL
 data <- join(data, incomegroups, by='lower.destinationcountrytype', type='left', match='all')
 
-#Create new column "Domestic" 
+#Create new column "Domestic"
 data$domesticresponse <- ifelse(data$donorcountryid==data$destinationcountryid,TRUE,FALSE)
 data$domesticresponse[is.na(data$domesticresponse)] <- FALSE
 
@@ -178,6 +189,7 @@ data$deflatortype[is.na(data$deflatortype)] <- FALSE
 
 #Merge to create new column "Deflator" based on Deflator type
 deflators <- dbReadTable(con, c("repo", "fts_deflators"))
+deflators$year <- NULL
 data <- join(data, deflators, by='deflatortype', type='left', match='all')
 data <- transform(data,amountDeflated=as.numeric(amountUSD)/as.numeric(Deflators))
 data <- transform(data,amountDeflatedMillions=amountDeflated/1000000)
