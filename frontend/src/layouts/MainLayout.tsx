@@ -15,6 +15,7 @@ import { AdminLayout } from '../components/AdminLayout';
 import { HelpNavItem } from '../components/Help';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
+import { AsyncAdvancedQueryBuilder } from '../pages/AdvancedQueryBuilder';
 import { AsyncDataSourceHistory } from '../pages/DataSourceHistory';
 import { AsyncDataSourceQueries } from '../pages/DataSourceQueries';
 import { AsyncDataSources } from '../pages/DataSources';
@@ -252,6 +253,12 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/" exact component={AsyncHome} />
               <Route path="/datasets" exact component={AsyncPublishedDatasets} />
               <Route path="/sources" exact component={AsyncDataSources} />
+              <Route path="/queries/build/advanced/" exact component={AsyncAdvancedQueryBuilder} />
+              <Route
+                path="/queries/build/advanced/:id"
+                exact
+                component={AsyncAdvancedQueryBuilder}
+              />
               <Route path="/queries/build" exact component={AsyncQueryBuilder} />
               <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
               <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
