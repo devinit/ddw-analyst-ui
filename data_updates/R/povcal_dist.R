@@ -1,4 +1,4 @@
-list.of.packages <- c("data.table","XML","RPostgreSQL")
+list.of.packages <- c("data.table","XML","RPostgreSQL","here")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-project.org")
 lapply(list.of.packages, require, character.only=T)
