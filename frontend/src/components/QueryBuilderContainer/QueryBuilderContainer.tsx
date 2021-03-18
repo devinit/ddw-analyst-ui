@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { useOperation } from '../../hooks/operations';
+import { useOperation } from '../../hooks';
 
 type ComponentProps = {
   operationID?: number;
