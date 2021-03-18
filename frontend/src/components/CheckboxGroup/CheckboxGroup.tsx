@@ -55,20 +55,100 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     steps &&
       steps.map((step) => {
         const options = step.get('query_kwargs') as string;
-        const { filters }: Filters = options ? JSON.parse(options) : { filters: [] };
-        filters.flat().reduce(function (result, filter) {
-          if (filter && filter.field === checkboxValue && !checkboxState) {
-            setShowModal(true);
-            setModalMessage(
-              `Notice that ${filter.field
-                .split('_')
-                .join(' ')} is used in a filter step, deselecting it here may break this query.`,
-            );
-          }
-
-          return result;
-        }, []);
+        console.log(`Options are ${options}`);
+        toggleModalState(options, checkboxState, checkboxValue);
       });
+  };
+
+  const toggleModalState = (
+    options: string,
+    checkboxState: boolean | undefined,
+    checkboxValue: string,
+  ): void => {
+    const parsedOptions = parseOptions(options);
+    parsedOptions?.values?.flat().reduce(function (result, query) {
+      if (
+        query &&
+        query.field === checkboxValue &&
+        !checkboxState &&
+        parsedOptions.id === 'filters'
+      ) {
+        setShowModal(true);
+        setModalMessage(
+          `Notice that ${query.field
+            .split('_')
+            .join(' ')} is used in a filter step, deselecting it here may break this query.`,
+        );
+      }
+      if (
+        query &&
+        query.operational_column === checkboxValue &&
+        !checkboxState &&
+        parsedOptions.id === 'operational_column'
+      ) {
+        setShowModal(true);
+        setModalMessage(
+          `Notice that ${query.operational_column
+            .split('_')
+            .join(' ')} is used in a aggregate step, deselecting it here may break this query.`,
+        );
+      }
+      if (parsedOptions.id === 'join_on') {
+        let joinColumn = '';
+        Object.keys(query.join_on).forEach(function (key) {
+          joinColumn = key;
+        });
+        if (joinColumn === checkboxValue && !checkboxState) {
+          setShowModal(true);
+          setModalMessage(
+            `Notice that ${joinColumn
+              .split('_')
+              .join(' ')} is used in a join step, deselecting it here may break this query.`,
+          );
+        }
+      }
+
+      return result;
+    }, []);
+  };
+
+  const parseOptions = (options: string) => {
+    const parsedOptions = JSON.parse(options);
+    if (parsedOptions.hasOwnProperty('filters')) {
+      const { filters }: Filters = options ? parsedOptions : { filters: [] };
+
+      return {
+        id: 'filters',
+        values: [filters],
+      };
+    }
+    if (parsedOptions.hasOwnProperty('operational_column')) {
+      const aggregateOptions = options
+        ? JSON.parse(options)
+        : { group_by: [], agg_func_name: '', operational_column: '' };
+
+      return {
+        id: 'operational_column',
+        values: [aggregateOptions],
+      };
+    }
+    if (parsedOptions.hasOwnProperty('join_on')) {
+      const joinOptions = options
+        ? JSON.parse(options)
+        : {
+            table_name: '',
+            schema_name: '',
+            join_on: {},
+            columns_x: [],
+            columns_y: [],
+            join_how: '',
+          };
+
+      return {
+        id: 'join_on',
+        values: [joinOptions],
+      };
+    }
   };
 
   const groupIntoRows = (options: DropdownItemProps[]): DropdownItemProps[][] => {
