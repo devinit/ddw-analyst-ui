@@ -1,10 +1,11 @@
 import { List, Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { DropdownItemProps } from 'semantic-ui-react';
 import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
+import { CheckboxGroup } from '../CheckboxGroup';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface SelectQueryBuilderProps {
@@ -29,13 +30,6 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     );
   }, []);
 
-  const onChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    event.stopPropagation();
-    if (props.onUpdateColumns) {
-      props.onUpdateColumns(JSON.stringify({ columns: data.value as string[] }));
-    }
-  };
-
   const onSelectAll = () => {
     if (props.onUpdateColumns) {
       const columns = props.source.get('columns') as ColumnList;
@@ -54,42 +48,33 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     <React.Fragment>
       <Form.Group>
         <Form.Label className="bmd-label-floating">Columns</Form.Label>
-        <Dropdown
-          placeholder="Select Columns"
-          fluid
-          multiple
-          search
-          selection
+        <Form.Row>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onSelectAll}
+            hidden={!props.editable}
+            data-testid="qb-select-all-button"
+          >
+            <i className="material-icons mr-1">check_box</i>
+            Select All
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onDeselectAll}
+            hidden={!props.editable}
+            data-testid="qb-select-none-button"
+          >
+            <i className="material-icons mr-1">check_box_outline_blank</i>
+            Deselect All
+          </Button>
+        </Form.Row>
+        <CheckboxGroup
           options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-          value={props.columns?.filter((column) =>
-            selectableColumns.find((col) => col.value === column),
-          )}
-          onChange={onChange}
-          disabled={!props.editable}
-          data-testid="qb-select-columns"
+          selectedOptions={props.columns}
+          onUpdateOptions={props.onUpdateColumns}
         />
-      </Form.Group>
-      <Form.Group>
-        <Button
-          variant="danger"
-          size="sm"
-          onClick={onSelectAll}
-          hidden={!props.editable}
-          data-testid="qb-select-all-button"
-        >
-          <i className="material-icons mr-1">check_box</i>
-          Select All
-        </Button>
-        <Button
-          variant="danger"
-          size="sm"
-          onClick={onDeselectAll}
-          hidden={!props.editable}
-          data-testid="qb-select-none-button"
-        >
-          <i className="material-icons mr-1">check_box_outline_blank</i>
-          Deselect All
-        </Button>
       </Form.Group>
     </React.Fragment>
   );

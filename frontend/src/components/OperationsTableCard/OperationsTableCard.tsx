@@ -143,6 +143,20 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     props.history.push(`/queries/build/${operation.get('id') as number}/`);
   };
 
+  const onDuplicateOperation = (operation: OperationMap) => {
+    props.actions.setOperation(operation, true);
+    props.history.push('/queries/build/');
+  };
+
+  const onDuplicate = (operation: OperationMap) => {
+    if (operation) {
+      const duplicateOperation = operation.withMutations((opn) =>
+        opn.delete('id').set('name', `Copy of ${opn.get('name')}`),
+      );
+      onDuplicateOperation(duplicateOperation);
+    }
+  };
+
   const renderOperations = (operations: List<OperationMap>, allowEdit = false) => {
     if (operations && operations.count()) {
       return operations.map((operation, index) => {
@@ -162,6 +176,14 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                   View Data
                 </DatasetActionLink>
               </OverlayTrigger>
+              <Button
+                variant="dark"
+                size="sm"
+                data-testid="dataset-duplicate"
+                onClick={() => onDuplicate(operation)}
+              >
+                Make a Copy
+              </Button>
               <Button variant="dark" size="sm" onClick={onViewSQLQuery(operation)}>
                 SQL Query
               </Button>

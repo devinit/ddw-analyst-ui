@@ -38,7 +38,7 @@ describe('The Query Builder', () => {
 
   it('that is not a draft requires both a name and description', () => {
     // Visit query builder type in name and choose datasource
-    cy.get('[data-testid=sidebar-link-query-builder]').click();
+    cy.visit('/queries/build');
     cy.get('[name="name"]').focus().type('My Test Dataset');
     cy.get('[name="description"]').focus().type('My Test Dataset Description');
     cy.get('.search').eq(1).click({ force: true });
@@ -52,8 +52,10 @@ describe('The Query Builder', () => {
     cy.get('[name="name"]').eq(1).type('Dataset Step Test');
     cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
     cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
-    cy.get('[data-testid="qb-select-columns"]').type('code{enter}');
-    cy.get('[data-testid="qb-select-columns"]').type('name{enter}{esc}');
+
+    // Check the first and second checkbox
+    cy.get('.selectColumnCheckbox > input').eq(0).check({force: true});
+    cy.get('.selectColumnCheckbox > input').eq(1).check({force: true});
 
     // Save create step
     cy.get('[data-testid="qb-step-preview-button"]').click();
@@ -96,17 +98,78 @@ describe('The Query Builder', () => {
     // TODO: create test
   });
 
-  xdescribe('SELECT step', () => {
-    xit('can select and deselect a column', () => {
-      // TODO: create test
+  describe('SELECT step', () => {
+    it('can select and deselect a column', () => {
+      // Visit query builder, type name and choose datasource
+      cy.fillOperationForm();
+
+      // Add step
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Fill create step form
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+      // Check the first checkbox
+      cy.get('.selectColumnCheckbox > input').eq(0).check({force: true});
+
+      // Make sure first checkbox is checked
+      cy.get('.selectColumnCheckbox > input').eq(0).should('be.checked');
+
+      // Uncheck the first checkbox
+      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({force: true});
+
+      // Make sure first checkbox is unchecked
+      cy.get('.selectColumnCheckbox > input').eq(0).should('not.be.checked');
+
     });
 
-    xit('can select & deselect all columns', () => {
-      // TODO: create test
+    it('can select & deselect all columns', () => {
+      // Visit query builder type name and choose datasource
+      cy.fillOperationForm();
+
+      // Add step
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Fill create step form
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+      // Check all checkboxes
+      cy.get('[data-testid="qb-select-all-button"').click({force: true});
+
+      // Make sure all checkboxes are checked
+      cy.get('.selectColumnCheckbox > input').should('be.checked');
+
+      // Uncheck all checkboxes
+      cy.get('[data-testid="qb-select-none-button"').click({force: true});
+
+      // Make sure all checkboxes are unchecked
+      cy.get('.selectColumnCheckbox > input').should('not.be.checked');
     });
 
-    xit('creates a select step', () => {
-      // TODO: create test
+    it('creates a select step', () => {
+      // Visit query builder, type name and choose datasource
+      cy.fillOperationForm();
+
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Fill create step form
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+      // Check the first checkbox
+      cy.get('.selectColumnCheckbox > input').eq(0).check({force: true});
+
+      // Save and create step
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+
+      // Check that we now have 1 step
+      cy.get('.list-group').find('.list-group-item').should('have.length', 1);
+
     });
   });
 
@@ -179,10 +242,6 @@ describe('The Query Builder', () => {
   });
 
   xit('previews a dataset', () => {
-    // TODO: create test
-  });
-
-  xit('makes a copy of a dataset', () => {
     // TODO: create test
   });
 });
