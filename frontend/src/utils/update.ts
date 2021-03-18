@@ -26,6 +26,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
     columns: [
       { name: 'Donor', caption: 'Donor', type: 'string', required: true },
       { name: 'codename', caption: 'Code Name', type: 'string', required: true },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -34,6 +35,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
     columns: [
       { name: 'Donor', caption: 'Donor', type: 'string', required: true },
       { name: 'Region', caption: 'Region', type: 'string', required: true },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -42,6 +44,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
     columns: [
       { name: 'deflatortype', caption: 'Deflator Type', type: 'string', required: true },
       { name: 'Deflators', caption: 'Deflators', type: 'number', required: true },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -55,6 +58,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         required: true,
       },
       { name: 'deliverychannels', caption: 'Delivery Channels', type: 'string', required: true },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -73,6 +77,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         type: 'string',
         required: true,
       },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -81,6 +86,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
     columns: [
       { name: 'Donor', caption: 'Donor', type: 'string', required: true },
       { name: 'donorcountryid', caption: 'Donor Country ID', type: 'string', required: true },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -94,6 +100,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         required: true,
       },
       { name: 'incomegroups', caption: 'Income Groups', type: 'string' },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -116,6 +123,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         required: true,
       },
       { name: 'ngotype', caption: 'NGO Type', type: 'string', required: true },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -135,6 +143,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         values: ['ODA-eligible', 'Non-ODA eligible'],
         required: true,
       },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -149,6 +158,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         values: ['no', 'private'],
         required: true,
       },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -162,6 +172,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         required: true,
       },
       { name: 'recipientcodename', caption: 'Recipient Code Name', type: 'string', required: true },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
   {
@@ -180,6 +191,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         type: 'string',
         required: true,
       },
+      { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
 ];
