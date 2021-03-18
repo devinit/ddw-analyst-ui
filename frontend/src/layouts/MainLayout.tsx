@@ -114,15 +114,31 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   data-testid="sidebar-link-published-datasets"
                 />
               </Sidebar.Item>
-              <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
+              <Sidebar.Item
+                active={this.state.activeRoute.includes('/queries/build/')}
+                collapseId="query-builder"
+              >
                 <Sidebar.Link
-                  to="/queries/build/"
-                  single
+                  root
+                  to="#query-builder"
                   icon="query_builder"
                   textNormal="Query Builder"
-                  onClick={this.setActiveRoute}
-                  data-testid="sidebar-link-query-builder"
                 />
+                <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
+                  <Sidebar.Link
+                    to="/queries/build/"
+                    textNormal="Basic Query Builder"
+                    onClick={this.setActiveRoute}
+                    data-testid="sidebar-link-query-builder"
+                  />
+                </Sidebar.Item>
+                <Sidebar.Item active={this.state.activeRoute === '/queries/build/advanced/'}>
+                  <Sidebar.Link
+                    to="/queries/build/advanced/"
+                    textNormal="Advanced Query Builder"
+                    onClick={this.setActiveRoute}
+                  />
+                </Sidebar.Item>
               </Sidebar.Item>
               <Sidebar.Item active={this.state.activeRoute === '/sources/'}>
                 <Sidebar.Link
