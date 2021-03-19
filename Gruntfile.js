@@ -1,6 +1,6 @@
 'use strict';
 /* eslint-disable @typescript-eslint/no-var-requires */
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const webpackConfig = require('./webpack.config');
 
 const webpackConfigProduction = merge(webpackConfig, {
