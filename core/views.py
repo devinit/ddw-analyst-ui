@@ -6,14 +6,11 @@ import csv
 import json
 import datetime
 import dateutil.parser
-import logging
-import traceback
 
 from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
-from django.core.mail import mail_admins
 from django.db import connections
 from django.db.models import Q
 from django.http import Http404, HttpResponse, StreamingHttpResponse
@@ -47,6 +44,7 @@ from data.db_manager import fetch_data, update_table_from_tuple, run_query
 from core.pypika_utils import QueryBuilder
 from data_updates.utils import ScriptExecutor, list_update_scripts
 from core.tasks import create_dataset_archive, create_table_archive
+from core.errors import handleUncaughtError
 
 
 logger = logging.getLogger(__name__)
@@ -64,11 +62,7 @@ class ListUpdateScripts(APIView):
             post_status = status.HTTP_200_OK
             return Response(content, status=post_status)
         except Exception as e:
-            tb = e.__traceback__
-            b = traceback.extract_tb(tb)
-            result = traceback.format_list(b)
-            # print(e.__traceba)
-            return Response({'error': type(e).__name__,'detail': result}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            handleUncaughtError(e)
 
 
 @csrf_exempt

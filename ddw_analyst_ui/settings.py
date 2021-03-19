@@ -212,7 +212,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'kaliithatmau@gmail.com'
 # EMAIL_HOST_USER = 'devinitautomailer@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'grad2016')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # Disable allowed host emails to admin
 LOGGING = {
