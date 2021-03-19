@@ -44,10 +44,8 @@ from data.db_manager import fetch_data, update_table_from_tuple, run_query
 from core.pypika_utils import QueryBuilder
 from data_updates.utils import ScriptExecutor, list_update_scripts
 from core.tasks import create_dataset_archive, create_table_archive
-from core.errors import handleUncaughtError
+from core.errors import handle_uncaught_error
 
-
-logger = logging.getLogger(__name__)
 class ListUpdateScripts(APIView):
     """
     Allow any user to list all update scripts
@@ -62,7 +60,7 @@ class ListUpdateScripts(APIView):
             post_status = status.HTTP_200_OK
             return Response(content, status=post_status)
         except Exception as e:
-            handleUncaughtError(e)
+            return handle_uncaught_error(e)
 
 
 @csrf_exempt
