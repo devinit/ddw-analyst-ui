@@ -29,22 +29,23 @@ from rest_framework.views import APIView
 
 from core import query
 from core.models import (Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
-                        ScheduledEventRunInstance, Sector, Source, Tag, Theme, FrozenData,
-                        SavedQueryData)
+                         ScheduledEventRunInstance, Sector, Source, Tag, Theme, FrozenData,
+                         SavedQueryData)
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
 from core.serializers import (DataSerializer, OperationSerializer,
-                            OperationStepSerializer, OperationDataColumnAliasSerializer,
-                            ReviewSerializer, ScheduledEventRunInstanceSerializer,
-                            ScheduledEventSerializer, SectorSerializer,
-                            SourceSerializer, TagSerializer, ThemeSerializer,
-                            UserSerializer, FrozenDataSerializer, SavedQueryDataSerializer)
+                              OperationStepSerializer, OperationDataColumnAliasSerializer,
+                              ReviewSerializer, ScheduledEventRunInstanceSerializer,
+                              ScheduledEventSerializer, SectorSerializer,
+                              SourceSerializer, TagSerializer, ThemeSerializer,
+                              UserSerializer, FrozenDataSerializer, SavedQueryDataSerializer)
 from data.db_manager import fetch_data, update_table_from_tuple, run_query
 from core.pypika_utils import QueryBuilder
 from data_updates.utils import ScriptExecutor, list_update_scripts
 from core.tasks import create_dataset_archive, create_table_archive
 from core.errors import handle_uncaught_error
+
 
 class ListUpdateScripts(APIView):
     """
@@ -55,7 +56,6 @@ class ListUpdateScripts(APIView):
 
     def get(self, request):
         try:
-            x = 2/0
             content = {"update_scripts": list_update_scripts()}
             post_status = status.HTTP_200_OK
             return Response(content, status=post_status)
@@ -95,6 +95,8 @@ def streaming_script_execute(request):
                 return HttpResponse(json.dumps(response_data), content_type='application/json', status=post_status)
         except exceptions.AuthenticationFailed:
             return redirect('/login/')
+        except Exception as e:
+            handle_uncaught_error(e)
     return redirect('/login/')
 
 
@@ -156,10 +158,12 @@ def streaming_export_view(request, pk):
     except Operation.DoesNotExist:
         raise Http404
     except json.decoder.JSONDecodeError as json_error:
-        JsonResponse({
+        return JsonResponse({
             'error': str(json_error),
             'error_type': 'JSONDecodeError'
         })
+    except Exception as e:
+        return handle_uncaught_error(e)
 
 
 class ViewData(APIView):
@@ -188,8 +192,8 @@ class ViewData(APIView):
             page_data = paginator.paginate_queryset(
                 serializer.data['data'], request)
             return paginator.get_paginated_response(page_data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
 
 class PreviewOperationData(APIView):
@@ -254,8 +258,8 @@ class ChangePassword(APIView):
                 content = {"validation": form.errors.as_data()}
                 post_status = status.HTTP_400_BAD_REQUEST
             return Response(content, status=post_status)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
 
 class SectorList(generics.ListCreateAPIView):
@@ -317,10 +321,7 @@ class OperationList(generics.ListCreateAPIView):
         """
         Filters to return the operations that are not for the currently authenticated user.
         """
-        try:
-            return Operation.objects.filter(Q(is_draft=False)).order_by('-updated_on')
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Operation.objects.filter(Q(is_draft=False)).order_by('-updated_on')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -348,8 +349,9 @@ class UserOperationList(generics.ListAPIView):
                 return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
             else:
                 return Operation.objects.all().order_by('-updated_on')
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            pass
+
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
@@ -402,8 +404,8 @@ class ViewSourceDatasets(APIView):
             else:
                 serializer = OperationSerializer(datasets, many=True)
                 return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
 
 class ViewSourceHistory(APIView):
@@ -411,7 +413,8 @@ class ViewSourceHistory(APIView):
     Get all FrozenData instances attached to a specific data source
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
     # queryset = FrozenData.objects.all()
     serializer_class = FrozenDataSerializer
 
@@ -438,8 +441,8 @@ class ViewSourceHistory(APIView):
             else:
                 serializer = FrozenDataSerializer(datasets, many=True)
                 return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
 
 class ViewUserSourceDatasets(APIView):
@@ -477,8 +480,8 @@ class ViewUserSourceDatasets(APIView):
             else:
                 serializer = OperationSerializer(datasets, many=True)
                 return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
 
 class OperationColumnAlias(generics.RetrieveUpdateDestroyAPIView):
@@ -613,8 +616,8 @@ class ScheduledEventList(APIView):
                 return paginator.get_paginated_response(serializer.data)
             serializer = ScheduledEventSerializer(scheduled_events, many=True)
             return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
     def post(self, request, format=None):
         try:
@@ -624,12 +627,7 @@ class ScheduledEventList(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            # logging.error("Exception occurred", exc_info=True)
-            # logger.exception('An error occured')
-            # print(f" THIS IS THE ERROR {}",e.__str__())
-            print(e)
-            # mail_admins('Error','500 error',fail_silently=False)
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return handle_uncaught_error(e)
 
 
 class ScheduledEventRunInstanceHistory(APIView):
@@ -657,15 +655,16 @@ class ScheduledEventRunInstanceHistory(APIView):
                 paginator = pagination_class()
                 page = paginator.paginate_queryset(
                     scheduled_event_run_instance, request)
-                serializer = ScheduledEventRunInstanceSerializer(page, many=True)
+                serializer = ScheduledEventRunInstanceSerializer(
+                    page, many=True)
 
                 return paginator.get_paginated_response(serializer.data)
             else:
                 serializer = ScheduledEventRunInstanceSerializer(
                     scheduled_event_run_instance, many=True)
                 return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
     def get_post_response(self, serializer, request):
         error_message = ''
@@ -716,8 +715,8 @@ class ScheduledEventRunInstanceDetail(APIView):
             serializer = ScheduledEventRunInstanceSerializer(
                 scheduled_event_run_instance)
             return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
     def put(self, request, pk, format=None):
         scheduled_event_run_instance = self.get_object(pk)
@@ -768,6 +767,8 @@ def streaming_tables_export_view(request, table_name, schema="repo"):
         frozen_table = False
     except SavedQueryData.DoesNotExist:
         data_table = False
+    except Exception as e:
+        return handle_uncaught_error(e)
 
     if table_name not in settings.QUERY_TABLES and not frozen_table and not data_table:
         return_result = [
@@ -810,13 +811,14 @@ class UpdateTableAPI(APIView):
             delete_query = table_query_builder.delete()
             insert_query = table_query_builder.insert(params)
 
-            return_result = update_table_from_tuple([delete_query, insert_query])
+            return_result = update_table_from_tuple(
+                [delete_query, insert_query])
             return_status_code = status.HTTP_500_INTERNAL_SERVER_ERROR if return_result[
                 0]['result'] == 'error' else status.HTTP_200_OK
 
             return HttpResponse(json.dumps(return_result), content_type='application/json', status=return_status_code)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
 
 class FrozenDataList(APIView):
@@ -830,8 +832,8 @@ class FrozenDataList(APIView):
             frozen_data = FrozenData.objects.all()
             serializer = FrozenDataSerializer(frozen_data, many=True)
             return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
     def post(self, request, format=None):
         serializer = FrozenDataSerializer(data=request.data)
@@ -862,12 +864,13 @@ class FrozenDataDetail(APIView):
             frozen_data = self.get_object(pk)
             serializer = FrozenDataSerializer(frozen_data)
             return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
     def put(self, request, pk, format=None):
         frozen_data = self.get_object(pk)
-        serializer = FrozenDataSerializer(frozen_data, data=request.data, partial=True)
+        serializer = FrozenDataSerializer(
+            frozen_data, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -890,15 +893,16 @@ class SavedQueryDataList(APIView):
     """ List all SavedQueryData or create a new one"""
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get(self, request, format=None):
         try:
             saved_query_data = SavedQueryData.objects.all()
             serializer = SavedQueryDataSerializer(saved_query_data, many=True)
             return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
     def post(self, request, format=None):
         serializer = SavedQueryDataSerializer(data=request.data)
@@ -919,7 +923,8 @@ class SavedQueryDataList(APIView):
 class SavedQueryDataDetail(APIView):
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_object(self, pk):
         try:
@@ -932,8 +937,8 @@ class SavedQueryDataDetail(APIView):
             saved_query_data = self.get_object(pk)
             serializer = SavedQueryDataSerializer(saved_query_data)
             return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
     def put(self, request, pk, format=None):
         saved_query_data = self.get_object(pk)
@@ -962,13 +967,15 @@ class ViewDatasetHistory(APIView):
     Get all SavedQueryData instances attached to a specific operation
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
     serializer_class = SavedQueryDataSerializer
 
     def get_queryset(self, pk, request):
         try:
             operation = Operation.objects.get(id=pk)
-            history = SavedQueryData.objects.filter(operation=operation).order_by('-created_on').distinct()
+            history = SavedQueryData.objects.filter(
+                operation=operation).order_by('-created_on').distinct()
             return history
         except Operation.DoesNotExist:
             raise Http404
@@ -987,8 +994,8 @@ class ViewDatasetHistory(APIView):
             else:
                 serializer = SavedQueryDataSerializer(history, many=True)
                 return Response(serializer.data)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)
 
 
 class EstimateQueryTime(APIView):
@@ -1011,5 +1018,5 @@ class EstimateQueryTime(APIView):
             operation = self.get_queryset(pk)
             estimate = query.querytime_estimate(operation=operation)
             return Response(estimate)
-        except:
-            return Response({'detail': 'An unknown error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return handle_uncaught_error(e)

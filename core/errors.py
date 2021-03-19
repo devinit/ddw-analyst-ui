@@ -16,7 +16,8 @@ class AliasUpdateError(APIException):
 
 def handle_uncaught_error(error):
     error_traceback = error.__traceback__
-    extracted_traceback = traceback.extract_tb(tb)
+    extracted_traceback = traceback.extract_tb(error_traceback)
     result = traceback.format_list(extracted_traceback)
-    mail_admins(type(error).__name__, result[0], fail_silently=False)
+    message = result[0]
+    mail_admins(f'DDW ANALYST UI {type(error).__name__}',message , fail_silently=False)
     return Response({'detail': f'{str(error).capitalize()} error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
