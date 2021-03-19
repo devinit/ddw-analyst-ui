@@ -96,7 +96,7 @@ def streaming_script_execute(request):
         except exceptions.AuthenticationFailed:
             return redirect('/login/')
         except Exception as e:
-            handle_uncaught_error(e)
+            return handle_uncaught_error(e)
     return redirect('/login/')
 
 
@@ -349,8 +349,8 @@ class UserOperationList(generics.ListAPIView):
                 return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
             else:
                 return Operation.objects.all().order_by('-updated_on')
-        except Exception as e:
-            pass
+        except Operation.DoesNotExist:
+            raise Http404
 
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
