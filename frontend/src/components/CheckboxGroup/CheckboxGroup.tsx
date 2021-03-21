@@ -82,29 +82,72 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
       }
       if (
         query &&
-        query.operational_column === checkboxValue &&
+        query.operational_column === checkboxValue.substr(0, checkboxValue.lastIndexOf('_')) &&
         !checkboxState &&
-        parsedOptions.id === 'operational_column'
+        parsedOptions.id === 'aggregate'
       ) {
         setShowModal(true);
         setModalMessage(
           `Notice that ${query.operational_column
             .split('_')
-            .join(' ')} is used in a aggregate step, deselecting it here may break this query.`,
+            .join(' ')} is used in an aggregate step, deselecting it here may break this query.`,
         );
       }
       if (parsedOptions.id === 'join_on') {
-        let joinColumn = '';
-        Object.keys(query.join_on).forEach(function (key) {
-          joinColumn = key;
-        });
-        if (joinColumn === checkboxValue && !checkboxState) {
-          setShowModal(true);
-          setModalMessage(
-            `Notice that ${joinColumn
-              .split('_')
-              .join(' ')} is used in a join step, deselecting it here may break this query.`,
-          );
+        const keys = Object.keys(query.join_on);
+        for (const iterator of keys) {
+          if (iterator === checkboxValue && !checkboxState) {
+            setShowModal(true);
+            setModalMessage(
+              `Notice that ${iterator
+                .split('_')
+                .join(' ')} is used in a join step, deselecting it here may break this query.`,
+            );
+            break;
+          }
+        }
+      }
+      if (
+        query &&
+        query.operational_column === checkboxValue &&
+        !checkboxState &&
+        parsedOptions.id === 'scalar'
+      ) {
+        setShowModal(true);
+        setModalMessage(
+          `Notice that ${query.operational_column
+            .split('_')
+            .join(
+              ' ',
+            )} is used in a scalar transform step, deselecting it here may break this query.`,
+        );
+      }
+      if (query && query.operational_columns && !checkboxState && parsedOptions.id === 'multi') {
+        for (const iterator of query.operational_columns) {
+          if (iterator === checkboxValue && !checkboxState) {
+            setShowModal(true);
+            setModalMessage(
+              `Notice that ${iterator
+                .split('_')
+                .join(
+                  ' ',
+                )} is used in a multi transform step, deselecting it here may break this query.`,
+            );
+            break;
+          }
+        }
+      }
+      if (query && query.over && !checkboxState && parsedOptions.id === 'window') {
+        for (const iterator of query.columns) {
+          if (iterator === checkboxValue && !checkboxState) {
+            setShowModal(true);
+            setModalMessage(
+              `Notice that ${iterator
+                .split('_')
+                .join(' ')} is used in a window step, deselecting it here may break this query.`,
+            );
+            break;
+          }
         }
       }
 
@@ -122,16 +165,6 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
         values: [filters],
       };
     }
-    if (parsedOptions.hasOwnProperty('operational_column')) {
-      const aggregateOptions = options
-        ? JSON.parse(options)
-        : { group_by: [], agg_func_name: '', operational_column: '' };
-
-      return {
-        id: 'operational_column',
-        values: [aggregateOptions],
-      };
-    }
     if (parsedOptions.hasOwnProperty('join_on')) {
       const joinOptions = options
         ? JSON.parse(options)
@@ -147,6 +180,57 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
       return {
         id: 'join_on',
         values: [joinOptions],
+      };
+    }
+    if (
+      parsedOptions.hasOwnProperty('operational_column') &&
+      !parsedOptions.hasOwnProperty('trans_func_name')
+    ) {
+      const aggregateOptions = options
+        ? JSON.parse(options)
+        : { group_by: [], agg_func_name: '', operational_column: '' };
+
+      return {
+        id: 'aggregate',
+        values: [aggregateOptions],
+      };
+    }
+    if (
+      parsedOptions.hasOwnProperty('operational_column') &&
+      parsedOptions.hasOwnProperty('trans_func_name')
+    ) {
+      const scalarOptions = options
+        ? JSON.parse(options)
+        : { group_by: [], agg_func_name: '', operational_column: '' };
+
+      return {
+        id: 'scalar',
+        values: [scalarOptions],
+      };
+    }
+    if (parsedOptions.hasOwnProperty('operational_columns')) {
+      const multiOptions = options
+        ? JSON.parse(options)
+        : {
+            operational_value: '',
+            trans_func_name: '',
+            operational_column: '',
+            operational_columns: [],
+          };
+
+      return {
+        id: 'multi',
+        values: [multiOptions],
+      };
+    }
+    if (parsedOptions.hasOwnProperty('over')) {
+      const windowOptions = options
+        ? JSON.parse(options)
+        : { window_fn: '', order_by: [], term: '', over: [], columns: [] };
+
+      return {
+        id: 'window',
+        values: [windowOptions],
       };
     }
   };
