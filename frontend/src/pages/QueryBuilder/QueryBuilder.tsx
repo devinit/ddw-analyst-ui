@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Alert, Card, Col, Row, Tab } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -10,10 +10,10 @@ import styled from 'styled-components';
 import { deleteOperation, fetchOperation, setOperation } from '../../actions/operations';
 import * as sourcesActions from '../../actions/sources';
 import { OperationDataTable } from '../../components/OperationDataTable';
-import { OperationForm } from '../../components/OperationForm';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
 import { useSourceFromOperation } from '../../hooks';
+import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
@@ -55,12 +55,6 @@ type QueryBuilderProps = ActionProps & ReduxState & RouteComponentProps<RouterPa
 
 const StyledIcon = styled.i`
   cursor: pointer;
-`;
-const StyledCardBody = styled(Card.Body)`
-  &.card-body {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
 `;
 const OBSOLETE_COLUMNS_LOG_MESSAGE = 'Obsolete Columns'; // eslint-disable-line @typescript-eslint/naming-convention
 
@@ -326,7 +320,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     return null;
   };
 
-  const renderOperationForm = () => {
+  const renderOperationTab = () => {
     const { activeOperation: operation } = props;
     const { id } = props.match.params;
 
@@ -339,16 +333,17 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const editable = isEditable(operation);
 
     return (
-      <OperationForm
+      <OperationTabContainer
+        alertMessages={alertMessages}
         operation={operation}
         editable={editable}
         valid={steps.count() > 0}
-        onUpdateOperation={onUpdateOperation}
-        onSuccess={onSaveOperation}
+        onUpdate={onUpdateOperation}
+        onSave={onSaveOperation}
         onPreview={onTogglePreview}
         previewing={showPreview}
         processing={props.page.get('processing') as boolean}
-        onDeleteOperation={onDeleteOperation}
+        onDelete={onDeleteOperation}
         onReset={!id ? () => props.actions.setActiveOperation() : undefined}
       >
         <OperationSteps
@@ -362,12 +357,8 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           disabled={showPreview}
           onDuplicateStep={onDuplicateStep}
         />
-      </OperationForm>
+      </OperationTabContainer>
     );
-  };
-
-  const onAlertClose = (): void => {
-    setAlertMessages(['']);
   };
 
   const { page } = props;
@@ -382,37 +373,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           'd-none': activeStep || showPreview || loadingPreview,
         })}
       >
-        <Tab.Container defaultActiveKey="operation">
-          <Card className="source-details">
-            <Card.Header className="card-header-text card-header-danger">
-              <Card.Text>Dataset</Card.Text>
-            </Card.Header>
-            <StyledCardBody>
-              <Alert
-                variant="dark"
-                show={!!alertMessages.length}
-                onClose={onAlertClose}
-                className="mb-4 mt-4 alert-with-icon"
-                data-testid="qb-alert"
-              >
-                <i className="material-icons mr-2 text-danger" data-notify="icon">
-                  error
-                </i>
-                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                  <i className="material-icons">close</i>
-                </button>
-                <span>
-                  {alertMessages.map((message, index) => (
-                    <p key={`${index}`} className="mb-2">
-                      {message}
-                    </p>
-                  ))}
-                </span>
-              </Alert>
-              {renderOperationForm()}
-            </StyledCardBody>
-          </Card>
-        </Tab.Container>
+        {renderOperationTab()}
       </Col>
 
       <Col
