@@ -1,7 +1,17 @@
 'use strict';
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { series, src, watch } = require('gulp');
+const { series, src } = require('gulp');
 const clean = require('gulp-clean');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
+const { merge } = require('webpack-merge');
+const webpackConfig = require('./webpack.config');
+
+const webpackConfigProduction = merge(webpackConfig, {
+  devtool: false,
+  mode: 'production',
+  watch: false,
+});
 
 function cleaning(cb) {
   ['frontend/static/frontend/css/*', 'frontend/static/frontend/js/*'].forEach((_path) => {
@@ -12,11 +22,16 @@ function cleaning(cb) {
 }
 
 function build(cb) {
-  // TODO: add cleaning tasks here
-  console.log('Building ...');
+  src('frontend/src/index.ts').pipe(webpackStream(webpackConfigProduction, webpack));
 
   cb();
 }
 
-exports.build = build;
-exports.default = series(cleaning, build);
+function dev(cb) {
+  src('frontend/src/index.ts').pipe(webpackStream(webpackConfig, webpack));
+
+  cb();
+}
+
+exports.build = series(cleaning, build);
+exports.default = series(cleaning, dev);
