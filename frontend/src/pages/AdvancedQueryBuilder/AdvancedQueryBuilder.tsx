@@ -22,16 +22,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           <Dimmer active={loading || !sources.count()} inverted>
             <Loader content="Loading" />
           </Dimmer>
-          <Card>
-            <Card.Header className="card-header-text card-header-danger">
-              <Card.Title>Card Header Goes Here</Card.Title>
-            </Card.Header>
-            <Card.Body>
-              {!loading && sources.count() ? (
-                <QueryBuilderContainer sources={sources.toJS()} operation={operation} />
-              ) : null}
-            </Card.Body>
-          </Card>
+          {!loading && sources.count() ? (
+            <QueryBuilderContainer sources={sources.toJS()} operation={operation} />
+          ) : null}
         </React.Fragment>
       </Col>
     </Row>
