@@ -28,7 +28,7 @@ const StyledCardBody = styled(Card.Body)`
   }
 `;
 
-const QueryBuilderContainer: FunctionComponent<ComponentProps> = (props) => {
+const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const [alertMessages, setAlertMessages] = useState<string[]>(props.alertMessages || []);
 
   useEffect(() => {
@@ -89,6 +89,6 @@ const QueryBuilderContainer: FunctionComponent<ComponentProps> = (props) => {
   );
 };
 
-const QueryBuilderContainerMemo = React.memo(QueryBuilderContainer);
+const OperationTabContainerMemo = React.memo(OperationTabContainer);
 
-export { QueryBuilderContainerMemo as QueryBuilderContainer };
+export { OperationTabContainerMemo as OperationTabContainer };
