@@ -1,6 +1,6 @@
 'use strict';
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { series, src } = require('gulp');
+const { dest, series, src } = require('gulp');
 const clean = require('gulp-clean');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
@@ -21,17 +21,17 @@ function cleaning(cb) {
   cb();
 }
 
-function build(cb) {
-  src('frontend/src/index.ts').pipe(webpackStream(webpackConfigProduction, webpack));
-
-  cb();
+function building() {
+  return src('frontend/src/index.ts')
+    .pipe(webpackStream(webpackConfigProduction, webpack))
+    .pipe(dest(webpackConfig.output.path));
 }
 
-function dev(cb) {
-  src('frontend/src/index.ts').pipe(webpackStream(webpackConfig, webpack));
-
-  cb();
+function dev() {
+  return src('frontend/src/index.ts')
+    .pipe(webpackStream(webpackConfig, webpack))
+    .pipe(dest(webpackConfig.output.path));
 }
 
-exports.build = series(cleaning, build);
+exports.build = series(cleaning, building);
 exports.default = series(cleaning, dev);
