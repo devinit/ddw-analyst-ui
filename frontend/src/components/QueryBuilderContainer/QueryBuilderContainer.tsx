@@ -1,13 +1,14 @@
 import React, { FunctionComponent } from 'react';
-import { useOperation } from '../../hooks';
+import { OperationMap } from '../../types/operations';
+import { Source } from '../../types/sources';
 
 type ComponentProps = {
-  operationID?: number;
+  operation?: OperationMap;
+  sources: Source[];
 };
 
-const QueryBuilderContainer: FunctionComponent<ComponentProps> = () => {
-  const { loading, operation } = useOperation(10);
-  console.log(loading, operation?.toJS());
+const QueryBuilderContainer: FunctionComponent<ComponentProps> = (props) => {
+  console.log(props);
 
   return <div>Content Goes Here</div>;
 };
