@@ -10,7 +10,10 @@ interface UseOperationResult {
   loading: boolean;
 }
 
-export const useOperation = (id: number, fetch = false): UseOperationResult => {
+export const useOperation = (id?: number, fetch = false): UseOperationResult => {
+  if (!id) {
+    return { loading: false, operation: undefined };
+  }
   const [operation, setOperation] = useState<OperationMap | undefined>(fromJS({}));
   const [loading, setLoading] = useState(false);
 

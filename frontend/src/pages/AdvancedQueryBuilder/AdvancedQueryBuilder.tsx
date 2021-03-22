@@ -12,9 +12,7 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
-  const { loading, operation } = operationID
-    ? useOperation(parseInt(operationID))
-    : { loading: false, operation: undefined };
+  const { loading, operation } = useOperation(operationID ? parseInt(operationID) : undefined);
   const sources = useSources({ limit: 200, offset: 0 });
 
   return (
