@@ -1,14 +1,11 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import { Alert, Card, Tab } from 'react-bootstrap';
 import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
-import { Source } from '../../types/sources';
 import { OperationForm } from '../OperationForm';
 
 type ComponentProps = {
   operation?: OperationMap;
-  sources: Source[];
-  hide?: boolean;
   valid?: boolean;
   editable?: boolean;
   processing?: boolean;
@@ -89,6 +86,8 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   );
 };
 
-const OperationTabContainerMemo = React.memo(OperationTabContainer);
+const OperationTabContainerMemo = React.memo<PropsWithChildren<ComponentProps>>(
+  OperationTabContainer,
+);
 
 export { OperationTabContainerMemo as OperationTabContainer };
