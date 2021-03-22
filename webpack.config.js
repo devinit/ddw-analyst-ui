@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BundleTracker = require('webpack-bundle-tracker');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
@@ -35,7 +35,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/bundle.css',
     }),
-    new BundleTracker({ filename: './webpack-stats.json' }),
+    // new BundleAnalyzerPlugin(),
     new LiveReloadPlugin(),
   ],
 };
