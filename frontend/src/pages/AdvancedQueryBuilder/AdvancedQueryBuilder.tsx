@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { QueryBuilderContainer } from '../../components/QueryBuilderContainer';
+import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { useOperation, useSources } from '../../hooks';
 
 type RouterParams = {
@@ -23,7 +23,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
             <Loader content="Loading" />
           </Dimmer>
           {!loading && sources.count() ? (
-            <QueryBuilderContainer sources={sources.toJS()} operation={operation} />
+            <OperationTabContainer sources={sources.toJS()} operation={operation} />
           ) : null}
         </React.Fragment>
       </Col>
