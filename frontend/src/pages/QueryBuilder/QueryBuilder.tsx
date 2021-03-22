@@ -2,14 +2,13 @@ import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators } from 'redux';
-import styled from 'styled-components';
 import { deleteOperation, fetchOperation, setOperation } from '../../actions/operations';
 import * as sourcesActions from '../../actions/sources';
-import { OperationDataTable } from '../../components/OperationDataTable';
+import { OperationPreview } from '../../components/OperationPreview';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
 import { useSourceFromOperation } from '../../hooks';
@@ -24,7 +23,7 @@ import {
   OperationMap,
   OperationStepMap,
 } from '../../types/operations';
-import { OperationColumn, SourceMap } from '../../types/sources';
+import { SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import { fetchOperationDataPreview } from '../../utils/hooks/operations';
 import * as pageActions from './actions';
@@ -53,9 +52,6 @@ interface RouterParams {
 
 type QueryBuilderProps = ActionProps & ReduxState & RouteComponentProps<RouterParams>;
 
-const StyledIcon = styled.i`
-  cursor: pointer;
-`;
 const OBSOLETE_COLUMNS_LOG_MESSAGE = 'Obsolete Columns'; // eslint-disable-line @typescript-eslint/naming-convention
 
 const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
@@ -278,23 +274,6 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   };
 
-  const renderPreview = () => {
-    if (loadingPreview) {
-      return <div>Loading ...</div>;
-    }
-    if (previewData.length) {
-      const columns: OperationColumn[] = Object.keys(previewData[0]).map((column, index) => ({
-        id: index,
-        column_alias: column,
-        column_name: column,
-      }));
-
-      return <OperationDataTable list={fromJS(previewData)} columns={columns} />;
-    }
-
-    return <div>No results found</div>;
-  };
-
   const renderOperationStepForm = (
     source?: SourceMap,
     step?: OperationStepMap,
@@ -381,27 +360,15 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         lg={12}
         className={classNames({ 'd-none': !activeStep && !(showPreview || loadingPreview) })}
       >
-        <Card>
-          <Card.Header>
-            <Card.Title>
-              {showPreview || loadingPreview ? 'Preview Dataset' : 'Create Query Step'}
-              <StyledIcon className="material-icons float-right" onClick={resetAction}>
-                close
-              </StyledIcon>
-            </Card.Title>
-          </Card.Header>
-          <Card.Body>
-            <div className="mb-2">
-              {showPreview || loadingPreview
-                ? renderPreview()
-                : renderOperationStepForm(
-                    activeSource,
-                    activeStep,
-                    page.get('editingStep') as boolean,
-                  )}
-            </div>
-          </Card.Body>
-        </Card>
+        <OperationPreview
+          show={showPreview}
+          loading={loadingPreview}
+          title="Create Query Step"
+          onClose={resetAction}
+          data={fromJS(previewData)}
+        >
+          {renderOperationStepForm(activeSource, activeStep, page.get('editingStep') as boolean)}
+        </OperationPreview>
       </Col>
     </Row>
   );
