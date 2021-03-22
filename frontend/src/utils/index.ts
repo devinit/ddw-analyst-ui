@@ -15,7 +15,7 @@ export * from './api';
 export * from './localForage';
 export * from './update';
 
-export const getSourceIDFromOperation = (operation: OperationMap): string | undefined => {
+export const getSourceIDFromOperation = (operation: OperationMap): number | undefined => {
   if (!operation) {
     return;
   }
