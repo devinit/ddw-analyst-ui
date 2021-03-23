@@ -84,7 +84,6 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             <FormControl
               name="value"
               defaultValue={filter.get('value') as string}
-              value={filter.get('value') as string}
               isInvalid={!!(errors && errors.get('value'))}
               onFocus={this.setFocusedField}
               onBlur={this.resetFocus}
