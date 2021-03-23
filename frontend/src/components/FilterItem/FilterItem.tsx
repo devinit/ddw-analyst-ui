@@ -38,7 +38,6 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             search
             options={columns}
             onChange={this.onSelectColumn}
-            defaultValue={filter.get('field') as string}
             value={filter.get('field') as string}
             error={!!(errors && errors.get('field'))}
             disabled={!this.props.editable}
@@ -60,7 +59,6 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             search
             options={operations}
             onChange={this.onSelectOperation}
-            defaultValue={this.props.filter.get('func') as string}
             value={filter.get('func') as string}
             error={!!(errors && errors.get('func'))}
             disabled={!this.props.editable}
@@ -86,7 +84,6 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             <FormControl
               name="value"
               defaultValue={filter.get('value') as string}
-              value={filter.get('value') as string}
               isInvalid={!!(errors && errors.get('value'))}
               onFocus={this.setFocusedField}
               onBlur={this.resetFocus}
