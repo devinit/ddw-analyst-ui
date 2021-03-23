@@ -65,14 +65,14 @@ class ListUpdateScripts(APIView):
 
 @csrf_exempt
 def streaming_script_execute(request):
-    form_data = json.loads(request.body.decode())
+    try:
+        form_data = json.loads(request.body.decode())
 
-    posted_token = form_data.get('token')
-    script_name = form_data.get('script_name')
+        posted_token = form_data.get('token')
+        script_name = form_data.get('script_name')
 
-    if posted_token is not None:
-        token_auth = TokenAuthentication()
-        try:
+        if posted_token is not None:
+            token_auth = TokenAuthentication()
             user, _ = token_auth.authenticate_credentials(
                 posted_token.encode("utf-8"))
             if user.is_authenticated and user.is_superuser:
@@ -93,11 +93,12 @@ def streaming_script_execute(request):
                     response_data['returncode'] = item
 
                 return HttpResponse(json.dumps(response_data), content_type='application/json', status=post_status)
-        except exceptions.AuthenticationFailed:
-            return redirect('/login/')
-        except Exception as e:
-            return handle_uncaught_error(e)
-    return redirect('/login/')
+        return redirect('/login/')
+    except exceptions.AuthenticationFailed:
+        return redirect('/login/')
+    except Exception as e:
+        return handle_uncaught_error(e)
+
 
 
 class Echo:

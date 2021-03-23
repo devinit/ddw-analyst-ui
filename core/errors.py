@@ -1,10 +1,11 @@
+import json
 import traceback
 
 from django.core.mail import mail_admins
+from django.http import Http404, HttpResponse
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
-from rest_framework.response import Response
 
 class AliasCreationError(APIException):
     """Raised when alias creation fails"""
@@ -19,5 +20,6 @@ def handle_uncaught_error(error):
     extracted_traceback = traceback.extract_tb(error_traceback)
     result = traceback.format_list(extracted_traceback)
     message = result[0]
+    response={'detail': f'{str(error).capitalize()} error occured'}
     mail_admins(f'DDW ANALYST UI {type(error).__name__}',message , fail_silently=False)
-    return Response({'detail': f'{str(error).capitalize()} error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return HttpResponse(json.dumps(response), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
