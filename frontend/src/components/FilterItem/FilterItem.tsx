@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import { debounce } from 'lodash';
-import * as React from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Button, Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { FormControlElement } from '../../types/bootstrap';
 import { ErroredFilterMap, Filter, FilterMap } from '../../types/operations';
 
 interface FilterItemProps {
@@ -16,163 +17,158 @@ interface FilterItemProps {
   editable?: boolean;
 }
 
-interface FilterItemState {
-  hasFocus: string;
-}
+export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
+  const [hasFocus, setHasFocus] = useState('');
 
-export class FilterItem extends React.Component<FilterItemProps, FilterItemState> {
-  static defaultProps: Partial<FilterItemProps> = { editable: true };
-  state: FilterItemState = { hasFocus: '' };
-
-  render() {
-    const { columns, filter, operations } = this.props;
-    const errors = filter.get('error') as FilterMap | undefined;
-
-    return (
-      <Row className="mb-1">
-        <Col lg={4} className="my-2">
-          <Dropdown
-            placeholder="Select Column"
-            fluid
-            selection
-            search
-            options={columns}
-            onChange={this.onSelectColumn}
-            value={filter.get('field') as string}
-            error={!!(errors && errors.get('field'))}
-            disabled={!this.props.editable}
-            data-testid="qb-filter-select-column"
-          />
-          <Form.Control.Feedback
-            type="invalid"
-            className={classNames({ 'd-block': !!(errors && errors.get('field')) })}
-          >
-            {errors && errors.get('field')}
-          </Form.Control.Feedback>
-        </Col>
-
-        <Col lg={4} className="my-2">
-          <Dropdown
-            placeholder="Select Operation"
-            fluid
-            selection
-            search
-            options={operations}
-            onChange={this.onSelectOperation}
-            value={filter.get('func') as string}
-            error={!!(errors && errors.get('func'))}
-            disabled={!this.props.editable}
-            data-testid="qb-filter-select-operation"
-          />
-          <Form.Control.Feedback
-            type="invalid"
-            className={classNames({ 'd-block': !!(errors && errors.get('func')) })}
-          >
-            {errors && errors.get('func')}
-          </Form.Control.Feedback>
-        </Col>
-
-        <Col lg={3}>
-          <Form.Group
-            className={this.getFormGroupClasses(
-              'value',
-              filter.get('value') as string,
-              !!(errors && errors.get('value')),
-            )}
-          >
-            <Form.Label className="bmd-label-floating">Value</Form.Label>
-            <FormControl
-              name="value"
-              defaultValue={filter.get('value') as string}
-              isInvalid={!!(errors && errors.get('value'))}
-              onFocus={this.setFocusedField}
-              onBlur={this.resetFocus}
-              onChange={debounce(this.onChangeValue, 1000, { leading: true })}
-              disabled={!this.props.editable}
-              data-testid="qb-filter-value"
-            />
-            <Form.Control.Feedback
-              type="invalid"
-              className={classNames({ 'd-block': !!(errors && errors.get('value')) })}
-            >
-              {errors && errors.get('value')}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Col>
-
-        <Col lg={1}>
-          <Row>
-            <Button
-              variant="link"
-              className="btn-just-icon"
-              onClick={this.onDelete}
-              hidden={!this.props.editable}
-              data-testid="qb-filter-delete-button"
-            >
-              <i className="material-icons">delete</i>
-            </Button>
-            <Button
-              title="Copy"
-              className="btn-just-icon"
-              variant="link"
-              data-testid="qb-filter-duplicate-button"
-              onClick={this.onDuplicateFilter}
-            >
-              <i className="material-icons">content_copy</i>
-            </Button>
-          </Row>
-        </Col>
-      </Row>
-    );
-  }
-
-  private onSelectColumn = (
+  const onSelectColumn = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => {
     if (data.value) {
-      const filter = this.props.filter.set('field', data.value as string);
-      this.props.onUpdate(filter);
+      const filter = props.filter.set('field', data.value as string);
+      props.onUpdate(filter);
     }
   };
 
-  private onSelectOperation = (
+  const onSelectOperation = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => {
     if (data.value) {
-      const filter = this.props.filter.set('func', data.value as string);
-      this.props.onUpdate(filter);
+      const filter = props.filter.set('func', data.value as string);
+      props.onUpdate(filter);
     }
   };
 
-  private onChangeValue = ({ currentTarget }: React.FormEvent<any>) => {
-    const filter = this.props.filter.set('value', currentTarget.value);
-    this.props.onUpdate(filter);
+  const onChangeValue = ({ currentTarget }: React.ChangeEvent<FormControlElement>) => {
+    const filter = props.filter.set('value', currentTarget.value);
+    props.onUpdate(filter);
   };
 
-  private getFormGroupClasses(fieldName: string, value: string | number, hasError = false) {
+  const getFormGroupClasses = (fieldName: string, value: string | number, hasError = false) => {
     return classNames('bmd-form-group', {
-      'is-focused': this.state.hasFocus === fieldName,
+      'is-focused': hasFocus === fieldName,
       'is-filled': value,
       'has-danger': hasError,
     });
-  }
-
-  private setFocusedField = ({ currentTarget }: React.FocusEvent<HTMLInputElement>) => {
-    this.setState({ hasFocus: currentTarget.name });
   };
 
-  private resetFocus = () => {
-    this.setState({ hasFocus: '' });
+  const setFocusedField = ({ currentTarget }: React.FocusEvent<HTMLInputElement>) => {
+    setHasFocus(currentTarget.name);
   };
 
-  private onDelete = () => {
-    this.props.onDelete(this.props.filter);
+  const resetFocus = () => {
+    setHasFocus('');
   };
-  private onDuplicateFilter = () => {
-    this.props.onDuplicateFilter(this.props.filter);
+
+  const onDelete = () => {
+    props.onDelete(props.filter);
   };
-}
+  const onDuplicateFilter = () => {
+    props.onDuplicateFilter(props.filter);
+  };
+
+  const { columns, filter, operations } = props;
+  const errors = filter.get('error') as FilterMap | undefined;
+
+  return (
+    <Row className="mb-1">
+      <Col lg={4} className="my-2">
+        <Dropdown
+          placeholder="Select Column"
+          fluid
+          selection
+          search
+          options={columns}
+          onChange={onSelectColumn}
+          value={filter.get('field') as string}
+          error={!!(errors && errors.get('field'))}
+          disabled={!props.editable}
+          data-testid="qb-filter-select-column"
+        />
+        <Form.Control.Feedback
+          type="invalid"
+          className={classNames({ 'd-block': !!(errors && errors.get('field')) })}
+        >
+          {errors && errors.get('field')}
+        </Form.Control.Feedback>
+      </Col>
+
+      <Col lg={4} className="my-2">
+        <Dropdown
+          placeholder="Select Operation"
+          fluid
+          selection
+          search
+          options={operations}
+          onChange={onSelectOperation}
+          value={filter.get('func') as string}
+          error={!!(errors && errors.get('func'))}
+          disabled={!props.editable}
+          data-testid="qb-filter-select-operation"
+        />
+        <Form.Control.Feedback
+          type="invalid"
+          className={classNames({ 'd-block': !!(errors && errors.get('func')) })}
+        >
+          {errors && errors.get('func')}
+        </Form.Control.Feedback>
+      </Col>
+
+      <Col lg={3}>
+        <Form.Group
+          className={getFormGroupClasses(
+            'value',
+            filter.get('value') as string,
+            !!(errors && errors.get('value')),
+          )}
+        >
+          <Form.Label className="bmd-label-floating">Value</Form.Label>
+          <FormControl
+            name="value"
+            defaultValue={filter.get('value') as string}
+            isInvalid={!!(errors && errors.get('value'))}
+            onFocus={setFocusedField}
+            onBlur={resetFocus}
+            onChange={debounce(onChangeValue, 1000, { leading: true })}
+            disabled={!props.editable}
+            data-testid="qb-filter-value"
+          />
+          <Form.Control.Feedback
+            type="invalid"
+            className={classNames({ 'd-block': !!(errors && errors.get('value')) })}
+          >
+            {errors && errors.get('value')}
+          </Form.Control.Feedback>
+        </Form.Group>
+      </Col>
+
+      <Col lg={1}>
+        <Row>
+          <Button
+            variant="link"
+            className="btn-just-icon"
+            onClick={onDelete}
+            hidden={!props.editable}
+            data-testid="qb-filter-delete-button"
+          >
+            <i className="material-icons">delete</i>
+          </Button>
+          <Button
+            title="Copy"
+            className="btn-just-icon"
+            variant="link"
+            data-testid="qb-filter-duplicate-button"
+            onClick={onDuplicateFilter}
+          >
+            <i className="material-icons">content_copy</i>
+          </Button>
+        </Row>
+      </Col>
+    </Row>
+  );
+};
+
+FilterItem.defaultProps = { editable: true };
 
 export default FilterItem;
