@@ -344,13 +344,10 @@ class UserOperationList(generics.ListAPIView):
         """
         Filters to return a list of all the operations for the currently authenticated user.
         """
-        try:
-            if self.request.user.is_authenticated:
-                return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
-            else:
-                return Operation.objects.all().order_by('-updated_on')
-        except Operation.DoesNotExist:
-            raise Http404
+        if self.request.user.is_authenticated:
+            return Operation.objects.filter(user=self.request.user).order_by('-updated_on')
+        else:
+            return Operation.objects.all().order_by('-updated_on')
 
 
 class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -413,8 +410,7 @@ class ViewSourceHistory(APIView):
     Get all FrozenData instances attached to a specific data source
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
     # queryset = FrozenData.objects.all()
     serializer_class = FrozenDataSerializer
 
@@ -811,8 +807,7 @@ class UpdateTableAPI(APIView):
             delete_query = table_query_builder.delete()
             insert_query = table_query_builder.insert(params)
 
-            return_result = update_table_from_tuple(
-                [delete_query, insert_query])
+            return_result = update_table_from_tuple([delete_query, insert_query])
             return_status_code = status.HTTP_500_INTERNAL_SERVER_ERROR if return_result[
                 0]['result'] == 'error' else status.HTTP_200_OK
 
@@ -869,8 +864,7 @@ class FrozenDataDetail(APIView):
 
     def put(self, request, pk, format=None):
         frozen_data = self.get_object(pk)
-        serializer = FrozenDataSerializer(
-            frozen_data, data=request.data, partial=True)
+        serializer = FrozenDataSerializer(frozen_data, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -923,8 +917,7 @@ class SavedQueryDataList(APIView):
 class SavedQueryDataDetail(APIView):
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_object(self, pk):
         try:
@@ -967,15 +960,13 @@ class ViewDatasetHistory(APIView):
     Get all SavedQueryData instances attached to a specific operation
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
     serializer_class = SavedQueryDataSerializer
 
     def get_queryset(self, pk, request):
         try:
             operation = Operation.objects.get(id=pk)
-            history = SavedQueryData.objects.filter(
-                operation=operation).order_by('-created_on').distinct()
+            history = SavedQueryData.objects.filter(operation=operation).order_by('-created_on').distinct()
             return history
         except Operation.DoesNotExist:
             raise Http404
@@ -1003,8 +994,7 @@ class EstimateQueryTime(APIView):
     Estimate the operation query time.
     """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_queryset(self, pk):
         try:
