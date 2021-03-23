@@ -5,7 +5,7 @@ import { DropdownItemProps } from 'semantic-ui-react';
 import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
-import { CheckboxGroup } from '../CheckboxGroup';
+import { CheckboxGroup, CheckboxGroupValidator } from '../CheckboxGroup';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface SelectQueryBuilderProps {
@@ -70,12 +70,13 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             Deselect All
           </Button>
         </Form.Row>
-        <CheckboxGroup
-          steps={props.steps}
-          options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-          selectedOptions={props.columns}
-          onUpdateOptions={props.onUpdateColumns}
-        />
+        <CheckboxGroupValidator steps={props.steps}>
+          <CheckboxGroup
+            options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
+            selectedOptions={props.columns}
+            onUpdateOptions={props.onUpdateColumns}
+          />
+        </CheckboxGroupValidator>
       </Form.Group>
     </React.Fragment>
   );
