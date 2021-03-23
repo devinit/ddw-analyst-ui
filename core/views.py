@@ -56,7 +56,6 @@ class ListUpdateScripts(APIView):
 
     def get(self, request):
         try:
-
             content = {"update_scripts": list_update_scripts()}
             post_status = status.HTTP_200_OK
             return Response(content, status=post_status)
