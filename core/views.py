@@ -44,7 +44,7 @@ from data.db_manager import fetch_data, update_table_from_tuple, run_query
 from core.pypika_utils import QueryBuilder
 from data_updates.utils import ScriptExecutor, list_update_scripts
 from core.tasks import create_dataset_archive, create_table_archive
-from core.errors import handle_uncaught_error
+from core.errors import handle_uncaught_error, UncaughtError
 
 
 class ListUpdateScripts(APIView):
@@ -60,7 +60,8 @@ class ListUpdateScripts(APIView):
             post_status = status.HTTP_200_OK
             return Response(content, status=post_status)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 @csrf_exempt
@@ -97,7 +98,9 @@ def streaming_script_execute(request):
     except exceptions.AuthenticationFailed:
         return redirect('/login/')
     except Exception as e:
-        return handle_uncaught_error(e)
+        handle_uncaught_error(e)
+        response = {'detail': f'{str(e)}'}
+        return HttpResponse(json.dumps(response), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
@@ -164,7 +167,9 @@ def streaming_export_view(request, pk):
             'error_type': 'JSONDecodeError'
         })
     except Exception as e:
-        return handle_uncaught_error(e)
+        handle_uncaught_error(e)
+        response = {'detail': f'{str(e)}'}
+        return HttpResponse(json.dumps(response), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ViewData(APIView):
@@ -193,7 +198,8 @@ class ViewData(APIView):
                 serializer.data['data'], request)
             return paginator.get_paginated_response(page_data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 class PreviewOperationData(APIView):
@@ -258,7 +264,8 @@ class ChangePassword(APIView):
                 post_status = status.HTTP_400_BAD_REQUEST
             return Response(content, status=post_status)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 class SectorList(generics.ListCreateAPIView):
@@ -394,7 +401,8 @@ class ViewSourceDatasets(APIView):
                 serializer = OperationSerializer(datasets, many=True)
                 return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 class ViewSourceHistory(APIView):
@@ -430,7 +438,8 @@ class ViewSourceHistory(APIView):
                 serializer = FrozenDataSerializer(datasets, many=True)
                 return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 class ViewUserSourceDatasets(APIView):
@@ -469,7 +478,8 @@ class ViewUserSourceDatasets(APIView):
                 serializer = OperationSerializer(datasets, many=True)
                 return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 class OperationColumnAlias(generics.RetrieveUpdateDestroyAPIView):
@@ -605,7 +615,8 @@ class ScheduledEventList(APIView):
             serializer = ScheduledEventSerializer(scheduled_events, many=True)
             return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
     def post(self, request, format=None):
         try:
@@ -615,7 +626,8 @@ class ScheduledEventList(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 class ScheduledEventRunInstanceHistory(APIView):
@@ -652,7 +664,8 @@ class ScheduledEventRunInstanceHistory(APIView):
                     scheduled_event_run_instance, many=True)
                 return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
     def get_post_response(self, serializer, request):
         error_message = ''
@@ -704,7 +717,8 @@ class ScheduledEventRunInstanceDetail(APIView):
                 scheduled_event_run_instance)
             return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
     def put(self, request, pk, format=None):
         scheduled_event_run_instance = self.get_object(pk)
@@ -745,37 +759,36 @@ class TableStreamingExporter():
 
 @csrf_exempt
 def streaming_tables_export_view(request, table_name, schema="repo"):
-
-    data_table = True
-    frozen_table = True
     try:
+        data_table = True
+        frozen_table = True
         FrozenData.objects.get(frozen_db_table=table_name)
         SavedQueryData.objects.get(saved_query_db_table=table_name)
+        if table_name not in settings.QUERY_TABLES and not frozen_table and not data_table:
+            return_result = [
+                {
+                    "result": "error",
+                    "message": "Invalid table " + table_name,
+                }
+            ]
+            return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
+
+        table_query_builder = TableQueryBuilder(table_name, schema)
+        exporter = TableStreamingExporter(
+            table_query_builder.select().get_sql_without_limit())
+        response = StreamingHttpResponse(
+            exporter.stream(), content_type="text/csv")
+        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(
+            table_name)
+        return response
     except FrozenData.DoesNotExist:
         frozen_table = False
     except SavedQueryData.DoesNotExist:
         data_table = False
     except Exception as e:
-        return handle_uncaught_error(e)
-
-    if table_name not in settings.QUERY_TABLES and not frozen_table and not data_table:
-        return_result = [
-            {
-                "result": "error",
-                "message": "Invalid table " + table_name,
-            }
-        ]
-        return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
-
-    table_query_builder = TableQueryBuilder(table_name, schema)
-    exporter = TableStreamingExporter(
-        table_query_builder.select().get_sql_without_limit())
-    response = StreamingHttpResponse(
-        exporter.stream(), content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(
-        table_name)
-    return response
-
+        handle_uncaught_error(e)
+        response = {'detail': f'{str(e)}'}
+        return HttpResponse(json.dumps(response), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UpdateTableAPI(APIView):
 
@@ -805,7 +818,8 @@ class UpdateTableAPI(APIView):
 
             return HttpResponse(json.dumps(return_result), content_type='application/json', status=return_status_code)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 class FrozenDataList(APIView):
@@ -820,7 +834,8 @@ class FrozenDataList(APIView):
             serializer = FrozenDataSerializer(frozen_data, many=True)
             return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
     def post(self, request, format=None):
         serializer = FrozenDataSerializer(data=request.data)
@@ -852,7 +867,8 @@ class FrozenDataDetail(APIView):
             serializer = FrozenDataSerializer(frozen_data)
             return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
     def put(self, request, pk, format=None):
         frozen_data = self.get_object(pk)
@@ -887,7 +903,8 @@ class SavedQueryDataList(APIView):
             serializer = SavedQueryDataSerializer(saved_query_data, many=True)
             return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
     def post(self, request, format=None):
         serializer = SavedQueryDataSerializer(data=request.data)
@@ -922,7 +939,8 @@ class SavedQueryDataDetail(APIView):
             serializer = SavedQueryDataSerializer(saved_query_data)
             return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
     def put(self, request, pk, format=None):
         saved_query_data = self.get_object(pk)
@@ -977,7 +995,8 @@ class ViewDatasetHistory(APIView):
                 serializer = SavedQueryDataSerializer(history, many=True)
                 return Response(serializer.data)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})
 
 
 class EstimateQueryTime(APIView):
@@ -1000,4 +1019,5 @@ class EstimateQueryTime(APIView):
             estimate = query.querytime_estimate(operation=operation)
             return Response(estimate)
         except Exception as e:
-            return handle_uncaught_error(e)
+            handle_uncaught_error(e)
+            raise UncaughtError({'detail': str(e)})

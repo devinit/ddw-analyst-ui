@@ -15,11 +15,15 @@ class AliasUpdateError(APIException):
     """Raised when alias update fails"""
     status_code = status.HTTP_400_BAD_REQUEST
 
+class UncaughtError(APIException):
+    """Raised when there is an uncaught error"""
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    default_detail = 'An unknown error occured.'
+
+
 def handle_uncaught_error(error):
     error_traceback = error.__traceback__
     extracted_traceback = traceback.extract_tb(error_traceback)
     result = traceback.format_list(extracted_traceback)
     message = result[0]
-    response={'detail': f'{str(error).capitalize()} error occured'}
-    mail_admins(f'DDW ANALYST UI {type(error).__name__}',message , fail_silently=False)
-    return HttpResponse(json.dumps(response), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    mail_admins(f'DDW ANALYST UI {type(error).__name__}', message , fail_silently=False)
