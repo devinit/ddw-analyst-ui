@@ -16,20 +16,19 @@ const SelectColumnValidator: FunctionComponent<ComponentProps> = (props) => {
     const { steps } = props;
     if (steps) {
       steps
-        .filter((step) => step.get('step_id') !== props.step.get('step_id'))
-        .map((step) => {
+        .filter(
+          (step) =>
+            parseInt(step.get('step_id') as string) > parseInt(props.step.get('step_id') as string),
+        )
+        .forEach((step) => {
           const options = step.get('query_kwargs') as string;
-          validateColumnDeselect(options, checkboxValue);
+          validateSelectColumnDeselect(options, checkboxValue).then((validationMessage) => {
+            if (validationMessage) {
+              setModalMessage(validationMessage);
+            }
+          });
         });
     }
-  };
-
-  const validateColumnDeselect = (options: string, checkboxValue: string): void => {
-    validateSelectColumnDeselect(options, checkboxValue).then((validationMessage) => {
-      if (validationMessage) {
-        setModalMessage(validationMessage);
-      }
-    });
   };
 
   const toggleShowModal = () => {
@@ -41,11 +40,11 @@ const SelectColumnValidator: FunctionComponent<ComponentProps> = (props) => {
       <BasicModal show={modalMessage} onHide={toggleShowModal}>
         {modalMessage}
       </BasicModal>
-      {React.Children.map(props.children, (child) => {
-        return React.isValidElement(child)
+      {React.Children.map(props.children, (child) =>
+        React.isValidElement(child)
           ? React.cloneElement(child, { onDeselect: onDeselectColumn })
-          : child;
-      })}
+          : child,
+      )}
     </>
   );
 };
