@@ -118,8 +118,8 @@ class Echo:
 class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
 
-    def __init__(self, operation):
-        self.main_query = query.build_query(operation=operation)[1]
+    def __init__(self, operation, frozen_table_id=None):
+        self.main_query = query.build_query(operation=operation, frozen_table_id=frozen_table_id)[1]
         self.operation = operation
 
     def stream(self):
@@ -154,7 +154,8 @@ class StreamingExporter:
 def streaming_export_view(request, pk):
     try:
         operation = Operation.objects.get(pk=pk)
-        exporter = StreamingExporter(operation)
+        frozen_table_id = request.query_params.get('frozen_table_id', None)
+        exporter = StreamingExporter(operation, frozen_table_id=frozen_table_id)
         response = StreamingHttpResponse(
             exporter.stream(), content_type="text/csv")
         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(
@@ -848,6 +849,14 @@ class FrozenDataList(APIView):
                 datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 
             serializer.save(user=request.user, frozen_db_table=frozen_db_table)
+            # Add this new table to the Sources, and it's columns to the SourceColumnMap
+            source = Source.objects.get(active_mirror_name=parent_db_table)
+            frozen_source = Source(indicator='Frozen '+source.indicator, indicator_acronym=source.indicator_acronym, source=source.source, schema=source.schema, storage_type=source.storage_type, active_mirror_name=frozen_db_table)
+            frozen_source.save()
+            column_maps = source.sourcecolumnmap.all()
+            for column_map in column_maps:
+                frozen_column_map = SourceColumnMap(data_type=column_map.data_type, source=frozen_source, name=column_map.name, description=column_map.description, alias=column_map.alias, source_name=column_map.source_name)
+                frozen_column_map.save()
             create_table_archive.delay(serializer.instance.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -882,12 +891,7 @@ class FrozenDataDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        frozen_data = self.get_object(pk)
-        table_name = frozen_data.frozen_db_table
-        frozen_data.delete()
-        query_builder = TableQueryBuilder(table_name, "archive")
-        delete_sql = query_builder.delete_table(table_name, "archive")
-        delete_result = run_query(delete_sql)
+        delete_result = query.delete_archive(pk)
         if delete_result[0]['result'] == 'success':
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
@@ -915,7 +919,7 @@ class SavedQueryDataList(APIView):
             saved_query_db_table = "query_data_" + \
                 datetime.datetime.now().strftime('%Y%m%d%H%M%S')
             query_builder = TableQueryBuilder(
-                saved_query_db_table, "repo", operation=serializer.validated_data["operation"])
+                saved_query_db_table, operation=serializer.validated_data["operation"])
             sql = query_builder.get_sql_without_limit()
             serializer.save(user=self.request.user, full_query=sql,
                             saved_query_db_table=saved_query_db_table)
