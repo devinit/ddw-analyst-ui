@@ -19,7 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ADMINS = [
     ('Edwin', 'edwin.magezi@devinit.org'),
     ('Alex', 'alex.miller@devinit.org'),
-    ('David', 'david.ebukali@devinit.org')
+    ('David', 'david.ebukali@devinit.org'),
+    ('Chris', 'chrisw@devinit.org')
 ]
 
 # Quick-start development settings - unsuitable for production
