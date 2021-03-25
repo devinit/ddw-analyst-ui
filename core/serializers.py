@@ -5,7 +5,6 @@
     Serializers also provide deserialization, allowing parsed data to be converted back into complex
     types, after first validating the incoming data.
 """
-from datetime import datetime
 from json.decoder import JSONDecodeError
 
 from dateutil.relativedelta import *
@@ -17,12 +16,13 @@ from rest_framework.utils import model_meta
 
 from core import query
 from core.const import DEFAULT_LIMIT_COUNT
-from core.errors import handle_uncaught_error
-from core.models import (
-    Operation, OperationStep, OperationDataColumnAlias, Review, ScheduledEvent,
-    ScheduledEventRunInstance, Sector, Source, SourceColumnMap, Tag,
-    Theme, UpdateHistory, FrozenData, SavedQueryData)
-from core.errors import AliasCreationError, AliasUpdateError, UncaughtError
+from core.errors import (AliasCreationError, AliasUpdateError,
+                         CustomAPIException, handle_uncaught_error)
+from core.models import (FrozenData, Operation, OperationDataColumnAlias,
+                         OperationStep, Review, SavedQueryData, ScheduledEvent,
+                         ScheduledEventRunInstance, Sector, Source,
+                         SourceColumnMap, Tag, Theme, UpdateHistory)
+
 
 class DataSerializer(serializers.BaseSerializer):
     """
@@ -194,7 +194,7 @@ class OperationSerializer(serializers.ModelSerializer):
             raise AliasCreationError({'error_code': operation.alias_creation_status})
         except Exception as e:
             handle_uncaught_error(e)
-            raise UncaughtError({'detail': str(e)})
+            raise CustomAPIException({'detail': str(e)})
 
     def update(self, instance, validated_data):
         try:
@@ -237,7 +237,7 @@ class OperationSerializer(serializers.ModelSerializer):
             raise AliasUpdateError({'error_code': instance.alias_creation_status})
         except Exception as e:
             handle_uncaught_error(e)
-            raise UncaughtError({'detail': str(e)})
+            raise CustomAPIException({'detail': str(e)})
 
     def create_operation_data_aliases(self, operation):
         count, data = query.query_table(operation, 1, 0, estimate_count=True)

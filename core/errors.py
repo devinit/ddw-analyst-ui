@@ -15,10 +15,10 @@ class AliasUpdateError(APIException):
     """Raised when alias update fails"""
     status_code = status.HTTP_400_BAD_REQUEST
 
-class UncaughtError(APIException):
-    """Raised when there is an uncaught error"""
+class CustomAPIException(APIException):
+    """Raised when there is an uncaught API error"""
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-    default_detail = 'An unknown error occured.'
+    default_detail = 'A server error occured. Please contact your administrator'
 
 
 def handle_uncaught_error(error):
