@@ -10,7 +10,7 @@ def build_query(operation=None, steps=None, limit=None, offset=None, estimate_co
     if not count_query and estimate_count: # if count returns 0, remove estimate TODO: figure out why count would contradict actual results
         count_query = QueryBuilder(operation=operation, operation_steps=steps).count_sql(False)
     if limit is None:
-        data_query = QueryBuilder(operation=operation, operation_steps=steps).get_sql_without_limit())
+        data_query = QueryBuilder(operation=operation, operation_steps=steps).get_sql_without_limit()
     else:
         data_query = QueryBuilder(operation=operation, operation_steps=steps).get_sql(limit, offset))
     if frozen_table_id:
