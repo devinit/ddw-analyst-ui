@@ -12,7 +12,7 @@ def build_query(operation=None, steps=None, limit=None, offset=None, estimate_co
     if limit is None:
         data_query = QueryBuilder(operation=operation, operation_steps=steps).get_sql_without_limit()
     else:
-        data_query = QueryBuilder(operation=operation, operation_steps=steps).get_sql(limit, offset))
+        data_query = QueryBuilder(operation=operation, operation_steps=steps).get_sql(limit, offset)
     if frozen_table_id:
         # We replace the old schema and table names with the ones of the frozen one
         try:
