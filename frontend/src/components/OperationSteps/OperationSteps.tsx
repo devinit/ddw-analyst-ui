@@ -24,6 +24,7 @@ interface OperationStepsProps {
   onSelectSource: (source: SourceMap) => Partial<QueryBuilderAction>;
   onAddStep: (step?: OperationStepMap) => Partial<QueryBuilderAction>;
   onClickStep: (step?: OperationStepMap) => void;
+  onDuplicateStep: (step?: OperationStepMap) => void;
 }
 
 const StyledListItem = styled(ListGroup.Item)`
@@ -50,15 +51,26 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
               const isActiveStep = activeStep && activeStep.get('step_id') === step.get('step_id');
 
               return (
-                <StyledListItem
-                  className="py-2"
-                  key={index}
-                  onClick={!activeStep && onClickStep(step)}
-                  disabled={(activeStep && !isActiveStep) || props.disabled}
-                  active={isActiveStep}
-                >
-                  <OperationStep step={step} />
-                </StyledListItem>
+                <>
+                  <StyledListItem
+                    className="py-2 step-info"
+                    key={index}
+                    onClick={!activeStep && onClickStep(step)}
+                    disabled={(activeStep && !isActiveStep) || props.disabled}
+                    active={isActiveStep}
+                  >
+                    <OperationStep step={step} />
+                  </StyledListItem>
+                  <Button
+                    id="step-duplicate"
+                    variant="dark"
+                    size="sm"
+                    data-testid="step-duplicate"
+                    onClick={() => props.onDuplicateStep(step)}
+                  >
+                    Duplicate
+                  </Button>
+                </>
               );
             })}
           </ListGroup>
