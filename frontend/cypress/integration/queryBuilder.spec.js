@@ -94,6 +94,16 @@ describe('The Query Builder', () => {
       .contains(`Columns donor_code, donor_name used in steps 1 are obsolete.`);
   });
 
+  it('that creates a copy of a step', () => {
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/dataset/3/', datasets.results[2]);
+    });
+    cy.visit('/queries/build/3/');
+    cy.get('[data-testid="step-duplicate"]').click({ force: true });
+    cy.url().should('include', '/queries/build');
+    cy.get('[data-testid="op-step-name"]').should('have.value', 'Copy of Select');
+  });
+
   xit('with an active data source has a button to add a step', () => {
     // TODO: create test
   });

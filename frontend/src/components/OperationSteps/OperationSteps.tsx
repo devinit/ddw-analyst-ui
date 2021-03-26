@@ -53,7 +53,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
               return (
                 <>
                   <StyledListItem
-                    className="py-2 step-info"
+                    className="py-2"
                     key={index}
                     onClick={!activeStep && onClickStep(step)}
                     disabled={(activeStep && !isActiveStep) || props.disabled}

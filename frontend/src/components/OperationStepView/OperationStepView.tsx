@@ -26,7 +26,7 @@ export class OperationStepView extends React.Component<OperationStepProps> {
 
     return (
       <React.Fragment>
-        <div>
+        <div className="step-info">
           <Badge variant="secondary">
             {(step.get('query_func') as string).toUpperCase().split('_').join(' ')}
           </Badge>

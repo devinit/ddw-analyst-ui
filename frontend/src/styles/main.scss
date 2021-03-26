@@ -347,9 +347,12 @@ th .material-icons {
 }
 
 .step-info {
+  &:hover #step-duplicate {
+    display: inline-block !important;
+  }
 
 }
 
-#step-duplicate {
-  // display: none !important;
-}
+// #step-duplicate {
+//   display: none !important;
+// }
