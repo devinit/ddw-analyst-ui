@@ -42,6 +42,16 @@ Cypress.Commands.add('fillOperationForm', () => {
   cy.get('.search').eq(1).type('CRS ISO codes{enter}{esc}');
 });
 
+Cypress.Commands.add('useFTS', () => {
+  // Visit query builder type name and choose datasource
+  cy.visit('/queries/build');
+  cy.get('[name="name"]').focus().type('My Test Dataset');
+  cy.get('[name="description"]').focus().type('My Test Dataset Description');
+  cy.get('.search').eq(1).click({ force: true });
+  cy.wait(5000);
+  cy.get('.search').eq(1).type('Financial Tracking Service{enter}{esc}');
+});
+
 Cypress.Commands.add('fillStepForm', () => {
   // Add step
   cy.get('[data-testid="qb-add-step-button"]').click();
@@ -73,6 +83,20 @@ Cypress.Commands.add('fillStepForm', () => {
     .click({ force: true })
     .type('{downarrow}{enter}{esc}');
   cy.get('[name="value"]').eq(1).type('3');
+});
+
+Cypress.Commands.add('createSelectStep', () => {
+  // Fill create step form
+  cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+  cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+  // Check all checkboxes
+  cy.get('[data-testid="qb-select-all-button"]').click();
+
+  // Save and create step
+  cy.get('[data-testid="qb-step-preview-button"]').click();
+
 });
 
 //
