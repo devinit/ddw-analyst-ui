@@ -119,6 +119,7 @@ export class FilterQueryBuilder extends React.Component<
           filter={filter}
           onUpdate={(filtr: FilterMap) => this.onUpdateItem(filtr, index)}
           onDelete={() => this.onDeleteItem(index)}
+          onDuplicateFilter={this.onDuplicateFilter}
         />
       ));
     }
@@ -131,6 +132,7 @@ export class FilterQueryBuilder extends React.Component<
       const filter: FilterMap = Map({} as any);
       if (this.props.filters) {
         const filters = this.props.filters.push(filter);
+        console.log(filters);
         this.props.onUpdateFilters(JSON.stringify(Map({ filters } as any).toJS()));
       } else {
         const filters = Map({ filters: List([filter]) }).toJS();
@@ -155,5 +157,9 @@ export class FilterQueryBuilder extends React.Component<
 
   private toggleInfo = () => {
     this.setState({ showInfo: !this.state.showInfo });
+  };
+
+  private onDuplicateFilter = () => {
+    console.log('here');
   };
 }

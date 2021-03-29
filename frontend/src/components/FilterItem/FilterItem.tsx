@@ -112,6 +112,12 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             <i className="material-icons">delete</i>
           </Button>
         </Col>
+
+        <Col lg={1}>
+          <Button data-testid="qb-filter-delete-button" onClick={this.props.onDuplicateFilter}>
+            Copy
+          </Button>
+        </Col>
       </Row>
     );
   }
