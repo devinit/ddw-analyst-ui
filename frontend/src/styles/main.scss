@@ -353,6 +353,8 @@ th .material-icons {
 .step-container{
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   &:hover #step-duplicate {
-    display: inline-block !important;
+    display: block !important;
+    margin-left: 20px;
+    margin-bottom: 10px;
   }
 }
