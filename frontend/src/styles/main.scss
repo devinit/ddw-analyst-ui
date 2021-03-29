@@ -353,6 +353,10 @@ th .material-icons {
 
 }
 
-// #step-duplicate {
-//   display: none !important;
-// }
+#step-duplicate {
+  display: none !important;
+}
+
+.step-container{
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}

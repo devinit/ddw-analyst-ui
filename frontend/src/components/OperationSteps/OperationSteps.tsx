@@ -28,7 +28,6 @@ interface OperationStepsProps {
 }
 
 const StyledListItem = styled(ListGroup.Item)`
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   border-color: ${(props) => (props.active ? '#737373 !important' : 'default')};
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
@@ -51,7 +50,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
               const isActiveStep = activeStep && activeStep.get('step_id') === step.get('step_id');
 
               return (
-                <>
+                <div className="step-container" key={index}>
                   <StyledListItem
                     className="py-2"
                     key={index}
@@ -70,7 +69,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                   >
                     Duplicate
                   </Button>
-                </>
+                </div>
               );
             })}
           </ListGroup>
