@@ -27,15 +27,25 @@ interface OperationStepsProps {
   onDuplicateStep: (step?: OperationStepMap) => void;
 }
 
+const StyledButton = styled(Button)`
+  display: none;
+  padding-top: 0 !important;
+  padding-right: 0 !important;
+  margin-top: 0;
+`;
+
 const StyledListItem = styled(ListGroup.Item)`
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   border-color: ${(props) => (props.active ? '#737373 !important' : 'default')};
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
 `;
-const StyledButton = styled(Button)`
-  padding-top: 0 !important;
-  padding-right: 0 !important;
-  margin-top: 0;
+
+const StyledStepContainer = styled.div`
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  &:hover {
+    ${StyledButton} {
+      display: block !important;
+    }
 `;
 
 const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
@@ -55,10 +65,9 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
               const isActiveStep = activeStep && activeStep.get('step_id') === step.get('step_id');
 
               return (
-                <div className="step-container" key={index}>
+                <StyledStepContainer key={index}>
                   <StyledListItem
                     className="py-2"
-                    key={index}
                     onClick={!activeStep && onClickStep(step)}
                     disabled={(activeStep && !isActiveStep) || props.disabled}
                     active={isActiveStep}
@@ -76,7 +85,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                       <i className="material-icons">content_copy</i>
                     </StyledButton>
                   </div>
-                </div>
+                </StyledStepContainer>
               );
             })}
           </ListGroup>
