@@ -237,6 +237,212 @@ describe('The Query Builder', () => {
     // TODO: create test
   });
 
+  describe('Warning for breaking changes', () => {
+    it('Filter step', () => {
+      // Visit query builder, type name and choose datasource
+      cy.useFTS();
+
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Create select query step
+      cy.createSelectStep();
+
+      // // Fill create step form with 2 filters
+      cy.fillStepForm();
+
+      // Save and create step
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+
+      cy.get('.list-group').find('.list-group-item').eq(0).click({force: true});
+
+      // Uncheck the first checkbox
+      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({force: true});
+
+      cy.get('.modal-content').should('be.visible');
+
+    });
+
+    it('Join step', () => {
+      // Visit query builder, type name and choose datasource
+      cy.useFTS();
+
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Create select query step
+      cy.createSelectStep();
+
+      // Go to create another query step form
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}{downarrow}{enter}');
+      cy.get('[data-testid="qb-join-type"]').type('inner{enter}');      
+      cy.get('[data-testid="qb-join-dataset-select"]').type('{enter}');
+      
+      cy.get('[data-testid="qb-join-add-mapping-button"]').click();
+
+      cy.get('[data-testid="qb-join-primary-column-select"]').type('{downarrow}{enter}');
+      cy.get('[data-testid="qb-join-secondary-column-select"]').type('{downarrow}{enter}');
+
+      // Save and create step
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+
+      cy.get('.list-group').find('.list-group-item').eq(0).click({force: true});
+
+      // Uncheck the first checkbox
+      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({force: true});
+
+      cy.get('.modal-content').should('be.visible');
+
+    });
+
+    it('Aggregate step', () => {
+      // Visit query builder, type name and choose datasource
+      cy.useFTS();
+
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Create select query step
+      cy.createSelectStep();
+
+      // Go to create another query step form
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}{downarrow}{downarrow}{enter}');
+      cy.get('[data-testid="qb-aggregate-function-select"]').type('average{enter}');      
+      cy.get('[name="operational_column"] > input').eq(0).type('{downarrow}{enter}', {force: true});
+      cy.get('[name="group_by"] > input').eq(0).type('{downarrow}{enter}', {force: true});
+      cy.get('[name="group_by"] > input').eq(0).type('{downarrow}{enter}', {force: true});
+      
+      // Save and create step
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+
+      cy.get('.list-group').find('.list-group-item').eq(0).click({force: true});
+
+      // // Uncheck the first checkbox
+      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({force: true});
+
+      cy.get('.modal-content').should('be.visible');
+
+    });
+
+    it('Scalar transform step', () => {
+      // Visit query builder, type name and choose datasource
+      cy.useFTS();
+
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Create select query step
+      cy.createSelectStep();
+
+      // Go to create another query step form
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}{downarrow}{downarrow}{downarrow}{enter}');      
+      cy.get('[name="trans_func_name"] > input').type('{downarrow}add{enter}', {force: true});
+      cy.get('[name="operational_column"] > input').type('{downarrow}{enter}', {force: true});
+      cy.get('[name="operational_value"]').type('5', {force: true});
+      
+      // Save and create step
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+
+      cy.get('.list-group').find('.list-group-item').eq(0).click({force: true});
+
+      // Uncheck the first checkbox
+      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({force: true});
+
+      cy.get('.modal-content').should('be.visible');
+
+    });
+
+  it('Multi tranform step', () => {
+    // Visit query builder, type name and choose datasource
+    cy.useFTS();
+
+    cy.get('[data-testid="qb-add-step-button"]').click();
+
+    // Fill create step form
+    cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+    cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+    cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+    // Check all checkboxes
+    cy.get('[data-testid="qb-select-all-button"]').click();
+
+    // Save and create step
+    cy.get('[data-testid="qb-step-preview-button"]').click();
+
+    // Go to create another query step form
+    cy.get('[data-testid="qb-add-step-button"]').click();
+
+    cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+    cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+    cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{enter}');              
+    cy.get('[name="trans_func_name"] > input').type('{downarrow}add{enter}', {force: true});
+    
+    cy.get('[name="operational_columns"] > input').type('{enter}', {force: true});    
+    cy.get('[name="operational_columns"] > input').type('{downarrow}{enter}', {force: true});
+    
+    // Save and create step
+    cy.get('[data-testid="qb-step-preview-button"]').click();
+
+    cy.get('.list-group').find('.list-group-item').eq(0).click({force: true});
+
+    // Uncheck the first checkbox
+    cy.get('.selectColumnCheckbox > input').eq(0).uncheck({force: true});
+
+    cy.get('.modal-content').should('be.visible');
+  });
+
+  it('Window step', () => {
+    // Visit query builder, type name and choose datasource
+    cy.useFTS();
+
+    cy.get('[data-testid="qb-add-step-button"]').click();
+
+    // Fill create step form
+    cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+    cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+    cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+    // Check all checkboxes
+    cy.get('[data-testid="qb-select-all-button"]').click();
+
+    // Save and create step
+    cy.get('[data-testid="qb-step-preview-button"]').click();
+
+    // Go to create another query step form
+    cy.get('[data-testid="qb-add-step-button"]').click();
+
+    cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+    cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+    cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{enter}');              
+    cy.get('[name="window_fn"] > input').type('{downarrow}add{enter}', {force: true});
+    
+    cy.get('[name="term"] > input').type('{enter}', {force: true});    
+    cy.get('[name="over"] > input').type('{downarrow}{enter}', {force: true});
+    cy.get('[name="order_by"] > input').type('{downarrow}{enter}', {force: true});
+    cy.get('[name="columns"] > input').type('{enter}', {force: true});
+    cy.get('[name="columns"] > input').type('{downarrow}{enter}', {force: true});
+    
+    // Save and create step
+    cy.get('[data-testid="qb-step-preview-button"]').click();
+
+    cy.get('.list-group').find('.list-group-item').eq(0).click({force: true});
+
+    // Uncheck the first checkbox
+    cy.get('.selectColumnCheckbox > input').eq(0).uncheck({force: true});
+
+    cy.get('.modal-content').should('be.visible');
+
+  });
+});
+
   xit('creates a dataset', () => {
     // TODO: create test
   });
