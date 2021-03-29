@@ -32,6 +32,11 @@ const StyledListItem = styled(ListGroup.Item)`
   border-color: ${(props) => (props.active ? '#737373 !important' : 'default')};
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
 `;
+const StyledButton = styled(Button)`
+  padding-top: 0 !important;
+  padding-right: 0 !important;
+  margin-top: 0;
+`;
 
 const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = props;
@@ -60,15 +65,17 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                   >
                     <OperationStep step={step} />
                   </StyledListItem>
-                  <Button
-                    id="step-duplicate"
-                    variant="dark"
-                    size="sm"
-                    data-testid="step-duplicate"
-                    onClick={() => props.onDuplicateStep(step)}
-                  >
-                    Duplicate
-                  </Button>
+                  <div className="step-action-buttons d-inline-flex">
+                    <StyledButton
+                      title="Duplicate"
+                      variant="link"
+                      size="sm"
+                      data-testid="step-duplicate"
+                      onClick={() => props.onDuplicateStep(step)}
+                    >
+                      <i className="material-icons">content_copy</i>
+                    </StyledButton>
+                  </div>
                 </div>
               );
             })}
