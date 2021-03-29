@@ -346,17 +346,13 @@ th .material-icons {
   }
 }
 
-.step-info {
-  &:hover #step-duplicate {
-    display: inline-block !important;
-  }
-
-}
-
 #step-duplicate {
   display: none !important;
 }
 
 .step-container{
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  &:hover #step-duplicate {
+    display: inline-block !important;
+  }
 }
