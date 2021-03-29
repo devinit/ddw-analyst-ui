@@ -11,6 +11,7 @@ interface FilterItemProps {
   filter: ErroredFilterMap;
   onUpdate: (filter: ErroredFilterMap) => void;
   onDelete: (filter: ErroredFilterMap) => void;
+  onDuplicateFilter: (filter: ErroredFilterMap) => void;
   errors?: { [P in keyof Filter]?: string };
   editable?: boolean;
 }
