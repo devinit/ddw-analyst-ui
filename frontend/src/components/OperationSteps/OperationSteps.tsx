@@ -76,7 +76,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                   >
                     <OperationStep step={step} />
                   </StyledListItem>
-                  <StyledButtonWrapper className="step-action-buttons">
+                  <StyledButtonWrapper>
                     <StyledButton
                       title="Duplicate"
                       variant="link"
