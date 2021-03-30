@@ -28,7 +28,6 @@ interface OperationStepsProps {
 }
 
 const StyledButton = styled(Button)`
-  display: none;
   padding-top: 0 !important;
   padding-right: 0 !important;
   margin-top: 0;
@@ -40,11 +39,14 @@ const StyledListItem = styled(ListGroup.Item)`
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
 `;
 
+const StyledButtonWrapper = styled.div`
+  display: none;
+`;
 const StyledStepContainer = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   &:hover {
-    ${StyledButton} {
-      display: block !important;
+    ${StyledButtonWrapper} {
+      display: inline-flex !important;
     }
 `;
 
@@ -74,7 +76,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                   >
                     <OperationStep step={step} />
                   </StyledListItem>
-                  <div className="step-action-buttons d-inline-flex">
+                  <StyledButtonWrapper className="step-action-buttons">
                     <StyledButton
                       title="Duplicate"
                       variant="link"
@@ -84,7 +86,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                     >
                       <i className="material-icons">content_copy</i>
                     </StyledButton>
-                  </div>
+                  </StyledButtonWrapper>
                 </StyledStepContainer>
               );
             })}
