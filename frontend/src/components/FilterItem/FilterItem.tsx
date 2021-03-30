@@ -102,7 +102,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
           </Form.Group>
         </Col>
 
-        <Col lg={1}>
+        <Col lg={0.5}>
           <Button
             variant="link"
             className="btn-just-icon"
@@ -114,7 +114,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
           </Button>
         </Col>
 
-        <Col lg={1}>
+        <Col lg={0.5}>
           <Button
             title="Duplicate"
             variant="link"
