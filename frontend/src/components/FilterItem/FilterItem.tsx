@@ -43,6 +43,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             error={!!(errors && errors.get('field'))}
             disabled={!this.props.editable}
             data-testid="qb-filter-select-column"
+            name="Column"
           />
           <Form.Control.Feedback
             type="invalid"
@@ -65,6 +66,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
             error={!!(errors && errors.get('func'))}
             disabled={!this.props.editable}
             data-testid="qb-filter-select-operation"
+            name="operation"
           />
           <Form.Control.Feedback
             type="invalid"
@@ -115,7 +117,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
         </Col>
 
         <Col lg={1}>
-          <Button data-testid="qb-filter-delete-button" onClick={this.props.onDuplicateFilter}>
+          <Button data-testid="qb-filter-duplicate-button" onClick={this.onDuplicateFilter}>
             Copy
           </Button>
         </Col>
@@ -166,6 +168,9 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
 
   private onDelete = () => {
     this.props.onDelete(this.props.filter);
+  };
+  private onDuplicateFilter = () => {
+    this.props.onDuplicateFilter(this.props.filter);
   };
 }
 
