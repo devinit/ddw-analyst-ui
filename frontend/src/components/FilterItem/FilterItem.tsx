@@ -92,6 +92,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
               onBlur={this.resetFocus}
               onChange={debounce(this.onChangeValue, 1000, { leading: true })}
               disabled={!this.props.editable}
+              data-testid="qb-filter-value"
             />
             <Form.Control.Feedback
               type="invalid"

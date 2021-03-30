@@ -89,7 +89,6 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
 
   const onUpdateOptions = (options: string) => {
     const step = props.step.set('query_kwargs', options);
-    console.log(props.step.get('query_kwargs'));
     props.onUpdateStep(step, props.editing);
   };
 
