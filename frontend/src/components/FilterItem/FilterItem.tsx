@@ -117,7 +117,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
 
         <Col lg={0.5}>
           <Button
-            title="Duplicate"
+            title="Copy"
             variant="link"
             data-testid="qb-filter-duplicate-button"
             onClick={this.onDuplicateFilter}
