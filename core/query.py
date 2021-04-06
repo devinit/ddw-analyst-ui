@@ -42,9 +42,10 @@ def querytime_estimate(operation=None, operation_steps=None):
 def delete_archive(id):
     try:
         frozen_data = FrozenData.objects.get(pk=id)
+        table_name = frozen_data.frozen_db_table
         frozen_data.delete()
-        query_builder = TableQueryBuilder(table_name, "archive")
-        delete_sql = query_builder.delete_table(table_name, "archive")
+        query_builder = TableQueryBuilder(table_name, "archives")
+        delete_sql = query_builder.delete_table(table_name, "archives")
         delete_result = run_query(delete_sql)
         if delete_result[0]['result'] == 'success':
             delete_source(table_name)
@@ -68,5 +69,6 @@ def delete_operations(table_name):
     try:
         operations = Operation.objects.filter(operation_query__contains=table_name)
         operations.delete()
+        return True
     except Operation.DoesNotExist:
         return False
