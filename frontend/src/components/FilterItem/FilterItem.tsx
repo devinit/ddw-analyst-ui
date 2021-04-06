@@ -103,27 +103,27 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
           </Form.Group>
         </Col>
 
-        <Col lg={0.5}>
-          <Button
-            variant="link"
-            className="btn-just-icon"
-            onClick={this.onDelete}
-            hidden={!this.props.editable}
-            data-testid="qb-filter-delete-button"
-          >
-            <i className="material-icons">delete</i>
-          </Button>
-        </Col>
-
-        <Col lg={0.5}>
-          <Button
-            title="Copy"
-            variant="link"
-            data-testid="qb-filter-duplicate-button"
-            onClick={this.onDuplicateFilter}
-          >
-            <i className="material-icons">content_copy</i>
-          </Button>
+        <Col lg={1}>
+          <Row>
+            <Button
+              variant="link"
+              className="btn-just-icon"
+              onClick={this.onDelete}
+              hidden={!this.props.editable}
+              data-testid="qb-filter-delete-button"
+            >
+              <i className="material-icons">delete</i>
+            </Button>
+            <Button
+              title="Copy"
+              className="btn-just-icon"
+              variant="link"
+              data-testid="qb-filter-duplicate-button"
+              onClick={this.onDuplicateFilter}
+            >
+              <i className="material-icons">content_copy</i>
+            </Button>
+          </Row>
         </Col>
       </Row>
     );
