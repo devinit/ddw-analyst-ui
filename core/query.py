@@ -68,6 +68,9 @@ def delete_operations(table_name):
     # to avoid errors like deleting a query for fts_codenames when fts table is deleted
     try:
         operations = Operation.objects.filter(operation_query__contains=table_name)
+        for operation in operations:
+            operation.operationstep_set.all().delete()
+            operation.operationdatacolumnalias_set.all().delete()
         operations.delete()
         return True
     except Operation.DoesNotExist:
