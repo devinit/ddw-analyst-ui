@@ -31,7 +31,7 @@ from core import query
 from core.errors import CustomAPIException, handle_uncaught_error
 from core.models import (FrozenData, Operation, OperationDataColumnAlias,
                          OperationStep, Review, SavedQueryData, ScheduledEvent,
-                         ScheduledEventRunInstance, Sector, Source, Tag, Theme)
+                         ScheduledEventRunInstance, Sector, Source, Tag, Theme, SourceColumnMap, SavedQueryData)
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
@@ -851,9 +851,9 @@ class FrozenDataList(APIView):
             serializer.save(user=request.user, frozen_db_table=frozen_db_table)
             # Add this new table to the Sources, and it's columns to the SourceColumnMap
             source = Source.objects.get(active_mirror_name=parent_db_table)
-            frozen_source = Source(indicator='Frozen '+source.indicator, indicator_acronym=source.indicator_acronym, source=source.source, schema=source.schema, storage_type=source.storage_type, active_mirror_name=frozen_db_table)
+            frozen_source = Source(indicator='Frozen '+source.indicator, indicator_acronym=source.indicator_acronym, source=source.source, schema='archives', storage_type=source.storage_type, active_mirror_name=frozen_db_table)
             frozen_source.save()
-            column_maps = source.sourcecolumnmap.all()
+            column_maps = source.sourcecolumnmap_set.all()
             for column_map in column_maps:
                 frozen_column_map = SourceColumnMap(data_type=column_map.data_type, source=frozen_source, name=column_map.name, description=column_map.description, alias=column_map.alias, source_name=column_map.source_name)
                 frozen_column_map.save()
