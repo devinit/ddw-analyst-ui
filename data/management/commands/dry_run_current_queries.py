@@ -37,7 +37,7 @@ class Command(BaseCommand):
             print(query.id)
             try:
                 sql = QueryBuilder(operation=query).get_sql(limit=2)
-                self.stdout.write(self.style.SQL("{}".format(sql)))
+                self.stdout.write(self.style.SUCCESS("{}".format(sql)))
                 results = analyse_query(sql)
                 if results[0]['result'] == 'success':
                     continue
