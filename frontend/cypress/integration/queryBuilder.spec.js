@@ -229,6 +229,28 @@ describe('The Query Builder', () => {
       // Check that we now have 1 filter
       cy.get('.list-group').find('.list-group-item').should('have.length', 1);
     });
+
+    it('makes a copy of a filter', () => {
+      // Visit query builder, type name and choose datasource
+      cy.fillOperationForm();
+
+      // Fill create step form with 2 filters
+      cy.fillStepForm();
+
+      // Save and create step
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+
+      // Click on the step
+      cy.get('[data-testid="qb-step-wrapper"]').click();
+
+      // Click filter duplicate button
+      cy.get('[data-testid="qb-filter-duplicate-button"]').first().click();
+
+      //Check that a copy of the filter has been made with the value field being empty
+      cy.get('[data-testid="qb-filter-select-column"]').eq(2).contains('Country code');
+      cy.get('[data-testid="qb-filter-select-operation"]').eq(2).contains('is Less Than Or Equal');
+      cy.get('[data-testid="qb-filter-value"]').eq(2).should('be.empty');
+    });
   });
 
   xit('creates a JOIN step', () => {

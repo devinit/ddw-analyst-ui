@@ -11,6 +11,7 @@ interface FilterItemProps {
   filter: ErroredFilterMap;
   onUpdate: (filter: ErroredFilterMap) => void;
   onDelete: (filter: ErroredFilterMap) => void;
+  onDuplicateFilter: (filter: ErroredFilterMap) => void;
   errors?: { [P in keyof Filter]?: string };
   editable?: boolean;
 }
@@ -91,6 +92,7 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
               onBlur={this.resetFocus}
               onChange={debounce(this.onChangeValue, 1000, { leading: true })}
               disabled={!this.props.editable}
+              data-testid="qb-filter-value"
             />
             <Form.Control.Feedback
               type="invalid"
@@ -102,15 +104,26 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
         </Col>
 
         <Col lg={1}>
-          <Button
-            variant="link"
-            className="btn-just-icon"
-            onClick={this.onDelete}
-            hidden={!this.props.editable}
-            data-testid="qb-filter-delete-button"
-          >
-            <i className="material-icons">delete</i>
-          </Button>
+          <Row>
+            <Button
+              variant="link"
+              className="btn-just-icon"
+              onClick={this.onDelete}
+              hidden={!this.props.editable}
+              data-testid="qb-filter-delete-button"
+            >
+              <i className="material-icons">delete</i>
+            </Button>
+            <Button
+              title="Copy"
+              className="btn-just-icon"
+              variant="link"
+              data-testid="qb-filter-duplicate-button"
+              onClick={this.onDuplicateFilter}
+            >
+              <i className="material-icons">content_copy</i>
+            </Button>
+          </Row>
         </Col>
       </Row>
     );
@@ -159,6 +172,9 @@ export class FilterItem extends React.Component<FilterItemProps, FilterItemState
 
   private onDelete = () => {
     this.props.onDelete(this.props.filter);
+  };
+  private onDuplicateFilter = () => {
+    this.props.onDuplicateFilter(this.props.filter);
   };
 }
 

@@ -69,6 +69,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
               return (
                 <StyledStepContainer key={index}>
                   <StyledListItem
+                    data-testid="qb-step-wrapper"
                     className="py-2"
                     onClick={!activeStep && onClickStep(step)}
                     disabled={(activeStep && !isActiveStep) || props.disabled}
