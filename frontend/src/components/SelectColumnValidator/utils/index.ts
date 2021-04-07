@@ -60,45 +60,27 @@ export const validateSelectColumnDeselect = (
 const parseOptions = (options: string): ParsedOptions => {
   const parsedOptions = JSON.parse(options);
   if (parsedOptions.hasOwnProperty('filters')) {
-    return {
-      id: 'filters',
-      values: [parsedOptions.filters],
-    };
+    return { id: 'filters', values: [parsedOptions.filters] };
   }
   if (parsedOptions.hasOwnProperty('join_on')) {
-    return {
-      id: 'join_on',
-      values: [parsedOptions],
-    };
+    return { id: 'join_on', values: [parsedOptions] };
   }
   if (
     parsedOptions.hasOwnProperty('operational_column') &&
     !parsedOptions.hasOwnProperty('trans_func_name')
   ) {
-    return {
-      id: 'aggregate',
-      values: [parsedOptions],
-    };
+    return { id: 'aggregate', values: [parsedOptions] };
   }
   if (
     parsedOptions.hasOwnProperty('operational_column') &&
     parsedOptions.hasOwnProperty('trans_func_name')
   ) {
-    return {
-      id: 'scalar',
-      values: [parsedOptions],
-    };
+    return { id: 'scalar', values: [parsedOptions] };
   }
   if (parsedOptions.hasOwnProperty('operational_columns')) {
-    return {
-      id: 'multi',
-      values: [parsedOptions],
-    };
+    return { id: 'multi', values: [parsedOptions] };
   }
   if (parsedOptions.hasOwnProperty('over')) {
-    return {
-      id: 'window',
-      values: [parsedOptions],
-    };
+    return { id: 'window', values: [parsedOptions] };
   }
 };
