@@ -266,6 +266,19 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     props.actions.deleteOperationStep(step);
   };
 
+  const onDuplicateStep = (step: OperationStepMap) => {
+    const steps = props.page.get('steps') as List<OperationStepMap>;
+    if (step) {
+      const duplicateStep = step.withMutations((step) =>
+        step
+          .delete('id')
+          .set('step_id', steps.count() + 1)
+          .set('name', `Copy of ${step.get('name')}`),
+      );
+      props.actions.updateActiveStep(duplicateStep, false);
+    }
+  };
+
   const renderPreview = () => {
     if (loadingPreview) {
       return <div>Loading ...</div>;
@@ -343,6 +356,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           onClickStep={onClickStep}
           editable={editable}
           disabled={showPreview}
+          onDuplicateStep={onDuplicateStep}
         />
       </OperationForm>
     );

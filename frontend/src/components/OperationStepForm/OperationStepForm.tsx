@@ -321,6 +321,7 @@ export const OperationStepForm: FunctionComponent<OperationStepFormProps> = (pro
                 <Form.Control
                   name="name"
                   type="text"
+                  data-testid="op-step-name"
                   onChange={handleChange}
                   isInvalid={!!errors.name}
                   onFocus={setFocusedField}
