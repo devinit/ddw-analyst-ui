@@ -94,6 +94,16 @@ describe('The Query Builder', () => {
       .contains(`Columns donor_code, donor_name used in steps 1 are obsolete.`);
   });
 
+  it('that creates a copy of a step', () => {
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/dataset/3/', datasets.results[2]);
+    });
+    cy.visit('/queries/build/3/');
+    cy.get('[data-testid="step-duplicate"]').click({ force: true });
+    cy.url().should('include', '/queries/build');
+    cy.get('[data-testid="op-step-name"]').should('have.value', 'Copy of Select');
+  });
+
   xit('with an active data source has a button to add a step', () => {
     // TODO: create test
   });
@@ -218,6 +228,28 @@ describe('The Query Builder', () => {
 
       // Check that we now have 1 filter
       cy.get('.list-group').find('.list-group-item').should('have.length', 1);
+    });
+
+    it('makes a copy of a filter', () => {
+      // Visit query builder, type name and choose datasource
+      cy.fillOperationForm();
+
+      // Fill create step form with 2 filters
+      cy.fillStepForm();
+
+      // Save and create step
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+
+      // Click on the step
+      cy.get('[data-testid="qb-step-wrapper"]').click();
+
+      // Click filter duplicate button
+      cy.get('[data-testid="qb-filter-duplicate-button"]').first().click();
+
+      //Check that a copy of the filter has been made with the value field being empty
+      cy.get('[data-testid="qb-filter-select-column"]').eq(2).contains('Country code');
+      cy.get('[data-testid="qb-filter-select-operation"]').eq(2).contains('is Less Than Or Equal');
+      cy.get('[data-testid="qb-filter-value"]').eq(2).should('be.empty');
     });
   });
 

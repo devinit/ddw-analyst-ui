@@ -176,6 +176,7 @@ jobs:
           cd ~/ddw-analyst-ui
           npm ci
           npm run build
+          docker-compose exec -T web python manage.py collectstatic --no-input
 
   end-to-end:
     name: 'Cypress End-to-End'

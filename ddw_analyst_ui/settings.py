@@ -19,14 +19,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ADMINS = [
     ('Edwin', 'edwin.magezi@devinit.org'),
     ('Alex', 'alex.miller@devinit.org'),
-    ('David', 'david.ebukali@devinit.org')
+    ('David', 'david.ebukali@devinit.org'),
+    ('Chris', 'chrisw@devinit.org')
 ]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '!brp5jw6nf-2f*=6=s$$@2he&!y+x*2gkhb6ate$ne-kt7c#h4')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY',
+                       '!brp5jw6nf-2f*=6=s$$@2he&!y+x*2gkhb6ate$ne-kt7c#h4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEV', 'False') == 'True'
@@ -55,7 +57,6 @@ INSTALLED_APPS = [
     'social_django',
     'rest_social_auth',
     'knox',
-    'webpack_loader',
     'ddw_analyst_ui',
 ]
 
@@ -183,14 +184,6 @@ CSV_FILES_FOLDER = os.path.join(BASE_DIR, 'data_updates', 'manual', 'CSV')
 
 IS_TESTING = False
 
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
-    }
-}
-
 QUERY_TABLES = [
     'fts_codenames', 'fts_privatemoney', 'fts_dacregion', 'fts_donorscountryid', 'fts_recipientcodename', 'fts_ngotype', 'fts_deliverychannels',
     'fts_recipientcountryid', 'fts_odaeligible', 'fts_destinationcountryid', 'fts_incomegroups', 'fts_deflators', 'fts_isos', 'fts_privatemoney',
@@ -217,6 +210,11 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
         'null': {
             'class': 'logging.NullHandler',
         },

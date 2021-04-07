@@ -134,6 +134,10 @@ export const queryBuilderHelpMenuLinks: MenuLink[] = [
   {
     caption: 'Aggregate Query',
     url: `${BASE_URL}1j10m46dLY-zb5Mee4JWncTGeOsf2o8oChSN90ZUu8vk/edit#heading=h.r7eozdejatca`,
+  },
+  {
+    caption: 'Duplicate Step',
+    url: `${BASE_URL}1j10m46dLY-zb5Mee4JWncTGeOsf2o8oChSN90ZUu8vk/edit#heading=h.hvjhhaea4v1c`,
     addDividerAfter: true,
   },
   {
