@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     'social_django',
     'rest_social_auth',
     'knox',
-    'webpack_loader',
     'ddw_analyst_ui',
 ]
 
@@ -184,14 +183,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CSV_FILES_FOLDER = os.path.join(BASE_DIR, 'data_updates', 'manual', 'CSV')
 
 IS_TESTING = False
-
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
-    }
-}
 
 QUERY_TABLES = [
     'fts_codenames', 'fts_privatemoney', 'fts_dacregion', 'fts_donorscountryid', 'fts_recipientcodename', 'fts_ngotype', 'fts_deliverychannels',
