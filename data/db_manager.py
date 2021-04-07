@@ -123,6 +123,8 @@ def analyse_query(query, database="datasets"):
             ms_in_one_second = 1000000.0
             # We get last two i.e planning time and execution time
             for raw_result in raw_results:
+                if not isinstance(raw_result, str):
+                    continue
                 time_event, = re.findall('Time: ([\d\.]+) ms', raw_result)
                 if len(time_event) == 1:
                     time_in_ms += float(time_event)
