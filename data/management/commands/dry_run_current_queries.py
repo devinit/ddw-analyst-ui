@@ -45,8 +45,10 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(query.id, query.name, results[0]['message'])))
                     input('Press Enter to continue...')
             except AttributeError as error:
-                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with error {}'.format(query.id, query.name, error)))
+                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with attribute error {}'.format(query.id, query.name, error)))
             except TypeError as error:
+                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with type error {}'.format(query.id, query.name, error)))
+            except Exception as error:
                 self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with error {}'.format(query.id, query.name, error)))
 
     def checkQueriesBySource(self, source, old_cols):
