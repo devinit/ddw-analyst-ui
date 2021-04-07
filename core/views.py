@@ -851,7 +851,7 @@ class FrozenDataList(APIView):
             serializer.save(user=request.user, frozen_db_table=frozen_db_table)
             # Add this new table to the Sources, and it's columns to the SourceColumnMap
             source = Source.objects.get(active_mirror_name=parent_db_table)
-            frozen_source = Source(indicator='Frozen '+source.indicator, indicator_acronym=source.indicator_acronym, source=source.source, schema='archives', storage_type=source.storage_type, active_mirror_name=frozen_db_table)
+            frozen_source = Source(indicator='Frozen '+source.indicator+' '+serializer.data['description']+' '+datetime.datetime.now().strftime('%Y%m%d'), indicator_acronym=source.indicator_acronym, source=source.source, schema='archives', storage_type=source.storage_type, active_mirror_name=frozen_db_table)
             frozen_source.save()
             column_maps = source.sourcecolumnmap_set.all()
             for column_map in column_maps:
