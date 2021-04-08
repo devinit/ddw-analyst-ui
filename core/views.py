@@ -760,20 +760,25 @@ class TableStreamingExporter():
 
 @csrf_exempt
 def streaming_tables_export_view(request, table_name, schema="repo"):
+    data_table = True
+    frozen_table = True
     try:
-        data_table = True
-        frozen_table = True
         FrozenData.objects.get(frozen_db_table=table_name)
         SavedQueryData.objects.get(saved_query_db_table=table_name)
-        if table_name not in settings.QUERY_TABLES and not frozen_table and not data_table:
-            return_result = [
-                {
-                    "result": "error",
-                    "message": "Invalid table " + table_name,
-                }
-            ]
-            return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
+    except FrozenData.DoesNotExist:
+        frozen_table = False
+    except SavedQueryData.DoesNotExist:
+        data_table = False
+    if table_name not in settings.QUERY_TABLES and not frozen_table and not data_table:
+        return_result = [
+            {
+                "result": "error",
+                "message": "Invalid table " + table_name,
+            }
+        ]
+        return HttpResponse(json.dumps(return_result), content_type='application/json', status=status.HTTP_204_NO_CONTENT)
 
+    try:
         table_query_builder = TableQueryBuilder(table_name, schema)
         exporter = TableStreamingExporter(
             table_query_builder.select().get_sql_without_limit())
@@ -782,10 +787,7 @@ def streaming_tables_export_view(request, table_name, schema="repo"):
         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(
             table_name)
         return response
-    except FrozenData.DoesNotExist:
-        frozen_table = False
-    except SavedQueryData.DoesNotExist:
-        data_table = False
+
     except Exception as e:
         handle_uncaught_error(e)
         response = {'detail': f'{str(e)}'}
