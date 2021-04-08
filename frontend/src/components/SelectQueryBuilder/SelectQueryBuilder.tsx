@@ -20,6 +20,7 @@ interface SelectQueryBuilderProps {
 
 const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) => {
   const [selectableColumns, setSelectableColumns] = useState<DropdownItemProps[]>([]);
+  const [columnOrderView, setColumnOrderView] = useState(false);
   useEffect(() => {
     const { source, step, steps } = props;
     const columns = source.get('columns') as ColumnList;
@@ -70,6 +71,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             <i className="material-icons mr-1">check_box_outline_blank</i>
             Deselect All
           </Button>
+          <Button size="sm">{columnOrderView ? 'Select Columns' : 'Order Columns'}</Button>
         </Form.Row>
         <SelectColumnValidator step={props.step} steps={props.steps}>
           <CheckboxGroup
