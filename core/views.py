@@ -780,7 +780,6 @@ def streaming_tables_export_view(request, table_name, schema="repo"):
 
     try:
         table_query_builder = TableQueryBuilder(table_name, schema)
-        print("Here")
         exporter = TableStreamingExporter(
             table_query_builder.select().get_sql_without_limit())
         response = StreamingHttpResponse(
