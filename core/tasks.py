@@ -6,7 +6,7 @@ from ddw_analyst_ui.celery import app
 from core.pypika_utils import QueryBuilder
 from core.pypika_fts_utils import TableQueryBuilder
 from data.db_manager import count_rows, run_query
-from core.models import FrozenData, Operation, SavedQueryData
+from core.models import FrozenData, Operation, SavedQueryData, Source
 
 @app.task(bind=False)
 def count_operation_rows(id):
