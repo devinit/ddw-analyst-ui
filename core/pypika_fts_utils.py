@@ -4,7 +4,7 @@ import re
 
 class TableQueryBuilder(pypika_utils.QueryBuilder):
 
-    def __init__(self, initial_table_name, initial_schema_name, operation=None):
+    def __init__(self, initial_table_name, initial_schema_name="repo", operation=None):
 
         if operation is not None:
             super().__init__(operation=operation)

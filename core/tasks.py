@@ -6,7 +6,7 @@ from ddw_analyst_ui.celery import app
 from core.pypika_utils import QueryBuilder
 from core.pypika_fts_utils import TableQueryBuilder
 from data.db_manager import count_rows, run_query
-from core.models import FrozenData, Operation, SavedQueryData
+from core.models import FrozenData, Operation, SavedQueryData, Source
 
 @app.task(bind=False)
 def count_operation_rows(id):
@@ -26,7 +26,9 @@ def count_operation_rows(id):
 def create_table_archive(id):
     try:
         frozen_data = FrozenData.objects.get(id=id)
-        query_builder = TableQueryBuilder(frozen_data.parent_db_table, "repo")
+        source = Source.objects.get(active_mirror_name=frozen_data.parent_db_table)
+        schema = source.schema
+        query_builder = TableQueryBuilder(frozen_data.parent_db_table, schema)
         create_query = query_builder.select().create_table_from_query(frozen_data.frozen_db_table, "archives")
         create_result = run_query(create_query)
         if create_result[0]['result'] == 'success':
@@ -51,7 +53,7 @@ def create_table_archive(id):
 def create_dataset_archive(id):
     try:
         query_data = SavedQueryData.objects.get(id=id)
-        query_builder = TableQueryBuilder(query_data.saved_query_db_table, "repo", operation=query_data.operation)
+        query_builder = TableQueryBuilder(query_data.saved_query_db_table, operation=query_data.operation)
         create_query = query_builder.create_table_from_query(query_data.saved_query_db_table, "dataset")
         create_result = run_query(create_query)
         if create_result[0]['result'] == 'success':
