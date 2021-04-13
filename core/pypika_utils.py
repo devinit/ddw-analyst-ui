@@ -184,10 +184,13 @@ class QueryBuilder:
         if self.selected:
             self.current_query = self.current_query.where(filter_operations_or)
         else:
-            self.current_query = Query.from_(self.current_dataset)
+            if self.check_current_query_equals_current_dataset():
+                self.current_query = Query.from_(self.current_dataset)
             self.current_query = self.current_query.select(self.current_dataset.star).where(filter_operations_or)
             self.selected = True
 
+        if self.selected:
+            self.current_dataset = self.current_query
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
@@ -365,3 +368,9 @@ class QueryBuilder:
             self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two.current_query))
 
         return self
+
+    def check_current_query_equals_current_dataset(self):
+        if self.current_dataset == self.current_query:
+            return True
+        else:
+            return False

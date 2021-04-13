@@ -32,7 +32,7 @@ class Command(BaseCommand):
             self.checkQueriesBySource(source, old_cols)
 
     def checkAllQueries(self, exclude_sub_queries=True):
-        queries = Operation.objects.filter(Q(is_sub_query=False)) if exclude_sub_queries else Operation.objects.all()
+        queries = Operation.objects.filter(Q(is_sub_query=False)).order_by('id') if exclude_sub_queries else Operation.objects.all().order_by('id')
         for query in queries:
             print(query.id)
             try:
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 if results[0]['result'] == 'success':
                     continue
                 else:
-                    self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(query.id, query.name, results[0]['message'])))
+                    self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with SQL error {}".format(query.id, query.name, results[0]['message'])))
                     input('Press Enter to continue...')
             except AttributeError as error:
                 self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with attribute error {}'.format(query.id, query.name, error)))
