@@ -63,7 +63,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
       margin: '2px',
       cursor: 'grab',
       transform: CSS.Translate.toString(transform),
-      transition,
+      transition: transition?.toString(),
     };
 
     return (
