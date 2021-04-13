@@ -5,6 +5,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -34,6 +35,10 @@ interface SelectQueryBuilderProps {
   onUpdateColumns?: (options: string) => void;
 }
 
+interface SelectColumnProps {
+  id: string;
+}
+
 const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) => {
   const [selectableColumns, setSelectableColumns] = useState<DropdownItemProps[]>([]);
   const [columnOrderView, setColumnOrderView] = useState(false);
@@ -48,11 +53,15 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     );
   }, []);
 
-  const SelectColumn = (props) => {
+  const SelectColumn = (props: SelectColumnProps) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
       id: props.id,
     });
     const style = {
+      borderStyle: 'solid',
+      width: '400px',
+      margin: '2px',
+      cursor: 'grab',
       transform: CSS.Translate.toString(transform),
       transition,
     };
@@ -72,15 +81,21 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
       }),
     );
 
-    const handleDragEnd = (event) => {
+    const handleDragEnd = (event: DragEndEvent) => {
       const { active, over } = event;
-      if (active.id !== over.id) {
-        setItems(() => {
-          const oldIndex = items.indexOf(active.id);
-          const newIndex = items.indexOf(over.id);
+      if (over) {
+        if (active.id !== over.id) {
+          setItems(() => {
+            const oldIndex = items.indexOf(active.id);
+            const newIndex = items.indexOf(over.id);
 
-          return arrayMove(items, oldIndex, newIndex);
-        });
+            return arrayMove(items, oldIndex, newIndex);
+          });
+        }
+      }
+
+      if (props.onUpdateColumns) {
+        props.onUpdateColumns(JSON.stringify({ columns: items }));
       }
     };
 
