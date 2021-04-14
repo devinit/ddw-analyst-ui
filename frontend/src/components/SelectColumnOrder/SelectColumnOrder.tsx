@@ -58,10 +58,10 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = (props) => 
         items={props.selectedColumns ? props.selectedColumns : []}
         strategy={verticalListSortingStrategy}
       >
-        {props.selectedColumns ? (
+        {props.selectedColumns && props.selectedColumns.length > 0 ? (
           props.selectedColumns.map((column) => <SelectColumn key={column} id={column} />)
         ) : (
-          <div>No columns to sort</div>
+          <div>No columns selected</div>
         )}
       </SortableContext>
     </DndContext>
