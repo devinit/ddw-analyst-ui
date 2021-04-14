@@ -87,6 +87,7 @@ class QueryBuilder:
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
         self.selected = False
         self.aggregated = False
+        self.select_after_filter = False
 
         if operation_steps:
             query_steps = sorted(operation_steps, key=itemgetter('step_id'))
@@ -180,7 +181,7 @@ class QueryBuilder:
         return self
 
     def filter(self, filters, source=None):
-        if self.aggregated:
+        if self.aggregated or self.select_after_filter:
             table = self.current_query
         elif source is None:
             table = self.current_dataset
@@ -190,17 +191,16 @@ class QueryBuilder:
             table, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
         if self.selected:
-            if self.aggregated:
+            if self.aggregated or self.select_after_filter:
                 self.current_query = Query.from_(self.current_dataset)
                 self.current_query = self.current_query.select(self.current_dataset.star)
             self.current_query = self.current_query.where(filter_operations_or)
+            self.current_dataset = self.current_query
         else:
             self.current_query = Query.from_(self.current_dataset)
             self.current_query = self.current_query.select(self.current_dataset.star).where(filter_operations_or)
             self.selected = True
 
-        if self.selected:
-            self.current_dataset = self.current_query
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
@@ -297,19 +297,26 @@ class QueryBuilder:
         return sub_query.current_query
 
     def select(self, columns=None, groupby=None):
+        if self.selected:
+            self.select_after_filter = True
         self.current_query = Query.from_(self.current_dataset)
-        self.selected = True
 
         if columns:
             for col_index in range(len(columns)):
                 # If column value is numeric, then that's a sub-query
                 if str(columns[col_index]).isnumeric():
                     columns[col_index] = self.generate_sub_query_as_column(columns[col_index])
+
             self.current_query = self.current_query.select(*columns)
             self.number_of_columns = len(columns)
         else:
             self.current_query = self.current_query.select(self.current_dataset.star)
             self.number_of_columns = 0 # Means all columns selected, and we shall not use it in subqueries
+
+        self.selected = True
+
+        if self.aggregated or self.select_after_filter:
+            self.current_dataset = self.current_query
 
         return self
 
