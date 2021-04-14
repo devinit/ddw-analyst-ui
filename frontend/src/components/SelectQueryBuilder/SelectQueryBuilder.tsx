@@ -1,20 +1,3 @@
-import {
-  closestCenter,
-  DndContext,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { List, Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
@@ -24,6 +7,7 @@ import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { CheckboxGroup } from '../CheckboxGroup';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
+import { SelectColumnOrder } from '../SelectColumnOrder';
 import { SelectColumnValidator } from '../SelectColumnValidator';
 
 interface SelectQueryBuilderProps {
@@ -35,13 +19,10 @@ interface SelectQueryBuilderProps {
   onUpdateColumns?: (options: string) => void;
 }
 
-interface SelectColumnProps {
-  id: string;
-}
-
 const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) => {
   const [selectableColumns, setSelectableColumns] = useState<DropdownItemProps[]>([]);
   const [columnOrderView, setColumnOrderView] = useState(false);
+
   useEffect(() => {
     const { source, step, steps } = props;
     const columns = source.get('columns') as ColumnList;
@@ -52,63 +33,6 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
         : [],
     );
   }, []);
-
-  const SelectColumn = (props: SelectColumnProps) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-      id: props.id,
-    });
-    const style = {
-      borderStyle: 'solid',
-      width: '400px',
-      margin: '2px',
-      cursor: 'grab',
-      transform: CSS.Translate.toString(transform),
-      transition: transition?.toString(),
-    };
-
-    return (
-      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-        {props.id}
-      </div>
-    );
-  };
-  const SelectColumnOrder = () => {
-    const [items, setItems] = useState(props.columns ? props.columns.sort() : []);
-    const sensors = useSensors(
-      useSensor(PointerSensor),
-      useSensor(KeyboardSensor, {
-        coordinateGetter: sortableKeyboardCoordinates,
-      }),
-    );
-
-    const handleDragEnd = (event: DragEndEvent) => {
-      const { active, over } = event;
-      if (over) {
-        if (active.id !== over.id) {
-          setItems(() => {
-            const oldIndex = items.indexOf(active.id);
-            const newIndex = items.indexOf(over.id);
-
-            return arrayMove(items, oldIndex, newIndex);
-          });
-        }
-      }
-
-      if (props.onUpdateColumns) {
-        props.onUpdateColumns(JSON.stringify({ columns: items }));
-      }
-    };
-
-    return (
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          {items.map((item) => (
-            <SelectColumn key={item} id={item} />
-          ))}
-        </SortableContext>
-      </DndContext>
-    );
-  };
 
   const onSelectAll = () => {
     if (props.onUpdateColumns) {
@@ -126,7 +50,6 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
 
   const handleColumnOrderClick = () => {
     setColumnOrderView(!columnOrderView);
-    // console.log(columnOrderView);
   };
 
   return (
@@ -137,7 +60,10 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           {columnOrderView ? 'Select Columns' : 'Order Columns'}
         </Button>
         {columnOrderView ? (
-          <SelectColumnOrder />
+          <SelectColumnOrder
+            selectedColumns={props.columns}
+            onUpdateColumns={props.onUpdateColumns}
+          />
         ) : (
           <>
             <Form.Row>
