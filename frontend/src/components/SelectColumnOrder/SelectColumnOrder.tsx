@@ -20,7 +20,8 @@ interface SelectColumnOrderProps {
   selectedColumns?: string[];
   onUpdateColumns?: (options: string) => void;
 }
-export const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = (props) => {
+
+const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = (props) => {
   const [orderedColumns, setOrderedColumns] = useState(props.selectedColumns);
 
   useEffect(() => {
@@ -66,3 +67,5 @@ export const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = (pro
     </DndContext>
   );
 };
+
+export { SelectColumnOrder };

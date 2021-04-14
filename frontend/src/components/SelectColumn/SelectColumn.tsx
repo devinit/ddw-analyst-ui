@@ -5,7 +5,8 @@ import { CSS } from '@dnd-kit/utilities';
 interface SelectColumnProps {
   id: string;
 }
-export const SelectColumn: FunctionComponent<SelectColumnProps> = (props) => {
+
+const SelectColumn: FunctionComponent<SelectColumnProps> = (props) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: props.id,
   });
@@ -24,3 +25,5 @@ export const SelectColumn: FunctionComponent<SelectColumnProps> = (props) => {
     </div>
   );
 };
+
+export { SelectColumn };
