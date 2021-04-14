@@ -56,9 +56,11 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     <React.Fragment>
       <Form.Group>
         <Form.Label className="bmd-label-floating">Columns</Form.Label>
-        <Button size="sm" onClick={handleColumnOrderClick}>
-          {columnOrderView ? 'Select Columns' : 'Order Columns'}
-        </Button>
+        <Form.Row>
+          <Button variant="danger" size="sm" onClick={handleColumnOrderClick}>
+            {columnOrderView ? 'Select Columns' : 'Order Columns'}
+          </Button>
+        </Form.Row>
         {columnOrderView ? (
           <SelectColumnOrder
             selectedColumns={props.columns}
