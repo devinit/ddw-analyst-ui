@@ -86,6 +86,7 @@ class QueryBuilder:
 
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
         self.selected = False
+        self.aggregated = False
 
         if operation_steps:
             query_steps = sorted(operation_steps, key=itemgetter('step_id'))
@@ -118,6 +119,7 @@ class QueryBuilder:
 
 
     def aggregate(self, group_by, agg_func_name, operational_column):
+        self.aggregated = True
         self.current_query = Query.from_(self.current_dataset)
 
         # https://pypika.readthedocs.io/en/latest/api/pypika.functions.html e.g. Sum, Count, Avg
@@ -137,6 +139,7 @@ class QueryBuilder:
 
     def window(self, window_fn, term=None, over=None, order_by=None, columns=None, **kwargs):
 
+        self.aggregated = True
         self.current_query = Query.from_(self.current_dataset)
         tmp_query = ''
         window_ = getattr(an, window_fn)
@@ -177,15 +180,22 @@ class QueryBuilder:
         return self
 
     def filter(self, filters, source=None):
-        table = self.current_dataset if source is None else Table(source.active_mirror_name)
+        if self.aggregated:
+            table = self.current_query
+        elif source is None:
+            table = self.current_dataset
+        else:
+            table = Table(source.active_mirror_name)
         filter_operations = [FILTER_MAPPING[filter["func"]](getattr(
             table, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
         if self.selected:
+            if self.aggregated:
+                self.current_query = Query.from_(self.current_dataset)
+                self.current_query = self.current_query.select(self.current_dataset.star)
             self.current_query = self.current_query.where(filter_operations_or)
         else:
-            if self.check_current_query_equals_current_dataset():
-                self.current_query = Query.from_(self.current_dataset)
+            self.current_query = Query.from_(self.current_dataset)
             self.current_query = self.current_query.select(self.current_dataset.star).where(filter_operations_or)
             self.selected = True
 
@@ -194,6 +204,7 @@ class QueryBuilder:
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
+        self.aggregated = True
         if not isinstance(operational_columns, list):
             raise ValueError("Expecting a list of operational columns")
 
@@ -216,6 +227,7 @@ class QueryBuilder:
         return self
 
     def scalar_transform(self, trans_func_name, operational_column, operational_value):
+        self.aggregated = True
         self.current_query = Query.from_(self.current_dataset)
         scalar_transform_mapping = {
             "add": operator.add,
@@ -237,6 +249,7 @@ class QueryBuilder:
         return self
 
     def join(self, table_name, schema_name, join_on, join_how="full", columns_x=None, columns_y=None, suffix_y="2"):
+        self.aggregated = True
         self.current_query = Query.from_(self.current_dataset)
 
         join_how_mapping = {
@@ -368,9 +381,3 @@ class QueryBuilder:
             self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two.current_query))
 
         return self
-
-    def check_current_query_equals_current_dataset(self):
-        if self.current_dataset == self.current_query:
-            return True
-        else:
-            return False
