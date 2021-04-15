@@ -25,6 +25,7 @@ function* fetchOperationData({ payload }: QueryDataAction) {
       .catch((error) => error.response);
 
     if (status === 200 || (status === 201 && data)) {
+      localForage.setItem(`${localForageKeys.DATASET_ID}-${payload.id}`, JSON.stringify(data));
       yield put(setOperationData(fromJS(data), payload) as QueryDataAction);
     } else if (status === 401) {
       yield put(setToken(''));

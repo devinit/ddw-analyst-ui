@@ -6,6 +6,7 @@ export const localForageKeys = {
   USER: 'USER',
   ACTIVE_SOURCE: 'ACTIVE_SOURCE',
   ACTIVE_OPERATION: 'ACTIVE_OPERATION',
+  DATASET_ID: 'DATASET_ID',
 };
 
 export type LocalForageActiveSource = [number, Source];
