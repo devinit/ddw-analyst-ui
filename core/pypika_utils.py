@@ -79,6 +79,38 @@ def multi_subtract(iterable):
 def prod(iterable):
     return reduce(operator.mul, iterable, 1)
 
+def filter_selects(query_step):
+    query_func = None
+    try:
+        query_func = query_step.query_func
+    except TypeError:
+        query_func = query_step['query_func']
+    if query_func == 'select':
+        return True
+    else:
+        return False
+
+def filter_filters(query_step):
+    query_func = None
+    try:
+        query_func = query_step.query_func
+    except TypeError:
+        query_func = query_step['query_func']
+    if query_func == 'filter':
+        return True
+    else:
+        return False
+
+def filter_others(query_step):
+    query_func = None
+    try:
+        query_func = query_step.query_func
+    except TypeError:
+        query_func = query_step['query_func']
+    if query_func != 'select' and query_func != 'filter':
+        return True
+    else:
+        return False
 
 class QueryBuilder:
 
@@ -87,7 +119,7 @@ class QueryBuilder:
         self.limit_regex = re.compile('LIMIT \d+', re.IGNORECASE)
         self.selected = False
         self.aggregated = False
-        self.select_after_filter = False
+        self.filtered = False
 
         if operation_steps:
             query_steps = sorted(operation_steps, key=itemgetter('step_id'))
@@ -102,6 +134,14 @@ class QueryBuilder:
         self.current_dataset = Table(self.initial_table_name, schema=self.initial_schema_name)
         self.current_query = Query.from_(self.current_dataset)
 
+        select_steps = filter(filter_selects, query_steps)
+        self.execute(select_steps, operation_steps)
+        filter_steps = filter(filter_filters, query_steps)
+        self.execute(filter_steps, operation_steps)
+        other_steps = filter(filter_others, query_steps)
+        self.execute(other_steps, operation_steps)
+
+    def execute(self, query_steps, operation_steps=None):
         for query_step in query_steps:
             if operation_steps:
                 query_func = getattr(self, query_step['query_func'])
@@ -181,7 +221,7 @@ class QueryBuilder:
         return self
 
     def filter(self, filters, source=None):
-        if self.aggregated or self.select_after_filter:
+        if self.aggregated or (self.filtered and self.check_dataset_equals_query()):
             table = self.current_query
         elif source is None:
             table = self.current_dataset
@@ -191,16 +231,18 @@ class QueryBuilder:
             table, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
         if self.selected:
-            if self.aggregated or self.select_after_filter:
+            if self.aggregated or (self.filtered and self.check_dataset_equals_query()):
                 self.current_query = Query.from_(self.current_dataset)
                 self.current_query = self.current_query.select(self.current_dataset.star)
             self.current_query = self.current_query.where(filter_operations_or)
-            self.current_dataset = self.current_query
         else:
-            self.current_query = Query.from_(self.current_dataset)
+            if self.check_dataset_equals_query():
+                self.current_query = Query.from_(self.current_dataset)
             self.current_query = self.current_query.select(self.current_dataset.star).where(filter_operations_or)
             self.selected = True
-
+        if self.aggregated:
+            self.current_dataset = self.current_query
+        self.filtered = True
         return self
 
     def multi_transform(self, trans_func_name, operational_columns):
@@ -297,9 +339,8 @@ class QueryBuilder:
         return sub_query.current_query
 
     def select(self, columns=None, groupby=None):
-        if self.selected:
-            self.select_after_filter = True
-        self.current_query = Query.from_(self.current_dataset)
+        if not self.selected and not self.check_dataset_equals_query():
+            self.current_query = Query.from_(self.current_dataset)
 
         if columns:
             for col_index in range(len(columns)):
@@ -315,7 +356,7 @@ class QueryBuilder:
 
         self.selected = True
 
-        if self.aggregated or self.select_after_filter:
+        if self.aggregated or self.filtered:
             self.current_dataset = self.current_query
 
         return self
@@ -388,3 +429,6 @@ class QueryBuilder:
             self.current_query = self.current_query.where(filter_op(getattr(self.current_dataset, table_field), query_two.current_query))
 
         return self
+
+    def check_dataset_equals_query(self):
+        return self.current_query == self.current_dataset
