@@ -17,49 +17,51 @@ import {
 import { SelectColumn } from '../SelectColumn/SelectColumn';
 
 interface SelectColumnOrderProps {
-  selectedColumns?: string[];
+  selectedColumns: { alias: string; columnName: string }[];
   onUpdateColumns?: (options: string) => void;
 }
 
-const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = (props) => {
-  const [orderedColumns, setOrderedColumns] = useState(props.selectedColumns);
+const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
+  selectedColumns,
+  onUpdateColumns,
+}) => {
+  const [orderedColumns, setOrderedColumns] = useState(
+    selectedColumns?.map((column) => column.columnName),
+  );
 
   useEffect(() => {
-    if (props.onUpdateColumns) {
-      props.onUpdateColumns(JSON.stringify({ columns: orderedColumns }));
+    if (onUpdateColumns) {
+      onUpdateColumns(JSON.stringify({ columns: orderedColumns }));
     }
   }, [orderedColumns]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over) {
-      if (active.id !== over.id) {
-        setOrderedColumns(() => {
-          if (props.selectedColumns) {
-            const oldIndex = props.selectedColumns.indexOf(active.id);
-            const newIndex = props.selectedColumns.indexOf(over.id);
 
-            return arrayMove(props.selectedColumns, oldIndex, newIndex);
-          }
-        });
-      }
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    if (over && active.id !== over.id) {
+      setOrderedColumns(() => {
+        const columnNames = selectedColumns.map((column) => column.columnName);
+        const activeColumn = selectedColumns.find((column) => column.alias === active.id);
+        const overColumn = selectedColumns.find((column) => column.alias === over.id);
+        const oldIndex = columnNames.indexOf(activeColumn ? activeColumn.columnName : '');
+        const newIndex = columnNames.indexOf(overColumn ? overColumn.columnName : '');
+
+        return arrayMove(columnNames, oldIndex, newIndex);
+      });
     }
   };
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext
-        items={props.selectedColumns ? props.selectedColumns : []}
+        items={selectedColumns ? selectedColumns.map((column) => column.alias) : []}
         strategy={verticalListSortingStrategy}
       >
-        {props.selectedColumns && props.selectedColumns.length > 0 ? (
-          props.selectedColumns.map((column) => <SelectColumn key={column} id={column} />)
+        {selectedColumns && selectedColumns.length > 0 ? (
+          selectedColumns.map((column) => <SelectColumn key={column.alias} id={column.alias} />)
         ) : (
           <div>No columns selected</div>
         )}

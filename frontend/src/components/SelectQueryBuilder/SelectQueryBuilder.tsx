@@ -22,6 +22,9 @@ interface SelectQueryBuilderProps {
 const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) => {
   const [selectableColumns, setSelectableColumns] = useState<DropdownItemProps[]>([]);
   const [columnOrderView, setColumnOrderView] = useState(false);
+  const [selectedColumns, setSelectedColumns] = useState<{ alias: string; columnName: string }[]>(
+    [],
+  );
 
   useEffect(() => {
     const { source, step, steps } = props;
@@ -32,7 +35,15 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
         ? QueryBuilderHandler.getSelectOptionsFromColumns(selectable, columns)
         : [],
     );
-  }, []);
+    setSelectedColumns(() => {
+      return props.columns
+        ? props.columns.map((column) => ({
+            alias: QueryBuilderHandler.getColumnAlias(column, columns),
+            columnName: column,
+          }))
+        : [];
+    });
+  }, [props.columns]);
 
   const onSelectAll = () => {
     if (props.onUpdateColumns) {
@@ -57,13 +68,18 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
       <Form.Group>
         <Form.Label className="bmd-label-floating">Columns</Form.Label>
         <Form.Row>
-          <Button variant="danger" size="sm" onClick={handleColumnOrderClick}>
+          <Button
+            variant="danger"
+            size="sm"
+            data-testid="qb-select-column-order-button"
+            onClick={handleColumnOrderClick}
+          >
             {columnOrderView ? 'Select Columns' : 'Order Columns'}
           </Button>
         </Form.Row>
         {columnOrderView ? (
           <SelectColumnOrder
-            selectedColumns={props.columns}
+            selectedColumns={selectedColumns}
             onUpdateColumns={props.onUpdateColumns}
           />
         ) : (
