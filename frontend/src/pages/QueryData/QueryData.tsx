@@ -1,6 +1,5 @@
-import { fromJS, List, Map } from 'immutable';
+import { List, Map } from 'immutable';
 import * as React from 'react';
-import * as localForage from 'localforage';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
@@ -15,7 +14,6 @@ import { SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
 import * as pageActions from './actions';
 import { QueryDataState, queryDataReducerId } from './reducers';
-import { localForageKeys } from '../../utils';
 
 interface ActionProps {
   actions: typeof pageActions & {
@@ -81,17 +79,7 @@ class QueryData extends React.Component<QueryDataProps> {
       }
     }
     if (id) {
-      localForage.getItem<string>(`${localForageKeys.DATASET_ID}-${id}`).then((data) => {
-        if (data) {
-          this.props.actions.setOperationData(fromJS(JSON.parse(data)), {
-            id,
-            limit: 10,
-            offset: 0,
-          });
-        } else {
-          this.props.actions.fetchOperationData({ id, limit: 10, offset: 0 });
-        }
-      });
+      this.props.actions.fetchOperationData({ id, limit: 10, offset: 0 });
     }
   }
 
