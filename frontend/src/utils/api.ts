@@ -25,5 +25,6 @@ export const api = {
     SAVED_QUERYSETS: '/api/savedquerysets/',
     SINGLE_SAVED_QUERYSET: '/api/savedqueryset/',
     DOWNLOAD_SAVED_QUERYSET: '/api/tables/download/{table}/dataset/',
+    FETCH_OPERATION: '/api/operations/{id}',
   },
 };
