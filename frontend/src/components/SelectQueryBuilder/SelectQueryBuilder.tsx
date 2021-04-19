@@ -21,7 +21,7 @@ interface SelectQueryBuilderProps {
 
 const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) => {
   const [selectableColumns, setSelectableColumns] = useState<DropdownItemProps[]>([]);
-  const [columnOrderView, setColumnOrderView] = useState(false);
+  const [isOrderingColumns, setIsOrderingColumns] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState<{ alias: string; columnName: string }[]>(
     [],
   );
@@ -60,7 +60,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
   };
 
   const handleColumnOrderClick = () => {
-    setColumnOrderView(!columnOrderView);
+    setIsOrderingColumns(!isOrderingColumns);
   };
 
   return (
@@ -74,13 +74,13 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             data-testid="qb-select-column-order-button"
             onClick={handleColumnOrderClick}
           >
-            {columnOrderView ? 'Select Columns' : 'Order Columns'}
+            {isOrderingColumns ? 'Select Columns' : 'Order Columns'}
           </Button>
           <Button
             variant="danger"
             size="sm"
             onClick={onSelectAll}
-            hidden={!props.editable || columnOrderView}
+            hidden={!props.editable || isOrderingColumns}
             data-testid="qb-select-all-button"
           >
             Select All
@@ -89,13 +89,13 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             variant="danger"
             size="sm"
             onClick={onDeselectAll}
-            hidden={!props.editable || columnOrderView}
+            hidden={!props.editable || isOrderingColumns}
             data-testid="qb-select-none-button"
           >
             Deselect All
           </Button>
         </Form.Row>
-        {columnOrderView ? (
+        {isOrderingColumns ? (
           <SelectColumnOrder
             selectedColumns={selectedColumns}
             onUpdateColumns={props.onUpdateColumns}
