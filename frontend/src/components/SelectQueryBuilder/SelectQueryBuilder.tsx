@@ -76,6 +76,24 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           >
             {columnOrderView ? 'Select Columns' : 'Order Columns'}
           </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onSelectAll}
+            hidden={!props.editable || columnOrderView}
+            data-testid="qb-select-all-button"
+          >
+            Select All
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onDeselectAll}
+            hidden={!props.editable || columnOrderView}
+            data-testid="qb-select-none-button"
+          >
+            Deselect All
+          </Button>
         </Form.Row>
         {columnOrderView ? (
           <SelectColumnOrder
@@ -83,37 +101,13 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             onUpdateColumns={props.onUpdateColumns}
           />
         ) : (
-          <>
-            <Form.Row>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={onSelectAll}
-                hidden={!props.editable}
-                data-testid="qb-select-all-button"
-              >
-                <i className="material-icons mr-1">check_box</i>
-                Select All
-              </Button>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={onDeselectAll}
-                hidden={!props.editable}
-                data-testid="qb-select-none-button"
-              >
-                <i className="material-icons mr-1">check_box_outline_blank</i>
-                Deselect All
-              </Button>
-            </Form.Row>
-            <SelectColumnValidator step={props.step} steps={props.steps}>
-              <CheckboxGroup
-                options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-                selectedOptions={props.columns}
-                onUpdateOptions={props.onUpdateColumns}
-              />
-            </SelectColumnValidator>
-          </>
+          <SelectColumnValidator step={props.step} steps={props.steps}>
+            <CheckboxGroup
+              options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
+              selectedOptions={props.columns}
+              onUpdateOptions={props.onUpdateColumns}
+            />
+          </SelectColumnValidator>
         )}
       </Form.Group>
     </React.Fragment>
