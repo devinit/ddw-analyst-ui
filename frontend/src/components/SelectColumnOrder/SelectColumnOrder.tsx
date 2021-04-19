@@ -26,6 +26,17 @@ interface SelectColumnOrderProps {
 const StyledSpan = styled.span`
   top: -6px;
   position: relative;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+`;
+
+const StyledWrapper = styled.div`
+  max-height: 400px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
@@ -62,24 +73,26 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
   };
 
   return (
-    <div>
+    <>
       <Alert variant="dark" className="mt-3 p-3 w-50">
         <i className="material-icons">info</i>{' '}
         <StyledSpan className="d-inline-flex">Drag & drop columns to desired position</StyledSpan>
       </Alert>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext
-          items={selectedColumns ? selectedColumns.map((column) => column.alias) : []}
-          strategy={verticalListSortingStrategy}
-        >
-          {selectedColumns && selectedColumns.length > 0 ? (
-            selectedColumns.map((column) => <SelectColumn key={column.alias} id={column.alias} />)
-          ) : (
-            <div>No columns selected</div>
-          )}
-        </SortableContext>
-      </DndContext>
-    </div>
+      <StyledWrapper>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext
+            items={selectedColumns ? selectedColumns.map((column) => column.alias) : []}
+            strategy={verticalListSortingStrategy}
+          >
+            {selectedColumns && selectedColumns.length > 0 ? (
+              selectedColumns.map((column) => <SelectColumn key={column.alias} id={column.alias} />)
+            ) : (
+              <div>No columns selected</div>
+            )}
+          </SortableContext>
+        </DndContext>
+      </StyledWrapper>
+    </>
   );
 };
 
