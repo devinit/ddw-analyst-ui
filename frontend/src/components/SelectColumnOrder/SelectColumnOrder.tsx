@@ -87,7 +87,7 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
             {selectedColumns && selectedColumns.length > 0 ? (
               selectedColumns.map((column) => <SelectColumn key={column.alias} id={column.alias} />)
             ) : (
-              <div>No columns selected</div>
+              <div data-testid="qb-select-no-column-message">No columns selected</div>
             )}
           </SortableContext>
         </DndContext>
