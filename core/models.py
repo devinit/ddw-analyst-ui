@@ -289,6 +289,8 @@ class FrozenData(BaseEntity):
     active = models.BooleanField(default=True)
     description = models.CharField(max_length=200, null=False)
     logs = models.TextField(blank=True, null=True)
+    last_accessed = models.DateTimeField(auto_now_add=True, null=True)
+    deletion_date = models.DateTimeField(null=True)
 
     def __str__(self):
         status = [choice[1] for choice in self.status_choices if choice[0] == self.status]

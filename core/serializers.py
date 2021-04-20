@@ -35,12 +35,13 @@ class DataSerializer(serializers.BaseSerializer):
         limit = request.query_params.get('limit', None)
         offset = request.query_params.get('offset', None)
         use_aliases = request.query_params.get('aliases', 0)
+        frozen_table_id = request.query_params.get('frozen_table_id', None)
         if limit == 0:
             limit = DEFAULT_LIMIT_COUNT
         operation = instance['operation_instance']
         self.set_operation(operation)
         try:
-            count, data = query.query_table(operation, limit, offset, estimate_count=True)
+            count, data = query.query_table(operation, limit, offset, estimate_count=True, frozen_table_id=frozen_table_id)
             return {
                 'count': count,
                 'data': self.use_aliases(data) if use_aliases == '1' else data
@@ -462,6 +463,7 @@ class FrozenDataSerializer(serializers.ModelSerializer):
             'user',
             'created_on',
             'logs',
+            'deletion_date',
         )
 
 
