@@ -35,7 +35,13 @@ const SelectColumn: FunctionComponent<SelectColumnProps> = (props) => {
   };
 
   return (
-    <Column style={style} ref={setNodeRef} {...attributes} {...listeners}>
+    <Column
+      style={style}
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      data-testid="qb-select-column-order"
+    >
       {props.id}
     </Column>
   );

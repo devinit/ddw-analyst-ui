@@ -181,6 +181,30 @@ describe('The Query Builder', () => {
       cy.get('.list-group').find('.list-group-item').should('have.length', 1);
 
     });
+
+    it('orders the columns in a select step', () => {
+      // Visit query builder, type name and choose datasource
+      cy.fillOperationForm();
+
+      // Add step
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Fill create step form
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+      // Check the first three checkboxes
+      cy.get('.selectColumnCheckbox > input').eq(0).check({force: true});
+      cy.get('.selectColumnCheckbox > input').eq(1).check({force: true});
+      cy.get('.selectColumnCheckbox > input').eq(2).check({force: true});
+
+      //  Show selected columns in order column view
+      cy.get('[data-testid="qb-select-column-order-button"]').click();
+      cy.get('[data-testid="qb-select-column-order"]').eq(0).contains('Country code');
+      cy.get('[data-testid="qb-select-column-order"]').eq(1).contains('Country name');
+      cy.get('[data-testid="qb-select-column-order"]').eq(2).contains('ISO Alpha 3');
+    });
   });
 
   describe('FILTER step', () => {
