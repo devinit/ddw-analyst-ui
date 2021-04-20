@@ -232,10 +232,10 @@ describe('The Query Builder', () => {
 
     it('makes a copy of a filter', () => {
       // Visit query builder, type name and choose datasource
-      cy.fillOperationForm();
+      cy.useCrsIsoCodes();
 
       // Fill create step form with 2 filters
-      cy.fillStepForm();
+      cy.createCRSFilterStep();
 
       // Save and create step
       cy.get('[data-testid="qb-step-preview-button"]').click();
