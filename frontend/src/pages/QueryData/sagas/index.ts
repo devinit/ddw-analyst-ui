@@ -15,7 +15,10 @@ function* fetchOperationData({ payload }: QueryDataAction) {
   try {
     const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const cacheData: string = yield localForage.getItem<string>(
-      `${localForageKeys.DATASET_DATA}-${payload.id}`,
+      `${localForageKeys.DATASET_DATA}-${payload.limit}-${payload.offset}-${payload.id}`,
+    );
+    const cachedOperationUpdatedTime: string | null = yield localForage.getItem<string>(
+      `${localForageKeys.DATASET_UPDATED_ON}-${payload.id}`,
     );
     const expiredCache: boolean = yield isCacheExpired(payload.id as number);
 
@@ -42,11 +45,16 @@ function* fetchOperationData({ payload }: QueryDataAction) {
         .catch((error) => error.response);
 
       if (status === 200 || (status === 201 && data)) {
-        localForage.setItem(`${localForageKeys.DATASET_DATA}-${payload.id}`, JSON.stringify(data));
         localForage.setItem(
-          `${localForageKeys.DATASET_UPDATED_ON}-${payload.id}`,
-          activeOperationUpdatedTime,
+          `${localForageKeys.DATASET_DATA}-${payload.limit}-${payload.offset}-${payload.id}`,
+          JSON.stringify(data),
         );
+        if (cachedOperationUpdatedTime === null) {
+          localForage.setItem(
+            `${localForageKeys.DATASET_UPDATED_ON}-${payload.id}`,
+            activeOperationUpdatedTime,
+          );
+        }
         yield put(setOperationData(fromJS(data), payload) as QueryDataAction);
       } else if (status === 401) {
         yield put(setToken(''));
