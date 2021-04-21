@@ -4,7 +4,8 @@ exports[`renders correctly with the required props 1`] = `
 <div
   aria-describedby=""
   aria-roledescription="sortable"
-  className="sc-bdfBwQ gWmvCG"
+  className=""
+  data-testid="qb-select-column-order"
   role="button"
   style={
     Object {

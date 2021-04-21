@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styled from 'styled-components';
+import 'jest-styled-components';
 
 interface SelectColumnProps {
   id: string;
