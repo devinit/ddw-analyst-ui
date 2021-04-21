@@ -4,6 +4,7 @@ import * as localForage from 'localforage';
 import { select, put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
 import { setToken } from '../../../actions/token';
+import { ReduxStore } from '../../../store';
 import { Operation } from '../../../types/operations';
 import { api, localForageKeys } from '../../../utils';
 import { fetchOperationDataFailed, setOperationData } from '../actions';
@@ -12,13 +13,13 @@ import { isCacheExpired } from '../utils';
 
 function* fetchOperationData({ payload }: QueryDataAction) {
   try {
-    const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const cacheData = yield localForage.getItem<string>(
+    const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    const cacheData: string = yield localForage.getItem<string>(
       `${localForageKeys.DATASET_DATA}-${payload.id}`,
     );
-    const expiredCache = yield isCacheExpired(payload.id as number);
+    const expiredCache: boolean = yield isCacheExpired(payload.id as number);
 
-    const reduxState = yield select();
+    const reduxState: ReduxStore = yield select();
     const activeOperationUpdatedTime = reduxState.getIn([
       'operations',
       'activeOperation',
