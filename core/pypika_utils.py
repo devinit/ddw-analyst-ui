@@ -90,6 +90,17 @@ def filter_selects(query_step):
     else:
         return False
 
+def filter_joins(query_step):
+    query_func = None
+    try:
+        query_func = query_step.query_func
+    except TypeError:
+        query_func = query_step['query_func']
+    if query_func == 'join':
+        return True
+    else:
+        return False
+
 def filter_filters(query_step):
     query_func = None
     try:
@@ -107,7 +118,7 @@ def filter_others(query_step):
         query_func = query_step.query_func
     except TypeError:
         query_func = query_step['query_func']
-    if query_func != 'select' and query_func != 'filter':
+    if query_func != 'select' and query_func != 'filter' and query_func != 'join':
         return True
     else:
         return False
@@ -120,6 +131,7 @@ class QueryBuilder:
         self.selected = False
         self.aggregated = False
         self.filtered = False
+        self.joined = False
 
         if operation_steps:
             query_steps = sorted(operation_steps, key=itemgetter('step_id'))
@@ -136,8 +148,14 @@ class QueryBuilder:
 
         select_steps = filter(filter_selects, query_steps)
         self.execute(select_steps, operation_steps)
+        join_steps = filter(filter_joins, query_steps)
+        self.execute(join_steps, operation_steps)
+        if self.joined:
+            self.current_dataset = self.current_query
         filter_steps = filter(filter_filters, query_steps)
         self.execute(filter_steps, operation_steps)
+        if self.filtered:
+            self.current_dataset = self.current_query
         other_steps = filter(filter_others, query_steps)
         self.execute(other_steps, operation_steps)
 
@@ -221,8 +239,8 @@ class QueryBuilder:
         return self
 
     def filter(self, filters, source=None):
-        if self.aggregated or (self.filtered and self.check_dataset_equals_query()):
-            table = self.current_query
+        if self.joined:
+            table = self.previous_dataset
         elif source is None:
             table = self.current_dataset
         else:
@@ -231,17 +249,12 @@ class QueryBuilder:
             table, filter["field"]), filter["value"]) for filter in filters]
         filter_operations_or = reduce(operator.or_, filter_operations)
         if self.selected:
-            if self.aggregated or (self.filtered and self.check_dataset_equals_query()):
-                self.current_query = Query.from_(self.current_dataset)
-                self.current_query = self.current_query.select(self.current_dataset.star)
             self.current_query = self.current_query.where(filter_operations_or)
         else:
             if self.check_dataset_equals_query():
                 self.current_query = Query.from_(self.current_dataset)
             self.current_query = self.current_query.select(self.current_dataset.star).where(filter_operations_or)
             self.selected = True
-        if self.aggregated:
-            self.current_dataset = self.current_query
         self.filtered = True
         return self
 
@@ -291,7 +304,8 @@ class QueryBuilder:
         return self
 
     def join(self, table_name, schema_name, join_on, join_how="full", columns_x=None, columns_y=None, suffix_y="2"):
-        self.aggregated = True
+        self.selected = True
+        self.joined = True
         self.current_query = Query.from_(self.current_dataset)
 
         join_how_mapping = {
@@ -330,6 +344,7 @@ class QueryBuilder:
             *select_on
         )
 
+        self.previous_dataset = self.current_dataset
         self.current_dataset = self.current_query
         return self
 
