@@ -34,6 +34,8 @@ export const isCacheExpired = async (id: number) => {
   if (cachedOperationUpdatedTime) {
     const { data } = await fetchOperationById(id);
     if (moment(data.updated_on).isAfter(cachedOperationUpdatedTime)) {
+      localForage.setItem(`${localForageKeys.DATASET_UPDATED_ON}-${id}`, data.updated_on);
+
       return true;
     }
   }
