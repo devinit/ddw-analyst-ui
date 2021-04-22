@@ -7,6 +7,7 @@ import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { CheckboxGroup } from '../CheckboxGroup';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
+import { SelectColumnValidator } from '../SelectColumnValidator';
 
 interface SelectQueryBuilderProps {
   source: SourceMap;
@@ -70,11 +71,13 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             Deselect All
           </Button>
         </Form.Row>
-        <CheckboxGroup
-          options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-          selectedOptions={props.columns}
-          onUpdateOptions={props.onUpdateColumns}
-        />
+        <SelectColumnValidator step={props.step} steps={props.steps}>
+          <CheckboxGroup
+            options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
+            selectedOptions={props.columns}
+            onUpdateOptions={props.onUpdateColumns}
+          />
+        </SelectColumnValidator>
       </Form.Group>
     </React.Fragment>
   );

@@ -6,6 +6,7 @@ interface ComponentProps {
   options: DropdownItemProps[];
   selectedOptions?: string[];
   onUpdateOptions?: (options: string) => void;
+  onDeselect?: (option: string) => void;
 }
 
 const StyledSegment = styled(Segment)`
@@ -17,6 +18,7 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   const [checkboxes, addCheckboxes] = useState<string[] | undefined>(
     props.selectedOptions && props.selectedOptions.length > 0 ? props.selectedOptions : [],
   );
+
   useEffect(() => {
     if (props.onUpdateOptions) {
       props.onUpdateOptions(JSON.stringify({ columns: checkboxes }));
@@ -31,6 +33,9 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
       ? checkboxes?.concat(data.value as string)
       : checkboxes?.filter((checkbox) => checkbox !== data.value);
     addCheckboxes(updatedCheckboxes);
+    if (props.onDeselect && !data.checked) {
+      props.onDeselect(data.value as string);
+    }
   };
 
   const isChecked = (value: string): boolean => {

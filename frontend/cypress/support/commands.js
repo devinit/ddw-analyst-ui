@@ -32,7 +32,7 @@ Cypress.Commands.add('login', (email, password) => {
   });
 });
 
-Cypress.Commands.add('fillOperationForm', () => {
+Cypress.Commands.add('useCrsIsoCodes', () => {
   // Visit query builder type name and choose datasource
   cy.visit('/queries/build');
   cy.get('[name="name"]').focus().type('My Test Dataset');
@@ -42,7 +42,17 @@ Cypress.Commands.add('fillOperationForm', () => {
   cy.get('.search').eq(1).type('CRS ISO codes{enter}{esc}');
 });
 
-Cypress.Commands.add('fillStepForm', () => {
+Cypress.Commands.add('useFTS', () => {
+  // Visit query builder type name and choose datasource
+  cy.visit('/queries/build');
+  cy.get('[name="name"]').focus().type('My Test Dataset');
+  cy.get('[name="description"]').focus().type('My Test Dataset Description');
+  cy.get('.search').eq(1).click({ force: true });
+  cy.wait(5000);
+  cy.get('.search').eq(1).type('Financial Tracking Service{enter}{esc}');
+});
+
+Cypress.Commands.add('createCRSFilterStep', () => {
   // Add step
   cy.get('[data-testid="qb-add-step-button"]').click();
 
@@ -73,6 +83,53 @@ Cypress.Commands.add('fillStepForm', () => {
     .click({ force: true })
     .type('{downarrow}{enter}{esc}');
   cy.get('[name="value"]').eq(1).type('3');
+});
+
+Cypress.Commands.add('createFTSFilterStep', () => {
+  // Add step
+  cy.get('[data-testid="qb-add-step-button"]').click();
+
+  // Fill create query step form
+  cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+  cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}filter{enter}');
+
+  // Add first filter
+  cy.get('[data-testid="qb-filter-add-button"]').click();
+  cy.get('[data-testid="qb-filter-select-column"]>input')
+    .eq(0)
+    .click({ force: true })
+    .type('amount{enter}');
+  cy.get('[data-testid="qb-filter-select-operation"]')
+    .click({ force: true })
+    .type('{downarrow}{enter}{esc}');
+  cy.get('[name="value"]').type('2');
+
+  // Add second filter
+  cy.get('[data-testid="qb-filter-add-button"]').click();
+  cy.get('[data-testid="qb-filter-select-column"]')
+    .eq(1)
+    .click({ force: true })
+    .type('{downarrow}boundary{downarrow}');
+  cy.get('[data-testid="qb-filter-select-operation"]')
+    .eq(1)
+    .click({ force: true })
+    .type('{downarrow}{enter}{esc}');
+  cy.get('[name="value"]').eq(1).type('3');
+});
+
+Cypress.Commands.add('createGenericSelectStep', () => {
+  // Fill create step form
+  cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+  cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+  // Check all checkboxes
+  cy.get('[data-testid="qb-select-all-button"]').click();
+
+  // Save and create step
+  cy.get('[data-testid="qb-step-preview-button"]').click();
+
 });
 
 //
