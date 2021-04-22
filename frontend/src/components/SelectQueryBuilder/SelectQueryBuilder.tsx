@@ -101,7 +101,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             onUpdateColumns={props.onUpdateColumns}
           />
         ) : (
-          <SelectColumnValidator step={props.step} steps={props.steps}>
+          <SelectColumnValidator step={props.step} steps={props.steps} columns={selectableColumns}>
             <CheckboxGroup
               options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
               selectedOptions={props.columns}
