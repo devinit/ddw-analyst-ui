@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with the required props 1`] = `
+<div
+  aria-describedby=""
+  aria-roledescription="sortable"
+  className=""
+  data-testid="qb-select-column-order"
+  role="button"
+  style={
+    Object {
+      "transform": undefined,
+      "transition": undefined,
+    }
+  }
+  tabIndex={0}
+>
+  test
+</div>
+`;

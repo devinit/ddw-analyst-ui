@@ -2,11 +2,12 @@ import { List } from 'immutable';
 import React, { FunctionComponent, useState } from 'react';
 import { OperationStepMap } from '../../types/operations';
 import { BasicModal } from '../BasicModal';
-import { validateSelectColumnDeselect } from './utils';
+import { SelectColumn, validateSelectColumnDeselect } from './utils';
 
 interface ComponentProps {
   step: OperationStepMap;
   steps?: List<OperationStepMap>;
+  columns: SelectColumn[];
 }
 
 const SelectColumnValidator: FunctionComponent<ComponentProps> = (props) => {
@@ -22,18 +23,17 @@ const SelectColumnValidator: FunctionComponent<ComponentProps> = (props) => {
         )
         .forEach((step) => {
           const options = step.get('query_kwargs') as string;
-          validateSelectColumnDeselect(options, checkboxValue).then((validationMessage) => {
-            if (validationMessage) {
-              setModalMessage(validationMessage);
-            }
-          });
+          validateSelectColumnDeselect(options, checkboxValue, props.columns).then(
+            (validationMessage) => {
+              if (validationMessage) {
+                setModalMessage(validationMessage);
+              }
+            },
+          );
         });
     }
   };
-
-  const toggleShowModal = () => {
-    setModalMessage('');
-  };
+  const toggleShowModal = () => setModalMessage('');
 
   return (
     <>
