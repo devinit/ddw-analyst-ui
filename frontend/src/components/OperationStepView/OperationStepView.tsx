@@ -68,6 +68,28 @@ export const OperationStepView: FunctionComponent<OperationStepProps> = ({ step,
             content_copy
           </StyledIcon>
         </StyledButton>
+        <StyledButton
+          className="pl-1"
+          title="Move Up"
+          variant="link"
+          size="sm"
+          data-testid="move-step-up"
+        >
+          <StyledIcon className="material-icons" data-testid="step-up-trigger">
+            expand_less
+          </StyledIcon>
+        </StyledButton>
+        <StyledButton
+          className="pl-1"
+          title="Move Down"
+          variant="link"
+          size="sm"
+          data-testid="move-step-down"
+        >
+          <StyledIcon className="material-icons" data-testid="step-down-trigger">
+            expand_more
+          </StyledIcon>
+        </StyledButton>
       </StyledActionsWrapper>
     );
   };
