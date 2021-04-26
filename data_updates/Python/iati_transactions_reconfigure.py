@@ -43,8 +43,10 @@ def main():
 
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
+    conn = engine.connect()
 
-    if_exists = "replace"
+    truncate_command = "TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME)
+    conn.execute(truncate_command)
 
     paginator = s3_client.get_paginator('list_objects_v2')
     page_iterator = paginator.paginate(Bucket=IATI_BUCKET_NAME, Prefix=IATI_FOLDER_NAME)
@@ -74,10 +76,7 @@ def main():
             flat_data[numeric_column] = pd.to_numeric(flat_data[numeric_column], errors='coerce')
         flat_data = flat_data.astype(dtype=DTYPES)
 
-        flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
-
-        if if_exists == "replace":
-            if_exists = "append"
+        flat_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists="append")
 
     engine.dispose()
 
