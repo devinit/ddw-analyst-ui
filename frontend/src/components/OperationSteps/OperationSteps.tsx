@@ -23,27 +23,13 @@ interface OperationStepsProps {
   onDuplicateStep: (step?: OperationStepMap) => void;
 }
 
-const StyledButton = styled(Button)`
-  padding-top: 0 !important;
-  padding-right: 0 !important;
-  margin-top: 0;
-`;
-
 const StyledListItem = styled(ListGroup.Item)`
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   border-color: ${(props) => (props.active ? '#737373 !important' : 'default')};
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
 `;
-
-const StyledButtonWrapper = styled.div`
-  display: none;
-`;
 const StyledStepContainer = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  &:hover {
-    ${StyledButtonWrapper} {
-      display: inline-flex !important;
-    }
 `;
 
 const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
@@ -67,19 +53,8 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                     disabled={(activeStep && !isActiveStep) || props.disabled}
                     active={isActiveStep}
                   >
-                    <OperationStep step={step} />
+                    <OperationStep step={step} onDuplicateStep={props.onDuplicateStep} />
                   </StyledListItem>
-                  <StyledButtonWrapper>
-                    <StyledButton
-                      title="Duplicate"
-                      variant="link"
-                      size="sm"
-                      data-testid="step-duplicate"
-                      onClick={() => props.onDuplicateStep(step)}
-                    >
-                      <i className="material-icons">content_copy</i>
-                    </StyledButton>
-                  </StyledButtonWrapper>
                 </StyledStepContainer>
               );
             })}
