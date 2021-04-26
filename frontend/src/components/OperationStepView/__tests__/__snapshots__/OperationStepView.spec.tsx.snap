@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OperationStep renders an info button when the provided step has a description 1`] = `
+Array [
+  <div>
+    <span
+      className="badge badge-secondary"
+    >
+      FILTER
+    </span>
+  </div>,
+  .c2 {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.c3 {
+  padding-top: 0 !important;
+  padding-right: 0 !important;
+  margin-top: 0;
+}
+
+.c0 {
+  position: relative;
+}
+
+.c1 {
+  position: absolute;
+  display: inline-block;
+  right: 0;
+  margin-right: 1rem;
+}
+
+<div
+    className="c0"
+  >
+    My Test Step
+    <div
+      className="c1"
+    >
+      <i
+        className="c2 material-icons mt-1"
+        data-testid="step-info-trigger"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        info
+      </i>
+      <button
+        className="c3 pl-1 btn btn-link btn-sm"
+        data-testid="step-duplicate"
+        disabled={false}
+        onClick={[Function]}
+        title="Duplicate"
+        type="button"
+      >
+        <i
+          className="c2 material-icons"
+          data-testid="step-duplicate-trigger"
+        >
+          content_copy
+        </i>
+      </button>
+    </div>
+  </div>,
+]
+`;
+
+exports[`OperationStep renders correctly with the default props 1`] = `
+Array [
+  <div>
+    <span
+      className="badge badge-secondary"
+    >
+      FILTER
+    </span>
+  </div>,
+  .c3 {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.c2 {
+  padding-top: 0 !important;
+  padding-right: 0 !important;
+  margin-top: 0;
+}
+
+.c0 {
+  position: relative;
+}
+
+.c1 {
+  position: absolute;
+  display: inline-block;
+  right: 0;
+  margin-right: 1rem;
+}
+
+<div
+    className="c0"
+  >
+    My Test Step
+    <div
+      className="c1"
+    >
+      <button
+        className="c2 pl-1 btn btn-link btn-sm"
+        data-testid="step-duplicate"
+        disabled={false}
+        onClick={[Function]}
+        title="Duplicate"
+        type="button"
+      >
+        <i
+          className="c3 material-icons"
+          data-testid="step-duplicate-trigger"
+        >
+          content_copy
+        </i>
+      </button>
+    </div>
+  </div>,
+]
+`;
