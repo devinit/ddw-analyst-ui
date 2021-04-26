@@ -45,7 +45,7 @@ Cypress.Commands.add(
   },
 );
 
-Cypress.Commands.add('createCRSFilterStep', () => {
+Cypress.Commands.add('createFilterStep', (firstFilterValue, secondFilterValue) => {
   // Add step
   cy.get('[data-testid="qb-add-step-button"]').click();
 
@@ -59,7 +59,7 @@ Cypress.Commands.add('createCRSFilterStep', () => {
   cy.get('[data-testid="qb-filter-select-column"]>input')
     .eq(0)
     .click({ force: true })
-    .type('{downarrow}Country code{enter}');
+    .type(firstFilterValue);
   cy.get('[data-testid="qb-filter-select-operation"]')
     .click({ force: true })
     .type('{downarrow}{enter}{esc}');
@@ -70,7 +70,7 @@ Cypress.Commands.add('createCRSFilterStep', () => {
   cy.get('[data-testid="qb-filter-select-column"]')
     .eq(1)
     .click({ force: true })
-    .type('{downarrow}Country name{downarrow}');
+    .type(secondFilterValue);
   cy.get('[data-testid="qb-filter-select-operation"]')
     .eq(1)
     .click({ force: true })
@@ -78,40 +78,7 @@ Cypress.Commands.add('createCRSFilterStep', () => {
   cy.get('[name="value"]').eq(1).type('3');
 });
 
-Cypress.Commands.add('createFTSFilterStep', () => {
-  // Add step
-  cy.get('[data-testid="qb-add-step-button"]').click();
-
-  // Fill create query step form
-  cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-  cy.get('[data-testid="qb-step-select-query"]').type('{downarrow}filter{enter}');
-
-  // Add first filter
-  cy.get('[data-testid="qb-filter-add-button"]').click();
-  cy.get('[data-testid="qb-filter-select-column"]>input')
-    .eq(0)
-    .click({ force: true })
-    .type('amount{enter}');
-  cy.get('[data-testid="qb-filter-select-operation"]')
-    .click({ force: true })
-    .type('{downarrow}{enter}{esc}');
-  cy.get('[name="value"]').type('2');
-
-  // Add second filter
-  cy.get('[data-testid="qb-filter-add-button"]').click();
-  cy.get('[data-testid="qb-filter-select-column"]')
-    .eq(1)
-    .click({ force: true })
-    .type('{downarrow}boundary{downarrow}');
-  cy.get('[data-testid="qb-filter-select-operation"]')
-    .eq(1)
-    .click({ force: true })
-    .type('{downarrow}{enter}{esc}');
-  cy.get('[name="value"]').eq(1).type('3');
-});
-
-Cypress.Commands.add('createGenericSelectStep', () => {
+Cypress.Commands.add('createSelectStep', () => {
   // Fill create step form
   cy.get('[name="name"]').eq(1).type('Dataset Step Test');
   cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
