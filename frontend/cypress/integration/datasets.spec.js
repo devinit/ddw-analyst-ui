@@ -113,4 +113,21 @@ describe('The Datasets Pages', () => {
       .eq(1)
       .contains('Countries Being Left Behind');
   });
+
+  it('views data in datasets', () => {
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/datasets/mine/', datasets);
+    });
+    cy.visit('/');
+    cy.get('.dataset-row')
+      .eq(3)
+      .then(($datasetRow) => {
+        cy.wrap($datasetRow)
+          .contains('View Data')
+          .click({ force: true })
+          .then(() => {
+            cy.get('.operation-data-table');
+          });
+      });
+  });
 });
