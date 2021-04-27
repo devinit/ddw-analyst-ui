@@ -104,52 +104,52 @@
     },
     {
       "id": 4,
-      "name": "Test data view",
+      "name": "Test dataset view",
       "description": "test",
-      "operation_query": "('SELECT COUNT(\"sq0\".*) FROM (SELECT \"country_name\",\"cblb\",\"di_id\",\"iso3\" FROM \"repo\".\"cblb\") \"sq0\"', 'SELECT \"country_name\",\"cblb\",\"di_id\",\"iso3\" FROM \"repo\".\"cblb\"')",
-      "row_count": 30,
+      "operation_query": "('SELECT COUNT(\"sq0\".*) FROM (SELECT \"country_name\",\"di_id\",\"iso3\",\"fragile_2018\" FROM \"repo\".\"fragility\") \"sq0\"', 'SELECT \"country_name\",\"di_id\",\"iso3\",\"fragile_2018\" FROM \"repo\".\"fragility\"')",
+      "row_count": 146,
       "theme": null,
       "sample_output_path": null,
       "tags": [],
       "operation_steps": [
           {
-              "id": 38,
+              "id": 80,
               "step_id": 1,
               "name": "test",
               "description": "test",
               "query_func": "select",
-              "query_kwargs": "{\"columns\":[\"country_name\",\"cblb\",\"di_id\",\"iso3\"]}",
-              "source": 7,
-              "created_on": "2021-04-23T08:58:08.154098Z",
-              "updated_on": "2021-04-23T08:58:08.154126Z",
+              "query_kwargs": "{\"columns\":[\"country_name\",\"di_id\",\"iso3\",\"fragile_2018\"]}",
+              "source": 13,
+              "created_on": "2021-04-23T11:53:50.353678Z",
+              "updated_on": "2021-04-23T11:53:50.353716Z",
               "logs": {}
           }
       ],
       "reviews": [],
       "is_draft": true,
       "user": "Admin",
-      "created_on": "2021-04-23T08:58:08.140465Z",
-      "updated_on": "2021-04-23T08:58:08.474538Z",
+      "created_on": "2021-04-23T11:53:50.340970Z",
+      "updated_on": "2021-04-23T11:53:50.648637Z",
       "aliases": [
           {
-              "id": 890,
+              "id": 1024,
               "column_name": "country_name",
               "column_alias": "Country name"
           },
           {
-              "id": 891,
-              "column_name": "cblb",
-              "column_alias": "Country Being Left Behind"
-          },
-          {
-              "id": 892,
+              "id": 1025,
               "column_name": "di_id",
               "column_alias": "ISO Alpha 2"
           },
           {
-              "id": 893,
+              "id": 1026,
               "column_name": "iso3",
               "column_alias": "ISO Alpha 3"
+          },
+          {
+              "id": 1027,
+              "column_name": "fragile_2018",
+              "column_alias": "Fragility status in 2018"
           }
       ],
       "alias_creation_status": "d",

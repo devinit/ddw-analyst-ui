@@ -115,7 +115,7 @@ export const OperationDataTable: FunctionComponent<OperationDataTableProps> = ({
           ))}
         </tr>
       </thead>
-      <tbody>{renderTableRows(list, columns)}</tbody>
+      <tbody data-testid="dataset-table-body">{renderTableRows(list, columns)}</tbody>
     </Table>
   );
 };

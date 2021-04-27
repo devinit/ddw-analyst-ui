@@ -118,6 +118,9 @@ describe('The Datasets Pages', () => {
     cy.fixture('datasets').then((datasets) => {
       cy.intercept('api/datasets/mine/', datasets);
     });
+    cy.fixture('tableData').then((data) => {
+      cy.intercept('api/dataset/data/4', data);
+    });
     cy.visit('/');
     cy.get('.dataset-row')
       .eq(3)
@@ -126,7 +129,7 @@ describe('The Datasets Pages', () => {
           .contains('View Data')
           .click({ force: true })
           .then(() => {
-            cy.get('.operation-data-table');
+            cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 10);
           });
       });
   });
