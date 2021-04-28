@@ -1,15 +1,17 @@
-import React, { FunctionComponent } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 
 interface SelectColumnProps {
   id: string;
+  count?: number;
 }
 
-const Column = styled.div`
+export const Column = styled.div`
   margin-top: 4px;
   margin-bottom: 4px;
+  margin-right: 8px;
   cursor: grab;
   word-wrap: break-word;
   line-height: 1em;
@@ -42,7 +44,7 @@ const SelectColumn: FunctionComponent<SelectColumnProps> = (props) => {
       {...listeners}
       data-testid="qb-select-column-order"
     >
-      {props.id}
+      {props.count ? `${props.count}. ${props.id}` : props.id}
     </Column>
   );
 };

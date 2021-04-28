@@ -1,22 +1,26 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
-  DndContext,
   closestCenter,
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
 } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { SelectColumn } from '../SelectColumn/SelectColumn';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import React, {
+  ForwardedRef,
+  forwardRef,
+  ForwardRefExoticComponent,
+  FunctionComponent,
+  useEffect,
+  useState,
+} from 'react';
 import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
+import { Column, SelectColumn } from '../SelectColumn';
 
 interface SelectColumnOrderProps {
   selectedColumns: { alias: string; columnName: string }[];
@@ -31,18 +35,29 @@ const StyledSpan = styled.span`
 `;
 
 const StyledWrapper = styled.div`
-  max-height: 400px;
-  overflow-y: scroll;
+  display: flex;
+  flex: 1 1 0%;
+  flex-wrap: wrap;
 
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
+export const DragOverlayItem: ForwardRefExoticComponent<{ id: string }> = forwardRef(
+  ({ id, ...props }, ref: ForwardedRef<HTMLDivElement>) => (
+    <Column {...props} ref={ref}>
+      {id}
+    </Column>
+  ),
+);
+DragOverlayItem.displayName = 'DragOverlayItem';
+
 const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
   selectedColumns,
   onUpdateColumns,
 }) => {
+  const [activeId, setActiveId] = useState<string | null>(null);
   const [orderedColumns, setOrderedColumns] = useState(
     selectedColumns?.map((column) => column.columnName),
   );
@@ -58,6 +73,12 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+
+    setActiveId(active.id);
+  };
+
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     if (over && active.id !== over.id) {
       setOrderedColumns(() => {
@@ -70,6 +91,8 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
         return arrayMove(columnNames, oldIndex, newIndex);
       });
     }
+
+    setActiveId(null);
   };
 
   return (
@@ -79,17 +102,24 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
         <StyledSpan className="d-inline-flex">Drag & drop columns to desired position</StyledSpan>
       </Alert>
       <StyledWrapper>
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
           <SortableContext
             items={selectedColumns ? selectedColumns.map((column) => column.alias) : []}
-            strategy={verticalListSortingStrategy}
           >
             {selectedColumns && selectedColumns.length > 0 ? (
-              selectedColumns.map((column) => <SelectColumn key={column.alias} id={column.alias} />)
+              selectedColumns.map((column, index) => (
+                <SelectColumn key={column.alias} id={column.alias} count={index + 1} />
+              ))
             ) : (
               <div data-testid="qb-select-no-column-message">No columns selected</div>
             )}
           </SortableContext>
+          <DragOverlay>{activeId ? <DragOverlayItem id={activeId} /> : null}</DragOverlay>
         </DndContext>
       </StyledWrapper>
     </>
