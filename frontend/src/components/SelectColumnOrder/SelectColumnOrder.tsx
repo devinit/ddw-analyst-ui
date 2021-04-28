@@ -10,17 +10,11 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import React, {
-  ForwardedRef,
-  forwardRef,
-  ForwardRefExoticComponent,
-  FunctionComponent,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
-import { Column, SelectColumn } from '../SelectColumn';
+import DragOverlayItem from './DragOverlayItem';
+import { SortableItem } from './SortableItem';
 
 interface SelectColumnOrderProps {
   selectedColumns: { alias: string; columnName: string }[];
@@ -43,15 +37,6 @@ const StyledWrapper = styled.div`
     display: none;
   }
 `;
-
-export const DragOverlayItem: ForwardRefExoticComponent<{ id: string }> = forwardRef(
-  ({ id, ...props }, ref: ForwardedRef<HTMLDivElement>) => (
-    <Column {...props} ref={ref}>
-      {id}
-    </Column>
-  ),
-);
-DragOverlayItem.displayName = 'DragOverlayItem';
 
 const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
   selectedColumns,
@@ -113,7 +98,7 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
           >
             {selectedColumns && selectedColumns.length > 0 ? (
               selectedColumns.map((column, index) => (
-                <SelectColumn key={column.alias} id={column.alias} count={index + 1} />
+                <SortableItem key={column.alias} id={column.alias} count={index + 1} />
               ))
             ) : (
               <div data-testid="qb-select-no-column-message">No columns selected</div>
