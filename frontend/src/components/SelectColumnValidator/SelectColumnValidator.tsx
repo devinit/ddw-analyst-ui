@@ -37,7 +37,7 @@ const SelectColumnValidator: FunctionComponent<ComponentProps> = (props) => {
 
   return (
     <>
-      <BasicModal show={modalMessage} onHide={toggleShowModal}>
+      <BasicModal show={!!modalMessage} onHide={toggleShowModal}>
         {modalMessage}
       </BasicModal>
       {React.Children.map(props.children, (child) =>
