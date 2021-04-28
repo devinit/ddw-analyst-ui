@@ -224,12 +224,15 @@ describe('The Query Builder', () => {
   });
 
   describe('FILTER step', () => {
+    const firstFilterValue = '{downarrow}Country code{enter}';
+    const secondFilterValue = '{downarrow}Country name{downarrow}';
+
     it('can add and delete a filter', () => {
       // Visit query builder type name and choose datasource
       cy.fillOperationForm(operationName, operationDescription);
 
       // Fill create step form with 2 filters
-      cy.createCRSFilterStep();
+      cy.createFilterStep(firstFilterValue, secondFilterValue);
 
       // Delete first filter
       cy.get('[data-testid="qb-filter-delete-button"]').eq(0).click();
@@ -246,7 +249,7 @@ describe('The Query Builder', () => {
       cy.fillOperationForm(operationName, operationDescription);
 
       // Fill create step form with 2 filters
-      cy.createCRSFilterStep();
+      cy.createFilterStep(firstFilterValue, secondFilterValue);
 
       cy.get('[data-testid="qb-filter-info-button"]').click();
 
@@ -261,7 +264,7 @@ describe('The Query Builder', () => {
       cy.get('.list-group').should('not.exist');
 
       // Fill create step form with 2 filters
-      cy.createCRSFilterStep();
+      cy.createFilterStep(firstFilterValue, secondFilterValue);
 
       // Save and create step
       cy.get('[data-testid="qb-step-preview-button"]').click();
@@ -275,7 +278,7 @@ describe('The Query Builder', () => {
       cy.fillOperationForm(operationName, operationDescription);
 
       // Fill create step form with 2 filters
-      cy.createCRSFilterStep();
+      cy.createFilterStep(firstFilterValue, secondFilterValue);
 
       // Save and create step
       cy.get('[data-testid="qb-step-preview-button"]').click();
@@ -319,10 +322,10 @@ describe('The Query Builder', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Fill create step form with 2 filters
-      cy.createFTSFilterStep();
+      cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
 
       // Save and create step
       cy.get('[data-testid="qb-step-preview-button"]').click();
@@ -342,7 +345,7 @@ describe('The Query Builder', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
@@ -377,7 +380,7 @@ describe('The Query Builder', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
@@ -410,7 +413,7 @@ describe('The Query Builder', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
@@ -442,7 +445,7 @@ describe('The Query Builder', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
@@ -475,7 +478,7 @@ describe('The Query Builder', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
