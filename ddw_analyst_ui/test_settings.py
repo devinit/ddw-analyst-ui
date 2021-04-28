@@ -1,4 +1,4 @@
-from ddw_analyst_ui.settings import *
+from ddw_analyst_ui.docker_settings import *
 
 
 MIGRATION_MODULES = {

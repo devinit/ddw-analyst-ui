@@ -33,6 +33,12 @@ class TestFixtureData(TestCase):
             source_id=1
         )
 
+        self.op2 = Operation.objects.create(
+            name="Test operation One Column",
+            operation_query="Test query",
+            theme_id=1
+        )
+
     def test_can_generate_select_all(self):
         queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
@@ -40,14 +46,14 @@ class TestFixtureData(TestCase):
 
     def test_can_generate_select_by_column(self):
         OperationStep.objects.create(
-            operation=self.op,
-            step_id=2,
+            operation=self.op2,
+            step_id=1,
             name="Select",
             query_func="select",
             query_kwargs="{ \"columns\": [ \"year\" ] }",
             source_id=1
         )
-        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
+        queries = query.build_query(operation=self.op2, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
         self.assertEqual(len(dat[0].keys()), 1)
 
@@ -288,15 +294,16 @@ class TestFixtureData(TestCase):
 
     def test_can_catch_sql_err(self):
         OperationStep.objects.create(
-            operation=self.op,
-            step_id=2,
+            operation=self.op2,
+            step_id=1,
             name="Select",
             query_func="select",
             query_kwargs="{ \"columns\": [ \"iso10\" ] }",
             source_id=1
         )
-        queries = query.build_query(operation=self.op, limit=1, offset=0, estimate_count=True)
+        queries = query.build_query(operation=self.op2, limit=1, offset=0, estimate_count=True)
         _, dat = fetch_data(queries, database="default")
+        print(dat)
         self.assertTrue("error" in list(dat[0].keys()))
 
     def test_can_catch_zip_err(self):

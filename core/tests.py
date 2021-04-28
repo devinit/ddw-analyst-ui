@@ -166,6 +166,12 @@ class TestPypikaUtils(TestCase):
             source_id=1
         )
 
+        self.op2 = Operation.objects.create(
+            name="Test operation two",
+            operation_query="Test query two",
+            theme_id=1
+        )
+
     def test_can_generate_select_all(self):
         expected = 'SELECT * FROM "public"."crs_current"'
         qb = QueryBuilder(self.op)
@@ -174,14 +180,14 @@ class TestPypikaUtils(TestCase):
     def test_can_generate_select_by_column(self):
         expected = 'SELECT "year" FROM "public"."crs_current"'
         OperationStep.objects.create(
-            operation=self.op,
-            step_id=2,
-            name="Select",
+            operation=self.op2,
+            step_id=1,
+            name="Select By Column",
             query_func="select",
             query_kwargs="{ \"columns\": [ \"year\" ] }",
             source_id=1
         )
-        qb = QueryBuilder(self.op)
+        qb = QueryBuilder(self.op2)
         self.assertEqual(qb.get_sql_without_limit(), expected)
 
     def test_can_generate_filter(self):
