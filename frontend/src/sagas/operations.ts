@@ -22,33 +22,59 @@ import {
   setOperation,
 } from '../actions/operations';
 import { fetchActiveSource } from '../actions/sources';
+import { isDatasetCacheExpired } from '../utils/cache';
 
 function* fetchOperations({ payload }: OperationsAction) {
   try {
-    const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const basePath = payload.mine ? api.routes.MY_DATASETS : api.routes.DATASETS;
-    const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios
-      .request({
-        url:
-          payload.link ||
-          `${basePath}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}`,
-        method: 'get',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `token ${token}`,
-        },
-      })
-      .then((response: AxiosResponse<Operation[]>) => response)
-      .catch((error) => error.response);
+    const datasetKey = payload.mine
+      ? localForageKeys.MY_DATASETS
+      : localForageKeys.PUBLISHED_DATASETS;
+    const dataCountKey = `${datasetKey}-${localForageKeys.DATASET_COUNT}-${payload.limit}-${payload.offset}`;
+    const cacheDatasets: string = yield localForage.getItem<string>(
+      `${datasetKey}-${payload.limit}-${payload.offset}`,
+    );
+    const cachedDatasetCount: number = yield localForage.getItem<number>(dataCountKey);
+    const expiredCache: boolean = yield isDatasetCacheExpired(dataCountKey, basePath);
 
-    if (status === 200 && data.results) {
-      yield put(onFetchOperationsSuccessful(data.results, data.count));
+    if (cacheDatasets && !expiredCache) {
+      const data = JSON.parse(cacheDatasets);
+      yield put(onFetchOperationsSuccessful(data.results, cachedDatasetCount));
       yield put(updateOperationInfo({ next: data.next, previous: data.previous }, payload.offset));
-    } else if (status === 401) {
-      yield put(setToken(''));
-      yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
     } else {
-      yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
+      const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios
+        .request({
+          url:
+            payload.link ||
+            `${basePath}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}`,
+          method: 'get',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${token}`,
+          },
+        })
+        .then((response: AxiosResponse<Operation[]>) => response)
+        .catch((error) => error.response);
+
+      if (status === 200 && data.results) {
+        localForage.setItem(
+          `${datasetKey}-${payload.limit}-${payload.offset}`,
+          JSON.stringify(data),
+        );
+        if (cachedDatasetCount === null) {
+          localForage.setItem<number>(dataCountKey, data.count);
+        }
+        yield put(onFetchOperationsSuccessful(data.results, data.count));
+        yield put(
+          updateOperationInfo({ next: data.next, previous: data.previous }, payload.offset),
+        );
+      } else if (status === 401) {
+        yield put(setToken(''));
+        yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
+      } else {
+        yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
+      }
     }
   } catch (error) {
     yield put(onFetchOperationsFailed()); // TODO: add a reason for failure
@@ -57,7 +83,7 @@ function* fetchOperations({ payload }: OperationsAction) {
 
 function* fetchOperation({ payload }: OperationsAction) {
   try {
-    const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status, data }: AxiosResponse<Operation> = yield axios
       .request({
         url: `${api.routes.SINGLE_DATASET}${payload.id}/`,
@@ -90,7 +116,7 @@ function* fetchOperation({ payload }: OperationsAction) {
 
 function* deleteOperation({ payload }: OperationsAction) {
   try {
-    const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status }: AxiosResponse<Operation> = yield axios
       .request({
         url: `${api.routes.SINGLE_DATASET}${payload.id}/`,
