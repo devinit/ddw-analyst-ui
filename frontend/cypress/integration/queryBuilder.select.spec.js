@@ -132,7 +132,7 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Fill create step form with 2 filters
       cy.createFTSFilterStep();
@@ -155,7 +155,7 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
@@ -190,7 +190,7 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
@@ -223,7 +223,7 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
@@ -255,7 +255,7 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
@@ -288,7 +288,7 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[data-testid="qb-add-step-button"]').click();
 
       // Create select query step
-      cy.createGenericSelectStep();
+      cy.createSelectStep();
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]').click();
