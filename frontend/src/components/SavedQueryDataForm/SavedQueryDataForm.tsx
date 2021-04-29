@@ -82,6 +82,7 @@ const SavedQueryDataForm: FunctionComponent<FrozenDataFormProps> = ({
                   isInvalid={!!errors.description}
                   onFocus={() => setHasFocus(true)}
                   onBlur={() => setHasFocus(false)}
+                  data-testid="dataset-frozen-data-description"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.description ? errors.description : null}
@@ -93,6 +94,7 @@ const SavedQueryDataForm: FunctionComponent<FrozenDataFormProps> = ({
                 variant="danger"
                 className={classNames('float-right', { 'd-none': !canSave })}
                 type="submit"
+                data-testid="dataset-frozen-data-save-button"
               >
                 Save Current Version
               </Button>

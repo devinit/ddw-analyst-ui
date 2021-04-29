@@ -10,7 +10,6 @@
 //
 //
 import { Base64 } from 'js-base64';
-import 'cypress-downloadfile/lib/downloadFileCommand';
 // -- This is a parent command --
 Cypress.Commands.add('login', (email, password) => {
   cy.request({

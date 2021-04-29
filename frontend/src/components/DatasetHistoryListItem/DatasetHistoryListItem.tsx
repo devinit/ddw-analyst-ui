@@ -59,7 +59,12 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
           <div className="dataset-row-title h4">{item.description}</div>
 
           <div className="dataset-row-actions float mb-1">
-            <Button size="sm" variant="dark" onClick={onRefresh}>
+            <Button
+              size="sm"
+              variant="dark"
+              onClick={onRefresh}
+              data-testid="dataset-frozen-data-refresh-button"
+            >
               <i className="material-icons">refresh</i>
             </Button>
             {item.logs ? (
@@ -80,7 +85,12 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
                 Download
               </a>
             ) : null}
-            <Button variant="danger" size="sm" onClick={onDelete}>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={onDelete}
+              data-testid="frozen-dataset-delete-button"
+            >
               <i className="material-icons">delete</i>{' '}
               {deleteStatus === 'default' ? 'Delete' : 'Confirm Delete'}
             </Button>
@@ -90,7 +100,10 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
             Created {moment(item.created_on).fromNow()}
             {' by '}
             <span>{extractNameFromEmail(item.user || '')}</span>
-            <span className={`badge ml-2 ${statusClasses[item.status]}`}>
+            <span
+              className={`badge ml-2 ${statusClasses[item.status]}`}
+              data-testid="dataset-frozen-data-status"
+            >
               {status[item.status]}
             </span>
           </div>
