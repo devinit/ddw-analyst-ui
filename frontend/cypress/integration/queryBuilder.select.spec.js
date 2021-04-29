@@ -123,7 +123,7 @@ describe('The Query Builder: SELECT STEP', () => {
   });
 
   describe('warns for breaking changes', () => {
-    const filterStepDataSource = 'Financial Tracking Service{enter}{esc}';
+    const filterStepDataSource = 'Financial Tracking Service';
 
     it('affecting the FILTER step', () => {
       // Visit query builder, type name and choose datasource
@@ -135,7 +135,7 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.createSelectStep();
 
       // Fill create step form with 2 filters
-      cy.createFTSFilterStep();
+      cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
 
       // Save and create step
       cy.get('[data-testid="qb-step-preview-button"]').click();

@@ -32,18 +32,14 @@ Cypress.Commands.add('login', (email, password) => {
   });
 });
 
-Cypress.Commands.add(
-  'fillOperationForm',
-  (name, description, dataSource = 'CRS ISO codes{enter}{esc}') => {
-    // Visit query builder type name and choose datasource
-    cy.visit('/queries/build');
-    cy.get('[name="name"]').focus().type(name);
-    cy.get('[name="description"]').focus().type(description);
-    cy.get('.search').eq(1).click({ force: true });
-    cy.wait(5000);
-    cy.get('.search').eq(1).type(dataSource);
-  },
-);
+Cypress.Commands.add('fillOperationForm', (name, description, dataSource = 'CRS ISO codes') => {
+  // Visit query builder type name and choose datasource
+  cy.visit('/queries/build');
+  cy.get('[name="name"]').focus().type(name);
+  cy.get('[name="description"]').focus().type(description);
+  cy.get('.search').eq(1).click({ force: true }).type(dataSource);
+  cy.get('.item', { timeout: 10000 }).eq(0).click();
+});
 
 Cypress.Commands.add('createFilterStep', (firstFilterValue, secondFilterValue) => {
   // Add step
