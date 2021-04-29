@@ -20,10 +20,8 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   );
 
   useEffect(() => {
-    if (props.onUpdateOptions) {
-      props.onUpdateOptions(JSON.stringify({ columns: checkboxes }));
-    }
-  }, [checkboxes]);
+    addCheckboxes(props.selectedOptions);
+  }, [props.selectedOptions]);
 
   const onChange = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
@@ -32,7 +30,9 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     const updatedCheckboxes: string[] | undefined = data.checked
       ? checkboxes?.concat(data.value as string)
       : checkboxes?.filter((checkbox) => checkbox !== data.value);
-    addCheckboxes(updatedCheckboxes);
+    if (props.onUpdateOptions) {
+      props.onUpdateOptions(JSON.stringify({ columns: updatedCheckboxes }));
+    }
     if (props.onDeselect && !data.checked) {
       props.onDeselect(data.value as string);
     }

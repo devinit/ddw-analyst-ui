@@ -35,14 +35,14 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
         ? QueryBuilderHandler.getSelectOptionsFromColumns(selectable, columns)
         : [],
     );
-    setSelectedColumns(() => {
-      return props.columns
+    setSelectedColumns(() =>
+      props.columns
         ? props.columns.map((column) => ({
             alias: QueryBuilderHandler.getColumnAlias(column, columns),
             columnName: column,
           }))
-        : [];
-    });
+        : [],
+    );
   }, [props.columns]);
 
   const onSelectAll = () => {
