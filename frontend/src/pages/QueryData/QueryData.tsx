@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
@@ -12,6 +12,7 @@ import { ReduxStore } from '../../store';
 import { OperationDataMap, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
+import { useOperation } from '../../utils/hooks/operations';
 import * as pageActions from './actions';
 import { QueryDataState, queryDataReducerId } from './reducers';
 
@@ -36,6 +37,11 @@ interface RouteParams {
 type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams>;
 
 const QueryData: FunctionComponent<QueryDataProps> = (props) => {
+  const { id } = props.match.params;
+  const [loading, setLoading] = useState(props.page.get('loading') as boolean);
+  const { operation: activeOperation, loading: operationLoading } = useOperation(
+    parseInt(id as string),
+  );
   const setOperation = (id?: string) => {
     if (!id) {
       return;
@@ -51,6 +57,12 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
       props.actions.fetchOperation(id);
     }
   };
+
+  // TODO: remove useEffect
+  useEffect(() => {
+    setLoading((props.page.get('loading') as boolean) || operationLoading);
+  }, [props.page.get('loading'), operationLoading]);
+
   useEffect(() => {
     const operation = props.activeOperation;
     const { id } = props.match.params;
@@ -100,10 +112,8 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
     return <div>{loading ? 'Loading ...' : 'No results found'}</div>;
   };
 
-  const loading = props.page.get('loading') as boolean;
   const token = props.token;
-  const { id } = props.match.params;
-  const operation = props.activeOperation;
+  const operation = activeOperation;
   const title = operation ? operation.get('name') : 'Query Data';
 
   return (
