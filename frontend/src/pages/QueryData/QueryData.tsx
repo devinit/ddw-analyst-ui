@@ -4,7 +4,7 @@ import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationDataTableContainer } from '../../components/OperationDataTableContainer';
-import { OperationMap } from '../../types/operations';
+import { OperationData, OperationMap } from '../../types/operations';
 import { api, localForageKeys } from '../../utils';
 import { DatasetDataPayload, useOperation, useOperationData } from '../../utils/hooks/operations';
 
@@ -18,9 +18,13 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
   const { operation: activeOperation, loading: operationLoading } = useOperation(
     parseInt(id as string),
   ) as { operation: OperationMap; loading: boolean };
-  const { data, dataLoading, error, options, setOptions } = useOperationData({
-    payload: { id: id as string, limit: 10, offset: 0 },
-  });
+  const { data, dataLoading, error, options, setOptions } = useOperationData(
+    {
+      payload: { id: id as string, limit: 10, offset: 0 },
+    },
+    false,
+    false,
+  );
   const [token, setToken] = useState<string>();
 
   useEffect(() => {
@@ -30,12 +34,12 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
   const onPageChange = (payload: DatasetDataPayload) => setOptions({ payload });
 
   const renderTable = () => {
-    if (id && data && data.count() !== 0 && activeOperation) {
+    if (id && data && (data as OperationData[]).length !== 0 && activeOperation) {
       return (
         <OperationDataTableContainer
           operation={activeOperation}
           id={id}
-          list={data}
+          list={data as OperationData[]}
           limit={options.payload.limit}
           offset={options.payload.offset}
           count={activeOperation.get('row_count') as number | null}

@@ -27,7 +27,7 @@ export const fetchOperationById = async (id: number): Promise<QueryResult> => {
   return await axios(`${BASEPATH.replace('{id}', id.toString())}`, { headers });
 };
 
-export const isCacheExpired = async (id: number) => {
+export const isCacheExpired = async (id: number): Promise<boolean> => {
   const cachedOperationUpdatedTime = await localForage.getItem<string>(
     `${localForageKeys.DATASET_UPDATED_ON}-${id}`,
   );
