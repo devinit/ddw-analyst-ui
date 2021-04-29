@@ -25,7 +25,7 @@ interface OperationDataHookResult<T = OperationDataHookOptions> {
   refetch?: (options?: T) => void;
 }
 
-interface DatasetDataPayload {
+export interface DatasetDataPayload {
   limit: number;
   offset: number;
   id: string;

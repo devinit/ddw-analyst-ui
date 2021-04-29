@@ -1,8 +1,8 @@
 import { List } from 'immutable';
 import React, { FunctionComponent } from 'react';
-import { fetchOperationData } from '../../pages/QueryData/actions';
 import { OperationDataMap, OperationMap } from '../../types/operations';
 import { OperationColumn, OperationColumnMap } from '../../types/sources';
+import { DatasetDataPayload } from '../../utils/hooks/operations';
 import { OperationDataTable } from '../OperationDataTable';
 import { PaginationRow } from '../PaginationRow';
 
@@ -13,7 +13,7 @@ interface OperationDataTableContainerProps {
   limit: number;
   offset: number;
   count: number | null;
-  fetchData: typeof fetchOperationData;
+  fetchData: (options: DatasetDataPayload) => void;
 }
 
 export const OperationDataTableContainer: FunctionComponent<OperationDataTableContainerProps> = (
