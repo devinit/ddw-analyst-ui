@@ -123,12 +123,12 @@ export const useOperationData = (
 };
 
 interface UseOperationResult {
-  operation?: OperationMap;
+  operation?: Operation | OperationMap;
   loading: boolean;
 }
 
-export const useOperation = (id: number, fetch = false): UseOperationResult => {
-  const [operation, setOperation] = useState<OperationMap | undefined>(fromJS({}));
+export const useOperation = (id: number, fetch = false, immutable = true): UseOperationResult => {
+  const [operation, setOperation] = useState<Operation | undefined>();
   const [loading, setLoading] = useState(false);
 
   const fetchOperation = () => {
@@ -143,7 +143,7 @@ export const useOperation = (id: number, fetch = false): UseOperationResult => {
       })
       .then(({ status, data, statusText }: AxiosResponse<Operation>) => {
         if (status === 200 && data) {
-          const activeOperation = fromJS(data);
+          const activeOperation = data;
           setOperation(activeOperation);
           setLoading(false);
         } else if (status === 401) {
@@ -169,7 +169,7 @@ export const useOperation = (id: number, fetch = false): UseOperationResult => {
         .getItem<Operation | undefined>(localForageKeys.ACTIVE_OPERATION)
         .then((activeOperation) => {
           if (activeOperation && activeOperation.id === id) {
-            setOperation(fromJS(activeOperation));
+            setOperation(activeOperation);
             setLoading(false);
           } else {
             fetchOperation();
@@ -178,5 +178,5 @@ export const useOperation = (id: number, fetch = false): UseOperationResult => {
     }
   }, [id]);
 
-  return { loading, operation };
+  return { loading, operation: immutable ? fromJS(operation) : operation };
 };
