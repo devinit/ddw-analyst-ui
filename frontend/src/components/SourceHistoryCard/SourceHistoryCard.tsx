@@ -88,7 +88,12 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       <Card className="dataset-list">
         <Card.Header className={classNames({ 'd-none': !props.source })}>
           <h4>{props.source.get('indicator')}</h4>
-          <Button size="sm" variant="danger" onClick={onClickFreezeButton}>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={onClickFreezeButton}
+            data-testid="source-version-freeze-button"
+          >
             Freeze Current Version
           </Button>
         </Card.Header>

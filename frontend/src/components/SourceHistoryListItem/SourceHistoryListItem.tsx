@@ -54,10 +54,17 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
       </Dimmer>
       <div className="dataset-row p-3 border-bottom">
         <div className="col-md-12">
-          <div className="dataset-row-title h4">{item.description}</div>
+          <div className="dataset-row-title h4" data-testid="frozen-data-description">
+            {item.description}
+          </div>
 
           <div className="dataset-row-actions float mb-1">
-            <Button variant="dark" size="sm" onClick={onRefresh}>
+            <Button
+              variant="dark"
+              size="sm"
+              onClick={onRefresh}
+              data-testid="frozen-dataset-refresh-button"
+            >
               <i className="material-icons">refresh</i>
             </Button>
             {item.logs ? (
@@ -75,7 +82,12 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
                 Download
               </a>
             ) : null}
-            <Button variant="danger" size="sm" onClick={onDelete}>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={onDelete}
+              data-testid="frozen-data-delete-button"
+            >
               <i className="material-icons">delete</i>{' '}
               {deleteStatus === 'default' ? 'Delete' : 'Confirm Delete'}
             </Button>
@@ -85,7 +97,10 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
             Created {moment(item.created_on).fromNow()}
             {' by '}
             <span>{extractNameFromEmail(item.user || '')}</span>
-            <span className={`badge ml-2 ${statusClasses[item.status]}`}>
+            <span
+              className={`badge ml-2 ${statusClasses[item.status]}`}
+              data-testid="frozen-data-status"
+            >
               {status[item.status]}
             </span>
           </div>

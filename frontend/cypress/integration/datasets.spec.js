@@ -122,6 +122,8 @@ describe('The Datasets Pages', () => {
       cy.intercept('api/dataset/data/4', data);
     });
     cy.visit('/');
+
+    // View datadet data in tabular form
     cy.get('.dataset-row')
       .eq(3)
       .then(($datasetRow) => {

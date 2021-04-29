@@ -78,6 +78,7 @@ const FrozenDataForm: FunctionComponent<FrozenDataFormProps> = ({ source, onCanc
                   isInvalid={!!errors.description}
                   onFocus={() => setHasFocus(true)}
                   onBlur={() => setHasFocus(false)}
+                  data-testid="frozen-data-form-message"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.description ? errors.description : null}
@@ -89,6 +90,7 @@ const FrozenDataForm: FunctionComponent<FrozenDataFormProps> = ({ source, onCanc
                 variant="danger"
                 className={classNames('float-right', { 'd-none': !canSave })}
                 type="submit"
+                data-testid="frozen-data-form-save-button"
               >
                 Save Current Version
               </Button>
