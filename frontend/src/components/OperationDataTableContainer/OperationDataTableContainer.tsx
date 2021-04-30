@@ -32,7 +32,7 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
   if (list && list.length) {
     const aliases = operation.get('aliases') as List<OperationColumnMap>;
     let columns: OperationColumn[] = [];
-    if (aliases) {
+    if (aliases && aliases.count()) {
       // make sure that the columns are in required order ... no using immutable as it messes up the order
       const _aliases = aliases.toJS() as OperationColumn[];
       columns = Object.keys(list[0]).map<OperationColumn>(
