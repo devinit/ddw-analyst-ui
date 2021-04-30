@@ -20,6 +20,7 @@ import { ReduxStore } from '../../store';
 import {
   AliasCreationStatus,
   Operation,
+  OperationData,
   OperationDataList,
   OperationDataMap,
   OperationMap,
@@ -70,7 +71,7 @@ const OBSOLETE_COLUMNS_LOG_MESSAGE = 'Obsolete Columns'; // eslint-disable-line 
 const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [showPreview, setShowPreview] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
-  const [previewData, setPreviewData] = useState<List<OperationDataMap>>(List());
+  const [previewData, setPreviewData] = useState<OperationData[]>([]);
   const [alertMessages, setAlertMessages] = useState<string[]>([]);
 
   useEffect(() => {
@@ -93,7 +94,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   }, [props.activeOperation]);
 
-  const updatePreviewState = (data: OperationDataList, show: boolean, loading: boolean): void => {
+  const updatePreviewState = (data: OperationData[], show: boolean, loading: boolean): void => {
     setPreviewData(data);
     setShowPreview(show);
     setLoadingPreview(loading);
@@ -241,7 +242,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const onTogglePreview = () => {
     if (showPreview) {
-      updatePreviewState(List(), false, false);
+      updatePreviewState([], false, false);
 
       return;
     }
@@ -256,7 +257,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       if (results.error) {
         setAlertMessages([`Error: ${results.error}`]);
       } else {
-        updatePreviewState(fromJS(results.data), true, false);
+        updatePreviewState(results.data || [], true, false);
       }
     });
   };
@@ -283,12 +284,14 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     if (loadingPreview) {
       return <div>Loading ...</div>;
     }
-    if (previewData.count()) {
-      const columns: OperationColumn[] = Object.keys(
-        (previewData.get(0) as OperationDataMap).toJS(),
-      ).map((column, index) => ({ id: index, column_alias: column, column_name: column }));
+    if (previewData.length) {
+      const columns: OperationColumn[] = Object.keys(previewData[0]).map((column, index) => ({
+        id: index,
+        column_alias: column,
+        column_name: column,
+      }));
 
-      return <OperationDataTable list={previewData} columns={columns} />;
+      return <OperationDataTable list={fromJS(previewData)} columns={columns} />;
     }
 
     return <div>No results found</div>;
