@@ -13,7 +13,7 @@ import { OperationDataTable } from '../../components/OperationDataTable';
 import { OperationForm } from '../../components/OperationForm';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
-import { SourcesState } from '../../reducers/sources';
+import { useSources } from '../../hooks';
 import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
@@ -40,7 +40,6 @@ interface ActionProps {
     };
 }
 interface ReduxState {
-  sources: SourcesState;
   source?: SourceMap;
   operations: List<OperationMap>;
   activeOperation?: OperationMap;
@@ -71,6 +70,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [previewData, setPreviewData] = useState<OperationData[]>([]);
   const [alertMessages, setAlertMessages] = useState<string[]>([]);
+  const sources = useSources({ limit: 200, offset: 0 });
 
   useEffect(() => {
     const { id } = props.match.params;
@@ -346,8 +346,8 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         onReset={!id ? () => props.actions.setActiveOperation() : undefined}
       >
         <OperationSteps
-          sources={props.sources.get('sources') as List<SourceMap>}
-          isFetchingSources={props.sources.get('loading') as boolean}
+          sources={sources}
+          isFetchingSources={sources.count() === 0}
           steps={steps}
           fetchSources={props.actions.fetchSources}
           onSelectSource={props.actions.setActiveSource}
@@ -460,7 +460,6 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {
     token: reduxStore.get('token') as TokenState,
-    sources: reduxStore.get('sources') as SourcesState,
     operations: reduxStore.getIn(['operations', 'operations']),
     activeOperation: reduxStore.getIn(['operations', 'activeOperation']),
     activeSource: reduxStore.getIn(['sources', 'activeSource']),
