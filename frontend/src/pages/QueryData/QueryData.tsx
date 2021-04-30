@@ -4,9 +4,10 @@ import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationDataTableContainer } from '../../components/OperationDataTableContainer';
+import { FetchOptions } from '../../types/api';
 import { OperationData, OperationMap } from '../../types/operations';
 import { api, localForageKeys } from '../../utils';
-import { DatasetDataPayload, useOperation, useOperationData } from '../../utils/hooks/operations';
+import { useOperation, useOperationData } from '../../utils/hooks/operations';
 
 interface RouteParams {
   id?: string;
@@ -31,17 +32,17 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((key) => setToken(key || undefined));
   }, []);
 
-  const onPageChange = (payload: DatasetDataPayload) => setOptions({ payload });
+  const onPageChange = (payload: FetchOptions) => setOptions({ payload });
 
   const renderTable = () => {
     if (id && data && (data as OperationData[]).length !== 0 && activeOperation) {
       return (
         <OperationDataTableContainer
           operation={activeOperation}
-          id={id}
+          id={parseInt(id)}
           list={data as OperationData[]}
-          limit={options.payload.limit}
-          offset={options.payload.offset}
+          limit={options.payload.limit || 10}
+          offset={options.payload.offset || 0}
           count={activeOperation.get('row_count') as number | null}
           fetchData={onPageChange}
         />

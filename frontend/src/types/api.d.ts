@@ -15,4 +15,5 @@ export interface FetchOptions {
   offset?: number;
   link?: string;
   search?: string;
+  id?: number;
 }

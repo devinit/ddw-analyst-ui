@@ -1,19 +1,19 @@
 import { fromJS, List } from 'immutable';
 import React, { FunctionComponent } from 'react';
+import { FetchOptions } from '../../types/api';
 import { OperationData, OperationMap } from '../../types/operations';
 import { OperationColumn, OperationColumnMap } from '../../types/sources';
-import { DatasetDataPayload } from '../../utils/hooks/operations';
 import { OperationDataTable } from '../OperationDataTable';
 import { PaginationRow } from '../PaginationRow';
 
 interface OperationDataTableContainerProps {
   operation: OperationMap;
   list?: OperationData[];
-  id: string;
+  id: number;
   limit: number;
   offset: number;
   count: number | null;
-  fetchData: (options: DatasetDataPayload) => void;
+  fetchData: (options: FetchOptions) => void;
 }
 
 export const OperationDataTableContainer: FunctionComponent<OperationDataTableContainerProps> = (

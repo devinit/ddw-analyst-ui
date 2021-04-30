@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { api, localForageKeys } from '..';
 import { setToken } from '../../actions/token';
 import { isCacheExpired } from '../../pages/QueryData/utils';
+import { FetchOptions } from '../../types/api';
 import {
   Operation,
   OperationData,
@@ -14,7 +15,7 @@ import {
 } from '../../types/operations';
 
 interface OperationDataHookOptions {
-  payload: DatasetDataPayload;
+  payload: FetchOptions;
 }
 
 interface OperationDataHookResult<T = OperationDataHookOptions> {
@@ -24,12 +25,6 @@ interface OperationDataHookResult<T = OperationDataHookOptions> {
   error?: string;
   setOptions: Dispatch<SetStateAction<T>>;
   refetch?: (options?: T) => void;
-}
-
-export interface DatasetDataPayload {
-  limit: number;
-  offset: number;
-  id: string;
 }
 
 interface FetchResponse {
@@ -63,7 +58,7 @@ const handleDataResult = (status: number, data: OperationDataResult): FetchRespo
   };
 };
 
-const fetchOperationData = async (payload: DatasetDataPayload): Promise<FetchResponse> => {
+const fetchOperationData = async (payload: FetchOptions): Promise<FetchResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   const { status, data }: AxiosResponse<OperationDataResult> = await axios
     .request({
@@ -101,15 +96,21 @@ export const fetchOperationDataPreview = async (
   return handleDataResult(status, data);
 };
 
-const getCachedOperationData = async (
-  payload: DatasetDataPayload,
-): Promise<[OperationData[], boolean]> => {
-  const cachedData = await localForage.getItem<string>(
-    `${localForageKeys.DATASET_DATA}-${payload.limit}-${payload.offset}-${payload.id}`,
-  );
-  const expiredCache: boolean = await isCacheExpired(parseInt(payload.id));
+const getCachedOperationData = async ({
+  limit,
+  offset,
+  id,
+}: FetchOptions): Promise<[OperationData[], boolean]> => {
+  if (limit && typeof offset === 'number' && id) {
+    const cachedData = await localForage.getItem<string>(
+      `${localForageKeys.DATASET_DATA}-${limit}-${offset}-${id}`,
+    );
+    const expiredCache: boolean = await isCacheExpired(id);
 
-  return cachedData && !expiredCache ? [JSON.parse(cachedData), false] : [[], true];
+    return cachedData && !expiredCache ? [JSON.parse(cachedData), false] : [[], true];
+  }
+
+  return [[], true];
 };
 
 export const useOperationData = (
@@ -147,8 +148,6 @@ export const useOperationData = (
         if (_fetch) {
           fetchData();
         } else {
-          console.log('Cached', cachedData);
-
           setData(immutable ? fromJS(cachedData) : cachedData);
           setDataLoading(false);
         }
