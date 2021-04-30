@@ -21,7 +21,7 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
   ) as { operation: OperationMap; loading: boolean };
   const { data, dataLoading, error, options, setOptions } = useOperationData(
     {
-      payload: { id: id as string, limit: 10, offset: 0 },
+      payload: { id: parseInt(id as string), limit: 10, offset: 0 },
     },
     false,
     false,
