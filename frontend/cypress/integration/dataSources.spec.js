@@ -78,6 +78,24 @@ describe('The Data Sources Page', () => {
       cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
       cy.get('[data-testid="sources-table-row"]').first().contains('FTS ISO codes test');
 
+      // Query frozen data source
+      cy.visit('/queries/build');
+      cy.get('[name="name"]').focus().type('My Test Dataset');
+      cy.get('[name="description"]').focus().type('My Test Dataset Description');
+      cy.get('.search').eq(1).click({ force: true });
+      cy.wait(5000);
+      cy.get('.search').eq(1).type('FTS ISO codes test{enter}{esc}');
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      // Fill create step form and save dataset
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+      cy.get('.selectColumnCheckbox > input').eq(0).check({ force: true });
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+      cy.get('[data-testid="qb-save-button"]').click();
+      cy.get('.dataset-row-footer').eq(0).contains('Frozen FTS ISO codes test')
+
       // Delete new version
       cy.visit('/sources');
       cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}');
