@@ -25,7 +25,11 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
 
   return (
     <Row className={classNames(props.className)}>
-      <Col lg={4} className="align-middle d-none d-sm-none d-md-block" style={{ top: '2px' }}>
+      <Col
+        lg={4}
+        className="align-middle d-none d-sm-none d-md-block m-auto"
+        style={{ top: '2px' }}
+      >
         {count === 0
           ? 'No Data'
           : `Showing ${offset + 1} to ${max > count ? count : max} of ${count}`}
