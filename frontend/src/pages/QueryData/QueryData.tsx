@@ -21,7 +21,7 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
   ) as { operation: OperationMap; loading: boolean };
   const { data, dataLoading, error, options, setOptions } = useOperationData(
     {
-      payload: { id: parseInt(id as string), limit: 10, offset: 0 },
+      payload: { id: parseInt(id as string), limit: 15, offset: 0 },
     },
     false,
     false,
@@ -41,7 +41,7 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
           operation={activeOperation}
           id={parseInt(id)}
           list={data as OperationData[]}
-          limit={options.payload.limit || 10}
+          limit={options.payload.limit || 20}
           offset={options.payload.offset || 0}
           count={activeOperation.get('row_count') as number | null}
           fetchData={onPageChange}

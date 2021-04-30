@@ -16,7 +16,15 @@ interface OperationDataTableProps {
 
 const StyledTableHeader = styled.th`
   border-top: 1px solid #ddd !important;
+  background-color: #f2f2f2 !important;
+  white-space: nowrap !important;
+  padding: 5px 8px !important;
+  font-size: 0.85rem !important;
   font-weight: 400 !important;
+`;
+
+const StyleTableCell = styled.td`
+  padding: 4px 8px !important;
 `;
 
 const renderTableRows = (data: List<OperationDataMap>, columns: OperationColumn[]) => {
@@ -24,9 +32,9 @@ const renderTableRows = (data: List<OperationDataMap>, columns: OperationColumn[
     return data.map((item, key) => (
       <tr key={key}>
         {columns.map((column) => (
-          <td key={column.column_name} className="text-truncate">
+          <StyleTableCell key={column.column_name} className="text-truncate">
             {item.get(column.column_name)?.toString()}
-          </td>
+          </StyleTableCell>
         ))}
       </tr>
     ));
@@ -81,7 +89,7 @@ export const OperationDataTable: FunctionComponent<OperationDataTableProps> = ({
   };
 
   return (
-    <Table bordered responsive hover striped className="operation-data-table">
+    <Table bordered responsive hover className="operation-data-table">
       <thead>
         <tr>
           {columns.map((column) => (
