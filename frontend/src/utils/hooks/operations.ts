@@ -4,7 +4,6 @@ import * as localForage from 'localforage';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { api, localForageKeys } from '..';
 import { setToken } from '../../actions/token';
-import { isCacheExpired } from '../../pages/QueryData/utils';
 import { FetchOptions } from '../../types/api';
 import {
   Operation,
@@ -13,6 +12,7 @@ import {
   OperationMap,
   OperationStep,
 } from '../../types/operations';
+import { getCachedOperationData } from '../cache';
 
 interface OperationDataHookOptions {
   payload: FetchOptions;
@@ -96,23 +96,6 @@ export const fetchOperationDataPreview = async (
   return handleDataResult(status, data);
 };
 
-const getCachedOperationData = async ({
-  limit,
-  offset,
-  id,
-}: FetchOptions): Promise<[OperationData[], boolean]> => {
-  if (limit && typeof offset === 'number' && id) {
-    const cachedData = await localForage.getItem<string>(
-      `${localForageKeys.DATASET_DATA}-${limit}-${offset}-${id}`,
-    );
-    const expiredCache: boolean = await isCacheExpired(id);
-
-    return cachedData && !expiredCache ? [JSON.parse(cachedData), false] : [[], true];
-  }
-
-  return [[], true];
-};
-
 export const useOperationData = (
   defaultOptions: OperationDataHookOptions,
   fetch = false,
@@ -130,8 +113,12 @@ export const useOperationData = (
       setData(immutable ? fromJS(data) : data);
       // update local storage cache
       localForage.setItem(
-        `${localForageKeys.DATASET_DATA}-${payload.limit}-${payload.offset}-${payload.id}`,
+        `${localForageKeys.DATASET_DATA}-${payload.id}-${payload.limit}-${payload.offset}`,
         JSON.stringify(data),
+      );
+      localForage.setItem(
+        `${localForageKeys.DATASET_DATA_UPDATED_ON}-${payload.id}-${payload.limit}-${payload.offset}`,
+        new Date().toISOString(),
       );
       setDataLoading(false);
     });

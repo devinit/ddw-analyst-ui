@@ -1,3 +1,4 @@
+/* eslint-disable-next-line @typescript-eslint/naming-convention */
 export interface APIResponse<T> {
   count: number;
   next: string;
