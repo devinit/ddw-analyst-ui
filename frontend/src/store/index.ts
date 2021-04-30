@@ -6,7 +6,6 @@ import createSagaMiddleware from 'redux-saga';
 import { dataSourcesReducer, dataSourcesReducerId } from '../pages/DataSources/reducers';
 import { homeReducer, homeReducerId } from '../pages/Home/reducers';
 import { queryBuilderReducer, queryBuilderReducerId } from '../pages/QueryBuilder/reducers';
-import { queryDataReducer, queryDataReducerId } from '../pages/QueryData/reducers';
 import { ModalState, modalReducer } from '../reducers/modal';
 import { OperationsState, operationsReducer } from '../reducers/operations';
 import { SourcesState, sourcesReducer } from '../reducers/sources';
@@ -26,7 +25,6 @@ const structuredReducers = {
   [`${dataSourcesReducerId}`]: dataSourcesReducer,
   [`${queryBuilderReducerId}`]: queryBuilderReducer,
   [`${homeReducerId}`]: homeReducer,
-  [`${queryDataReducerId}`]: queryDataReducer,
 };
 const reducers = combineReducers(structuredReducers);
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
