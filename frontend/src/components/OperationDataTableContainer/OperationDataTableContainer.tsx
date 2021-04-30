@@ -45,6 +45,7 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
         <OperationDataTable list={fromJS(list)} columns={columns} editableHeaders />
         {count !== null ? (
           <PaginationRow
+            className="pt-3"
             pageRangeDisplayed={5}
             limit={limit}
             count={count}

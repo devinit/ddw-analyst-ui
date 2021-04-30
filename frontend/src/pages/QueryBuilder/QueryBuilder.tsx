@@ -21,8 +21,6 @@ import {
   AliasCreationStatus,
   Operation,
   OperationData,
-  OperationDataList,
-  OperationDataMap,
   OperationMap,
   OperationStepMap,
 } from '../../types/operations';

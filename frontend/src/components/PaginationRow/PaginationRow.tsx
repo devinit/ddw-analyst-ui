@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Pagination, PaginationProps } from '../Pagination';
@@ -5,6 +6,7 @@ import { Pagination, PaginationProps } from '../Pagination';
 interface ComponentProps extends Partial<PaginationProps> {
   limit: number;
   count: number;
+  className?: string;
 }
 
 const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...props }) => {
@@ -22,7 +24,7 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
   const max = offset + limit;
 
   return (
-    <Row>
+    <Row className={classNames(props.className)}>
       <Col lg={4} className="align-middle d-none d-sm-none d-md-block" style={{ top: '2px' }}>
         {count === 0
           ? 'No Data'
