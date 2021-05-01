@@ -73,6 +73,32 @@ describe('The Data Sources Page', () => {
         });
       cy.get('[data-testid="frozen-data-status"]').contains('Completed');
 
+      // Download frozen data source
+      const localStoragePrefix = 'ddw-analyst-ui/ddw_store/';
+      const token = window.localStorage.getItem(`${localStoragePrefix}API_KEY`);
+      if (token) {
+        const options = {
+          url: `${Cypress.config('baseUrl')}api/frozendata/`,
+          headers: {
+            Authorization: `token ${token.replaceAll('"', '')}`,
+          },
+        };
+        cy.request(options).then((response) => {
+          const currentDataSourceId = Math.max(...response.body.map((data) => Number(data.id)));
+          const currentFrozenDataSource = response.body.find(
+            (item) => Number(item.id) === currentDataSourceId,
+          );
+          cy.get('[data-testid="frozen-source-download-button"]')
+            .eq(0)
+            .should('not.be.visible')
+            .should(
+              'have.attr',
+              'href',
+              `/api/tables/download/${currentFrozenDataSource.frozen_db_table}/archives/`,
+            );
+        });
+      }
+
       // Check if new frozen data source can  be accesses like others
       cy.visit('/sources');
       cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
@@ -87,7 +113,6 @@ describe('The Data Sources Page', () => {
       cy.get('.search').eq(1).type('FTS ISO codes test{enter}{esc}');
       cy.get('[data-testid="qb-add-step-button"]').click();
 
-      // Fill create step form and save dataset
       cy.get('[name="name"]').eq(1).type('Dataset Step Test');
       cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
       cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');

@@ -20,6 +20,7 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
   const [deleteStatus, setDeleteStatus] = useState<'default' | 'confirm'>('default');
   const [showLogs, setShowLogs] = useState(false);
   const [fetching, setFetching] = useState(false);
+
   useEffect(() => setItem(props.item), [props.item]);
   useEffect(() => {
     if (fetching) {
@@ -78,6 +79,7 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-dark btn-sm"
+                data-testid="frozen-source-download-button"
               >
                 Download
               </a>
