@@ -59,7 +59,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   });
 
   const renderOperationSteps = (steps: List<OperationStepMap>, activeStep?: OperationStepMap) => {
-    if (steps.count()) {
+    if (steps.count() && activeSource) {
       return (
         <Row>
           <ListGroup variant="flush" className="w-100">

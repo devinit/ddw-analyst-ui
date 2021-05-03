@@ -8,6 +8,8 @@ describe('The Query Builder', () => {
       cy.login(username, password);
     });
   });
+  const operationName = 'My Test Dataset';
+  const operationDescription = 'My Test Dataset Description';
 
   it('should be navigated to from the sidebar', () => {
     cy.visit('/');
@@ -39,8 +41,8 @@ describe('The Query Builder', () => {
   it('that is not a draft requires both a name and description', () => {
     // Visit query builder type in name and choose datasource
     cy.visit('/queries/build');
-    cy.get('[name="name"]').focus().type('My Test Dataset');
-    cy.get('[name="description"]').focus().type('My Test Dataset Description');
+    cy.get('[name="name"]').focus().type(operationName);
+    cy.get('[name="description"]').focus().type(operationDescription);
     cy.get('.search').eq(1).click({ force: true });
     cy.wait(5000);
     cy.get('.search').eq(1).type('CRS ISO Codes{enter}');
@@ -54,8 +56,8 @@ describe('The Query Builder', () => {
     cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
 
     // Check the first and second checkbox
-    cy.get('.selectColumnCheckbox > input').eq(0).check({force: true});
-    cy.get('.selectColumnCheckbox > input').eq(1).check({force: true});
+    cy.get('.selectColumnCheckbox > input').eq(0).check({ force: true });
+    cy.get('.selectColumnCheckbox > input').eq(1).check({ force: true });
 
     // Save create step
     cy.get('[data-testid="qb-step-preview-button"]').click();
@@ -106,151 +108,6 @@ describe('The Query Builder', () => {
 
   xit('with an active data source has a button to add a step', () => {
     // TODO: create test
-  });
-
-  describe('SELECT step', () => {
-    it('can select and deselect a column', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm();
-
-      // Add step
-      cy.get('[data-testid="qb-add-step-button"]').click();
-
-      // Fill create step form
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
-
-      // Check the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).check({force: true});
-
-      // Make sure first checkbox is checked
-      cy.get('.selectColumnCheckbox > input').eq(0).should('be.checked');
-
-      // Uncheck the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({force: true});
-
-      // Make sure first checkbox is unchecked
-      cy.get('.selectColumnCheckbox > input').eq(0).should('not.be.checked');
-
-    });
-
-    it('can select & deselect all columns', () => {
-      // Visit query builder type name and choose datasource
-      cy.fillOperationForm();
-
-      // Add step
-      cy.get('[data-testid="qb-add-step-button"]').click();
-
-      // Fill create step form
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
-
-      // Check all checkboxes
-      cy.get('[data-testid="qb-select-all-button"').click({force: true});
-
-      // Make sure all checkboxes are checked
-      cy.get('.selectColumnCheckbox > input').should('be.checked');
-
-      // Uncheck all checkboxes
-      cy.get('[data-testid="qb-select-none-button"').click({force: true});
-
-      // Make sure all checkboxes are unchecked
-      cy.get('.selectColumnCheckbox > input').should('not.be.checked');
-    });
-
-    it('creates a select step', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm();
-
-      cy.get('[data-testid="qb-add-step-button"]').click();
-
-      // Fill create step form
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
-
-      // Check the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).check({force: true});
-
-      // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-
-      // Check that we now have 1 step
-      cy.get('.list-group').find('.list-group-item').should('have.length', 1);
-
-    });
-  });
-
-  describe('FILTER step', () => {
-    it('can add and delete a filter', () => {
-      // Visit query builder type name and choose datasource
-      cy.fillOperationForm();
-
-      // Fill create step form with 2 filters
-      cy.fillStepForm();
-
-      // Delete first filter
-      cy.get('[data-testid="qb-filter-delete-button"]').eq(0).click();
-
-      // Check that first filter is not visible
-      cy.contains('Country code').should('not.be.visible');
-
-      // Check that second filter is visible
-      cy.contains('Country name').should('be.visible');
-    });
-
-    it('shows information on filter options', () => {
-      // Visit query builder type name and choose datasource
-      cy.fillOperationForm();
-
-      // Fill create step form with 2 filters
-      cy.fillStepForm();
-
-      cy.get('[data-testid="qb-filter-info-button"]').click();
-
-      cy.contains('Multiple filter options').should('be.visible');
-    });
-
-    it('creates a filter step', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm();
-
-      // Make sure no filters exist before we add any
-      cy.get('.list-group').should('not.exist');
-
-      // Fill create step form with 2 filters
-      cy.fillStepForm();
-
-      // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-
-      // Check that we now have 1 filter
-      cy.get('.list-group').find('.list-group-item').should('have.length', 1);
-    });
-
-    it('makes a copy of a filter', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm();
-
-      // Fill create step form with 2 filters
-      cy.fillStepForm();
-
-      // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-
-      // Click on the step
-      cy.get('[data-testid="qb-step-wrapper"]').click();
-
-      // Click filter duplicate button
-      cy.get('[data-testid="qb-filter-duplicate-button"]').first().click();
-
-      //Check that a copy of the filter has been made with the value field being empty
-      cy.get('[data-testid="qb-filter-select-column"]').eq(2).contains('Country code');
-      cy.get('[data-testid="qb-filter-select-operation"]').eq(2).contains('is Less Than Or Equal');
-      cy.get('[data-testid="qb-filter-value"]').eq(2).should('be.empty');
-    });
   });
 
   xit('creates a JOIN step', () => {

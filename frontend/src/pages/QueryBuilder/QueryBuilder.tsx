@@ -13,15 +13,14 @@ import { OperationDataTable } from '../../components/OperationDataTable';
 import { OperationForm } from '../../components/OperationForm';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
-import { SourcesState } from '../../reducers/sources';
+import { useSources } from '../../hooks';
 import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import {
   AliasCreationStatus,
   Operation,
-  OperationDataList,
-  OperationDataMap,
+  OperationData,
   OperationMap,
   OperationStepMap,
 } from '../../types/operations';
@@ -41,7 +40,6 @@ interface ActionProps {
     };
 }
 interface ReduxState {
-  sources: SourcesState;
   source?: SourceMap;
   operations: List<OperationMap>;
   activeOperation?: OperationMap;
@@ -70,8 +68,9 @@ const OBSOLETE_COLUMNS_LOG_MESSAGE = 'Obsolete Columns'; // eslint-disable-line 
 const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [showPreview, setShowPreview] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
-  const [previewData, setPreviewData] = useState<List<OperationDataMap>>(List());
+  const [previewData, setPreviewData] = useState<OperationData[]>([]);
   const [alertMessages, setAlertMessages] = useState<string[]>([]);
+  const sources = useSources({ limit: 200, offset: 0 });
 
   useEffect(() => {
     const { id } = props.match.params;
@@ -93,7 +92,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   }, [props.activeOperation]);
 
-  const updatePreviewState = (data: OperationDataList, show: boolean, loading: boolean): void => {
+  const updatePreviewState = (data: OperationData[], show: boolean, loading: boolean): void => {
     setPreviewData(data);
     setShowPreview(show);
     setLoadingPreview(loading);
@@ -241,7 +240,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const onTogglePreview = () => {
     if (showPreview) {
-      updatePreviewState(List(), false, false);
+      updatePreviewState([], false, false);
 
       return;
     }
@@ -256,7 +255,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       if (results.error) {
         setAlertMessages([`Error: ${results.error}`]);
       } else {
-        updatePreviewState(fromJS(results.data), true, false);
+        updatePreviewState(results.data || [], true, false);
       }
     });
   };
@@ -283,12 +282,14 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     if (loadingPreview) {
       return <div>Loading ...</div>;
     }
-    if (previewData.count()) {
-      const columns: OperationColumn[] = Object.keys(
-        (previewData.get(0) as OperationDataMap).toJS(),
-      ).map((column, index) => ({ id: index, column_alias: column, column_name: column }));
+    if (previewData.length) {
+      const columns: OperationColumn[] = Object.keys(previewData[0]).map((column, index) => ({
+        id: index,
+        column_alias: column,
+        column_name: column,
+      }));
 
-      return <OperationDataTable list={previewData} columns={columns} />;
+      return <OperationDataTable list={fromJS(previewData)} columns={columns} />;
     }
 
     return <div>No results found</div>;
@@ -345,8 +346,8 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         onReset={!id ? () => props.actions.setActiveOperation() : undefined}
       >
         <OperationSteps
-          sources={props.sources.get('sources') as List<SourceMap>}
-          isFetchingSources={props.sources.get('loading') as boolean}
+          sources={sources}
+          isFetchingSources={sources.count() === 0}
           steps={steps}
           fetchSources={props.actions.fetchSources}
           onSelectSource={props.actions.setActiveSource}
@@ -459,7 +460,6 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {
     token: reduxStore.get('token') as TokenState,
-    sources: reduxStore.get('sources') as SourcesState,
     operations: reduxStore.getIn(['operations', 'operations']),
     activeOperation: reduxStore.getIn(['operations', 'activeOperation']),
     activeSource: reduxStore.getIn(['sources', 'activeSource']),

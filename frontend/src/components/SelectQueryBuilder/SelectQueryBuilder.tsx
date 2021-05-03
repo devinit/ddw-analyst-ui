@@ -7,6 +7,8 @@ import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
 import { CheckboxGroup } from '../CheckboxGroup';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
+import { SelectColumnOrder } from '../SelectColumnOrder';
+import { SelectColumnValidator } from '../SelectColumnValidator';
 
 interface SelectQueryBuilderProps {
   source: SourceMap;
@@ -19,6 +21,11 @@ interface SelectQueryBuilderProps {
 
 const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) => {
   const [selectableColumns, setSelectableColumns] = useState<DropdownItemProps[]>([]);
+  const [isOrderingColumns, setIsOrderingColumns] = useState(false);
+  const [selectedColumns, setSelectedColumns] = useState<{ alias: string; columnName: string }[]>(
+    [],
+  );
+
   useEffect(() => {
     const { source, step, steps } = props;
     const columns = source.get('columns') as ColumnList;
@@ -28,7 +35,15 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
         ? QueryBuilderHandler.getSelectOptionsFromColumns(selectable, columns)
         : [],
     );
-  }, []);
+    setSelectedColumns(() =>
+      props.columns
+        ? props.columns.map((column) => ({
+            alias: QueryBuilderHandler.getColumnAlias(column, columns),
+            columnName: column,
+          }))
+        : [],
+    );
+  }, [props.columns]);
 
   const onSelectAll = () => {
     if (props.onUpdateColumns) {
@@ -44,6 +59,10 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     }
   };
 
+  const handleColumnOrderClick = () => {
+    setIsOrderingColumns(!isOrderingColumns);
+  };
+
   return (
     <React.Fragment>
       <Form.Group>
@@ -52,29 +71,44 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           <Button
             variant="danger"
             size="sm"
+            data-testid="qb-select-column-order-button"
+            onClick={handleColumnOrderClick}
+          >
+            {isOrderingColumns ? 'Select Columns' : 'Order Columns'}
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
             onClick={onSelectAll}
-            hidden={!props.editable}
+            hidden={!props.editable || isOrderingColumns}
             data-testid="qb-select-all-button"
           >
-            <i className="material-icons mr-1">check_box</i>
             Select All
           </Button>
           <Button
             variant="danger"
             size="sm"
             onClick={onDeselectAll}
-            hidden={!props.editable}
+            hidden={!props.editable || isOrderingColumns}
             data-testid="qb-select-none-button"
           >
-            <i className="material-icons mr-1">check_box_outline_blank</i>
             Deselect All
           </Button>
         </Form.Row>
-        <CheckboxGroup
-          options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
-          selectedOptions={props.columns}
-          onUpdateOptions={props.onUpdateColumns}
-        />
+        {isOrderingColumns ? (
+          <SelectColumnOrder
+            selectedColumns={selectedColumns}
+            onUpdateColumns={props.onUpdateColumns}
+          />
+        ) : (
+          <SelectColumnValidator step={props.step} steps={props.steps} columns={selectableColumns}>
+            <CheckboxGroup
+              options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
+              selectedOptions={props.columns}
+              onUpdateOptions={props.onUpdateColumns}
+            />
+          </SelectColumnValidator>
+        )}
       </Form.Group>
     </React.Fragment>
   );

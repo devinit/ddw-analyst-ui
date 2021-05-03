@@ -6,6 +6,7 @@ interface ComponentProps {
   options: DropdownItemProps[];
   selectedOptions?: string[];
   onUpdateOptions?: (options: string) => void;
+  onDeselect?: (option: string) => void;
 }
 
 const StyledSegment = styled(Segment)`
@@ -17,11 +18,10 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   const [checkboxes, addCheckboxes] = useState<string[] | undefined>(
     props.selectedOptions && props.selectedOptions.length > 0 ? props.selectedOptions : [],
   );
+
   useEffect(() => {
-    if (props.onUpdateOptions) {
-      props.onUpdateOptions(JSON.stringify({ columns: checkboxes }));
-    }
-  }, [checkboxes]);
+    addCheckboxes(props.selectedOptions);
+  }, [props.selectedOptions]);
 
   const onChange = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
@@ -30,7 +30,12 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     const updatedCheckboxes: string[] | undefined = data.checked
       ? checkboxes?.concat(data.value as string)
       : checkboxes?.filter((checkbox) => checkbox !== data.value);
-    addCheckboxes(updatedCheckboxes);
+    if (props.onUpdateOptions) {
+      props.onUpdateOptions(JSON.stringify({ columns: updatedCheckboxes }));
+    }
+    if (props.onDeselect && !data.checked) {
+      props.onDeselect(data.value as string);
+    }
   };
 
   const isChecked = (value: string): boolean => {

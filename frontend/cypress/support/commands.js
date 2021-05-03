@@ -32,17 +32,16 @@ Cypress.Commands.add('login', (email, password) => {
   });
 });
 
-Cypress.Commands.add('fillOperationForm', () => {
+Cypress.Commands.add('fillOperationForm', (name, description, dataSource = 'CRS ISO codes') => {
   // Visit query builder type name and choose datasource
   cy.visit('/queries/build');
-  cy.get('[name="name"]').focus().type('My Test Dataset');
-  cy.get('[name="description"]').focus().type('My Test Dataset Description');
-  cy.get('.search').eq(1).click({ force: true });
-  cy.wait(5000);
-  cy.get('.search').eq(1).type('CRS ISO codes{enter}{esc}');
+  cy.get('[name="name"]').focus().type(name);
+  cy.get('[name="description"]').focus().type(description);
+  cy.get('.search').eq(1).click({ force: true }).type(dataSource);
+  cy.get('.item', { timeout: 10000 }).eq(0).click();
 });
 
-Cypress.Commands.add('fillStepForm', () => {
+Cypress.Commands.add('createFilterStep', (firstFilterValue, secondFilterValue) => {
   // Add step
   cy.get('[data-testid="qb-add-step-button"]').click();
 
@@ -56,7 +55,7 @@ Cypress.Commands.add('fillStepForm', () => {
   cy.get('[data-testid="qb-filter-select-column"]>input')
     .eq(0)
     .click({ force: true })
-    .type('{downarrow}Country code{enter}');
+    .type(firstFilterValue);
   cy.get('[data-testid="qb-filter-select-operation"]')
     .click({ force: true })
     .type('{downarrow}{enter}{esc}');
@@ -67,12 +66,25 @@ Cypress.Commands.add('fillStepForm', () => {
   cy.get('[data-testid="qb-filter-select-column"]')
     .eq(1)
     .click({ force: true })
-    .type('{downarrow}Country name{downarrow}');
+    .type(secondFilterValue);
   cy.get('[data-testid="qb-filter-select-operation"]')
     .eq(1)
     .click({ force: true })
     .type('{downarrow}{enter}{esc}');
   cy.get('[name="value"]').eq(1).type('3');
+});
+
+Cypress.Commands.add('createSelectStep', () => {
+  // Fill create step form
+  cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+  cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+
+  // Check all checkboxes
+  cy.get('[data-testid="qb-select-all-button"]').click();
+
+  // Save and create step
+  cy.get('[data-testid="qb-step-preview-button"]').click();
 });
 
 //

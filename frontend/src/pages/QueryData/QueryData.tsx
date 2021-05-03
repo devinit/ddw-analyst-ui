@@ -1,159 +1,82 @@
-import { List, Map } from 'immutable';
-import * as React from 'react';
+import * as localForage from 'localforage';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
-import { MapDispatchToProps, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { fetchOperation, setOperation } from '../../actions/operations';
-import { fetchActiveSource, setActiveSource } from '../../actions/sources';
-import { OperationDataTableContainer } from '../../components/OperationDataTableContainer/OperationDataTableContainer';
-import { ReduxStore } from '../../store';
-import { OperationDataMap, OperationMap } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
-import { api, getSourceIDFromOperation } from '../../utils';
-import * as pageActions from './actions';
-import { QueryDataState, queryDataReducerId } from './reducers';
+import { OperationDataTableContainer } from '../../components/OperationDataTableContainer';
+import { FetchOptions } from '../../types/api';
+import { OperationData, OperationMap } from '../../types/operations';
+import { api, localForageKeys } from '../../utils';
+import { useOperation, useOperationData } from '../../utils/hooks/operations';
 
-interface ActionProps {
-  actions: typeof pageActions & {
-    fetchOperation: typeof fetchOperation;
-    setOperation: typeof setOperation;
-    fetchActiveSource: typeof fetchActiveSource;
-    setActiveSource: typeof setActiveSource;
-  };
-}
-interface ReduxState {
-  page: QueryDataState;
-  operations: List<OperationMap>;
-  activeOperation?: OperationMap;
-  source?: SourceMap;
-  token: string;
-}
 interface RouteParams {
   id?: string;
 }
-type QueryDataProps = ActionProps & ReduxState & RouteComponentProps<RouteParams>;
+type QueryDataProps = RouteComponentProps<RouteParams>;
 
-class QueryData extends React.Component<QueryDataProps> {
-  render() {
-    const loading = this.props.page.get('loading') as boolean;
-    const token = this.props.token;
-    const { id } = this.props.match.params;
-    const operation = this.props.activeOperation;
-    const title = operation ? operation.get('name') : 'Query Data';
+const QueryData: FunctionComponent<QueryDataProps> = (props) => {
+  const { id } = props.match.params;
+  const { operation: activeOperation, loading: operationLoading } = useOperation(
+    parseInt(id as string),
+  ) as { operation: OperationMap; loading: boolean };
+  const { data, dataLoading, error, options, setOptions } = useOperationData(
+    {
+      payload: { id: parseInt(id as string), limit: 15, offset: 0 },
+    },
+    false,
+    false,
+  );
+  const [token, setToken] = useState<string>();
 
-    return (
-      <Row>
-        <Col>
-          <Dimmer active={loading} inverted>
-            <Loader content="Loading" />
-          </Dimmer>
+  useEffect(() => {
+    localForage.getItem<string>(localForageKeys.API_KEY).then((key) => setToken(key || undefined));
+  }, []);
 
-          <Card>
-            <Card.Header className="card-header-text card-header-danger">
-              <Card.Text>{title}</Card.Text>
-              <Form action={`${api.routes.EXPORT}${id}/`} method="POST">
-                <Form.Control type="hidden" name="token" value={token} />
-                <Button type="submit" variant="danger" size="sm">
-                  Export to CSV
-                </Button>
-              </Form>
-            </Card.Header>
-            <Card.Body>{this.renderTable()}</Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    );
-  }
+  const onPageChange = (payload: FetchOptions) => setOptions({ payload });
 
-  componentDidMount() {
-    const operation = this.props.activeOperation;
-    const { id } = this.props.match.params;
-    if (!operation) {
-      this.setOperation(id);
-    } else {
-      const sourceID = getSourceIDFromOperation(operation);
-      if (sourceID) {
-        this.props.actions.fetchActiveSource(sourceID);
-      }
-    }
-    if (id) {
-      this.props.actions.fetchOperationData({ id, limit: 10, offset: 0 });
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.actions.setOperationData(Map(), {} as any); // eslint-disable-line @typescript-eslint/no-explicit-any
-  }
-
-  private renderTable() {
-    const { page, actions, match, activeOperation: operation } = this.props;
-    const data = page.getIn(['data', 'results']) as List<OperationDataMap>;
-    const loading = page.get('loading') as boolean;
-    const { fetchOperationData: fetchData } = actions;
-    const { id } = match.params;
-
-    if (id && data && data.count() !== 0 && operation) {
+  const renderTable = () => {
+    if (id && data && (data as OperationData[]).length !== 0 && activeOperation) {
       return (
         <OperationDataTableContainer
-          operation={operation}
-          id={id}
-          list={data}
-          limit={this.props.page.get('limit') as number}
-          offset={this.props.page.get('offset') as number}
-          count={operation.get('row_count') as number | null}
-          fetchData={fetchData}
+          operation={activeOperation}
+          id={parseInt(id)}
+          list={data as OperationData[]}
+          limit={options.payload.limit || 20}
+          offset={options.payload.offset || 0}
+          count={activeOperation.get('row_count') as number | null}
+          fetchData={onPageChange}
         />
       );
     }
-    const alert = this.props.page.get('alert') as string;
-    if (alert) {
-      return <Alert variant="danger">{alert}</Alert>;
+    if (error) {
+      return <Alert variant="danger">{error}</Alert>;
     }
 
-    return <div>{loading ? 'Loading ...' : 'No results found'}</div>;
-  }
+    return <div>{dataLoading ? 'Loading ...' : 'No results found'}</div>;
+  };
 
-  private setOperation(id?: string) {
-    if (!id) {
-      return;
-    }
-    const operation = this.props.operations.find((ope) => ope.get('id') === parseInt(id, 10));
-    if (operation) {
-      this.props.actions.setOperation(operation);
-      const sourceID = getSourceIDFromOperation(operation);
-      if (sourceID) {
-        this.props.actions.fetchActiveSource(sourceID);
-      }
-    } else {
-      this.props.actions.fetchOperation(id);
-    }
-  }
-}
+  return (
+    <Row>
+      <Col>
+        <Dimmer active={dataLoading || operationLoading} inverted>
+          <Loader content="Loading" />
+        </Dimmer>
 
-const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
-  dispatch,
-): ActionProps => ({
-  actions: bindActionCreators(
-    {
-      ...pageActions,
-      fetchActiveSource,
-      setActiveSource,
-      fetchOperation,
-      setOperation,
-    },
-    dispatch,
-  ),
-});
-const mapStateToProps = (reduxStore: ReduxStore): ReduxState => ({
-  page: reduxStore.get(`${queryDataReducerId}`),
-  operations: reduxStore.getIn(['operations', 'operations']),
-  activeOperation: reduxStore.getIn(['operations', 'activeOperation']),
-  source: reduxStore.getIn(['sources', 'activeSource']),
-  token: reduxStore.get('token'),
-});
+        <Card>
+          <Card.Header className="card-header-text card-header-danger">
+            <Card.Text>{activeOperation ? activeOperation.get('name') : 'Query Data'}</Card.Text>
+            <Form action={`${api.routes.EXPORT}${id}/`} method="POST">
+              {token ? <Form.Control type="hidden" name="token" value={token} /> : null}
+              <Button type="submit" variant="danger" size="sm">
+                Export to CSV
+              </Button>
+            </Form>
+          </Card.Header>
+          <Card.Body>{renderTable()}</Card.Body>
+        </Card>
+      </Col>
+    </Row>
+  );
+};
 
-const connector = connect(mapStateToProps, mapDispatchToProps)(QueryData);
-
-export { connector as QueryData, connector as default };
+export { QueryData, QueryData as default };

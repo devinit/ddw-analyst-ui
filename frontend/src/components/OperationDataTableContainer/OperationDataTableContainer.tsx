@@ -1,27 +1,25 @@
-import { List } from 'immutable';
+import { fromJS, List } from 'immutable';
 import React, { FunctionComponent } from 'react';
-import { fetchOperationData } from '../../pages/QueryData/actions';
-import { OperationDataMap, OperationMap } from '../../types/operations';
+import { FetchOptions } from '../../types/api';
+import { OperationData, OperationMap } from '../../types/operations';
 import { OperationColumn, OperationColumnMap } from '../../types/sources';
 import { OperationDataTable } from '../OperationDataTable';
 import { PaginationRow } from '../PaginationRow';
 
 interface OperationDataTableContainerProps {
   operation: OperationMap;
-  list?: List<OperationDataMap>;
-  id: string;
+  list?: OperationData[];
+  id: number;
   limit: number;
   offset: number;
   count: number | null;
-  fetchData: typeof fetchOperationData;
+  fetchData: (options: FetchOptions) => void;
 }
 
 export const OperationDataTableContainer: FunctionComponent<OperationDataTableContainerProps> = (
   props,
 ) => {
   const { fetchData, id, limit, list, count, operation } = props;
-  const aliases = operation.get('aliases') as List<OperationColumnMap>;
-  const columns = aliases ? (aliases.toJS() as OperationColumn[]) : [];
 
   const onPageChange = (page: { selected: number }): void => {
     fetchData({
@@ -31,12 +29,23 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
     });
   };
 
-  if (list && list.count()) {
+  if (list && list.length) {
+    const aliases = operation.get('aliases') as List<OperationColumnMap>;
+    let columns: OperationColumn[] = [];
+    if (aliases && aliases.count()) {
+      // make sure that the columns are in required order ... no using immutable as it messes up the order
+      const _aliases = aliases.toJS() as OperationColumn[];
+      columns = Object.keys(list[0]).map<OperationColumn>(
+        (column) => _aliases.find((alias) => alias.column_name === column) as OperationColumn,
+      );
+    }
+
     return (
       <>
-        <OperationDataTable list={list} columns={columns} editableHeaders />
+        <OperationDataTable list={fromJS(list)} columns={columns} editableHeaders />
         {count !== null ? (
           <PaginationRow
+            className="pt-3"
             pageRangeDisplayed={5}
             limit={limit}
             count={count}

@@ -20,7 +20,7 @@ const defaultOptions: Options = {
   search: '',
 };
 
-export const useSources = (options: Options = defaultOptions): List<SourceMap> => {
+export const useSources = (options: Options = defaultOptions, fetch = false): List<SourceMap> => {
   const [token, setToken] = useState('');
   const [sources, setSources] = useState<List<SourceMap>>(fromJS([]));
   useEffect(() => {
@@ -28,10 +28,8 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
       if (_token) setToken(_token);
     });
   }, []);
-  useEffect(() => {
-    if (!token) {
-      return;
-    }
+
+  const fetchSources = (): void => {
     const url = `${api.routes.SOURCES}?limit=${options.limit}&offset=${options.offset}&search=${
       options.search || ''
     }`;
@@ -47,6 +45,7 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
       .then(({ status, data, statusText }: AxiosResponse<APIResponse<Source[]>>) => {
         if (status === 200 && data.results) {
           setSources(fromJS(data.results));
+          localForage.setItem(localForageKeys.SOURCES, data.results);
         } else if (status === 401) {
           console.log('Failed to fetch sources: ', statusText);
           setSources(fromJS([]));
@@ -58,6 +57,25 @@ export const useSources = (options: Options = defaultOptions): List<SourceMap> =
         );
         setSources(fromJS([]));
       });
+  };
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+    if (fetch) {
+      fetchSources();
+    } else {
+      localForage.getItem<Source[] | undefined>(localForageKeys.SOURCES).then((sources) => {
+        console.log('testing', sources);
+
+        if (sources && sources.length) {
+          setSources(fromJS(sources));
+        } else {
+          fetchSources();
+        }
+      });
+    }
   }, [token, options.limit, options.offset, options.search]);
 
   return sources;

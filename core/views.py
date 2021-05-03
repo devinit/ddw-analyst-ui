@@ -154,7 +154,7 @@ class StreamingExporter:
 def streaming_export_view(request, pk):
     try:
         operation = Operation.objects.get(pk=pk)
-        frozen_table_id = request.query_params.get('frozen_table_id', None)
+        frozen_table_id = request.GET.get('frozen_table_id', None)
         exporter = StreamingExporter(operation, frozen_table_id=frozen_table_id)
         response = StreamingHttpResponse(
             exporter.stream(), content_type="text/csv")

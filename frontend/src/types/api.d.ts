@@ -1,3 +1,4 @@
+/* eslint-disable-next-line @typescript-eslint/naming-convention */
 export interface APIResponse<T> {
   count: number;
   next: string;
@@ -15,4 +16,5 @@ export interface FetchOptions {
   offset?: number;
   link?: string;
   search?: string;
+  id?: number;
 }
