@@ -6,8 +6,8 @@ import { SourceHistoryCard } from '../../components/SourceHistoryCard';
 import { useSource } from '../../hooks';
 
 const DataSourceHistory: FunctionComponent = (): ReactElement => {
-  const { id } = useParams();
-  const { source, loading } = useSource(id);
+  const { id } = useParams<{ id: string }>();
+  const { source, loading } = useSource(parseInt(id));
 
   return (
     <Row>

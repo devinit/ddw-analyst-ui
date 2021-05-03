@@ -3,8 +3,9 @@ import { fromJS, List } from 'immutable';
 import * as localForage from 'localforage';
 import { useEffect, useState } from 'react';
 import { APIResponse } from '../types/api';
+import { OperationMap } from '../types/operations';
 import { Source, SourceMap } from '../types/sources';
-import { api, localForageKeys } from '../utils';
+import { api, getSourceIDFromOperation, localForageKeys } from '../utils';
 interface Options {
   limit: number;
   offset: number;
@@ -84,8 +85,8 @@ interface UseSourceResult {
   loading: boolean;
 }
 
-export const useSource = (id: number, fetch = false): UseSourceResult => {
-  const [source, setSource] = useState<SourceMap | undefined>(fromJS({}));
+export const useSource = (id?: number, fetch = false): UseSourceResult => {
+  const [source, setSource] = useState<SourceMap | undefined>();
   const [loading, setLoading] = useState(false);
 
   const fetchSource = () => {
@@ -119,6 +120,7 @@ export const useSource = (id: number, fetch = false): UseSourceResult => {
   };
 
   useEffect(() => {
+    if (!id) return;
     if (fetch) {
       fetchSource();
     } else {
@@ -136,4 +138,10 @@ export const useSource = (id: number, fetch = false): UseSourceResult => {
   }, [id]);
 
   return { loading, source };
+};
+
+export const useSourceFromOperation = (operation?: OperationMap): UseSourceResult => {
+  const sourceID = operation && getSourceIDFromOperation(operation);
+
+  return useSource(sourceID ? parseInt(sourceID) : undefined);
 };

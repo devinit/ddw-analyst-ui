@@ -1,27 +1,23 @@
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Button, ListGroup, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { useSources } from '../../hooks';
 import { QueryBuilderAction } from '../../pages/QueryBuilder/reducers';
-import { SourcesAction } from '../../reducers/sources';
-import { FetchOptions } from '../../types/api';
 import { OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { sortObjectArrayByProperty, sortSteps } from '../../utils';
 import OperationStep from '../OperationStepView';
 
 interface OperationStepsProps {
-  sources: List<SourceMap>;
   editable?: boolean;
-  isFetchingSources: boolean;
   steps: List<OperationStepMap>;
   activeSource?: SourceMap;
   activeStep?: OperationStepMap;
   disabled?: boolean;
-  fetchSources: (options: FetchOptions) => Partial<SourcesAction>;
-  onSelectSource: (source: SourceMap) => Partial<QueryBuilderAction>;
+  onSelectSource: (source: SourceMap) => void;
   onAddStep: (step?: OperationStepMap) => Partial<QueryBuilderAction>;
   onClickStep: (step?: OperationStepMap) => void;
   onDuplicateStep: (step?: OperationStepMap) => void;
@@ -51,15 +47,11 @@ const StyledStepContainer = styled.div`
 `;
 
 const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
-  const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = props;
-  useEffect(() => {
-    if (props.activeSource && props.sources && props.sources.count() === 0) {
-      fetchSources();
-    }
-  });
+  const { activeSource, activeStep, editable, steps } = props;
+  const sources = useSources({ limit: 200, offset: 0 });
 
   const renderOperationSteps = (steps: List<OperationStepMap>, activeStep?: OperationStepMap) => {
-    if (steps.count() && activeSource) {
+    if (steps.count()) {
       return (
         <Row>
           <ListGroup variant="flush" className="w-100">
@@ -114,17 +106,11 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
     return [];
   };
 
-  const fetchSources = () => {
-    if (!props.isFetchingSources) {
-      props.fetchSources({ limit: 100 });
-    }
-  };
-
   const onSelectSource = (
     _event: React.SyntheticEvent<HTMLElement, Event>, // eslint-disable-line @typescript-eslint/naming-convention
     data: DropdownProps,
   ) => {
-    const selectedSource = props.sources.find((source) => source.get('id') === data.value);
+    const selectedSource = sources.find((source) => source.get('id') === data.value);
     if (selectedSource) {
       props.onSelectSource(selectedSource);
     }
@@ -148,8 +134,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           selection
           search
           options={getSelectOptionsFromSources(sources)}
-          loading={isFetchingSources}
-          onClick={fetchSources}
+          loading={sources.count() === 0}
           onChange={onSelectSource}
           value={activeSource ? (activeSource.get('id') as string) : undefined}
           disabled={!editable || props.disabled}
