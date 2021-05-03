@@ -67,8 +67,6 @@ export const useSources = (options: Options = defaultOptions, fetch = false): Li
       fetchSources();
     } else {
       localForage.getItem<Source[] | undefined>(localForageKeys.SOURCES).then((sources) => {
-        console.log('testing', sources);
-
         if (sources && sources.length) {
           setSources(fromJS(sources));
         } else {
