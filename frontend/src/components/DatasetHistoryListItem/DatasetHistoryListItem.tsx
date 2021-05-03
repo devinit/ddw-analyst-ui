@@ -81,6 +81,7 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-dark btn-sm"
+                data-testid="frozen-dataset-download-button"
               >
                 Download
               </a>

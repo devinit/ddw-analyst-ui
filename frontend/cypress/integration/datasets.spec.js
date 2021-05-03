@@ -144,21 +144,44 @@ describe('The Datasets Pages', () => {
   });
 
   it('freezes and deletes a dataset', () => {
-    cy.fixture('datasets').then((datasets) => {
-      cy.intercept('api/datasets/mine/', datasets);
-    });
-    // Freeze data set
     cy.visit('/');
-    cy.get('.dataset-row').eq(4).contains('Versions').click({ force: true });
-    cy.get('[data-testid="dataset-source-freeze-button"]').click();
-    cy.get('[data-testid="dataset-frozen-data-description"]').should('be.visible').type('test');
+    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
+    cy.get('[data-testid="dataset-freeze-button"]').click();
+    cy.get('[data-testid="dataset-frozen-data-description"]')
+      .should('be.visible')
+      .type('Test dataset freeze');
     cy.get('[data-testid="dataset-frozen-data-save-button"]').should('be.visible').click();
     cy.get('[data-testid="dataset-frozen-data-refresh-button"]').first().click({ force: true });
     cy.get('[data-testid="dataset-frozen-data-status"]').contains('Completed');
 
-    // TODO: Download frozen dataset
+    // Download frozen dataset
+    const localStoragePrefix = 'ddw-analyst-ui/ddw_store/';
+    const token = window.localStorage.getItem(`${localStoragePrefix}API_KEY`);
+    if (token) {
+      const options = {
+        url: `${Cypress.config('baseUrl')}api/savedquerysets/`,
+        headers: {
+          Authorization: `token ${token.replaceAll('"', '')}`,
+        },
+      };
+      cy.request(options).then((response) => {
+        const currentDataDatasetId = Math.max(...response.body.map((data) => Number(data.id)));
+        const currentFrozenDataset = response.body.find(
+          (item) => Number(item.id) === currentDataDatasetId,
+        );
+        cy.get('[data-testid="frozen-dataset-download-button"]')
+          .eq(0)
+          .should('not.be.visible')
+          .should(
+            'have.attr',
+            'href',
+            `/api/tables/download/${currentFrozenDataset.saved_query_db_table}/dataset/`,
+          );
+      });
+    }
 
     // Delete frozen dataset
     cy.get('[data-testid="frozen-dataset-delete-button"]').first().dblclick({ force: true });
+    cy.get('.p-0').contains('Test dataset freeze').should('not.exist');
   });
 });

@@ -154,54 +154,6 @@
       ],
       "alias_creation_status": "d",
       "logs": {}
-    },
-    {
-      "id": 5,
-      "name": "Test dataset freeze",
-      "description": "test",
-      "operation_query": "('SELECT COUNT(\"sq0\".*) FROM (SELECT \"country_code\",\"country_name\",\"iso3\" FROM \"repo\".\"fts_isos\") \"sq0\"', 'SELECT \"country_code\",\"country_name\",\"iso3\" FROM \"repo\".\"fts_isos\"')",
-      "row_count": 216,
-      "theme": null,
-      "sample_output_path": null,
-      "tags": [],
-      "operation_steps": [
-          {
-              "id": 82,
-              "step_id": 1,
-              "name": "Test",
-              "description": "test",
-              "query_func": "select",
-              "query_kwargs": "{\"columns\":[\"country_code\",\"country_name\",\"iso3\"]}",
-              "source": 24,
-              "created_on": "2021-04-29T09:50:54.276707Z",
-              "updated_on": "2021-04-29T09:50:54.276733Z",
-              "logs": {}
-          }
-      ],
-      "reviews": [],
-      "is_draft": true,
-      "user": "Admin",
-      "created_on": "2021-04-29T09:50:54.260338Z",
-      "updated_on": "2021-04-29T09:50:54.969457Z",
-      "aliases": [
-          {
-              "id": 1031,
-              "column_name": "country_code",
-              "column_alias": "Country code"
-          },
-          {
-              "id": 1032,
-              "column_name": "country_name",
-              "column_alias": "Country name"
-          },
-          {
-              "id": 1033,
-              "column_name": "iso3",
-              "column_alias": "ISO Alpha 3"
-          }
-      ],
-      "alias_creation_status": "d",
-      "logs": {}
     }
   ]
 }

@@ -91,7 +91,7 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
             size="sm"
             variant="danger"
             onClick={onClickFreezeButton}
-            data-testid="dataset-source-freeze-button"
+            data-testid="dataset-freeze-button"
           >
             Freeze Current Version
           </Button>
