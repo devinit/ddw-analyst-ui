@@ -117,7 +117,14 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
       onSubmit={onSuccess()}
       validateOnMount
     >
-      {({ errors, isSubmitting, isValid, setFieldValue }: FormikProps<Operation>) => (
+      {({
+        errors,
+        isSubmitting,
+        isValid,
+        setFieldValue,
+        handleSubmit,
+        submitCount,
+      }: FormikProps<Operation>) => (
         <Form className="form" noValidate data-testid="operation-form">
           <Alert variant="danger" hidden={!props.alert}>
             {props.alert}
@@ -130,7 +137,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               name="name"
               type="text"
               value={values.name || ''}
-              isInvalid={!!errors.name}
+              isInvalid={submitCount > 0 && !!errors.name}
               onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
               onFocus={setFocusedField}
               onBlur={resetFocus}
@@ -148,7 +155,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               name="description"
               as="textarea"
               onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
-              isInvalid={!!errors.description}
+              isInvalid={submitCount > 0 && !!errors.description}
               onFocus={setFocusedField}
               onBlur={resetFocus}
               value={values.description ? values.description.toString() : ''}
@@ -172,8 +179,8 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
           <Dropdown hidden={!!values.id && !props.editable} data-testid="qb-dropdown-buttons">
             <Button
               variant="danger"
-              disabled={!props.valid || !isValid || isSubmitting || props.processing}
-              onClick={onSuccess()}
+              disabled={!isValid || isSubmitting}
+              onClick={() => handleSubmit()}
               size="sm"
               data-testid="qb-save-button"
             >
