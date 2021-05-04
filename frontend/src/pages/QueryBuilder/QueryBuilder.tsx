@@ -13,7 +13,7 @@ import { OperationDataTable } from '../../components/OperationDataTable';
 import { OperationForm } from '../../components/OperationForm';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
-import { useSources } from '../../hooks';
+import { useSourceFromOperation } from '../../hooks';
 import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
@@ -43,7 +43,6 @@ interface ReduxState {
   source?: SourceMap;
   operations: List<OperationMap>;
   activeOperation?: OperationMap;
-  activeSource?: SourceMap;
   token: TokenState;
   page: QueryBuilderState;
   user: UserState;
@@ -70,7 +69,14 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [previewData, setPreviewData] = useState<OperationData[]>([]);
   const [alertMessages, setAlertMessages] = useState<string[]>([]);
-  const sources = useSources({ limit: 200, offset: 0 });
+  const [activeSource, setActiveSource] = useState<SourceMap | undefined>();
+  const { source: operationSource } = useSourceFromOperation(props.activeOperation);
+
+  useEffect(() => {
+    if (operationSource) {
+      setActiveSource(operationSource);
+    }
+  }, [operationSource]);
 
   useEffect(() => {
     const { id } = props.match.params;
@@ -346,13 +352,10 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         onReset={!id ? () => props.actions.setActiveOperation() : undefined}
       >
         <OperationSteps
-          sources={sources}
-          isFetchingSources={sources.count() === 0}
           steps={steps}
-          fetchSources={props.actions.fetchSources}
-          onSelectSource={props.actions.setActiveSource}
+          onSelectSource={(source) => setActiveSource(source)}
           onAddStep={props.actions.updateActiveStep}
-          activeSource={props.activeSource}
+          activeSource={activeSource}
           activeStep={activeStep}
           onClickStep={onClickStep}
           editable={editable}
@@ -367,7 +370,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     setAlertMessages(['']);
   };
 
-  const { activeSource, page } = props;
+  const { page } = props;
   const activeStep = page.get('activeStep') as OperationStepMap | undefined;
 
   return (
@@ -462,10 +465,8 @@ const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
     token: reduxStore.get('token') as TokenState,
     operations: reduxStore.getIn(['operations', 'operations']),
     activeOperation: reduxStore.getIn(['operations', 'activeOperation']),
-    activeSource: reduxStore.getIn(['sources', 'activeSource']),
     page: reduxStore.get(`${queryBuilderReducerId}`),
     user: reduxStore.get('user') as UserState,
-    source: reduxStore.getIn(['sources', 'activeSource']),
   };
 };
 
