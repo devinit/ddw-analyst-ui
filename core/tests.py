@@ -457,3 +457,101 @@ class TestPypikaUtils(TestCase):
 
         qb = QueryBuilder(self.op)
         self.assertEqual(qb.get_sql_without_limit(), expected)
+
+    def test_can_generate_query_from_multiple_filters(self):
+        expected = 'SELECT "crs_current"."year","crs_current"."finance_type","crs_current"."usd_disbursement_deflated" FROM "public"."crs_current" WHERE ("crs_current"."year">=1973 OR "crs_current"."short_description" ILIKE \'%sector%\' OR "crs_current"."short_description" ILIKE \'%wheat%\') AND ("crs_current"."channel_code"=32 OR "crs_current"."purpose_name" ILIKE \'%health%\' OR "crs_current"."purpose_name" ILIKE \'%education%\') AND "crs_current"."gender"=\'YES\''
+        OperationStep.objects.create(
+            operation=self.op2,
+            step_id=1,
+            name="Select By Columns",
+            query_func="select",
+            query_kwargs="{ \"columns\": [ \"year\" ] }",
+            source_id=1
+        )
+        OperationStep.objects.create(
+            operation=self.op2,
+            step_id=2,
+            name="Filter",
+            query_func="filter",
+            query_kwargs='{"filters":[{"field":"year", "value":1973, "func":"ge"},{"field":"short_description", "value":"%sector%|%wheat%", "func":"text_search"}]}',
+            source_id=1
+        )
+        OperationStep.objects.create(
+            operation=self.op2,
+            step_id=3,
+            name="Select By Columns",
+            query_func="select",
+            query_kwargs="{ \"columns\": [ \"finance_type\" ] }",
+            source_id=1
+        )
+        OperationStep.objects.create(
+            operation=self.op2,
+            step_id=4,
+            name="Select By Columns",
+            query_func="select",
+            query_kwargs="{ \"columns\": [ \"usd_disbursement_deflated\" ] }",
+            source_id=1
+        )
+        OperationStep.objects.create(
+            operation=self.op2,
+            step_id=5,
+            name="Filter",
+            query_func="filter",
+            query_kwargs='{"filters":[{"field":"channel_code", "value":32, "func":"eq"},{"field":"purpose_name", "value":"%health%|%education%", "func":"text_search"}]}',
+            source_id=1
+        )
+        OperationStep.objects.create(
+            operation=self.op2,
+            step_id=6,
+            name="Filter",
+            query_func="filter",
+            query_kwargs='{"filters":[{"field":"gender", "value":"YES", "func":"eq"}]}',
+            source_id=1
+        )
+        qb = QueryBuilder(self.op2)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
+
+    def test_can_run_aggregate_fns_with_filters(self):
+        expected = 'SELECT "sq0"."year",AVG("sq0"."usd_commitment") "usd_commitment_Avg" FROM (SELECT "crs_current".* FROM "public"."crs_current" WHERE "crs_current"."year">=1973 OR "crs_current"."short_description" ILIKE \'%sector%\' OR "crs_current"."short_description" ILIKE \'%wheat%\') "sq0" GROUP BY "sq0"."year"'
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name='Aggregate',
+            query_func='aggregate',
+            query_kwargs='{"group_by":["year"],"agg_func_name":"Avg", "operational_column":"usd_commitment"}',
+            source_id=1
+        )
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=3,
+            name="Filter",
+            query_func="filter",
+            query_kwargs='{"filters":[{"field":"year", "value":1973, "func":"ge"},{"field":"short_description", "value":"%sector%|%wheat%", "func":"text_search"}]}',
+            source_id=1
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)
+
+    def test_can_generate_joins_with_filters(self):
+        expected = 'SELECT "crs_current".*,"dac1_current"."part_code","dac1_current"."part_name" FROM "public"."crs_current" FULL OUTER JOIN "public"."dac1_current" ON "crs_current"."year"="dac1_current"."year" WHERE "crs_current"."year">=1973 OR "crs_current"."short_description" ILIKE \'%sector%\' OR "crs_current"."short_description" ILIKE \'%wheat%\''
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=2,
+            name="Filter",
+            query_func="filter",
+            query_kwargs='{"filters":[{"field":"year", "value":1973, "func":"ge"},{"field":"short_description", "value":"%sector%|%wheat%", "func":"text_search"}]}',
+            source_id=1
+        )
+        OperationStep.objects.create(
+            operation=self.op,
+            step_id=3,
+            name='Join',
+            query_func='join',
+            query_kwargs='{"table_name":"dac1_current","schema_name":"public", "join_on":{"year":"year"}\
+            ,"columns_x":["donor_name","usd_commitment"],"columns_y":["part_code","part_name"]}',
+            source_id=2
+        )
+
+        qb = QueryBuilder(self.op)
+        self.assertEqual(qb.get_sql_without_limit(), expected)

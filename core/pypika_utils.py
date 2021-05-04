@@ -354,8 +354,6 @@ class QueryBuilder:
         return sub_query.current_query
 
     def select(self, columns=None, groupby=None):
-        if not self.selected and not self.check_dataset_equals_query():
-            self.current_query = Query.from_(self.current_dataset)
 
         if columns:
             for col_index in range(len(columns)):
