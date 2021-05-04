@@ -11,7 +11,6 @@ import * as sourcesActions from '../../actions/sources';
 import { OperationPreview } from '../../components/OperationPreview';
 import { OperationStepForm } from '../../components/OperationStepForm';
 import OperationSteps from '../../components/OperationSteps';
-import { useSourceFromOperation } from '../../hooks';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { TokenState } from '../../reducers/token';
 import { UserState } from '../../reducers/user';
@@ -25,6 +24,7 @@ import {
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation } from '../../utils';
+import { useSourceFromOperation } from '../../utils/hooks';
 import { fetchOperationDataPreview } from '../../utils/hooks/operations';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';

@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { DatasetHistoryCard } from '../../components/DatasetHistoryCard';
 import { OperationMap } from '../../types/operations';
-import { useOperation } from '../../utils/hooks/operations';
+import { useOperation } from '../../utils/hooks';
 
 const QueryHistory: FunctionComponent = (): ReactElement => {
   const { id } = useParams<{ id: string }>();
