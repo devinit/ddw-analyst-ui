@@ -4,11 +4,11 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, ListGroup, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import styled from 'styled-components';
-import { useSources } from '../../hooks';
 import { QueryBuilderAction } from '../../pages/QueryBuilder/reducers';
 import { OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { sortObjectArrayByProperty, sortSteps } from '../../utils';
+import { useSources } from '../../utils/hooks';
 import OperationStep from '../OperationStepView';
 import { OperationStepsOrder } from '../OperationStepsOrder';
 

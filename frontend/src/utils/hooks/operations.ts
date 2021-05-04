@@ -145,12 +145,19 @@ export const useOperationData = (
   return { data, dataLoading, options, error, setOptions };
 };
 
-interface UseOperationResult {
-  operation?: Operation | OperationMap;
+interface UseOperationResult<O = Operation | OperationMap> {
+  operation?: O;
   loading: boolean;
 }
 
-export const useOperation = (id: number, fetch = false, immutable = true): UseOperationResult => {
+export const useOperation = <O = Operation | OperationMap>(
+  id?: number,
+  fetch = false,
+  immutable = true,
+): UseOperationResult<O> => {
+  if (!id) {
+    return { loading: false, operation: undefined };
+  }
   const [operation, setOperation] = useState<Operation | undefined>();
   const [loading, setLoading] = useState(false);
 
