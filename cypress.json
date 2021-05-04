@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://staging-ddw.devinit.org",
+  "baseUrl": "https://staging-ddw.devinit.org/",
   "fixturesFolder": "frontend/cypress/fixtures",
   "integrationFolder": "frontend/cypress/integration",
   "pluginsFile": "frontend/cypress/plugins/index.js",
