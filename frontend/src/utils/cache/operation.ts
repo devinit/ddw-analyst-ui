@@ -12,7 +12,7 @@ export const getCachedOperationData = async ({
 }: FetchOptions): Promise<[OperationData[], boolean]> => {
   if (limit && typeof offset === 'number' && id) {
     const cachedData = await localForage.getItem<string>(
-      `${localForageKeys.DATASET_DATA}-${limit}-${offset}-${id}`,
+      `${localForageKeys.DATASET_DATA}-${id}-${limit}-${offset}`,
     );
     const expiredCache: boolean = await isOperationDataCacheExpired({ limit, offset, id });
 
