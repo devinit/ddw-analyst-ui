@@ -3,7 +3,7 @@ import { Alert, Row } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { SourceHistoryCard } from '../../components/SourceHistoryCard';
-import { useSource } from '../../hooks';
+import { useSource } from '../../utils/hooks';
 
 const DataSourceHistory: FunctionComponent = (): ReactElement => {
   const { id } = useParams<{ id: string }>();
