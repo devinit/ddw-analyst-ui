@@ -33,7 +33,7 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
           console.log(err.message);
         });
     }
-  }, [fetching]);
+  }, [fetching, item]);
   useEffect(() => setItem(props.item), [props.item]);
   const onDelete = () => {
     if (deleteStatus === 'default') {
