@@ -78,7 +78,7 @@ describe('The Data Sources Page', () => {
       const token = window.localStorage.getItem(`${localStoragePrefix}API_KEY`);
       if (token) {
         const options = {
-          url: `${Cypress.config('baseUrl')}api/frozendata/`,
+          url: `${Cypress.config('baseUrl')}/api/frozendata/`,
           headers: {
             Authorization: `token ${token.replaceAll('"', '')}`,
           },

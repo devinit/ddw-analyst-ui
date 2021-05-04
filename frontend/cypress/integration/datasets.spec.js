@@ -159,7 +159,7 @@ describe('The Datasets Pages', () => {
     const token = window.localStorage.getItem(`${localStoragePrefix}API_KEY`);
     if (token) {
       const options = {
-        url: `${Cypress.config('baseUrl')}api/savedquerysets/`,
+        url: `${Cypress.config('baseUrl')}/api/savedquerysets/`,
         headers: {
           Authorization: `token ${token.replaceAll('"', '')}`,
         },
