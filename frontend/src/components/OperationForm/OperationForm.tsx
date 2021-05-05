@@ -53,25 +53,25 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const resetFocus = () => {
     setHasFocus('');
   };
-
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const onChange = (setFieldValue: (field: string, value: any) => void) => ({
     currentTarget,
-  }: React.ChangeEvent<any>) => {
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = currentTarget;
     setFieldValue(name, value);
     if (props.onUpdateOperation) {
       if (props.operation) {
-        props.onUpdateOperation(props.operation.set(name, value));
+        props.onUpdateOperation(props.operation.set(name as keyof Operation, value));
       } else {
         const operation = fromJS({ [name]: value });
         props.onUpdateOperation(operation);
       }
     }
   };
-
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const toggleDraft = (setFieldValue: (field: string, value: any) => void) => ({
     currentTarget,
-  }: React.ChangeEvent<any>) => {
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = currentTarget;
     setFieldValue('is_draft', checked);
     if (props.onUpdateOperation) {
