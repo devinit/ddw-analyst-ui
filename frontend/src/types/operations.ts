@@ -106,6 +106,6 @@ type AdvancedQueryFilter = {
 
 type AdvancedQueryFilterComparator = {
   column: string;
-  value: string | number;
-  comp: '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte';
+  value: string | number | (string | number)[];
+  comp: '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte' | '$btn' | '$in';
 };
