@@ -92,3 +92,20 @@ export interface WindowOptions {
   term: string;
   columns: string[];
 }
+
+export interface AdvancedQueryOptions {
+  source: number;
+  columns?: OperationColumn[];
+  filter?: AdvancedQueryFilter;
+}
+
+type AdvancedQueryFilter = {
+  $and?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
+  $or?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
+};
+
+type AdvancedQueryFilterComparator = {
+  column: string;
+  value: string | number;
+  comp: '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte';
+};
