@@ -17,12 +17,20 @@ export const fetchOperations = async (path: string): Promise<QueryResult> => {
   return await axios(path, { headers });
 };
 
-export const isDatasetCacheExpired = async (key: string, path: string): Promise<boolean> => {
-  const cachedDataCount: number | null = await localForage.getItem<number>(key);
+export const isDatasetCacheExpired = async (
+  dataCountkey: string,
+  cacheDatasets: string,
+  path: string,
+): Promise<boolean> => {
+  const cachedDataCount: number | null = await localForage.getItem<number>(dataCountkey);
+  const cacheData = JSON.parse(cacheDatasets as string);
   if (cachedDataCount) {
     const { data } = await fetchOperations(path);
-    if (data.count > cachedDataCount) {
-      localForage.setItem(key, data.count);
+    if (
+      data.count > cachedDataCount ||
+      JSON.stringify(cacheData.results) !== JSON.stringify(data.results)
+    ) {
+      localForage.setItem(dataCountkey, data.count);
 
       return true;
     }

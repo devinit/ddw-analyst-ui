@@ -36,7 +36,11 @@ function* fetchOperations({ payload }: OperationsAction) {
       `${datasetKey}-${payload.limit}-${payload.offset}`,
     );
     const cachedDatasetCount: number = yield localForage.getItem<number>(dataCountKey);
-    const expiredCache: boolean = yield isDatasetCacheExpired(dataCountKey, basePath);
+    const expiredCache: boolean = yield isDatasetCacheExpired(
+      dataCountKey,
+      cacheDatasets,
+      basePath,
+    );
 
     if (cacheDatasets && !expiredCache) {
       const data = JSON.parse(cacheDatasets);
