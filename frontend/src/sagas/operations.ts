@@ -22,7 +22,7 @@ import {
   setOperation,
 } from '../actions/operations';
 import { fetchActiveSource } from '../actions/sources';
-import { isDatasetCacheExpired } from '../utils/cache';
+import { isOperationsCacheExpired } from '../utils/cache';
 
 function* fetchOperations({ payload }: OperationsAction) {
   try {
@@ -36,10 +36,10 @@ function* fetchOperations({ payload }: OperationsAction) {
       `${datasetKey}-${payload.limit}-${payload.offset}`,
     );
     const cachedDatasetCount: number = yield localForage.getItem<number>(dataCountKey);
-    const expiredCache: boolean = yield isDatasetCacheExpired(
+    const expiredCache: boolean = yield isOperationsCacheExpired(
       dataCountKey,
       cacheDatasets,
-      basePath,
+      `${basePath}?limit=${payload.limit}&offset=${payload.offset}`,
     );
 
     if (cacheDatasets && !expiredCache) {
