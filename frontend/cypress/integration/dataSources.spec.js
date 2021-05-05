@@ -74,30 +74,30 @@ describe('The Data Sources Page', () => {
       cy.get('[data-testid="frozen-data-status"]').contains('Completed');
 
       // Download frozen data source
-      const localStoragePrefix = 'ddw-analyst-ui/ddw_store/';
-      const token = window.localStorage.getItem(`${localStoragePrefix}API_KEY`);
-      if (token) {
-        const options = {
-          url: `${Cypress.config('baseUrl')}/api/frozendata/`,
-          headers: {
-            Authorization: `token ${token.replaceAll('"', '')}`,
-          },
-        };
-        cy.request(options).then((response) => {
-          const currentDataSourceId = Math.max(...response.body.map((data) => Number(data.id)));
-          const currentFrozenDataSource = response.body.find(
-            (item) => Number(item.id) === currentDataSourceId,
-          );
-          cy.get('[data-testid="frozen-source-download-button"]')
-            .eq(0)
-            .should('not.be.visible')
-            .should(
-              'have.attr',
-              'href',
-              `/api/tables/download/${currentFrozenDataSource.frozen_db_table}/archives/`,
+      cy.getAccessToken().then((token) => {
+        if (token) {
+          const options = {
+            url: `${Cypress.config('baseUrl')}/api/frozendata/`,
+            headers: {
+              Authorization: `token ${token.replaceAll('"', '')}`,
+            },
+          };
+          cy.request(options).then((response) => {
+            const currentDataSourceId = Math.max(...response.body.map((data) => Number(data.id)));
+            const currentFrozenDataSource = response.body.find(
+              (item) => Number(item.id) === currentDataSourceId,
             );
-        });
-      }
+            cy.get('[data-testid="frozen-source-download-button"]')
+              .eq(0)
+              .should('not.be.visible')
+              .should(
+                'have.attr',
+                'href',
+                `/api/tables/download/${currentFrozenDataSource.frozen_db_table}/archives/`,
+              );
+          });
+        }
+      });
 
       // Check if new frozen data source can  be accesses like others
       cy.visit('/sources');
