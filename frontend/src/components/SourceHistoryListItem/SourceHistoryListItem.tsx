@@ -42,6 +42,7 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
         if (response.status === 204 && props.onDelete) {
           props.onDelete(item);
         }
+        setDeleteStatus('default');
       });
     }
   };
