@@ -90,7 +90,8 @@ describe('The Datasets Pages', () => {
     cy.get('[data-testid="active-data-source"]')
       .children()
       .eq(1)
-      .contains('Countries Being Left Behind');
+      .not()
+      .contains('Select Data Source');
   });
 
   it('makes a copy of a published dataset', () => {
@@ -111,7 +112,8 @@ describe('The Datasets Pages', () => {
     cy.get('[data-testid="active-data-source"]')
       .children()
       .eq(1)
-      .contains('Countries Being Left Behind');
+      .not()
+      .contains('Select Data Source');
   });
 
   it('views data in datasets', () => {
