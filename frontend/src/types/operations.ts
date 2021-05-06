@@ -97,6 +97,7 @@ export interface AdvancedQueryOptions {
   source: number;
   columns?: OperationColumn[];
   filter?: AdvancedQueryFilter;
+  join?: AdvancedQueryJoin;
 }
 
 type AdvancedQueryFilter = {
@@ -109,3 +110,9 @@ type AdvancedQueryFilterComparator = {
   value: string | number | (string | number)[];
   comp: '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte' | '$btn' | '$in';
 };
+
+interface AdvancedQueryJoin {
+  type: 'inner' | 'left' | 'right' | 'full';
+  source: number;
+  mapping: [string, string][];
+}
