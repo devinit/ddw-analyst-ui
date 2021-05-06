@@ -3,6 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
+import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
 import { SourcesContext } from '../../context';
 import { OperationMap } from '../../types/operations';
 import { useOperation, useSources } from '../../utils/hooks';
@@ -54,7 +55,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onSave={onSaveOperation}
                 onDelete={onDeleteOperation}
                 onUpdate={onUpdateOperation}
-              />
+              >
+                <QuerySentenceBuilder />
+              </OperationTabContainer>
             </SourcesContext.Provider>
           ) : null}
         </React.Fragment>
