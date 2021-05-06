@@ -219,6 +219,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
           )
         : undefined,
     });
+    props.history.push(`/page/${page.selected}`);
+    console.log(props.match);
   };
 
   const onFilterByDataSource = (
