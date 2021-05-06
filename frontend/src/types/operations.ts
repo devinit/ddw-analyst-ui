@@ -95,9 +95,14 @@ export interface WindowOptions {
 
 export interface AdvancedQueryOptions {
   source: number;
-  columns?: OperationColumn[];
+  columns?: AdvancedQueryColumn[];
   filter?: AdvancedQueryFilter;
   join?: AdvancedQueryJoin;
+  groupby?: OperationColumn[];
+}
+
+interface AdvancedQueryColumn extends OperationColumn {
+  aggregate?: 'sum' | 'avg' | 'max' | 'min' | 'std';
 }
 
 type AdvancedQueryFilter = {
