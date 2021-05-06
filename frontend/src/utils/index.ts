@@ -161,4 +161,5 @@ export const getSelectOptionsFromSources = (sources: List<SourceMap>): DropdownI
       text: source.get('indicator'),
       value: source.get('id'),
     }))
-    .toJS();
+    .toJS()
+    .sort(sortObjectArrayByProperty('text').sort);
