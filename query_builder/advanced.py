@@ -85,7 +85,12 @@ class AdvancedQueryBuilder:
         return join_query
 
     def get_select_query(self, table, query, columns):
+        # TODO: handle aggregation here
         return query.select(*[table[column] for column in columns])
+
+    def get_groupby_query(self, table, query, columns):
+        # TODO: handle .having here as its usage is based on the groupby
+        return query.groupby(*[table[column] for column in columns])
 
     def get_filter_query(self, table, query, config):
         if self.andKey in config:
