@@ -105,6 +105,10 @@ class TestRestFramework(TestCase):
         response = client.post('/api/datasets/', data, format="json")
         assert response.status_code == 201
 
+        response = client.get('/api/export/3/')
+        assert response.status_code == 200
+        assert isinstance(response.streaming_content, map)
+
         query.query_table = query_table
 
     def test_post_password_change(self):
