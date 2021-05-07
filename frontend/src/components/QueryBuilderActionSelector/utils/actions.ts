@@ -33,9 +33,13 @@ export const getSupportedActions = (
     (action) => action.visibleFor.length === 0 || action.visibleFor.includes(activeAction),
   );
 
-export const getSelectOptionsFromActions = (actions: ActionMeta[]): DropdownItemProps[] =>
+export const getSelectOptionsFromActions = (
+  actions: ActionMeta[],
+  enabledActions?: ActionMeta[],
+): DropdownItemProps[] =>
   actions.map((action) => ({
     key: action.name,
     text: action.caption,
     value: action.name,
+    disabled: enabledActions && !enabledActions.find((act) => act.name === action.name),
   }));
