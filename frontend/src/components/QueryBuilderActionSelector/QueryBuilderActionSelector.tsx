@@ -30,7 +30,7 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
         fluid
         selection
         search
-        options={getSelectOptionsFromActions(supportedActions)}
+        options={getSelectOptionsFromActions(actions, supportedActions)}
         loading={false}
         onChange={onSelectAction}
         value={selectedAction}
