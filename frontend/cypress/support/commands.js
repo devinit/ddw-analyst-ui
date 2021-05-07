@@ -94,6 +94,43 @@ Cypress.Commands.add('getAccessToken', () => {
   return token;
 });
 
+Cypress.Commands.add('freezeDataSource', () => {
+  cy.visit('/sources');
+  cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
+  cy.get('[data-testid="sources-table-row"]')
+    .first()
+    .then(($element) => {
+      cy.wrap($element).contains('Versions').click();
+      cy.get('[data-testid="source-version-freeze-button"]').click();
+      cy.get('[data-testid="frozen-data-form-message"]').should('be.visible').type('test');
+      cy.get('[data-testid="frozen-data-form-save-button"]').should('be.visible').click();
+      cy.get('[data-testid="frozen-dataset-refresh-button"]').first().click({ force: true });
+    });
+});
+
+Cypress.Commands.add('deleteFrozenDataSource', () => {
+  cy.visit('/sources');
+  cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}');
+  cy.get('[data-testid="sources-table-row"]')
+    .first()
+    .then(($element) => {
+      cy.wrap($element).contains('Versions').click();
+      cy.get('[data-testid="frozen-data-description"]').first().contains('test');
+      cy.get('[data-testid="frozen-data-delete-button"]').first().dblclick({ force: true });
+    });
+});
+
+Cypress.Commands.add('freezeDataset', () => {
+  cy.visit('/');
+  cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
+  cy.get('[data-testid="dataset-freeze-button"]').click();
+  cy.get('[data-testid="dataset-frozen-data-description"]')
+    .should('be.visible')
+    .type('Test dataset freeze');
+  cy.get('[data-testid="dataset-frozen-data-save-button"]').should('be.visible').click();
+  cy.get('[data-testid="dataset-frozen-data-refresh-button"]').first().click({ force: true });
+});
+
 //
 //
 // -- This is a child command --

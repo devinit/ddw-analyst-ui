@@ -70,7 +70,12 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
               <i className="material-icons">refresh</i>
             </Button>
             {item.logs ? (
-              <Button variant="dark" size="sm" onClick={toggleShowLogs}>
+              <Button
+                variant="dark"
+                size="sm"
+                data-testid="frozen-source-info-button"
+                onClick={toggleShowLogs}
+              >
                 <i className="material-icons">info</i> Info
               </Button>
             ) : null}

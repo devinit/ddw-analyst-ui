@@ -146,17 +146,23 @@ describe('The Datasets Pages', () => {
   });
 
   it('freezes and deletes a dataset', () => {
-    cy.visit('/');
-    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
-    cy.get('[data-testid="dataset-freeze-button"]').click();
-    cy.get('[data-testid="dataset-frozen-data-description"]')
-      .should('be.visible')
-      .type('Test dataset freeze');
-    cy.get('[data-testid="dataset-frozen-data-save-button"]').should('be.visible').click();
-    cy.get('[data-testid="dataset-frozen-data-refresh-button"]').first().click({ force: true });
+    cy.freezeDataset();
     cy.get('[data-testid="dataset-frozen-data-status"]').contains('Completed');
+    cy.get('.dataset-row')
+      .its(length)
+      .then((datasetRow) => {
+        const datasetRowNumber = datasetRow.length;
+        cy.wrap(datasetRowNumber).as('datasetRowNumber');
+      });
+    // Delete frozen dataset
+    cy.get('[data-testid="frozen-dataset-delete-button"]').first().dblclick({ force: true });
+    cy.get('@datasetRowNumber').then((datasetRowNumber) => {
+      cy.get('.dataset-row').should('have.length', datasetRowNumber - 1);
+    });
+  });
 
-    // Download frozen dataset
+  it('downloads frozen dataset', () => {
+    cy.freezeDataset();
     cy.getAccessToken().then((token) => {
       if (token) {
         const options = {
@@ -181,9 +187,6 @@ describe('The Datasets Pages', () => {
         });
       }
     });
-
-    // Delete frozen dataset
     cy.get('[data-testid="frozen-dataset-delete-button"]').first().dblclick({ force: true });
-    cy.get('.p-0').contains('Test dataset freeze').should('not.exist');
   });
 });
