@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import { AdvancedQueryBuilderAction, AdvancedQueryOptions } from '../../types/operations';
-import { actions } from './utils';
+import { actions, getSelectOptionsFromActions, getSupportedActions } from './utils';
 
 interface ComponentProps {
   onSelectAction?: (action: AdvancedQueryBuilderAction) => void;
@@ -10,9 +10,15 @@ interface ComponentProps {
 }
 type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 
-const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = () => {
+const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) => {
+  const [supportedActions, setSupportedActions] = useState(actions);
+  const [selectedAction, setSelectedAction] = useState(props.defaultAction);
   const onSelectAction = (_event: SelectEvent, data: DropdownProps) => {
-    console.log(data);
+    setSelectedAction(data.value as AdvancedQueryBuilderAction);
+    setSupportedActions(getSupportedActions(actions, data.value as AdvancedQueryBuilderAction));
+    if (props.onSelectAction) {
+      props.onSelectAction(data.value as AdvancedQueryBuilderAction);
+    }
   };
 
   return (
@@ -24,10 +30,12 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = () => {
         fluid
         selection
         search
-        options={actions}
+        options={getSelectOptionsFromActions(supportedActions)}
         loading={false}
         onChange={onSelectAction}
+        value={selectedAction}
         data-testid="a-qb-action-selector"
+        selectOnBlur={false}
       />
     </div>
   );
