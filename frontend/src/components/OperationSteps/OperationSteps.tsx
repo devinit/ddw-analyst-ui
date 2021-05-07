@@ -41,26 +41,18 @@ const StyledStepContainer = styled.div`
 `;
 
 const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
-  const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = props;
+  const { activeSource, activeStep, editable, steps } = props;
   const [isOrderingSteps, setIsOrderingSteps] = useState(false);
   const [createdSteps, setCreatedSteps] = useState<Step[]>([]);
-
-  useEffect(() => {
-    if (props.activeSource && props.sources && props.sources.count() === 0) {
-      fetchSources();
-    }
-  });
+  const sources = useSources({ limit: 200, offset: 0 });
 
   useEffect(() => {
     setCreatedSteps(
-      steps
-        .valueSeq()
-        .toArray()
-        .map((step) => ({
-          step_id: step.get('step_id') as string,
-          name: step.get('name') as string,
-          query_func: step.get('query_func') as string,
-        })),
+      steps.toArray().map((step) => ({
+        step_id: step.get('step_id') as string,
+        name: step.get('name') as string,
+        query_func: step.get('query_func') as string,
+      })),
     );
   }, [steps]);
 
@@ -141,12 +133,12 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
         unorderedStepsArray.forEach((unorderedStep) => {
           if (unorderedStep.get('step_id') === orderedStep) {
             const updatedStep = unorderedStep.update('step_id', () => orderedIndex + 1);
+            props.onReorderSteps(updatedStep);
             result.push({
               step_id: unorderedStep.get('step_id') as string,
               name: unorderedStep.get('name') as string,
               query_func: unorderedStep.get('query_func') as string,
             });
-            props.onReorderSteps(updatedStep);
           }
         });
       });
