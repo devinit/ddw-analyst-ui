@@ -16,7 +16,7 @@ export const actions: ActionMeta[] = [
   {
     name: 'filter',
     caption: 'Filter',
-    visibleFor: ['select'],
+    visibleFor: ['select', 'join'],
   },
   {
     name: 'join',
@@ -25,9 +25,13 @@ export const actions: ActionMeta[] = [
   },
 ];
 
-// export const getSupportedActions = (activeAction: AdvancedQueryBuilderAction) => {
-//   return [];
-// };
+export const getSupportedActions = (
+  actions: ActionMeta[],
+  activeAction: AdvancedQueryBuilderAction,
+): ActionMeta[] =>
+  actions.filter(
+    (action) => action.visibleFor.length === 0 || action.visibleFor.includes(activeAction),
+  );
 
 export const getSelectOptionsFromActions = (actions: ActionMeta[]): DropdownItemProps[] =>
   actions.map((action) => ({
