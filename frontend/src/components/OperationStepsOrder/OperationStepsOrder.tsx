@@ -14,10 +14,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { SelectColumn } from '../SelectColumn/SelectColumn';
 import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Step } from '../OperationSteps';
+import { SortableItem } from '../SelectColumnOrder/SortableItem';
 
 interface StepsOrderProps {
   createdSteps: Step[];
@@ -91,7 +91,7 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
           >
             {createdSteps && createdSteps.length > 0 ? (
               createdSteps.map((step) => (
-                <SelectColumn key={step.step_id} id={`${step.name} - ${step.query_func}`} />
+                <SortableItem key={step.step_id} id={`${step.name} - ${step.query_func}`} />
               ))
             ) : (
               <div data-testid="qb-select-no-column-message">No steps selected</div>
