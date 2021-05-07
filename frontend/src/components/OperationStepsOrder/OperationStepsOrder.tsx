@@ -19,9 +19,9 @@ import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Step } from '../OperationSteps';
 
-interface SelectColumnOrderProps {
+interface StepsOrderProps {
   createdSteps: Step[];
-  onUpdateColumns?: (options: string) => void;
+  onUpdateSteps?: (options: string) => void;
 }
 
 const StyledSpan = styled.span`
@@ -40,17 +40,17 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const OperationStepsOrder: FunctionComponent<SelectColumnOrderProps> = ({
+const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
   createdSteps,
-  onUpdateColumns,
+  onUpdateSteps,
 }) => {
-  const [orderedColumns, setOrderedColumns] = useState(createdSteps?.map((column) => column.name));
+  const [orderedSteps, setOrderedSteps] = useState(createdSteps?.map((step) => step.step_id));
 
   useEffect(() => {
-    if (onUpdateColumns) {
-      onUpdateColumns(JSON.stringify(orderedColumns));
+    if (onUpdateSteps) {
+      onUpdateSteps(JSON.stringify(orderedSteps));
     }
-  }, [orderedColumns]);
+  }, [orderedSteps]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -59,18 +59,18 @@ const OperationStepsOrder: FunctionComponent<SelectColumnOrderProps> = ({
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     if (over && active.id !== over.id) {
-      setOrderedColumns(() => {
-        const columnNames = createdSteps.map((step) => step.name);
-        const activeColumn = createdSteps.find(
+      setOrderedSteps(() => {
+        const stepIds = createdSteps.map((step) => step.step_id as string);
+        const activeStep = createdSteps.find(
           (step) => `${step.name} - ${step.query_func}` === active.id,
         );
-        const overColumn = createdSteps.find(
+        const overStep = createdSteps.find(
           (step) => `${step.name} - ${step.query_func}` === over.id,
         );
-        const oldIndex = columnNames.indexOf(activeColumn ? activeColumn.name : '');
-        const newIndex = columnNames.indexOf(overColumn ? overColumn.name : '');
+        const oldIndex = stepIds.indexOf(activeStep ? (activeStep.step_id as string) : '');
+        const newIndex = stepIds.indexOf(overStep ? (overStep.step_id as string) : '');
 
-        return arrayMove(columnNames, oldIndex, newIndex);
+        return arrayMove(stepIds, oldIndex, newIndex);
       });
     }
   };
@@ -79,7 +79,7 @@ const OperationStepsOrder: FunctionComponent<SelectColumnOrderProps> = ({
     <>
       <Alert variant="dark" className="mt-3 p-3 w-50">
         <i className="material-icons">info</i>{' '}
-        <StyledSpan className="d-inline-flex">Drag & drop columns to desired position</StyledSpan>
+        <StyledSpan className="d-inline-flex">Drag & drop steps to desired position</StyledSpan>
       </Alert>
       <StyledWrapper>
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -94,7 +94,7 @@ const OperationStepsOrder: FunctionComponent<SelectColumnOrderProps> = ({
                 <SelectColumn key={step.step_id} id={`${step.name} - ${step.query_func}`} />
               ))
             ) : (
-              <div data-testid="qb-select-no-column-message">No columns selected</div>
+              <div data-testid="qb-select-no-column-message">No steps selected</div>
             )}
           </SortableContext>
         </DndContext>

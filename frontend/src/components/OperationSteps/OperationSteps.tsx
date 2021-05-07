@@ -22,6 +22,7 @@ interface OperationStepsProps {
   onAddStep: (step?: OperationStepMap) => Partial<QueryBuilderAction>;
   onClickStep: (step?: OperationStepMap) => void;
   onDuplicateStep: (step?: OperationStepMap) => void;
+  onReorderSteps: (step?: OperationStepMap) => void;
 }
 
 export interface Step {
@@ -41,18 +42,9 @@ const StyledStepContainer = styled.div`
 
 const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const { activeSource, activeStep, editable, isFetchingSources, sources, steps } = props;
-  const [sortableSteps, setSortableSteps] = useState<List<OperationStepMap>>(steps);
   const [isOrderingSteps, setIsOrderingSteps] = useState(false);
-  const [createdSteps, setCreatedSteps] = useState<Step[]>(
-    steps
-      .valueSeq()
-      .toArray()
-      .map((column) => ({
-        step_id: column.get('step_id') as string,
-        name: column.get('name') as string,
-        query_func: column.get('name') as string,
-      })),
-  );
+  const [createdSteps, setCreatedSteps] = useState<Step[]>([]);
+
   useEffect(() => {
     if (props.activeSource && props.sources && props.sources.count() === 0) {
       fetchSources();
@@ -60,32 +52,24 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   });
 
   useEffect(() => {
-    setSortableSteps(() => {
-      let theSteps;
-      if (createdSteps) {
-        for (let index = 0; index < createdSteps?.length; index++) {
-          const element = createdSteps[index];
-
-          theSteps = sortableSteps.map((step) => {
-            if (step.get('name') === element.name) {
-              return step.update('step_id', () => index + 1);
-            } else {
-              return step.update('step_id', () => index);
-            }
-          });
-        }
-      }
-
-      return theSteps ? theSteps : sortableSteps;
-    });
-  }, [createdSteps]);
+    setCreatedSteps(
+      steps
+        .valueSeq()
+        .toArray()
+        .map((step) => ({
+          step_id: step.get('step_id') as string,
+          name: step.get('name') as string,
+          query_func: step.get('query_func') as string,
+        })),
+    );
+  }, [steps]);
 
   const renderOperationSteps = (steps: List<OperationStepMap>, activeStep?: OperationStepMap) => {
     if (steps.count()) {
       return (
         <Row>
           <ListGroup variant="flush" className="w-100">
-            {sortableSteps.sort(sortSteps).map((step, index) => {
+            {steps.sort(sortSteps).map((step, index) => {
               const isActiveStep = activeStep && activeStep.get('step_id') === step.get('step_id');
 
               return (
@@ -147,36 +131,27 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
     setIsOrderingSteps(!isOrderingSteps);
   };
 
-  const onUpdateColumns = (orderedColumns: string) => {
-    console.log(orderedColumns);
-    const orderedColumnsArray: string[] = JSON.parse(orderedColumns);
+  const onUpdateSteps = (orderedSteps: string) => {
+    const orderedStepsArray: string[] = JSON.parse(orderedSteps);
     setCreatedSteps(() => {
-      const columns = [];
-      const stepsArray = steps.valueSeq().toArray();
+      const result: Step[] = [];
+      const unorderedStepsArray = steps.valueSeq().toArray();
 
-      for (let index = 0; index < orderedColumnsArray.length; index++) {
-        for (let key = 0; key < stepsArray.length; key++) {
-          const element = stepsArray[key];
-          if (element.get('name') === orderedColumnsArray[index]) {
-            columns.push({
-              step_id: element.get('step_id') as string,
-              name: element.get('name') as string,
-              query_func: element.get('name') as string,
+      orderedStepsArray.forEach((orderedStep, orderedIndex) => {
+        unorderedStepsArray.forEach((unorderedStep) => {
+          if (unorderedStep.get('step_id') === orderedStep) {
+            const updatedStep = unorderedStep.update('step_id', () => orderedIndex + 1);
+            result.push({
+              step_id: unorderedStep.get('step_id') as string,
+              name: unorderedStep.get('name') as string,
+              query_func: unorderedStep.get('query_func') as string,
             });
+            props.onReorderSteps(updatedStep);
           }
-        }
-      }
+        });
+      });
 
-      return orderedColumnsArray.length > 0
-        ? columns
-        : steps
-            .valueSeq()
-            .toArray()
-            .map((column) => ({
-              step_id: column.get('step_id') as string,
-              name: column.get('name') as string,
-              query_func: column.get('name') as string,
-            }));
+      return orderedStepsArray.length > 0 ? result : createdSteps;
     });
   };
 
@@ -215,7 +190,6 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           size="sm"
           onClick={handleStepOrderClick}
           disabled={!!activeStep || props.disabled}
-          // hidden={isOrderingSteps}
           data-testid="qb-add-step-button"
         >
           {!isOrderingSteps ? (
@@ -228,7 +202,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
       </div>
 
       {isOrderingSteps ? (
-        <OperationStepsOrder createdSteps={createdSteps} onUpdateColumns={onUpdateColumns} />
+        <OperationStepsOrder createdSteps={createdSteps} onUpdateSteps={onUpdateSteps} />
       ) : (
         renderOperationSteps(steps, activeStep)
       )}

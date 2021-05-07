@@ -169,6 +169,10 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     props.actions.setActiveOperation(operation, true);
   };
 
+  const onReorderSteps = (step: OperationStepMap) => {
+    props.actions.editOperationStep(step);
+  };
+
   const onDeleteOperation = (operation: OperationMap) => {
     const operationID = operation.get('id') as string | undefined;
     if (operationID) {
@@ -361,6 +365,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           editable={editable}
           disabled={showPreview}
           onDuplicateStep={onDuplicateStep}
+          onReorderSteps={onReorderSteps}
         />
       </OperationForm>
     );
