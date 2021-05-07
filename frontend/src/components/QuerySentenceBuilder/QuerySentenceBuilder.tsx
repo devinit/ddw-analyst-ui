@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import { SourceMap } from '../../types/sources';
 import { DataSourceSelector } from '../DataSourceSelector';
+import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
 
 const QuerySentenceBuilder: FunctionComponent = () => {
   const [source, setSource] = useState<SourceMap>();
@@ -10,6 +11,7 @@ const QuerySentenceBuilder: FunctionComponent = () => {
   return (
     <div>
       <DataSourceSelector source={source} onSelect={onSelectSource} />
+      <QueryBuilderActionSelector />
     </div>
   );
 };
