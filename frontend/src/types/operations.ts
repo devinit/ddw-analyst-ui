@@ -105,6 +105,8 @@ interface AdvancedQueryColumn extends OperationColumn {
   aggregate?: 'sum' | 'avg' | 'max' | 'min' | 'std';
 }
 
+export type AdvancedQueryBuilderAction = 'select' | 'filter' | 'join';
+
 type AdvancedQueryFilter = {
   $and?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
   $or?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
