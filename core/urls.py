@@ -47,7 +47,6 @@ urlpatterns = [
     path('dataset/preview/', core_views.PreviewOperationData.as_view()),
     path('dataset/data/<int:pk>/', core_views.ViewData.as_view()),
     path('dataset/alias/<int:pk>/', core_views.OperationColumnAlias.as_view()),
-    path('dataset/estimate/<int:pk>/', core_views.EstimateQueryTime.as_view()),
     # For handling saving query sets, and freezing data
     path('savedquerysets/', core_views.SavedQueryDataList.as_view()),
     path('savedqueryset/<int:pk>/', core_views.SavedQueryDataDetail.as_view()),

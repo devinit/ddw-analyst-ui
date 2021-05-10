@@ -7,6 +7,7 @@ from core.pypika_utils import QueryBuilder
 from core.pypika_fts_utils import TableQueryBuilder
 from data.db_manager import count_rows, run_query
 from core.models import FrozenData, Operation, SavedQueryData, Source
+from core import query
 
 @app.task(bind=False)
 def count_operation_rows(id):
@@ -72,3 +73,15 @@ def create_dataset_archive(id):
             return { "status": "failed", "result": json.dumps(create_result) }
     except SavedQueryData.DoesNotExist:
         return { "status": "errored", "result": id }
+
+
+@app.task(bind=False)
+def estimate_operation_time(id):
+    try:
+        operation = Operation.objects.get(id=id)
+        estimate = query.querytime_estimate(operation=operation)
+        if estimate[0]['result'] == 'success':
+            operation.estimated_run_time = estimate[0]['message']
+            operation.save()
+    except Operation.DoesNotExist:
+        pass

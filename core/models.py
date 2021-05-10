@@ -112,6 +112,7 @@ class Operation(BaseEntity):
         {"type": "[error, warning, info]", "message": "", ""}
     """
     logs = models.JSONField(blank=True, null=True, default=dict)
+    estimated_run_time = models.IntegerField(null=True, default=0)
 
     def __str__(self):
         return self.name

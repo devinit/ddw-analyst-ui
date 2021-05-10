@@ -173,6 +173,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'aliases',
             'alias_creation_status',
             'logs',
+            'estimated_run_time',
         )
 
     def create(self, validated_data):

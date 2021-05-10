@@ -43,7 +43,7 @@ from core.serializers import (DataSerializer, FrozenDataSerializer,
                               ScheduledEventSerializer, SectorSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
                               UserSerializer)
-from core.tasks import create_dataset_archive, create_table_archive
+from core.tasks import create_dataset_archive, create_table_archive, estimate_operation_time
 from data.db_manager import run_query, update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
 
@@ -328,6 +328,7 @@ class OperationList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        estimate_operation_time.delay(serializer.instance.id)
 
 
 class UserOperationList(generics.ListAPIView):
@@ -1006,25 +1007,3 @@ class ViewDatasetHistory(APIView):
             raise CustomAPIException({'detail': str(e)})
 
 
-class EstimateQueryTime(APIView):
-    """
-    Estimate the operation query time.
-    """
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
-
-    def get_queryset(self, pk):
-        try:
-            operation = Operation.objects.get(id=pk)
-            return operation
-        except Operation.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk):
-        try:
-            operation = self.get_queryset(pk)
-            estimate = query.querytime_estimate(operation=operation)
-            return Response(estimate)
-        except Exception as e:
-            handle_uncaught_error(e)
-            raise CustomAPIException({'detail': str(e)})
