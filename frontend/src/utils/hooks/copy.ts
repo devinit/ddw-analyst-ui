@@ -19,7 +19,7 @@ export default function useCopyToClipboard(resetInterval: number): CopyToClipboa
   React.useEffect(() => {
     let timeout: number;
     if (isCopied && resetInterval) {
-      timeout = setTimeout(() => setCopied(false), resetInterval);
+      timeout = window.setTimeout(() => setCopied(false), resetInterval);
     }
 
     return () => {
