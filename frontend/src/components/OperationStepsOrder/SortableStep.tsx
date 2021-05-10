@@ -2,6 +2,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { List } from 'immutable';
 import React, { FunctionComponent } from 'react';
+import { Row } from 'react-bootstrap';
 import { OperationStepMap } from '../../types/operations';
 import { StyledListItem, StyledStepContainer } from '../OperationSteps';
 import { Step } from '../OperationSteps/OperationSteps';
@@ -39,13 +40,7 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
   const currentStep = steps.find((step) => step.get('step_id') === props.step.step_id);
 
   return (
-    <StyledStepContainer
-      style={style}
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      data-testid="qb-select-column-order"
-    >
+    <StyledStepContainer style={style} ref={setNodeRef} data-testid="qb-select-column-order">
       <StyledListItem
         data-testid="qb-step-wrapper"
         className="py-2"
@@ -54,7 +49,12 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
         active={isActiveStep}
       >
         {currentStep && (
-          <OperationStepView step={currentStep} onDuplicateStep={props.onDuplicateStep} />
+          <Row>
+            <span {...listeners} {...attributes}>
+              <i className="material-icons mr-1">drag_indicator</i>
+            </span>
+            <OperationStepView step={currentStep} onDuplicateStep={props.onDuplicateStep} />
+          </Row>
         )}
       </StyledListItem>
     </StyledStepContainer>

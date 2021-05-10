@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Badge, Button } from 'react-bootstrap';
+import { Badge, Button, Col } from 'react-bootstrap';
 import { Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { OperationStepMap } from '../../types/operations';
@@ -74,15 +74,17 @@ export const OperationStepView: FunctionComponent<OperationStepProps> = ({ step,
 
   return (
     <React.Fragment>
-      <div>
-        <Badge variant="secondary">
-          {(step.get('query_func') as string).toUpperCase().split('_').join(' ')}
-        </Badge>
-      </div>
-      <StyledContentWrapper>
-        {step.get('name')}
-        {renderStepInfo(step)}
-      </StyledContentWrapper>
+      <Col className="pr-0" md={11}>
+        <div>
+          <Badge variant="secondary">
+            {(step.get('query_func') as string).toUpperCase().split('_').join(' ')}
+          </Badge>
+        </div>
+        <StyledContentWrapper>
+          {step.get('name')}
+          {renderStepInfo(step)}
+        </StyledContentWrapper>
+      </Col>
     </React.Fragment>
   );
 };
