@@ -145,14 +145,20 @@ describe('The Datasets Pages', () => {
       });
   });
 
-  it('freezes and deletes a dataset', () => {
+  it('freezes a dataset', () => {
     cy.freezeDataset();
     cy.get('[data-testid="dataset-frozen-data-status"]').contains('Completed');
+    cy.get('.dataset-row-title').contains('Test dataset freeze');
+  });
+
+  it('deletes a frozen dataset', () => {
+    // Get initial frozen datasets row count
     cy.get('[data-testid="datasetRows"]')
       .its('length')
       .then((rowNumber) => {
         cy.wrap(rowNumber).as('datasetRowNumber');
       });
+
     // Delete frozen dataset
     cy.get('[data-testid="frozen-dataset-delete-button"]').first().dblclick({ force: true });
     cy.get('@datasetRowNumber').then((datasetRowNumber) => {

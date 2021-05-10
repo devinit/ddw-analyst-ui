@@ -33,7 +33,7 @@ export const SourceHistoryListItem: FunctionComponent<ComponentProps> = (props) 
         })
         .catch((error) => console.log(error.message));
     }
-  }, [fetching, item]);
+  }, [fetching]);
   const onDelete = () => {
     if (deleteStatus === 'default') {
       setDeleteStatus('confirm');

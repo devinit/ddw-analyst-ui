@@ -58,16 +58,21 @@ describe('The Data Sources Page', () => {
   });
 
   describe('data source update', () => {
-    it('freezes and deletes a data source', () => {
-      // Freeze data source
+    it('freezes a data source', () => {
       cy.freezeDataSource();
       cy.get('[data-testid="frozen-data-status"]').contains('Completed');
+      cy.get('[data-testid="frozen-data-description"]').contains('test');
+    });
+
+    it('deletes a frozen data source', () => {
+      // Get datasource version row count
       cy.get('.dataset-row')
         .its('length')
         .then((rowNumber) => {
           cy.wrap(rowNumber).as('dataSourceRowNumber');
         });
-      // Delete frozen data source
+
+      // Delete frozen datasource
       cy.deleteFrozenDataSource();
 
       //  Confirm that frozen data source was deleted
