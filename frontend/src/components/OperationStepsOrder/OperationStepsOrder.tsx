@@ -94,7 +94,9 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
     <>
       <Alert variant="dark" className="mt-3 p-3 w-50">
         <i className="material-icons">info</i>{' '}
-        <StyledSpan className="d-inline-flex">Drag & drop steps to desired position</StyledSpan>
+        <StyledSpan className="d-inline-flex">
+          Drag & drop steps to desired position with the drag icon on the left of each step.
+        </StyledSpan>
       </Alert>
       <DndContext
         sensors={sensors}

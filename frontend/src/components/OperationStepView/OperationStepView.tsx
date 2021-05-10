@@ -74,17 +74,15 @@ export const OperationStepView: FunctionComponent<OperationStepProps> = ({ step,
 
   return (
     <React.Fragment>
-      <Col className="pr-0" md={11}>
-        <div>
-          <Badge variant="secondary">
-            {(step.get('query_func') as string).toUpperCase().split('_').join(' ')}
-          </Badge>
-        </div>
-        <StyledContentWrapper>
-          {step.get('name')}
-          {renderStepInfo(step)}
-        </StyledContentWrapper>
-      </Col>
+      <div>
+        <Badge variant="secondary">
+          {(step.get('query_func') as string).toUpperCase().split('_').join(' ')}
+        </Badge>
+      </div>
+      <StyledContentWrapper>
+        {step.get('name')}
+        {renderStepInfo(step)}
+      </StyledContentWrapper>
     </React.Fragment>
   );
 };

@@ -2,7 +2,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { List } from 'immutable';
 import React, { FunctionComponent } from 'react';
-import { Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { OperationStepMap } from '../../types/operations';
 import { StyledListItem, StyledStepContainer } from '../OperationSteps';
 import { Step } from '../OperationSteps/OperationSteps';
@@ -50,10 +50,14 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
       >
         {currentStep && (
           <Row>
-            <span {...listeners} {...attributes}>
-              <i className="material-icons mr-1">drag_indicator</i>
-            </span>
-            <OperationStepView step={currentStep} onDuplicateStep={props.onDuplicateStep} />
+            <Col md={0.5}>
+              <span className="pl-1" {...listeners} {...attributes}>
+                <i className="material-icons mr-1">drag_indicator</i>
+              </span>
+            </Col>
+            <Col className="w-80" md={11}>
+              <OperationStepView step={currentStep} onDuplicateStep={props.onDuplicateStep} />
+            </Col>
           </Row>
         )}
       </StyledListItem>
