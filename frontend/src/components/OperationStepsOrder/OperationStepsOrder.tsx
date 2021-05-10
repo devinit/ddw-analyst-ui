@@ -74,12 +74,8 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
     if (over && active.id !== over.id) {
       setOrderedSteps(() => {
         const stepIds = steps.toArray().map((step) => step.get('step_id') as string);
-        const activeStep = steps.find(
-          (step) => `${step.get('name')} - ${step.get('query_func')}` === active.id,
-        );
-        const overStep = steps.find(
-          (step) => `${step.get('name')} - ${step.get('query_func')}` === over.id,
-        );
+        const activeStep = steps.find((step) => `${step.get('step_id')}` === active.id);
+        const overStep = steps.find((step) => `${step.get('step_id')}` === over.id);
         const oldIndex = stepIds.indexOf(activeStep ? (activeStep.get('step_id') as string) : '');
         const newIndex = stepIds.indexOf(overStep ? (overStep.get('step_id') as string) : '');
 
@@ -117,7 +113,7 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
                   return (
                     <SortableStep
                       key={index}
-                      id={`${step.name} - ${step.query_func}`}
+                      id={`${step.step_id}`}
                       steps={steps}
                       step={step}
                       activeStep={activeStep}
