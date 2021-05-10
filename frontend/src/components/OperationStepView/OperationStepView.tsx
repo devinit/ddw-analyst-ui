@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Badge, Button, Col } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
 import { Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { OperationStepMap } from '../../types/operations';
