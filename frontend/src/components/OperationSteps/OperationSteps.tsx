@@ -31,12 +31,12 @@ export interface Step {
   step_id: string | number;
 }
 
-const StyledListItem = styled(ListGroup.Item)`
+export const StyledListItem = styled(ListGroup.Item)`
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   border-color: ${(props) => (props.active ? '#737373 !important' : 'default')};
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
 `;
-const StyledStepContainer = styled.div`
+export const StyledStepContainer = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 `;
 
@@ -171,7 +171,6 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           size="sm"
           onClick={onAddStep}
           disabled={!!activeStep || props.disabled}
-          hidden={isOrderingSteps}
           data-testid="qb-add-step-button"
         >
           <i className="material-icons mr-1">add</i>
@@ -194,7 +193,15 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
       </div>
 
       {isOrderingSteps ? (
-        <OperationStepsOrder createdSteps={createdSteps} onUpdateSteps={onUpdateSteps} />
+        <OperationStepsOrder
+          createdSteps={createdSteps}
+          onUpdateSteps={onUpdateSteps}
+          steps={steps}
+          activeStep={activeStep}
+          onClickStep={props.onClickStep}
+          onDuplicateStep={props.onDuplicateStep}
+          disabled={props.disabled}
+        />
       ) : (
         renderOperationSteps(steps, activeStep)
       )}
