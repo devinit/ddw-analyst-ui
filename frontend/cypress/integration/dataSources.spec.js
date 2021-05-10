@@ -63,10 +63,9 @@ describe('The Data Sources Page', () => {
       cy.freezeDataSource();
       cy.get('[data-testid="frozen-data-status"]').contains('Completed');
       cy.get('.dataset-row')
-        .its(length)
-        .then((lengthObject) => {
-          const dataSourceRowNumber = lengthObject.length;
-          cy.wrap(dataSourceRowNumber).as('dataSourceRowNumber');
+        .its('length')
+        .then((rowNumber) => {
+          cy.wrap(rowNumber).as('dataSourceRowNumber');
         });
       // Delete frozen data source
       cy.deleteFrozenDataSource();
@@ -141,10 +140,8 @@ describe('The Data Sources Page', () => {
       cy.deleteFrozenDataSource();
     });
 
-    xit('that info button logs error message incase of an error', () => {
-      cy.fixture('frozenDataSource').then((source) => {
-        cy.intercept('GET', '/api/source/history/', source);
-      });
+    it('that info button logs error message incase of an error', () => {
+      cy.intercept('GET', '/api/source/history/**', { fixture: 'erroredFrozenDataSource' });
       cy.visit('/sources');
       cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
       cy.get('[data-testid="sources-table-row"]')

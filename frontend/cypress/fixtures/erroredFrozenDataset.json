@@ -1,0 +1,19 @@
+{
+  "count": 1,
+  "previous": null,
+  "next": null,
+  "results": [
+    {
+      "id": 1,
+      "active": true,
+      "operation": 77,
+      "full_query": "SELECT \"country_name\",\"country_code\",\"iso3\" FROM \"repo\".\"wdi_isos\"",
+      "saved_query_db_table": "query_data_20210509171658",
+      "status": "e",
+      "description": "Test errored frozen dataset",
+      "user": "Admin",
+      "created_on": "2021-05-09T17:16:59.001038Z",
+      "logs": "Invalid dataset"
+  }
+  ]
+}

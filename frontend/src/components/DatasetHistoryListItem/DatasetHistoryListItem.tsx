@@ -33,10 +33,9 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
           console.log(err.message);
         });
     }
-  }, [fetching]);
+  }, [fetching, item]);
   useEffect(() => {
     setItem(props.item);
-    setFetching(true);
   }, [props.item]);
   const onDelete = () => {
     if (deleteStatus === 'default') {
@@ -58,7 +57,7 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
       <Dimmer active={fetching} inverted>
         <Loader content="Loading" />
       </Dimmer>
-      <div className="dataset-row p-3 border-bottom">
+      <div className="dataset-row p-3 border-bottom" data-testid="datasetRows">
         <div className="col-md-12">
           <div className="dataset-row-title h4">{item.description}</div>
 
@@ -72,7 +71,12 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
               <i className="material-icons">refresh</i>
             </Button>
             {item.logs ? (
-              <Button variant="dark" size="sm" onClick={toggleShowLogs}>
+              <Button
+                variant="dark"
+                size="sm"
+                onClick={toggleShowLogs}
+                data-testid="frozen-dataset-info-button"
+              >
                 <i className="material-icons">info</i> Logs
               </Button>
             ) : null}

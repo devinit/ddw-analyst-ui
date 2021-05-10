@@ -148,16 +148,15 @@ describe('The Datasets Pages', () => {
   it('freezes and deletes a dataset', () => {
     cy.freezeDataset();
     cy.get('[data-testid="dataset-frozen-data-status"]').contains('Completed');
-    cy.get('.dataset-row')
-      .its(length)
-      .then((datasetRow) => {
-        const datasetRowNumber = datasetRow.length;
-        cy.wrap(datasetRowNumber).as('datasetRowNumber');
+    cy.get('[data-testid="datasetRows"]')
+      .its('length')
+      .then((rowNumber) => {
+        cy.wrap(rowNumber).as('datasetRowNumber');
       });
     // Delete frozen dataset
     cy.get('[data-testid="frozen-dataset-delete-button"]').first().dblclick({ force: true });
     cy.get('@datasetRowNumber').then((datasetRowNumber) => {
-      cy.get('.dataset-row').should('have.length', datasetRowNumber - 1);
+      cy.get('[data-testid="datasetRows"]').should('have.length', datasetRowNumber - 1);
     });
   });
 
@@ -188,5 +187,14 @@ describe('The Datasets Pages', () => {
       }
     });
     cy.get('[data-testid="frozen-dataset-delete-button"]').first().dblclick({ force: true });
+  });
+
+  it('that info button logs error message incase of an error', () => {
+    cy.intercept('GET', '/api/dataset/history/**', { fixture: 'erroredFrozenDataset' });
+    cy.visit('/');
+    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
+    cy.get('[data-testid="frozen-dataset-info-button"]').click({ force: true });
+    cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
+    cy.get('.modal-footer').contains('Close').click();
   });
 });
