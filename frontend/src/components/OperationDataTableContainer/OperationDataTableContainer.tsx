@@ -36,8 +36,10 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
       // make sure that the columns are in required order ... no using immutable as it messes up the order
       const _aliases = aliases.toJS() as OperationColumn[];
       columns = Object.keys(list[0])
-        .map<OperationColumn>(
-          (column) => _aliases.find((alias) => alias.column_name === column) as OperationColumn,
+        .map<OperationColumn>((column) =>
+          column === 'error'
+            ? { id: 0, column_name: 'error', column_alias: 'Error' }
+            : (_aliases.find((alias) => alias.column_name === column) as OperationColumn),
         )
         .filter((column) => !!column); // remove undefined
     }
