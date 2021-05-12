@@ -59,65 +59,22 @@ describe('The Data Sources Page', () => {
 
   describe('data source update', () => {
     it('freezes a data source', () => {
-      cy.freezeDataSource();
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(($element) => {
+          cy.wrap($element).contains('Versions').click();
+          cy.get('[data-testid="source-version-freeze-button"]').click();
+          cy.get('[data-testid="frozen-data-form-message"]').should('be.visible').type('test');
+          cy.get('[data-testid="frozen-data-form-save-button"]').should('be.visible').click();
+          cy.get('[data-testid="frozen-dataset-refresh-button"]').first().click({ force: true });
+        });
       cy.get('[data-testid="frozen-data-status"]').contains('Completed');
       cy.get('[data-testid="frozen-data-description"]').contains('test');
     });
 
-    it('deletes a frozen data source', () => {
-      // Get datasource version row count
-      cy.get('.dataset-row')
-        .its('length')
-        .then((rowNumber) => {
-          cy.wrap(rowNumber).as('dataSourceRowNumber');
-        });
-
-      // Delete frozen datasource
-      cy.deleteFrozenDataSource();
-
-      //  Confirm that frozen data source was deleted
-      cy.visit('/sources');
-      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
-      cy.get('[data-testid="sources-table-history-button"]').first().click();
-      cy.get('@dataSourceRowNumber').then((dataSourceRowNumber) => {
-        cy.get('.dataset-row').should('have.length', dataSourceRowNumber - 1);
-      });
-      cy.visit('/sources');
-      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
-      cy.get('.row').contains('No Data');
-    });
-
-    it('searches for frozen data source in sources', () => {
-      cy.freezeDataSource();
-      cy.visit('/sources');
-      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
-      cy.get('[data-testid="sources-table-row"]').first().contains('FTS ISO codes test');
-      cy.deleteFrozenDataSource();
-    });
-
-    it('querys a frozen data source', () => {
-      cy.freezeDataSource();
-      cy.visit('/queries/build');
-      cy.get('[name="name"]').focus().type('My Test Dataset');
-      cy.get('[name="description"]').focus().type('My Test Dataset Description');
-      cy.get('.search').eq(1).click({ force: true });
-      cy.wait(5000);
-      cy.get('.search').eq(1).type('FTS ISO codes test{enter}{esc}');
-      cy.get('[data-testid="qb-add-step-button"]').click();
-
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
-      cy.get('.selectColumnCheckbox > input').eq(0).check({ force: true });
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-      cy.get('[data-testid="qb-save-button"]').click();
-      cy.get('.dataset-row-footer').eq(0).contains('Frozen FTS ISO codes test');
-
-      cy.deleteFrozenDataSource();
-    });
-
     it('downloads frozen data source', () => {
-      cy.freezeDataSource();
       cy.getAccessToken().then((token) => {
         if (token) {
           const options = {
@@ -142,10 +99,60 @@ describe('The Data Sources Page', () => {
           });
         }
       });
-      cy.deleteFrozenDataSource();
     });
 
-    it('that info button logs error message incase of an error', () => {
+    it('searches for frozen data source in sources', () => {
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
+      cy.get('[data-testid="sources-table-row"]').first().contains('FTS ISO codes test');
+    });
+
+    it('querys a frozen data source', () => {
+      cy.visit('/queries/build');
+      cy.get('[name="name"]').focus().type('My Test Dataset');
+      cy.get('[name="description"]').focus().type('My Test Dataset Description');
+      cy.get('.search').eq(1).click({ force: true });
+      cy.wait(5000);
+      cy.get('.search').eq(1).type('FTS ISO codes test{enter}{esc}');
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+      cy.get('.selectColumnCheckbox > input').eq(0).check({ force: true });
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+      cy.get('[data-testid="qb-save-button"]').click();
+      cy.get('.dataset-row-footer').eq(0).contains('Frozen FTS ISO codes test');
+    });
+
+    it('deletes a frozen data source', () => {
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}');
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(($element) => {
+          cy.wrap($element).contains('Versions').click();
+          cy.get('.dataset-row')
+            .its('length')
+            .then((rowNumber) => {
+              cy.wrap(rowNumber).as('dataSourceRowNumber');
+            });
+          cy.get('[data-testid="frozen-data-description"]').first().contains('test');
+          cy.get('[data-testid="frozen-data-delete-button"]').first().dblclick({ force: true });
+
+          // Check row count after deleting
+          cy.get('@dataSourceRowNumber').then((dataSourceRowNumber) => {
+            cy.get('.dataset-row').should('have.length', dataSourceRowNumber - 1);
+          });
+        });
+
+      //  Confirm that frozen data source was deleted
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
+      cy.get('.row').contains('No Data');
+    });
+
+    it('that info button logs error message incase of a datasource freeze error', () => {
       cy.intercept('GET', '/api/source/history/**', { fixture: 'erroredFrozenDataSource' });
       cy.visit('/sources');
       cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
