@@ -24,7 +24,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           variant="danger"
           size="sm"
           data-toggle="tooltip"
-          data-placement="bottom"
+          data-placement="top"
           data-html="true"
           title={`<i>Replaces</i> <strong>ALL</strong> columns with those selected`}
           onClick={() => setDisplayColumnSelector(true)}
