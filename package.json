@@ -49,6 +49,7 @@
     "@testing-library/react": "^10.4.3",
     "@testing-library/react-hooks": "^5.1.0",
     "@types/classnames": "^2.2.11",
+    "@types/codemirror": "^5.60.0",
     "@types/jest": "^26.0.21",
     "@types/js-base64": "^2.3.2",
     "@types/localforage": "0.0.34",
