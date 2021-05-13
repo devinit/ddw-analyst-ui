@@ -12,7 +12,24 @@ interface ComponentProps {
 
 const StyledSegment = styled(Segment)`
   max-height: 350px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  border-bottom: 0 !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 3px !important;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
 `;
 
 const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
