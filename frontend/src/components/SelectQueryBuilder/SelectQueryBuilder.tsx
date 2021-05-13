@@ -56,13 +56,12 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
   };
 
   const onDeselectAll = () => {
-    if (props.onUpdateColumns) {
-      props.onUpdateColumns(JSON.stringify({ columns: [] }));
-    }
+    if (props.onUpdateColumns) props.onUpdateColumns(JSON.stringify({ columns: [] }));
   };
 
-  const handleColumnOrderClick = () => {
-    setIsOrderingColumns(!isOrderingColumns);
+  const handleColumnOrderClick = () => setIsOrderingColumns(!isOrderingColumns);
+  const onUpdateColumns = (columns: string[]) => {
+    if (props.onUpdateColumns) props.onUpdateColumns(JSON.stringify({ columns }));
   };
 
   return (
@@ -107,7 +106,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             <CheckboxGroup
               options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
               selectedOptions={props.columns}
-              onUpdateOptions={props.onUpdateColumns}
+              onUpdateOptions={onUpdateColumns}
             />
           </SelectColumnValidator>
         )}
