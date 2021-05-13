@@ -33,7 +33,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           Order Columns
         </Button>
       </ButtonGroup>
-      <ColumnSelector show={displayColumnSelector} source={source} />
+      <ColumnSelector show={displayColumnSelector} source={source} columns={[]} />
     </div>
   );
 };
