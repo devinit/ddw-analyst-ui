@@ -1,29 +1,15 @@
-import { Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { ColumnList, SourceMap } from '../../types/sources';
-import { sortObjectArrayByProperty } from '../../utils';
-import { CheckboxGroup, CheckboxGroupOption } from '../CheckboxGroup';
-import { QueryBuilderHandler } from '../QueryBuilderHandler';
-
-type CheckOption = CheckboxGroupOption;
+import { SourceMap } from '../../types/sources';
+import { ColumnSelector } from './ColumnSelector';
 interface ComponentProps {
   source: SourceMap;
 }
-const getColumnGroupOptionsFromSource = (source: SourceMap): CheckOption[] => {
-  const columnsList = source.get('columns') as ColumnList;
-  const columnSet = Set(columnsList.map((column) => column.get('name') as string));
-
-  return QueryBuilderHandler.getSelectOptionsFromColumns(columnSet, columnsList) as CheckOption[];
-};
 
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const [displayColumnSelector, setDisplayColumnSelector] = useState(false);
-  const [columns, setColumns] = useState<CheckOption[]>([]);
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
-
-    setColumns(getColumnGroupOptionsFromSource(source));
   }, []);
 
   return (
@@ -47,13 +33,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           Order Columns
         </Button>
       </ButtonGroup>
-      {displayColumnSelector ? (
-        <CheckboxGroup
-          options={columns.sort(sortObjectArrayByProperty('text').sort)}
-          // selectedOptions={columns}
-          // onUpdateOptions={onUpdateColumns}
-        />
-      ) : null}
+      <ColumnSelector show={displayColumnSelector} source={source} />
     </div>
   );
 };
