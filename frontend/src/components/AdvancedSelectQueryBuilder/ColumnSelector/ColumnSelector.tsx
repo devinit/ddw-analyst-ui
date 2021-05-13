@@ -1,6 +1,6 @@
 import { Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { ColumnList, SourceMap } from '../../../types/sources';
+import { Column, ColumnList, SourceMap } from '../../../types/sources';
 import { sortObjectArrayByProperty } from '../../../utils';
 import { CheckboxGroup, CheckboxGroupOption } from '../../CheckboxGroup';
 import { QueryBuilderHandler } from '../../QueryBuilderHandler';
@@ -8,6 +8,7 @@ import { QueryBuilderHandler } from '../../QueryBuilderHandler';
 interface ColumnSelectorProps {
   show?: boolean;
   source: SourceMap;
+  columns: Column[];
 }
 type CheckOption = CheckboxGroupOption;
 
@@ -18,20 +19,26 @@ const getColumnGroupOptionsFromSource = (source: SourceMap): CheckOption[] => {
   return QueryBuilderHandler.getSelectOptionsFromColumns(columnSet, columnsList) as CheckOption[];
 };
 
-const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show }) => {
+const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, ...props }) => {
   const [columns, setColumns] = useState<CheckOption[]>([]);
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
+    props.columns.map((column) => column.name as string),
+  );
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
 
     setColumns(getColumnGroupOptionsFromSource(source));
   }, []);
+  const onUpdateColumns = (selection: string[]) => {
+    setSelectedColumns(selection);
+  };
 
   if (show) {
     return (
       <CheckboxGroup
         options={columns.sort(sortObjectArrayByProperty('text').sort)}
-        // selectedOptions={columns}
-        // onUpdateOptions={onUpdateColumns}
+        selectedOptions={selectedColumns}
+        onUpdateOptions={onUpdateColumns}
       />
     );
   }
