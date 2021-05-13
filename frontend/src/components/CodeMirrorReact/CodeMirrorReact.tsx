@@ -18,7 +18,7 @@ const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
       const codeMirror = CodeMirror(ref.current, props.config);
       console.log(codeMirror);
     }
-  });
+  }, []);
 
   return <div ref={ref}></div>;
 };
