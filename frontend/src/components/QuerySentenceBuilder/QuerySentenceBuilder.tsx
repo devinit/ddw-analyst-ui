@@ -23,17 +23,19 @@ const QuerySentenceBuilder: FunctionComponent = () => {
   return (
     <div>
       <DataSourceSelector source={source} onSelect={onSelectSource} />
-      <QueryBuilderActionSelector onSelectAction={onSelectAction} />
-      {action === 'select' ? <AdvancedSelectQueryBuilder /> : null}
       {source ? (
-        <CodeMirrorReact
-          config={{
-            mode,
-            value: JSON.stringify(getDefaultValue(source), null, 2),
-            lineNumbers: true,
-            theme: 'material',
-          }}
-        />
+        <>
+          <QueryBuilderActionSelector onSelectAction={onSelectAction} />
+          {action === 'select' ? <AdvancedSelectQueryBuilder /> : null}
+          <CodeMirrorReact
+            config={{
+              mode,
+              value: JSON.stringify(getDefaultValue(source), null, 2),
+              lineNumbers: true,
+              theme: 'material',
+            }}
+          />
+        </>
       ) : null}
     </div>
   );
