@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { AdvancedQueryBuilderAction } from '../../types/operations';
+import { AdvancedQueryBuilderAction, AdvancedQueryOptions } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { CodeMirrorReact, JsonModeSpec } from '../CodeMirrorReact';
@@ -8,6 +8,11 @@ import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
 
 const mode: CodeMirror.ModeSpec<JsonModeSpec> = { name: 'javascript', json: true };
 
+const getDefaultValue = (source: SourceMap): AdvancedQueryOptions => ({
+  source: source.get('id') as number,
+  columns: [],
+});
+
 const QuerySentenceBuilder: FunctionComponent = () => {
   const [source, setSource] = useState<SourceMap>();
   const [action, setAction] = useState<AdvancedQueryBuilderAction>();
@@ -15,14 +20,21 @@ const QuerySentenceBuilder: FunctionComponent = () => {
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
   const onSelectAction = (selectedAction: AdvancedQueryBuilderAction) => setAction(selectedAction);
 
-  const defaultValue = { mode: 'JSON' };
-
   return (
     <div>
       <DataSourceSelector source={source} onSelect={onSelectSource} />
       <QueryBuilderActionSelector onSelectAction={onSelectAction} />
       {action === 'select' ? <AdvancedSelectQueryBuilder /> : null}
-      <CodeMirrorReact config={{ mode, value: JSON.stringify(defaultValue, null, 2) }} />
+      {source ? (
+        <CodeMirrorReact
+          config={{
+            mode,
+            value: JSON.stringify(getDefaultValue(source), null, 2),
+            lineNumbers: true,
+            theme: 'material',
+          }}
+        />
+      ) : null}
     </div>
   );
 };
