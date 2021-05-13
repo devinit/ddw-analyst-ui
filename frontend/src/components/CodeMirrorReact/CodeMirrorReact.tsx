@@ -23,7 +23,10 @@ const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
   useEffect(() => {
     if (editor) {
       const value = editor.getValue();
+      const cursorPosition = editor.getCursor();
       editor.setValue((props.config.value as string) || value);
+      editor.setCursor(cursorPosition);
+      editor.focus();
     }
   });
 
