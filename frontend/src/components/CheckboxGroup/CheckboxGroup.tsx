@@ -1,10 +1,14 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { CheckboxProps, DropdownItemProps, Form, Segment } from 'semantic-ui-react';
+import { Form, Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
-import { ICheck } from '../ICheck';
+import { ICheck, ICheckData } from '../ICheck';
 
+export interface CheckboxGroupOption {
+  text: string;
+  value: string | number;
+}
 interface ComponentProps {
-  options: DropdownItemProps[];
+  options: CheckboxGroupOption[];
   selectedOptions?: string[];
   onUpdateOptions?: (options: string) => void;
   onDeselect?: (option: string) => void;
@@ -41,16 +45,14 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     addCheckboxes(props.selectedOptions);
   }, [props.selectedOptions]);
 
-  const onChange = (data: CheckboxProps): void => {
+  const onChange = (data: ICheckData): void => {
     const updatedCheckboxes: string[] | undefined = data.checked
       ? checkboxes?.concat(data.value as string)
       : checkboxes?.filter((checkbox) => checkbox !== data.value);
     if (props.onUpdateOptions) {
       props.onUpdateOptions(JSON.stringify({ columns: updatedCheckboxes }));
     }
-    if (props.onDeselect && !data.checked) {
-      props.onDeselect(data.value as string);
-    }
+    if (props.onDeselect && !data.checked) props.onDeselect(data.value as string);
   };
 
   const isChecked = (value: string): boolean => {
@@ -59,8 +61,8 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
       : false;
   };
 
-  const groupIntoRows = (options: DropdownItemProps[]): DropdownItemProps[][] => {
-    const rows: DropdownItemProps[][] = [];
+  const groupIntoRows = (options: CheckboxGroupOption[]): CheckboxGroupOption[][] => {
+    const rows: CheckboxGroupOption[][] = [];
     const maxPerRow = 3;
     for (let index = 0; index < options.length; index++) {
       const option = options[index];
@@ -79,8 +81,8 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     <StyledSegment>
       {groupIntoRows(props.options).map((row, index) => (
         <div key={`${index}`} className="row">
-          {row.map(({ key, text, value }) => (
-            <Form.Field key={key} className="col-md-4">
+          {row.map(({ text, value }, index) => (
+            <Form.Field key={index} className="col-md-4">
               <ICheck
                 variant="danger"
                 checked={isChecked(value as string)}
