@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState } from 'react';
 import { AdvancedQueryBuilderAction } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
+import { CodeMirrorReact } from '../CodeMirrorReact';
 import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
 
@@ -18,6 +19,7 @@ const QuerySentenceBuilder: FunctionComponent = () => {
       <DataSourceSelector source={source} onSelect={onSelectSource} />
       <QueryBuilderActionSelector onSelectAction={onSelectAction} />
       {action === 'select' ? <AdvancedSelectQueryBuilder /> : null}
+      <CodeMirrorReact />
     </div>
   );
 };
