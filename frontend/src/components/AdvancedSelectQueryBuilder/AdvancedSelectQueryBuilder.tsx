@@ -1,11 +1,29 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import { Set } from 'immutable';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import { ColumnList, SourceMap } from '../../types/sources';
+import { sortObjectArrayByProperty } from '../../utils';
+import { CheckboxGroup, CheckboxGroupOption } from '../CheckboxGroup';
+import { QueryBuilderHandler } from '../QueryBuilderHandler';
 
-// interface ComponentProps {}
+type CheckOption = CheckboxGroupOption;
+interface ComponentProps {
+  source: SourceMap;
+}
+const getColumnGroupOptionsFromSource = (source: SourceMap): CheckOption[] => {
+  const columnsList = source.get('columns') as ColumnList;
+  const columnSet = Set(columnsList.map((column) => column.get('name') as string));
 
-const AdvancedSelectQueryBuilder: FunctionComponent = () => {
+  return QueryBuilderHandler.getSelectOptionsFromColumns(columnSet, columnsList) as CheckOption[];
+};
+
+const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
+  const [displayColumnSelector, setDisplayColumnSelector] = useState(false);
+  const [columns, setColumns] = useState<CheckOption[]>([]);
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
+
+    setColumns(getColumnGroupOptionsFromSource(source));
   }, []);
 
   return (
@@ -18,6 +36,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent = () => {
           data-placement="bottom"
           data-html="true"
           title={`<i>Replaces</i> <strong>ALL</strong> columns with those selected`}
+          onClick={() => setDisplayColumnSelector(true)}
         >
           Select Column(s)
         </Button>
@@ -28,6 +47,13 @@ const AdvancedSelectQueryBuilder: FunctionComponent = () => {
           Order Columns
         </Button>
       </ButtonGroup>
+      {displayColumnSelector ? (
+        <CheckboxGroup
+          options={columns.sort(sortObjectArrayByProperty('text').sort)}
+          // selectedOptions={columns}
+          // onUpdateOptions={onUpdateColumns}
+        />
+      ) : null}
     </div>
   );
 };
