@@ -144,5 +144,5 @@ export const useSource = (id?: number, fetch = false): UseSourceResult => {
 export const useSourceFromOperation = (operation?: OperationMap): UseSourceResult => {
   const sourceID = operation && getSourceIDFromOperation(operation);
 
-  return useSource(sourceID ? parseInt(sourceID) : undefined);
+  return useSource(sourceID ? sourceID : undefined);
 };
