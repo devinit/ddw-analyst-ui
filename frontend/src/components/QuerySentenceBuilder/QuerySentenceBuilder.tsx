@@ -26,7 +26,7 @@ const QuerySentenceBuilder: FunctionComponent = () => {
       {source ? (
         <>
           <QueryBuilderActionSelector onSelectAction={onSelectAction} />
-          {action === 'select' ? <AdvancedSelectQueryBuilder /> : null}
+          {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
           <CodeMirrorReact
             config={{
               mode,
