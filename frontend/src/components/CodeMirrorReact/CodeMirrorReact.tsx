@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef } from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
@@ -12,13 +12,20 @@ interface CodeMirrorReactProps {
 }
 
 const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
+  const [editor, setEditor] = useState<CodeMirror.Editor>();
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (ref.current) {
       const codeMirror = CodeMirror(ref.current, props.config);
-      console.log(codeMirror);
+      setEditor(codeMirror);
     }
   }, []);
+  useEffect(() => {
+    if (editor) {
+      const value = editor.getValue();
+      editor.setValue((props.config.value as string) || value);
+    }
+  });
 
   return <div ref={ref}></div>;
 };
