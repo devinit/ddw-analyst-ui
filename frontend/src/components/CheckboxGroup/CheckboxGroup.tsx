@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Checkbox, CheckboxProps, DropdownItemProps, Form, Segment } from 'semantic-ui-react';
+import { CheckboxProps, DropdownItemProps, Form, Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { ICheck } from '../ICheck';
 
 interface ComponentProps {
   options: DropdownItemProps[];
@@ -23,10 +24,7 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     addCheckboxes(props.selectedOptions);
   }, [props.selectedOptions]);
 
-  const onChange = (
-    _event: React.SyntheticEvent<HTMLElement, Event>,
-    data: CheckboxProps,
-  ): void => {
+  const onChange = (data: CheckboxProps): void => {
     const updatedCheckboxes: string[] | undefined = data.checked
       ? checkboxes?.concat(data.value as string)
       : checkboxes?.filter((checkbox) => checkbox !== data.value);
@@ -66,12 +64,14 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
         <div key={`${index}`} className="row">
           {row.map(({ key, text, value }) => (
             <Form.Field key={key} className="col-md-4">
-              <Checkbox
+              <ICheck
+                variant="danger"
                 checked={isChecked(value as string)}
                 label={text}
-                value={value as string}
+                id={value as string}
+                name={value as string}
                 onChange={onChange}
-                className={'selectColumnCheckbox'}
+                className="selectColumnCheckbox text-capitalize"
               />
             </Form.Field>
           ))}
