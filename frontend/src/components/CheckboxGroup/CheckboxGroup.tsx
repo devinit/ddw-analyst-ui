@@ -11,7 +11,7 @@ export interface CheckboxGroupOption {
 interface ComponentProps {
   options: CheckboxGroupOption[];
   selectedOptions?: string[];
-  onUpdateOptions?: (options: string) => void;
+  onUpdateOptions?: (columns?: string[]) => void;
   onDeselect?: (option: string) => void;
 }
 
@@ -51,7 +51,7 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
       ? checkboxes?.concat(data.value as string)
       : checkboxes?.filter((checkbox) => checkbox !== data.value);
     if (props.onUpdateOptions) {
-      props.onUpdateOptions(JSON.stringify({ columns: updatedCheckboxes }));
+      props.onUpdateOptions(updatedCheckboxes);
     }
     if (props.onDeselect && !data.checked) props.onDeselect(data.value as string);
   };
