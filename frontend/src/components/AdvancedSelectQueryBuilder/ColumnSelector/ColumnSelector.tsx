@@ -1,6 +1,7 @@
 import { Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Column, ColumnList, SourceMap } from '../../../types/sources';
+import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
+import { ColumnList, SourceMap } from '../../../types/sources';
 import { sortObjectArrayByProperty } from '../../../utils';
 import { CheckboxGroup, CheckboxGroupOption } from '../../CheckboxGroup';
 import { QueryBuilderHandler } from '../../QueryBuilderHandler';
@@ -8,7 +9,8 @@ import { QueryBuilderHandler } from '../../QueryBuilderHandler';
 interface ColumnSelectorProps {
   show?: boolean;
   source: SourceMap;
-  columns: Column[];
+  columns: AdvancedQueryColumn[];
+  onUpdateSelection?: (options: Partial<AdvancedQueryOptions>) => void;
 }
 type CheckOption = CheckboxGroupOption;
 
@@ -31,6 +33,12 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
   }, []);
   const onUpdateColumns = (selection: string[]) => {
     setSelectedColumns(selection);
+    if (props.onUpdateSelection) {
+      const _columns = (source.get('columns') as ColumnList)
+        .filter((column) => selection.includes(column.get('name') as string))
+        .toJS();
+      props.onUpdateSelection({ columns: _columns });
+    }
   };
 
   if (show) {
