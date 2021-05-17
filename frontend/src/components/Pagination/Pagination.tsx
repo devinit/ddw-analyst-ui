@@ -4,7 +4,7 @@ import ReactPaginate, { ReactPaginateProps } from 'react-paginate';
 
 export interface PaginationProps extends Partial<ReactPaginateProps> {
   className?: string;
-  currentPage: number;
+  currentPage?: number;
 }
 const renderLabel = (caption: string): ReactNode => (
   <>

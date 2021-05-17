@@ -7,7 +7,7 @@ interface ComponentProps extends Partial<PaginationProps> {
   limit: number;
   count: number;
   className?: string;
-  currentPage: number;
+  currentPage?: number;
 }
 
 const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...props }) => {
