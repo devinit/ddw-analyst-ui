@@ -177,14 +177,12 @@ describe('The Datasets Pages', () => {
           cy.get('[data-testid="datasetRows"]').each((row) => {
             const badge = row.find('[data-testid="dataset-frozen-data-status"]');
             if (badge[0].innerHTML === 'Completed') {
-              row
-                .find('[data-testid="frozen-dataset-download-button"]')
-                .should('not.be.visible')
-                .should(
-                  'have.attr',
-                  'href',
-                  `/api/tables/download/${currentFrozenDataset.saved_query_db_table}/dataset/`,
-                );
+              const button = row.find('[data-testid="frozen-dataset-download-button"]');
+              expect(button).to.not.be.visible;
+              expect(button).to.have.attr(
+                'href',
+                `/api/tables/download/${currentFrozenDataset.saved_query_db_table}/dataset/`,
+              );
             } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
               row.find('[data-testid="frozen-dataset-download-button"]').should('not.exist');
             }
@@ -192,15 +190,6 @@ describe('The Datasets Pages', () => {
         });
       }
     });
-  });
-
-  it('that info button logs error message incase of a dataset freeze error', () => {
-    cy.intercept('GET', '/api/dataset/history/**', { fixture: 'erroredFrozenDataset' });
-    cy.visit('/');
-    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
-    cy.get('[data-testid="frozen-dataset-info-button"]').click({ force: true });
-    cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
-    cy.get('.modal-footer').contains('Close').click();
   });
 
   it('deletes a frozen dataset', () => {
@@ -216,5 +205,14 @@ describe('The Datasets Pages', () => {
     cy.get('@datasetRowNumber').then((datasetRowNumber) => {
       cy.get('[data-testid="datasetRows"]').should('have.length', datasetRowNumber - 1);
     });
+  });
+
+  it('that info button logs error message incase of a dataset freeze error', () => {
+    cy.intercept('GET', '/api/dataset/history/**', { fixture: 'erroredFrozenDataset' });
+    cy.visit('/');
+    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
+    cy.get('[data-testid="frozen-dataset-info-button"]').click({ force: true });
+    cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
+    cy.get('.modal-footer').contains('Close').click();
   });
 });
