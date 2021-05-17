@@ -6,6 +6,7 @@ import { APIResponse } from '../types/api';
 import { OperationMap } from '../types/operations';
 import { Source, SourceMap } from '../types/sources';
 import { api, getSourceIDFromOperation, localForageKeys } from '../utils';
+import { fetchCachedSources, updateSourcesCache } from '../utils/cache';
 interface Options {
   limit: number;
   offset: number;
@@ -46,7 +47,7 @@ export const useSources = (options: Options = defaultOptions, fetch = false): Li
       .then(({ status, data, statusText }: AxiosResponse<APIResponse<Source[]>>) => {
         if (status === 200 && data.results) {
           setSources(fromJS(data.results));
-          localForage.setItem(localForageKeys.SOURCES, data.results);
+          updateSourcesCache(data.results);
         } else if (status === 401) {
           console.log('Failed to fetch sources: ', statusText);
           setSources(fromJS([]));
@@ -67,7 +68,7 @@ export const useSources = (options: Options = defaultOptions, fetch = false): Li
     if (fetch) {
       fetchSources();
     } else {
-      localForage.getItem<Source[] | undefined>(localForageKeys.SOURCES).then((sources) => {
+      fetchCachedSources().then((sources) => {
         if (sources && sources.length) {
           setSources(fromJS(sources));
         } else {
