@@ -118,7 +118,7 @@ describe('The Data Sources Page', () => {
       cy.visit('/queries/build');
       cy.get('[name="name"]').focus().type('My Test Dataset');
       cy.get('[name="description"]').focus().type('My Test Dataset Description');
-      cy.get('.search').eq(1).click({ force: true }).type('FTS ISO codes test{enter}{esc}');
+      cy.get('.search').eq(1).click({ force: true }).type('FTS ISO codes test');
       cy.get('.item', { timeout: 10000 }).eq(0).click();
       cy.get('[data-testid="qb-add-step-button"]').click();
 
