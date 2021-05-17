@@ -22,7 +22,7 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
       props.onPageChange(page);
     }
   };
-  const max = offset + limit;
+  const max = offset ? offset : 0 + limit;
 
   return (
     <Row className={classNames(props.className)}>
@@ -33,7 +33,7 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
       >
         {count === 0
           ? 'No Data'
-          : `Showing ${offset + 1} to ${max > count ? count : max} of ${count}`}
+          : `Showing ${offset ? offset : 0 + 1} to ${max > count ? count : max} of ${count}`}
       </Col>
       <Col lg={8} className="align-middle">
         <Pagination
