@@ -87,7 +87,12 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
       <Card className="dataset-list">
         <Card.Header className={classNames({ 'd-none': !props.dataset })}>
           <h4>{props.dataset.get('name')}</h4>
-          <Button size="sm" variant="danger" onClick={onClickFreezeButton}>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={onClickFreezeButton}
+            data-testid="dataset-freeze-button"
+          >
             Freeze Current Version
           </Button>
         </Card.Header>

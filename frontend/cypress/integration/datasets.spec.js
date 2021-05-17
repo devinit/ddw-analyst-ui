@@ -90,7 +90,8 @@ describe('The Datasets Pages', () => {
     cy.get('[data-testid="active-data-source"]')
       .children()
       .eq(1)
-      .contains('Countries Being Left Behind');
+      .not()
+      .contains('Select Data Source');
   });
 
   it('makes a copy of a published dataset', () => {
@@ -111,6 +112,107 @@ describe('The Datasets Pages', () => {
     cy.get('[data-testid="active-data-source"]')
       .children()
       .eq(1)
-      .contains('Countries Being Left Behind');
+      .not()
+      .contains('Select Data Source');
+  });
+
+  it('views data in datasets', () => {
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/datasets/mine/', datasets);
+    });
+    cy.fixture('datasetTableData').then((data) => {
+      cy.intercept('api/dataset/data/4', data);
+    });
+
+    // View dataset data in tabular form and export it as csv
+    cy.visit('/');
+    cy.get('.dataset-row')
+      .eq(3)
+      .then(($datasetRow) => {
+        cy.wrap($datasetRow)
+          .contains('View Data')
+          .click({ force: true })
+          .then(() => {
+            cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 10);
+            cy.get('[data-testid="dataset-data-export-form"]').then(($form) => {
+              cy.wrap($form).should('have.attr', 'method', 'POST');
+              cy.wrap($form).should('have.attr', 'action', '/api/export/4/');
+            });
+            cy.get('[data-testid="dataset-export-button"]')
+              .should('be.visible')
+              .should('have.attr', 'type', 'submit');
+          });
+      });
+  });
+
+  it('freezes a dataset', () => {
+    cy.visit('/');
+    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
+    cy.get('[data-testid="dataset-freeze-button"]').click();
+    cy.get('[data-testid="dataset-frozen-data-description"]')
+      .should('be.visible')
+      .type('Test dataset freeze');
+    cy.get('[data-testid="dataset-frozen-data-save-button"]').should('be.visible').click();
+    cy.get('[data-testid="dataset-frozen-data-refresh-button"]').first().click({ force: true });
+    cy.get('[data-testid="dataset-frozen-data-status"]').each((badge) => {
+      expect(['Errored', 'Completed', 'Pending'].includes(badge[0].innerHTML)).to.be.true;
+    });
+    cy.get('.dataset-row-title').contains('Test dataset freeze');
+  });
+
+  it('downloads a successfully frozen dataset', () => {
+    cy.getAccessToken().then((token) => {
+      if (token) {
+        const options = {
+          url: `${Cypress.config('baseUrl')}/api/savedquerysets/`,
+          headers: {
+            Authorization: `token ${token.replaceAll('"', '')}`,
+          },
+        };
+        cy.request(options).then((response) => {
+          const currentDataDatasetId = Math.max(...response.body.map((data) => Number(data.id)));
+          const currentFrozenDataset = response.body.find(
+            (item) => Number(item.id) === currentDataDatasetId,
+          );
+          cy.get('[data-testid="datasetRows"]').each((row) => {
+            const badge = row.find('[data-testid="dataset-frozen-data-status"]');
+            if (badge[0].innerHTML === 'Completed') {
+              const button = row.find('[data-testid="frozen-dataset-download-button"]');
+              expect(button).to.not.be.visible;
+              expect(button).to.have.attr(
+                'href',
+                `/api/tables/download/${currentFrozenDataset.saved_query_db_table}/dataset/`,
+              );
+            } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
+              row.find('[data-testid="frozen-dataset-download-button"]').should('not.exist');
+            }
+          });
+        });
+      }
+    });
+  });
+
+  it('deletes a frozen dataset', () => {
+    // Get initial frozen datasets row count
+    cy.get('[data-testid="datasetRows"]')
+      .its('length')
+      .then((rowNumber) => {
+        cy.wrap(rowNumber).as('datasetRowNumber');
+      });
+
+    // Delete frozen dataset
+    cy.get('[data-testid="frozen-dataset-delete-button"]').first().dblclick({ force: true });
+    cy.get('@datasetRowNumber').then((datasetRowNumber) => {
+      cy.get('[data-testid="datasetRows"]').should('have.length', datasetRowNumber - 1);
+    });
+  });
+
+  it('that info button logs error message incase of a dataset freeze error', () => {
+    cy.intercept('GET', '/api/dataset/history/**', { fixture: 'erroredFrozenDataset' });
+    cy.visit('/');
+    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
+    cy.get('[data-testid="frozen-dataset-info-button"]').click({ force: true });
+    cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
+    cy.get('.modal-footer').contains('Close').click();
   });
 });

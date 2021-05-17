@@ -34,7 +34,9 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
         });
     }
   }, [fetching]);
-  useEffect(() => setItem(props.item), [props.item]);
+  useEffect(() => {
+    setItem(props.item);
+  }, [props.item]);
   const onDelete = () => {
     if (deleteStatus === 'default') {
       setDeleteStatus('confirm');
@@ -43,6 +45,7 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
         if (response.status === 204 && props.onDelete) {
           props.onDelete(item);
         }
+        setDeleteStatus('default');
       });
     }
   };
@@ -54,16 +57,26 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
       <Dimmer active={fetching} inverted>
         <Loader content="Loading" />
       </Dimmer>
-      <div className="dataset-row p-3 border-bottom">
+      <div className="dataset-row p-3 border-bottom" data-testid="datasetRows">
         <div className="col-md-12">
           <div className="dataset-row-title h4">{item.description}</div>
 
           <div className="dataset-row-actions float mb-1">
-            <Button size="sm" variant="dark" onClick={onRefresh}>
+            <Button
+              size="sm"
+              variant="dark"
+              onClick={onRefresh}
+              data-testid="dataset-frozen-data-refresh-button"
+            >
               <i className="material-icons">refresh</i>
             </Button>
             {item.logs ? (
-              <Button variant="dark" size="sm" onClick={toggleShowLogs}>
+              <Button
+                variant="dark"
+                size="sm"
+                onClick={toggleShowLogs}
+                data-testid="frozen-dataset-info-button"
+              >
                 <i className="material-icons">info</i> Logs
               </Button>
             ) : null}
@@ -76,11 +89,17 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-dark btn-sm"
+                data-testid="frozen-dataset-download-button"
               >
                 Download
               </a>
             ) : null}
-            <Button variant="danger" size="sm" onClick={onDelete}>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={onDelete}
+              data-testid="frozen-dataset-delete-button"
+            >
               <i className="material-icons">delete</i>{' '}
               {deleteStatus === 'default' ? 'Delete' : 'Confirm Delete'}
             </Button>
@@ -90,7 +109,10 @@ export const DatasetHistoryListItem: FunctionComponent<ComponentProps> = (props)
             Created {moment(item.created_on).fromNow()}
             {' by '}
             <span>{extractNameFromEmail(item.user || '')}</span>
-            <span className={`badge ml-2 ${statusClasses[item.status]}`}>
+            <span
+              className={`badge ml-2 ${statusClasses[item.status]}`}
+              data-testid="dataset-frozen-data-status"
+            >
               {status[item.status]}
             </span>
           </div>
