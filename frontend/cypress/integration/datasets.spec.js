@@ -174,15 +174,22 @@ describe('The Datasets Pages', () => {
           const currentFrozenDataset = response.body.find(
             (item) => Number(item.id) === currentDataDatasetId,
           );
-          cy.get('[data-testid="datasetRows"]')
-            .find('[data-testid="frozen-dataset-download-button"]')
-            .eq(0)
-            .should('not.be.visible')
-            .should(
-              'have.attr',
-              'href',
-              `/api/tables/download/${currentFrozenDataset.saved_query_db_table}/dataset/`,
-            );
+          cy.get('[data-testid="datasetRows"]').each((row) => {
+            const badge = row.find('[data-testid="dataset-frozen-data-status"]');
+            console.log('Badge:', badge);
+            if (badge[0].innerHTML === 'Completed') {
+              row
+                .find('[data-testid="frozen-dataset-download-button"]')
+                .should('not.be.visible')
+                .should(
+                  'have.attr',
+                  'href',
+                  `/api/tables/download/${currentFrozenDataset.saved_query_db_table}/dataset/`,
+                );
+            } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
+              row.find('[data-testid="frozen-dataset-download-button"]').should('not.exist');
+            }
+          });
         });
       }
     });
