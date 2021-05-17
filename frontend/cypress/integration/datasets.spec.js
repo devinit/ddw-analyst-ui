@@ -154,11 +154,13 @@ describe('The Datasets Pages', () => {
       .type('Test dataset freeze');
     cy.get('[data-testid="dataset-frozen-data-save-button"]').should('be.visible').click();
     cy.get('[data-testid="dataset-frozen-data-refresh-button"]').first().click({ force: true });
-    cy.get('[data-testid="dataset-frozen-data-status"]').contains('Completed');
+    cy.get('[data-testid="dataset-frozen-data-status"]').each((badge) => {
+      expect(['Errored', 'Completed', 'Pending'].includes(badge[0].innerHTML)).to.be.true;
+    });
     cy.get('.dataset-row-title').contains('Test dataset freeze');
   });
 
-  it('downloads frozen dataset', () => {
+  it('downloads a successfully frozen dataset', () => {
     cy.getAccessToken().then((token) => {
       if (token) {
         const options = {
@@ -172,7 +174,8 @@ describe('The Datasets Pages', () => {
           const currentFrozenDataset = response.body.find(
             (item) => Number(item.id) === currentDataDatasetId,
           );
-          cy.get('[data-testid="frozen-dataset-download-button"]')
+          cy.get('[data-testid="datasetRows"]')
+            .find('[data-testid="frozen-dataset-download-button"]')
             .eq(0)
             .should('not.be.visible')
             .should(
