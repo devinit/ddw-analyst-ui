@@ -63,7 +63,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
-  const params = useParams();
+  const params: { id: string } = useParams();
   const pageNumber = params.id ? parseInt(params.id) : 0;
   useEffect(() => {
     fetchQueries(showMyQueries);
