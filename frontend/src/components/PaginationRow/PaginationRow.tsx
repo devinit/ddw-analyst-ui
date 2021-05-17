@@ -7,10 +7,11 @@ interface ComponentProps extends Partial<PaginationProps> {
   limit: number;
   count: number;
   className?: string;
+  currentPage: number;
 }
 
 const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...props }) => {
-  const [offset, setOffset] = useState(0);
+  const [offset, setOffset] = useState(props.currentPage);
   const onPageSelected = (page: { selected: number }): void => {
     if (page.selected === 0) {
       setOffset(0);
@@ -39,6 +40,7 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
           className="pagination-danger float-right"
           {...props}
           onPageChange={onPageSelected}
+          currentPage={props.currentPage}
         />
       </Col>
     </Row>

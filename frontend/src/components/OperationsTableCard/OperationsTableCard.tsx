@@ -11,7 +11,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useParams, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
@@ -63,7 +63,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
-
+  const params = useParams();
+  const pageNumber = params.id ? parseInt(params.id) : 0;
   useEffect(() => {
     fetchQueries(showMyQueries);
   }, []);
@@ -207,7 +208,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const onPageChange = (page: { selected: number }): void => {
     props.actions.fetchOperations({
       limit: props.limit,
-      offset: page.selected * props.limit,
+      offset: pageNumber * props.limit,
       search: searchQuery,
       mine: showMyQueries,
       link: props.sourceID
@@ -215,12 +216,15 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
             props.sourceID,
             showMyQueries,
             props.limit,
-            page.selected * props.limit,
+            pageNumber * props.limit,
           )
         : undefined,
     });
-    props.history.push(`/page/${page.selected}`);
-    console.log(props.match);
+    if (page.selected !== 0) {
+      props.history.push(`/page/${page.selected}`);
+    } else {
+      props.history.push('/');
+    }
   };
 
   const onFilterByDataSource = (
@@ -249,6 +253,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
           count={count}
           pageCount={Math.ceil(count / props.limit)}
           onPageChange={onPageChange}
+          currentPage={pageNumber}
         />
       );
     }
