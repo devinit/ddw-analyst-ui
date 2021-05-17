@@ -70,11 +70,13 @@ describe('The Data Sources Page', () => {
           cy.get('[data-testid="frozen-data-form-save-button"]').should('be.visible').click();
           cy.get('[data-testid="frozen-dataset-refresh-button"]').first().click({ force: true });
         });
-      cy.get('[data-testid="frozen-data-status"]').contains('Completed');
+      cy.get('[data-testid="frozen-data-status"]').each((badge) => {
+        expect(['Errored', 'Completed', 'Pending'].includes(badge[0].innerHTML)).to.be.true;
+      });
       cy.get('[data-testid="frozen-data-description"]').contains('test');
     });
 
-    it('downloads frozen data source', () => {
+    it('downloads a successfully frozen data source', () => {
       cy.getAccessToken().then((token) => {
         if (token) {
           const options = {
@@ -88,17 +90,39 @@ describe('The Data Sources Page', () => {
             const currentFrozenDataSource = response.body.find(
               (item) => Number(item.id) === currentDataSourceId,
             );
-            cy.get('[data-testid="frozen-source-download-button"]')
-              .eq(0)
-              .should('not.be.visible')
-              .should(
-                'have.attr',
-                'href',
-                `/api/tables/download/${currentFrozenDataSource.frozen_db_table}/archives/`,
-              );
+            cy.get('.dataset-row').each((row) => {
+              const badge = row.find('[data-testid="frozen-data-status"]');
+              if (badge[0].innerHTML === 'Completed') {
+                row
+                  .find('[data-testid="frozen-source-download-button"]')
+                  .should('not.be.visible')
+                  .should(
+                    'have.attr',
+                    'href',
+                    `/api/tables/download/${currentFrozenDataSource.frozen_db_table}/archives/`,
+                  );
+              } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
+                row.find('[data-testid="frozen-source-download-button"]').should('not.exist');
+              }
+            });
           });
         }
       });
+    });
+
+    it('that info button logs error message incase of a datasource freeze error', () => {
+      cy.intercept('GET', '/api/source/history/**', { fixture: 'erroredFrozenDataSource' });
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(($element) => {
+          cy.wrap($element).contains('Versions').click();
+          cy.get('[data-testid="frozen-data-status"]').contains('Errored');
+          cy.get('[data-testid="frozen-source-info-button"]').first().click({ force: true });
+          cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
+          cy.get('.modal-footer').contains('Close').click();
+        });
     });
 
     it('searches for frozen data source in sources', () => {
@@ -111,8 +135,7 @@ describe('The Data Sources Page', () => {
       cy.visit('/queries/build');
       cy.get('[name="name"]').focus().type('My Test Dataset');
       cy.get('[name="description"]').focus().type('My Test Dataset Description');
-      cy.get('.search').eq(1).click({ force: true });
-      cy.wait(5000);
+      cy.get('.search', { timeout: 10000 }).eq(1).click({ force: true });
       cy.get('.search').eq(1).type('FTS ISO codes test{enter}{esc}');
       cy.get('[data-testid="qb-add-step-button"]').click();
 
@@ -150,21 +173,6 @@ describe('The Data Sources Page', () => {
       cy.visit('/sources');
       cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
       cy.get('.row').contains('No Data');
-    });
-
-    it('that info button logs error message incase of a datasource freeze error', () => {
-      cy.intercept('GET', '/api/source/history/**', { fixture: 'erroredFrozenDataSource' });
-      cy.visit('/sources');
-      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
-      cy.get('[data-testid="sources-table-row"]')
-        .first()
-        .then(($element) => {
-          cy.wrap($element).contains('Versions').click();
-          cy.get('[data-testid="frozen-data-status"]').contains('Errored');
-          cy.get('[data-testid="frozen-source-info-button"]').first().click({ force: true });
-          cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
-          cy.get('.modal-footer').contains('Close').click();
-        });
     });
   });
 });

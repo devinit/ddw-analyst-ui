@@ -176,7 +176,6 @@ describe('The Datasets Pages', () => {
           );
           cy.get('[data-testid="datasetRows"]').each((row) => {
             const badge = row.find('[data-testid="dataset-frozen-data-status"]');
-            console.log('Badge:', badge);
             if (badge[0].innerHTML === 'Completed') {
               row
                 .find('[data-testid="frozen-dataset-download-button"]')
@@ -195,6 +194,15 @@ describe('The Datasets Pages', () => {
     });
   });
 
+  it('that info button logs error message incase of a dataset freeze error', () => {
+    cy.intercept('GET', '/api/dataset/history/**', { fixture: 'erroredFrozenDataset' });
+    cy.visit('/');
+    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
+    cy.get('[data-testid="frozen-dataset-info-button"]').click({ force: true });
+    cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
+    cy.get('.modal-footer').contains('Close').click();
+  });
+
   it('deletes a frozen dataset', () => {
     // Get initial frozen datasets row count
     cy.get('[data-testid="datasetRows"]')
@@ -208,14 +216,5 @@ describe('The Datasets Pages', () => {
     cy.get('@datasetRowNumber').then((datasetRowNumber) => {
       cy.get('[data-testid="datasetRows"]').should('have.length', datasetRowNumber - 1);
     });
-  });
-
-  it('that info button logs error message incase of a dataset freeze error', () => {
-    cy.intercept('GET', '/api/dataset/history/**', { fixture: 'erroredFrozenDataset' });
-    cy.visit('/');
-    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
-    cy.get('[data-testid="frozen-dataset-info-button"]').click({ force: true });
-    cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
-    cy.get('.modal-footer').contains('Close').click();
   });
 });
