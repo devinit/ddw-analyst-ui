@@ -116,12 +116,17 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const aliasCreationStatus = operation.get(
       'alias_creation_status',
     ) as AliasCreationStatus | null;
+    const aliases = operation.get('aliases') as Map<string, Map<string, string | number>>;
+    let columnAliases;
+    if (aliases) {
+      columnAliases = aliases.map((alias) => alias.get('column_alias'));
+    }
     if (logs?.get('type') || logs?.get('message')) {
       if (logs.get('message') === OBSOLETE_COLUMNS_LOG_MESSAGE) {
-        const columns = logs.get('columns') as string[];
+        columnAliases = columnAliases ? columnAliases : (logs.get('columns') as string[]);
         const steps = logs.get('steps') as number[];
         setAlertMessages([
-          `Columns ${columns.join(', ')} used in steps ${steps.join(', ')} are obsolete.`,
+          `Columns ${columnAliases.join(', ')} used in steps ${steps.join(', ')} are obsolete.`,
           'NB: This warning will be cleared on save',
         ]);
       }
