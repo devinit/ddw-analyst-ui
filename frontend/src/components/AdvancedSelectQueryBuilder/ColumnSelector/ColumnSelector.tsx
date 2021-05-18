@@ -21,7 +21,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
 
     setColumns(getColumnGroupOptionsFromSource(source));
-  }, []);
+  }, [source]);
   const onUpdateColumns = (selection: string[]) => {
     setSelectedColumns(selection);
     if (props.onUpdateSelection) {
