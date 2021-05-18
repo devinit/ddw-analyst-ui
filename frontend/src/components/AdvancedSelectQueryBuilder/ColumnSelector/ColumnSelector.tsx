@@ -1,10 +1,9 @@
-import { Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
 import { ColumnList, SourceMap } from '../../../types/sources';
 import { sortObjectArrayByProperty } from '../../../utils';
-import { CheckboxGroup, CheckboxGroupOption } from '../../CheckboxGroup';
-import { QueryBuilderHandler } from '../../QueryBuilderHandler';
+import { CheckboxGroup } from '../../CheckboxGroup';
+import { CheckOption, cleanColumn, getColumnGroupOptionsFromSource } from './utils';
 
 interface ColumnSelectorProps {
   show?: boolean;
@@ -12,14 +11,6 @@ interface ColumnSelectorProps {
   columns: AdvancedQueryColumn[];
   onUpdateSelection?: (options: Partial<AdvancedQueryOptions>) => void;
 }
-type CheckOption = CheckboxGroupOption;
-
-const getColumnGroupOptionsFromSource = (source: SourceMap): CheckOption[] => {
-  const columnsList = source.get('columns') as ColumnList;
-  const columnSet = Set(columnsList.map((column) => column.get('name') as string));
-
-  return QueryBuilderHandler.getSelectOptionsFromColumns(columnSet, columnsList) as CheckOption[];
-};
 
 const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, ...props }) => {
   const [columns, setColumns] = useState<CheckOption[]>([]);
@@ -34,11 +25,12 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
   const onUpdateColumns = (selection: string[]) => {
     setSelectedColumns(selection);
     if (props.onUpdateSelection) {
-      const _columns = (source.get('columns') as ColumnList)
-        .filter((column) => selection.includes(column.get('name') as string))
-        .toJS()
-        .map(({ id, name, alias }) => ({ id, name, alias }));
-      props.onUpdateSelection({ columns: _columns });
+      props.onUpdateSelection({
+        columns: (source.get('columns') as ColumnList)
+          .filter((column) => selection.includes(column.get('name') as string))
+          .toJS()
+          .map((column) => cleanColumn(column, props.columns)),
+      });
     }
   };
 
