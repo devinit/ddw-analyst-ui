@@ -15,11 +15,13 @@ interface OperationFormProps {
   valid?: boolean;
   processing?: boolean;
   previewing?: boolean;
+  validating?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
   onDeleteOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
   onPreview?: () => void;
   onReset?: () => void;
+  onValidate?: () => void;
 }
 
 const schema = Yup.object().shape({
@@ -196,6 +198,17 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               data-testid="qb-preview-button"
             >
               {props.previewing ? 'Close Preview' : 'Preview'}
+            </Button>
+            <Button
+              variant="dark"
+              className={classNames({ 'd-none': !props.operation })}
+              onClick={props.onValidate}
+              size="sm"
+              hidden={!props.onValidate}
+              disabled={!props.valid}
+              data-testid="qb-validate-button"
+            >
+              {props.validating ? 'Validating' : 'Validate'}
             </Button>
             <Dropdown.Toggle
               split

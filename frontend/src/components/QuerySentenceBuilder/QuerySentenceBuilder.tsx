@@ -1,11 +1,21 @@
+import { fromJS } from 'immutable';
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
-import { AdvancedQueryBuilderAction, AdvancedQueryOptions } from '../../types/operations';
+import {
+  AdvancedQueryBuilderAction,
+  AdvancedQueryOptions,
+  Operation,
+  OperationMap,
+} from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { CodeMirrorReact, JsonModeSpec } from '../CodeMirrorReact';
 import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
 
+interface ComponentProps {
+  operation?: OperationMap;
+  onUpdateOperation: (operation: OperationMap) => void;
+}
 interface QueryContextProps {
   options: AdvancedQueryOptions;
   updateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
@@ -17,7 +27,7 @@ export const AdvancedQueryContext = createContext<QueryContextProps>({
   options: defaultOptions as AdvancedQueryOptions,
 });
 
-const QuerySentenceBuilder: FunctionComponent = () => {
+const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [source, setSource] = useState<SourceMap>();
   const [action, setAction] = useState<AdvancedQueryBuilderAction>();
   const [context, setContext] = useState<QueryContextProps>({
@@ -35,10 +45,19 @@ const QuerySentenceBuilder: FunctionComponent = () => {
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
   const onSelectAction = (selectedAction: AdvancedQueryBuilderAction) => setAction(selectedAction);
   const onChange = (value: string) => {
+    const parsedValue = JSON.parse(value);
     setContext({
-      options: { ...context.options, ...JSON.parse(value) },
+      options: { ...context.options, ...parsedValue },
       updateOptions: onUpdateOptions,
     });
+    if (props.operation) {
+      props.onUpdateOperation(
+        props.operation.set('advanced_config' as keyof Operation, parsedValue),
+      );
+    } else {
+      const operation = fromJS({ advanced_config: parsedValue });
+      props.onUpdateOperation(operation);
+    }
   };
 
   return (
