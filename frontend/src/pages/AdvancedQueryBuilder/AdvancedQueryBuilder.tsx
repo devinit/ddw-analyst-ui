@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
