@@ -34,6 +34,12 @@ const QuerySentenceBuilder: FunctionComponent = () => {
 
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
   const onSelectAction = (selectedAction: AdvancedQueryBuilderAction) => setAction(selectedAction);
+  const onChange = (value: string) => {
+    setContext({
+      options: { ...context.options, ...JSON.parse(value) },
+      updateOptions: onUpdateOptions,
+    });
+  };
 
   return (
     <div>
@@ -50,6 +56,7 @@ const QuerySentenceBuilder: FunctionComponent = () => {
                 lineNumbers: true,
                 theme: 'material',
               }}
+              onChange={onChange}
             />
           </>
         ) : null}
