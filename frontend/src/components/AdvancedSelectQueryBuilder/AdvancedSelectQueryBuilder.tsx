@@ -34,9 +34,6 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         <Button variant="danger" size="sm" className="d-none">
           Insert Column
         </Button>
-        <Button variant="danger" size="sm" className="d-none">
-          Order Columns
-        </Button>
       </ButtonGroup>
       <AdvancedQueryContext.Consumer>
         {({ options, updateOptions }) => (
