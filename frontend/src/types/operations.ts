@@ -34,6 +34,7 @@ export interface Operation {
   user: string;
   aliases: OperationColumn[] | List<OperationColumnMap>;
   logs: Record<string, unknown>;
+  advanced_config: AdvancedQueryOptions | null;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {
