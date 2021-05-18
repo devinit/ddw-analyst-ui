@@ -36,7 +36,8 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     if (props.onUpdateSelection) {
       const _columns = (source.get('columns') as ColumnList)
         .filter((column) => selection.includes(column.get('name') as string))
-        .toJS();
+        .toJS()
+        .map(({ id, name, alias }) => ({ id, name, alias }));
       props.onUpdateSelection({ columns: _columns });
     }
   };
