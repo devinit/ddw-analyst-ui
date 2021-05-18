@@ -101,7 +101,7 @@ export interface AdvancedQueryOptions {
   groupby?: Column[];
 }
 
-export interface AdvancedQueryColumn extends Column {
+export interface AdvancedQueryColumn extends Partial<Column> {
   aggregate?: 'sum' | 'avg' | 'max' | 'min' | 'std';
 }
 
