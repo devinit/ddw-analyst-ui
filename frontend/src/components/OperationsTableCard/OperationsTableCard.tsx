@@ -65,6 +65,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const { sources } = useContext(SourcesContext);
   const params: { id: string } = useParams();
   const pageNumber = params.id ? parseInt(params.id) : 0;
+  localStorage.setItem('offset', (pageNumber * props.limit).toString());
+
   useEffect(() => {
     fetchQueries(showMyQueries);
   }, []);
@@ -84,7 +86,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     if (!loading) {
       props.actions.fetchOperations({
         limit: props.limit,
-        offset: 0,
+        offset: parseInt(localStorage.getItem('offset')),
         mine,
         link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
       });
@@ -208,7 +210,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const onPageChange = (page: { selected: number }): void => {
     props.actions.fetchOperations({
       limit: props.limit,
-      offset: pageNumber * props.limit,
+      offset: page.selected * props.limit,
       search: searchQuery,
       mine: showMyQueries,
       link: props.sourceID
@@ -216,7 +218,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
             props.sourceID,
             showMyQueries,
             props.limit,
-            pageNumber * props.limit,
+            page.selected * props.limit,
           )
         : undefined,
     });
