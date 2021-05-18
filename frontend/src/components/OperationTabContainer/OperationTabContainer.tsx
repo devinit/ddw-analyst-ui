@@ -10,12 +10,14 @@ type ComponentProps = {
   editable?: boolean;
   processing?: boolean;
   previewing?: boolean;
+  validating?: boolean;
   alertMessages?: string[];
   onSave: (preview?: boolean) => void;
   onUpdate: (operation?: OperationMap) => void;
   onPreview?: () => void;
   onDelete: (operation?: OperationMap) => void;
   onReset?: () => void;
+  onValidate?: () => void;
 };
 
 const StyledCardBody = styled(Card.Body)`
@@ -75,8 +77,10 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
             onPreview={props.onPreview}
             previewing={props.previewing}
             processing={props.processing}
+            validating={props.validating}
             onDeleteOperation={props.onDelete}
             onReset={props.onReset}
+            onValidate={props.onValidate}
           >
             {props.children}
           </OperationForm>
