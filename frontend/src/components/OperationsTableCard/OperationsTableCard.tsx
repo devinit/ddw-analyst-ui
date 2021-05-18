@@ -86,7 +86,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     if (!loading) {
       props.actions.fetchOperations({
         limit: props.limit,
-        offset: parseInt(localStorage.getItem('offset')),
+        offset: parseInt(localStorage.getItem('offset') || '{}'),
         mine,
         link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
       });
