@@ -35,6 +35,7 @@ export const StyledListItem = styled(ListGroup.Item)`
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   border-color: ${(props) => (props.active ? '#737373 !important' : 'default')};
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
+  user-select: none;
 `;
 export const StyledStepContainer = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
@@ -182,6 +183,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           onClick={handleStepOrderClick}
           disabled={!!activeStep || props.disabled}
           data-testid="qb-add-step-button"
+          hidden={steps.size <= 1}
         >
           {!isOrderingSteps ? (
             <i className="material-icons mr-1">reorder</i>
