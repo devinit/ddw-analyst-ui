@@ -1,3 +1,4 @@
+import CodeMirror from 'codemirror';
 import { fromJS } from 'immutable';
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
 import {
@@ -19,6 +20,7 @@ interface ComponentProps {
 interface QueryContextProps {
   options: AdvancedQueryOptions;
   updateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
+  editor?: CodeMirror.Editor;
 }
 
 const mode: CodeMirror.ModeSpec<JsonModeSpec> = { name: 'javascript', json: true };
@@ -30,6 +32,7 @@ export const AdvancedQueryContext = createContext<QueryContextProps>({
 const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [source, setSource] = useState<SourceMap>();
   const [action, setAction] = useState<AdvancedQueryBuilderAction>();
+  const [editor, setEditor] = useState<CodeMirror.Editor>();
   const [context, setContext] = useState<QueryContextProps>({
     options: defaultOptions as AdvancedQueryOptions,
   });
@@ -42,6 +45,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     });
   }, [source]);
 
+  const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
   const onSelectAction = (selectedAction: AdvancedQueryBuilderAction) => setAction(selectedAction);
   const onChange = (value: string) => {
@@ -62,7 +66,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
 
   return (
     <div>
-      <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions }}>
+      <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions, editor }}>
         <DataSourceSelector source={source} onSelect={onSelectSource} />
         {source ? (
           <>
@@ -75,6 +79,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                 lineNumbers: true,
                 theme: 'material',
               }}
+              onInit={onEditorInit}
               onChange={onChange}
             />
           </>
