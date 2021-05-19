@@ -126,25 +126,14 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
 
   const onUpdateSteps = (orderedSteps: string) => {
     const orderedStepsArray: string[] = JSON.parse(orderedSteps);
-    setCreatedSteps(() => {
-      const result: Step[] = [];
-      const unorderedStepsArray = steps.valueSeq().toArray();
-
-      orderedStepsArray.forEach((orderedStep, orderedIndex) => {
-        unorderedStepsArray.forEach((unorderedStep) => {
-          if (unorderedStep.get('step_id') === orderedStep) {
-            const updatedStep = unorderedStep.update('step_id', () => orderedIndex + 1);
-            props.onReorderSteps(updatedStep);
-            result.push({
-              step_id: unorderedStep.get('step_id') as string,
-              name: unorderedStep.get('name') as string,
-              query_func: unorderedStep.get('query_func') as string,
-            });
-          }
-        });
+    const unorderedStepsArray = steps.valueSeq().toArray();
+    orderedStepsArray.forEach((orderedStep, orderedIndex) => {
+      unorderedStepsArray.forEach((unorderedStep) => {
+        if (unorderedStep.get('step_id') === orderedStep) {
+          const updatedStep = unorderedStep.update('step_id', () => orderedIndex + 1);
+          props.onReorderSteps(updatedStep);
+        }
       });
-
-      return orderedStepsArray.length > 0 ? result : createdSteps;
     });
   };
 
