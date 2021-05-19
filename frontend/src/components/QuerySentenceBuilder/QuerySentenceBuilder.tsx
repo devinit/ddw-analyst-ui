@@ -8,6 +8,7 @@ import {
   OperationMap,
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
+import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { CodeMirrorReact, JsonModeSpec } from '../CodeMirrorReact';
 import { DataSourceSelector } from '../DataSourceSelector';
@@ -72,6 +73,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
           <>
             <QueryBuilderActionSelector onSelectAction={onSelectAction} />
             {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
+            {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
             <CodeMirrorReact
               config={{
                 mode,
