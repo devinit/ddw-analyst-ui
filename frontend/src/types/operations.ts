@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { List, Map } from 'immutable';
-import { OperationColumn, OperationColumnMap } from './sources';
+import { Column, OperationColumn, OperationColumnMap } from './sources';
 
 export type QueryName = 'filter' | 'join' | 'aggregate' | 'transform';
 export interface Filter {
@@ -34,6 +34,7 @@ export interface Operation {
   user: string;
   aliases: OperationColumn[] | List<OperationColumnMap>;
   logs: Record<string, unknown>;
+  advanced_config: AdvancedQueryOptions | null;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {
@@ -98,10 +99,10 @@ export interface AdvancedQueryOptions {
   columns?: AdvancedQueryColumn[];
   filter?: AdvancedQueryFilter;
   join?: AdvancedQueryJoin;
-  groupby?: OperationColumn[];
+  groupby?: Column[];
 }
 
-interface AdvancedQueryColumn extends OperationColumn {
+export interface AdvancedQueryColumn extends Partial<Column> {
   aggregate?: 'sum' | 'avg' | 'max' | 'min' | 'std';
 }
 
