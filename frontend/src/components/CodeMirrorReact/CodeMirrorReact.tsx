@@ -10,6 +10,7 @@ export type JsonModeSpec = {
 interface CodeMirrorReactProps {
   config: CodeMirror.EditorConfiguration;
   onChange?: (value?: string | CodeMirror.Doc) => void;
+  onInit?: (editor: CodeMirror.Editor) => void;
 }
 
 const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
@@ -19,10 +20,9 @@ const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
     if (ref.current) {
       const codeMirror = CodeMirror(ref.current, props.config);
       setEditor(codeMirror);
+      if (props.onInit) props.onInit(codeMirror);
       codeMirror.on('change', (mirror) => {
-        if (props.onChange) {
-          props.onChange(mirror.getValue());
-        }
+        if (props.onChange) props.onChange(mirror.getValue());
       });
     }
   }, []);
