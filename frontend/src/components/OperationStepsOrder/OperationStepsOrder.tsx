@@ -16,13 +16,12 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Alert, ListGroup, Row } from 'react-bootstrap';
-import styled from 'styled-components';
-import { Step } from '../OperationSteps';
+import { ListGroup, Row } from 'react-bootstrap';
 import { OperationStepMap } from '../../types/operations';
 import { List } from 'immutable';
 import { SortableStep } from './SortableStep';
-import { DragOverlayItem } from '../SelectColumnOrder/DragOverlayItem';
+import { DragStepOverlayItem } from './DragStepOverlayItem';
+import { Step } from '../OperationSteps';
 
 interface StepsOrderProps {
   steps: List<OperationStepMap>;
@@ -33,13 +32,6 @@ interface StepsOrderProps {
   onUpdateSteps?: (options: string) => void;
   onClickStep: (step?: OperationStepMap) => void;
 }
-
-const StyledSpan = styled.span`
-  top: -6px;
-  position: relative;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-`;
 
 const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
   createdSteps,
@@ -52,6 +44,7 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
 }) => {
   const [orderedSteps, setOrderedSteps] = useState(createdSteps?.map((step) => step.step_id));
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [dragStep, setDragStep] = useState<OperationStepMap>(activeStep as OperationStepMap);
 
   useEffect(() => {
     if (onUpdateSteps) {
@@ -68,6 +61,7 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
     const { active } = event;
 
     setActiveId(active.id);
+    setDragStep(getDragStep(active.id));
   };
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
@@ -84,6 +78,12 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
     }
 
     setActiveId(null);
+  };
+
+  const getDragStep = (id: string) => {
+    const step = steps.find((step) => `${step.get('step_id')}` === id);
+
+    return step as OperationStepMap;
   };
 
   return (
@@ -124,7 +124,15 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
             </ListGroup>
           </Row>
         </SortableContext>
-        <DragOverlay>{activeId ? <DragOverlayItem id={activeId} /> : null}</DragOverlay>
+        <DragOverlay>
+          {activeId ? (
+            <DragStepOverlayItem
+              id={activeId}
+              onDuplicateStep={onDuplicateStep}
+              step={dragStep}
+            ></DragStepOverlayItem>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </>
   );

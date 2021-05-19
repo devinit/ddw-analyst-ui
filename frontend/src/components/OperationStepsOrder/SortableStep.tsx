@@ -11,7 +11,7 @@ import OperationStepView from '../OperationStepView';
 interface SortableStepProps {
   id: string;
   steps: List<OperationStepMap>;
-  step: Step;
+  step: Step | null;
   activeStep?: OperationStepMap;
   isActiveStep?: boolean;
   onClickStep: (step?: OperationStepMap) => void;
@@ -37,7 +37,13 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
     props.onClickStep(step);
   };
 
-  const currentStep = steps.find((step) => step.get('step_id') === props.step.step_id);
+  const currentStep = steps.find((step) => {
+    if (props.step) {
+      return step.get('step_id') === props.step.step_id;
+    } else {
+      return false;
+    }
+  });
 
   return (
     <StyledStepContainer style={style} ref={setNodeRef} data-testid="qb-select-column-order">
@@ -55,7 +61,7 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
                 <i className="material-icons mr-1">drag_indicator</i>
               </span>
             </Col>
-            <Col className="w-80" md={11}>
+            <Col className="w-90" md={11}>
               <OperationStepView step={currentStep} onDuplicateStep={props.onDuplicateStep} />
             </Col>
           </Row>
