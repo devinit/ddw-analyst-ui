@@ -26,7 +26,7 @@ import { isOperationsCacheExpired } from '../utils/cache';
 
 function* fetchOperations({ payload }: OperationsAction) {
   try {
-    let fetch = !!payload.search;
+    let fetch = !!(payload.search || payload.link);
     const basePath = payload.mine ? api.routes.MY_DATASETS : api.routes.DATASETS;
     const datasetKey = payload.mine
       ? localForageKeys.MY_DATASETS
