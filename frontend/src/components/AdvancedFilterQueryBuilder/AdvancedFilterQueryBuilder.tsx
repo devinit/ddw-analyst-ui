@@ -2,20 +2,24 @@ import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { SourceMap } from '../../types/sources';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
+import { validateFilter } from './utils';
+import { handleAnd } from './utils/actions';
 
 interface ComponentProps {
   source: SourceMap;
 }
 
 const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = () => {
-  const { options, updateOptions } = useContext(AdvancedQueryContext);
+  const { options, editor } = useContext(AdvancedQueryContext);
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
   }, []);
-  console.log(options, updateOptions);
 
   const onInsertAnd = () => {
-    // TODO: implement AND
+    if (editor) {
+      const validationResponse = validateFilter({ action: '$and', options, editor });
+      handleAnd(validationResponse);
+    }
   };
 
   return (
