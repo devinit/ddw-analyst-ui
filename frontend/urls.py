@@ -15,6 +15,7 @@ urlpatterns = [
     path('datasets/', views.index),
     path('login/', views.index),
     path('sources/', views.index),
+    path('sources/page/<int:pk>/', views.with_id),
     path('source/datasets/<int:pk>/', views.with_id),
     path('source/history/<int:pk>/', views.with_id),
     path('queries/build/', views.index),

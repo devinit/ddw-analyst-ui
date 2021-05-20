@@ -107,6 +107,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const onSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    props.history.push('/');
     if (event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
@@ -233,6 +234,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => {
+    props.history.push('/');
     const { value } = data;
     props.actions.fetchOperations({
       limit: props.limit,

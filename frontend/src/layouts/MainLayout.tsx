@@ -237,6 +237,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Route path="/page/:id" exact component={AsyncHome} />
               <Route path="/datasets" exact component={AsyncPublishedDatasets} />
               <Route path="/sources" exact component={AsyncDataSources} />
+              <Route path="/sources/page/:id" exact component={AsyncDataSources} />
               <Route path="/queries/build" exact component={AsyncQueryBuilder} />
               <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
               <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
