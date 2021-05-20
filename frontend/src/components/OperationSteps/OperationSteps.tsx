@@ -171,7 +171,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           size="sm"
           onClick={handleStepOrderClick}
           disabled={!!activeStep || props.disabled}
-          data-testid="qb-add-step-button"
+          data-testid="qb-order-step-button"
           hidden={steps.size <= 1}
         >
           {!isOrderingSteps ? (
