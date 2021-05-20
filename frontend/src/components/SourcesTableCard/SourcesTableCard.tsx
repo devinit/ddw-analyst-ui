@@ -34,7 +34,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         fetchSources({ limit: 10, offset: parseInt(localStorage.getItem('offset') || '{}') }),
       );
     }
-  }, []);
+  }, [pageNumber]);
 
   const onSearchChange = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     history.push('/sources');

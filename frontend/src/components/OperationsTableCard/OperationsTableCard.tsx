@@ -69,7 +69,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   useEffect(() => {
     fetchQueries(showMyQueries);
-  }, []);
+  }, [pageNumber]);
 
   useEffect(() => {
     const values = Array.from(sources, (source) => {
@@ -224,9 +224,17 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         : undefined,
     });
     if (page.selected !== 0) {
-      props.history.push(`/page/${page.selected}`);
+      if (showMyQueries) {
+        props.history.push(`/page/${page.selected}`);
+      } else {
+        props.history.push(`/datasets/page/${page.selected}`);
+      }
     } else {
-      props.history.push('/');
+      if (showMyQueries) {
+        props.history.push('/');
+      } else {
+        props.history.push('/datasets');
+      }
     }
   };
 
