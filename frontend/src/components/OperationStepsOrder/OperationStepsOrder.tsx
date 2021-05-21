@@ -42,12 +42,12 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
   onDuplicateStep,
   disabled,
 }) => {
-  const [orderedSteps, setOrderedSteps] = useState(createdSteps?.map((step) => step.step_id));
+  const [orderedSteps, setOrderedSteps] = useState<string[]>();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [dragStep, setDragStep] = useState<OperationStepMap>(activeStep as OperationStepMap);
 
   useEffect(() => {
-    if (onUpdateSteps) {
+    if (onUpdateSteps && orderedSteps) {
       onUpdateSteps(JSON.stringify(orderedSteps));
     }
   }, [orderedSteps]);
