@@ -22,6 +22,7 @@ import { List } from 'immutable';
 import { SortableStep } from './SortableStep';
 import { DragStepOverlayItem } from './DragStepOverlayItem';
 import { Step } from '../OperationSteps';
+import { sort } from '../../utils';
 
 interface StepsOrderProps {
   steps: List<OperationStepMap>;
@@ -86,6 +87,13 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
     return step as OperationStepMap;
   };
 
+  const sortSteps = (stepA: Step, stepB: Step): number => {
+    const valueA = stepA.step_id as number;
+    const valueB = stepB.step_id as number;
+
+    return sort(valueA, valueB);
+  };
+
   return (
     <>
       <DndContext
@@ -103,18 +111,22 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
           <Row>
             <ListGroup variant="flush" className="w-100">
               {createdSteps && createdSteps.length > 0 ? (
-                createdSteps.map((step, index) => {
+                createdSteps.sort(sortSteps).map((step, index) => {
+                  const stepMap = steps.find(
+                    (stepMapItem) => stepMapItem.get('step_id') === step.step_id,
+                  ) as OperationStepMap;
+
                   return (
                     <SortableStep
                       key={index}
                       id={`${step.step_id}`}
-                      steps={steps}
                       step={step}
                       activeStep={activeStep}
                       isActiveStep={activeStep && activeStep.get('step_id') === step.step_id}
                       onClickStep={onClickStep}
                       onDuplicateStep={onDuplicateStep}
                       disabled={disabled}
+                      stepMap={stepMap}
                     />
                   );
                 })

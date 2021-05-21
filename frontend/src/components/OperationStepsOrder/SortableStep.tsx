@@ -1,6 +1,5 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { List } from 'immutable';
 import React, { FunctionComponent } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { OperationStepMap } from '../../types/operations';
@@ -10,7 +9,7 @@ import OperationStepView from '../OperationStepView';
 
 interface SortableStepProps {
   id: string;
-  steps: List<OperationStepMap>;
+  stepMap: OperationStepMap;
   step: Step | null;
   activeStep?: OperationStepMap;
   isActiveStep?: boolean;
@@ -21,7 +20,7 @@ interface SortableStepProps {
 
 const SortableStep: FunctionComponent<SortableStepProps> = ({
   id,
-  steps,
+  stepMap,
   activeStep,
   isActiveStep,
   ...props
@@ -37,24 +36,16 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
     props.onClickStep(step);
   };
 
-  const currentStep = steps.find((step) => {
-    if (props.step) {
-      return step.get('step_id') === props.step.step_id;
-    } else {
-      return false;
-    }
-  });
-
   return (
     <StyledStepContainer style={style} ref={setNodeRef} data-testid="qb-select-column-order">
       <StyledListItem
         data-testid="qb-step-wrapper"
         className="py-2"
-        onClick={!activeStep && onClickStep(currentStep as OperationStepMap)}
+        onClick={!activeStep && onClickStep(stepMap as OperationStepMap)}
         disabled={(activeStep && !isActiveStep) || props.disabled}
         active={isActiveStep}
       >
-        {currentStep && (
+        {stepMap && (
           <Row>
             <Col md={0.5}>
               <span className="pl-1" {...listeners} {...attributes}>
@@ -62,7 +53,7 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
               </span>
             </Col>
             <Col className="w-90" md={11}>
-              <OperationStepView step={currentStep} onDuplicateStep={props.onDuplicateStep} />
+              <OperationStepView step={stepMap} onDuplicateStep={props.onDuplicateStep} />
             </Col>
           </Row>
         )}
