@@ -2,6 +2,7 @@ import React, { FunctionComponent, useContext, useEffect, useState } from 'react
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { SourceMap } from '../../types/sources';
 import { CodeMirrorReact } from '../CodeMirrorReact';
+import { ICheckData, IRadio } from '../IRadio';
 import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
 import { validateFilter } from './utils';
 import { handleAnd } from './utils/actions';
@@ -22,10 +23,14 @@ const defaultOptions = {
   ],
 };
 
+type FilterBy = 'and' | 'or';
+
 const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = () => {
   const { options, editor } = useContext(AdvancedQueryContext);
   const [showEditor, setShowEditor] = useState(false);
   const [editorContent, setEditorContent] = useState<Record<string, unknown>>({});
+  const [filterBy, setFilterBy] = useState<FilterBy>('and');
+
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
   }, []);
@@ -38,9 +43,32 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = () => {
       setShowEditor(true);
     }
   };
+  const onRadioChange = (data: ICheckData) => {
+    setFilterBy(data.value as FilterBy);
+  };
 
   return (
     <div className="mb-3">
+      <div>
+        <IRadio
+          variant="danger"
+          id="and"
+          name="filterBy"
+          label="AND"
+          onChange={onRadioChange}
+          inline
+          checked={filterBy === 'and'}
+        />
+        <IRadio
+          variant="danger"
+          id="or"
+          name="filterBy"
+          label="OR"
+          onChange={onRadioChange}
+          inline
+          checked={filterBy === 'or'}
+        />
+      </div>
       <ButtonGroup className="mr-2">
         <Button
           variant="danger"
