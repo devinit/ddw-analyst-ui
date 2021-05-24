@@ -11,7 +11,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
-import { RouteComponentProps, useParams, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
@@ -63,8 +63,10 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
-  const params: { id: string } = useParams();
-  const pageNumber = params.id ? parseInt(params.id) : 0;
+  const [source, setSource] = useState(0);
+  const currentUrlParams = new URLSearchParams(window.location.search);
+  const page = currentUrlParams.get('page');
+  const pageNumber = page ? parseInt(page) : 0;
   localStorage.setItem('offset', (pageNumber * props.limit).toString());
 
   useEffect(() => {
@@ -224,17 +226,16 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         : undefined,
     });
     if (page.selected !== 0) {
-      if (showMyQueries) {
-        props.history.push(`/page/${page.selected}`);
-      } else {
-        props.history.push(`/datasets/page/${page.selected}`);
+      currentUrlParams.set('page', (page.selected + 1).toString());
+      if (searchQuery) {
+        currentUrlParams.set('q', searchQuery);
       }
+      if (source) {
+        currentUrlParams.set('source', source.toString());
+      }
+      props.history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
     } else {
-      if (showMyQueries) {
-        props.history.push('/');
-      } else {
-        props.history.push('/datasets');
-      }
+      props.history.push('/');
     }
   };
 
@@ -244,6 +245,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   ) => {
     props.history.push('/');
     const { value } = data;
+    setSource(value as number);
     props.actions.fetchOperations({
       limit: props.limit,
       offset: 0,
@@ -265,7 +267,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
           count={count}
           pageCount={Math.ceil(count / props.limit)}
           onPageChange={onPageChange}
-          currentPage={pageNumber}
+          currentPage={pageNumber === 0 ? 0 : pageNumber - 1}
         />
       );
     }

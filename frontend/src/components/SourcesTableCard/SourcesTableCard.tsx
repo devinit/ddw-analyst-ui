@@ -8,7 +8,7 @@ import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
 import { fetchSources } from '../../actions/sources';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 interface ComponentProps {
   sources: List<SourceMap>;
@@ -25,8 +25,9 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
   const history = useHistory();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
-  const params: { id: string } = useParams();
-  const pageNumber = params.id ? parseInt(params.id) : 0;
+  const currentUrlParams = new URLSearchParams(window.location.search);
+  const page = currentUrlParams.get('page');
+  const pageNumber = page ? parseInt(page) : 0;
   localStorage.setItem('offset', (pageNumber * props.limit).toString());
   useEffect(() => {
     if (!props.loading) {
@@ -57,7 +58,11 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
       }),
     );
     if (page.selected !== 0) {
-      history.push(`/sources/page/${page.selected}`);
+      currentUrlParams.set('page', (page.selected + 1).toString());
+      if (searchQuery) {
+        currentUrlParams.set('q', searchQuery);
+      }
+      history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
     } else {
       history.push('/sources');
     }
@@ -71,7 +76,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         count={props.count}
         pageCount={Math.ceil(props.count / props.limit)}
         onPageChange={onPageChange}
-        currentPage={pageNumber}
+        currentPage={pageNumber === 0 ? 0 : pageNumber - 1}
       />
     );
   };

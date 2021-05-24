@@ -11,9 +11,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
-    path('page/<int:pk>/',views.with_id),
     path('datasets/', views.index),
-    path('datasets/page/<int:pk>/', views.with_id),
     path('login/', views.index),
     path('sources/', views.index),
     path('sources/page/<int:pk>/', views.with_id),
