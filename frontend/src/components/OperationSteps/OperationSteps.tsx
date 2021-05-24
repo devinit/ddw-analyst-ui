@@ -125,16 +125,19 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   };
 
   const onUpdateSteps = (orderedSteps: string) => {
-    const orderedStepsArray: string[] = JSON.parse(orderedSteps);
-    const unorderedStepsArray = steps.valueSeq().toArray();
-    orderedStepsArray.forEach((orderedStep, orderedIndex) => {
-      unorderedStepsArray.forEach((unorderedStep) => {
-        if (unorderedStep.get('step_id') === orderedStep) {
-          const updatedStep = unorderedStep.update('step_id', () => orderedIndex + 1);
-          props.onReorderSteps(updatedStep);
-        }
+    if (isOrderingSteps) {
+      console.log('Ordering');
+      const orderedStepsArray: string[] = JSON.parse(orderedSteps);
+      const unorderedStepsArray = steps.valueSeq().toArray();
+      orderedStepsArray.forEach((orderedStep, orderedIndex) => {
+        unorderedStepsArray.forEach((unorderedStep) => {
+          if (unorderedStep.get('step_id') === orderedStep) {
+            const updatedStep = unorderedStep.update('step_id', () => orderedIndex + 1);
+            props.onReorderSteps(updatedStep);
+          }
+        });
       });
-    });
+    }
   };
 
   return (
