@@ -24,7 +24,7 @@ interface QueryContextProps {
   editor?: CodeMirror.Editor;
 }
 
-const mode: CodeMirror.ModeSpec<JsonModeSpec> = { name: 'javascript', json: true };
+export const jsonMode: CodeMirror.ModeSpec<JsonModeSpec> = { name: 'javascript', json: true };
 const defaultOptions: Partial<AdvancedQueryOptions> = { source: undefined, columns: [] };
 export const AdvancedQueryContext = createContext<QueryContextProps>({
   options: defaultOptions as AdvancedQueryOptions,
@@ -76,7 +76,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
             <CodeMirrorReact
               config={{
-                mode,
+                mode: jsonMode,
                 value: JSON.stringify(context.options, null, 2),
                 lineNumbers: true,
                 theme: 'material',
