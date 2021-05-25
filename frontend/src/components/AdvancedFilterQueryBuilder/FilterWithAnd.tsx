@@ -1,7 +1,8 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import { AdvancedQueryFilterComparator, AdvancedQueryFilter } from '../../types/operations';
 import { CodeMirrorReact } from '../CodeMirrorReact';
-import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
+import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { validateFilter } from './utils';
 import { handleAnd } from './utils/actions';
 
@@ -12,10 +13,20 @@ const defaultOptions = {
   $and: [],
 };
 
+type FilterComparator = (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
+type EditorContent = {
+  $and: FilterComparator;
+};
+
 const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
-  const { options, editor } = useContext(AdvancedQueryContext);
+  const { options, editor } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [showEditor, setShowEditor] = useState(true);
-  const [editorContent, setEditorContent] = useState<Record<string, unknown>>(defaultOptions);
+  const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions);
+  useEffect(() => {
+    if (options.filter && options.filter.$and) {
+      setEditorContent({ $and: options.filter.$and });
+    }
+  }, []);
   const onInsertAnd = () => {
     if (editor) {
       const validationResponse = validateFilter({ action: '$and', options, editor });
