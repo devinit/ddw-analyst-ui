@@ -10,9 +10,9 @@ interface FilterItemProps {
   columns: DropdownItemProps[];
   operations: DropdownItemProps[];
   filter: ErroredFilterMap;
-  onUpdate: (filter: ErroredFilterMap) => void;
-  onDelete: (filter: ErroredFilterMap) => void;
-  onDuplicateFilter: (filter: ErroredFilterMap) => void;
+  onUpdate?: (filter: ErroredFilterMap) => void;
+  onDelete?: (filter: ErroredFilterMap) => void;
+  onDuplicateFilter?: (filter: ErroredFilterMap) => void;
   errors?: { [P in keyof Filter]?: string };
   editable?: boolean;
 }
@@ -24,7 +24,7 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => {
-    if (data.value) {
+    if (data.value && props.onUpdate) {
       const filter = props.filter.set('field', data.value as string);
       props.onUpdate(filter);
     }
@@ -34,15 +34,17 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => {
-    if (data.value) {
+    if (data.value && props.onUpdate) {
       const filter = props.filter.set('func', data.value as string);
       props.onUpdate(filter);
     }
   };
 
   const onChangeValue = ({ currentTarget }: React.ChangeEvent<FormControlElement>) => {
-    const filter = props.filter.set('value', currentTarget.value);
-    props.onUpdate(filter);
+    if (props.onUpdate) {
+      const filter = props.filter.set('value', currentTarget.value);
+      props.onUpdate(filter);
+    }
   };
 
   const getFormGroupClasses = (fieldName: string, value: string | number, hasError = false) => {
@@ -62,10 +64,10 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
   };
 
   const onDelete = () => {
-    props.onDelete(props.filter);
+    if (props.onDelete) props.onDelete(props.filter);
   };
   const onDuplicateFilter = () => {
-    props.onDuplicateFilter(props.filter);
+    if (props.onDuplicateFilter) props.onDuplicateFilter(props.filter);
   };
 
   const { columns, filter, operations } = props;
@@ -145,24 +147,28 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
 
       <Col lg={1}>
         <Row>
-          <Button
-            variant="link"
-            className="btn-just-icon"
-            onClick={onDelete}
-            hidden={!props.editable}
-            data-testid="qb-filter-delete-button"
-          >
-            <i className="material-icons">delete</i>
-          </Button>
-          <Button
-            title="Copy"
-            className="btn-just-icon"
-            variant="link"
-            data-testid="qb-filter-duplicate-button"
-            onClick={onDuplicateFilter}
-          >
-            <i className="material-icons">content_copy</i>
-          </Button>
+          {props.onDelete ? (
+            <Button
+              variant="link"
+              className="btn-just-icon"
+              onClick={onDelete}
+              hidden={!props.editable}
+              data-testid="qb-filter-delete-button"
+            >
+              <i className="material-icons">delete</i>
+            </Button>
+          ) : null}
+          {props.onDuplicateFilter ? (
+            <Button
+              title="Copy"
+              className="btn-just-icon"
+              variant="link"
+              data-testid="qb-filter-duplicate-button"
+              onClick={onDuplicateFilter}
+            >
+              <i className="material-icons">content_copy</i>
+            </Button>
+          ) : null}
         </Row>
       </Col>
     </Row>
