@@ -51,8 +51,12 @@ describe('The Datasets Pages', () => {
     cy.get('.dataset-row-title').first().contains('education');
   });
 
-  xit('filters datasets by data source', () => {
-    // TODO: create test
+  it('filters datasets by data source', () => {
+    cy.visit('/datasets/');
+    cy.get('.search').first().click({ force: true });
+    cy.wait(4000);
+    cy.get('.search').first().type('crs iso codes{enter}');
+    cy.get('.dataset-row-footer').children('.text-danger').should('have.text', 'crs iso codes');
   });
 
   xdescribe('dataset row', () => {
