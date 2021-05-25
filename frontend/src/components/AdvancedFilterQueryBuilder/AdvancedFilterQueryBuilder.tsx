@@ -1,7 +1,9 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { SourceMap } from '../../types/sources';
+import React, { FunctionComponent, useState } from 'react';
+import { ColumnList, SourceMap } from '../../types/sources';
 import { ICheckData, IRadio } from '../IRadio';
 import { FilterWithAnd } from './FilterWithAnd';
+import { Set } from 'immutable';
+import { QueryBuilderHandler } from '../QueryBuilderHandler';
 
 interface ComponentProps {
   source: SourceMap;
@@ -9,11 +11,15 @@ interface ComponentProps {
 
 type FilterBy = '$and' | '$or';
 
-const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = () => {
+const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const [filterBy, setFilterBy] = useState<FilterBy>('$and');
-  const onRadioChange = (data: ICheckData) => {
-    setFilterBy(data.value as FilterBy);
-  };
+
+  // parse source columns into format consumable by FilterItem
+  const columns = source.get('columns') as ColumnList;
+  const columnSet = Set(columns.map((column) => column.get('name') as string));
+  const columnItems = QueryBuilderHandler.getSelectOptionsFromColumns(columnSet, columns);
+
+  const onRadioChange = (data: ICheckData) => setFilterBy(data.value as FilterBy);
 
   return (
     <div className="mb-3">
@@ -37,7 +43,7 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = () => {
           checked={filterBy === '$or'}
         />
       </div>
-      <FilterWithAnd show={filterBy === '$and'} />
+      <FilterWithAnd show={filterBy === '$and'} source={source} columns={columnItems} />
     </div>
   );
 };

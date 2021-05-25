@@ -116,8 +116,10 @@ export type AdvancedQueryFilter = {
 export type AdvancedQueryFilterComparator = {
   column: string;
   value: string | number | (string | number)[];
-  comp: '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte' | '$btn' | '$in';
+  comp: FilterComp;
 };
+
+export type FilterComp = '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte' | '$btn' | '$in';
 
 interface AdvancedQueryJoin {
   type: 'inner' | 'left' | 'right' | 'full';
