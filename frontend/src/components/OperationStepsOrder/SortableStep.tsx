@@ -2,6 +2,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import React, { FunctionComponent } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import styled from 'styled-components';
 import { OperationStepMap } from '../../types/operations';
 import { StyledListItem, StyledStepContainer } from '../OperationSteps';
 import { Step } from '../OperationSteps/OperationSteps';
@@ -17,6 +18,10 @@ interface SortableStepProps {
   disabled?: boolean;
   onDuplicateStep: (step?: OperationStepMap) => void;
 }
+
+const StyledIcon = styled.i`
+  font-size: 18px;
+`;
 
 const SortableStep: FunctionComponent<SortableStepProps> = ({
   id,
@@ -47,9 +52,9 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
       >
         {stepMap && (
           <Row>
-            <Col md={0.5}>
-              <span className="pl-1" {...listeners} {...attributes}>
-                <i className="material-icons mr-1">drag_indicator</i>
+            <Col md={0.5} className="mt-auto mb-auto">
+              <span className="pl-2" {...listeners} {...attributes}>
+                <StyledIcon className="material-icons">drag_indicator</StyledIcon>
               </span>
             </Col>
             <Col className="w-90" md={11}>
