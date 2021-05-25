@@ -8,10 +8,11 @@ interface ComponentProps extends Partial<PaginationProps> {
   count: number;
   className?: string;
   currentPage?: number;
+  storedOffset?: number;
 }
 
 const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...props }) => {
-  const [offset, setOffset] = useState(props.currentPage);
+  const [offset, setOffset] = useState(props.storedOffset);
   const onPageSelected = (page: { selected: number }): void => {
     if (page.selected === 0) {
       setOffset(0);
@@ -22,7 +23,8 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
       props.onPageChange(page);
     }
   };
-  const max = offset ? offset : 0 + limit;
+  // const max = offset ? offset : 0 + limit;
+  const max = offset + limit;
 
   return (
     <Row className={classNames(props.className)}>
@@ -33,7 +35,7 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
       >
         {count === 0
           ? 'No Data'
-          : `Showing ${offset ? offset : 0 + 1} to ${max > count ? count : max} of ${count}`}
+          : `Showing ${offset + 1} to ${max > count ? count : max} of ${count}`}
       </Col>
       <Col lg={8} className="align-middle">
         <Pagination

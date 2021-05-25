@@ -67,11 +67,14 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const currentUrlParams = new URLSearchParams(window.location.search);
   const page = currentUrlParams.get('page');
   const pageNumber = page ? parseInt(page) : 0;
-  localStorage.setItem('offset', (pageNumber * props.limit).toString());
 
   useEffect(() => {
+    localStorage.setItem(
+      'offset',
+      (pageNumber === 0 ? 0 : (pageNumber - 1) * props.limit).toString(),
+    );
     fetchQueries(showMyQueries);
-  }, [pageNumber]);
+  }, []);
 
   useEffect(() => {
     const values = Array.from(sources, (source) => {
@@ -109,7 +112,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const onSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    props.history.push('/');
+    // props.history.push('/');
     if (event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
@@ -235,7 +238,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       }
       props.history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
     } else {
-      props.history.push('/');
+      if (showMyQueries) {
+        props.history.push('/');
+      } else {
+        props.history.push('/datasets');
+      }
     }
   };
 
@@ -243,7 +250,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => {
-    props.history.push('/');
+    // props.history.push('/');
     const { value } = data;
     setSource(value as number);
     props.actions.fetchOperations({
@@ -268,6 +275,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
           pageCount={Math.ceil(count / props.limit)}
           onPageChange={onPageChange}
           currentPage={pageNumber === 0 ? 0 : pageNumber - 1}
+          storedOffset={parseInt(localStorage.getItem('offset') || '{}')}
         />
       );
     }
