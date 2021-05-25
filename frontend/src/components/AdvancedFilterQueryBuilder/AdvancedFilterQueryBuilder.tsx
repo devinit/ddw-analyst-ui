@@ -11,10 +11,6 @@ type FilterBy = '$and' | '$or';
 
 const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = () => {
   const [filterBy, setFilterBy] = useState<FilterBy>('$and');
-
-  useEffect(() => {
-    (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
-  }, []);
   const onRadioChange = (data: ICheckData) => {
     setFilterBy(data.value as FilterBy);
   };
