@@ -1,6 +1,10 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { AdvancedQueryFilter, AdvancedQueryFilterComparator } from '../../types/operations';
+import {
+  AdvancedQueryFilter,
+  AdvancedQueryFilterComparator,
+  AdvancedQueryOptions,
+} from '../../types/operations';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { validateFilter } from './utils';
@@ -19,7 +23,7 @@ type EditorContent = {
 };
 
 const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
-  const { options, editor } = useContext<QueryContextProps>(AdvancedQueryContext);
+  const { options, editor, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [showEditor, setShowEditor] = useState(true);
   const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions);
   const [canEdit, setCanEdit] = useState(false);
@@ -28,12 +32,23 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
   });
+
   useEffect(() => {
     if (options.filter && options.filter.$and) {
       setCanEdit(true);
     }
   }, []);
-  const onInsertAnd = () => {
+
+  const onReplace = () => {
+    if (editor && updateOptions) {
+      validateFilter({ action: '$and', options, editor }); // TODO: actually validate filter before action
+      options.filter = editorContent;
+      updateOptions(options as AdvancedQueryOptions);
+    }
+    setIsEditingExisting(false);
+  };
+
+  const onInsert = () => {
     if (editor) {
       const validationResponse = validateFilter({ action: '$and', options, editor });
       handleAnd(validationResponse);
@@ -42,11 +57,17 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
     }
     setIsEditingExisting(false);
   };
+
   const onEditExisting = () => {
     if (options.filter && options.filter.$and) {
       setEditorContent({ $and: options.filter.$and });
       setIsEditingExisting(true);
     }
+  };
+
+  const onChange = (value: string) => {
+    const parsedValue = JSON.parse(value);
+    setEditorContent(parsedValue);
   };
 
   if (show) {
@@ -61,6 +82,7 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
               lineNumbers: true,
               theme: 'material',
             }}
+            onChange={onChange}
           />
         ) : null}
         <ButtonGroup className="mr-2">
@@ -84,7 +106,7 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
             data-placement="bottom"
             data-html="true"
             title={`<i>Replaces</i> existing filter config`}
-            onClick={onInsertAnd}
+            onClick={onReplace}
           >
             Replace
           </Button>
@@ -94,8 +116,8 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
             data-toggle="tooltip"
             data-placement="bottom"
             data-html="true"
-            title={`<i>Inserts</i> config to current cursor position on the main editor. <strong>NB:</strong> valid JSON will auto-format`}
-            onClick={onInsertAnd}
+            title={`<i>Inserts</i> config to current cursor position on the main editor. </br> <strong>NB:</strong> valid JSON will auto-format`}
+            onClick={onInsert}
           >
             Insert
           </Button>
