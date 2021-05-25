@@ -1,48 +1,20 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { SourceMap } from '../../types/sources';
-import { CodeMirrorReact } from '../CodeMirrorReact';
 import { ICheckData, IRadio } from '../IRadio';
-import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
-import { validateFilter } from './utils';
-import { handleAnd } from './utils/actions';
+import { FilterWithAnd } from './FilterWithAnd';
 
 interface ComponentProps {
   source: SourceMap;
 }
-const defaultOptions = {
-  $and: [
-    { column: 'donor_name', comp: '$eq', value: 'United States' },
-    { column: 'agency_name', comp: '$eq', value: 'Department of Agriculture' },
-    {
-      $or: [
-        { column: 'agency_name', comp: '$eq', value: 'Department of Agriculture' },
-        { column: 'agency_name', comp: '$eq', value: 'Miscellaneous' },
-      ],
-    },
-  ],
-};
 
-type FilterBy = 'and' | 'or';
+type FilterBy = '$and' | '$or';
 
 const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = () => {
-  const { options, editor } = useContext(AdvancedQueryContext);
-  const [showEditor, setShowEditor] = useState(false);
-  const [editorContent, setEditorContent] = useState<Record<string, unknown>>({});
-  const [filterBy, setFilterBy] = useState<FilterBy>('and');
+  const [filterBy, setFilterBy] = useState<FilterBy>('$and');
 
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
   }, []);
-
-  const onInsertAnd = () => {
-    if (editor) {
-      const validationResponse = validateFilter({ action: '$and', options, editor });
-      handleAnd(validationResponse);
-      setEditorContent(defaultOptions);
-      setShowEditor(true);
-    }
-  };
   const onRadioChange = (data: ICheckData) => {
     setFilterBy(data.value as FilterBy);
   };
@@ -52,49 +24,24 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = () => {
       <div>
         <IRadio
           variant="danger"
-          id="and"
+          id="$and"
           name="filterBy"
           label="AND"
           onChange={onRadioChange}
           inline
-          checked={filterBy === 'and'}
+          checked={filterBy === '$and'}
         />
         <IRadio
           variant="danger"
-          id="or"
+          id="$or"
           name="filterBy"
           label="OR"
           onChange={onRadioChange}
           inline
-          checked={filterBy === 'or'}
+          checked={filterBy === '$or'}
         />
       </div>
-      <ButtonGroup className="mr-2">
-        <Button
-          variant="danger"
-          size="sm"
-          data-toggle="tooltip"
-          data-placement="top"
-          data-html="true"
-          title={`<i>Inserts</i> config for creating an <strong>AND</strong> filter.</br><strong>NB:</strong> if a filter property already exists, this will be inserted in the current cursor position`}
-          onClick={onInsertAnd}
-        >
-          Insert AND
-        </Button>
-        <Button variant="danger" size="sm" className="d-one">
-          Insert OR
-        </Button>
-      </ButtonGroup>
-      {showEditor ? (
-        <CodeMirrorReact
-          config={{
-            mode: jsonMode,
-            value: JSON.stringify(editorContent, null, 2),
-            lineNumbers: true,
-            theme: 'material',
-          }}
-        />
-      ) : null}
+      <FilterWithAnd show={filterBy === '$and'} />
     </div>
   );
 };
