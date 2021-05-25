@@ -48,6 +48,10 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const sources = useSources({ limit: 200, offset: 0 });
 
   useEffect(() => {
+    (window as any).$('[data-toggle="sort-tooltip"]').tooltip(); // eslint-disable-line
+  }, []);
+
+  useEffect(() => {
     setCreatedSteps(
       steps
         .sort(sortSteps)
@@ -172,13 +176,16 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           Add Step
         </Button>
         <Button
-          variant={isOrderingSteps ? 'warning' : 'dark'}
+          variant={isOrderingSteps ? 'dark' : 'danger'}
           size="sm"
           onClick={handleStepOrderClick}
           disabled={!!activeStep || props.disabled}
           data-testid="qb-order-step-button"
           hidden={steps.size <= 1}
           className="pl-2 pr-2"
+          data-toggle="sort-tooltip"
+          data-placement="right"
+          title="Toggle Sort Steps"
         >
           {!isOrderingSteps ? (
             <i className="material-icons">reorder</i>
