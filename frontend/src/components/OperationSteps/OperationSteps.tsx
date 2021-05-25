@@ -187,11 +187,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           data-placement="right"
           title="Toggle Sort Steps"
         >
-          {!isOrderingSteps ? (
-            <i className="material-icons">reorder</i>
-          ) : (
-            <i className="material-icons">view_list</i>
-          )}
+          <i className="material-icons">reorder</i>
         </Button>
       </div>
 
