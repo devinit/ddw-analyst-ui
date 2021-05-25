@@ -129,7 +129,6 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
 
   const onUpdateSteps = (orderedSteps: string) => {
     if (isOrderingSteps) {
-      console.log('Ordaring');
       const orderedStepsArray: string[] = JSON.parse(orderedSteps);
       const unorderedStepsArray = steps.valueSeq().toArray();
       orderedStepsArray.forEach((orderedStep, orderedIndex) => {
