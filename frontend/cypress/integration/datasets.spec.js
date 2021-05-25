@@ -45,6 +45,14 @@ describe('The Datasets Pages', () => {
     // TODO: create test
   });
 
+  xit('filters datasets by search text', () => {
+    // TODO: create test
+  });
+
+  xit('filters datasets by data source', () => {
+    // TODO: create test
+  });
+
   xdescribe('dataset row', () => {
     xit('shows action buttons when hovered over', () => {
       // TODO: create test
@@ -145,7 +153,7 @@ describe('The Datasets Pages', () => {
       });
   });
 
-  it('freezes a dataset', () => {
+  xit('freezes a dataset', () => {
     cy.visit('/');
     cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
     cy.get('[data-testid="dataset-freeze-button"]').click();
