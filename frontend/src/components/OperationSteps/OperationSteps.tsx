@@ -49,11 +49,14 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
 
   useEffect(() => {
     setCreatedSteps(
-      steps.toArray().map((step) => ({
-        step_id: step.get('step_id') as string,
-        name: step.get('name') as string,
-        query_func: step.get('query_func') as string,
-      })),
+      steps
+        .sort(sortSteps)
+        .toArray()
+        .map((step) => ({
+          step_id: step.get('step_id') as string,
+          name: step.get('name') as string,
+          query_func: step.get('query_func') as string,
+        })),
     );
   }, [steps]);
 
@@ -126,7 +129,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
 
   const onUpdateSteps = (orderedSteps: string) => {
     if (isOrderingSteps) {
-      console.log('Ordering');
+      console.log('Ordaring');
       const orderedStepsArray: string[] = JSON.parse(orderedSteps);
       const unorderedStepsArray = steps.valueSeq().toArray();
       orderedStepsArray.forEach((orderedStep, orderedIndex) => {

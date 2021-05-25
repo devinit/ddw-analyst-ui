@@ -22,7 +22,7 @@ import { List } from 'immutable';
 import { SortableStep } from './SortableStep';
 import { DragStepOverlayItem } from './DragStepOverlayItem';
 import { Step } from '../OperationSteps';
-import { sort } from '../../utils';
+import { sort, sortSteps } from '../../utils';
 
 interface StepsOrderProps {
   steps: List<OperationStepMap>;
@@ -68,7 +68,10 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     if (over && active.id !== over.id) {
       setOrderedSteps(() => {
-        const stepIds = steps.toArray().map((step) => step.get('step_id') as string);
+        const stepIds = steps
+          .sort(sortSteps)
+          .toArray()
+          .map((step) => step.get('step_id') as string);
         const activeStep = steps.find((step) => `${step.get('step_id')}` === active.id);
         const overStep = steps.find((step) => `${step.get('step_id')}` === over.id);
         const oldIndex = stepIds.indexOf(activeStep ? (activeStep.get('step_id') as string) : '');
@@ -87,11 +90,37 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
     return step as OperationStepMap;
   };
 
-  const sortSteps = (stepA: Step, stepB: Step): number => {
+  const sortCreatedSteps = (stepA: Step, stepB: Step): number => {
     const valueA = stepA.step_id as number;
     const valueB = stepB.step_id as number;
 
     return sort(valueA, valueB);
+  };
+
+  const renderOrderSteps = () => {
+    if (createdSteps.length > 0) {
+      return createdSteps.sort(sortCreatedSteps).map((step, index) => {
+        const stepMap = steps.find(
+          (stepMapItem) => stepMapItem.get('step_id') === step.step_id,
+        ) as OperationStepMap;
+
+        return (
+          <SortableStep
+            key={index}
+            id={`${step.step_id}`}
+            step={step}
+            activeStep={activeStep}
+            isActiveStep={activeStep && activeStep.get('step_id') === step.step_id}
+            onClickStep={onClickStep}
+            onDuplicateStep={onDuplicateStep}
+            disabled={disabled}
+            stepMap={stepMap}
+          />
+        );
+      });
+    } else {
+      return <div data-testid="qb-select-no-column-message">No steps selected</div>;
+    }
   };
 
   return (
@@ -110,29 +139,7 @@ const OperationStepsOrder: FunctionComponent<StepsOrderProps> = ({
         >
           <Row>
             <ListGroup variant="flush" className="w-100">
-              {createdSteps && createdSteps.length > 0 ? (
-                createdSteps.sort(sortSteps).map((step, index) => {
-                  const stepMap = steps.find(
-                    (stepMapItem) => stepMapItem.get('step_id') === step.step_id,
-                  ) as OperationStepMap;
-
-                  return (
-                    <SortableStep
-                      key={index}
-                      id={`${step.step_id}`}
-                      step={step}
-                      activeStep={activeStep}
-                      isActiveStep={activeStep && activeStep.get('step_id') === step.step_id}
-                      onClickStep={onClickStep}
-                      onDuplicateStep={onDuplicateStep}
-                      disabled={disabled}
-                      stepMap={stepMap}
-                    />
-                  );
-                })
-              ) : (
-                <div data-testid="qb-select-no-column-message">No steps selected</div>
-              )}
+              {renderOrderSteps()}
             </ListGroup>
           </Row>
         </SortableContext>
