@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { AdvancedQueryFilterComparator, AdvancedQueryFilter } from '../../types/operations';
+import { AdvancedQueryFilter, AdvancedQueryFilterComparator } from '../../types/operations';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { validateFilter } from './utils';
@@ -22,9 +22,11 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
   const { options, editor } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [showEditor, setShowEditor] = useState(true);
   const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions);
+  const [canEdit, setCanEdit] = useState(false);
+  const [isEditingExisting, setIsEditingExisting] = useState(false);
   useEffect(() => {
     if (options.filter && options.filter.$and) {
-      setEditorContent({ $and: options.filter.$and });
+      setCanEdit(true);
     }
   }, []);
   const onInsertAnd = () => {
@@ -33,6 +35,13 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
       handleAnd(validationResponse);
       setEditorContent(defaultOptions);
       setShowEditor(true);
+    }
+    setIsEditingExisting(false);
+  };
+  const onEditExisting = () => {
+    if (options.filter && options.filter.$and) {
+      setEditorContent({ $and: options.filter.$and });
+      setIsEditingExisting(true);
     }
   };
 
@@ -51,6 +60,19 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
           />
         ) : null}
         <ButtonGroup className="mr-2">
+          {canEdit ? (
+            <Button
+              variant={isEditingExisting ? 'dark' : 'danger'}
+              size="sm"
+              data-toggle="tooltip"
+              data-placement="top"
+              data-html="true"
+              title={`<i>Edits</i> existing $and config in the filter property`}
+              onClick={onEditExisting}
+            >
+              Edit Existing
+            </Button>
+          ) : null}
           <Button
             variant="danger"
             size="sm"
