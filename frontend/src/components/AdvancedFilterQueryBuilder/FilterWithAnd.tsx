@@ -36,7 +36,7 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
     if (options.filter && options.filter.$and) {
       setCanEdit(true);
     }
-  }, []);
+  }, [options]);
 
   const onReplace = () => {
     if (editor && updateOptions) {
@@ -51,7 +51,7 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
     if (editor) {
       const validationResponse = validateFilter({ action: '$and', options, editor });
       handleAnd(validationResponse);
-      setEditorContent(defaultOptions);
+      editor.replaceSelection(JSON.stringify(editorContent, null, 2));
     }
     setIsEditingExisting(false);
   };
