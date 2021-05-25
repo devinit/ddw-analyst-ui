@@ -1,17 +1,25 @@
+import { Map } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import { DropdownItemProps } from 'semantic-ui-react';
 import {
   AdvancedQueryFilter,
   AdvancedQueryFilterComparator,
   AdvancedQueryOptions,
+  ErroredFilterMap,
+  FilterComp,
 } from '../../types/operations';
+import { SourceMap } from '../../types/sources';
 import { CodeMirrorReact } from '../CodeMirrorReact';
+import { FilterItem } from '../FilterItem';
 import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { validateFilter } from './utils';
-import { handleAnd } from './utils/actions';
+import { handleAnd, operations } from './utils/actions';
 
 interface ComponentProps {
   show?: boolean;
+  source: SourceMap;
+  columns: DropdownItemProps[];
 }
 const defaultOptions = {
   $and: [],
@@ -22,11 +30,12 @@ type EditorContent = {
   $and: FilterComparator;
 };
 
-const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
+const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show, columns }) => {
   const { options, editor, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions);
   const [canEdit, setCanEdit] = useState(false);
   const [isEditingExisting, setIsEditingExisting] = useState(false);
+  const [activeFilter, setActiveFilter] = useState(Map({}) as ErroredFilterMap);
 
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
@@ -68,9 +77,33 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
     setEditorContent(parsedValue);
   };
 
+  const onUpdateFilter = (filter: ErroredFilterMap) => {
+    setActiveFilter(filter);
+  };
+
+  const onAddFilter = (filter: ErroredFilterMap) => {
+    if (editorContent.$and) {
+      setEditorContent({
+        ...editorContent,
+        $and: editorContent.$and.concat({
+          column: filter.get('field') as string,
+          comp: filter.get('func') as FilterComp,
+          value: filter.get('value') as string,
+        }),
+      });
+    }
+  };
+
   if (show) {
     return (
       <>
+        <FilterItem
+          columns={columns}
+          operations={operations}
+          filter={activeFilter}
+          onUpdate={onUpdateFilter}
+          onAdd={onAddFilter}
+        />
         <CodeMirrorReact
           className="mt-2"
           config={{
