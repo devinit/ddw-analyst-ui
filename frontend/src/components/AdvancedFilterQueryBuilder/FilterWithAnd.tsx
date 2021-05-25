@@ -24,7 +24,6 @@ type EditorContent = {
 
 const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
   const { options, editor, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
-  const [showEditor, setShowEditor] = useState(true);
   const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions);
   const [canEdit, setCanEdit] = useState(false);
   const [isEditingExisting, setIsEditingExisting] = useState(false);
@@ -53,7 +52,6 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
       const validationResponse = validateFilter({ action: '$and', options, editor });
       handleAnd(validationResponse);
       setEditorContent(defaultOptions);
-      setShowEditor(true);
     }
     setIsEditingExisting(false);
   };
@@ -73,18 +71,16 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
   if (show) {
     return (
       <>
-        {showEditor ? (
-          <CodeMirrorReact
-            className="mt-2"
-            config={{
-              mode: jsonMode,
-              value: JSON.stringify(editorContent, null, 2),
-              lineNumbers: true,
-              theme: 'material',
-            }}
-            onChange={onChange}
-          />
-        ) : null}
+        <CodeMirrorReact
+          className="mt-2"
+          config={{
+            mode: jsonMode,
+            value: JSON.stringify(editorContent, null, 2),
+            lineNumbers: true,
+            theme: 'material',
+          }}
+          onChange={onChange}
+        />
         <ButtonGroup className="mr-2">
           {canEdit ? (
             <Button
