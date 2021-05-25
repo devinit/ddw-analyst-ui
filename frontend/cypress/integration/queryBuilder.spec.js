@@ -96,6 +96,18 @@ describe('The Query Builder', () => {
       .contains(`Columns donor_code, donor_name used in steps 1 are obsolete.`);
   });
 
+  it('replaces column names with column aliases for logs and displays them in an alert', () => {
+    // Mock datasets route
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/dataset/4/', datasets.results[3]);
+    });
+
+    cy.visit('/queries/build/4/');
+    cy.get('[data-testid="qb-alert"] p')
+      .first()
+      .contains(`Columns Country name, Country code, ISO Alpha 3 used in steps 1 are obsolete.`);
+  });
+
   it('that creates a copy of a step', () => {
     cy.fixture('datasets').then((datasets) => {
       cy.intercept('api/dataset/3/', datasets.results[2]);
