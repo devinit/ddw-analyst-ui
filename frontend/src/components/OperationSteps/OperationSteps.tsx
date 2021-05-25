@@ -172,19 +172,19 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           Add Step
         </Button>
         <Button
-          variant="danger"
+          variant={isOrderingSteps ? 'warning' : 'dark'}
           size="sm"
           onClick={handleStepOrderClick}
           disabled={!!activeStep || props.disabled}
           data-testid="qb-order-step-button"
           hidden={steps.size <= 1}
+          className="pl-2 pr-2"
         >
           {!isOrderingSteps ? (
-            <i className="material-icons mr-1">reorder</i>
+            <i className="material-icons">reorder</i>
           ) : (
-            <i className="material-icons mr-1">view_list</i>
+            <i className="material-icons">view_list</i>
           )}
-          {!isOrderingSteps ? 'Order Steps' : 'View Steps'}
         </Button>
       </div>
 
