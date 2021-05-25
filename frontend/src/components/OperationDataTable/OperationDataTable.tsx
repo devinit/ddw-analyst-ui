@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { OperationDataMap } from '../../types/operations';
 import { OperationColumn } from '../../types/sources';
 import { api, formatString, localForageKeys } from '../../utils';
+import { BasicModal, ModalMessage } from '../BasicModal';
 
 interface OperationDataTableProps {
   list: List<OperationDataMap>;
@@ -48,8 +49,17 @@ export const OperationDataTable: FunctionComponent<OperationDataTableProps> = ({
 }) => {
   const [editableHeader, setEditableHeader] = useState('');
   const [columns, setColumns] = useState(props.columns);
+  const [modalMessage, setModalMessage] = useState('');
   const onToggleEditingHeader = (column?: OperationColumn): void => {
-    setEditableHeader(column ? column.column_name : '');
+    if (column && column.id) {
+      setEditableHeader(column.column_name);
+    } else if (column && !column.id) {
+      setModalMessage(
+        'Alias generation was not completed. To regenerate aliases, please save the dataset.',
+      );
+    } else {
+      setEditableHeader('');
+    }
   };
 
   const onEditColumnHeader = (event: KeyboardEvent<HTMLInputElement>, column: OperationColumn) => {
@@ -89,34 +99,43 @@ export const OperationDataTable: FunctionComponent<OperationDataTableProps> = ({
   };
 
   return (
-    <Table bordered responsive hover className="operation-data-table">
-      <thead>
-        <tr>
-          {columns.map((column) => (
-            <StyledTableHeader
-              key={column.column_name}
-              className="text-truncate"
-              onClick={() => onToggleEditingHeader(column)}
-            >
-              {editableHeaders && editableHeader === column.column_name ? (
-                <FormControl
-                  type="text"
-                  defaultValue={column.column_alias}
-                  onKeyPress={(event: KeyboardEvent<HTMLInputElement>) =>
-                    onEditColumnHeader(event, column)
-                  }
-                  autoFocus
-                  onBlur={() => onToggleEditingHeader()}
-                />
-              ) : (
-                formatString(column.column_alias)
-              )}
-            </StyledTableHeader>
-          ))}
-        </tr>
-      </thead>
-      <tbody data-testid="dataset-table-body">{renderTableRows(list, columns)}</tbody>
-    </Table>
+    <>
+      <Table bordered responsive hover className="operation-data-table">
+        <thead>
+          <tr>
+            {columns.map((column) => (
+              <StyledTableHeader
+                key={column.column_name}
+                className="text-truncate"
+                onClick={() => onToggleEditingHeader(column)}
+              >
+                {editableHeaders && editableHeader === column.column_name ? (
+                  <FormControl
+                    type="text"
+                    defaultValue={column.column_alias}
+                    onKeyPress={(event: KeyboardEvent<HTMLInputElement>) =>
+                      onEditColumnHeader(event, column)
+                    }
+                    autoFocus
+                    onBlur={() => onToggleEditingHeader()}
+                  />
+                ) : (
+                  formatString(column.column_alias)
+                )}
+              </StyledTableHeader>
+            ))}
+          </tr>
+        </thead>
+        <tbody data-testid="dataset-table-body">{renderTableRows(list, columns)}</tbody>
+      </Table>
+      <BasicModal
+        show={!!modalMessage}
+        onHide={() => setModalMessage('')}
+        title="Alias Editing Disabled"
+      >
+        {modalMessage ? <ModalMessage message={modalMessage} /> : null}
+      </BasicModal>
+    </>
   );
 };
 
