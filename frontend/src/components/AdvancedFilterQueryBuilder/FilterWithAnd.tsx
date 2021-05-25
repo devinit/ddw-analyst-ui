@@ -24,6 +24,10 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
   const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions);
   const [canEdit, setCanEdit] = useState(false);
   const [isEditingExisting, setIsEditingExisting] = useState(false);
+
+  useEffect(() => {
+    (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
+  });
   useEffect(() => {
     if (options.filter && options.filter.$and) {
       setCanEdit(true);
@@ -65,7 +69,7 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
               variant={isEditingExisting ? 'dark' : 'danger'}
               size="sm"
               data-toggle="tooltip"
-              data-placement="top"
+              data-placement="bottom"
               data-html="true"
               title={`<i>Edits</i> existing $and config in the filter property`}
               onClick={onEditExisting}
@@ -77,12 +81,23 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show }) => {
             variant="danger"
             size="sm"
             data-toggle="tooltip"
-            data-placement="top"
+            data-placement="bottom"
             data-html="true"
-            title={`<i>Inserts</i> config for creating an <strong>AND</strong> filter.</br><strong>NB:</strong> if a filter property already exists, this will be inserted in the current cursor position`}
+            title={`<i>Replaces</i> existing filter config`}
             onClick={onInsertAnd}
           >
-            Insert AND
+            Replace
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            data-html="true"
+            title={`<i>Inserts</i> config to current cursor position on the main editor. <strong>NB:</strong> valid JSON will auto-format`}
+            onClick={onInsertAnd}
+          >
+            Insert
           </Button>
         </ButtonGroup>
       </>
