@@ -108,12 +108,12 @@ export interface AdvancedQueryColumn extends Partial<Column> {
 
 export type AdvancedQueryBuilderAction = 'select' | 'filter' | 'join';
 
-type AdvancedQueryFilter = {
+export type AdvancedQueryFilter = {
   $and?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
   $or?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
 };
 
-type AdvancedQueryFilterComparator = {
+export type AdvancedQueryFilterComparator = {
   column: string;
   value: string | number | (string | number)[];
   comp: '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte' | '$btn' | '$in';
