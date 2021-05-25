@@ -10,6 +10,7 @@ interface FilterItemProps {
   columns: DropdownItemProps[];
   operations: DropdownItemProps[];
   filter: ErroredFilterMap;
+  onAdd?: (filter: ErroredFilterMap) => void;
   onUpdate?: (filter: ErroredFilterMap) => void;
   onDelete?: (filter: ErroredFilterMap) => void;
   onDuplicateFilter?: (filter: ErroredFilterMap) => void;
@@ -68,6 +69,9 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
   };
   const onDuplicateFilter = () => {
     if (props.onDuplicateFilter) props.onDuplicateFilter(props.filter);
+  };
+  const onAdd = () => {
+    if (props.onAdd) props.onAdd(props.filter);
   };
 
   const { columns, filter, operations } = props;
@@ -147,6 +151,17 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
 
       <Col lg={1}>
         <Row>
+          {props.onAdd ? (
+            <Button
+              variant="link"
+              className="btn-just-icon"
+              onClick={onAdd}
+              hidden={!props.editable}
+              data-testid="qb-filter-add-button"
+            >
+              <i className="material-icons">add</i>
+            </Button>
+          ) : null}
           {props.onDelete ? (
             <Button
               variant="link"
