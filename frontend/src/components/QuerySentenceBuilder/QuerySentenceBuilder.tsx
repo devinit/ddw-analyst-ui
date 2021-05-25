@@ -18,7 +18,7 @@ interface ComponentProps {
   operation?: OperationMap;
   onUpdateOperation: (operation: OperationMap) => void;
 }
-interface QueryContextProps {
+export interface QueryContextProps {
   options: AdvancedQueryOptions;
   updateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
   editor?: CodeMirror.Editor;
