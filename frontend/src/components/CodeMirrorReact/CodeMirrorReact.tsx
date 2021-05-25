@@ -1,5 +1,6 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
 import CodeMirror from 'codemirror';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
 
@@ -11,6 +12,7 @@ interface CodeMirrorReactProps {
   config: CodeMirror.EditorConfiguration;
   onChange?: (value?: string | CodeMirror.Doc) => void;
   onInit?: (editor: CodeMirror.Editor) => void;
+  className?: string;
 }
 
 const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
@@ -38,7 +40,7 @@ const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
     }
   }, [props.config.value]);
 
-  return <div ref={ref}></div>;
+  return <div ref={ref} className={classNames(props.className)}></div>;
 };
 
 export { CodeMirrorReact };
