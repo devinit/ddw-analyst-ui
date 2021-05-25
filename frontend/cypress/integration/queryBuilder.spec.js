@@ -105,7 +105,7 @@ describe('The Query Builder', () => {
     cy.visit('/queries/build/4/');
     cy.get('[data-testid="qb-alert"] p')
       .first()
-      .contains(`Columns Country name, Country code used in steps 1 are obsolete.`);
+      .contains(`Columns Country name, Country code, ISO Alpha 3 used in steps 1 are obsolete.`);
   });
 
   it('that creates a copy of a step', () => {
