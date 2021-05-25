@@ -45,8 +45,10 @@ describe('The Datasets Pages', () => {
     // TODO: create test
   });
 
-  xit('filters datasets by search text', () => {
-    // TODO: create test
+  it('filters datasets by search text', () => {
+    cy.visit('/datasets/');
+    cy.get('[data-testid="sources-table-search"]').first().type('education{enter}');
+    cy.get('.dataset-row-title').first().contains('education');
   });
 
   xit('filters datasets by data source', () => {
@@ -153,7 +155,7 @@ describe('The Datasets Pages', () => {
       });
   });
 
-  xit('freezes a dataset', () => {
+  it('freezes a dataset', () => {
     cy.visit('/');
     cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
     cy.get('[data-testid="dataset-freeze-button"]').click();
