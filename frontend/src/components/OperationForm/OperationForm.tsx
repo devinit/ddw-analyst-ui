@@ -24,11 +24,13 @@ interface OperationFormProps {
 
 const schema = Yup.object().shape({
   name: Yup.string().required('Name is required!'),
-  description: Yup.string().when('is_draft', {
-    is: true,
-    then: Yup.string(),
-    otherwise: Yup.string().required('Description is required'),
-  }),
+  description: Yup.string()
+    .when('is_draft', {
+      is: true,
+      then: Yup.string(),
+      otherwise: Yup.string().required('Description is required'),
+    })
+    .nullable(),
   is_draft: Yup.bool(),
 });
 
