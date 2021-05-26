@@ -1,8 +1,9 @@
 import CodeMirror from 'codemirror';
 import { AdvancedQueryOptions } from '../../../types/operations';
+import { FilterWith } from '../AdvancedFilterQueryBuilder';
 
 interface ValidationOptions {
-  action: '$and' | '$or';
+  action: FilterWith;
   options: AdvancedQueryOptions;
   editor: CodeMirror.Editor;
 }
