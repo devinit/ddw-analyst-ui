@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { ICheckData, IRadio } from '../IRadio';
-import { FilterWithAnd } from './FilterWithAnd';
+import { FilterWithAndOr } from './FilterWithAndOr';
 import { Set } from 'immutable';
 import { QueryBuilderHandler } from '../QueryBuilderHandler';
 
@@ -9,17 +9,17 @@ interface ComponentProps {
   source: SourceMap;
 }
 
-type FilterBy = '$and' | '$or';
+export type FilterWith = '$and' | '$or';
 
 const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
-  const [filterBy, setFilterBy] = useState<FilterBy>('$and');
+  const [filterWith, setFilterWith] = useState<FilterWith>('$and');
 
   // parse source columns into format consumable by FilterItem
   const columns = source.get('columns') as ColumnList;
   const columnSet = Set(columns.map((column) => column.get('name') as string));
   const columnItems = QueryBuilderHandler.getSelectOptionsFromColumns(columnSet, columns);
 
-  const onRadioChange = (data: ICheckData) => setFilterBy(data.value as FilterBy);
+  const onRadioChange = (data: ICheckData) => setFilterWith(data.value as FilterWith);
 
   return (
     <div className="mb-3">
@@ -31,7 +31,7 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           label="AND"
           onChange={onRadioChange}
           inline
-          checked={filterBy === '$and'}
+          checked={filterWith === '$and'}
         />
         <IRadio
           variant="danger"
@@ -40,10 +40,15 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           label="OR"
           onChange={onRadioChange}
           inline
-          checked={filterBy === '$or'}
+          checked={filterWith === '$or'}
         />
       </div>
-      <FilterWithAnd show={filterBy === '$and'} source={source} columns={columnItems} />
+      <FilterWithAndOr
+        show={!!filterWith}
+        filterWith={filterWith}
+        source={source}
+        columns={columnItems}
+      />
     </div>
   );
 };

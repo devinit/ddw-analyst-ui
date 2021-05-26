@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Map } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
@@ -13,26 +14,30 @@ import { SourceMap } from '../../types/sources';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { FilterItem } from '../FilterItem';
 import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
+import { FilterWith } from './AdvancedFilterQueryBuilder';
 import { validateFilter } from './utils';
 import { handleAnd, operations } from './utils/actions';
 
 interface ComponentProps {
   show?: boolean;
+  filterWith?: FilterWith;
   source: SourceMap;
   columns: DropdownItemProps[];
 }
-const defaultOptions = {
-  $and: [],
-};
+const defaultOptions = (use: FilterWith): EditorContent => ({
+  [use]: [],
+});
 
 type FilterComparator = (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
-type EditorContent = {
-  $and: FilterComparator;
-};
+type EditorContent = Partial<
+  {
+    [key in FilterWith]: FilterComparator;
+  }
+>;
 
-const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show, columns }) => {
+const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, filterWith }) => {
   const { options, editor, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
-  const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions);
+  const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions(filterWith!));
   const [canEdit, setCanEdit] = useState(false);
   const [isEditingExisting, setIsEditingExisting] = useState(false);
   const [activeFilter, setActiveFilter] = useState(Map({}) as ErroredFilterMap);
@@ -40,16 +45,17 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show, columns }) => 
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
   });
-
   useEffect(() => {
-    if (options.filter && options.filter.$and) {
-      setCanEdit(true);
-    }
+    setEditorContent(defaultOptions(filterWith!));
+    setCanEdit(!!(options.filter && options.filter[filterWith!]));
+  }, [filterWith]);
+  useEffect(() => {
+    setCanEdit(!!(options.filter && options.filter[filterWith!]));
   }, [options]);
 
   const onReplace = () => {
-    if (editor && updateOptions) {
-      validateFilter({ action: '$and', options, editor }); // TODO: actually validate filter before action
+    if (filterWith && editor && updateOptions) {
+      validateFilter({ action: filterWith, options, editor }); // TODO: actually validate filter before action
       options.filter = editorContent;
       updateOptions(options as AdvancedQueryOptions);
     }
@@ -57,8 +63,8 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show, columns }) => 
   };
 
   const onInsert = () => {
-    if (editor) {
-      const validationResponse = validateFilter({ action: '$and', options, editor });
+    if (editor && filterWith) {
+      const validationResponse = validateFilter({ action: filterWith, options, editor });
       handleAnd(validationResponse);
       editor.replaceSelection(JSON.stringify(editorContent, null, 2));
     }
@@ -66,8 +72,8 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show, columns }) => 
   };
 
   const onEditExisting = () => {
-    if (options.filter && options.filter.$and) {
-      setEditorContent({ $and: options.filter.$and });
+    if (filterWith && options.filter && options.filter[filterWith]) {
+      setEditorContent({ [filterWith]: options.filter[filterWith] });
       setIsEditingExisting(true);
     }
   };
@@ -82,10 +88,10 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show, columns }) => 
   };
 
   const onAddFilter = (filter: ErroredFilterMap) => {
-    if (editorContent.$and) {
+    if (filterWith && editorContent[filterWith]) {
       setEditorContent({
         ...editorContent,
-        $and: editorContent.$and.concat({
+        [filterWith]: editorContent[filterWith]?.concat({
           column: filter.get('field') as string,
           comp: filter.get('func') as FilterComp,
           value: filter.get('value') as string,
@@ -122,7 +128,7 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show, columns }) => 
               data-toggle="tooltip"
               data-placement="bottom"
               data-html="true"
-              title={`<i>Edits</i> existing $and config in the filter property`}
+              title={`<i>Edits</i> existing ${filterWith} config in the filter property`}
               onClick={onEditExisting}
             >
               Edit Existing
@@ -158,6 +164,6 @@ const FilterWithAnd: FunctionComponent<ComponentProps> = ({ show, columns }) => 
   return null;
 };
 
-FilterWithAnd.defaultProps = { show: false };
+FilterWithAndOr.defaultProps = { show: false, filterWith: '$and' };
 
-export { FilterWithAnd };
+export { FilterWithAndOr };
