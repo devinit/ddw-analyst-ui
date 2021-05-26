@@ -120,15 +120,13 @@ def analyse_query(query, database="datasets"):
             analyse_cursor.execute(analyse_query)
             raw_results = list(analyse_cursor.fetchall())
             time_in_ms = 0.0
-            ms_in_one_second = 1000000.0
             # We get last two i.e planning time and execution time
             for raw_result in raw_results:
-                if not isinstance(raw_result, str):
+                if not isinstance(raw_result[0], str):
                     continue
-                time_event, = re.findall('Time: ([\d\.]+) ms', raw_result)
+                time_event = re.findall('Time: ([\d\.]+) ms', raw_result[0])
                 if len(time_event) == 1:
-                    time_in_ms += float(time_event)
-            # time_in_seconds = float(time_in_ms/ms_in_one_second)
+                    time_in_ms += float(time_event[0])
             results = [
                 {
                     "result": "success",

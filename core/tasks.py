@@ -81,7 +81,10 @@ def estimate_operation_time(id):
         operation = Operation.objects.get(id=id)
         estimate = query.querytime_estimate(operation=operation)
         if estimate[0]['result'] == 'success':
-            operation.estimated_run_time = estimate[0]['message']
+            operation.estimated_run_time = int(estimate[0]['message'])
             operation.save()
+            return { "status": "success", "result": estimate[0] }
+        else:
+            return { "status": "error" + estimate[0]['message'], "result": estimate[0]['message'] }
     except Operation.DoesNotExist:
-        pass
+        return { "status": "error", "result": "Operation does not exist" }
