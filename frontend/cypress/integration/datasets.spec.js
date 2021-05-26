@@ -48,7 +48,7 @@ describe('The Datasets Pages', () => {
   it('filters datasets by search text', () => {
     cy.visit('/datasets/');
     cy.get('[data-testid="sources-table-search"]').first().type('education{enter}');
-    cy.get('.dataset-row-title').first().contains('education');
+    cy.get('.dataset-row').contains('education');
   });
 
   it('filters datasets by data source', () => {
