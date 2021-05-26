@@ -47,16 +47,22 @@ describe('The Datasets Pages', () => {
 
   it('filters datasets by search text', () => {
     cy.visit('/datasets/');
-    cy.get('[data-testid="sources-table-search"]').first().type('education{enter}');
-    cy.get('.dataset-row').contains('education');
+    cy.get('[data-testid="sources-table-search"]').first().type('iati{enter}');
+    cy.get('.dataset-row-title').filter(':visible').should('include.text', 'iati');
+    cy.get('.dataset-row-title')
+      .siblings('.mb-2')
+      .filter(':visible')
+      .should('include.text', 'iati');
   });
 
   it('filters datasets by data source', () => {
     cy.visit('/datasets/');
     cy.get('.search').first().click({ force: true });
     cy.wait(4000);
-    cy.get('.search').first().type('crs iso codes{enter}');
-    cy.get('.dataset-row-footer').children('.text-danger').should('have.text', 'crs iso codes');
+    cy.get('.search').first().type('FTS dependency codenames{enter}');
+    cy.get('.dataset-row-footer')
+      .children('.text-danger')
+      .should('include.text', 'FTS dependency codenames');
   });
 
   xdescribe('dataset row', () => {
