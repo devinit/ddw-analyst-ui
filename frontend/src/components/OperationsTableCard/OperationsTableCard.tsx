@@ -11,7 +11,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
@@ -28,6 +28,7 @@ import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
+import queryString from 'query-string';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -57,16 +58,35 @@ const getSourceDatasetsLink = (
   }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
+  const { search } = useLocation();
+  const queryParams = queryString.parse(location.search);
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
   const [info, setInfo] = useState('');
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
+
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
 
   useEffect(() => {
     fetchQueries(showMyQueries);
   }, []);
+
+  useEffect(() => {
+    const values = queryString.parse(location.search);
+
+    const search = (values.q as string) || '';
+
+    props.actions.fetchOperations({
+      limit: props.limit,
+      offset: 0,
+      search,
+      mine: showMyQueries,
+      link: props.sourceID
+        ? getSourceDatasetsLink(props.sourceID, showMyQueries, props.limit, 0, search)
+        : undefined,
+    });
+  }, [search]);
 
   useEffect(() => {
     const values = Array.from(sources, (source) => {
@@ -110,15 +130,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
       const { value } = event.currentTarget as HTMLInputElement;
       setSearchQuery(value || '');
-      props.actions.fetchOperations({
-        limit: props.limit,
-        offset: 0,
-        search: value || '',
-        mine: showMyQueries,
-        link: props.sourceID
-          ? getSourceDatasetsLink(props.sourceID, showMyQueries, props.limit, 0, value)
-          : undefined,
-      });
+      const values = queryString.parse(location.search);
+      values.q = value || null;
+      props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
     }
   };
 
