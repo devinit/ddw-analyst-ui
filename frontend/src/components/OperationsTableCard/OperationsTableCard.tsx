@@ -63,7 +63,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
-  const [source, setSource] = useState(0);
   const currentUrlParams = new URLSearchParams(window.location.search);
   const page = currentUrlParams.get('page');
   const pageNumber = page ? parseInt(page) : 0;
@@ -74,8 +73,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       (pageNumber === 0 ? 0 : (pageNumber - 1) * props.limit).toString(),
     );
     fetchQueries(showMyQueries);
-  }, []);
-
+  }, [pageNumber]);
   useEffect(() => {
     const values = Array.from(sources, (source) => {
       return {
@@ -112,12 +110,16 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const onSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // props.history.push('/');
     if (event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
 
       const { value } = event.currentTarget as HTMLInputElement;
+      if (value !== '') {
+        currentUrlParams.set('q', value);
+        currentUrlParams.set('page', '1');
+      }
+      props.history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
       setSearchQuery(value || '');
       props.actions.fetchOperations({
         limit: props.limit,
@@ -230,12 +232,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     });
     if (page.selected !== 0) {
       currentUrlParams.set('page', (page.selected + 1).toString());
-      if (searchQuery) {
-        currentUrlParams.set('q', searchQuery);
-      }
-      if (source) {
-        currentUrlParams.set('source', source.toString());
-      }
       props.history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
     } else {
       if (showMyQueries) {
@@ -250,9 +246,10 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => {
-    // props.history.push('/');
     const { value } = data;
-    setSource(value as number);
+    currentUrlParams.set('source', (value as number).toString());
+    currentUrlParams.set('page', '1');
+    props.history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
     props.actions.fetchOperations({
       limit: props.limit,
       offset: 0,

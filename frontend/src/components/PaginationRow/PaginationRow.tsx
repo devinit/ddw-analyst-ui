@@ -23,7 +23,7 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
       props.onPageChange(page);
     }
   };
-  // const max = offset ? offset : 0 + limit;
+
   const max = offset + limit;
 
   return (

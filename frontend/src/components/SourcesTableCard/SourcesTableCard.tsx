@@ -28,24 +28,41 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
   const currentUrlParams = new URLSearchParams(window.location.search);
   const page = currentUrlParams.get('page');
   const pageNumber = page ? parseInt(page) : 0;
-  localStorage.setItem('offset', (pageNumber * props.limit).toString());
   useEffect(() => {
+    localStorage.setItem(
+      'offset',
+      (pageNumber === 0 ? 0 : (pageNumber - 1) * props.limit).toString(),
+    );
     if (!props.loading) {
       dispatch(
         fetchSources({ limit: 10, offset: parseInt(localStorage.getItem('offset') || '{}') }),
+        // fetchSources({ limit: 10, offset: props.offset }),
       );
     }
   }, [pageNumber]);
 
   const onSearchChange = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    history.push('/sources');
     if (event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
 
       const { value } = event.currentTarget as HTMLInputElement;
+      if (value !== '') {
+        currentUrlParams.set('q', value);
+        currentUrlParams.set('page', '1');
+        localStorage.setItem('searchQuery', value);
+      }
+      history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
       setSearchQuery(value || '');
-      dispatch(fetchSources({ limit: props.limit, offset: 0, search: value || '' }));
+      dispatch(
+        fetchSources({
+          limit: props.limit,
+          offset: localStorage.getItem('offset')
+            ? parseInt(localStorage.getItem('offset') || '{}')
+            : 0,
+          search: value || '',
+        }),
+      );
     }
   };
 
@@ -57,15 +74,8 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         search: searchQuery,
       }),
     );
-    if (page.selected !== 0) {
-      currentUrlParams.set('page', (page.selected + 1).toString());
-      if (searchQuery) {
-        currentUrlParams.set('q', searchQuery);
-      }
-      history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
-    } else {
-      history.push('/sources');
-    }
+    currentUrlParams.set('page', (page.selected + 1).toString());
+    history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
   };
 
   const renderPagination = (): ReactNode => {
@@ -77,6 +87,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         pageCount={Math.ceil(props.count / props.limit)}
         onPageChange={onPageChange}
         currentPage={pageNumber === 0 ? 0 : pageNumber - 1}
+        storedOffset={parseInt(localStorage.getItem('offset') || '{}')}
       />
     );
   };
