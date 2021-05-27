@@ -142,6 +142,7 @@ export const queryBuilderHelpMenuLinks: MenuLink[] = [
   {
     caption: 'Order Steps',
     url: `${BASE_URL}1j10m46dLY-zb5Mee4JWncTGeOsf2o8oChSN90ZUu8vk/edit#heading=h.bgki9c380aeq`,
+    addDividerAfter: true,
   },
   {
     caption: 'Report Issue',
