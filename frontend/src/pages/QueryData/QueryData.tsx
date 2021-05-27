@@ -65,9 +65,13 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
         <Card>
           <Card.Header className="card-header-text card-header-danger">
             <Card.Text>{activeOperation ? activeOperation.get('name') : 'Query Data'}</Card.Text>
-            <Form action={`${api.routes.EXPORT}${id}/`} method="POST">
+            <Form
+              action={`${api.routes.EXPORT}${id}/`}
+              method="POST"
+              data-testid="dataset-data-export-form"
+            >
               {token ? <Form.Control type="hidden" name="token" value={token} /> : null}
-              <Button type="submit" variant="danger" size="sm">
+              <Button type="submit" variant="danger" size="sm" data-testid="dataset-export-button">
                 Export to CSV
               </Button>
             </Form>

@@ -87,6 +87,13 @@ Cypress.Commands.add('createSelectStep', () => {
   cy.get('[data-testid="qb-step-preview-button"]').click();
 });
 
+Cypress.Commands.add('getAccessToken', () => {
+  const localStoragePrefix = 'ddw-analyst-ui/ddw_store/';
+  const token = window.localStorage.getItem(`${localStoragePrefix}API_KEY`);
+
+  return token;
+});
+
 //
 //
 // -- This is a child command --

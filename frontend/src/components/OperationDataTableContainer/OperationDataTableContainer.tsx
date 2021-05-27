@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 import { FetchOptions } from '../../types/api';
 import { OperationData, OperationMap } from '../../types/operations';
 import { OperationColumn, OperationColumnMap } from '../../types/sources';
+import { formatString } from '../../utils';
 import { OperationDataTable } from '../OperationDataTable';
 import { PaginationRow } from '../PaginationRow';
 
@@ -36,11 +37,16 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
       // make sure that the columns are in required order ... no using immutable as it messes up the order
       const _aliases = aliases.toJS() as OperationColumn[];
       columns = Object.keys(list[0])
-        .map<OperationColumn>((column) =>
-          column === 'error'
-            ? { id: 0, column_name: 'error', column_alias: 'Error' }
-            : (_aliases.find((alias) => alias.column_name === column) as OperationColumn),
-        )
+        .map<OperationColumn>((column) => {
+          if (column === 'error') {
+            return { id: 0, column_name: 'error', column_alias: 'Error' };
+          }
+
+          return (
+            _aliases.find((alias) => alias.column_name === column) ||
+            ({ column_name: column, column_alias: formatString(column) } as OperationColumn)
+          );
+        })
         .filter((column) => !!column); // remove undefined
     }
 

@@ -188,6 +188,8 @@ class OperationSerializer(serializers.ModelSerializer):
             operation.user = read_only_dict['user']
             operation.operation_query = query.build_query(operation=operation)
             operation.count_rows = True
+            if not 'is_draft' in validated_data:
+                operation.is_draft = False
             operation.save()
             self.create_operation_data_aliases(operation)
             return operation

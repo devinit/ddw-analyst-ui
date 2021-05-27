@@ -1,0 +1,65 @@
+{
+  "count": 0,
+  "results": [
+      {
+          "country_name": "Afghanistan",
+          "di_id": "AF",
+          "iso3": "AFG",
+          "fragile_2018": "Extremely fragile"
+      },
+      {
+          "country_name": "Albania",
+          "di_id": "AL",
+          "iso3": "ALB",
+          "fragile_2018": "Not fragile"
+      },
+      {
+          "country_name": "Algeria",
+          "di_id": "DZ",
+          "iso3": "DZA",
+          "fragile_2018": "Not fragile"
+      },
+      {
+          "country_name": "Angola",
+          "di_id": "AO",
+          "iso3": "AGO",
+          "fragile_2018": "Fragile"
+      },
+      {
+          "country_name": "Antigua and Barbuda",
+          "di_id": "AG",
+          "iso3": "ATG",
+          "fragile_2018": "Not fragile"
+      },
+      {
+          "country_name": "Argentina",
+          "di_id": "AR",
+          "iso3": "ARG",
+          "fragile_2018": "Not fragile"
+      },
+      {
+          "country_name": "Armenia",
+          "di_id": "AM",
+          "iso3": "ARM",
+          "fragile_2018": "Not fragile"
+      },
+      {
+          "country_name": "Azerbaijan",
+          "di_id": "AZ",
+          "iso3": "AZE",
+          "fragile_2018": "Not fragile"
+      },
+      {
+          "country_name": "Bangladesh",
+          "di_id": "BD",
+          "iso3": "BGD",
+          "fragile_2018": "Fragile"
+      },
+      {
+          "country_name": "Belarus",
+          "di_id": "BY",
+          "iso3": "BLR",
+          "fragile_2018": "Not fragile"
+      }
+  ]
+}

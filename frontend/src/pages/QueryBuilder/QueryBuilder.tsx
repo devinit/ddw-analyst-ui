@@ -116,12 +116,16 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const aliasCreationStatus = operation.get(
       'alias_creation_status',
     ) as AliasCreationStatus | null;
+    const aliases = operation.get('aliases') as Map<string, Map<string, string | number>>;
+
     if (logs?.get('type') || logs?.get('message')) {
       if (logs.get('message') === OBSOLETE_COLUMNS_LOG_MESSAGE) {
-        const columns = logs.get('columns') as string[];
+        const columnAliases = aliases.size
+          ? aliases.map((alias) => alias.get('column_alias'))
+          : (logs.get('columns') as string[]);
         const steps = logs.get('steps') as number[];
         setAlertMessages([
-          `Columns ${columns.join(', ')} used in steps ${steps.join(', ')} are obsolete.`,
+          `Columns ${columnAliases.join(', ')} used in steps ${steps.join(', ')} are obsolete.`,
           'NB: This warning will be cleared on save',
         ]);
       }
@@ -167,6 +171,10 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const onUpdateOperation = (operation: OperationMap) => {
     props.actions.setActiveOperation(operation, true);
+  };
+
+  const onReorderSteps = (step: OperationStepMap) => {
+    props.actions.editOperationStep(step);
   };
 
   const onDeleteOperation = (operation: OperationMap) => {
@@ -361,6 +369,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           editable={editable}
           disabled={showPreview}
           onDuplicateStep={onDuplicateStep}
+          onReorderSteps={onReorderSteps}
         />
       </OperationForm>
     );

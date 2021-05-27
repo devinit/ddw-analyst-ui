@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, ListGroup, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import { OperationStepMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { sortObjectArrayByProperty, sortSteps } from '../../utils';
 import OperationStep from '../OperationStepView';
+import { OperationStepsOrder } from '../OperationStepsOrder';
 
 interface OperationStepsProps {
   editable?: boolean;
@@ -21,34 +22,47 @@ interface OperationStepsProps {
   onAddStep: (step?: OperationStepMap) => Partial<QueryBuilderAction>;
   onClickStep: (step?: OperationStepMap) => void;
   onDuplicateStep: (step?: OperationStepMap) => void;
+  onReorderSteps: (step?: OperationStepMap) => void;
 }
 
-const StyledButton = styled(Button)`
-  padding-top: 0 !important;
-  padding-right: 0 !important;
-  margin-top: 0;
-`;
+export interface Step {
+  name: string;
+  query_func: string;
+  step_id: string | number;
+}
 
-const StyledListItem = styled(ListGroup.Item)`
+export const StyledListItem = styled(ListGroup.Item)`
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   border-color: ${(props) => (props.active ? '#737373 !important' : 'default')};
   background-color: ${(props) => (props.active ? '#EEEEEE' : '#FFFFFF')};
+  user-select: none;
 `;
-
-const StyledButtonWrapper = styled.div`
-  display: none;
-`;
-const StyledStepContainer = styled.div`
+export const StyledStepContainer = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  &:hover {
-    ${StyledButtonWrapper} {
-      display: inline-flex !important;
-    }
 `;
 
 const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const { activeSource, activeStep, editable, steps } = props;
+  const [isOrderingSteps, setIsOrderingSteps] = useState(false);
+  const [createdSteps, setCreatedSteps] = useState<Step[]>([]);
   const sources = useSources({ limit: 200, offset: 0 });
+
+  useEffect(() => {
+    (window as any).$('[data-toggle="sort-tooltip"]').tooltip(); // eslint-disable-line
+  }, []);
+
+  useEffect(() => {
+    setCreatedSteps(
+      steps
+        .sort(sortSteps)
+        .toArray()
+        .map((step) => ({
+          step_id: step.get('step_id') as string,
+          name: step.get('name') as string,
+          query_func: step.get('query_func') as string,
+        })),
+    );
+  }, [steps]);
 
   const renderOperationSteps = (steps: List<OperationStepMap>, activeStep?: OperationStepMap) => {
     if (steps.count()) {
@@ -67,19 +81,8 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                     disabled={(activeStep && !isActiveStep) || props.disabled}
                     active={isActiveStep}
                   >
-                    <OperationStep step={step} />
+                    <OperationStep step={step} onDuplicateStep={props.onDuplicateStep} />
                   </StyledListItem>
-                  <StyledButtonWrapper>
-                    <StyledButton
-                      title="Duplicate"
-                      variant="link"
-                      size="sm"
-                      data-testid="step-duplicate"
-                      onClick={() => props.onDuplicateStep(step)}
-                    >
-                      <i className="material-icons">content_copy</i>
-                    </StyledButton>
-                  </StyledButtonWrapper>
                 </StyledStepContainer>
               );
             })}
@@ -124,6 +127,25 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
     props.onClickStep(step);
   };
 
+  const handleStepOrderClick = () => {
+    setIsOrderingSteps(!isOrderingSteps);
+  };
+
+  const onUpdateSteps = (orderedSteps: string) => {
+    if (isOrderingSteps) {
+      const orderedStepsArray: string[] = JSON.parse(orderedSteps);
+      const unorderedStepsArray = steps.valueSeq().toArray();
+      orderedStepsArray.forEach((orderedStep, orderedIndex) => {
+        unorderedStepsArray.forEach((unorderedStep) => {
+          if (unorderedStep.get('step_id') === orderedStep) {
+            const updatedStep = unorderedStep.update('step_id', () => orderedIndex + 1);
+            props.onReorderSteps(updatedStep);
+          }
+        });
+      });
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="mb-3">
@@ -148,15 +170,40 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           size="sm"
           onClick={onAddStep}
           disabled={!!activeStep || props.disabled}
-          hidden={!editable}
           data-testid="qb-add-step-button"
         >
           <i className="material-icons mr-1">add</i>
           Add Step
         </Button>
+        <Button
+          variant={isOrderingSteps ? 'dark' : 'danger'}
+          size="sm"
+          onClick={handleStepOrderClick}
+          disabled={!!activeStep || props.disabled}
+          data-testid="qb-order-step-button"
+          hidden={steps.size <= 1}
+          className="pl-2 pr-2"
+          data-toggle="sort-tooltip"
+          data-placement="right"
+          title="Toggle Sort Steps"
+        >
+          <i className="material-icons">reorder</i>
+        </Button>
       </div>
 
-      {renderOperationSteps(steps, activeStep)}
+      {isOrderingSteps ? (
+        <OperationStepsOrder
+          createdSteps={createdSteps}
+          onUpdateSteps={onUpdateSteps}
+          steps={steps}
+          activeStep={activeStep}
+          onClickStep={props.onClickStep}
+          onDuplicateStep={props.onDuplicateStep}
+          disabled={props.disabled}
+        />
+      ) : (
+        renderOperationSteps(steps, activeStep)
+      )}
     </React.Fragment>
   );
 };

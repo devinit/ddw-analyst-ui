@@ -56,4 +56,121 @@ describe('The Data Sources Page', () => {
         });
       });
   });
+
+  describe('data source update', () => {
+    it('freezes a data source', () => {
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(($element) => {
+          cy.wrap($element).contains('Versions').click();
+          cy.get('[data-testid="source-version-freeze-button"]').click();
+          cy.get('[data-testid="frozen-data-form-message"]').should('be.visible').type('test');
+          cy.get('[data-testid="frozen-data-form-save-button"]').should('be.visible').click();
+          cy.get('[data-testid="frozen-dataset-refresh-button"]').first().click({ force: true });
+        });
+      cy.get('[data-testid="frozen-data-status"]').each((badge) => {
+        expect(['Errored', 'Completed', 'Pending'].includes(badge[0].innerHTML)).to.be.true;
+      });
+      cy.get('[data-testid="frozen-data-description"]').contains('test');
+    });
+
+    it('downloads a successfully frozen data source', () => {
+      cy.getAccessToken().then((token) => {
+        if (token) {
+          const options = {
+            url: `${Cypress.config('baseUrl')}/api/frozendata/`,
+            headers: {
+              Authorization: `token ${token.replaceAll('"', '')}`,
+            },
+          };
+          cy.request(options).then((response) => {
+            const currentDataSourceId = Math.max(...response.body.map((data) => Number(data.id)));
+            const currentFrozenDataSource = response.body.find(
+              (item) => Number(item.id) === currentDataSourceId,
+            );
+            cy.get('.dataset-row').each((row) => {
+              const badge = row.find('[data-testid="frozen-data-status"]');
+              if (badge[0].innerHTML === 'Completed') {
+                const button = row.find('[data-testid="frozen-source-download-button"]');
+                expect(button).to.not.be.visible;
+                expect(button).to.have.attr(
+                  'href',
+                  `/api/tables/download/${currentFrozenDataSource.frozen_db_table}/archives/`,
+                );
+              } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
+                row.find('[data-testid="frozen-source-download-button"]').should('not.exist');
+              }
+            });
+          });
+        }
+      });
+    });
+
+    it('searches for frozen data source in sources', () => {
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
+      cy.get('[data-testid="sources-table-row"]').first().contains('FTS ISO codes test');
+    });
+
+    it('querys a frozen data source', () => {
+      cy.visit('/queries/build');
+      cy.get('[name="name"]').focus().type('My Test Dataset');
+      cy.get('[name="description"]').focus().type('My Test Dataset Description');
+      cy.get('.search').eq(1).click({ force: true }).type('FTS ISO codes test');
+      cy.get('.item', { timeout: 10000 }).eq(0).click();
+      cy.get('[data-testid="qb-add-step-button"]').click();
+
+      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+      cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
+      cy.get('.selectColumnCheckbox > input').eq(0).check({ force: true });
+      cy.get('[data-testid="qb-step-preview-button"]').click();
+      cy.get('[data-testid="qb-save-button"]').click();
+      cy.get('.dataset-row-footer').eq(0).contains('Frozen FTS ISO codes test');
+    });
+
+    it('deletes a frozen data source', () => {
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}');
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(($element) => {
+          cy.wrap($element).contains('Versions').click();
+          cy.get('.dataset-row')
+            .its('length')
+            .then((rowNumber) => {
+              cy.wrap(rowNumber).as('dataSourceRowNumber');
+            });
+          cy.get('[data-testid="frozen-data-description"]').first().contains('test');
+          cy.get('[data-testid="frozen-data-delete-button"]').first().dblclick({ force: true });
+
+          // Check row count after deleting
+          cy.get('@dataSourceRowNumber').then((dataSourceRowNumber) => {
+            cy.get('.dataset-row').should('have.length', dataSourceRowNumber - 1);
+          });
+        });
+
+      //  Confirm that frozen data source was deleted
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes test{enter}');
+      cy.get('.row').contains('No Data');
+    });
+
+    it('that info button logs error message incase of a datasource freeze error', () => {
+      cy.intercept('GET', '/api/source/history/**', { fixture: 'erroredFrozenDataSource' });
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}').first();
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(($element) => {
+          cy.wrap($element).contains('Versions').click();
+          cy.get('[data-testid="frozen-data-status"]').contains('Errored');
+          cy.get('[data-testid="frozen-source-info-button"]').first().click({ force: true });
+          cy.get('.modal-body').should('be.visible').contains('Invalid dataset');
+          cy.get('.modal-footer').contains('Close').click();
+        });
+    });
+  });
 });

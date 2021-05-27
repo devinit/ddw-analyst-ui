@@ -3,6 +3,7 @@ import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react'
 import { Button, Card, Modal } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { Source, SourceMap } from '../../types/sources';
+import { clearSourcesCache } from '../../utils/cache';
 import { fetchDataSourceHistory } from '../../utils/history';
 import { BasicModal, ModalMessage } from '../BasicModal';
 import { FrozenDataForm } from '../FrozenDataForm';
@@ -43,6 +44,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
   const onCreateFrozenData = (frozenData: FrozenData) => {
     setHistory([frozenData].concat(history));
     setShowFrozenDataForm(false);
+    clearSourcesCache();
   };
 
   const onPageChange = (page: { selected: number }): void => {
@@ -88,7 +90,12 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
       <Card className="dataset-list">
         <Card.Header className={classNames({ 'd-none': !props.source })}>
           <h4>{props.source.get('indicator')}</h4>
-          <Button size="sm" variant="danger" onClick={onClickFreezeButton}>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={onClickFreezeButton}
+            data-testid="source-version-freeze-button"
+          >
             Freeze Current Version
           </Button>
         </Card.Header>

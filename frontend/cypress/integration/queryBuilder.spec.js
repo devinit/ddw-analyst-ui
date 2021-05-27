@@ -96,6 +96,18 @@ describe('The Query Builder', () => {
       .contains(`Columns donor_code, donor_name used in steps 1 are obsolete.`);
   });
 
+  it('replaces column names with column aliases for logs and displays them in an alert', () => {
+    // Mock datasets route
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/dataset/4/', datasets.results[3]);
+    });
+
+    cy.visit('/queries/build/4/');
+    cy.get('[data-testid="qb-alert"] p')
+      .first()
+      .contains(`Columns Country name, Country code, ISO Alpha 3 used in steps 1 are obsolete.`);
+  });
+
   it('that creates a copy of a step', () => {
     cy.fixture('datasets').then((datasets) => {
       cy.intercept('api/dataset/3/', datasets.results[2]);
@@ -132,5 +144,55 @@ describe('The Query Builder', () => {
 
   xit('previews a dataset', () => {
     // TODO: create test
+  });
+
+  it('shows reorder step button', () => {
+    // Visit query builder, type name and choose datasource
+    cy.fillOperationForm('Test Dataset', 'Test Dataset', 'Financial Tracking Service');
+
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+
+    // Create select query step
+    cy.createSelectStep();
+
+    // Fill create step form with 2 filters
+    cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
+
+    // Save and create step
+    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
+
+    // Check that there is more than one step
+    cy.get('.list-group').children().should('have.length', 2);
+
+    // Check that reorder button is visible
+    cy.get('[data-testid="qb-order-step-button"]').should('be.visible');
+  });
+
+  it('navigates to reorder steps view and back to normal steps view', () => {
+    // Visit query builder, type name and choose datasource
+    cy.fillOperationForm('Test Dataset', 'Test Dataset', 'Financial Tracking Service');
+
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+
+    // Create select query step
+    cy.createSelectStep();
+
+    // Fill create step form with 2 filters
+    cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
+
+    // Save and create step
+    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
+
+    // Navigate to reorder step view
+    cy.get('[data-testid="qb-order-step-button"]').click({ force: true });
+
+    // Check that drag handles are visible
+    cy.get('[data-testid="qb-drag-handle"]').should('be.visible');
+
+    // Navigate back to normal step view
+    cy.get('[data-testid="qb-order-step-button"]').click({ force: true });
+
+    // Check that drag handles do not exist
+    cy.get('[data-testid="qb-drag-handle"]').should('not.exist');
   });
 });
