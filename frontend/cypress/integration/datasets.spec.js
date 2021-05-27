@@ -46,23 +46,51 @@ describe('The Datasets Pages', () => {
   });
 
   it('filters datasets by search text', () => {
+    cy.intercept('/api/datasets/?limit=10&offset=0').as('datasets');
+
     cy.visit('/datasets/');
-    cy.get('[data-testid="sources-table-search"]').first().type('iati{enter}');
-    cy.get('.dataset-row-title').filter(':visible').should('include.text', 'iati');
-    cy.get('.dataset-row-title')
-      .siblings('.mb-2')
-      .filter(':visible')
-      .should('include.text', 'iati');
+
+    cy.wait('@datasets').then((res) => {
+      cy.get('[data-testid="sources-table-search"]').type('iati{enter}');
+      cy.getAccessToken().then((token) => {
+        if (token) {
+          const options = {
+            url: `${Cypress.config('baseUrl')}/api/datasets/?&offset=0&search=iati`,
+            headers: {
+              Authorization: `token ${token.replaceAll('"', '')}`,
+            },
+          };
+          cy.request(options).then((response) => {
+            expect(res.response.body.count).to.not.equal(response.body.count);
+          });
+        }
+      });
+    });
   });
 
   it('filters datasets by data source', () => {
+    cy.intercept('/api/datasets/?limit=10&offset=0').as('datasets');
+
     cy.visit('/datasets/');
-    cy.get('.search').first().click({ force: true });
-    cy.wait(4000);
-    cy.get('.search').first().type('FTS dependency codenames{enter}');
-    cy.get('.dataset-row-footer')
-      .children('.text-danger')
-      .should('include.text', 'FTS dependency codenames');
+
+    cy.wait('@datasets').then((res) => {
+      cy.get('.search').first().click({ force: true });
+      cy.wait(4000);
+      cy.get('.search').first().type('FTS dependency codenames{enter}');
+      cy.getAccessToken().then((token) => {
+        if (token) {
+          const options = {
+            url: `${Cypress.config('baseUrl')}/api/source/datasets/43/?limit=10&offset=0&search=`,
+            headers: {
+              Authorization: `token ${token.replaceAll('"', '')}`,
+            },
+          };
+          cy.request(options).then((response) => {
+            expect(res.response.body.count).to.not.equal(response.body.count);
+          });
+        }
+      });
+    });
   });
 
   xdescribe('dataset row', () => {
