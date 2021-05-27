@@ -26,27 +26,37 @@ import { isOperationsCacheExpired } from '../utils/cache';
 
 function* fetchOperations({ payload }: OperationsAction) {
   try {
-    const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    let fetch = !!(payload.search || payload.link);
     const basePath = payload.mine ? api.routes.MY_DATASETS : api.routes.DATASETS;
     const datasetKey = payload.mine
       ? localForageKeys.MY_DATASETS
       : localForageKeys.PUBLISHED_DATASETS;
     const dataCountKey = `${datasetKey}-${localForageKeys.DATASET_COUNT}-${payload.limit}-${payload.offset}`;
-    const cacheDatasets: string = yield localForage.getItem<string>(
-      `${datasetKey}-${payload.limit}-${payload.offset}`,
-    );
     const cachedDatasetCount: number = yield localForage.getItem<number>(dataCountKey);
-    const expiredCache: boolean = yield isOperationsCacheExpired(
-      dataCountKey,
-      cacheDatasets,
-      `${basePath}?limit=${payload.limit}&offset=${payload.offset}`,
-    );
 
-    if (cacheDatasets && !expiredCache) {
-      const data = JSON.parse(cacheDatasets);
-      yield put(onFetchOperationsSuccessful(data.results, cachedDatasetCount));
-      yield put(updateOperationInfo({ next: data.next, previous: data.previous }, payload.offset));
-    } else {
+    if (!fetch) {
+      const cacheDatasets: string = yield localForage.getItem<string>(
+        `${datasetKey}-${payload.limit}-${payload.offset}`,
+      );
+      const expiredCache: boolean = yield isOperationsCacheExpired(
+        dataCountKey,
+        cacheDatasets,
+        `${basePath}?limit=${payload.limit}&offset=${payload.offset}`,
+      );
+
+      if (cacheDatasets && !expiredCache) {
+        const data = JSON.parse(cacheDatasets);
+        yield put(onFetchOperationsSuccessful(data.results, cachedDatasetCount));
+        yield put(
+          updateOperationInfo({ next: data.next, previous: data.previous }, payload.offset),
+        );
+      } else {
+        fetch = true;
+      }
+    }
+
+    if (fetch) {
+      const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
       const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios
         .request({
           url:
