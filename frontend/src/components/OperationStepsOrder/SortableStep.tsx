@@ -53,7 +53,7 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
         {stepMap && (
           <Row>
             <Col md={0.5} className="mt-auto mb-auto">
-              <span className="pl-2" {...listeners} {...attributes}>
+              <span data-testid="qb-drag-handle" className="pl-2" {...listeners} {...attributes}>
                 <StyledIcon className="material-icons">drag_indicator</StyledIcon>
               </span>
             </Col>
