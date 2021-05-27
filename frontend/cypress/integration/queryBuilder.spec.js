@@ -156,7 +156,7 @@ describe('The Query Builder', () => {
     cy.get('[data-testid="qb-order-step-button"]').should('be.visible');
   });
 
-  it('navigates to reorder step view', () => {
+  it('navigates to reorder steps view and back to normal steps view', () => {
     // Visit query builder, type name and choose datasource
     cy.fillOperationForm('Test Dataset', 'Test Dataset', 'Financial Tracking Service');
 
@@ -176,5 +176,11 @@ describe('The Query Builder', () => {
 
     // Check that drag handles are visible
     cy.get('[data-testid="qb-drag-handle"]').should('be.visible');
+
+    // Navigate back to normal step view
+    cy.get('[data-testid="qb-order-step-button"]').click({ force: true });
+
+    // Check that drag handles do not exist
+    cy.get('[data-testid="qb-drag-handle"]').should('not.exist');
   });
 });
