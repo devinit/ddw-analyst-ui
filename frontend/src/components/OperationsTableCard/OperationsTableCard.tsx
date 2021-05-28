@@ -11,7 +11,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
@@ -28,6 +28,7 @@ import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
+import queryString from 'query-string';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -57,23 +58,18 @@ const getSourceDatasetsLink = (
   }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
+  const { search } = useLocation();
+  const queryParams = queryString.parse(location.search);
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
   const [info, setInfo] = useState('');
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
-  const currentUrlParams = new URLSearchParams(window.location.search);
-  const page = currentUrlParams.get('page');
-  const pageNumber = page ? parseInt(page) : 0;
-
+  const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
   useEffect(() => {
-    localStorage.setItem(
-      'offset',
-      (pageNumber === 0 ? 0 : (pageNumber - 1) * props.limit).toString(),
-    );
     fetchQueries(showMyQueries);
-  }, [pageNumber]);
+  }, [pageNumber, search]);
   useEffect(() => {
     const values = Array.from(sources, (source) => {
       return {
@@ -85,11 +81,14 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   }, [sources]);
 
   const fetchQueries = (mine = false) => {
+    const values = queryString.parse(location.search);
+    const search = (values.q as string) || '';
     const loading = props.operations.get('loading') as boolean;
     if (!loading) {
       props.actions.fetchOperations({
         limit: props.limit,
-        offset: parseInt(localStorage.getItem('offset') || '{}'),
+        offset: (pageNumber - 1) * props.limit,
+        search,
         mine,
         link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
       });
@@ -115,21 +114,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       event.stopPropagation();
 
       const { value } = event.currentTarget as HTMLInputElement;
-      if (value !== '') {
-        currentUrlParams.set('q', value);
-        currentUrlParams.set('page', '1');
-      }
-      props.history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
       setSearchQuery(value || '');
-      props.actions.fetchOperations({
-        limit: props.limit,
-        offset: 0,
-        search: value || '',
-        mine: showMyQueries,
-        link: props.sourceID
-          ? getSourceDatasetsLink(props.sourceID, showMyQueries, props.limit, 0, value)
-          : undefined,
-      });
+      setPageNumber(1);
+      const values = queryString.parse(location.search);
+      values.q = value || null;
+      values.page = '1';
+      props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
     }
   };
 
@@ -230,16 +220,10 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
           )
         : undefined,
     });
-    if (page.selected !== 0) {
-      currentUrlParams.set('page', (page.selected + 1).toString());
-      props.history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
-    } else {
-      if (showMyQueries) {
-        props.history.push('/');
-      } else {
-        props.history.push('/datasets');
-      }
-    }
+    setPageNumber(page.selected + 1);
+    const values = queryString.parse(location.search);
+    values.page = (page.selected + 1).toString() || null;
+    props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
   };
 
   const onFilterByDataSource = (
@@ -247,9 +231,10 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     data: DropdownProps,
   ) => {
     const { value } = data;
-    currentUrlParams.set('source', (value as number).toString());
-    currentUrlParams.set('page', '1');
-    props.history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
+    const values = queryString.parse(location.search);
+    values.source = (value as number).toString() || null;
+    values.page = '1';
+    props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
     props.actions.fetchOperations({
       limit: props.limit,
       offset: 0,
@@ -271,8 +256,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
           count={count}
           pageCount={Math.ceil(count / props.limit)}
           onPageChange={onPageChange}
-          currentPage={pageNumber === 0 ? 0 : pageNumber - 1}
-          storedOffset={parseInt(localStorage.getItem('offset') || '{}')}
+          currentPage={pageNumber === 1 ? 0 : pageNumber - 1}
+          offset={(pageNumber - 1) * props.limit}
         />
       );
     }

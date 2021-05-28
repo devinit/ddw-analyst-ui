@@ -8,7 +8,8 @@ import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
 import { fetchSources } from '../../actions/sources';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 
 interface ComponentProps {
   sources: List<SourceMap>;
@@ -22,24 +23,25 @@ interface ComponentProps {
 type SourcesTableCardProps = ComponentProps;
 
 export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props) => {
+  const { search } = useLocation();
+  const queryParams = queryString.parse(location.search);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState('');
-  const currentUrlParams = new URLSearchParams(window.location.search);
-  const page = currentUrlParams.get('page');
-  const pageNumber = page ? parseInt(page) : 0;
+  const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
+  const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
   useEffect(() => {
-    localStorage.setItem(
-      'offset',
-      (pageNumber === 0 ? 0 : (pageNumber - 1) * props.limit).toString(),
-    );
+    const values = queryString.parse(location.search);
+    const search = (values.q as string) || '';
     if (!props.loading) {
       dispatch(
-        fetchSources({ limit: 10, offset: parseInt(localStorage.getItem('offset') || '{}') }),
-        // fetchSources({ limit: 10, offset: props.offset }),
+        fetchSources({
+          limit: 10,
+          offset: (pageNumber - 1) * props.limit,
+          search,
+        }),
       );
     }
-  }, [pageNumber]);
+  }, [search, pageNumber]);
 
   const onSearchChange = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
@@ -47,22 +49,12 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
       event.stopPropagation();
 
       const { value } = event.currentTarget as HTMLInputElement;
-      if (value !== '') {
-        currentUrlParams.set('q', value);
-        currentUrlParams.set('page', '1');
-        localStorage.setItem('searchQuery', value);
-      }
-      history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
       setSearchQuery(value || '');
-      dispatch(
-        fetchSources({
-          limit: props.limit,
-          offset: localStorage.getItem('offset')
-            ? parseInt(localStorage.getItem('offset') || '{}')
-            : 0,
-          search: value || '',
-        }),
-      );
+      setPageNumber(1);
+      const values = queryString.parse(location.search);
+      values.q = value || null;
+      values.page = '1';
+      history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
     }
   };
 
@@ -74,8 +66,10 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         search: searchQuery,
       }),
     );
-    currentUrlParams.set('page', (page.selected + 1).toString());
-    history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
+    setPageNumber(page.selected + 1);
+    const values = queryString.parse(location.search);
+    values.page = (page.selected + 1).toString() || null;
+    history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
   };
 
   const renderPagination = (): ReactNode => {
@@ -86,8 +80,8 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         count={props.count}
         pageCount={Math.ceil(props.count / props.limit)}
         onPageChange={onPageChange}
-        currentPage={pageNumber === 0 ? 0 : pageNumber - 1}
-        storedOffset={parseInt(localStorage.getItem('offset') || '{}')}
+        currentPage={pageNumber === 1 ? 0 : pageNumber - 1}
+        offset={(pageNumber - 1) * props.limit}
       />
     );
   };
