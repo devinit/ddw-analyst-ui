@@ -120,9 +120,18 @@ export type AdvancedQueryFilterComparator = {
 };
 
 export type FilterComp = '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte' | '$btn' | '$in';
+export type JoinType =
+  | 'inner'
+  | 'outer'
+  | 'left'
+  | 'right'
+  | 'full'
+  | 'cross'
+  | 'left_outer'
+  | 'right_outer';
 
-interface AdvancedQueryJoin {
-  type: 'inner' | 'left' | 'right' | 'full';
+export interface AdvancedQueryJoin {
+  type: JoinType;
   source: number;
   mapping: [string, string][];
 }
