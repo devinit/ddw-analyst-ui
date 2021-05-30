@@ -1,17 +1,35 @@
 import classNames from 'classnames';
 import { List, Set } from 'immutable';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { Alert, Col, Form } from 'react-bootstrap';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, DropdownProps } from 'semantic-ui-react';
+import { AdvancedQueryJoin, JoinType } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { JoinColumnsMapper } from '../JoinColumnsMapper';
 import { QueryBuilderHandler } from '../QueryBuilderHandler';
+import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
+import { hasJoinConfig, joinTypes } from './utils';
 
 interface ComponentProps {
   source: SourceMap;
 }
 
 const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
+  const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
+  const [joinType, setJoinType] = useState<JoinType>('inner');
+
+  useEffect(() => {
+    if (!hasJoinConfig(options)) {
+      updateOptions!({ join: { type: joinType } as AdvancedQueryJoin });
+    }
+  }, []);
+
+  const onChangeJoinType = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    const value = data.value as JoinType;
+    setJoinType(value);
+    updateOptions!({ join: { ...options.join, type: value } as AdvancedQueryJoin });
+  };
+
   // parse source columns into format consumable by FilterItem
   const columns = source.get('columns') as ColumnList;
   const columnSet = Set(columns.map((column) => column.get('name') as string));
@@ -28,9 +46,9 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
             fluid
             search
             selection
-            // options={this.joinTypes}
-            // value={this.props.joinType}
-            // onChange={this.onChange}
+            options={joinTypes}
+            value={joinType}
+            onChange={onChangeJoinType}
             // disabled={!this.props.editable}
             data-testid="qb-join-type"
           />
