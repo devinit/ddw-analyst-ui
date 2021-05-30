@@ -1,5 +1,7 @@
+import { List } from 'immutable';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { AdvancedQueryOptions } from '../../../types/operations';
+import { SourceMap } from '../../../types/sources';
 
 export const hasJoinConfig = (options: AdvancedQueryOptions): boolean => !!options.join;
 export const joinTypes: DropdownItemProps[] = [

@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import classNames from 'classnames';
 import { List, Set } from 'immutable';
 import React, { FunctionComponent, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { Alert, Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
+import { SourcesContext } from '../../context';
 import { AdvancedQueryJoin, JoinType } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
+import { getSelectOptionsFromSources } from '../../utils';
 import { JoinColumnsMapper } from '../JoinColumnsMapper';
 import { QueryBuilderHandler } from '../QueryBuilderHandler';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
@@ -17,6 +20,7 @@ interface ComponentProps {
 const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [joinType, setJoinType] = useState<JoinType>('inner');
+  const { sources } = useContext(SourcesContext);
 
   useEffect(() => {
     if (!hasJoinConfig(options)) {
@@ -28,6 +32,12 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     const value = data.value as JoinType;
     setJoinType(value);
     updateOptions!({ join: { ...options.join, type: value } as AdvancedQueryJoin });
+  };
+
+  const onSelectSource = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    updateOptions!({
+      join: { ...options.join, source: data.value as number } as AdvancedQueryJoin,
+    });
   };
 
   // parse source columns into format consumable by FilterItem
@@ -49,7 +59,6 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
             options={joinTypes}
             value={joinType}
             onChange={onChangeJoinType}
-            // disabled={!this.props.editable}
             data-testid="qb-join-type"
           />
           <Form.Control.Feedback type="invalid" className={classNames({ 'd-block': false })}>
@@ -59,20 +68,15 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       </Col>
       <Col md={6} className="mt-2 pl-0">
         <Form.Group>
-          <Form.Label className="bmd-label-floating">Data set to join with</Form.Label>
+          <Form.Label className="bmd-label-floating">Data Source to Join With</Form.Label>
           <Dropdown
             name="source"
-            placeholder="Select Data Set"
+            placeholder="Select Data Source"
             fluid
             search
             selection
-            // options={this.getSelectOptionsFromSources(this.props.sources, this.props.source).sort(
-            //   sortObjectArrayByProperty('text').sort,
-            // )}
-            // loading={this.props.isFetchingSources}
-            // value={sourceID as string | undefined}
-            // onChange={this.onChange}
-            // disabled={!this.props.editable}
+            options={getSelectOptionsFromSources(sources, source)}
+            onChange={onSelectSource}
             data-testid="qb-join-dataset-select"
           />
           <Form.Control.Feedback type="invalid" className={classNames({ 'd-block': false })}>

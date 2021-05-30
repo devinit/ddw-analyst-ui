@@ -154,8 +154,12 @@ export const getStepSelectableColumns = (
   return Set(columnsList.map((column) => column.get('name') as string));
 };
 
-export const getSelectOptionsFromSources = (sources: List<SourceMap>): DropdownItemProps[] =>
+export const getSelectOptionsFromSources = (
+  sources: List<SourceMap>,
+  exclude?: SourceMap,
+): DropdownItemProps[] =>
   sources
+    .filter((source) => (exclude ? source.get('id') !== exclude.get('id') : true))
     .map((source) => ({
       key: source.get('id'),
       text: source.get('indicator'),
