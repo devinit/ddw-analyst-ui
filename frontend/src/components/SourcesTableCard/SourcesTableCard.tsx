@@ -30,17 +30,21 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
   const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
   const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
   useEffect(() => {
+    if (Object.entries(queryParams).length === 0) {
+      history.push(`${window.location.pathname}?page=1`);
+      setPageNumber(1);
+    }
+  }, [queryParams]);
+  useEffect(() => {
     const values = queryString.parse(location.search);
     const search = (values.q as string) || '';
-    if (!props.loading) {
-      dispatch(
-        fetchSources({
-          limit: 10,
-          offset: (pageNumber - 1) * props.limit,
-          search,
-        }),
-      );
-    }
+    dispatch(
+      fetchSources({
+        limit: 10,
+        offset: (pageNumber - 1) * props.limit,
+        search,
+      }),
+    );
   }, [search, pageNumber]);
 
   const onSearchChange = (event: React.KeyboardEvent<HTMLInputElement>): void => {

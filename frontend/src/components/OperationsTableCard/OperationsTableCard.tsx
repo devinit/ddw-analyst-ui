@@ -68,6 +68,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const { sources } = useContext(SourcesContext);
   const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
   useEffect(() => {
+    if (Object.entries(queryParams).length === 0) {
+      props.history.push(`${window.location.pathname}?page=1`);
+      setPageNumber(1);
+    }
+  }, [queryParams]);
+  useEffect(() => {
     fetchQueries(showMyQueries);
   }, [pageNumber, search]);
   useEffect(() => {
@@ -83,16 +89,13 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const fetchQueries = (mine = false) => {
     const values = queryString.parse(location.search);
     const search = (values.q as string) || '';
-    const loading = props.operations.get('loading') as boolean;
-    if (!loading) {
-      props.actions.fetchOperations({
-        limit: props.limit,
-        offset: (pageNumber - 1) * props.limit,
-        search,
-        mine,
-        link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
-      });
-    }
+    props.actions.fetchOperations({
+      limit: props.limit,
+      offset: (pageNumber - 1) * props.limit,
+      search,
+      mine,
+      link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
+    });
     if (mine && !showMyQueries) {
       setShowMyQueries(true);
       setSearchQuery('');
