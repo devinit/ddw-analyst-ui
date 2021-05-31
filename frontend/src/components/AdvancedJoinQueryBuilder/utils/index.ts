@@ -1,7 +1,8 @@
-import { List } from 'immutable';
+import { Set } from 'immutable';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { AdvancedQueryOptions } from '../../../types/operations';
-import { SourceMap } from '../../../types/sources';
+import { ColumnList, SourceMap } from '../../../types/sources';
+import { QueryBuilderHandler } from '../../QueryBuilderHandler';
 
 export const hasJoinConfig = (options: AdvancedQueryOptions): boolean => !!options.join;
 export const joinTypes: DropdownItemProps[] = [
@@ -14,3 +15,17 @@ export const joinTypes: DropdownItemProps[] = [
   { key: 'left_outer', text: 'Left Outer Join', value: 'left_outer' },
   { key: 'right_outer', text: 'Right Outer Join', value: 'right_outer' },
 ];
+
+export const getSourceColumns = (
+  source: SourceMap,
+  asDropdownItems = false,
+): DropdownItemProps[] | ColumnList => {
+  const columns = source.get('columns') as ColumnList;
+  if (asDropdownItems) {
+    const columnSet = Set(columns.map((column) => column.get('name') as string));
+
+    return QueryBuilderHandler.getSelectOptionsFromColumns(columnSet, columns);
+  }
+
+  return columns;
+};

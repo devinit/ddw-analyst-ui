@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import classNames from 'classnames';
-import { List, Set } from 'immutable';
+import { List } from 'immutable';
 import React, { FunctionComponent, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { Alert, Col, Form } from 'react-bootstrap';
-import { Dropdown, DropdownProps } from 'semantic-ui-react';
+import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { SourcesContext } from '../../context';
 import { AdvancedQueryJoin, JoinType } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
 import { JoinColumnsMapper } from '../JoinColumnsMapper';
-import { QueryBuilderHandler } from '../QueryBuilderHandler';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
-import { hasJoinConfig, joinTypes } from './utils';
+import { getSourceColumns, hasJoinConfig, joinTypes } from './utils';
 
 interface ComponentProps {
   source: SourceMap;
@@ -21,6 +20,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [joinType, setJoinType] = useState<JoinType>('inner');
   const { sources } = useContext(SourcesContext);
+  const [joinColumns, setJoinColumns] = useState<ColumnList>(List());
 
   useEffect(() => {
     if (!hasJoinConfig(options)) {
@@ -38,12 +38,14 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     updateOptions!({
       join: { ...options.join, source: data.value as number } as AdvancedQueryJoin,
     });
+    const joinSource = sources.find((_source) => _source.get('id') === data.value);
+    if (joinSource) {
+      setJoinColumns(getSourceColumns(joinSource) as ColumnList);
+    }
   };
 
   // parse source columns into format consumable by FilterItem
-  const columns = source.get('columns') as ColumnList;
-  const columnSet = Set(columns.map((column) => column.get('name') as string));
-  const columnItems = QueryBuilderHandler.getSelectOptionsFromColumns(columnSet, columns);
+  const columnItems = getSourceColumns(source, true) as DropdownItemProps[];
 
   return (
     <>
@@ -85,20 +87,18 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
         </Form.Group>
       </Col>
 
-      <Col md={12} className={classNames('mt-2 pl-0', { 'd-none': false })}>
-        <Alert variant="danger" hidden={true}>
-          Alert Goes Here
-        </Alert>
-        <JoinColumnsMapper
-          // editable={this.props.editable}
-          primaryColumns={columnItems}
-          secondaryColumns={List()}
-          primaryColumn={''}
-          secondaryColumn={''}
-          columnMapping={{}}
-          // onUpdate={this.onChangeMapping}
-        />
-      </Col>
+      {joinType && joinColumns.count() ? (
+        <Col md={12} className={classNames('mt-2 pl-0', { 'd-none': false })}>
+          <Alert variant="danger" hidden={true}>
+            Alert Goes Here
+          </Alert>
+          <JoinColumnsMapper
+            primaryColumns={columnItems}
+            secondaryColumns={joinColumns}
+            // onUpdate={this.onChangeMapping}
+          />
+        </Col>
+      ) : null}
     </>
   );
 };
