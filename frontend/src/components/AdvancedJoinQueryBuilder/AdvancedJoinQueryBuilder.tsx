@@ -8,7 +8,7 @@ import { SourcesContext } from '../../context';
 import { AdvancedQueryJoin, JoinType } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
-import { JoinColumnsMapper } from '../JoinColumnsMapper';
+import { AdvancedJoinColumnsMapper } from '../AdvancedJoinColumnsMapper';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
 import { getSourceColumns, hasJoinConfig, joinTypes } from './utils';
 
@@ -41,6 +41,20 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     const joinSource = sources.find((_source) => _source.get('id') === data.value);
     if (joinSource) {
       setJoinColumns(getSourceColumns(joinSource) as ColumnList);
+    }
+  };
+
+  const onAddMapping = (columnMapping: [string, string]) => {
+    if (columnMapping.every((column) => !!column)) {
+      updateOptions!({
+        join: {
+          ...options.join,
+          mapping:
+            options.join && options.join.mapping
+              ? options.join.mapping.concat([columnMapping])
+              : [columnMapping],
+        } as AdvancedQueryJoin,
+      });
     }
   };
 
@@ -88,14 +102,14 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       </Col>
 
       {joinType && joinColumns.count() ? (
-        <Col md={12} className={classNames('mt-2 pl-0', { 'd-none': false })}>
+        <Col md={10} className={classNames('mt-2 pl-0', { 'd-none': false })}>
           <Alert variant="danger" hidden={true}>
             Alert Goes Here
           </Alert>
-          <JoinColumnsMapper
+          <AdvancedJoinColumnsMapper
             primaryColumns={columnItems}
             secondaryColumns={joinColumns}
-            // onUpdate={this.onChangeMapping}
+            onAdd={onAddMapping}
           />
         </Col>
       ) : null}
