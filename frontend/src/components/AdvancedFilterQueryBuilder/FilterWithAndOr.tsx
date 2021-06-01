@@ -102,6 +102,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         }),
       });
     }
+    setActiveFilter(Map({}) as ErroredFilterMap);
   };
 
   if (show) {
