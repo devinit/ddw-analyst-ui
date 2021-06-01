@@ -87,7 +87,7 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
           search
           options={columns}
           onChange={onSelectColumn}
-          value={filter.get('field') as string}
+          value={(filter.get('field') as string) || ''}
           error={!!(errors && errors.get('field'))}
           disabled={!props.editable}
           data-testid="qb-filter-select-column"
@@ -108,7 +108,7 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
           search
           options={operations}
           onChange={onSelectOperation}
-          value={filter.get('func') as string}
+          value={(filter.get('func') as string) || ''}
           error={!!(errors && errors.get('func'))}
           disabled={!props.editable}
           data-testid="qb-filter-select-operation"
@@ -133,6 +133,7 @@ export const FilterItem: FunctionComponent<FilterItemProps> = (props) => {
           <FormControl
             name="value"
             defaultValue={filter.get('value') as string}
+            value={(filter.get('value') as string) || ''}
             isInvalid={!!(errors && errors.get('value'))}
             onFocus={setFocusedField}
             onBlur={resetFocus}
