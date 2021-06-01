@@ -87,6 +87,10 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
     setActiveFilter(filter);
   };
 
+  const onReset = () => {
+    setEditorContent(defaultOptions(filterWith!));
+  };
+
   const onAddFilter = (filter: ErroredFilterMap) => {
     if (filterWith && editorContent[filterWith]) {
       setEditorContent({
@@ -155,6 +159,17 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
             onClick={onInsert}
           >
             Insert
+          </Button>
+          <Button
+            variant="dark"
+            size="sm"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            data-html="true"
+            title={`<i>Resets</i> config to default JSON`}
+            onClick={onReset}
+          >
+            Reset
           </Button>
         </ButtonGroup>
       </>
