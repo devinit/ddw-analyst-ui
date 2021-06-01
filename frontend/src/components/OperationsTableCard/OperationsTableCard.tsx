@@ -72,6 +72,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       props.history.push(`${window.location.pathname}?page=1`);
       setPageNumber(1);
     }
+    setPageNumber(Number(queryParams.page as string));
   }, [queryParams]);
   useEffect(() => {
     fetchQueries(showMyQueries);

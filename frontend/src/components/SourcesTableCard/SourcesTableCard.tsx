@@ -29,11 +29,13 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
   const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
+  console.log(pageNumber);
   useEffect(() => {
     if (Object.entries(queryParams).length === 0) {
       history.push(`${window.location.pathname}?page=1`);
       setPageNumber(1);
     }
+    setPageNumber(Number(queryParams.page as string));
   }, [queryParams]);
   useEffect(() => {
     const values = queryString.parse(location.search);
