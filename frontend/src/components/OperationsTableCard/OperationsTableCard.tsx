@@ -1,7 +1,13 @@
 import { List } from 'immutable';
-import { debounce } from 'lodash';
 import queryString from 'query-string';
-import React, { ChangeEvent, FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
   Button,
   Card,
@@ -22,6 +28,7 @@ import { OperationsState } from '../../reducers/operations';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
+import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { BasicModal } from '../BasicModal';
@@ -66,6 +73,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const { search, pathname } = useLocation();
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [sourceID, setSourceID] = useState<number | undefined>(props.sourceID);
   const [info, setInfo] = useState('');
@@ -75,12 +83,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   useEffect(() => {
     const queryParams = queryString.parse(location.search);
     setSearchQuery((queryParams.search as string) || '');
+    setSearchInput((queryParams.search as string) || '');
     setPageNumber(Number(queryParams.page || 1));
     setSourceID(queryParams.source ? Number(queryParams.source) : undefined);
   }, [search]);
-  useEffect(() => {
-    fetchQueries(showMyQueries);
-  }, [pageNumber, searchQuery, sourceID]);
+  useEffect(() => fetchQueries(showMyQueries), [pageNumber, searchQuery, sourceID]);
   useEffect(() => {
     const values = Array.from(sources, (source) => {
       return {
@@ -101,13 +108,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const fetchQueries = (mine = false) => {
-    const values = queryString.parse(search);
-    const searchValue = (values.search as string) || '';
     const offset = (pageNumber - 1) * props.limit;
     props.actions.fetchOperations({
       limit: props.limit,
       offset,
-      search: searchValue,
+      search: searchQuery,
       mine,
       link: sourceID ? getSourceDatasetsLink(sourceID, mine, props.limit, offset) : undefined,
     });
@@ -121,12 +126,18 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const onSearchChange = (event: ChangeEvent<FormControlElement>) => {
+    const { value = '' } = event.currentTarget as HTMLInputElement;
+    setSearchInput(value);
+  };
 
-    const { value } = event.target as HTMLInputElement;
-    updateQueryParams({ search: value, page: 1 });
+  const onSearch = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+
+      updateQueryParams({ search: searchInput, page: 1 });
+    }
   };
 
   const onViewData = (operation: OperationMap) => {
@@ -276,8 +287,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               <FormControl
                 placeholder="Search ..."
                 className="w-100"
-                defaultValue={searchQuery}
-                onChange={debounce(onSearch, 1000)}
+                value={searchInput}
+                onChange={onSearchChange}
+                onKeyDown={onSearch}
                 data-testid="sources-table-search"
               />
             </Col>
