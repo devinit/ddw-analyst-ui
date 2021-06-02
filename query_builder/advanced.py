@@ -86,7 +86,7 @@ class AdvancedQueryBuilder:
 
     def get_select_query(self, table, query, columns):
         # TODO: handle aggregation here
-        return query.select(*[table[column] for column in columns])
+        return query.select(*[table[column.get('name')].as_(column.get('alias')) for column in columns])
 
     def get_groupby_query(self, table, query, columns):
         # TODO: handle .having here as its usage is based on the groupby
@@ -119,7 +119,9 @@ class AdvancedQueryBuilder:
 def get_config():
     return {
         'source': 1,
-        'columns': ['donor_name', 'agency_name'],
+        'select_all': True,
+        'columns': [{ 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name' }, { 'id': 20, 'name': 'agency_name', 'alias': 'Agency' }],
+        'group_by': ['donor_name', 'agency_name'],
         'filter': {
             '$and': [
                 { 'column': 'donor_name', 'comp': '$eq', 'value': 'United States' },
