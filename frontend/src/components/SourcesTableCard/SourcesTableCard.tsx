@@ -1,6 +1,7 @@
 import { List } from 'immutable';
+import { debounce } from 'lodash';
 import queryString from 'query-string';
-import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
+import React, { ChangeEvent, FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card, FormControl } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -10,7 +11,6 @@ import { LinksMap } from '../../types/api';
 import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
-import { setQueryParams } from '../../utils';
 
 interface ComponentProps {
   sources: List<SourceMap>;
@@ -22,41 +22,45 @@ interface ComponentProps {
   count: number;
 }
 type SourcesTableCardProps = ComponentProps;
+type TableFilters = {
+  search?: string;
+  page?: number;
+};
 
 export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props) => {
   const { search, pathname } = useLocation();
-  const queryParams = queryString.parse(search);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
-  const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
   useEffect(() => {
-    if (Object.entries(queryParams).length === 0) {
-      history.push(`${pathname}?page=1`);
-      setPageNumber(1);
-    }
-    setPageNumber(Number(queryParams.page as string));
-  }, [queryParams]);
+    const queryParams = queryString.parse(search);
+    setSearchQuery((queryParams.search as string) || '');
+    setPageNumber(Number(queryParams.page || 1));
+  }, [search]);
   useEffect(() => {
-    const values = queryString.parse(search);
-    const searchValue = (values.q as string) || '';
     dispatch(
       fetchSources({
         limit: 10,
         offset: (pageNumber - 1) * props.limit,
-        search: searchValue,
+        search: searchQuery,
       }),
     );
-  }, [search, pageNumber]);
+  }, [searchQuery, pageNumber]);
 
-  const onSearchChange = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
+  const updateQueryParams = (filter: TableFilters): void => {
+    const queryParameters = { ...queryString.parse(search), ...filter };
+    const cleanParameters: Partial<TableFilters> = {};
+    if (queryParameters.search) cleanParameters.search = queryParameters.search;
+    if (queryParameters.page) cleanParameters.page = queryParameters.page;
+    history.push(`${pathname}?${queryString.stringify(cleanParameters)}`);
+  };
 
-      const { value } = event.currentTarget as HTMLInputElement;
-      setQueryParams(value, setPageNumber, setSearchQuery, history, pathname, search);
-    }
+  const onSearch = (event: ChangeEvent<HTMLInputElement>): void => {
+    const { value } = event.target as HTMLInputElement;
+    event.preventDefault();
+    event.stopPropagation();
+    updateQueryParams({ search: value, page: 1 });
   };
 
   const onPageChange = (page: { selected: number }): void => {
@@ -67,10 +71,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         search: searchQuery,
       }),
     );
-    setPageNumber(page.selected + 1);
-    const values = queryString.parse(search);
-    values.page = (page.selected + 1).toString() || null;
-    history.push(`${pathname}?${queryString.stringify(values)}`);
+    updateQueryParams({ page: page.selected + 1 });
   };
 
   const renderPagination = (): ReactNode => {
@@ -98,7 +99,8 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
             <FormControl
               placeholder="Search ..."
               className="w-50"
-              onKeyDown={onSearchChange}
+              defaultValue={searchQuery}
+              onChange={debounce(onSearch, 1000)}
               data-testid="sources-table-search"
             />
           </Card.Title>
