@@ -67,6 +67,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
+  const [sourceID, setSourceID] = useState<number | undefined>(props.sourceID);
   const [info, setInfo] = useState('');
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
@@ -75,10 +76,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     const queryParams = queryString.parse(location.search);
     setSearchQuery((queryParams.search as string) || '');
     setPageNumber(Number(queryParams.page || 1));
+    setSourceID(queryParams.source ? Number(queryParams.source) : undefined);
   }, [search]);
   useEffect(() => {
     fetchQueries(showMyQueries);
-  }, [pageNumber, search]);
+  }, [pageNumber, search, sourceID]);
   useEffect(() => {
     const values = Array.from(sources, (source) => {
       return {
@@ -106,7 +108,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       offset: (pageNumber - 1) * props.limit,
       search: searchValue,
       mine,
-      link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
+      link: sourceID ? getSourceDatasetsLink(sourceID, mine, props.limit) : undefined,
     });
     if (mine && !showMyQueries) {
       setShowMyQueries(true);
@@ -223,13 +225,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       offset: page.selected * props.limit,
       search: searchQuery,
       mine: showMyQueries,
-      link: props.sourceID
-        ? getSourceDatasetsLink(
-            props.sourceID,
-            showMyQueries,
-            props.limit,
-            page.selected * props.limit,
-          )
+      link: sourceID
+        ? getSourceDatasetsLink(sourceID, showMyQueries, props.limit, page.selected * props.limit)
         : undefined,
     });
     setPageNumber(page.selected + 1);
@@ -241,10 +238,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     data: DropdownProps,
   ) => {
     const { value } = data;
-    const values = queryString.parse(search);
-    values.source = (value as number).toString() || null;
-    values.page = '1';
-    props.history.push(`${pathname}?${queryString.stringify(values)}`);
+    updateQueryParams({ source: typeof value === 'number' ? value : undefined, page: 1 });
+    setSourceID(typeof value === 'number' ? value : undefined);
     props.actions.fetchOperations({
       limit: props.limit,
       offset: 0,
@@ -301,6 +296,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 fluid
                 search
                 selection
+                value={sourceID || ''}
                 options={dropDownValues}
                 onChange={onFilterByDataSource}
               />
