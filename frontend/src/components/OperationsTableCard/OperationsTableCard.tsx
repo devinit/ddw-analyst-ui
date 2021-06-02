@@ -62,7 +62,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const queryParams = queryString.parse(location.search);
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
-  const [filterQuery, setFilterQuery] = useState(Number(queryParams.source as string) || '');
   const [info, setInfo] = useState('');
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
@@ -120,7 +119,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
       const { value } = event.currentTarget as HTMLInputElement;
       setQueryParams(value, setPageNumber, setSearchQuery, props.history, pathname, search);
-      setSearchQuery('');
     }
   };
 
@@ -235,7 +233,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     const values = queryString.parse(search);
     values.source = (value as number).toString() || null;
     values.page = '1';
-    setFilterQuery(value as number);
     props.history.push(`${pathname}?${queryString.stringify(values)}`);
     props.actions.fetchOperations({
       limit: props.limit,
@@ -245,7 +242,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       link:
         (value as string) && getSourceDatasetsLink(value as number, showMyQueries, props.limit, 0),
     });
-    setFilterQuery('');
   };
 
   const renderPagination = () => {
@@ -296,7 +292,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 selection
                 options={dropDownValues}
                 onChange={onFilterByDataSource}
-                value={filterQuery}
               />
             </Col>
           </Row>

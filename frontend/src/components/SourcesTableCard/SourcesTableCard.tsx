@@ -56,7 +56,6 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
 
       const { value } = event.currentTarget as HTMLInputElement;
       setQueryParams(value, setPageNumber, setSearchQuery, history, pathname, search);
-      setSearchQuery('');
     }
   };
 
