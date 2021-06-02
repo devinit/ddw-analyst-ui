@@ -1,6 +1,7 @@
 import { List } from 'immutable';
+import { debounce } from 'lodash';
 import queryString from 'query-string';
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, FunctionComponent, useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -21,7 +22,6 @@ import { OperationsState } from '../../reducers/operations';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
-import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { BasicModal } from '../BasicModal';
@@ -45,7 +45,7 @@ interface ComponentProps extends RouteComponentProps {
   showMyQueries?: boolean;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
-type Filters = {
+type TableFilters = {
   search?: string;
   page?: number;
   source?: number;
@@ -80,7 +80,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   }, [search]);
   useEffect(() => {
     fetchQueries(showMyQueries);
-  }, [pageNumber, search, sourceID]);
+  }, [pageNumber, searchQuery, sourceID]);
   useEffect(() => {
     const values = Array.from(sources, (source) => {
       return {
@@ -91,9 +91,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     setDropDownValues(values as DropdownItemProps[]);
   }, [sources]);
 
-  const updateQueryParams = (filter: Filters): void => {
+  const updateQueryParams = (filter: TableFilters): void => {
     const queryParameters = { ...queryString.parse(search), ...filter };
-    const cleanParameters: Partial<Filters> = {};
+    const cleanParameters: Partial<TableFilters> = {};
     if (queryParameters.search) cleanParameters.search = queryParameters.search;
     if (queryParameters.page) cleanParameters.page = queryParameters.page;
     if (queryParameters.source) cleanParameters.source = queryParameters.source;
@@ -121,21 +121,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const onSearchChange = (event: React.ChangeEvent<FormControlElement>) => {
-    const { value: searchQuery = '' } = event.currentTarget as HTMLInputElement;
-    setSearchQuery(searchQuery);
-  };
+  const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
 
-  const onSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const { value } = event.currentTarget as HTMLInputElement;
-      setSearchQuery(value || '');
-      setPageNumber(1);
-      updateQueryParams({ search: value, page: 1 });
-    }
+    const { value } = event.target as HTMLInputElement;
+    updateQueryParams({ search: value, page: 1 });
   };
 
   const onViewData = (operation: OperationMap) => {
@@ -285,9 +276,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               <FormControl
                 placeholder="Search ..."
                 className="w-100"
-                value={searchQuery}
-                onChange={onSearchChange}
-                onKeyDown={onSearch}
+                defaultValue={searchQuery}
+                onChange={debounce(onSearch, 1000)}
                 data-testid="sources-table-search"
               />
             </Col>
