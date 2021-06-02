@@ -128,7 +128,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   const onSearchChange = (event: ChangeEvent<FormControlElement>) => {
     const { value = '' } = event.currentTarget as HTMLInputElement;
-    setSearchInput(value);
+    if (!value) {
+      updateQueryParams({ search: '' });
+    } else {
+      setSearchInput(value);
+    }
   };
 
   const onSearch = (event: KeyboardEvent<HTMLInputElement>) => {
