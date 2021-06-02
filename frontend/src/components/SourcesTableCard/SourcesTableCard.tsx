@@ -10,6 +10,7 @@ import { LinksMap } from '../../types/api';
 import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
+import { setQueryParams } from '../../utils';
 
 interface ComponentProps {
   sources: List<SourceMap>;
@@ -54,12 +55,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
       event.stopPropagation();
 
       const { value } = event.currentTarget as HTMLInputElement;
-      setSearchQuery(value || '');
-      setPageNumber(1);
-      const values = queryString.parse(search);
-      values.q = value || null;
-      values.page = '1';
-      history.push(`${pathname}?${queryString.stringify(values)}`);
+      setQueryParams(value, setPageNumber, setSearchQuery, history, pathname, search);
       setSearchQuery('');
     }
   };

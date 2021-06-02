@@ -23,7 +23,7 @@ import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
-import { api } from '../../utils';
+import { api, setQueryParams } from '../../utils';
 import { BasicModal } from '../BasicModal';
 import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
@@ -119,12 +119,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       event.stopPropagation();
 
       const { value } = event.currentTarget as HTMLInputElement;
-      setSearchQuery(value || '');
-      setPageNumber(1);
-      const values = queryString.parse(search);
-      values.q = value || null;
-      values.page = '1';
-      props.history.push(`${pathname}?${queryString.stringify(values)}`);
+      setQueryParams(value, setPageNumber, setSearchQuery, props.history, pathname, search);
       setSearchQuery('');
     }
   };
