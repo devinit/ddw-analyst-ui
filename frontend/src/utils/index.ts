@@ -164,19 +164,3 @@ export const getSelectOptionsFromSources = (sources: List<SourceMap>): DropdownI
       value: source.get('id'),
     }))
     .toJS();
-
-export const setQueryParams = (
-  value: string,
-  setPageNumber: React.Dispatch<React.SetStateAction<number>>,
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>,
-  history: History<LocationState>,
-  pathname: string,
-  search: string,
-): void => {
-  setSearchQuery(value || '');
-  setPageNumber(1);
-  const values = queryString.parse(search);
-  values.q = value || null;
-  values.page = '1';
-  history.push(`${pathname}?${queryString.stringify(values)}`);
-};

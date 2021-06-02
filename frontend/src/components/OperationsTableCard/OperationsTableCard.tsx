@@ -23,7 +23,7 @@ import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
-import { api, setQueryParams } from '../../utils';
+import { api } from '../../utils';
 import { BasicModal } from '../BasicModal';
 import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
@@ -45,6 +45,11 @@ interface ComponentProps extends RouteComponentProps {
   showMyQueries?: boolean;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
+type Filters = {
+  search?: string;
+  page?: number;
+  source?: number;
+};
 
 const getSourceDatasetsLink = (
   sourceID: number,
@@ -68,12 +73,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const { sources } = useContext(SourcesContext);
   useEffect(() => {
     const queryParams = queryString.parse(location.search);
-    if (queryParams.q) {
-      setSearchQuery(queryParams.q as string);
-    }
-    if (queryParams.page) {
-      setPageNumber(Number(queryParams.page));
-    }
+    setSearchQuery((queryParams.search as string) || '');
+    setPageNumber(Number(queryParams.page || 1));
   }, [search]);
   useEffect(() => {
     fetchQueries(showMyQueries);
@@ -88,9 +89,18 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     setDropDownValues(values as DropdownItemProps[]);
   }, [sources]);
 
+  const updateQueryParams = (filter: Filters): void => {
+    const queryParameters = { ...queryString.parse(search), ...filter };
+    const cleanParameters: Partial<Filters> = {};
+    if (queryParameters.search) cleanParameters.search = queryParameters.search;
+    if (queryParameters.page) cleanParameters.page = queryParameters.page;
+    if (queryParameters.source) cleanParameters.source = queryParameters.source;
+    props.history.push(`${pathname}?${queryString.stringify(cleanParameters)}`);
+  };
+
   const fetchQueries = (mine = false) => {
     const values = queryString.parse(search);
-    const searchValue = (values.q as string) || '';
+    const searchValue = (values.search as string) || '';
     props.actions.fetchOperations({
       limit: props.limit,
       offset: (pageNumber - 1) * props.limit,
@@ -119,7 +129,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       event.stopPropagation();
 
       const { value } = event.currentTarget as HTMLInputElement;
-      setQueryParams(value, setPageNumber, setSearchQuery, props.history, pathname, search);
+      setSearchQuery(value || '');
+      setPageNumber(1);
+      updateQueryParams({ search: value, page: 1 });
     }
   };
 
@@ -221,9 +233,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         : undefined,
     });
     setPageNumber(page.selected + 1);
-    const values = queryString.parse(search);
-    values.page = (page.selected + 1).toString() || null;
-    props.history.push(`${pathname}?${queryString.stringify(values)}`);
+    updateQueryParams({ page: page.selected + 1 });
   };
 
   const onFilterByDataSource = (
