@@ -59,21 +59,22 @@ const getSourceDatasetsLink = (
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
   const { search, pathname } = useLocation();
-  const queryParams = queryString.parse(location.search);
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
-  const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
   const [info, setInfo] = useState('');
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
-  const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
   useEffect(() => {
-    if (Object.entries(queryParams).length === 0) {
-      props.history.push(`${pathname}?page=1`);
-      setPageNumber(1);
+    const queryParams = queryString.parse(location.search);
+    if (queryParams.q) {
+      setSearchQuery(queryParams.q as string);
     }
-    setPageNumber(Number(queryParams.page as string));
-  }, [queryParams]);
+    if (queryParams.page) {
+      setPageNumber(Number(queryParams.page));
+    }
+  }, [search]);
   useEffect(() => {
     fetchQueries(showMyQueries);
   }, [pageNumber, search]);
