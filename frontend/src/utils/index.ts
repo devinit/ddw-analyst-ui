@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { History, LocationState } from 'history';
 import { List, Set } from 'immutable';
-import queryString from 'query-string';
 import { DropdownItemProps } from 'semantic-ui-react';
 import {
   AggregateOptions,
