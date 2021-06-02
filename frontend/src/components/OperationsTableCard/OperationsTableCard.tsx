@@ -103,12 +103,13 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const fetchQueries = (mine = false) => {
     const values = queryString.parse(search);
     const searchValue = (values.search as string) || '';
+    const offset = (pageNumber - 1) * props.limit;
     props.actions.fetchOperations({
       limit: props.limit,
-      offset: (pageNumber - 1) * props.limit,
+      offset,
       search: searchValue,
       mine,
-      link: sourceID ? getSourceDatasetsLink(sourceID, mine, props.limit) : undefined,
+      link: sourceID ? getSourceDatasetsLink(sourceID, mine, props.limit, offset) : undefined,
     });
     if (mine && !showMyQueries) {
       setShowMyQueries(true);
@@ -252,8 +253,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   const renderPagination = () => {
     const count = props.operations.get('count') as number;
+    const operations = props.operations.get('operations') as List<OperationMap>;
 
-    if (count) {
+    if (count && operations.count()) {
       return (
         <PaginationRow
           pageRangeDisplayed={2}
