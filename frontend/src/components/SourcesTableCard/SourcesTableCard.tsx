@@ -29,7 +29,6 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
   const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
-  console.log(pageNumber);
   useEffect(() => {
     if (Object.entries(queryParams).length === 0) {
       history.push(`${window.location.pathname}?page=1`);
@@ -61,6 +60,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
       values.q = value || null;
       values.page = '1';
       history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
+      setSearchQuery('');
     }
   };
 

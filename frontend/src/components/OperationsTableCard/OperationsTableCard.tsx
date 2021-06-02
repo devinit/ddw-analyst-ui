@@ -29,6 +29,7 @@ import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
 import queryString from 'query-string';
+import { filter } from 'lodash';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -62,6 +63,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const queryParams = queryString.parse(location.search);
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
+  const [filterQuery, setFilterQuery] = useState(Number(queryParams.source as string) || '');
   const [info, setInfo] = useState('');
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
@@ -124,6 +126,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       values.q = value || null;
       values.page = '1';
       props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
+      setSearchQuery('');
     }
   };
 
@@ -238,6 +241,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     const values = queryString.parse(location.search);
     values.source = (value as number).toString() || null;
     values.page = '1';
+    setFilterQuery(value as number);
     props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
     props.actions.fetchOperations({
       limit: props.limit,
@@ -247,6 +251,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       link:
         (value as string) && getSourceDatasetsLink(value as number, showMyQueries, props.limit, 0),
     });
+    setFilterQuery('');
   };
 
   const renderPagination = () => {
@@ -297,6 +302,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 selection
                 options={dropDownValues}
                 onChange={onFilterByDataSource}
+                value={filterQuery}
               />
             </Col>
           </Row>
