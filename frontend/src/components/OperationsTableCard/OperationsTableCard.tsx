@@ -1,4 +1,5 @@
 import { List } from 'immutable';
+import queryString from 'query-string';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import {
   Button,
@@ -28,8 +29,6 @@ import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
-import queryString from 'query-string';
-import { filter } from 'lodash';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -59,7 +58,7 @@ const getSourceDatasetsLink = (
   }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const queryParams = queryString.parse(location.search);
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
@@ -71,7 +70,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
   useEffect(() => {
     if (Object.entries(queryParams).length === 0) {
-      props.history.push(`${window.location.pathname}?page=1`);
+      props.history.push(`${pathname}?page=1`);
       setPageNumber(1);
     }
     setPageNumber(Number(queryParams.page as string));
@@ -90,12 +89,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   }, [sources]);
 
   const fetchQueries = (mine = false) => {
-    const values = queryString.parse(location.search);
-    const search = (values.q as string) || '';
+    const values = queryString.parse(search);
+    const searchValue = (values.q as string) || '';
     props.actions.fetchOperations({
       limit: props.limit,
       offset: (pageNumber - 1) * props.limit,
-      search,
+      search: searchValue,
       mine,
       link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
     });
@@ -122,10 +121,10 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       const { value } = event.currentTarget as HTMLInputElement;
       setSearchQuery(value || '');
       setPageNumber(1);
-      const values = queryString.parse(location.search);
+      const values = queryString.parse(search);
       values.q = value || null;
       values.page = '1';
-      props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
+      props.history.push(`${pathname}?${queryString.stringify(values)}`);
       setSearchQuery('');
     }
   };
@@ -228,9 +227,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         : undefined,
     });
     setPageNumber(page.selected + 1);
-    const values = queryString.parse(location.search);
+    const values = queryString.parse(search);
     values.page = (page.selected + 1).toString() || null;
-    props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
+    props.history.push(`${pathname}?${queryString.stringify(values)}`);
   };
 
   const onFilterByDataSource = (
@@ -238,11 +237,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     data: DropdownProps,
   ) => {
     const { value } = data;
-    const values = queryString.parse(location.search);
+    const values = queryString.parse(search);
     values.source = (value as number).toString() || null;
     values.page = '1';
     setFilterQuery(value as number);
-    props.history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
+    props.history.push(`${pathname}?${queryString.stringify(values)}`);
     props.actions.fetchOperations({
       limit: props.limit,
       offset: 0,

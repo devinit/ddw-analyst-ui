@@ -1,15 +1,15 @@
 import { List } from 'immutable';
+import queryString from 'query-string';
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import { Card, FormControl } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import { fetchSources } from '../../actions/sources';
 import { LinksMap } from '../../types/api';
 import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
-import { fetchSources } from '../../actions/sources';
-import { useHistory, useLocation } from 'react-router-dom';
-import queryString from 'query-string';
 
 interface ComponentProps {
   sources: List<SourceMap>;
@@ -23,27 +23,27 @@ interface ComponentProps {
 type SourcesTableCardProps = ComponentProps;
 
 export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props) => {
-  const { search } = useLocation();
-  const queryParams = queryString.parse(location.search);
+  const { search, pathname } = useLocation();
+  const queryParams = queryString.parse(search);
   const history = useHistory();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState((queryParams.q as string) || '');
   const [pageNumber, setPageNumber] = useState(Number(queryParams.page as string) || 1);
   useEffect(() => {
     if (Object.entries(queryParams).length === 0) {
-      history.push(`${window.location.pathname}?page=1`);
+      history.push(`${pathname}?page=1`);
       setPageNumber(1);
     }
     setPageNumber(Number(queryParams.page as string));
   }, [queryParams]);
   useEffect(() => {
-    const values = queryString.parse(location.search);
-    const search = (values.q as string) || '';
+    const values = queryString.parse(search);
+    const searchValue = (values.q as string) || '';
     dispatch(
       fetchSources({
         limit: 10,
         offset: (pageNumber - 1) * props.limit,
-        search,
+        search: searchValue,
       }),
     );
   }, [search, pageNumber]);
@@ -56,10 +56,10 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
       const { value } = event.currentTarget as HTMLInputElement;
       setSearchQuery(value || '');
       setPageNumber(1);
-      const values = queryString.parse(location.search);
+      const values = queryString.parse(search);
       values.q = value || null;
       values.page = '1';
-      history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
+      history.push(`${pathname}?${queryString.stringify(values)}`);
       setSearchQuery('');
     }
   };
@@ -73,9 +73,9 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
       }),
     );
     setPageNumber(page.selected + 1);
-    const values = queryString.parse(location.search);
+    const values = queryString.parse(search);
     values.page = (page.selected + 1).toString() || null;
-    history.push(`${window.location.pathname}?${queryString.stringify(values)}`);
+    history.push(`${pathname}?${queryString.stringify(values)}`);
   };
 
   const renderPagination = (): ReactNode => {
