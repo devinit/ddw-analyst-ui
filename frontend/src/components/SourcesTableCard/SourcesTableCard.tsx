@@ -1,22 +1,15 @@
 import { List } from 'immutable';
 import queryString from 'query-string';
-import React, {
-  ChangeEvent,
-  KeyboardEvent,
-  FunctionComponent,
-  ReactNode,
-  useEffect,
-  useState,
-} from 'react';
-import { Card, FormControl } from 'react-bootstrap';
+import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
+import { Card } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { fetchSources } from '../../actions/sources';
 import { LinksMap } from '../../types/api';
-import { FormControlElement } from '../../types/bootstrap';
 import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
+import { SearchInput } from '../SearchInput';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
 
 interface ComponentProps {
@@ -39,12 +32,10 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
   const history = useHistory();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchInput, setSearchInput] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   useEffect(() => {
     const queryParams = queryString.parse(search);
     setSearchQuery((queryParams.search as string) || '');
-    setSearchInput((queryParams.search as string) || '');
     setPageNumber(Number(queryParams.page || 1));
   }, [search]);
   useEffect(() => {
@@ -65,23 +56,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
     history.push(`${pathname}?${queryString.stringify(cleanParameters)}`);
   };
 
-  const onSearchChange = (event: ChangeEvent<FormControlElement>) => {
-    const { value = '' } = event.currentTarget as HTMLInputElement;
-    if (!value) {
-      updateQueryParams({ search: '' });
-    } else {
-      setSearchInput(value);
-    }
-  };
-
-  const onSearch = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-
-      updateQueryParams({ search: searchInput, page: 1 });
-    }
-  };
+  const onSearch = (searchText: string) => updateQueryParams({ search: searchText, page: 1 });
 
   const onPageChange = (page: { selected: number }): void => {
     dispatch(
@@ -116,13 +91,11 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
       <Card>
         <Card.Header className="card-header-text card-header-danger">
           <Card.Title>
-            <FormControl
-              placeholder="Search ..."
+            <SearchInput
               className="w-50"
-              value={searchInput}
-              onChange={onSearchChange}
-              onKeyDown={onSearch}
-              data-testid="sources-table-search"
+              value={searchQuery}
+              onSearch={onSearch}
+              testid="sources-table-search"
             />
           </Card.Title>
         </Card.Header>

@@ -1,23 +1,7 @@
 import { List } from 'immutable';
 import queryString from 'query-string';
-import React, {
-  ChangeEvent,
-  KeyboardEvent,
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  Button,
-  Card,
-  Col,
-  Form,
-  FormControl,
-  OverlayTrigger,
-  Popover,
-  Row,
-} from 'react-bootstrap';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import { Button, Card, Col, Form, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -28,7 +12,6 @@ import { OperationsState } from '../../reducers/operations';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
-import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { BasicModal } from '../BasicModal';
@@ -36,6 +19,7 @@ import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
+import { SearchInput } from '../SearchInput';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -73,7 +57,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const { search, pathname } = useLocation();
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchInput, setSearchInput] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [sourceID, setSourceID] = useState<number | undefined>(props.sourceID);
   const [info, setInfo] = useState('');
@@ -83,7 +66,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   useEffect(() => {
     const queryParams = queryString.parse(location.search);
     setSearchQuery((queryParams.search as string) || '');
-    setSearchInput((queryParams.search as string) || '');
     setPageNumber(Number(queryParams.page || 1));
     setSourceID(queryParams.source ? Number(queryParams.source) : undefined);
   }, [search]);
@@ -126,23 +108,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const onSearchChange = (event: ChangeEvent<FormControlElement>) => {
-    const { value = '' } = event.currentTarget as HTMLInputElement;
-    if (!value) {
-      updateQueryParams({ search: '' });
-    } else {
-      setSearchInput(value);
-    }
-  };
-
-  const onSearch = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-
-      updateQueryParams({ search: searchInput, page: 1 });
-    }
-  };
+  const onSearch = (searchText: string) => updateQueryParams({ search: searchText, page: 1 });
 
   const onViewData = (operation: OperationMap) => {
     props.actions.setOperation(operation);
@@ -288,13 +254,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         <Card.Body>
           <Row>
             <Col xs="6" lg="4" md="6">
-              <FormControl
-                placeholder="Search ..."
+              <SearchInput
                 className="w-100"
-                value={searchInput}
-                onChange={onSearchChange}
-                onKeyDown={onSearch}
-                data-testid="sources-table-search"
+                onSearch={onSearch}
+                value={searchQuery}
+                testid="sources-table-search"
               />
             </Col>
             <Col xs="6" lg="4" md="6">
