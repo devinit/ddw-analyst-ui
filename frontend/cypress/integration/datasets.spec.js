@@ -93,6 +93,51 @@ describe('The Datasets Pages', () => {
     });
   });
 
+  it('shows correct url on pagination of datasets', () => {
+    cy.visit('/');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.get('.pagination > li')
+      .find('a')
+      .its('length')
+      .then((linkCount) => {
+        cy.wrap(linkCount).as('linkCount');
+      });
+    cy.get('.pagination > li')
+      .find('a')
+      .each(($link, index) => {
+        cy.get('@linkCount').then(($linkCount) => {
+          if (index === 1) {
+            cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=${index}`);
+          } else if (index < $linkCount && index !== 0) {
+            cy.get('.page-link').eq(index).click();
+            cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=${index}`);
+          }
+        });
+      });
+  });
+
+  it('shows correct url and pagination when datasets are filtered by text', () => {
+    cy.visit('/');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.get('[data-testid="sources-table-search"]').type('test{enter}');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1&q=test`);
+    cy.get('[data-testid="sources-table-search"]').should('have.value', 'test');
+    cy.go('back');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.get('[data-testid="sources-table-search"]').should('have.value', '');
+  });
+
+  it('shows correct url and pagination when datasets are filtered by datasource', () => {
+    cy.visit('/');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.get('.search').first().type('FTS dependency codenames{enter}');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1&source=44`);
+    cy.get('.text').eq(1).should('have.text', 'FTS dependency codenames');
+    cy.go('back');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.get('.text').eq(1).should('have.text', '');
+  });
+
   xdescribe('dataset row', () => {
     xit('shows action buttons when hovered over', () => {
       // TODO: create test
