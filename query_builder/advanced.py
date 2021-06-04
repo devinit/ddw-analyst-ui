@@ -4,6 +4,7 @@ import operator
 from pypika.enums import JoinType
 from pypika.queries import Query, Table
 from pypika import Criterion
+from pypika import functions as fn
 
 from core.models import Source
 
@@ -25,6 +26,15 @@ JOIN_MAPPING = {
     'right_outer': JoinType.right_outer,
     'full': JoinType.full_outer,
     'cross': JoinType.cross
+}
+
+FUNCTION_MAPPING = {
+    'SUM': fn.Sum,
+    'MAX': fn.Max,
+    'MIN': fn.Min,
+    'AVG': fn.Avg,
+    'STD': fn.StdDev
+    # TODO: add more functions
 }
 
 class AdvancedQueryBuilder:
@@ -62,7 +72,7 @@ class AdvancedQueryBuilder:
     def handle_filter(self, table, query, config):
         filter_config = config.get('filter')
         if 'columns' in config and config.get('columns'):
-            selectQuery = self.get_select_query(table, query, config.get('columns'))
+            selectQuery = self.get_select_query(table, query, config)
             return self.get_filter_query(table, selectQuery, filter_config)
 
         return self.get_filter_query(table, query, filter_config)
@@ -84,7 +94,12 @@ class AdvancedQueryBuilder:
 
         return join_query
 
-    def get_select_query(self, table, query, columns):
+    def get_select_query(self, table, query, config):
+        columns = config.get('columns')
+        if 'groupby' in config:
+            query = self.get_groupby_query(table, query, config.get('groupby'))
+        if 'having' in config:
+            query = self.get_having_query(table, query, config.get('having'))
         # TODO: handle aggregation here
         return query.select(*[table[column.get('name')].as_(column.get('alias')) for column in columns])
 
@@ -94,13 +109,27 @@ class AdvancedQueryBuilder:
 
     def get_filter_query(self, table, query, config):
         if self.andKey in config:
-            andConfig = config.get(self.andKey)
+            rootConfig = config.get(self.andKey)
+        elif self.orKey in config:
+            rootConfig = config.get(self.orKey)
 
-            # a way to handle complex filter configs
-            crit = Criterion.all([ self.get_filter_criterion(table, config) for config in andConfig ])
+        # a way to handle complex filter configs
+        crit = Criterion.all([ self.get_filter_criterion(table, config) for config in rootConfig ])
 
-            # sample query
-            return query.where(crit)
+        # sample query
+        return query.where(crit)
+
+    def get_having_query(self, table, query, config):
+        if self.andKey in config:
+            rootConfig = config.get(self.andKey)
+        elif self.orKey in config:
+            rootConfig = config.get(self.orKey)
+
+        # a way to handle complex having configs
+        crit = Criterion.all([ self.get_having_criterion(table, config) for config in rootConfig ])
+
+        # sample query
+        return query.having(crit)
 
     def get_filter_criterion(self, table, filter):
         if self.andKey in filter:
@@ -113,6 +142,24 @@ class AdvancedQueryBuilder:
 
         return FILTER_MAPPING[filter.get('comp')](table[filter.get('column')], filter.get('value'))
 
+    def get_having_criterion(self, table, config):
+        if self.andKey in config:
+            andConfig = config.get(self.andKey)
+            return Criterion.all([ self.get_having_criterion(table, config) for config in andConfig ])
+
+        if self.orKey in config:
+            orConfig = config.get(self.orKey)
+            return Criterion.any([ self.get_having_criterion(table, config) for config in orConfig ])
+
+        value = config.get('value')
+        if 'plain' in value:
+            value = value.get('plain')
+        else:
+            value = FUNCTION_MAPPING[value.get('aggregate')](table[value.get('column')])
+        if 'aggregate' in config:
+            return FILTER_MAPPING[config.get('comp')](FUNCTION_MAPPING[config.get('aggregate')](table[config.get('column')]), value)
+        return FILTER_MAPPING[config.get('comp')](table[config.get('column')], value)
+
 
 
 # TODO: test code - remove in production
@@ -121,7 +168,19 @@ def get_config():
         'source': 1,
         'select_all': True,
         'columns': [{ 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name' }, { 'id': 20, 'name': 'agency_name', 'alias': 'Agency' }],
-        'group_by': ['donor_name', 'agency_name'],
+        'groupby': ['donor_name', 'agency_name'],
+        'having': {
+            '$and': [
+                { 'column': 'donor_name', 'aggregate': 'SUM', 'comp': '$eq', 'value': { 'plain': 'United States' } },
+                { 'column': 'agency_name', 'comp': '$eq', 'value': { 'column': 'agency_name', 'aggregate': 'MIN' } },
+                {
+                    '$or': [
+                        { 'column': 'agency_name', 'aggregate': 'MAX', 'comp': '$gte', 'value': { 'column': 'donor_name', 'aggregate': 'MIN' } },
+                        { 'column': 'agency_name', 'comp': '$eq', 'value': { 'column': 'donor_name', 'aggregate': 'MIN' } },
+                    ],
+                },
+            ],
+        },
         'filter': {
             '$and': [
                 { 'column': 'donor_name', 'comp': '$eq', 'value': 'United States' },
