@@ -24,7 +24,7 @@ describe('The Data Sources Page', () => {
 
   it('shows correct url on pagination of data sources', () => {
     cy.visit('/');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
     cy.get('.pagination > li')
       .find('a')
       .its('length')
@@ -36,7 +36,7 @@ describe('The Data Sources Page', () => {
       .each(($link, index) => {
         cy.get('@linkCount').then(($linkCount) => {
           if (index === 1) {
-            cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=${index}`);
+            cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
           } else if (index < $linkCount && index !== 0) {
             cy.get('.page-link').eq(index).click();
             cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=${index}`);
@@ -47,12 +47,12 @@ describe('The Data Sources Page', () => {
 
   it('shows correct url and pagination when data sources are filtered by text', () => {
     cy.visit('/sources');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=1`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
     cy.get('[data-testid="sources-table-search"]').type('code{enter}');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=1&q=code`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=1&search=code`);
     cy.get('[data-testid="sources-table-search"]').should('have.value', 'code');
     cy.go('back');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=1`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
     cy.get('[data-testid="sources-table-search"]').should('have.value', '');
   });
 

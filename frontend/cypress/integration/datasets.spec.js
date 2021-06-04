@@ -95,7 +95,7 @@ describe('The Datasets Pages', () => {
 
   it('shows correct url on pagination of datasets', () => {
     cy.visit('/');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
     cy.get('.pagination > li')
       .find('a')
       .its('length')
@@ -107,7 +107,7 @@ describe('The Datasets Pages', () => {
       .each(($link, index) => {
         cy.get('@linkCount').then(($linkCount) => {
           if (index === 1) {
-            cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=${index}`);
+            cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
           } else if (index < $linkCount && index !== 0) {
             cy.get('.page-link').eq(index).click();
             cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=${index}`);
@@ -118,24 +118,24 @@ describe('The Datasets Pages', () => {
 
   it('shows correct url and pagination when datasets are filtered by text', () => {
     cy.visit('/');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
     cy.get('[data-testid="sources-table-search"]').type('test{enter}');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1&q=test`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1&search=test`);
     cy.get('[data-testid="sources-table-search"]').should('have.value', 'test');
     cy.go('back');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
     cy.get('[data-testid="sources-table-search"]').should('have.value', '');
   });
 
   it('shows correct url and pagination when datasets are filtered by datasource', () => {
     cy.visit('/');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
     cy.get('.search').first().type('FTS dependency codenames{enter}');
     cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1&source=44`);
     cy.get('.text').eq(1).should('have.text', 'FTS dependency codenames');
     cy.go('back');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=1`);
-    cy.get('.text').eq(1).should('have.text', '');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
+    cy.get('.text').eq(1).should('have.text', 'Filter by data source');
   });
 
   xdescribe('dataset row', () => {
