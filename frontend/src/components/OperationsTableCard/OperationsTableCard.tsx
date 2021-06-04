@@ -67,7 +67,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     const queryParams = queryString.parse(location.search);
     setSearchQuery((queryParams.search as string) || '');
     setPageNumber(Number(queryParams.page || 1));
-    setSourceID(queryParams.source ? Number(queryParams.source) : undefined);
+    setSourceID(props.sourceID || (queryParams.source ? Number(queryParams.source) : undefined));
   }, [search]);
   useEffect(() => fetchQueries(showMyQueries), [pageNumber, searchQuery, sourceID]);
   useEffect(() => {
