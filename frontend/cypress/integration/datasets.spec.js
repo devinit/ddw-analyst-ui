@@ -49,9 +49,12 @@ describe('The Datasets Pages', () => {
     cy.intercept('/api/datasets/?limit=10&offset=0').as('datasets');
 
     cy.visit('/datasets/');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
 
     cy.wait('@datasets').then((res) => {
       cy.get('[data-testid="sources-table-search"]').type('iati{enter}');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/?page=1&search=iati`);
+      cy.get('[data-testid="sources-table-search"]').should('have.value', 'iati');
       cy.getAccessToken().then((token) => {
         if (token) {
           const options = {
@@ -65,6 +68,9 @@ describe('The Datasets Pages', () => {
           });
         }
       });
+      cy.go('back');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
+      cy.get('[data-testid="sources-table-search"]').should('have.value', '');
     });
   });
 
@@ -72,11 +78,14 @@ describe('The Datasets Pages', () => {
     cy.intercept('/api/datasets/?limit=10&offset=0').as('datasets');
 
     cy.visit('/datasets/');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
 
     cy.wait('@datasets').then((res) => {
       cy.get('.search').first().click({ force: true });
       cy.wait(4000);
       cy.get('.search').first().type('FTS dependency codenames{enter}');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/?page=1&source=43`);
+      cy.get('.text').eq(1).should('have.text', 'FTS dependency codenames');
       cy.getAccessToken().then((token) => {
         if (token) {
           const options = {
@@ -90,7 +99,79 @@ describe('The Datasets Pages', () => {
           });
         }
       });
+      cy.go('back');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
+      cy.get('.text').eq(1).should('have.text', 'Filter by data source');
     });
+  });
+
+  it('it does not paginate when datasets are less than 10', () => {
+    cy.fixture('datasets').then((datasets) => {
+      datasets.count = 10;
+      datasets.results = datasets.results.filter((dataset) => {
+        if (dataset.id < 11) {
+          return dataset;
+        }
+      });
+      cy.intercept('api/datasets/', datasets);
+    });
+
+    cy.visit('/datasets');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
+    cy.get('[data-testid="pagination-results-count"]').should(
+      'contain.text',
+      'Showing 1 to 10 of 10',
+    );
+    cy.get('.pagination > li').its('length').should('eq', 3);
+    cy.get('.pagination > li')
+      .eq(0)
+      .should('have.class', 'disabled')
+      .and('contain.text', 'Previous');
+    cy.get('.pagination > li').eq(1).should('have.class', 'active').and('contain.text', 1);
+    cy.get('.pagination > li').eq(2).should('have.class', 'disabled').and('contain.text', 'Next');
+  });
+
+  it('paginates when datasets exceed 10', () => {
+    cy.fixture('datasets').then((datasets) => {
+      datasets.results = datasets.results.filter((dataset) => {
+        if (dataset.id < 11) {
+          return dataset;
+        }
+      });
+      cy.intercept('api/datasets/?limit=10&offset=0', datasets);
+    });
+    cy.fixture('datasets').then((datasets) => {
+      datasets.results = datasets.results.filter((datasets) => {
+        if (datasets.id > 10) {
+          return datasets;
+        }
+      });
+      cy.intercept('api/datasets/?limit=10&offset=10', datasets);
+    });
+
+    cy.visit('/datasets');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
+    cy.get('.dataset-row').eq(0).should('contain.text', 'Test');
+    cy.get('[data-testid="pagination-results-count"]').should(
+      'contain.text',
+      'Showing 1 to 10 of 15',
+    );
+    cy.get('.pagination > li').its('length').should('eq', 4);
+    cy.get('.pagination > li')
+      .eq(3)
+      .should('not.have.class', 'disabled')
+      .and('contain.text', 'Next');
+    cy.get('.pagination > li').find('a').eq(2).click();
+    cy.get('.pagination > li').eq(2).should('have.class', 'active');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/?page=2`);
+    cy.get('[data-testid="pagination-results-count"]').should(
+      'contain.text',
+      'Showing 11 to 15 of 15',
+    );
+    cy.get('.dataset-row').eq(0).should('contain.text', 'Test pagination');
+    cy.get('.pagination > li').find('a').eq(1).click();
+    cy.get('.pagination > li').eq(1).should('have.class', 'active');
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/?page=1`);
   });
 
   xdescribe('dataset row', () => {
