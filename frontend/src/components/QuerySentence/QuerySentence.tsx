@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { FormControl } from 'react-bootstrap';
 import { format } from 'sql-formatter';
 import { OperationMap } from '../../types/operations';
 import { useOperationQuery } from '../../utils/hooks';

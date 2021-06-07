@@ -219,7 +219,7 @@ interface UseOperationQueryResult {
 export const useOperationQuery = (operation?: OperationMap): UseOperationQueryResult => {
   const [token, setAPIToken] = useState('');
   const [loading, setLoading] = useState(false);
-  const [sentence, setSentence] = useState('');
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
@@ -244,11 +244,11 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
         })
         .then(({ status, data, statusText }: AxiosResponse<{ query: string }>) => {
           if (status === 200 && data) {
-            setSentence(data.query);
+            setQuery(data.query);
             setLoading(false);
           } else if (status === 401) {
             console.log('Failed to generate SQL query: ', statusText);
-            setSentence('');
+            setQuery('');
             setLoading(false);
           }
         })
@@ -256,24 +256,24 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
           console.log(
             `Failed to generate SQL query: ${error.response.status} ${error.response.statusText}`,
           );
-          setSentence('');
+          setQuery('');
           setLoading(false);
         });
     } else {
       // TODO: implement for basic QB as well
       setLoading(false);
-      setSentence('');
+      setQuery('');
     }
   };
 
   useEffect(() => {
-    if (operation) {
+    if (operation && token) {
       fetchOperationQuery(operation);
     } else {
       setLoading(false);
-      setSentence('');
+      setQuery('');
     }
-  }, [operation]);
+  }, [operation, token]);
 
-  return { loading, query: sentence };
+  return { loading, query };
 };
