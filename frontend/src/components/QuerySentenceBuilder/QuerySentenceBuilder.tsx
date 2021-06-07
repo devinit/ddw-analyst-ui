@@ -12,10 +12,10 @@ import { SourceMap } from '../../types/sources';
 import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedJoinQueryBuilder } from '../AdvancedJoinQueryBuilder';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
-import { CodeMirrorReact, JsonModeSpec } from '../CodeMirrorReact';
+import { JsonModeSpec } from '../CodeMirrorReact';
 import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
-import { QuerySentence } from '../QuerySentence';
+import { QuerySentencePreview } from '../QuerySentencePreview';
 
 interface ComponentProps {
   operation?: OperationMap;
@@ -86,20 +86,15 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
             {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
             {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
-            <CodeMirrorReact
-              config={{
-                mode: jsonMode,
-                value: JSON.stringify(context.options, null, 2),
-                lineNumbers: true,
-                theme: 'material',
-              }}
-              onInit={onEditorInit}
-              onChange={onChange}
+            <QuerySentencePreview
+              operation={props.operation}
+              onEditorInit={onEditorInit}
+              onEditorUpdate={onChange}
             />
+
             <Alert show={!!alert} variant="warning" className="mt-2">
               {alert}
             </Alert>
-            {props.operation ? <QuerySentence operation={props.operation} /> : null}
           </>
         ) : null}
       </AdvancedQueryContext.Provider>
