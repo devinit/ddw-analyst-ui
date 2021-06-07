@@ -15,6 +15,7 @@ import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { CodeMirrorReact, JsonModeSpec } from '../CodeMirrorReact';
 import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
+import { QuerySentence } from '../QuerySentence';
 
 interface ComponentProps {
   operation?: OperationMap;
@@ -98,6 +99,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             <Alert show={!!alert} variant="warning" className="mt-2">
               {alert}
             </Alert>
+            {props.operation ? <QuerySentence operation={props.operation} /> : null}
           </>
         ) : null}
       </AdvancedQueryContext.Provider>

@@ -64,6 +64,12 @@ class AdvancedQueryBuilder:
 
             return filter_query
 
+        if 'columns' in config:
+            select_query = self.get_select_query(table, query, config)
+            print(select_query)
+
+            return select_query
+
         # data = fetch_data_only(joinQuery.get_sql())
         # print(data)
 
