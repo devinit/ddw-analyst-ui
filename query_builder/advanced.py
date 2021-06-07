@@ -100,8 +100,8 @@ class AdvancedQueryBuilder:
             query = self.get_groupby_query(table, query, config.get('groupby'))
         if 'having' in config:
             query = self.get_having_query(table, query, config.get('having'))
-        # TODO: handle aggregation here
-        return query.select(*[table[column.get('name')].as_(column.get('alias')) for column in columns])
+        # handles aggregations and aliases...
+        return query.select(*[FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get('alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns])
 
     def get_groupby_query(self, table, query, columns):
         # TODO: handle .having here as its usage is based on the groupby
@@ -167,7 +167,10 @@ def get_config():
     return {
         'source': 1,
         'selectall': True,
-        'columns': [{ 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name', 'aggregate': 'SUM' }, { 'id': 20, 'name': 'agency_name', 'alias': 'Agency' }],
+        'columns': [
+            { 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name', 'aggregate': 'SUM' },
+            { 'id': 20, 'name': 'agency_name', 'alias': 'Agency' }
+        ],
         'groupby': ['donor_name', 'agency_name'],
         'having': {
             '$and': [
