@@ -166,8 +166,8 @@ class AdvancedQueryBuilder:
 def get_config():
     return {
         'source': 1,
-        'select_all': True,
-        'columns': [{ 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name' }, { 'id': 20, 'name': 'agency_name', 'alias': 'Agency' }],
+        'selectall': True,
+        'columns': [{ 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name', 'aggregate': 'SUM' }, { 'id': 20, 'name': 'agency_name', 'alias': 'Agency' }],
         'groupby': ['donor_name', 'agency_name'],
         'having': {
             '$and': [
