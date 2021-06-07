@@ -56,13 +56,13 @@ class AdvancedQueryBuilder:
             join_query = self.handle_join(table, query, config)
             print(join_query)
 
-            return
+            return join_query
 
         if 'filter' in config:
             filter_query = self.handle_filter(table, query, config)
             print(filter_query)
 
-            return
+            return filter_query
 
         # data = fetch_data_only(joinQuery.get_sql())
         # print(data)
