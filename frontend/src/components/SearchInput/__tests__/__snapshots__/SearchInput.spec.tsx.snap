@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with the default props 1`] = `
+<input
+  className="form-control"
+  data-testid="search-input"
+  onChange={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Search ..."
+  value=""
+/>
+`;
