@@ -26,6 +26,7 @@ const PaginationRow: FunctionComponent<ComponentProps> = ({ limit, count, ...pro
         lg={4}
         className="align-middle d-none d-sm-none d-md-block m-auto"
         style={{ top: '2px' }}
+        data-testid="pagination-results-count"
       >
         {count === 0
           ? 'No Data'

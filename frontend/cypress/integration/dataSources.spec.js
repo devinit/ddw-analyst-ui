@@ -22,40 +22,6 @@ describe('The Data Sources Page', () => {
     cy.get('.sources-table').find('tbody').find('tr').should('have.length.lessThan', 11);
   });
 
-  it('shows correct url on pagination of data sources', () => {
-    cy.visit('/');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
-    cy.get('.pagination > li')
-      .find('a')
-      .its('length')
-      .then((linkCount) => {
-        cy.wrap(linkCount).as('linkCount');
-      });
-    cy.get('.pagination > li')
-      .find('a')
-      .each(($link, index) => {
-        cy.get('@linkCount').then(($linkCount) => {
-          if (index === 1) {
-            cy.url().should('eq', `${Cypress.config('baseUrl')}/`);
-          } else if (index < $linkCount && index !== 0) {
-            cy.get('.page-link').eq(index).click();
-            cy.url().should('eq', `${Cypress.config('baseUrl')}/?page=${index}`);
-          }
-        });
-      });
-  });
-
-  it('shows correct url and pagination when data sources are filtered by text', () => {
-    cy.visit('/sources');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
-    cy.get('[data-testid="sources-table-search"]').type('code{enter}');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=1&search=code`);
-    cy.get('[data-testid="sources-table-search"]').should('have.value', 'code');
-    cy.go('back');
-    cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
-    cy.get('[data-testid="sources-table-search"]').should('have.value', '');
-  });
-
   describe('sources table', () => {
     it('shows each row with action buttons', () => {
       cy.visit('/sources');
@@ -63,6 +29,106 @@ describe('The Data Sources Page', () => {
         cy.get('[data-testid=source-table-row-actions]').then((actions) => {
           expect(rows.length).to.equal(actions.length);
         });
+      });
+    });
+
+    it('it does not paginate when sources do not exceed 10', () => {
+      cy.fixture('dataSources').then((sources) => {
+        sources.count = 10;
+        sources.results = sources.results.filter((source) => {
+          if (source.id < 11) {
+            return source;
+          }
+        });
+        cy.intercept('api/sources/', sources);
+      });
+      cy.visit('/sources');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
+      cy.get('[data-testid="pagination-results-count"]').should(
+        'contain.text',
+        'Showing 1 to 10 of 10',
+      );
+      cy.get('.pagination > li').its('length').should('eq', 3);
+      cy.get('.pagination > li')
+        .eq(0)
+        .should('have.class', 'disabled')
+        .and('contain.text', 'Previous');
+      cy.get('.pagination > li').eq(1).should('have.class', 'active').and('contain.text', 1);
+      cy.get('.pagination > li').eq(2).should('have.class', 'disabled').and('contain.text', 'Next');
+    });
+
+    it('it paginates when sources exceed 10', () => {
+      cy.fixture('dataSources').then((sources) => {
+        sources.results = sources.results.filter((source) => {
+          if (source.id < 11) {
+            return source;
+          }
+        });
+        cy.intercept('api/sources/?limit=10&offset=0', sources);
+      });
+      cy.fixture('dataSources').then((sources) => {
+        sources.results = sources.results.filter((source) => {
+          if (source.id > 10) {
+            return source;
+          }
+        });
+        cy.intercept('api/sources/?limit=10&offset=10', sources);
+      });
+      cy.visit('/sources');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
+      cy.get('[data-testid="sources-table-row"]')
+        .eq(0)
+        .should('contain.text', 'Official Development Assistance2');
+      cy.get('[data-testid="pagination-results-count"]').should(
+        'contain.text',
+        'Showing 1 to 10 of 20',
+      );
+      cy.get('.pagination > li').its('length').should('eq', 4);
+      cy.get('.pagination > li')
+        .eq(3)
+        .should('not.have.class', 'disabled')
+        .and('contain.text', 'Next');
+      cy.get('.pagination > li').find('a').eq(2).click();
+      cy.get('.pagination > li').eq(2).should('have.class', 'active');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=2`);
+      cy.get('[data-testid="pagination-results-count"]').should(
+        'contain.text',
+        'Showing 11 to 20 of 20',
+      );
+      cy.get('[data-testid="sources-table-row"]')
+        .eq(0)
+        .should('contain.text', 'DI Deflators Constant 2016 USD');
+      cy.get('.pagination > li').find('a').eq(1).click();
+      cy.get('.pagination > li').eq(1).should('have.class', 'active');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=1`);
+    });
+
+    it('it filters by text', () => {
+      cy.intercept('/api/sources/?limit=10&offset=0').as('datasources');
+
+      cy.visit('/sources');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
+
+      cy.wait('@datasources').then((res) => {
+        cy.get('[data-testid="sources-table-search"]').type('code{enter}');
+        cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=1&search=code`);
+        cy.get('[data-testid="sources-table-search"]').should('have.value', 'code');
+        cy.getAccessToken().then((token) => {
+          if (token) {
+            const options = {
+              url: `${Cypress.config('baseUrl')}/api/sources/?&offset=0&search=code`,
+              headers: {
+                Authorization: `token ${token.replaceAll('"', '')}`,
+              },
+            };
+            cy.request(options).then((response) => {
+              expect(res.response.body.count).to.not.equal(response.body.count);
+            });
+          }
+        });
+        cy.go('back');
+        cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
+        cy.get('[data-testid="sources-table-search"]').should('have.value', '');
       });
     });
 
