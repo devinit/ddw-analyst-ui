@@ -210,3 +210,70 @@ export const useOperation = <O = Operation | OperationMap>(
 
   return { loading, operation: immutable ? fromJS(operation) : operation };
 };
+
+interface UseOperationQueryResult {
+  query?: string;
+  loading: boolean;
+}
+
+export const useOperationQuery = (operation?: OperationMap): UseOperationQueryResult => {
+  const [token, setAPIToken] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [sentence, setSentence] = useState('');
+
+  useEffect(() => {
+    localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
+      if (token) setAPIToken(token);
+    });
+  }, []);
+
+  const fetchOperationQuery = (operation: OperationMap) => {
+    setLoading(true);
+    const config = operation.get('advanced_config');
+    if (config && token) {
+      axios
+        .request({
+          url: `${api.routes.DATASET_QUERY}`,
+          method: 'post',
+          withCredentials: false,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${token}`,
+          },
+          data: { config: (config as any).toJS() },
+        })
+        .then(({ status, data, statusText }: AxiosResponse<{ query: string }>) => {
+          if (status === 200 && data) {
+            setSentence(data.query);
+            setLoading(false);
+          } else if (status === 401) {
+            console.log('Failed to generate SQL query: ', statusText);
+            setSentence('');
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.log(
+            `Failed to generate SQL query: ${error.response.status} ${error.response.statusText}`,
+          );
+          setSentence('');
+          setLoading(false);
+        });
+    } else {
+      // TODO: implement for basic QB as well
+      setLoading(false);
+      setSentence('');
+    }
+  };
+
+  useEffect(() => {
+    if (operation) {
+      fetchOperationQuery(operation);
+    } else {
+      setLoading(false);
+      setSentence('');
+    }
+  }, [operation]);
+
+  return { loading, query: sentence };
+};
