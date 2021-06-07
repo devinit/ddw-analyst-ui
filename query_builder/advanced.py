@@ -5,6 +5,7 @@ from pypika.enums import JoinType
 from pypika.queries import Query, Table
 from pypika import Criterion
 from pypika import functions as fn
+from pypika import Order
 
 from core.models import Source
 
@@ -35,6 +36,11 @@ FUNCTION_MAPPING = {
     'AVG': fn.Avg,
     'STD': fn.StdDev
     # TODO: add more functions
+}
+
+ORDERBY_MAPPING = {
+    'ASC': Order.asc,
+    'DESC': Order.desc
 }
 
 class AdvancedQueryBuilder:
@@ -100,8 +106,16 @@ class AdvancedQueryBuilder:
             query = self.get_groupby_query(table, query, config.get('groupby'))
         if 'having' in config:
             query = self.get_having_query(table, query, config.get('having'))
-        # handles aggregations and aliases...
-        return query.select(*[FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get('alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns])
+
+        # also handles aggregations and aliases...
+        query = query.select(*[FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get(
+            'alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns])
+
+        if 'orderby' in config:
+            orderby = config.get('orderby')
+            return query.orderby(table[orderby[0]], order=ORDERBY_MAPPING[orderby[1]])
+
+        return query
 
     def get_groupby_query(self, table, query, columns):
         # TODO: handle .having here as its usage is based on the groupby
@@ -200,7 +214,8 @@ def get_config():
             'source': 5,
             'type': 'inner',
             'mapping': [['donor_name', 'donor_name'], ['year', 'year']]
-        }
+        },
+        'orderby': ['donor_name', 'ASC' ]
     }
 
 def build_query():
