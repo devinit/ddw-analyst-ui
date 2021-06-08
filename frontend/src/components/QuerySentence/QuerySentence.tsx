@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Alert } from 'react-bootstrap';
 import { format } from 'sql-formatter';
 import { OperationMap } from '../../types/operations';
 import { useOperationQuery } from '../../utils/hooks';
@@ -19,15 +20,19 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
 
   return (
     <div className="mt-2">
-      <CodeMirrorReact
-        config={{
-          mode: 'text',
-          value: sentence,
-          // lineNumbers: true,
-          // theme: 'material',
-          readOnly: true,
-        }}
-      />
+      {sentence ? (
+        <CodeMirrorReact
+          config={{
+            mode: 'text',
+            value: sentence,
+            readOnly: true,
+          }}
+        />
+      ) : (
+        <Alert show={!sentence} variant="dark">
+          Waiting for a valid config ...
+        </Alert>
+      )}
     </div>
   );
 };
