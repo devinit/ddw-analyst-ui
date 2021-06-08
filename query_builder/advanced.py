@@ -108,7 +108,7 @@ class AdvancedQueryBuilder:
             return join_query
 
         if 'columns' in config and config.get('columns'):
-            join_query = self.get_select_query(table, join_query, config.get('columns'))
+            join_query = self.get_select_query(table, join_query, config)
 
         return join_query
 
