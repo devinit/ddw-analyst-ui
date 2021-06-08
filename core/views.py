@@ -214,16 +214,23 @@ class PreviewOperationData(APIView):
 
     def get_data(self, request):
         try:
-            count, data = query.query_table(
-                operation_steps=request.data['operation_steps'],
-                limit=request.query_params.get('limit', 10),
-                offset=request.query_params.get('offset', 0),
-                estimate_count=True
-            )
-            return {
-                'count': count,
-                'data': data
-            }
+            if 'advanced_config' in request.data:
+                data = run_query(self.get_advanced_config_query(request), fetch=True)
+                return {
+                    'count': len(data),
+                    'data': data
+                }
+            else:
+                count, data = query.query_table(
+                    operation_steps=request.data['operation_steps'],
+                    limit=request.query_params.get('limit', 10),
+                    offset=request.query_params.get('offset', 0),
+                    estimate_count=True
+                )
+                return {
+                    'count': count,
+                    'data': data
+                }
         except json.decoder.JSONDecodeError as json_error:
             return {
                 'count': 0,
@@ -241,6 +248,12 @@ class PreviewOperationData(APIView):
         paginator.set_count(data['count'])
         page_data = paginator.paginate_queryset(data['data'], request)
         return paginator.get_paginated_response(page_data)
+
+    def get_advanced_config_query(self, request):
+        config = request.data['advanced_config']
+        builder = AdvancedQueryBuilder()
+        query = builder.process_config(config)
+        return query.get_sql()
 
 
 class GetOperationQuery(APIView):
