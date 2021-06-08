@@ -6,6 +6,7 @@ import { api, localForageKeys } from '..';
 import { setToken } from '../../actions/token';
 import { FetchOptions } from '../../types/api';
 import {
+  AdvancedQueryOptions,
   Operation,
   OperationData,
   OperationDataList,
@@ -276,4 +277,24 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
   }, [operation, token]);
 
   return { loading, query };
+};
+
+export const previewAdvancedDatasetData = async (
+  options: AdvancedQueryOptions,
+): Promise<FetchResponse> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const { status, data }: AxiosResponse<OperationDataResult> = await axios
+    .request({
+      url: PREVIEWBASEURL,
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `token ${token}`,
+      },
+      data: { advanced_config: options },
+    })
+    .then((response: AxiosResponse<OperationDataResult>) => response)
+    .catch((error) => error.response);
+
+  return handleDataResult(status, data);
 };

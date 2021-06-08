@@ -12,6 +12,7 @@ type ComponentProps = {
   title?: string;
   data: List<OperationDataMap>;
   onClose: () => void;
+  tableOnly?: boolean;
 };
 
 const StyledIcon = styled.i`
@@ -33,6 +34,10 @@ const OperationPreview: FunctionComponent<ComponentProps> = ({ show, loading, da
 
     return <div>No results found</div>;
   };
+
+  if (props.tableOnly) {
+    return <>{show || loading ? renderPreview() : props.children}</>;
+  }
 
   return (
     <Card>
