@@ -9,6 +9,8 @@ interface ColumnSelectorProps {
   show?: boolean;
   source: SourceMap;
   columns: AdvancedQueryColumn[];
+  usage?: 'select' | 'groupby';
+  nameOnly?: boolean;
   onUpdateSelection?: (options: Partial<AdvancedQueryOptions>) => void;
 }
 
@@ -26,10 +28,10 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     setSelectedColumns(selection);
     if (props.onUpdateSelection) {
       props.onUpdateSelection({
-        columns: (source.get('columns') as ColumnList)
+        [props.usage === 'select' ? 'columns' : 'groupby']: (source.get('columns') as ColumnList)
           .filter((column) => selection.includes(column.get('name') as string))
           .toJS()
-          .map((column) => cleanColumn(column, props.columns)),
+          .map((column) => (props.nameOnly ? column.name : cleanColumn(column, props.columns))),
       });
     }
   };
@@ -47,6 +49,6 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
   return null;
 };
 
-ColumnSelector.defaultProps = { show: true };
+ColumnSelector.defaultProps = { show: true, usage: 'select' };
 
 export { ColumnSelector };

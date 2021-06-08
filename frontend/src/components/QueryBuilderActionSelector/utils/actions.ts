@@ -23,6 +23,21 @@ export const actions: ActionMeta[] = [
     caption: 'Join',
     visibleFor: ['select', 'filter'],
   },
+  {
+    name: 'groupby',
+    caption: 'Group By',
+    visibleFor: ['select', 'filter'],
+  },
+  {
+    name: 'having',
+    caption: 'Having',
+    visibleFor: ['select', 'filter', 'groupby'],
+  },
+  {
+    name: 'orderby',
+    caption: 'Order By',
+    visibleFor: [],
+  },
 ];
 
 export const getSupportedActions = (
