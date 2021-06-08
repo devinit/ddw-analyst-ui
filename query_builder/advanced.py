@@ -93,9 +93,15 @@ class AdvancedQueryBuilder:
         join_config = config.get('join')
         join_table = self.get_source_table(join_config.get('source'))
 
-        join_query = query.join(join_table, JOIN_MAPPING[join_config.get('type')]).on(operator.and_(*[
-            operator.eq(table[mapping[0]], join_table[mapping[1]]) for mapping in join_config.get('mapping')
-        ]))
+        join_mapping = join_config.get('mapping')
+        if len(join_mapping) > 1:
+            join_query = query.join(join_table, JOIN_MAPPING[join_config.get('type')]).on(operator.and_(*[
+                operator.eq(table[mapping[0]], join_table[mapping[1]]) for mapping in join_mapping
+            ]))
+        else:
+            join_query = query.join(join_table, JOIN_MAPPING[join_config.get('type')]).on(*[
+                operator.eq(table[mapping[0]], join_table[mapping[1]]) for mapping in join_mapping
+            ])
         if 'filter' in config:
             join_query = self.handle_filter(table, join_query, config)
 
@@ -219,7 +225,7 @@ def get_config():
         'join': {
             'source': 5,
             'type': 'inner',
-            'mapping': [['donor_name', 'donor_name'], ['year', 'year']]
+            'mapping': [['donor_name', 'donor_name']]
         },
         'orderby': ['donor_name', 'ASC' ]
     }
