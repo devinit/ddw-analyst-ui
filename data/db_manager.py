@@ -85,17 +85,24 @@ def update_table_from_tuple(queries, database="datasets"):
         return results
 
 
-def run_query(query, database="datasets"):
+def run_query(query, database="datasets", fetch=False):
     with connections[database].cursor() as create_cursor:
         try:
             create_cursor.execute(query)
             connections[database].commit()
-            results = [
-                {
-                    "result": "success",
-                    "message": "Successfully created",
-                }
-            ]
+            if fetch:
+                first_row = create_cursor.fetchone()
+                columns = [col[0] for col in create_cursor.description]
+                results = [
+                    dict(zip(columns, row)) for row in ([first_row] + create_cursor.fetchall())
+                ]
+            else:
+                results = [
+                    {
+                        "result": "success",
+                        "message": "Successfully created",
+                    }
+                ]
         except ProgrammingError as sql_error:
             results = [
                 {
