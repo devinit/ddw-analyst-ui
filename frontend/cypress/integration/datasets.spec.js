@@ -108,11 +108,7 @@ describe('The Datasets Pages', () => {
   it('it does not paginate when datasets are less than 10', () => {
     cy.fixture('datasets').then((datasets) => {
       datasets.count = 10;
-      datasets.results = datasets.results.filter((dataset) => {
-        if (dataset.id < 11) {
-          return dataset;
-        }
-      });
+      datasets.results = datasets.results.slice(0,10);
       cy.intercept('api/datasets/?limit=10&offset=0', datasets);
     });
 
@@ -133,25 +129,19 @@ describe('The Datasets Pages', () => {
 
   it('paginates when datasets exceed 10', () => {
     cy.fixture('datasets').then((datasets) => {
-      datasets.results = datasets.results.filter((dataset) => {
-        if (dataset.id < 11) {
-          return dataset;
-        }
-      });
+      datasets.count = 15;
+      datasets.results = datasets.results.slice(0, 10);
       cy.intercept('api/datasets/?limit=10&offset=0', datasets);
     });
     cy.fixture('datasets').then((datasets) => {
-      datasets.results = datasets.results.filter((datasets) => {
-        if (datasets.id > 10) {
-          return datasets;
-        }
-      });
+      datasets.count = 15;
+      datasets.results = datasets.results.slice(10, 15);
       cy.intercept('api/datasets/?limit=10&offset=10', datasets);
     });
 
     cy.visit('/datasets');
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
-    cy.get('.dataset-row').eq(0).should('contain.text', 'Test');
+    cy.get('.dataset-row').its('length').should('eq', 10);
     cy.get('[data-testid="pagination-results-count"]').should(
       'contain.text',
       'Showing 1 to 10 of 15',
@@ -168,7 +158,7 @@ describe('The Datasets Pages', () => {
       'contain.text',
       'Showing 11 to 15 of 15',
     );
-    cy.get('.dataset-row').eq(0).should('contain.text', 'Test pagination');
+    cy.get('.dataset-row').its('length').should('eq', 5);
     cy.get('.pagination > li').find('a').eq(1).click();
     cy.get('.pagination > li').eq(1).should('have.class', 'active');
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/?page=1`);
