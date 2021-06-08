@@ -1,5 +1,5 @@
 
-# from data.db_manager import fetch_data_only
+# from data.db_manager import run_query
 import operator
 from pypika.enums import JoinType
 from pypika.queries import Query, Table
@@ -70,9 +70,6 @@ class AdvancedQueryBuilder:
 
             return select_query
 
-        # data = fetch_data_only(joinQuery.get_sql())
-        # print(data)
-
     def get_source_table(self, source_id):
         source = Source.objects.get(pk=source_id);
 
@@ -136,11 +133,12 @@ class AdvancedQueryBuilder:
     def get_filter_query(self, table, query, config):
         if self.andKey in config:
             rootConfig = config.get(self.andKey)
+            # a way to handle complex filter configs
+            crit = Criterion.all([ self.get_filter_criterion(table, config) for config in rootConfig ])
         elif self.orKey in config:
             rootConfig = config.get(self.orKey)
-
-        # a way to handle complex filter configs
-        crit = Criterion.all([ self.get_filter_criterion(table, config) for config in rootConfig ])
+            # a way to handle complex filter configs
+            crit = Criterion.any([ self.get_filter_criterion(table, config) for config in rootConfig ])
 
         # sample query
         return query.where(crit)
@@ -194,7 +192,7 @@ def get_config():
         'source': 1,
         'selectall': True,
         'columns': [
-            { 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name', 'aggregate': 'SUM' },
+            { 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name' },
             { 'id': 20, 'name': 'agency_name', 'alias': 'Agency' }
         ],
         'groupby': ['donor_name', 'agency_name'],
@@ -235,4 +233,7 @@ def build_query():
     config = get_config()
 
     builder = AdvancedQueryBuilder()
-    builder.process_config(config)
+    query = builder.process_config(config)
+
+    # data = run_query(query.get_sql(), fetch=True)
+    # print(data)
