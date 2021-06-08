@@ -10,6 +10,7 @@ import {
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
+import { AdvancedGroupByQueryBuilder } from '../AdvancedGroupByQueryBuilder';
 import { AdvancedJoinQueryBuilder } from '../AdvancedJoinQueryBuilder';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { JsonModeSpec } from '../CodeMirrorReact';
@@ -86,6 +87,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
             {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
             {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
+            {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
             <QuerySentencePreview
               operation={props.operation}
               onEditorInit={onEditorInit}
