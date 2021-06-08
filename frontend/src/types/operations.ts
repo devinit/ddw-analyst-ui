@@ -106,7 +106,13 @@ export interface AdvancedQueryColumn extends Partial<Column> {
   aggregate?: 'sum' | 'avg' | 'max' | 'min' | 'std';
 }
 
-export type AdvancedQueryBuilderAction = 'select' | 'filter' | 'join';
+export type AdvancedQueryBuilderAction =
+  | 'select'
+  | 'filter'
+  | 'join'
+  | 'having'
+  | 'groupby'
+  | 'orderby';
 
 export type AdvancedQueryFilter = {
   $and?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
