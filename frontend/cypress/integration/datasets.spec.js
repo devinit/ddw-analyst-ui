@@ -113,7 +113,7 @@ describe('The Datasets Pages', () => {
           return dataset;
         }
       });
-      cy.intercept('api/datasets/', datasets);
+      cy.intercept('api/datasets/?limit=10&offset=0', datasets);
     });
 
     cy.visit('/datasets');
