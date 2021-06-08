@@ -35,12 +35,8 @@ describe('The Data Sources Page', () => {
     it('it does not paginate when sources do not exceed 10', () => {
       cy.fixture('dataSources').then((sources) => {
         sources.count = 10;
-        sources.results = sources.results.filter((source) => {
-          if (source.id < 11) {
-            return source;
-          }
-        });
-        cy.intercept('api/sources/', sources);
+        sources.results = sources.results.slice(0, 10);
+        cy.intercept('api/sources/?limit=10&offset=0', sources);
       });
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
@@ -59,29 +55,21 @@ describe('The Data Sources Page', () => {
 
     it('it paginates when sources exceed 10', () => {
       cy.fixture('dataSources').then((sources) => {
-        sources.results = sources.results.filter((source) => {
-          if (source.id < 11) {
-            return source;
-          }
-        });
+        sources.count = 15;
+        sources.results = sources.results.slice(0, 10);
         cy.intercept('api/sources/?limit=10&offset=0', sources);
       });
       cy.fixture('dataSources').then((sources) => {
-        sources.results = sources.results.filter((source) => {
-          if (source.id > 10) {
-            return source;
-          }
-        });
+        sources.count = 15;
+        sources.results = sources.results.slice(10, 15);
         cy.intercept('api/sources/?limit=10&offset=10', sources);
       });
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
-      cy.get('[data-testid="sources-table-row"]')
-        .eq(0)
-        .should('contain.text', 'Official Development Assistance2');
+      cy.get('[data-testid="sources-table-row"]').its('length').should('eq', 10);
       cy.get('[data-testid="pagination-results-count"]').should(
         'contain.text',
-        'Showing 1 to 10 of 20',
+        'Showing 1 to 10 of 15',
       );
       cy.get('.pagination > li').its('length').should('eq', 4);
       cy.get('.pagination > li')
@@ -93,11 +81,9 @@ describe('The Data Sources Page', () => {
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=2`);
       cy.get('[data-testid="pagination-results-count"]').should(
         'contain.text',
-        'Showing 11 to 20 of 20',
+        'Showing 11 to 15 of 15',
       );
-      cy.get('[data-testid="sources-table-row"]')
-        .eq(0)
-        .should('contain.text', 'DI Deflators Constant 2016 USD');
+      cy.get('[data-testid="sources-table-row"]').its('length').should('eq', 5);
       cy.get('.pagination > li').find('a').eq(1).click();
       cy.get('.pagination > li').eq(1).should('have.class', 'active');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=1`);
