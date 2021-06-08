@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { List } from 'immutable';
 import * as localForage from 'localforage';
-import React, { FunctionComponent, KeyboardEvent, useState } from 'react';
+import React, { FunctionComponent, KeyboardEvent, useEffect, useState } from 'react';
 import { FormControl, Table } from 'react-bootstrap';
 import styled from 'styled-components';
 import { OperationDataMap } from '../../types/operations';
@@ -50,6 +50,9 @@ export const OperationDataTable: FunctionComponent<OperationDataTableProps> = ({
   const [editableHeader, setEditableHeader] = useState('');
   const [columns, setColumns] = useState(props.columns);
   const [modalMessage, setModalMessage] = useState('');
+
+  useEffect(() => setColumns(props.columns), [props.columns]);
+
   const onToggleEditingHeader = (column?: OperationColumn): void => {
     if (column && column.id) {
       setEditableHeader(column.column_name);
