@@ -11,6 +11,7 @@ export interface ResultData {
   updated_on: string;
   is_draft: boolean;
   alias_creation_status: string;
+  estimated_run_time: number;
 }
 
 export interface QueryResult {
