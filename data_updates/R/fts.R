@@ -78,7 +78,7 @@ object_fields = c(
   "destination"="destinationObjects"
 )
 
-object_field_cols = c("type","id","name")
+object_field_cols = c("type","id","name","organizationTypes", "organizationSubTypes")
 
 other_multi_fields = c("keywords") # TODO: implement if necessary
 
@@ -101,9 +101,10 @@ raw.fts.types = c(
   "versionId"="integer",
   "boundary"="text",
   "onBoundary"="text",
-  "source_Organization_id"="integer",
+  "source_Organization_id"="text",
   "source_UsageYear_id"="text",
   "source_Organization_name"="text",
+  "source_Organization_type"="text",
   "source_UsageYear_name"="text",
   "destination_Plan_id"="text",
   "destination_Organization_id"="text",
@@ -114,6 +115,7 @@ raw.fts.types = c(
   "destination_UsageYear_id"="text",
   "destination_Plan_name"="text",
   "destination_Organization_name"="text",
+  "destination_Organization_type"="text",
   "destination_GlobalCluster_name"="text",
   "destination_Location_name"="text",
   "destination_Project_name"="text",
@@ -126,7 +128,7 @@ raw.fts.types = c(
   "source_Location_id"="text",
   "source_iso3"="text",
   "source_Location_name"="text",
-  "destination_Emergency_id"="integer",
+  "destination_Emergency_id"="text",
   "destination_Emergency_name"="text",
   "refCode"="text",
   "source_GlobalCluster_id"="text",
@@ -135,7 +137,7 @@ raw.fts.types = c(
   "source_Plan_id"="text",
   "source_Plan_name"="text",
   "grandBargainEarmarkingType"="text",
-  "source_Emergency_id"="integer",
+  "source_Emergency_id"="text",
   "source_Emergency_name"="text",
   "source_Project_id"="integer",
   "source_Project_name"="text",
@@ -151,40 +153,7 @@ name.remapping = c(
   "destination_Location_name"="Destination.Country"
 )
 
-keep.columns = c(
-  "id",
-  "amountUSD",
-  "budgetYear",
-  "description",
-  "flowType",
-  "newMoney",
-  "originalAmount",
-  "originalCurrency",
-  "method",
-  "status",
-  "boundary",
-  "onBoundary",
-  "source_Organization_name",
-  "source_Location_name",
-  "source_iso3",
-  "source_UsageYear_name",
-  "destination_Organization_name",
-  "destination_GlobalCluster_name",
-  "destination_Location_name",
-  "destination_iso3",
-  "destination_UsageYear_name",
-  "destination_Plan_name",
-  "destination_Project_name",
-  "parentFlowId",
-  "grandBargainEarmarkingType",
-  "source_Plan_id",
-  "source_Plan_name",
-  "destination_Cluster_name",
-  "destination_Emergency_name",
-  "exchangeRate",
-  "source_Emergency_name",
-  "source_GlobalCluster_name"
-)
+keep.columns = names(raw.fts.types)
 
 keep.fts.types = raw.fts.types[keep.columns]
 names(keep.fts.types)[which(names(keep.fts.types) %in% names(name.remapping))] = name.remapping[names(keep.fts.types)[which(names(keep.fts.types) %in% names(name.remapping))]]
@@ -197,11 +166,32 @@ flatten_flow = function(single_flow){
     field_list = single_flow[object_fields[i]][[1]]
     if(length(field_list)>0){
       field_df = data.table(t(sapply(field_list,`[`,object_field_cols)))
+      for(j in 1:nrow(field_df)){
+        if(!is.null(unlist(field_df$organizationTypes[j], recursive=T))){
+          field_df$organizationTypes[j] = unlist(field_df$organizationTypes[j], recursive=T)
+        }else{
+          field_df$organizationTypes[j] = ""
+        }
+        if(!is.null(unlist(field_df$organizationSubTypes[j], recursive=T))){
+          field_df$organizationSubTypes[j] = unlist(field_df$organizationSubTypes[j], recursive=T)
+        }else{
+          field_df$organizationSubTypes[j] = ""
+        }
+      }
+      field_df$org_type = apply( field_df[,c("organizationTypes", "organizationSubTypes")] , 1, paste0, collapse=": ")
       field_df$type = sapply(field_df$type,`[`,1)
-      field_df_grouped = field_df[,.(id=paste(id,collapse=" | "),name=paste(name,collapse=" | ")),by=.(type)]
+      field_df_grouped = field_df[,.(
+        id=paste(id,collapse=" | "),
+        name=paste(name,collapse=" | "),
+        org_type=paste(org_type,collapse=" | ")
+      ),by=.(type)]
       field_prefix = names(object_fields)[i]
       flat_flow[,paste(field_prefix,field_df_grouped$type,"id",sep="_")] = field_df_grouped$id
       flat_flow[,paste(field_prefix,field_df_grouped$type,"name",sep="_")] = field_df_grouped$name
+      org_grouped = subset(field_df_grouped, type=="Organization")
+      if(nrow(org_grouped) > 0){
+        flat_flow[,paste(field_prefix,"Organization","type",sep="_")] = org_grouped$org_type
+      }
     }
   }
   
@@ -280,7 +270,7 @@ if(length(args)==0){
 }
 
 new_table = TRUE
-years = c(2000:2022)
+years = c(2000:2030)
 b = paste0("year=",paste(years,collapse="%2C"))
 fts.flow(boundary=b, auth=auth, con, table.quote, new_table)
 

@@ -1,17 +1,9 @@
 import { List } from 'immutable';
+import queryString from 'query-string';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import {
-  Button,
-  Card,
-  Col,
-  Form,
-  FormControl,
-  OverlayTrigger,
-  Popover,
-  Row,
-} from 'react-bootstrap';
+import { Button, Card, Col, Form, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
@@ -20,7 +12,6 @@ import { OperationsState } from '../../reducers/operations';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
-import { FormControlElement } from '../../types/bootstrap';
 import { OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { BasicModal } from '../BasicModal';
@@ -28,6 +19,7 @@ import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
+import { SearchInput } from '../SearchInput';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -44,6 +36,11 @@ interface ComponentProps extends RouteComponentProps {
   showMyQueries?: boolean;
 }
 type OperationsTableCardProps = ComponentProps & ActionProps & ReduxState;
+type TableFilters = {
+  search?: string;
+  page?: number;
+  source?: number;
+};
 
 const getSourceDatasetsLink = (
   sourceID: number,
@@ -57,17 +54,22 @@ const getSourceDatasetsLink = (
   }${sourceID}?limit=${limit}&offset=${offset}&search=${search}`;
 
 const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props) => {
+  const { search, pathname } = useLocation();
   const [showMyQueries, setShowMyQueries] = useState(props.showMyQueries);
   const [searchQuery, setSearchQuery] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+  const [sourceID, setSourceID] = useState<number | undefined>(props.sourceID);
   const [info, setInfo] = useState('');
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
-
   useEffect(() => {
-    fetchQueries(showMyQueries);
-  }, []);
-
+    const queryParams = queryString.parse(location.search);
+    setSearchQuery((queryParams.search as string) || '');
+    setPageNumber(Number(queryParams.page || 1));
+    setSourceID(props.sourceID || (queryParams.source ? Number(queryParams.source) : undefined));
+  }, [search]);
+  useEffect(() => fetchQueries(showMyQueries), [pageNumber, searchQuery, sourceID]);
   useEffect(() => {
     const values = Array.from(sources, (source) => {
       return {
@@ -78,16 +80,24 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     setDropDownValues(values as DropdownItemProps[]);
   }, [sources]);
 
+  const updateQueryParams = (filter: TableFilters): void => {
+    const queryParameters = { ...queryString.parse(search), ...filter };
+    const cleanParameters: Partial<TableFilters> = {};
+    if (queryParameters.search) cleanParameters.search = queryParameters.search;
+    if (queryParameters.page) cleanParameters.page = queryParameters.page;
+    if (queryParameters.source) cleanParameters.source = queryParameters.source;
+    props.history.push(`${pathname}?${queryString.stringify(cleanParameters)}`);
+  };
+
   const fetchQueries = (mine = false) => {
-    const loading = props.operations.get('loading') as boolean;
-    if (!loading) {
-      props.actions.fetchOperations({
-        limit: props.limit,
-        offset: 0,
-        mine,
-        link: props.sourceID ? getSourceDatasetsLink(props.sourceID, mine, props.limit) : undefined,
-      });
-    }
+    const offset = (pageNumber - 1) * props.limit;
+    props.actions.fetchOperations({
+      limit: props.limit,
+      offset,
+      search: searchQuery,
+      mine,
+      link: sourceID ? getSourceDatasetsLink(sourceID, mine, props.limit, offset) : undefined,
+    });
     if (mine && !showMyQueries) {
       setShowMyQueries(true);
       setSearchQuery('');
@@ -98,29 +108,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const onSearchChange = (event: React.ChangeEvent<FormControlElement>) => {
-    const { value: searchQuery = '' } = event.currentTarget as HTMLInputElement;
-    setSearchQuery(searchQuery);
-  };
-
-  const onSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const { value } = event.currentTarget as HTMLInputElement;
-      setSearchQuery(value || '');
-      props.actions.fetchOperations({
-        limit: props.limit,
-        offset: 0,
-        search: value || '',
-        mine: showMyQueries,
-        link: props.sourceID
-          ? getSourceDatasetsLink(props.sourceID, showMyQueries, props.limit, 0, value)
-          : undefined,
-      });
-    }
-  };
+  const onSearch = (searchText: string) => updateQueryParams({ search: searchText, page: 1 });
 
   const onViewData = (operation: OperationMap) => {
     props.actions.setOperation(operation);
@@ -210,15 +198,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       offset: page.selected * props.limit,
       search: searchQuery,
       mine: showMyQueries,
-      link: props.sourceID
-        ? getSourceDatasetsLink(
-            props.sourceID,
-            showMyQueries,
-            props.limit,
-            page.selected * props.limit,
-          )
+      link: sourceID
+        ? getSourceDatasetsLink(sourceID, showMyQueries, props.limit, page.selected * props.limit)
         : undefined,
     });
+    setPageNumber(page.selected + 1);
+    updateQueryParams({ page: page.selected + 1 });
   };
 
   const onFilterByDataSource = (
@@ -226,6 +211,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     data: DropdownProps,
   ) => {
     const { value } = data;
+    updateQueryParams({ source: typeof value === 'number' ? value : undefined, page: 1 });
+    setSourceID(typeof value === 'number' ? value : undefined);
     props.actions.fetchOperations({
       limit: props.limit,
       offset: 0,
@@ -238,8 +225,9 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   const renderPagination = () => {
     const count = props.operations.get('count') as number;
+    const operations = props.operations.get('operations') as List<OperationMap>;
 
-    if (count) {
+    if (count && operations.count()) {
       return (
         <PaginationRow
           pageRangeDisplayed={2}
@@ -247,6 +235,8 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
           count={count}
           pageCount={Math.ceil(count / props.limit)}
           onPageChange={onPageChange}
+          currentPage={pageNumber === 1 ? 0 : pageNumber - 1}
+          offset={(pageNumber - 1) * props.limit}
         />
       );
     }
@@ -264,13 +254,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         <Card.Body>
           <Row>
             <Col xs="6" lg="4" md="6">
-              <FormControl
-                placeholder="Search ..."
+              <SearchInput
                 className="w-100"
+                onSearch={onSearch}
                 value={searchQuery}
-                onChange={onSearchChange}
-                onKeyDown={onSearch}
-                data-testid="sources-table-search"
+                testid="sources-table-search"
               />
             </Col>
             <Col xs="6" lg="4" md="6">
@@ -280,6 +268,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 fluid
                 search
                 selection
+                value={sourceID || ''}
                 options={dropDownValues}
                 onChange={onFilterByDataSource}
               />
