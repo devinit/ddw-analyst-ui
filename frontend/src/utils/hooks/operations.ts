@@ -20,9 +20,7 @@ interface OperationDataHookOptions {
 
 interface OperationDataHookResult<T = OperationDataHookOptions> {
   data?: OperationDataList | OperationData[];
-  dataLoading: boolean;
   options: T;
-  error?: string;
   setOptions: Dispatch<SetStateAction<T>>;
   refetch?: (options?: T) => void;
 }
@@ -100,62 +98,61 @@ export const useOperationData = (
   defaultOptions: OperationDataHookOptions,
   fetch = false,
   immutable = true,
-): OperationDataHookResult => {
-  const [dataLoading, setDataLoading] = useState(true);
+): any => {
   const [options, setOptions] = useState(defaultOptions);
-  const [data, setData] = useState<OperationDataList>();
-  const [error, setError] = useState('');
   const { payload } = options;
+  let status = 'pending',
+    error1,
+    data1;
 
-  const fetchData = () => {
-    fetchOperationData(payload).then(({ data, error }) => {
-      setError(error || '');
-      setData(immutable ? fromJS(data) : data);
-      // update local storage cache
-      localForage.setItem(
-        `${localForageKeys.DATASET_DATA}-${payload.id}-${payload.limit}-${payload.offset}`,
-        JSON.stringify(data),
-      );
-      localForage.setItem(
-        `${localForageKeys.DATASET_DATA_UPDATED_ON}-${payload.id}-${payload.limit}-${payload.offset}`,
-        new Date().toISOString(),
-      );
-      setDataLoading(false);
-    });
-  };
+  const fetchData = fetchOperationData(payload).then(({ data, error }) => {
+    error1 = error || '';
+    data1 = immutable ? fromJS(data) : data;
+    // update local storage cache
+    localForage.setItem(
+      `${localForageKeys.DATASET_DATA}-${payload.id}-${payload.limit}-${payload.offset}`,
+      JSON.stringify(data1),
+    );
+    localForage.setItem(
+      `${localForageKeys.DATASET_DATA_UPDATED_ON}-${payload.id}-${payload.limit}-${payload.offset}`,
+      new Date().toISOString(),
+    );
+    status = 'done';
+  });
 
   useEffect(() => {
-    if (!dataLoading) {
-      setDataLoading(true);
-    }
     if (fetch) {
-      fetchData();
+      fetchData;
     } else {
       getCachedOperationData(payload).then(([cachedData, _fetch]) => {
         if (_fetch) {
-          fetchData();
+          fetchData;
         } else {
-          setData(immutable ? fromJS(cachedData) : cachedData);
-          setDataLoading(false);
+          data1 = immutable ? fromJS(cachedData) : cachedData;
         }
       });
     }
   }, [payload]);
 
-  return { data, dataLoading, options, error, setOptions };
+  return (): OperationDataHookResult => {
+    if (status === 'pending') {
+      throw fetchData;
+    }
+    const data = data1;
+
+    return { data, options, setOptions };
+  };
 };
 
 interface UseOperationResult {
   operation?: Operation | OperationMap;
-  loading: boolean;
 }
 
-export const useOperation = (id: number, fetch = false, immutable = true): UseOperationResult => {
-  const [operation, setOperation] = useState<Operation | undefined>();
-  const [loading, setLoading] = useState(false);
+export const useOperation = (id: number, fetch = false, immutable = true): any => {
+  let loading = true,
+    operation;
 
-  const fetchOperation = () => {
-    setLoading(true);
+  const fetchOperation = () =>
     axios
       .request({
         url: `${api.routes.SINGLE_DATASET}${id}`,
@@ -167,22 +164,21 @@ export const useOperation = (id: number, fetch = false, immutable = true): UseOp
       .then(({ status, data, statusText }: AxiosResponse<Operation>) => {
         if (status === 200 && data) {
           const activeOperation = data;
-          setOperation(activeOperation);
-          setLoading(false);
+          operation = activeOperation;
+          loading = false;
         } else if (status === 401) {
           console.log('Failed to fetch operation: ', statusText);
-          setOperation(undefined);
-          setLoading(false);
+          operation = undefined;
+          loading = false;
         }
       })
       .catch((error) => {
         console.log(
           `Failed to fetch operation: ${error.response.status} ${error.response.statusText}`,
         );
-        setOperation(undefined);
-        setLoading(false);
+        operation = undefined;
+        loading = false;
       });
-  };
 
   useEffect(() => {
     if (fetch) {
@@ -192,8 +188,8 @@ export const useOperation = (id: number, fetch = false, immutable = true): UseOp
         .getItem<Operation | undefined>(localForageKeys.ACTIVE_OPERATION)
         .then((activeOperation) => {
           if (activeOperation && activeOperation.id === id) {
-            setOperation(activeOperation);
-            setLoading(false);
+            operation = activeOperation;
+            loading = false;
           } else {
             fetchOperation();
           }
@@ -201,5 +197,11 @@ export const useOperation = (id: number, fetch = false, immutable = true): UseOp
     }
   }, [id]);
 
-  return { loading, operation: immutable ? fromJS(operation) : operation };
+  return (): UseOperationResult => {
+    if (loading) {
+      throw fetchOperation();
+    }
+
+    return { operation: immutable ? fromJS(operation) : operation };
+  };
 };
