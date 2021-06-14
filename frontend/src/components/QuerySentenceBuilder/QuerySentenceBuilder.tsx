@@ -42,7 +42,11 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [alert, setAlert] = useState('');
   useEffect(() => {
     setContext({
-      options: { ...context.options, source: source?.get('id') as number, columns: [] },
+      options: {
+        ...context.options,
+        source: source?.get('id') as number,
+        columns: [],
+      },
     });
   }, [source]);
 
@@ -82,7 +86,14 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
         {source ? (
           <>
             <QueryBuilderActionSelector onSelectAction={onSelectAction} />
-            {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
+            {action === 'select' ? (
+              <AdvancedSelectQueryBuilder
+                source={source}
+                onUpdateOptions={onUpdateOptions}
+                columns={context.options.columns}
+                selectAll={context.options.selectAll}
+              />
+            ) : null}
             {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
             {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
             <CodeMirrorReact
