@@ -99,7 +99,8 @@ export interface AdvancedQueryOptions {
   columns?: AdvancedQueryColumn[];
   filter?: AdvancedQueryFilter;
   join?: AdvancedQueryJoin;
-  groupby?: string[];
+  groupby?: Column[];
+  selectAll?: boolean;
 }
 
 export interface AdvancedQueryColumn extends Partial<Column> {
