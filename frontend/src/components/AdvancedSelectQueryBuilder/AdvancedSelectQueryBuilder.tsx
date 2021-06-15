@@ -95,7 +95,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           variant="danger"
           checked={selectAll}
         />
-        <Button variant="danger" size="sm" onClick={onReset} className="mr-1">
+        <Button variant="danger" size="sm" onClick={onReset} className="mr-1 ml-1">
           Clear/Reset
         </Button>
         <Button variant="danger" size="sm" className="d-none">
