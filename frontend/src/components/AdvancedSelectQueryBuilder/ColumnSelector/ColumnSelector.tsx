@@ -28,19 +28,18 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
   useEffect(() => {
     if (props.selectAll === true) {
       setSelectedColumns(props.columns.map((column) => column.name as string));
+    } else if (props.columns.length === 0) {
+      setSelectedColumns([]);
     }
-    // else if (props.selectAll === false) {
-    //   setSelectedColumns([]);
-    // }
-  }, [props.selectAll]);
+  }, [props.selectAll, props.columns]);
   useEffect(() => {
     if (props.onUpdateSelection) {
       props.onUpdateSelection({
         selectAll:
-          selectedColumns.length === (source.get('columns') as ColumnList).size ? true : false,
+          props.columns.length === (source.get('columns') as ColumnList).size ? true : false,
       });
     }
-  }, [selectedColumns, props.columns]);
+  }, [props.columns]);
   const onUpdateColumns = (selection: string[]) => {
     setSelectedColumns(selection);
     if (props.onUpdateSelection) {
