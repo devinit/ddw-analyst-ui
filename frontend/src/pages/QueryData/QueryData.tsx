@@ -15,7 +15,7 @@ import {
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 interface RouteParams {
-  id: string;
+  id?: string;
 }
 type QueryDataProps = RouteComponentProps<RouteParams>;
 
@@ -154,7 +154,7 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
               <Suspense fallback="Data Loading">
                 <RenderData
                   useOpData={useOpData}
-                  id={parseInt(id)}
+                  id={parseInt(id as string)}
                   activeOperation={operationReader}
                 />
               </Suspense>
