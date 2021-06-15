@@ -2,8 +2,8 @@ import React, { FunctionComponent, ReactElement, Suspense } from 'react';
 import { Alert, Row } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import { DatasetHistoryCard } from '../../components/DatasetHistoryCard';
-import { OperationMap, OperationReader } from '../../types/operations';
-import { useOperation } from '../../utils/hooks/operations';
+import { OperationMap } from '../../types/operations';
+import { useOperation, OperationReader } from '../../utils/hooks/operations';
 
 interface RenderQueryHistoryParams {
   operationReader: OperationReader;
