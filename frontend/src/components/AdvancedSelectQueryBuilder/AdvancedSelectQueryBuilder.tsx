@@ -2,6 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
+import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { ColumnSelector } from './ColumnSelector';
 import { cleanColumn } from './ColumnSelector/utils';
@@ -16,6 +17,7 @@ interface ComponentProps {
 
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, ...props }) => {
   const [displayColumnSelector, setDisplayColumnSelector] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
   // const [config, setConfig] = useState<AdvancedQueryOptions>();
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
@@ -33,17 +35,29 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
       });
     }
   }, [props.selectAll]);
-
-  const onSelectAll = () => {
+  useEffect(() => {
     setDisplayColumnSelector(true);
-    if (props.onUpdateOptions) {
-      props.onUpdateOptions({
-        columns: (source.get('columns') as ColumnList)
-          .toJS()
-          .map((column) => cleanColumn(column, props.columns ? props.columns : [])),
-        selectAll: true,
-      });
+    if (selectAll === true) {
+      if (props.onUpdateOptions) {
+        props.onUpdateOptions({
+          columns: (source.get('columns') as ColumnList)
+            .toJS()
+            .map((column) => cleanColumn(column, props.columns ? props.columns : [])),
+          selectAll: true,
+        });
+      }
+    } else {
+      if (props.onUpdateOptions) {
+        props.onUpdateOptions({
+          columns: [],
+          selectAll: false,
+        });
+      }
     }
+  }, [selectAll]);
+
+  const onCheckBoxChange = (data: ICheckData) => {
+    setSelectAll(data.checked);
   };
 
   return (
@@ -61,9 +75,13 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
         >
           Select Column(s)
         </Button>
-        <Button variant="danger" size="sm" className="mr-1" data-html="true" onClick={onSelectAll}>
-          Select All
-        </Button>
+        <ICheck
+          id="selectAll"
+          name="selectAll"
+          label="Select All"
+          onChange={onCheckBoxChange}
+          variant="danger"
+        />
         <Button variant="danger" size="sm" className="d-none">
           Insert Column
         </Button>
