@@ -15,7 +15,7 @@ import {
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 interface RouteParams {
-  id?: string;
+  id: string;
 }
 type QueryDataProps = RouteComponentProps<RouteParams>;
 
