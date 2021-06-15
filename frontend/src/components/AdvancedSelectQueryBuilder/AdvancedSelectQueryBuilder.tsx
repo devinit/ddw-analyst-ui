@@ -24,12 +24,14 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
   }, []);
   useEffect(() => {
     if (props.onUpdateOptions && props.selectAll === true) {
+      setSelectAll(true);
       props.onUpdateOptions({
         columns: (source.get('columns') as ColumnList)
           .toJS()
           .map((column) => cleanColumn(column, props.columns ? props.columns : [])),
       });
     } else if (props.onUpdateOptions && props.selectAll === false) {
+      setSelectAll(false);
       props.onUpdateOptions({
         columns: [],
       });
@@ -60,6 +62,16 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     setSelectAll(data.checked);
   };
 
+  const onReset = () => {
+    setSelectAll(false);
+    if (props.onUpdateOptions) {
+      props.onUpdateOptions({
+        columns: [],
+        selectAll: false,
+      });
+    }
+  };
+
   return (
     <div className="mb-3">
       <ButtonGroup className="mr-2">
@@ -81,7 +93,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           label="Select All"
           onChange={onCheckBoxChange}
           variant="danger"
+          checked={selectAll}
         />
+        <Button variant="danger" size="sm" onClick={onReset} className="mr-1">
+          Clear/Reset
+        </Button>
         <Button variant="danger" size="sm" className="d-none">
           Insert Column
         </Button>
