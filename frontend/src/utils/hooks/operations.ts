@@ -23,6 +23,7 @@ interface OperationDataHookResult<T = OperationDataHookOptions> {
   options: T;
   setOptions: Dispatch<SetStateAction<T>>;
   refetch?: (options?: T) => void;
+  error?: string;
 }
 
 export type OperationDataReader = () => OperationDataHookResult;
@@ -141,13 +142,15 @@ export const useOperationData = (
       throw fetchData;
     }
     const data = tempData;
+    const error = tempError;
 
-    return { data, options, setOptions };
+    return { data, options, setOptions, error };
   };
 };
 
 interface UseOperationResult {
   operation?: Operation | OperationMap;
+  loading?: boolean;
 }
 
 export type OperationReader = () => UseOperationResult;
@@ -206,6 +209,6 @@ export const useOperation = (id: number, fetch = false, immutable = true): Opera
       throw fetchOperation();
     }
 
-    return { operation: immutable ? fromJS(operation) : operation };
+    return { operation: immutable ? fromJS(operation) : operation, loading };
   };
 };

@@ -1,20 +1,19 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent, ReactElement, Suspense } from 'react';
 import { Alert, Row } from 'react-bootstrap';
 import { useParams } from 'react-router';
-import { Dimmer, Loader } from 'semantic-ui-react';
 import { DatasetHistoryCard } from '../../components/DatasetHistoryCard';
-import { OperationMap } from '../../types/operations';
+import { OperationMap, OperationReader } from '../../types/operations';
 import { useOperation } from '../../utils/hooks/operations';
 
-const QueryHistory: FunctionComponent = (): ReactElement => {
-  const { id } = useParams<{ id: string }>();
-  const { operation, loading } = useOperation(parseInt(id));
+interface RenderQueryHistoryParams {
+  operationReader: OperationReader;
+}
+
+const RenderQueryHistory = (props: RenderQueryHistoryParams) => {
+  const { operation, loading } = props.operationReader();
 
   return (
     <Row>
-      <Dimmer active={loading} inverted>
-        <Loader content="Loading" />
-      </Dimmer>
       {operation && !loading ? (
         <DatasetHistoryCard
           dataset={operation as OperationMap}
@@ -29,6 +28,17 @@ const QueryHistory: FunctionComponent = (): ReactElement => {
         </Alert>
       ) : null}
     </Row>
+  );
+};
+
+const QueryHistory: FunctionComponent = (): ReactElement => {
+  const { id } = useParams<{ id: string }>();
+  const operationReader = useOperation(parseInt(id));
+
+  return (
+    <Suspense fallback="Loading Dataset History">
+      <RenderQueryHistory operationReader={operationReader} />
+    </Suspense>
   );
 };
 

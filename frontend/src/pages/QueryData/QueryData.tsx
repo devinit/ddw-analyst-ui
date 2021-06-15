@@ -45,7 +45,7 @@ const RenderDataTable = (props: RenderDataTableParams) => {
   return (
     <OperationDataTableContainer
       operation={activeOperation}
-      id={parseInt(id)}
+      id={id}
       list={data as OperationData[]}
       limit={options.payload.limit || 20}
       offset={options.payload.offset || 0}
@@ -61,7 +61,7 @@ const RenderData = (props: RenderDataParams) => {
   const useOpData = props.useOpData;
 
   const estimatedRunTime = activeOperation.get('estimated_run_time') as number;
-  const estimatedSeconds = estimatedRunTime === 10 ? 0 : estimatedRunTime / 1000 + 10;
+  const estimatedSeconds = estimatedRunTime === 10 ? 0 : estimatedRunTime / 1000;
 
   const renderTime = ({ remainingTime }: { remainingTime: number }) => {
     if (remainingTime === 0) {
@@ -152,7 +152,11 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
 
             <Card.Body>
               <Suspense fallback="Data Loading">
-                <RenderData useOpData={useOpData} id={id} activeOperation={operationReader} />
+                <RenderData
+                  useOpData={useOpData}
+                  id={parseInt(id)}
+                  activeOperation={operationReader}
+                />
               </Suspense>
             </Card.Body>
           </Card>
