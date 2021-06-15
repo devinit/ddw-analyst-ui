@@ -13,41 +13,42 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         all = kwargs['all']
+        self.updateAllQueries()
 
-def updateAllQueries(self):
-        operations = Operation.objects.all()
-        for operation in operations:
-            try:
-                estimate = query.querytime_estimate(operation=operation)
-                if estimate[0]['result'] == 'success':
-                    operation.estimated_run_time = int(estimate[0]['message'])
-                    operation.save()
-                    self.stdout.write(self.style.SUCCESS("Done for {} - {}".format(operation.id, operation.name)))
-                else:
-                    self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(operation.id, operation.name, results[0]['message'])))
-                    # input('Press Enter to continue...')
-            except AttributeError as error:
-                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with attribute error {}'.format(operation.id, operation.name, error)))
-            except TypeError as error:
-                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with type error {}'.format(operation.id, operation.name, error)))
-            except Exception as error:
-                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with error {}'.format(operation.id, operation.name, error)))
+    def updateAllQueries(self):
+            operations = Operation.objects.all()
+            for operation in operations:
+                try:
+                    estimate = query.querytime_estimate(operation=operation)
+                    if estimate[0]['result'] == 'success':
+                        operation.estimated_run_time = int(estimate[0]['message'])
+                        operation.save()
+                        self.stdout.write(self.style.SUCCESS("Done for {} - {}".format(operation.id, operation.name)))
+                    else:
+                        self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(operation.id, operation.name, results[0]['message'])))
+                        # input('Press Enter to continue...')
+                except AttributeError as error:
+                    self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with attribute error {}'.format(operation.id, operation.name, error)))
+                except TypeError as error:
+                    self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with type error {}'.format(operation.id, operation.name, error)))
+                except Exception as error:
+                    self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with error {}'.format(operation.id, operation.name, error)))
 
-def updateById(self, id):
-        operations = Operation.objects.filter(id__in=[id])
-        for operation in operations:
-            try:
-                estimate = query.querytime_estimate(operation=operation)
-                if estimate[0]['result'] == 'success':
-                    operation.estimated_run_time = int(estimate[0]['message'])
-                    operation.save()
-                    self.stdout.write(self.style.SUCCESS("Done for {} - {}".format(operation.id, operation.name)))
-                else:
-                    self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(operation.id, operation.name, results[0]['message'])))
-                    # input('Press Enter to continue...')
-            except AttributeError as error:
-                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with attribute error {}'.format(operation.id, operation.name, error)))
-            except TypeError as error:
-                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with type error {}'.format(operation.id, operation.name, error)))
-            except Exception as error:
-                self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with error {}'.format(operation.id, operation.name, error)))
+    def updateById(self, id):
+            operations = Operation.objects.filter(id__in=[id])
+            for operation in operations:
+                try:
+                    estimate = query.querytime_estimate(operation=operation)
+                    if estimate[0]['result'] == 'success':
+                        operation.estimated_run_time = int(estimate[0]['message'])
+                        operation.save()
+                        self.stdout.write(self.style.SUCCESS("Done for {} - {}".format(operation.id, operation.name)))
+                    else:
+                        self.stdout.write(self.style.ERROR("Failed for Operation {} - {} with error {}".format(operation.id, operation.name, results[0]['message'])))
+                        # input('Press Enter to continue...')
+                except AttributeError as error:
+                    self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with attribute error {}'.format(operation.id, operation.name, error)))
+                except TypeError as error:
+                    self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with type error {}'.format(operation.id, operation.name, error)))
+                except Exception as error:
+                    self.stdout.write(self.style.NOTICE('Failed for Operation {} - {} with error {}'.format(operation.id, operation.name, error)))
