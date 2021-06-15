@@ -6,7 +6,12 @@ import { OperationDataTableContainer } from '../../components/OperationDataTable
 import { FetchOptions } from '../../types/api';
 import { OperationData, OperationMap } from '../../types/operations';
 import { api, localForageKeys } from '../../utils';
-import { useOperation, useOperationData } from '../../utils/hooks/operations';
+import {
+  useOperation,
+  useOperationData,
+  OperationDataReader,
+  OperationReader,
+} from '../../utils/hooks/operations';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 interface RouteParams {
@@ -14,7 +19,23 @@ interface RouteParams {
 }
 type QueryDataProps = RouteComponentProps<RouteParams>;
 
-const RenderDataTable = (props) => {
+interface RenderOperationNameParams {
+  operationReader: OperationReader;
+}
+
+interface RenderDataParams {
+  activeOperation: OperationReader;
+  id: number;
+  useOpData: OperationDataReader;
+}
+
+interface RenderDataTableParams {
+  activeOperation: OperationMap;
+  id: number;
+  useOpData: OperationDataReader;
+}
+
+const RenderDataTable = (props: RenderDataTableParams) => {
   const id = props.id;
   const activeOperation = props.activeOperation;
   const useOpData = props.useOpData;
@@ -34,15 +55,15 @@ const RenderDataTable = (props) => {
   );
 };
 
-const RenderData = (props) => {
+const RenderData = (props: RenderDataParams) => {
   const id = props.id;
   const { operation: activeOperation } = props.activeOperation() as { operation: OperationMap };
   const useOpData = props.useOpData;
 
   const estimatedRunTime = activeOperation.get('estimated_run_time') as number;
-  const estimatedSeconds = estimatedRunTime === 0 ? 0 : parseInt(estimatedRunTime / 1000);
+  const estimatedSeconds = estimatedRunTime === 10 ? 0 : estimatedRunTime / 1000 + 10;
 
-  const renderTime = ({ remainingTime }) => {
+  const renderTime = ({ remainingTime }: { remainingTime: number }) => {
     if (remainingTime === 0) {
       return <div className="timer">Results rendering...</div>;
     }
@@ -79,7 +100,7 @@ const RenderData = (props) => {
   );
 };
 
-const RenderOperationName = (props) => {
+const RenderOperationName = (props: RenderOperationNameParams) => {
   const { operation: activeOperation } = props.operationReader() as { operation: OperationMap };
 
   return <sub>{activeOperation ? activeOperation.get('name') : 'Query Data'}</sub>;

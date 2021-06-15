@@ -25,6 +25,8 @@ interface OperationDataHookResult<T = OperationDataHookOptions> {
   refetch?: (options?: T) => void;
 }
 
+export type OperationDataReader = () => OperationDataHookResult;
+
 interface FetchResponse {
   data?: OperationData[];
   error?: string;
@@ -98,20 +100,20 @@ export const useOperationData = (
   defaultOptions: OperationDataHookOptions,
   fetch = false,
   immutable = true,
-): any => {
+): OperationDataReader => {
   const [options, setOptions] = useState(defaultOptions);
   const { payload } = options;
-  let status = 'pending',
-    error1,
-    data1;
+  let status = 'pending';
+  let tempData: OperationDataList | OperationData[];
+  let tempError: string;
 
   const fetchData = fetchOperationData(payload).then(({ data, error }) => {
-    error1 = error || '';
-    data1 = immutable ? fromJS(data) : data;
+    tempError = error || '';
+    tempData = immutable ? fromJS(data) : data;
     // update local storage cache
     localForage.setItem(
       `${localForageKeys.DATASET_DATA}-${payload.id}-${payload.limit}-${payload.offset}`,
-      JSON.stringify(data1),
+      JSON.stringify(tempData),
     );
     localForage.setItem(
       `${localForageKeys.DATASET_DATA_UPDATED_ON}-${payload.id}-${payload.limit}-${payload.offset}`,
@@ -128,7 +130,7 @@ export const useOperationData = (
         if (_fetch) {
           fetchData;
         } else {
-          data1 = immutable ? fromJS(cachedData) : cachedData;
+          tempData = immutable ? fromJS(cachedData) : cachedData;
         }
       });
     }
@@ -138,7 +140,7 @@ export const useOperationData = (
     if (status === 'pending') {
       throw fetchData;
     }
-    const data = data1;
+    const data = tempData;
 
     return { data, options, setOptions };
   };
@@ -148,9 +150,11 @@ interface UseOperationResult {
   operation?: Operation | OperationMap;
 }
 
-export const useOperation = (id: number, fetch = false, immutable = true): any => {
-  let loading = true,
-    operation;
+export type OperationReader = () => UseOperationResult;
+
+export const useOperation = (id: number, fetch = false, immutable = true): OperationReader => {
+  let loading = true;
+  let operation: Operation | OperationMap | undefined;
 
   const fetchOperation = () =>
     axios
