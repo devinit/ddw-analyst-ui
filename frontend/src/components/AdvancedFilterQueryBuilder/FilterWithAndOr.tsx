@@ -15,7 +15,7 @@ import { CodeMirrorReact } from '../CodeMirrorReact';
 import { FilterItem } from '../FilterItem';
 import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { FilterWith } from './AdvancedFilterQueryBuilder';
-import { validateFilter } from './utils';
+import { validateFilter, validate } from './utils';
 import { handleAnd, operations } from './utils/actions';
 
 interface ComponentProps {
@@ -64,9 +64,10 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
 
   const onInsert = () => {
     if (editor && filterWith) {
-      const validationResponse = validateFilter({ action: filterWith, options, editor });
-      handleAnd(validationResponse);
+      // const validationResponse = validateFilter({ action: filterWith, options, editor });
+      // handleAnd(validationResponse);
       editor.replaceSelection(JSON.stringify(editorContent, null, 2));
+      validate(editor);
     }
     setIsEditingExisting(false);
   };
@@ -118,10 +119,12 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         <CodeMirrorReact
           className="mt-2"
           config={{
-            mode: jsonMode,
+            // mode: jsonMode,
             value: JSON.stringify(editorContent, null, 2),
             lineNumbers: true,
             theme: 'material',
+            mode: 'application/json',
+            gutters: ['CodeMirror-lint-markers'],
           }}
           onChange={onChange}
         />
