@@ -8,11 +8,12 @@ import {
   Operation,
   OperationMap,
 } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { ColumnList, SourceMap } from '../../types/sources';
 import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedGroupByQueryBuilder } from '../AdvancedGroupByQueryBuilder';
 import { AdvancedJoinQueryBuilder } from '../AdvancedJoinQueryBuilder';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
+import { cleanColumn } from '../AdvancedSelectQueryBuilder/ColumnSelector/utils';
 import { JsonModeSpec } from '../CodeMirrorReact';
 import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
@@ -52,6 +53,21 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     });
   }, [source]);
 
+  useEffect(() => {
+    if (source && context.options.selectAll === true) {
+      onUpdateOptions({
+        columns: (source.get('columns') as ColumnList)
+          .toJS()
+          .map((column) =>
+            cleanColumn(column, context.options.columns ? context.options.columns : []),
+          ),
+      });
+    } else if (context.options.selectAll === false && context?.options?.columns?.length === 0) {
+      onUpdateOptions({
+        columns: [],
+      });
+    }
+  }, [context.options.selectAll]);
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>) => {
     setContext({ options: { ...context.options, ...options }, updateOptions: onUpdateOptions });
   };
@@ -89,12 +105,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
           <>
             <QueryBuilderActionSelector onSelectAction={onSelectAction} />
             {action === 'select' ? (
-              <AdvancedSelectQueryBuilder
-                source={source}
-                onUpdateOptions={onUpdateOptions}
-                columns={context.options.columns}
-                selectAll={context.options.selectAll}
-              />
+              <AdvancedSelectQueryBuilder source={source} columns={context.options.columns} />
             ) : null}
             {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
             {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
