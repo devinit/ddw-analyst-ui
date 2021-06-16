@@ -4,13 +4,11 @@ import { AdvancedQueryOptions } from '../../../types/operations';
 
 interface SelectAllColumnSelectorProps {
   onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
-  setSelectAll?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ColumnReset: FunctionComponent<SelectAllColumnSelectorProps> = ({ ...props }) => {
   const onReset = () => {
-    if (props.onUpdateOptions && props.setSelectAll) {
-      props.setSelectAll(false);
+    if (props.onUpdateOptions) {
       props.onUpdateOptions({
         columns: [],
         selectAll: false,
