@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
 import { ColumnList, SourceMap } from '../../../types/sources';
-import { ICheck, ICheckData } from '../../ICheck';
+import { ICheckData } from '../../ICheck';
+import { IRadio } from '../../IRadio';
 import { cleanColumn } from '../ColumnSelector/utils';
 
 interface SelectAllColumnSelectorProps {
@@ -10,7 +11,6 @@ interface SelectAllColumnSelectorProps {
   columns: AdvancedQueryColumn[];
   onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
   selectAll?: boolean;
-  setSelectAll?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SelectAllColumnSelector: FunctionComponent<SelectAllColumnSelectorProps> = ({
@@ -36,19 +36,19 @@ const SelectAllColumnSelector: FunctionComponent<SelectAllColumnSelectorProps> =
     }
   }, [props.selectAll]);
   const onCheckBoxChange = (data: ICheckData) => {
-    if (props.setSelectAll) {
-      props.setSelectAll(data.checked);
+    if (props.onUpdateOptions) {
+      props.onUpdateOptions({ selectAll: data.checked });
     }
   };
 
   return (
-    <ICheck
+    <IRadio
       id="selectAll"
       name="selectAll"
       label="Select All"
       onChange={onCheckBoxChange}
       variant="danger"
-      checked={props.selectAll}
+      checked={props.selectAll || false}
     />
   );
 };
