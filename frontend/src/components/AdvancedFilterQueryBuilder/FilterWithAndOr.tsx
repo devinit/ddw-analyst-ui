@@ -13,10 +13,10 @@ import {
 import { SourceMap } from '../../types/sources';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { FilterItem } from '../FilterItem';
-import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
+import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
 import { FilterWith } from './AdvancedFilterQueryBuilder';
 import { validateFilter, validate } from './utils';
-import { handleAnd, operations } from './utils/actions';
+import { operations } from './utils/actions';
 
 interface ComponentProps {
   show?: boolean;
