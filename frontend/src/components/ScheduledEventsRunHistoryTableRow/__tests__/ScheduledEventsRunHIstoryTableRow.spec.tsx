@@ -37,7 +37,10 @@ describe('<ScheduledEventsRunHistoryTableRow', () => {
       </ScheduledEventsRunHistoryTableRow>,
       { container: document.body.appendChild(tablebody) },
     );
-    fireEvent.click(getByTestId('logs-button'));
+    const button = getByTestId('logs-button') as HTMLElement;
+    expect(button).toBeDefined();
+    expect(button).not.toBeNull();
+    if (button) fireEvent.click(button);
     expect(onViewLogs).toHaveBeenCalledTimes(1);
     expect(onViewLogs).toHaveBeenCalledWith(history.logs);
   });
