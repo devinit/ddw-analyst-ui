@@ -58,39 +58,42 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
     setHasFocus('');
   };
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  const onChange = (setFieldValue: (field: string, value: any) => void) => ({
-    currentTarget,
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = currentTarget;
-    setFieldValue(name, value);
-    if (props.onUpdateOperation) {
-      if (props.operation) {
-        props.onUpdateOperation(props.operation.set(name as keyof Operation, value));
-      } else {
-        const operation = fromJS({ [name]: value });
-        props.onUpdateOperation(operation);
+  const onChange =
+    (setFieldValue: (field: string, value: any) => void) =>
+    ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = currentTarget;
+      setFieldValue(name, value);
+      if (props.onUpdateOperation) {
+        if (props.operation) {
+          props.onUpdateOperation(props.operation.set(name as keyof Operation, value));
+        } else {
+          const operation = fromJS({ [name]: value });
+          props.onUpdateOperation(operation);
+        }
       }
-    }
-  };
+    };
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  const toggleDraft = (setFieldValue: (field: string, value: any) => void) => ({
-    currentTarget,
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    const { checked } = currentTarget;
-    setFieldValue('is_draft', checked);
-    if (props.onUpdateOperation) {
-      if (props.operation) {
-        const isDraft = !!props.operation.get('is_draft');
-        const operation = props.operation.set('is_draft', !isDraft);
-        props.onUpdateOperation(operation);
-      } else {
-        const operation = fromJS({ is_draft: true });
-        props.onUpdateOperation(operation);
+  const toggleDraft =
+    (setFieldValue: (field: string, value: any) => void) =>
+    ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
+      const { checked } = currentTarget;
+      setFieldValue('is_draft', checked);
+      if (props.onUpdateOperation) {
+        if (props.operation) {
+          const isDraft = !!props.operation.get('is_draft');
+          const operation = props.operation.set('is_draft', !isDraft);
+          props.onUpdateOperation(operation);
+        } else {
+          const operation = fromJS({ is_draft: true });
+          props.onUpdateOperation(operation);
+        }
       }
-    }
-  };
+    };
 
-  const onSuccess = (preview = false) => () => props.onSuccess(preview);
+  const onSuccess =
+    (preview = false) =>
+    () =>
+      props.onSuccess(preview);
 
   const onDelete = () => {
     if (!confirmDelete) {

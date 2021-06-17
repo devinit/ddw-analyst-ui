@@ -120,12 +120,11 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     props.history.push(`/queries/history/${operation.get('id')}`);
   };
 
-  const onViewSQLQuery = (operation: OperationMap) => (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
-    setInfo(operation.get('operation_query') as string);
-  };
+  const onViewSQLQuery =
+    (operation: OperationMap) => (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      setInfo(operation.get('operation_query') as string);
+    };
 
   const onEditOperation = (operation: OperationMap) => {
     props.history.push(`/queries/build/${operation.get('id') as number}/`);

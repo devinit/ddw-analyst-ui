@@ -25,9 +25,9 @@ const OperationPreview: FunctionComponent<ComponentProps> = ({ show, loading, da
       return <div>Loading ...</div>;
     }
     if (data.count()) {
-      const columns: OperationColumn[] = Object.keys(
-        (data.get(0) as OperationDataMap).toJS(),
-      ).map((column, index) => ({ id: index, column_alias: column, column_name: column }));
+      const columns: OperationColumn[] = Object.keys((data.get(0) as OperationDataMap).toJS()).map(
+        (column, index) => ({ id: index, column_alias: column, column_name: column }),
+      );
 
       return <OperationDataTable list={data} columns={columns} />;
     }
