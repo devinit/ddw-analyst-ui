@@ -90,8 +90,7 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   );
 };
 
-const OperationTabContainerMemo = React.memo<PropsWithChildren<ComponentProps>>(
-  OperationTabContainer,
-);
+const OperationTabContainerMemo =
+  React.memo<PropsWithChildren<ComponentProps>>(OperationTabContainer);
 
 export { OperationTabContainerMemo as OperationTabContainer };

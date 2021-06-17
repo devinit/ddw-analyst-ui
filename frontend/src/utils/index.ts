@@ -113,9 +113,8 @@ export const getStepSelectableColumns = (
           return Set(selectColumns);
         }
         if (queryFunction === 'aggregate') {
-          const { group_by, agg_func_name, operational_column }: AggregateOptions = JSON.parse(
-            options,
-          );
+          const { group_by, agg_func_name, operational_column }: AggregateOptions =
+            JSON.parse(options);
           const aggregateColumns: string[] = group_by || [];
           aggregateColumns.push(`${operational_column}_${agg_func_name}`);
 
