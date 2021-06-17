@@ -8,7 +8,6 @@ describe('The Datasets Pages', () => {
       cy.login(username, password);
     });
   });
-
   // TODO: run each test for both my datasets & published datasets
 
   it('that are published should be navigated to from the sidebar', () => {
@@ -239,6 +238,9 @@ describe('The Datasets Pages', () => {
     cy.fixture('datasets').then((datasets) => {
       cy.intercept('api/datasets/mine/', datasets);
     });
+    cy.fixture('dataset4').then((dataset) => {
+      cy.intercept('api/dataset/4', dataset);
+    });
     cy.fixture('datasetTableData').then((data) => {
       cy.intercept('api/dataset/data/4', data);
     });
@@ -252,7 +254,10 @@ describe('The Datasets Pages', () => {
           .contains('View Data')
           .click({ force: true })
           .then(() => {
-            cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 10);
+            cy.get('[data-testid="dataset-table-body"]')
+              .children({ timeout: 10000 })
+              .should('have.length', 10);
+            cy.log('After wait');
             cy.get('[data-testid="dataset-data-export-form"]').then(($form) => {
               cy.wrap($form).should('have.attr', 'method', 'POST');
               cy.wrap($form).should('have.attr', 'action', '/api/export/4/');
