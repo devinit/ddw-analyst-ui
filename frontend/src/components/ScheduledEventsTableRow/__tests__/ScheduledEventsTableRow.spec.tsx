@@ -29,17 +29,25 @@ describe('<ScheduledEventsTableRow', () => {
     const { getByTestId } = render(<ScheduledEventsTableRow id={1} event={event} />, {
       container: document.body.appendChild(tablebody),
     });
-    const button = getByTestId('sche-events-table-btn');
-    fireEvent.click(button);
-    expect(button.innerHTML).toEqual('Creating instance...');
+    const button = getByTestId('sche-events-table-btn') as HTMLElement;
+    expect(button).toBeDefined();
+    expect(button).not.toBeNull();
+    if (button) {
+      fireEvent.click(button);
+      expect(button.innerHTML).toEqual('Creating instance...');
+    }
   });
 
   xit('changes row colour on table row click', () => {
     const { getByTestId } = render(<ScheduledEventsTableRow id={1} event={event} />, {
       container: document.body.appendChild(tablebody),
     });
-    const row = getByTestId('sche-events-table-row');
-    fireEvent.click(row);
-    expect(row).toHaveClass('table-danger');
+    const row = getByTestId('sche-events-table-row') as HTMLElement;
+    expect(row).toBeDefined();
+    expect(row).not.toBeNull();
+    if (row) {
+      fireEvent.click(row);
+      expect(row).toHaveClass('table-danger');
+    }
   });
 });
