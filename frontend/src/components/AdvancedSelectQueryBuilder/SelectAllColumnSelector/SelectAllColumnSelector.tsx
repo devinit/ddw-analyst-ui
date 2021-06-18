@@ -1,54 +1,37 @@
-import React, { FunctionComponent, useEffect } from 'react';
-import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
-import { ColumnList, SourceMap } from '../../../types/sources';
-import { ICheckData } from '../../ICheck';
-import { IRadio } from '../../IRadio';
-import { cleanColumn } from '../ColumnSelector/utils';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { AdvancedQueryOptions } from '../../../types/operations';
+import { ICheck, ICheckData } from '../../ICheck';
 
 interface SelectAllColumnSelectorProps {
   setShowColumnSelector?: React.Dispatch<React.SetStateAction<boolean>>;
-  source: SourceMap;
-  columns: AdvancedQueryColumn[];
   onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
   selectAll?: boolean;
 }
 
-const SelectAllColumnSelector: FunctionComponent<SelectAllColumnSelectorProps> = ({
-  source,
-  ...props
-}) => {
+const SelectAllColumnSelector: FunctionComponent<SelectAllColumnSelectorProps> = ({ ...props }) => {
+  const [selectAll, setSelectAll] = useState(true);
   useEffect(() => {
-    if (props.selectAll === true && props.setShowColumnSelector && props.onUpdateOptions) {
-      props.setShowColumnSelector(true);
+    if (props.onUpdateOptions) {
       props.onUpdateOptions({
-        columns: (source.get('columns') as ColumnList)
-          .toJS()
-          .map((column) => cleanColumn(column, props.columns ? props.columns : [])),
-        selectAll: true,
+        selectAll: selectAll,
       });
-    } else {
-      if (props.onUpdateOptions) {
-        props.onUpdateOptions({
-          columns: [],
-          selectAll: false,
-        });
-      }
     }
-  }, [props.selectAll]);
-  const onCheckBoxChange = (data: ICheckData) => {
+  }, []);
+  const onChange = (data: ICheckData) => {
+    setSelectAll(data.checked);
     if (props.onUpdateOptions) {
       props.onUpdateOptions({ selectAll: data.checked });
     }
   };
 
   return (
-    <IRadio
+    <ICheck
       id="selectAll"
       name="selectAll"
       label="Select All"
-      onChange={onCheckBoxChange}
+      onChange={onChange}
       variant="danger"
-      checked={props.selectAll || false}
+      checked={props.selectAll || selectAll}
     />
   );
 };
