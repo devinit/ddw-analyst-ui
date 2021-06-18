@@ -24,6 +24,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     <AdvancedQueryContext.Consumer>
       {({ options, updateOptions }) => (
         <div className="mb-3">
+          <SelectAllColumnSelector
+            setShowColumnSelector={setDisplayColumnSelector}
+            selectAll={options.selectAll}
+            onUpdateOptions={updateOptions}
+          />
           <ButtonGroup className="mr-2">
             <Button
               variant="danger"
@@ -35,15 +40,8 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
               onClick={() => setDisplayColumnSelector(true)}
               className="mr-1"
             >
-              Select Column(s)
+              {options.selectAll ? 'Select Columns for Ordering' : 'Select Column(s)'}
             </Button>
-            <SelectAllColumnSelector
-              setShowColumnSelector={setDisplayColumnSelector}
-              selectAll={options.selectAll}
-              onUpdateOptions={updateOptions}
-              source={source}
-              columns={options.columns || []}
-            />
             <ColumnReset onUpdateOptions={updateOptions} />
             <Button variant="danger" size="sm" className="d-none">
               Insert Column

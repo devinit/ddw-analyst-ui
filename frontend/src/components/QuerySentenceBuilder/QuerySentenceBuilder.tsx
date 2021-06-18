@@ -52,7 +52,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
       },
     });
   }, [source]);
-
   useEffect(() => {
     if (source && context.options.selectAll === true) {
       onUpdateOptions({
@@ -62,7 +61,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             cleanColumn(column, context.options.columns ? context.options.columns : []),
           ),
       });
-    } else if (context.options.selectAll === false && context?.options?.columns?.length === 0) {
+    } else if (context.options.selectAll === false) {
       onUpdateOptions({
         columns: [],
       });

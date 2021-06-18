@@ -10,14 +10,13 @@ const ColumnReset: FunctionComponent<SelectAllColumnSelectorProps> = ({ ...props
   const onReset = () => {
     if (props.onUpdateOptions) {
       props.onUpdateOptions({
-        columns: [],
-        selectAll: false,
+        selectAll: true,
       });
     }
   };
 
   return (
-    <Button variant="danger" size="sm" onClick={onReset} className="mr-1 ml-1">
+    <Button variant="danger" size="sm" onClick={onReset} className="mr-1">
       Clear/Reset
     </Button>
   );
