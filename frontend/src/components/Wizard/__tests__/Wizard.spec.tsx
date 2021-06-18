@@ -8,6 +8,9 @@ import * as TestRenderer from 'react-test-renderer';
 import { Wizard } from '../Wizard';
 
 describe('Wizard', () => {
+  beforeAll(() => {
+    window.ResizeObserver = jest.fn();
+  });
   test('renders the default structure correctly', () => {
     const renderer = TestRenderer.create(<Wizard />).toJSON();
 
