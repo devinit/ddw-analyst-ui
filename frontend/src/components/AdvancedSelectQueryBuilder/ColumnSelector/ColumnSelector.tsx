@@ -26,26 +26,22 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     setColumns(getColumnGroupOptionsFromSource(source));
   }, [source]);
   useEffect(() => {
-    if (props.selectAll === true) {
-      setSelectedColumns(props.columns.map((column) => column.name as string));
-    } else if (props.columns.length === 0 && props.selectAll === false) {
-      setSelectedColumns([]);
-    }
-  }, [props.selectAll, props.columns]);
-  useEffect(() => {
-    if (props.onUpdateSelection) {
-      if (props.columns.length === (source.get('columns') as ColumnList).size) {
-        props.onUpdateSelection({ selectAll: true });
-      }
+    if (
+      props.onUpdateSelection &&
+      props.columns.length > 0 &&
+      props.columns.length === selectedColumns.length
+    ) {
+      const orderedColumns = selectedColumns.map((column) =>
+        props.columns.find((columnObject) => columnObject.name === column),
+      );
       props.onUpdateSelection({
-        selectAll:
-          props.columns.length === (source.get('columns') as ColumnList).size ? true : false,
+        columns: orderedColumns as AdvancedQueryColumn[],
       });
     }
-  }, [props.columns]);
+  }, [selectedColumns]);
   const onUpdateColumns = (selection: string[]) => {
     setSelectedColumns(selection);
-    if (props.onUpdateSelection) {
+    if (props.onUpdateSelection && props.selectAll === false) {
       props.onUpdateSelection({
         [props.usage === 'select' ? 'columns' : 'groupby']: (source.get('columns') as ColumnList)
           .filter((column) => selection.includes(column.get('name') as string))
