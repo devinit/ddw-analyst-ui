@@ -4,19 +4,24 @@ import { AdvancedQueryOptions } from '../../../types/operations';
 
 interface SelectAllColumnSelectorProps {
   onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
+  setDisplayColumnSelector?: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplayColumnOrder?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ColumnReset: FunctionComponent<SelectAllColumnSelectorProps> = ({ ...props }) => {
   const onReset = () => {
-    if (props.onUpdateOptions) {
+    if (props.onUpdateOptions && props.setDisplayColumnSelector && props.setDisplayColumnOrder) {
+      props.setDisplayColumnSelector(false);
+      props.setDisplayColumnOrder(false);
       props.onUpdateOptions({
         selectAll: true,
+        columns: [],
       });
     }
   };
 
   return (
-    <Button variant="danger" size="sm" onClick={onReset} className="mr-1">
+    <Button variant="danger" size="sm" onClick={onReset}>
       Clear/Reset
     </Button>
   );

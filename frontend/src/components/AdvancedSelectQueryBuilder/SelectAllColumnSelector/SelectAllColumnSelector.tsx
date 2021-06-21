@@ -6,6 +6,7 @@ interface SelectAllColumnSelectorProps {
   setShowColumnSelector?: React.Dispatch<React.SetStateAction<boolean>>;
   onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
   selectAll?: boolean;
+  displayColumnOrder?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SelectAllColumnSelector: FunctionComponent<SelectAllColumnSelectorProps> = ({ ...props }) => {
@@ -17,6 +18,12 @@ const SelectAllColumnSelector: FunctionComponent<SelectAllColumnSelectorProps> =
       });
     }
   }, []);
+  useEffect(() => {
+    if (props.displayColumnOrder && props.setShowColumnSelector) {
+      props.displayColumnOrder(false);
+      props.setShowColumnSelector(false);
+    }
+  }, [selectAll]);
   const onChange = (data: ICheckData) => {
     setSelectAll(data.checked);
     if (props.onUpdateOptions) {
