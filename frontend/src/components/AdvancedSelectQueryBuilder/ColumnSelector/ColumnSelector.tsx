@@ -32,7 +32,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
   }, [props.columns]);
   const onUpdateColumns = (selection: string[]) => {
     setSelectedColumns(selection);
-    if (props.onUpdateSelection && props.selectAll === false) {
+    if (props.onUpdateSelection) {
       props.onUpdateSelection({
         [props.usage === 'select' ? 'columns' : 'groupby']: (source.get('columns') as ColumnList)
           .filter((column) => selection.includes(column.get('name') as string))
