@@ -1,8 +1,10 @@
 import CodeMirror from 'codemirror';
-import { AdvancedQueryOptions } from '../../../types/operations';
+import { AdvancedQueryOptions, comp } from '../../../types/operations';
 import { FilterWith } from '../AdvancedFilterQueryBuilder';
 import { JSHINT } from 'jshint';
 import './lint.css';
+import { EditorContent } from '../FilterWithAndOr';
+import { fromJS } from 'immutable';
 
 interface ValidationOptions {
   action: FilterWith;
@@ -11,6 +13,8 @@ interface ValidationOptions {
 }
 
 export type ValidationResponse = 'invalid' | 'create' | 'update';
+
+const widgets: any[] = [];
 
 export const validateFilter = ({ action, options }: ValidationOptions): ValidationResponse => {
   if (options.filter) {
@@ -27,8 +31,9 @@ export const validateFilter = ({ action, options }: ValidationOptions): Validati
   return 'invalid';
 };
 
-export const validate = (editor: CodeMirror.Editor) => {
-  const widgets: any[] = [];
+export const validate = (editor: CodeMirror.Editor, editorContent: EditorContent): string[] => {
+  const validationErrors: string[] = [];
+  clearErrors();
   if (editor) {
     editor.operation(function () {
       for (let i = 0; i < widgets.length; ++i) editor.removeLineWidget(widgets[i]);
@@ -51,6 +56,57 @@ export const validate = (editor: CodeMirror.Editor) => {
     const info = editor.getScrollInfo();
     const after = editor.charCoords({ line: editor.getCursor().line + 1, ch: 0 }, 'local').top;
     if (info.top + info.clientHeight < after) editor.scrollTo(null, after - info.clientHeight + 3);
-    // editor.clearHistory();
   }
+  const operatorErrors: string[] = validateOperators(editorContent);
+  if (operatorErrors.length > 0) {
+    operatorErrors.map((operatorError: string) => {
+      validationErrors.push(operatorError);
+    });
+  }
+
+  return validationErrors;
+};
+
+export const clearErrors = (): void => {
+  for (let index = 0; index < widgets.length; index++) {
+    widgets[index].clear();
+  }
+};
+
+export const validateOperators = (content: EditorContent): string[] => {
+  const messages: string[] = [];
+  const validOperators = fromJS(content).map((filterComps: any) => {
+    return filterComps.map((filters: any) => {
+      if (comp.includes(filters.get('comp'))) {
+        return 'valid';
+      } else {
+        return filters;
+      }
+    });
+  });
+
+  validOperators
+    .toArray()
+    .flat()
+    .filter((operators: any) => {
+      return typeof operators !== 'string';
+    })
+    .map((operator: any) => {
+      return operator.map((value: any) => {
+        if (value !== 'valid') {
+          return value;
+        }
+      });
+    })
+    .map((invalidOperator: any) => {
+      return invalidOperator.map((value: any) => {
+        if (value) {
+          messages.push(
+            `The operator ${value.get('comp')} with column name ${value.get('column')} is invalid.`,
+          );
+        }
+      });
+    });
+
+  return messages.length > 0 ? messages : [];
 };
