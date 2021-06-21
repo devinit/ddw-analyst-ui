@@ -5,6 +5,7 @@ import { JSHINT } from 'jshint';
 import './lint.css';
 import { EditorContent } from '../FilterWithAndOr';
 import { fromJS } from 'immutable';
+import { DropdownItemProps } from 'semantic-ui-react';
 
 interface ValidationOptions {
   action: FilterWith;
@@ -31,7 +32,11 @@ export const validateFilter = ({ action, options }: ValidationOptions): Validati
   return 'invalid';
 };
 
-export const validate = (editor: CodeMirror.Editor, editorContent: EditorContent): string[] => {
+export const validate = (
+  editor: CodeMirror.Editor,
+  editorContent: EditorContent,
+  columns: DropdownItemProps[],
+): string[] => {
   const validationErrors: string[] = [];
   clearErrors();
   if (editor) {
@@ -58,6 +63,7 @@ export const validate = (editor: CodeMirror.Editor, editorContent: EditorContent
     if (info.top + info.clientHeight < after) editor.scrollTo(null, after - info.clientHeight + 3);
   }
   const operatorErrors: string[] = validateOperators(editorContent);
+  const columnErrors: string[] = validateColumns(editorContent, columns);
   if (operatorErrors.length > 0) {
     operatorErrors.map((operatorError: string) => {
       validationErrors.push(operatorError);
@@ -75,38 +81,23 @@ export const clearErrors = (): void => {
 
 export const validateOperators = (content: EditorContent): string[] => {
   const messages: string[] = [];
-  const validOperators = fromJS(content).map((filterComps: any) => {
+  fromJS(content).map((filterComps: any) => {
     return filterComps.map((filters: any) => {
-      if (comp.includes(filters.get('comp'))) {
-        return 'valid';
-      } else {
-        return filters;
+      if (!comp.includes(filters.get('comp'))) {
+        messages.push(
+          `The operator ${filters.get('comp')} with column name ${filters.get(
+            'column',
+          )} is invalid.`,
+        );
       }
     });
   });
 
-  validOperators
-    .toArray()
-    .flat()
-    .filter((operators: any) => {
-      return typeof operators !== 'string';
-    })
-    .map((operator: any) => {
-      return operator.map((value: any) => {
-        if (value !== 'valid') {
-          return value;
-        }
-      });
-    })
-    .map((invalidOperator: any) => {
-      return invalidOperator.map((value: any) => {
-        if (value) {
-          messages.push(
-            `The operator ${value.get('comp')} with column name ${value.get('column')} is invalid.`,
-          );
-        }
-      });
-    });
-
   return messages.length > 0 ? messages : [];
+};
+
+export const validateColumns = (content: EditorContent, columns: DropdownItemProps[]): string[] => {
+  const messages: string[] = [];
+
+  return messages;
 };
