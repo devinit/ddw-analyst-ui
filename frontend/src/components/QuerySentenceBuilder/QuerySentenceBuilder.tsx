@@ -51,13 +51,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
       },
     });
   }, [source]);
-  useEffect(() => {
-    if (context.options.selectAll === true) {
-      onUpdateOptions({
-        columns: [],
-      });
-    }
-  }, [context.options.selectAll]);
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>) => {
     setContext({ options: { ...context.options, ...options }, updateOptions: onUpdateOptions });
   };
