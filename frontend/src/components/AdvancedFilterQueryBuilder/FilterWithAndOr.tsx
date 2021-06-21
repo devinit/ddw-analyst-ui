@@ -59,7 +59,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
       validateFilter({ action: filterWith, options, editor }); // TODO: actually validate filter before action
       options.filter = editorContent;
       updateOptions(options as AdvancedQueryOptions);
-      setError(validate(editor, editorContent));
+      setError(validate(editor, editorContent, columns));
     }
     setIsEditingExisting(false);
   };
@@ -69,7 +69,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
       // const validationResponse = validateFilter({ action: filterWith, options, editor });
       // handleAnd(validationResponse);
       editor.replaceSelection(JSON.stringify(editorContent, null, 2));
-      setError(validate(editor, editorContent));
+      setError(validate(editor, editorContent, columns));
     }
     setIsEditingExisting(false);
   };

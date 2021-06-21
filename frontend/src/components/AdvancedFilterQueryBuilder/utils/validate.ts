@@ -69,6 +69,11 @@ export const validate = (
       validationErrors.push(operatorError);
     });
   }
+  if (columnErrors.length > 0) {
+    columnErrors.map((columnError: string) => {
+      validationErrors.push(columnError);
+    });
+  }
 
   return validationErrors;
 };
@@ -97,7 +102,25 @@ export const validateOperators = (content: EditorContent): string[] => {
 };
 
 export const validateColumns = (content: EditorContent, columns: DropdownItemProps[]): string[] => {
-  const messages: string[] = [];
+  let selectedColumns: string[] = [];
+  const allColumns: string[] = [];
+  fromJS(content).map((filterComps: any) => {
+    return filterComps.map((filters: any) => {
+      selectedColumns.push(filters.get('column'));
+    });
+  });
 
-  return messages;
+  for (let key = 0; key < columns.length; key++) {
+    allColumns.push(columns[key].value as string);
+  }
+
+  selectedColumns = selectedColumns
+    .filter((column) => {
+      return !allColumns.includes(column);
+    })
+    .map((column) => {
+      return `${column} is not a valid column name.`;
+    });
+
+  return selectedColumns;
 };
