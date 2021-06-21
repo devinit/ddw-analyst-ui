@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Map } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 import { DropdownItemProps } from 'semantic-ui-react';
 import {
   AdvancedQueryFilter,
@@ -13,7 +13,7 @@ import {
 import { SourceMap } from '../../types/sources';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { FilterItem } from '../FilterItem';
-import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
+import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { FilterWith } from './AdvancedFilterQueryBuilder';
 import { validateFilter, validate } from './utils';
 import { operations } from './utils/actions';
@@ -29,7 +29,7 @@ const defaultOptions = (use: FilterWith): EditorContent => ({
 });
 
 type FilterComparator = (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
-type EditorContent = Partial<
+export type EditorContent = Partial<
   {
     [key in FilterWith]: FilterComparator;
   }
@@ -41,6 +41,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   const [canEdit, setCanEdit] = useState(false);
   const [isEditingExisting, setIsEditingExisting] = useState(false);
   const [activeFilter, setActiveFilter] = useState(Map({}) as ErroredFilterMap);
+  const [error, setError] = useState<string[]>([]);
 
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
@@ -58,6 +59,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
       validateFilter({ action: filterWith, options, editor }); // TODO: actually validate filter before action
       options.filter = editorContent;
       updateOptions(options as AdvancedQueryOptions);
+      setError(validate(editor, editorContent));
     }
     setIsEditingExisting(false);
   };
@@ -67,7 +69,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
       // const validationResponse = validateFilter({ action: filterWith, options, editor });
       // handleAnd(validationResponse);
       editor.replaceSelection(JSON.stringify(editorContent, null, 2));
-      validate(editor);
+      setError(validate(editor, editorContent));
     }
     setIsEditingExisting(false);
   };
@@ -119,11 +121,10 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         <CodeMirrorReact
           className="mt-2"
           config={{
-            // mode: jsonMode,
+            mode: jsonMode,
             value: JSON.stringify(editorContent, null, 2),
             lineNumbers: true,
             theme: 'material',
-            mode: 'application/json',
             gutters: ['CodeMirror-lint-markers'],
           }}
           onChange={onChange}
@@ -176,6 +177,13 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
             Reset
           </Button>
         </ButtonGroup>
+        <Alert variant="danger" hidden={error.length <= 0}>
+          <ul className="ui list">
+            {error.map((bug, i) => {
+              return <li key={i}>{bug}</li>;
+            })}
+          </ul>
+        </Alert>
       </>
     );
   }
