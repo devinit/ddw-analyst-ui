@@ -46,7 +46,6 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
   const [orderedColumns, setOrderedColumns] = useState(
     selectedColumns?.map((column) => column.columnName),
   );
-
   useEffect(() => {
     if (onUpdateColumns) {
       onUpdateColumns(JSON.stringify({ columns: orderedColumns }));

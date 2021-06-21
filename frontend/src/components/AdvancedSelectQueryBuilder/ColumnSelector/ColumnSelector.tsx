@@ -26,19 +26,10 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     setColumns(getColumnGroupOptionsFromSource(source));
   }, [source]);
   useEffect(() => {
-    if (
-      props.onUpdateSelection &&
-      props.columns.length > 0 &&
-      props.columns.length === selectedColumns.length
-    ) {
-      const orderedColumns = selectedColumns.map((column) =>
-        props.columns.find((columnObject) => columnObject.name === column),
-      );
-      props.onUpdateSelection({
-        columns: orderedColumns as AdvancedQueryColumn[],
-      });
+    if (props.columns.length === 0) {
+      setSelectedColumns([]);
     }
-  }, [selectedColumns]);
+  }, [props.columns]);
   const onUpdateColumns = (selection: string[]) => {
     setSelectedColumns(selection);
     if (props.onUpdateSelection && props.selectAll === false) {

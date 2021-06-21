@@ -8,12 +8,11 @@ import {
   Operation,
   OperationMap,
 } from '../../types/operations';
-import { ColumnList, SourceMap } from '../../types/sources';
+import { SourceMap } from '../../types/sources';
 import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedGroupByQueryBuilder } from '../AdvancedGroupByQueryBuilder';
 import { AdvancedJoinQueryBuilder } from '../AdvancedJoinQueryBuilder';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
-import { cleanColumn } from '../AdvancedSelectQueryBuilder/ColumnSelector/utils';
 import { JsonModeSpec } from '../CodeMirrorReact';
 import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
@@ -53,15 +52,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     });
   }, [source]);
   useEffect(() => {
-    if (source && context.options.selectAll === true) {
-      onUpdateOptions({
-        columns: (source.get('columns') as ColumnList)
-          .toJS()
-          .map((column) =>
-            cleanColumn(column, context.options.columns ? context.options.columns : []),
-          ),
-      });
-    } else if (context.options.selectAll === false) {
+    if (context.options.selectAll === true) {
       onUpdateOptions({
         columns: [],
       });
