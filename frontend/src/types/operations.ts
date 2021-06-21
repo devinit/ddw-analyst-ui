@@ -126,7 +126,9 @@ export type AdvancedQueryFilterComparator = {
   comp: FilterComp;
 };
 
-export type FilterComp = '$eq' | '$neq' | '$gt' | '$lt' | '$gte' | '$lte' | '$btn' | '$in';
+export const comp = ['$eq', '$neq', '$gt', '$lt', '$gte', '$lte', '$btn', '$in'] as const;
+export type FilterComp = typeof comp[number];
+
 export type JoinType =
   | 'inner'
   | 'outer'
