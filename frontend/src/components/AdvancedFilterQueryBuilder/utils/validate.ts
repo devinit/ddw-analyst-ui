@@ -1,4 +1,4 @@
-import CodeMirror from 'codemirror';
+import CodeMirror, { LineWidget } from 'codemirror';
 import { AdvancedQueryOptions, comp } from '../../../types/operations';
 import { FilterWith } from '../AdvancedFilterQueryBuilder';
 import { JSHINT } from 'jshint';
@@ -15,7 +15,7 @@ interface ValidationOptions {
 
 export type ValidationResponse = 'invalid' | 'create' | 'update';
 
-const widgets: any[] = [];
+const widgets: LineWidget[] = [];
 
 export const validateFilter = ({ action, options }: ValidationOptions): ValidationResponse => {
   if (options.filter) {
@@ -92,17 +92,18 @@ export const clearErrors = (): void => {
 
 export const validateOperators = (content: EditorContent): string[] => {
   const messages: string[] = [];
-  fromJS(content).map((filterComps: any) => {
-    return filterComps.map((filters: any) => {
-      if (!comp.includes(filters.get('comp'))) {
+  const parsedContent: [][] = JSON.parse(JSON.stringify(content));
+
+  for (const key in parsedContent) {
+    const filter = parsedContent[key];
+    for (const index in filter) {
+      if (!comp.includes(filter[index]['comp'])) {
         messages.push(
-          `The operator ${filters.get('comp')} with column name ${filters.get(
-            'column',
-          )} is invalid.`,
+          `The operator ${filter[index]['comp']} with column name ${filter[index]['column']} is invalid.`,
         );
       }
-    });
-  });
+    }
+  }
 
   return messages.length > 0 ? messages : [];
 };
@@ -110,11 +111,16 @@ export const validateOperators = (content: EditorContent): string[] => {
 export const validateColumns = (content: EditorContent, columns: DropdownItemProps[]): string[] => {
   let selectedColumns: string[] = [];
   const allColumns: string[] = [];
-  fromJS(content).map((filterComps: any) => {
-    return filterComps.map((filters: any) => {
-      selectedColumns.push(filters.get('column'));
-    });
-  });
+  const parsedContent: [][] = JSON.parse(JSON.stringify(content));
+
+  for (const key in parsedContent) {
+    const filter = parsedContent[key];
+    for (const index in filter) {
+      if (!comp.includes(filter[index]['comp'])) {
+        selectedColumns.push(filter[index]['column']);
+      }
+    }
+  }
 
   for (let key = 0; key < columns.length; key++) {
     allColumns.push(columns[key].value as string);
@@ -134,7 +140,7 @@ export const validateColumns = (content: EditorContent, columns: DropdownItemPro
 export const validateAndOr = (content: EditorContent): string[] => {
   const validKeys = ['$and', '$or'];
   const invalidKeys: string[] = [];
-  fromJS(content).mapKeys((key: any) => {
+  fromJS(content).mapKeys((key: string) => {
     if (!validKeys.includes(key)) {
       invalidKeys.push(`${key} is not a valid comparator`);
     }
