@@ -64,6 +64,7 @@ export const validate = (
   }
   const operatorErrors: string[] = validateOperators(editorContent);
   const columnErrors: string[] = validateColumns(editorContent, columns);
+  const comparisonErrors: string[] = validateAndOr(editorContent);
   if (operatorErrors.length > 0) {
     operatorErrors.map((operatorError: string) => {
       validationErrors.push(operatorError);
@@ -72,6 +73,11 @@ export const validate = (
   if (columnErrors.length > 0) {
     columnErrors.map((columnError: string) => {
       validationErrors.push(columnError);
+    });
+  }
+  if (comparisonErrors.length > 0) {
+    comparisonErrors.map((comparisonError: string) => {
+      validationErrors.push(comparisonError);
     });
   }
 
@@ -123,4 +129,16 @@ export const validateColumns = (content: EditorContent, columns: DropdownItemPro
     });
 
   return selectedColumns;
+};
+
+export const validateAndOr = (content: EditorContent): string[] => {
+  const validKeys = ['$and', '$or'];
+  const invalidKeys: string[] = [];
+  fromJS(content).mapKeys((key: any) => {
+    if (!validKeys.includes(key)) {
+      invalidKeys.push(`${key} is not a valid comparator`);
+    }
+  });
+
+  return invalidKeys;
 };
