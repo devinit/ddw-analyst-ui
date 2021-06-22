@@ -41,7 +41,10 @@ class DataSerializer(serializers.BaseSerializer):
         operation = instance['operation_instance']
         self.set_operation(operation)
         try:
-            count, data = query.query_table(operation, limit, offset, estimate_count=True, frozen_table_id=frozen_table_id)
+            if 'advanced_config' in request.data:
+                count, data = query.advanced_query_table(request.data['advanced_config'],  limit, offset, estimate_count=True)
+            else:
+                count, data = query.query_table(operation, limit, offset, estimate_count=True, frozen_table_id=frozen_table_id)
             return {
                 'count': count,
                 'data': self.use_aliases(data) if use_aliases == '1' else data
@@ -151,6 +154,7 @@ class OperationSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField(source='pk')
     aliases = OperationDataColumnAliasSerializer(
         source='operationdatacolumnalias_set', many=True, read_only=True)
+    advanced_config = serializers.ReadOnlyField(source='advanced_config')
 
     class Meta:
         model = Operation
@@ -173,11 +177,12 @@ class OperationSerializer(serializers.ModelSerializer):
             'aliases',
             'alias_creation_status',
             'logs',
+            'advanced_config',
         )
 
     def create(self, validated_data):
         try:
-            read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set')
+            read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set', 'advanced_config')
             read_only_dict = dict()
             for field in read_only_fields:
                 if field in validated_data:
@@ -186,7 +191,10 @@ class OperationSerializer(serializers.ModelSerializer):
             for step in read_only_dict['operationstep_set']:
                 OperationStep.objects.create(operation=operation, **step)
             operation.user = read_only_dict['user']
-            operation.operation_query = query.build_query(operation=operation)
+            if read_only_dict['advanced_config'] and len(read_only_dict['advanced_config']) > 2:
+                operation.operation_query = query.get_advanced_config_query(read_only_dict['advanced_config'])
+            else:
+                operation.operation_query = query.build_query(operation=operation)
             operation.count_rows = True
             if not 'is_draft' in validated_data:
                 operation.is_draft = False
@@ -231,7 +239,11 @@ class OperationSerializer(serializers.ModelSerializer):
                 step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
                 step_for_delete.delete()
 
-            instance.operation_query = query.build_query(operation=instance)
+            advanced_config = validated_data.pop('advanced_config')
+            if advanced_config and len(advanced_config) > 2:
+                instance.operation_query = query.get_advanced_config_query(advanced_config)
+            else:
+                instance.operation_query = query.build_query(operation=instance)
             instance.count_rows = True
             instance.save()
             self.update_operation_data_aliases(instance)
@@ -243,7 +255,10 @@ class OperationSerializer(serializers.ModelSerializer):
             raise CustomAPIException({'detail': str(e)})
 
     def create_operation_data_aliases(self, operation):
-        count, data = query.query_table(operation, 1, 0, estimate_count=True)
+        if operation['advanced_config'] and len(operation['advanced_config']) > 2:
+            count, data = query.advanced_query_table(operation['advanced_config'], 1, 0, estimate_count=True)
+        else:
+            count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
         operation.save()
         if data:
@@ -266,7 +281,10 @@ class OperationSerializer(serializers.ModelSerializer):
             operation.save()
 
     def update_operation_data_aliases(self, operation):
-        count, data = query.query_table(operation, 1, 0, estimate_count=True)
+        if operation['advanced_config'] and len(operation['advanced_config']) > 2:
+            count, data = query.advanced_query_table(operation['advanced_config'], 1, 0, estimate_count=True)
+        else:
+            count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
         operation.save()
         if data:
