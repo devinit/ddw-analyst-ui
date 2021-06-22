@@ -70,11 +70,14 @@ class AdvancedQueryBuilder:
 
             return select_query
 
-    def get_source_table(self, source_id):
+    def get_source_table(self, source_id, as_array=False):
         source = Source.objects.get(pk=source_id);
 
         table_name = source.active_mirror_name
         schema_name = source.schema
+
+        if as_array:
+            return [table_name, schema_name]
 
         return Table(table_name, schema=schema_name)
 
@@ -183,6 +186,16 @@ class AdvancedQueryBuilder:
         if 'aggregate' in config:
             return FILTER_MAPPING[config.get('comp')](FUNCTION_MAPPING[config.get('aggregate')](table[config.get('column')]), value)
         return FILTER_MAPPING[config.get('comp')](table[config.get('column')], value)
+
+    def count_sql(self, config, estimate=True):
+        if estimate:
+            stats_table = Table("pg_stat_user_tables")
+            table = self.get_source_table(config.get('source'), True)
+            table_name = table_parts[0]
+            schema_name = table_parts[1]
+            return Query.from_(stats_table).select(stats_table.n_live_tup).where(stats_table.relname == table_name).where(stats_table.schemaname == schema_name).get_sql()
+        query = self.process_config(config)
+        return query.select(fn.Count('*')).get_sql()
 
 
 

@@ -3,6 +3,8 @@ from data.db_manager import fetch_data, analyse_query, run_query
 from core.models import FrozenData, Source, SourceColumnMap, Operation, FrozenData
 from pypika import Table
 from core.pypika_fts_utils import TableQueryBuilder
+from query_builder.advanced import AdvancedQueryBuilder
+from core.const import DEFAULT_LIMIT_COUNT
 
 def build_query(operation=None, steps=None, limit=None, offset=None, estimate_count=None, frozen_table_id=None):
     """Build an SQL query"""
@@ -75,3 +77,24 @@ def delete_operations(table_name):
         return True
     except Operation.DoesNotExist:
         return False
+
+def get_advanced_config_query(advanced_config, limit=DEFAULT_LIMIT_COUNT, offset=0):
+    builder = AdvancedQueryBuilder()
+    query = builder.process_config(advanced_config)
+    if limit is None:
+        return query.get_sql()
+    else:
+        return query.limit(limit).offset(offset).get_sql()
+
+def get_advanced_config_count_query(advanced_config, estimate_count):
+    builder = AdvancedQueryBuilder()
+    return builder.count_sql(advanced_config, estimate_count)
+
+def build_advanced_queries(advanced_config, limit=None, offset=None, estimate_count=None):
+    count_sql = get_advanced_config_count_query(advanced_config, estimate_count)
+    data_sql = get_advanced_config_query(advanced_config, limit, offset)
+    return (count_sql, sql_without_limit)
+
+def advanced_query_table(config, limit=None, offset=None, estimate_count=None):
+    queries = build_advanced_queries(config, limit, offset, estimate_count)
+    return fetch_data(queries)
