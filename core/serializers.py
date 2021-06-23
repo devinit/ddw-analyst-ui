@@ -154,7 +154,6 @@ class OperationSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField(source='pk')
     aliases = OperationDataColumnAliasSerializer(
         source='operationdatacolumnalias_set', many=True, read_only=True)
-    advanced_config = serializers.ReadOnlyField(source='advanced_config')
 
     class Meta:
         model = Operation
