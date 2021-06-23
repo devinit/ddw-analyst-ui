@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
-import { ColumnList, SourceMap } from '../../../types/sources';
+import { Column, ColumnList, SourceMap } from '../../../types/sources';
 import { sortObjectArrayByProperty } from '../../../utils';
 import { CheckboxGroup } from '../../CheckboxGroup';
 import { CheckOption, cleanColumn, getColumnGroupOptionsFromSource } from './utils';
@@ -34,10 +34,15 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     setSelectedColumns(selection);
     if (props.onUpdateSelection) {
       props.onUpdateSelection({
-        [props.usage === 'select' ? 'columns' : 'groupby']: (source.get('columns') as ColumnList)
-          .filter((column) => selection.includes(column.get('name') as string))
-          .toJS()
-          .map((column) => (props.nameOnly ? column.name : cleanColumn(column, props.columns))),
+        [props.usage === 'select' ? 'columns' : 'groupby']: selection
+          .map((col) => {
+            return (source.get('columns') as ColumnList)
+              .find((column) => column.get('name') === col)
+              ?.toJS();
+          })
+          .map((column: Column) =>
+            props.nameOnly ? column.name : cleanColumn(column, props.columns),
+          ),
       });
     }
   };
