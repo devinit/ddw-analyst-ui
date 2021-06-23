@@ -15,7 +15,7 @@ import { CodeMirrorReact } from '../CodeMirrorReact';
 import { FilterItem } from '../FilterItem';
 import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { FilterWith } from './AdvancedFilterQueryBuilder';
-import { validateFilter, validate } from './utils';
+import { validate } from './utils';
 import { operations } from './utils/actions';
 
 interface ComponentProps {
@@ -56,7 +56,6 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
 
   const onReplace = () => {
     if (filterWith && editor && updateOptions) {
-      validateFilter({ action: filterWith, options, editor }); // TODO: actually validate filter before action
       options.filter = editorContent;
       updateOptions(options as AdvancedQueryOptions);
       setErrors(validate(editor, editorContent, columns));
@@ -107,7 +106,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         }),
       });
     }
-    setActiveFilter(Map({}) as ErroredFilterMap);
+    setActiveFilter(filter.set('value', ''));
   };
 
   if (show) {
