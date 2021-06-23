@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AdvancedQueryColumn } from '../../types/operations';
-import { ColumnList, SourceMap } from '../../types/sources';
+import { SourceMap } from '../../types/sources';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
-import { SelectColumnOrder } from '../SelectColumnOrder';
+import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
 import { ColumnReset } from './ColumnReset';
 import { ColumnSelector } from './ColumnSelector';
 import { SelectAllColumnSelector } from './SelectAllColumnSelector';
@@ -14,52 +14,13 @@ interface ComponentProps {
   onUpdateConfig?: (config: { columns: AdvancedQueryColumn[] }) => void;
 }
 
-const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
-  source,
-  columns,
-  ...props
-}) => {
+const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const [displayColumnSelector, setDisplayColumnSelector] = useState(false);
   const [displaySelectColumnOrder, setDisplaySelectColumnOrder] = useState(false);
-  const [selectedColumns, setSelectedColumns] = useState<{ alias: string; columnName: string }[]>(
-    [],
-  );
   // const [config, setConfig] = useState<AdvancedQueryOptions>();
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
   }, []);
-  useEffect(() => {
-    if (columns) {
-      setSelectedColumns(
-        columns.map((column) => {
-          return { alias: column.alias as string, columnName: column.name as string };
-        }),
-      );
-    }
-  }, [columns]);
-  const onUpdateColumns = (options: string) => {
-    const orderedColumns = JSON.parse(options).columns.map((column: string) => {
-      return {
-        alias: (source.get('columns') as ColumnList)
-          .find((sourceColumn) => sourceColumn.get('name') === column)
-          ?.get('alias'),
-        columnName: column,
-      };
-    });
-    if (props.onUpdateConfig) {
-      props.onUpdateConfig({
-        columns: orderedColumns.map((column: { alias: string; columnName: string }) => {
-          return {
-            id: (source.get('columns') as ColumnList)
-              .find((sourceColumn) => sourceColumn.get('name') === column.columnName)
-              ?.get('id'),
-            name: column.columnName,
-            alias: column.alias,
-          };
-        }) as AdvancedQueryColumn[],
-      });
-    }
-  };
   const onOrderColumns = () => {
     setDisplaySelectColumnOrder(true);
     setDisplayColumnSelector(false);
@@ -113,12 +74,12 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
             onUpdateSelection={updateOptions}
             selectAll={options.selectAll}
           />
-          {displaySelectColumnOrder ? (
-            <SelectColumnOrder
-              selectedColumns={selectedColumns}
-              onUpdateColumns={onUpdateColumns}
-            />
-          ) : null}
+          <AdvancedQueryBuilderColumnOrder
+            show={displaySelectColumnOrder}
+            columns={options.columns || []}
+            source={source}
+            onUpdateOptions={updateOptions}
+          />
         </div>
       )}
     </AdvancedQueryContext.Consumer>
