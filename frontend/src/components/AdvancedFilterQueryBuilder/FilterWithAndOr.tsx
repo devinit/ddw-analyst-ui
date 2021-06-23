@@ -125,7 +125,6 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
             {errors.map((error, i) => {
               return (
                 <div key={i} className="item">
-                  <i className="times icon"></i>
                   {error}
                 </div>
               );
