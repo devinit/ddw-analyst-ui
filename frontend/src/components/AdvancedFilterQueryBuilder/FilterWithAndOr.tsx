@@ -41,7 +41,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   const [canEdit, setCanEdit] = useState(false);
   const [isEditingExisting, setIsEditingExisting] = useState(false);
   const [activeFilter, setActiveFilter] = useState(Map({}) as ErroredFilterMap);
-  const [error, setError] = useState<string[]>([]);
+  const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
@@ -59,17 +59,15 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
       validateFilter({ action: filterWith, options, editor }); // TODO: actually validate filter before action
       options.filter = editorContent;
       updateOptions(options as AdvancedQueryOptions);
-      setError(validate(editor, editorContent, columns));
+      setErrors(validate(editor, editorContent, columns));
     }
     setIsEditingExisting(false);
   };
 
   const onInsert = () => {
     if (editor && filterWith) {
-      // const validationResponse = validateFilter({ action: filterWith, options, editor });
-      // handleAnd(validationResponse);
       editor.replaceSelection(JSON.stringify(editorContent, null, 2));
-      setError(validate(editor, editorContent, columns));
+      setErrors(validate(editor, editorContent, columns));
     }
     setIsEditingExisting(false);
   };
@@ -82,8 +80,12 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   };
 
   const onChange = (value: string) => {
-    const parsedValue = JSON.parse(value);
-    setEditorContent(parsedValue);
+    try {
+      const parsedValue = JSON.parse(value);
+      setEditorContent(parsedValue);
+    } catch (e) {
+      setErrors([...errors, e.message]);
+    }
   };
 
   const onUpdateFilter = (filter: ErroredFilterMap) => {
@@ -118,6 +120,18 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
           onUpdate={onUpdateFilter}
           onAdd={onAddFilter}
         />
+        <Alert variant="danger" hidden={errors.length <= 0}>
+          <ul className="ui list">
+            {errors.map((error, i) => {
+              return (
+                <div key={i} className="item">
+                  <i className="times icon"></i>
+                  {error}
+                </div>
+              );
+            })}
+          </ul>
+        </Alert>
         <CodeMirrorReact
           className="mt-2"
           config={{
@@ -177,13 +191,6 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
             Reset
           </Button>
         </ButtonGroup>
-        <Alert variant="danger" hidden={error.length <= 0}>
-          <ul className="ui list">
-            {error.map((bug, i) => {
-              return <li key={i}>{bug}</li>;
-            })}
-          </ul>
-        </Alert>
       </>
     );
   }
