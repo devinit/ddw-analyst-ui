@@ -116,9 +116,7 @@ export const validateColumns = (content: EditorContent, columns: DropdownItemPro
   for (const key in parsedContent) {
     const filter = parsedContent[key];
     for (const index in filter) {
-      if (!comp.includes(filter[index]['comp'])) {
-        selectedColumns.push(filter[index]['column']);
-      }
+      selectedColumns.push(filter[index]['column']);
     }
   }
 
