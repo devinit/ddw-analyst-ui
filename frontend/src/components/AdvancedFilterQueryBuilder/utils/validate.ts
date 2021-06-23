@@ -98,9 +98,7 @@ export const validateOperators = (content: EditorContent): string[] => {
     const filter = parsedContent[key];
     for (const index in filter) {
       if (!comp.includes(filter[index]['comp'])) {
-        messages.push(
-          `The operator ${filter[index]['comp']} with column name ${filter[index]['column']} is invalid.`,
-        );
+        messages.push(`The operator ${filter[index]['comp']} is invalid.`);
       }
     }
   }
