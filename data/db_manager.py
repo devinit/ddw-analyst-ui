@@ -94,7 +94,7 @@ def run_query(query, database="datasets", fetch=False):
                 first_row = create_cursor.fetchone()
                 columns = [col[0] for col in create_cursor.description]
                 results = [
-                    dict(zip(columns, row)) for row in ([first_row] + create_cursor.fetchall())
+                    dict(zip(columns, row)) for row in ([first_row] + create_cursor.fetchall()) if row
                 ]
             else:
                 results = [
