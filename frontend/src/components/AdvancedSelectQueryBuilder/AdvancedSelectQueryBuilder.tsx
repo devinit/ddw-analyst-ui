@@ -16,21 +16,21 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [activeAction, setActiveAction] = useState<'select' | 'order'>();
   const [selectAll, setSelectAll] = useState(
-    typeof options.selectAll !== 'undefined' ? options.selectAll : true,
+    typeof options.selectall !== 'undefined' ? options.selectall : true,
   );
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
-    if (typeof options.selectAll === 'undefined') {
-      updateOptions!({ selectAll: true });
+    if (typeof options.selectall === 'undefined') {
+      updateOptions!({ selectall: true });
     }
   }, []);
   const onToggleSelectAll = (data: ICheckData) => {
     setSelectAll(data.checked);
-    updateOptions!({ selectAll: data.checked });
+    updateOptions!({ selectall: data.checked });
   };
   const onReset = () => {
     setActiveAction(undefined);
-    updateOptions!({ selectAll: true, columns: [] });
+    updateOptions!({ selectall: true, columns: [] });
   };
 
   return (
@@ -53,7 +53,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           title={`<i>Replaces</i> <strong>ALL</strong> columns with those selected`}
           onClick={() => setActiveAction('select')}
         >
-          {options.selectAll ? 'Select Columns for Ordering' : 'Select Column(s)'}
+          {options.selectall ? 'Select Columns for Ordering' : 'Select Column(s)'}
         </Button>
         <Button
           variant="danger"
@@ -72,7 +72,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         source={source}
         columns={options.columns || []}
         onUpdateSelection={updateOptions}
-        selectAll={options.selectAll}
+        selectAll={options.selectall}
       />
       <AdvancedQueryBuilderColumnOrder
         show={activeAction === 'order'}
