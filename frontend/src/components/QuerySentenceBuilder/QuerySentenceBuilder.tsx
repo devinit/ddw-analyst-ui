@@ -87,9 +87,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
         {source ? (
           <>
             <QueryBuilderActionSelector onSelectAction={onSelectAction} />
-            {action === 'select' ? (
-              <AdvancedSelectQueryBuilder source={source} columns={context.options.columns} />
-            ) : null}
+            {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
             {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
             {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
             {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}

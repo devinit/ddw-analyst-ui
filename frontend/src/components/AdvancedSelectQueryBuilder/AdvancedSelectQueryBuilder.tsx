@@ -10,14 +10,12 @@ import { SelectAllColumnSelector } from './SelectAllColumnSelector';
 
 interface ComponentProps {
   source: SourceMap;
-  columns?: AdvancedQueryColumn[];
   onUpdateConfig?: (config: { columns: AdvancedQueryColumn[] }) => void;
 }
 
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const [displayColumnSelector, setDisplayColumnSelector] = useState(false);
   const [displaySelectColumnOrder, setDisplaySelectColumnOrder] = useState(false);
-  // const [config, setConfig] = useState<AdvancedQueryOptions>();
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
   }, []);
