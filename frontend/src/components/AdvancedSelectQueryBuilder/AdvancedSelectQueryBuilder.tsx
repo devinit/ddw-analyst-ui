@@ -5,6 +5,7 @@ import { SourceMap } from '../../types/sources';
 import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
+import { ColumnAggregate } from './ColumnAggregate';
 import { ColumnSelector } from './ColumnSelector';
 
 interface ComponentProps {
@@ -85,6 +86,12 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         show={activeAction === 'order'}
         columns={options.columns || []}
         source={source}
+        onUpdateOptions={updateOptions}
+      />
+      <ColumnAggregate
+        show={activeAction === 'aggregate'}
+        source={source}
+        columns={options.columns || []}
         onUpdateOptions={updateOptions}
       />
     </div>

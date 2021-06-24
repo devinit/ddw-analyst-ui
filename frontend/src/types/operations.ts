@@ -136,6 +136,7 @@ export type JoinType =
   | 'cross'
   | 'left_outer'
   | 'right_outer';
+export type Aggregate = 'SUM' | 'MAX' | 'MIN' | 'AVG' | 'STD';
 
 export interface AdvancedQueryJoin {
   type: JoinType;
