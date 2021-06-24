@@ -17,9 +17,11 @@ import DragOverlayItem from './DragOverlayItem';
 import { SortableItem } from './SortableItem';
 
 interface SelectColumnOrderProps {
-  selectedColumns: { alias: string; columnName: string }[];
+  selectedColumns: SelectedColumn[];
   onUpdateColumns?: (options: string) => void;
 }
+
+export type SelectedColumn = { alias: string; columnName: string };
 
 const StyledSpan = styled.span`
   top: -6px;
