@@ -1,64 +1,55 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
-import { ColumnList, SourceMap } from '../../../types/sources';
-import { SelectColumnOrder } from '../../SelectColumnOrder';
+import { Column, ColumnList, SourceMap } from '../../../types/sources';
+import { SelectColumnOrder, SelectedColumn } from '../../SelectColumnOrder';
 
 interface ColumnOrderProps {
-  onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
   show: boolean;
   columns: AdvancedQueryColumn[];
   source: SourceMap;
+  onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
 }
 
+const getColumnPropertyByName = (source: SourceMap, columnName: string, property: keyof Column) =>
+  (source.get('columns') as ColumnList)
+    .find((column) => column.get('name') === columnName)
+    ?.get(property);
+
 const AdvancedQueryBuilderColumnOrder: FunctionComponent<ColumnOrderProps> = ({
-  show,
   columns,
   source,
   ...props
 }) => {
-  const [selectedColumns, setSelectedColumns] = useState<{ alias: string; columnName: string }[]>(
-    [],
-  );
+  const [selectedColumns, setSelectedColumns] = useState<SelectedColumn[]>([]);
   useEffect(() => {
     if (columns) {
       setSelectedColumns(
-        columns.map((column) => {
-          return { alias: column.alias as string, columnName: column.name as string };
-        }),
+        columns.map((column) => ({
+          alias: column.alias as string,
+          columnName: column.name as string,
+        })),
       );
     }
   }, [columns]);
   const onUpdateColumns = (options: string) => {
-    const orderedColumns = JSON.parse(options).columns.map((column: string) => {
-      return {
-        alias: (source.get('columns') as ColumnList)
-          .find((sourceColumn) => sourceColumn.get('name') === column)
-          ?.get('alias'),
-        columnName: column,
-      };
-    });
+    const orderedColumns: SelectedColumn[] = JSON.parse(options).columns.map((column: string) => ({
+      alias: getColumnPropertyByName(source, column, 'alias'),
+      columnName: column,
+    }));
     if (props.onUpdateOptions) {
       props.onUpdateOptions({
-        columns: orderedColumns.map((column: { alias: string; columnName: string }) => {
-          return {
-            id: (source.get('columns') as ColumnList)
-              .find((sourceColumn) => sourceColumn.get('name') === column.columnName)
-              ?.get('id'),
-            name: column.columnName,
-            alias: column.alias,
-          };
-        }) as AdvancedQueryColumn[],
+        columns: orderedColumns.map(({ alias, columnName: name }) => ({
+          id: getColumnPropertyByName(source, name, 'id'),
+          name,
+          alias,
+        })) as AdvancedQueryColumn[],
       });
     }
   };
 
-  if (show) {
-    return (
-      <SelectColumnOrder selectedColumns={selectedColumns} onUpdateColumns={onUpdateColumns} />
-    );
-  }
-
-  return null;
+  return props.show ? (
+    <SelectColumnOrder selectedColumns={selectedColumns} onUpdateColumns={onUpdateColumns} />
+  ) : null;
 };
 
 export { AdvancedQueryBuilderColumnOrder };
