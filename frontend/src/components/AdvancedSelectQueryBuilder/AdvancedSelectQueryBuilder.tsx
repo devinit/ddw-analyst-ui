@@ -51,6 +51,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
             </Button>
             <Button
               variant="danger"
+              size="sm"
               disabled={options.columns ? options.columns.length <= 1 : false}
               onClick={onOrderColumns}
             >
