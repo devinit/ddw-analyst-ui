@@ -1,12 +1,11 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AdvancedQueryColumn } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
+import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
-import { ColumnReset } from './ColumnReset';
 import { ColumnSelector } from './ColumnSelector';
-import { SelectAllColumnSelector } from './SelectAllColumnSelector';
 
 interface ComponentProps {
   source: SourceMap;
@@ -14,74 +13,74 @@ interface ComponentProps {
 }
 
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
-  const [displayColumnSelector, setDisplayColumnSelector] = useState(false);
-  const [displaySelectColumnOrder, setDisplaySelectColumnOrder] = useState(false);
+  const { options, updateOptions } = useContext(AdvancedQueryContext);
+  const [activeAction, setActiveAction] = useState<'select' | 'order'>();
+  const [selectAll, setSelectAll] = useState(
+    typeof options.selectAll !== 'undefined' ? options.selectAll : true,
+  );
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
+    if (typeof options.selectAll === 'undefined') {
+      updateOptions!({ selectAll: true });
+    }
   }, []);
-  const onOrderColumns = () => {
-    setDisplaySelectColumnOrder(true);
-    setDisplayColumnSelector(false);
+  const onToggleSelectAll = (data: ICheckData) => {
+    setSelectAll(data.checked);
+    updateOptions!({ selectAll: data.checked });
   };
-  const onSelectColumns = () => {
-    setDisplayColumnSelector(true);
-    setDisplaySelectColumnOrder(false);
+  const onReset = () => {
+    setActiveAction(undefined);
+    updateOptions!({ selectAll: true, columns: [] });
   };
 
   return (
-    <AdvancedQueryContext.Consumer>
-      {({ options, updateOptions }) => (
-        <div className="mb-3">
-          <SelectAllColumnSelector
-            setShowColumnSelector={setDisplayColumnSelector}
-            selectAll={options.selectAll}
-            onUpdateOptions={updateOptions}
-          />
-          <ButtonGroup className="mr-2">
-            <Button
-              variant="danger"
-              size="sm"
-              data-toggle="tooltip"
-              data-placement="top"
-              data-html="true"
-              title={`<i>Replaces</i> <strong>ALL</strong> columns with those selected`}
-              onClick={onSelectColumns}
-            >
-              {options.selectAll ? 'Select Columns for Ordering' : 'Select Column(s)'}
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              disabled={options.columns ? options.columns.length <= 1 : false}
-              onClick={onOrderColumns}
-            >
-              Order Columns
-            </Button>
-            <ColumnReset
-              onUpdateOptions={updateOptions}
-              setDisplayColumnSelector={setDisplayColumnSelector}
-              setDisplaySelectColumnOrder={setDisplaySelectColumnOrder}
-            />
-            <Button variant="danger" size="sm" className="d-none">
-              Insert Column
-            </Button>
-          </ButtonGroup>
-          <ColumnSelector
-            show={displayColumnSelector}
-            source={source}
-            columns={options.columns || []}
-            onUpdateSelection={updateOptions}
-            selectAll={options.selectAll}
-          />
-          <AdvancedQueryBuilderColumnOrder
-            show={displaySelectColumnOrder}
-            columns={options.columns || []}
-            source={source}
-            onUpdateOptions={updateOptions}
-          />
-        </div>
-      )}
-    </AdvancedQueryContext.Consumer>
+    <div className="mb-3">
+      <ICheck
+        id="selectAll"
+        name="selectAll"
+        label="Select All"
+        onChange={onToggleSelectAll}
+        variant="danger"
+        checked={selectAll}
+      />
+      <ButtonGroup className="mr-2">
+        <Button
+          variant="danger"
+          size="sm"
+          data-toggle="tooltip"
+          data-placement="top"
+          data-html="true"
+          title={`<i>Replaces</i> <strong>ALL</strong> columns with those selected`}
+          onClick={() => setActiveAction('select')}
+        >
+          {options.selectAll ? 'Select Columns for Ordering' : 'Select Column(s)'}
+        </Button>
+        <Button
+          variant="danger"
+          size="sm"
+          disabled={options.columns ? options.columns.length <= 1 : false}
+          onClick={() => setActiveAction('order')}
+        >
+          Order Columns
+        </Button>
+        <Button variant="danger" size="sm" onClick={onReset}>
+          Clear/Reset
+        </Button>
+      </ButtonGroup>
+      <ColumnSelector
+        show={activeAction === 'select'}
+        source={source}
+        columns={options.columns || []}
+        onUpdateSelection={updateOptions}
+        selectAll={options.selectAll}
+      />
+      <AdvancedQueryBuilderColumnOrder
+        show={activeAction === 'order'}
+        columns={options.columns || []}
+        source={source}
+        onUpdateOptions={updateOptions}
+      />
+    </div>
   );
 };
 
