@@ -48,12 +48,23 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   const onSelectAggregate = (_event: SelectEvent, data: DropdownProps) => {
     setSelectedAggregate(data.value as string);
   };
-  const onSubmit = () => {
+  const onAdd = () => {
     if (props.onUpdateOptions) {
       props.onUpdateOptions({
         columns: props.columns.map((col) =>
           col.name === selectedColumn ? { ...col, aggregate: selectedAggregate } : col,
         ) as AdvancedQueryColumn[],
+      });
+    }
+  };
+  const onRemove = () => {
+    if (props.onUpdateOptions) {
+      props.onUpdateOptions({
+        columns: props.columns.map((col) => {
+          if (col.name === selectedColumn && col.aggregate) delete col.aggregate;
+
+          return col;
+        }) as AdvancedQueryColumn[],
       });
     }
   };
@@ -73,7 +84,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           />
         </Col>
 
-        <Col lg={4} className="my-2">
+        <Col lg={3} className="my-2">
           <Dropdown
             placeholder="Select Aggregation"
             fluid
@@ -85,10 +96,13 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           />
         </Col>
 
-        <Col lg={1}>
+        <Col lg={2}>
           <Row>
-            <Button variant="link" className="btn-just-icon" onClick={onSubmit}>
+            <Button variant="link" className="btn-just-icon" onClick={onAdd}>
               <i className="material-icons">add</i>
+            </Button>
+            <Button variant="link" className="btn-just-icon" onClick={onRemove}>
+              <i className="material-icons">remove</i>
             </Button>
           </Row>
         </Col>
