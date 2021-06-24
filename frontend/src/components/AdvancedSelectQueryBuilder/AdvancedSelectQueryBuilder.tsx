@@ -1,8 +1,12 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AdvancedQueryColumn } from '../../types/operations';
+<<<<<<< HEAD
 import { SourceMap } from '../../types/sources';
 import { ICheck, ICheckData } from '../ICheck';
+=======
+import { ColumnList, SourceMap } from '../../types/sources';
+>>>>>>>  Add umerical check for column aggregation
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
 import { ColumnAggregate } from './ColumnAggregate';

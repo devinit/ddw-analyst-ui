@@ -5,6 +5,11 @@ import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operat
 import { Column, ColumnList, SourceMap } from '../../../types/sources';
 
 interface ColumnAggregateProps {
+<<<<<<< HEAD
+=======
+  columns?: AdvancedQueryColumn[];
+  selectableColumns?: AdvancedQueryColumn[];
+>>>>>>>  Add umerical check for column aggregation
   show: boolean;
   source: SourceMap;
   columns: AdvancedQueryColumn[];
@@ -19,6 +24,7 @@ const aggregateOptions: DropdownItemProps[] = [
 ];
 type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 
+<<<<<<< HEAD
 const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...props }) => {
   const [columns, setColumns] = useState<DropdownItemProps[]>([]);
   const [selectedColumn, setSelectedColumn] = useState('');
@@ -43,6 +49,25 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   }, [props.columns]);
 
   const onSelectColumn = (_event: SelectEvent, data: DropdownProps) => {
+=======
+const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ columns, show, ...props }) => {
+  const selectableColumnOptions = props.selectableColumns?.map((column) => {
+    return { key: column.id, text: column.alias, value: column.name };
+  }) as DropdownItemProps[];
+  const [selectedColumn, setSelectedColumn] = useState('');
+  const [selectedAggregate, setSelectedAggregate] = useState('');
+  const aggregateFunctions = [
+    { key: 'Avg', text: 'Average', value: 'Avg' },
+    { key: 'Sum', text: 'Sum', value: 'Sum' },
+    { key: 'Max', text: 'Maximum', value: 'Max' },
+    { key: 'Min', text: 'Minimum', value: 'Min' },
+    { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' },
+  ];
+  const onSelectColumn = (
+    _event: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps,
+  ) => {
+>>>>>>>  Add umerical check for column aggregation
     setSelectedColumn(data.value as string);
   };
   const onSelectAggregate = (_event: SelectEvent, data: DropdownProps) => {
@@ -78,7 +103,11 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
             fluid
             selection
             search
+<<<<<<< HEAD
             options={columns}
+=======
+            options={selectableColumnOptions}
+>>>>>>>  Add umerical check for column aggregation
             onChange={onSelectColumn}
             value={selectedColumn}
           />
@@ -90,7 +119,11 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
             fluid
             selection
             search
+<<<<<<< HEAD
             options={aggregateOptions}
+=======
+            options={aggregateFunctions}
+>>>>>>>  Add umerical check for column aggregation
             onChange={onSelectAggregate}
             value={selectedAggregate}
           />
