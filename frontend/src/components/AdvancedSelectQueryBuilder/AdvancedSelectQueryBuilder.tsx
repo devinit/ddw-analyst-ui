@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AdvancedQueryColumn } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { ColumnList, SourceMap } from '../../types/sources';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
 import { ColumnAggregate } from './ColumnAggregate';
@@ -15,10 +15,16 @@ interface ComponentProps {
   onUpdateConfig?: (config: { columns: AdvancedQueryColumn[] }) => void;
 }
 
-const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
+const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, columns }) => {
   const [displayColumnSelector, setDisplayColumnSelector] = useState(false);
   const [displaySelectColumnOrder, setDisplaySelectColumnOrder] = useState(false);
   const [displayAggregateColumn, setDisplayAggregateColumn] = useState(false);
+  const numericalColumns = (source.get('columns') as ColumnList).filter(
+    (column) => column.get('data_type') === 'N',
+  );
+  const numericalSelectedColumns = columns?.filter((column) =>
+    numericalColumns.find((col) => col.get('name') === column.name),
+  );
   // const [config, setConfig] = useState<AdvancedQueryOptions>();
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
@@ -67,7 +73,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
             </Button>
             <Button
               variant="danger"
-              hidden={!(options.columns && options.columns.length > 0)}
+              hidden={!(numericalSelectedColumns && numericalSelectedColumns.length > 0)}
               onClick={onAggregateColumn}
             >
               Aggregate
@@ -99,6 +105,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           <ColumnAggregate
             show={displayAggregateColumn}
             columns={options.columns || []}
+            selectableColumns={numericalSelectedColumns}
             onUpdateOptions={updateOptions}
           />
         </div>

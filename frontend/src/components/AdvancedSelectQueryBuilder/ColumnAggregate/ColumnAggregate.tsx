@@ -5,22 +5,23 @@ import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operat
 
 interface ColumnAggregateProps {
   columns?: AdvancedQueryColumn[];
+  selectableColumns?: AdvancedQueryColumn[];
   show: boolean;
   onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
 }
 
 const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ columns, show, ...props }) => {
-  const selectableColumns = columns?.map((column) => {
+  const selectableColumnOptions = props.selectableColumns?.map((column) => {
     return { key: column.id, text: column.alias, value: column.name };
   }) as DropdownItemProps[];
   const [selectedColumn, setSelectedColumn] = useState('');
   const [selectedAggregate, setSelectedAggregate] = useState('');
-  const aggregate = [
-    { key: 'sum', text: 'Sum', value: 'sum' },
-    { key: 'avg', text: 'Average', value: 'avg' },
-    { key: 'max', text: 'Maximum', value: 'max' },
-    { key: 'min', text: 'Minimum', value: 'min' },
-    { key: 'std', text: 'Standard Deviation', value: 'std' },
+  const aggregateFunctions = [
+    { key: 'Avg', text: 'Average', value: 'Avg' },
+    { key: 'Sum', text: 'Sum', value: 'Sum' },
+    { key: 'Max', text: 'Maximum', value: 'Max' },
+    { key: 'Min', text: 'Minimum', value: 'Min' },
+    { key: 'StdDev', text: 'Standard Deviation', value: 'StdDev' },
   ];
   const onSelectColumn = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
@@ -57,7 +58,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ columns, sho
             fluid
             selection
             search
-            options={selectableColumns}
+            options={selectableColumnOptions}
             onChange={onSelectColumn}
             value={selectedColumn}
           />
@@ -69,7 +70,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ columns, sho
             fluid
             selection
             search
-            options={aggregate}
+            options={aggregateFunctions}
             onChange={onSelectAggregate}
             value={selectedAggregate}
           />
