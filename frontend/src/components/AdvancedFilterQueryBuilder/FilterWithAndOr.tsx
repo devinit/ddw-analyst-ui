@@ -96,7 +96,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   };
 
   const onAddFilter = (filter: ErroredFilterMap) => {
-    if (filterWith && editorContent[filterWith]) {
+    if (filter.size === 3 && filterWith && editorContent[filterWith]) {
       setEditorContent({
         ...editorContent,
         [filterWith]: editorContent[filterWith]?.concat({
@@ -105,8 +105,8 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
           value: filter.get('value') as string,
         }),
       });
+      setActiveFilter(filter.delete('value'));
     }
-    setActiveFilter(filter.set('value', ''));
   };
 
   if (show) {
