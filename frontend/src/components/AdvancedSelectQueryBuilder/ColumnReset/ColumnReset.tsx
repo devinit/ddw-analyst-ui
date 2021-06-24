@@ -6,6 +6,7 @@ interface SelectAllColumnSelectorProps {
   onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
   setDisplayColumnSelector?: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplaySelectColumnOrder?: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplayAggregateColumn?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ColumnReset: FunctionComponent<SelectAllColumnSelectorProps> = ({ ...props }) => {
@@ -13,10 +14,12 @@ const ColumnReset: FunctionComponent<SelectAllColumnSelectorProps> = ({ ...props
     if (
       props.onUpdateOptions &&
       props.setDisplayColumnSelector &&
-      props.setDisplaySelectColumnOrder
+      props.setDisplaySelectColumnOrder &&
+      props.setDisplayAggregateColumn
     ) {
       props.setDisplayColumnSelector(false);
       props.setDisplaySelectColumnOrder(false);
+      props.setDisplayAggregateColumn(false);
       props.onUpdateOptions({
         selectAll: true,
         columns: [],

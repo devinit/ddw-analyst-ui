@@ -4,6 +4,7 @@ import { AdvancedQueryColumn } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
+import { ColumnAggregate } from './ColumnAggregate';
 import { ColumnReset } from './ColumnReset';
 import { ColumnSelector } from './ColumnSelector';
 import { SelectAllColumnSelector } from './SelectAllColumnSelector';
@@ -17,6 +18,7 @@ interface ComponentProps {
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const [displayColumnSelector, setDisplayColumnSelector] = useState(false);
   const [displaySelectColumnOrder, setDisplaySelectColumnOrder] = useState(false);
+  const [displayAggregateColumn, setDisplayAggregateColumn] = useState(false);
   // const [config, setConfig] = useState<AdvancedQueryOptions>();
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
@@ -27,6 +29,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   };
   const onSelectColumns = () => {
     setDisplayColumnSelector(true);
+    setDisplaySelectColumnOrder(false);
+  };
+  const onAggregateColumn = () => {
+    setDisplayAggregateColumn(true);
+    setDisplayColumnSelector(false);
     setDisplaySelectColumnOrder(false);
   };
 
@@ -58,10 +65,19 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
             >
               Order Columns
             </Button>
+            <Button
+              variant="danger"
+              hidden={!(options.columns && options.columns.length > 0)}
+              onClick={onAggregateColumn}
+            >
+              Aggregate
+            </Button>
+
             <ColumnReset
               onUpdateOptions={updateOptions}
               setDisplayColumnSelector={setDisplayColumnSelector}
               setDisplaySelectColumnOrder={setDisplaySelectColumnOrder}
+              setDisplayAggregateColumn={setDisplayAggregateColumn}
             />
             <Button variant="danger" size="sm" className="d-none">
               Insert Column
@@ -78,6 +94,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
             show={displaySelectColumnOrder}
             columns={options.columns || []}
             source={source}
+            onUpdateOptions={updateOptions}
+          />
+          <ColumnAggregate
+            show={displayAggregateColumn}
+            columns={options.columns || []}
             onUpdateOptions={updateOptions}
           />
         </div>
