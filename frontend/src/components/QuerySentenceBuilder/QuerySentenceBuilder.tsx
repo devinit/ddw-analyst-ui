@@ -29,7 +29,11 @@ export interface QueryContextProps {
 }
 
 export const jsonMode: CodeMirror.ModeSpec<JsonModeSpec> = { name: 'javascript', json: true };
-const defaultOptions: Partial<AdvancedQueryOptions> = { source: undefined, columns: [] };
+const defaultOptions: Partial<AdvancedQueryOptions> = {
+  source: undefined,
+  columns: [],
+  selectall: true,
+};
 export const AdvancedQueryContext = createContext<QueryContextProps>({
   options: defaultOptions as AdvancedQueryOptions,
 });
@@ -44,13 +48,10 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [alert, setAlert] = useState('');
   useEffect(() => {
     setContext({
-      options: {
-        ...context.options,
-        source: source?.get('id') as number,
-        columns: [],
-      },
+      options: { ...context.options, source: source?.get('id') as number, columns: [] },
     });
   }, [source]);
+
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>) => {
     setContext({ options: { ...context.options, ...options }, updateOptions: onUpdateOptions });
   };
