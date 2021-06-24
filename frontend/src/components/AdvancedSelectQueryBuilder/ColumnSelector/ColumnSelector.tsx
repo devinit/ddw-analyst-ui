@@ -12,7 +12,6 @@ interface ColumnSelectorProps {
   usage?: 'select' | 'groupby';
   nameOnly?: boolean;
   onUpdateSelection?: (options: Partial<AdvancedQueryOptions>) => void;
-  selectAll?: boolean;
 }
 
 const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, ...props }) => {
@@ -26,20 +25,18 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     setColumns(getColumnGroupOptionsFromSource(source));
   }, [source]);
   useEffect(() => {
-    if (props.columns.length === 0) {
-      setSelectedColumns([]);
-    }
+    if (props.columns.length === 0) setSelectedColumns([]);
   }, [props.columns]);
   const onUpdateColumns = (selection: string[]) => {
     setSelectedColumns(selection);
     if (props.onUpdateSelection) {
       props.onUpdateSelection({
         [props.usage === 'select' ? 'columns' : 'groupby']: selection
-          .map((col) => {
-            return (source.get('columns') as ColumnList)
+          .map((col) =>
+            (source.get('columns') as ColumnList)
               .find((column) => column.get('name') === col)
-              ?.toJS();
-          })
+              ?.toJS(),
+          )
           .map((column: Column) =>
             props.nameOnly ? column.name : cleanColumn(column, props.columns),
           ),
