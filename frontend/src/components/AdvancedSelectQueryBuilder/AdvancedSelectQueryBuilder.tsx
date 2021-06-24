@@ -14,7 +14,7 @@ interface ComponentProps {
 
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
-  const [activeAction, setActiveAction] = useState<'select' | 'order'>();
+  const [activeAction, setActiveAction] = useState<'select' | 'order' | 'aggregate'>();
   const [selectAll, setSelectAll] = useState(
     typeof options.selectall !== 'undefined' ? options.selectall : true,
   );
@@ -58,10 +58,18 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         <Button
           variant="danger"
           size="sm"
-          disabled={options.columns ? options.columns.length <= 1 : false}
+          disabled={options.columns && options.columns.length <= 1}
           onClick={() => setActiveAction('order')}
         >
           Order Columns
+        </Button>
+        <Button
+          variant="danger"
+          size="sm"
+          hidden={selectAll || (options.columns && !options.columns.length)}
+          onClick={() => setActiveAction('aggregate')}
+        >
+          Aggregate
         </Button>
         <Button variant="danger" size="sm" onClick={onReset}>
           Clear/Reset
