@@ -72,7 +72,6 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         source={source}
         columns={options.columns || []}
         onUpdateSelection={updateOptions}
-        selectAll={options.selectall}
       />
       <AdvancedQueryBuilderColumnOrder
         show={activeAction === 'order'}
