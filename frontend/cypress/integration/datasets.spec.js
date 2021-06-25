@@ -105,18 +105,18 @@ describe('The Datasets Pages', () => {
     });
   });
 
-  it('it does not paginate when datasets are less than 10', () => {
+  it('it does not paginate when datasets are less than or equal to 10', () => {
     cy.fixture('datasets').then((datasets) => {
-      datasets.count = 10;
-      datasets.results = datasets.results.slice(0,10);
-      cy.intercept('api/datasets/?limit=10&offset=0', datasets);
+      datasets.results = datasets.results.slice(0, 9);
+      datasets.count = datasets.results.length;
+      cy.intercept('api/datasets/**', datasets);
     });
 
     cy.visit('/datasets');
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
     cy.get('[data-testid="pagination-results-count"]').should(
       'contain.text',
-      'Showing 1 to 10 of 10',
+      'Showing 1 to 9 of 9',
     );
     cy.get('.pagination > li').its('length').should('eq', 3);
     cy.get('.pagination > li')

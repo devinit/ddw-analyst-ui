@@ -40,7 +40,7 @@ export const isOperationDataCacheExpired = async ({
       // is cache older than an hour?
       const cacheMoment = moment(cachedDataUpdatedTime);
       const now = moment(new Date());
-      if (now.diff(cacheMoment, 'hours') >= 1) {
+      if (now.diff(cacheMoment, 'minutes') >= 10) {
         return true;
       }
       // has the dataset been updated?
