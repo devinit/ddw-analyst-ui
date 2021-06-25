@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import { OperationData, OperationMap } from '../../types/operations';
 import { previewAdvancedDatasetData } from '../../utils/hooks';
 import { CodeMirrorReact } from '../CodeMirrorReact';
@@ -19,11 +19,12 @@ interface QuerySentencePreviewProps {
 type PreviewOption = 'config' | 'query' | 'data';
 
 const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (props) => {
-  const { options } = useContext(AdvancedQueryContext);
+  let { options } = useContext(AdvancedQueryContext);
   const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [alert, setAlert] = useState('');
+  const [clearing, setClearing] = useState(false);
   const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
 
   useEffect(() => {
@@ -40,6 +41,24 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       });
     }
   }, [previewOption]);
+
+  const onClear = () => {
+    setClearing(true);
+    setTimeout(() => setClearing(false), 2000);
+  };
+
+  const getOptions = () => {
+    if (clearing) {
+      if (options.hasOwnProperty('filter')) {
+        const { filter, ...withoutFilter } = options;
+        options = Object.assign(withoutFilter, { columns: [] });
+      } else {
+        options = Object.assign(options, { columns: [] });
+      }
+    }
+
+    return options;
+  };
 
   return (
     <>
@@ -76,7 +95,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
         <CodeMirrorReact
           config={{
             mode: jsonMode,
-            value: JSON.stringify(options, null, 2),
+            value: JSON.stringify(getOptions(), null, 2),
             lineNumbers: true,
             theme: 'material',
           }}
@@ -84,6 +103,17 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           onChange={props.onEditorUpdate}
         />
       </div>
+      <Button
+        variant="dark"
+        size="sm"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        data-html="true"
+        title={`<i>Resets</i> main config to default JSON`}
+        onClick={onClear}
+      >
+        Clear
+      </Button>
       {previewOption === 'query' && props.operation ? (
         <QuerySentence operation={props.operation} />
       ) : null}
