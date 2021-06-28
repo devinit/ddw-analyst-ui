@@ -7,7 +7,8 @@ from pypika import Criterion
 from pypika import functions as fn
 from pypika import Order
 
-from core.models import Source
+from core.models import Source, SourceColumnMap
+from core.const import DEFAULT_LIMIT_COUNT
 
 FILTER_MAPPING = {
     '$lt': operator.lt,
@@ -64,14 +65,14 @@ class AdvancedQueryBuilder:
 
             return filter_query
 
-        if 'columns' in config:
+        if 'columns' in config or 'selectall' in config:
             select_query = self.get_select_query(table, query, config)
             print(select_query)
 
             return select_query
 
     def get_source_table(self, source_id, as_array=False):
-        source = Source.objects.get(pk=source_id);
+        source = Source.objects.get(pk=source_id)
 
         table_name = source.active_mirror_name
         schema_name = source.schema
@@ -80,6 +81,14 @@ class AdvancedQueryBuilder:
             return [table_name, schema_name]
 
         return Table(table_name, schema=schema_name)
+
+    def get_source_columns(self, source_id):
+        # source = Source.objects.get(pk=source_id)
+        source_columns = SourceColumnMap.objects.get(source_id=source_id)
+        columns = []
+        for source_column in source_columns:
+            columns.append({'id': source_column.id, 'name': source_column.name, 'alias':source_column.alias})
+        return columns
 
     def handle_filter(self, table, query, config):
         filter_config = config.get('filter')
@@ -113,15 +122,44 @@ class AdvancedQueryBuilder:
         return join_query
 
     def get_select_query(self, table, query, config):
-        columns = config.get('columns')
         if 'groupby' in config:
             query = self.get_groupby_query(table, query, config.get('groupby'))
         if 'having' in config:
             query = self.get_having_query(table, query, config.get('having'))
 
+        if 'selectall' in config:
+            all_columns = self.get_source_columns(config.get('source'))
+            if 'columns' in config:
+                # re-arrange columns starting by those in config first
+                provided_cols = config.get('columns')
+                for provided_col in provided_cols:
+                    j = next((i for i, item in enumerate(all_columns) if item['name'] == provided_col['name']), False)
+                    if j:
+                        all_columns.pop(j)
+                columns = provided_columns + all_columns
+
+            else:
+                columns = all_columns
+        else:
+            columns = config.get('columns')
+
+        # Handle select for joins
+        if 'join' in config:
+            join_config = config.get('join')
+            left_table = table
+            right_table = self.get_source_table(join_config.get('source'))
+            join_cols = join_config.get('columns')
+            right_cols = [FUNCTION_MAPPING[join_col.get('aggregate')](right_table[join_col.get('name')]).as_(join_col.get(
+                         'alias')) if 'aggregate' in join_col else right_table[join_col.get('name')].as_(join_col.get('alias')) for join_col in join_cols]
+            left_cols = [FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get(
+                        'alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns]
+            final_cols = left_cols + right_cols
+        else:
+            final_cols = [FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get(
+            'alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns]
+
         # also handles aggregations and aliases...
-        query = query.select(*[FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get(
-            'alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns])
+        query = query.select(*final_cols)
 
         if 'orderby' in config:
             orderby = config.get('orderby')
@@ -187,7 +225,7 @@ class AdvancedQueryBuilder:
             return FILTER_MAPPING[config.get('comp')](FUNCTION_MAPPING[config.get('aggregate')](table[config.get('column')]), value)
         return FILTER_MAPPING[config.get('comp')](table[config.get('column')], value)
 
-    def count_sql(self, config, estimate=True):
+    def get_count_sql(self, config, estimate=True):
         if estimate:
             stats_table = Table("pg_stat_user_tables")
             table = self.get_source_table(config.get('source'), True)
@@ -197,6 +235,8 @@ class AdvancedQueryBuilder:
         query = self.process_config(config)
         return query.select(fn.Count('*')).get_sql()
 
+    def get_sql_with_limit(self, query, limit=DEFAULT_LIMIT_COUNT, offset=0):
+        return query.limit(limit).offset(offset).get_sql()
 
 
 # TODO: test code - remove in production
@@ -236,7 +276,11 @@ def get_config():
         'join': {
             'source': 5,
             'type': 'inner',
-            'mapping': [['donor_name', 'donor_name']]
+            'mapping': [['donor_name', 'donor_name']],
+            'columns': [
+                { 'id': 23, 'name': 'donor_name', 'alias': 'Donor Name' },
+                { 'id': 20, 'name': 'agency_name', 'alias': 'Agency' }
+            ]
         },
         'orderby': ['donor_name', 'ASC' ]
     }
