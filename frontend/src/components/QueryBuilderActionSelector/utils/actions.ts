@@ -16,28 +16,28 @@ export const actions: ActionMeta[] = [
   {
     name: 'filter',
     caption: 'Filter',
-    visibleFor: ['select', 'join'],
+    visibleFor: [],
   },
   {
     name: 'join',
     caption: 'Join',
-    visibleFor: ['select', 'filter'],
+    visibleFor: [],
   },
   {
     name: 'groupby',
     caption: 'Group By',
-    visibleFor: ['select', 'filter'],
-  },
-  {
-    name: 'having',
-    caption: 'Having',
-    visibleFor: ['select', 'filter', 'groupby'],
-  },
-  {
-    name: 'orderby',
-    caption: 'Order By',
     visibleFor: [],
   },
+  // {
+  //   name: 'having',
+  //   caption: 'Having',
+  //   visibleFor: [],
+  // },
+  // {
+  //   name: 'orderby',
+  //   caption: 'Order By',
+  //   visibleFor: [],
+  // },
 ];
 
 export const getSupportedActions = (

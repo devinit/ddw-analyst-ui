@@ -23,7 +23,7 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
 
   return (
     <div className="mb-3">
-      <label>Active Action</label>
+      <label>Active Clause</label>
       <Dropdown
         className="col-lg-4"
         placeholder="Select Action"
