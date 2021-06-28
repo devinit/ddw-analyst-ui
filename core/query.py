@@ -88,7 +88,7 @@ def get_advanced_config_query(advanced_config, limit=DEFAULT_LIMIT_COUNT, offset
 
 def get_advanced_config_count_query(advanced_config, estimate_count):
     builder = AdvancedQueryBuilder()
-    return builder.count_sql(advanced_config, estimate_count)
+    return builder.get_count_sql(advanced_config, estimate_count)
 
 def build_advanced_queries(advanced_config, limit=None, offset=None, estimate_count=None):
     count_sql = get_advanced_config_count_query(advanced_config, estimate_count)
