@@ -39,7 +39,6 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   };
 
   const onUpdateOperation = (ope?: OperationMap) => {
-    console.log('Updating:', ope);
     setOperation(ope);
   };
 
