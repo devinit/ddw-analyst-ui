@@ -13,7 +13,7 @@ interface ComponentProps {
 const AdvancedGroupByQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => (
   <div className="mb-3">
     <AdvancedQueryContext.Consumer>
-      {({ options, updateOptions }) => (
+      {({ options }) => (
         <ColumnSelector
           show
           usage="groupby"
@@ -24,7 +24,6 @@ const AdvancedGroupByQueryBuilder: FunctionComponent<ComponentProps> = ({ source
               ? options.groupby.map<AdvancedQueryColumn>((column) => ({ name: column.name }))
               : []
           }
-          onUpdateSelection={updateOptions}
         />
       )}
     </AdvancedQueryContext.Consumer>
