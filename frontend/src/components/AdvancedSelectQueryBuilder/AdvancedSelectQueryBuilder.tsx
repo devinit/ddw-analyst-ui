@@ -85,10 +85,10 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
         </Button>
       </ButtonGroup>
       <ColumnSelector
+        usage={usage}
         show={activeAction === 'select'}
         source={source}
-        columns={options.columns || []}
-        onUpdateSelection={updateOptions}
+        columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
       />
       <AdvancedQueryBuilderColumnOrder
         show={activeAction === 'order'}

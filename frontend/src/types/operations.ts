@@ -142,4 +142,5 @@ export interface AdvancedQueryJoin {
   type: JoinType;
   source: number;
   mapping: [string, string][];
+  columns: AdvancedQueryColumn[];
 }
