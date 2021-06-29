@@ -79,6 +79,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
             value: JSON.stringify(options, null, 2),
             lineNumbers: true,
             theme: 'material',
+            readOnly: true,
           }}
           onInit={props.onEditorInit}
           onChange={props.onEditorUpdate}
