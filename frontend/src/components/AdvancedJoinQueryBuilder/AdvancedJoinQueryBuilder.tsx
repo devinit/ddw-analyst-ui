@@ -26,6 +26,10 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     if (!hasJoinConfig(options)) {
       updateOptions!({ join: { type: joinType } as AdvancedQueryJoin });
     }
+    if (options.join && options.join.source) {
+      const joinSource = sources.find((_source) => _source.get('id') === options.join?.source);
+      if (joinSource) setJoinSource(joinSource);
+    }
   }, []);
 
   const onChangeJoinType = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
@@ -111,6 +115,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
             search
             selection
             options={getSelectOptionsFromSources(sources, source)}
+            value={options.join && options.join.source}
             onChange={onSelectSource}
             data-testid="qb-join-dataset-select"
           />
