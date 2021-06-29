@@ -37,7 +37,12 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
   };
   const onReset = () => {
     setActiveAction(undefined);
-    updateOptions!({ selectall: true, columns: [] });
+    if (usage === 'select') {
+      updateOptions!({ selectall: true, columns: [] });
+    } else if (options.join && options.join.columns) {
+      delete options.join.columns;
+      updateOptions!({ join: options.join });
+    }
   };
 
   return (
