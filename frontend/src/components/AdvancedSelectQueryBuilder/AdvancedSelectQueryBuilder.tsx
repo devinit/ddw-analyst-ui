@@ -9,15 +9,22 @@ import { ColumnSelector } from './ColumnSelector';
 
 interface ComponentProps {
   source: SourceMap;
-  usage?: 'select' | 'join';
+  usage?: AdvancedSelectUsage;
 }
+type AdvancedSelectUsage = 'select' | 'join';
 
-const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
+const getDefaultSelectAll = (usage: AdvancedSelectUsage, selectAll?: boolean): boolean => {
+  if (usage === 'join') {
+    return false;
+  }
+
+  return typeof selectAll !== 'undefined' ? selectAll : true;
+};
+
+const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, usage }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [activeAction, setActiveAction] = useState<'select' | 'order' | 'aggregate'>();
-  const [selectAll, setSelectAll] = useState(
-    typeof options.selectall !== 'undefined' ? options.selectall : true,
-  );
+  const [selectAll, setSelectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
     if (typeof options.selectall === 'undefined') {
