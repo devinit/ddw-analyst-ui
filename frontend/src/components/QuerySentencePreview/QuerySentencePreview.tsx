@@ -48,7 +48,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           variant="danger"
           id="config"
           name="config"
-          label="Show Config"
+          label="Full Config"
           onChange={onRadioChange}
           inline
           checked={previewOption === 'config'}
