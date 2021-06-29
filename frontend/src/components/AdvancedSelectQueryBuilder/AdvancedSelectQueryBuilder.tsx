@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { AdvancedQueryColumn } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
@@ -10,7 +9,7 @@ import { ColumnSelector } from './ColumnSelector';
 
 interface ComponentProps {
   source: SourceMap;
-  onUpdateConfig?: (config: { columns: AdvancedQueryColumn[] }) => void;
+  usage?: 'select' | 'join';
 }
 
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
