@@ -144,3 +144,13 @@ export const validateAndOr = (content: EditorContent): string[] => {
 
   return invalidKeys;
 };
+
+export const isEditorContentEmpty = (obj: EditorContent): boolean => {
+  for (const value of Object.values(obj)) {
+    if (value && value.length > 0) {
+      return false;
+    }
+  }
+
+  return true;
+};
