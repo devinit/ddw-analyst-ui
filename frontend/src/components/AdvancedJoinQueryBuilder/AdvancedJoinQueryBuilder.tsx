@@ -56,6 +56,26 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       });
     }
   };
+  const onRemoveMapping = (columnMapping: [string, string]) => {
+    // should only attempt to remove when there's something to remove
+    if (
+      options.join &&
+      options.join.mapping &&
+      options.join.mapping.length &&
+      columnMapping.every((column) => !!column)
+    ) {
+      updateOptions!({
+        join: {
+          ...options.join,
+          mapping:
+            options.join &&
+            options.join.mapping.filter(
+              (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
+            ),
+        } as AdvancedQueryJoin,
+      });
+    }
+  };
 
   // parse source columns into format consumable by FilterItem
   const columnItems = getSourceColumns(source, true) as DropdownItemProps[];
@@ -109,6 +129,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
             primaryColumns={columnItems}
             secondaryColumns={getSourceColumns(joinSource) as ColumnList}
             onAdd={onAddMapping}
+            onRemove={onRemoveMapping}
           />
 
           <AdvancedSelectQueryBuilder source={joinSource} usage="join" />
