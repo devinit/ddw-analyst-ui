@@ -9,6 +9,7 @@ interface JoinColumnsMapperProps {
   primaryColumns: DropdownItemProps[];
   secondaryColumns: ColumnList;
   onAdd?: (columnMapping: [string, string]) => void;
+  onRemove?: (columnMapping: [string, string]) => void;
 }
 
 const StyledCol = styled(Col)`
@@ -31,9 +32,11 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
   };
 
   const onAdd = () => {
-    if (props.onAdd) {
-      props.onAdd(selectedColumns);
-    }
+    if (props.onAdd) props.onAdd(selectedColumns);
+  };
+
+  const onRemove = () => {
+    if (props.onRemove) props.onRemove(selectedColumns);
   };
 
   const { primaryColumns, secondaryColumns } = props;
@@ -53,7 +56,7 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
         />
       </Col>
 
-      <StyledCol md={2}>
+      <StyledCol md={1}>
         <i className="material-icons">arrow_forward</i>
       </StyledCol>
 
@@ -72,7 +75,7 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
         />
       </Col>
 
-      <Col lg={1}>
+      <Col lg={2}>
         {props.onAdd ? (
           <Button
             variant="link"
@@ -81,6 +84,16 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
             data-testid="qb-join-add-mapping"
           >
             <i className="material-icons">add</i>
+          </Button>
+        ) : null}
+        {props.onRemove ? (
+          <Button
+            variant="link"
+            className="btn-just-icon"
+            onClick={onRemove}
+            data-testid="qb-join-remove-mapping"
+          >
+            <i className="material-icons">remove</i>
           </Button>
         ) : null}
       </Col>
