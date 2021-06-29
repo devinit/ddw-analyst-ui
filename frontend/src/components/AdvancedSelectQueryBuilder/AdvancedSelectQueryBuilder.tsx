@@ -67,7 +67,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           title={`<i>Replaces</i> <strong>ALL</strong> columns with those selected`}
           onClick={() => setActiveAction('select')}
         >
-          {options.selectall ? 'Select Columns for Ordering' : 'Select Column(s)'}
+          {selectAll ? 'Select Columns for Ordering' : 'Select Column(s)'}
         </Button>
         <Button
           variant="danger"
@@ -84,7 +84,12 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
         <Button
           variant="danger"
           size="sm"
-          hidden={selectAll || (options.columns && !options.columns.length)}
+          hidden={
+            selectAll ||
+            (usage === 'join' && options.join
+              ? !options.join.columns || !options.join.columns.length
+              : !options.columns || !options.columns.length)
+          }
           onClick={() => setActiveAction('aggregate')}
         >
           Aggregate
