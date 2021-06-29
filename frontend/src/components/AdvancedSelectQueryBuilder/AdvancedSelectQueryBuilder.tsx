@@ -42,14 +42,16 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
 
   return (
     <div className="mb-3">
-      <ICheck
-        id="selectAll"
-        name="selectAll"
-        label="Select All"
-        onChange={onToggleSelectAll}
-        variant="danger"
-        checked={selectAll}
-      />
+      {usage === 'select' ? (
+        <ICheck
+          id="selectAll"
+          name="selectAll"
+          label="Select All"
+          onChange={onToggleSelectAll}
+          variant="danger"
+          checked={selectAll}
+        />
+      ) : null}
       <ButtonGroup className="mr-2">
         <Button
           variant="danger"
