@@ -1,13 +1,14 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../../types/sources';
+import { AdvancedQueryContext } from '../../QuerySentenceBuilder';
 import { SelectColumnOrder, SelectedColumn } from '../../SelectColumnOrder';
 
 interface ColumnOrderProps {
   show: boolean;
   columns: AdvancedQueryColumn[];
   source: SourceMap;
-  onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
+  usage?: 'select' | 'join';
 }
 
 const getColumnPropertyByName = (source: SourceMap, columnName: string, property: keyof Column) =>
@@ -21,6 +22,7 @@ const AdvancedQueryBuilderColumnOrder: FunctionComponent<ColumnOrderProps> = ({
   ...props
 }) => {
   const [selectedColumns, setSelectedColumns] = useState<SelectedColumn[]>([]);
+  const { options, updateOptions } = useContext(AdvancedQueryContext);
   useEffect(() => {
     if (columns) {
       setSelectedColumns(
@@ -31,19 +33,24 @@ const AdvancedQueryBuilderColumnOrder: FunctionComponent<ColumnOrderProps> = ({
       );
     }
   }, [columns]);
-  const onUpdateColumns = (options: string) => {
-    const orderedColumns: SelectedColumn[] = JSON.parse(options).columns.map((column: string) => ({
+  const onUpdateColumns = (config: string) => {
+    const orderedColumns: SelectedColumn[] = JSON.parse(config).columns.map((column: string) => ({
       alias: getColumnPropertyByName(source, column, 'alias'),
       columnName: column,
     }));
-    if (props.onUpdateOptions) {
-      props.onUpdateOptions({
+    if (updateOptions) {
+      const updatedOptions: Partial<AdvancedQueryOptions> = {
         columns: orderedColumns.map(({ alias, columnName: name }) => ({
           id: getColumnPropertyByName(source, name, 'id'),
           name,
           alias,
         })) as AdvancedQueryColumn[],
-      });
+      };
+      updateOptions(
+        props.usage === 'select'
+          ? updatedOptions
+          : ({ join: { ...options.join, ...updatedOptions } } as AdvancedQueryOptions),
+      );
     }
   };
 
@@ -51,5 +58,7 @@ const AdvancedQueryBuilderColumnOrder: FunctionComponent<ColumnOrderProps> = ({
     <SelectColumnOrder selectedColumns={selectedColumns} onUpdateColumns={onUpdateColumns} />
   ) : null;
 };
+
+AdvancedQueryBuilderColumnOrder.defaultProps = { usage: 'select' };
 
 export { AdvancedQueryBuilderColumnOrder };
