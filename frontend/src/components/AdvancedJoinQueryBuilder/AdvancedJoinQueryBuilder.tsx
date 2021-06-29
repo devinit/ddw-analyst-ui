@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import classNames from 'classnames';
-import { List } from 'immutable';
 import React, { FunctionComponent, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { Alert, Col, Form } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
@@ -19,8 +18,8 @@ interface ComponentProps {
 const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [joinType, setJoinType] = useState<JoinType>('inner');
+  const [joinSource, setJoinSource] = useState<SourceMap>();
   const { sources } = useContext(SourcesContext);
-  const [joinColumns, setJoinColumns] = useState<ColumnList>(List());
 
   useEffect(() => {
     if (!hasJoinConfig(options)) {
@@ -39,9 +38,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       join: { ...options.join, source: data.value as number } as AdvancedQueryJoin,
     });
     const joinSource = sources.find((_source) => _source.get('id') === data.value);
-    if (joinSource) {
-      setJoinColumns(getSourceColumns(joinSource) as ColumnList);
-    }
+    if (joinSource) setJoinSource(joinSource);
   };
 
   const onAddMapping = (columnMapping: [string, string]) => {
@@ -101,14 +98,14 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
         </Form.Group>
       </Col>
 
-      {joinType && joinColumns.count() ? (
+      {joinType && joinSource ? (
         <Col md={10} className={classNames('mt-2 pl-0', { 'd-none': false })}>
           <Alert variant="danger" hidden={true}>
             Alert Goes Here
           </Alert>
           <AdvancedJoinColumnsMapper
             primaryColumns={columnItems}
-            secondaryColumns={joinColumns}
+            secondaryColumns={getSourceColumns(joinSource) as ColumnList}
             onAdd={onAddMapping}
           />
         </Col>
