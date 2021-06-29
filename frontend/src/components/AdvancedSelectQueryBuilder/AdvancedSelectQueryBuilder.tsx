@@ -97,4 +97,6 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   );
 };
 
+AdvancedSelectQueryBuilder.defaultProps = { usage: 'select' };
+
 export { AdvancedSelectQueryBuilder };

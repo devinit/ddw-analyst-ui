@@ -8,6 +8,7 @@ import { AdvancedQueryJoin, JoinType } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
 import { AdvancedJoinColumnsMapper } from '../AdvancedJoinColumnsMapper';
+import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
 import { getSourceColumns, hasJoinConfig, joinTypes } from './utils';
 
@@ -108,6 +109,8 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
             secondaryColumns={getSourceColumns(joinSource) as ColumnList}
             onAdd={onAddMapping}
           />
+
+          <AdvancedSelectQueryBuilder source={joinSource} usage="join" />
         </Col>
       ) : null}
     </>
