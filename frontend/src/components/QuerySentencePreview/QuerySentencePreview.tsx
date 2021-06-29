@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import CodeMirror from 'codemirror';
 import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
@@ -14,6 +15,7 @@ interface QuerySentencePreviewProps {
   operation?: OperationMap;
   onEditorInit: (editor: CodeMirror.Editor) => void;
   onEditorUpdate?: (value: string) => void;
+  validated?: boolean;
 }
 
 type PreviewOption = 'config' | 'query' | 'data';
@@ -24,6 +26,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [alert, setAlert] = useState('');
+  const [editor, setEditor] = useState<CodeMirror.Editor>();
   const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
 
   useEffect(() => {
@@ -40,6 +43,21 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       });
     }
   }, [previewOption]);
+
+  const onEditorInit = (editr: CodeMirror.Editor) => {
+    setEditor(editr);
+    if (props.onEditorInit) props.onEditorInit(editr);
+  };
+
+  const getEditorValue = () => {
+    if (props.validated) {
+      return JSON.stringify(options || {}, null, 2);
+    }
+
+    if (editor) return editor.getValue();
+
+    return JSON.stringify({}, null, 2);
+  };
 
   return (
     <>
@@ -76,12 +94,12 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
         <CodeMirrorReact
           config={{
             mode: jsonMode,
-            value: JSON.stringify(options, null, 2),
+            value: getEditorValue(),
             lineNumbers: true,
             theme: 'material',
             readOnly: true,
           }}
-          onInit={props.onEditorInit}
+          onInit={onEditorInit}
           onChange={props.onEditorUpdate}
         />
       </div>
