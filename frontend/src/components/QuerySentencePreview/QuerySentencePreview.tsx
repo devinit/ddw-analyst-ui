@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
-import { OperationData, OperationMap } from '../../types/operations';
+import { AdvancedQueryBuilderAction, OperationData, OperationMap } from '../../types/operations';
 import { previewAdvancedDatasetData } from '../../utils/hooks';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { ICheckData, IRadio } from '../IRadio';
@@ -14,6 +14,7 @@ interface QuerySentencePreviewProps {
   operation?: OperationMap;
   onEditorInit: (editor: CodeMirror.Editor) => void;
   onEditorUpdate?: (value: string) => void;
+  action: AdvancedQueryBuilderAction | undefined;
 }
 
 type PreviewOption = 'config' | 'query' | 'data';
@@ -48,12 +49,11 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   };
 
   const getOptions = () => {
-    if (clearing) {
+    if (clearing && props.action === 'filter') {
+      // Clears only filter entries from main JSON
       if (options.hasOwnProperty('filter')) {
         const { filter, ...withoutFilter } = options;
-        options = Object.assign(withoutFilter, { columns: [] });
-      } else {
-        options = Object.assign(options, { columns: [] });
+        options = withoutFilter;
       }
     }
 
@@ -111,6 +111,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
         data-html="true"
         title={`<i>Resets</i> main config to default JSON`}
         onClick={onClear}
+        hidden={previewOption !== 'config'}
       >
         Clear
       </Button>
