@@ -1,7 +1,8 @@
 import CodeMirror from 'codemirror';
 import { fromJS } from 'immutable';
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, Col, Row } from 'react-bootstrap';
+import styled from 'styled-components';
 import {
   AdvancedQueryBuilderAction,
   AdvancedQueryOptions,
@@ -37,6 +38,10 @@ const defaultOptions: Partial<AdvancedQueryOptions> = {
 export const AdvancedQueryContext = createContext<QueryContextProps>({
   options: defaultOptions as AdvancedQueryOptions,
 });
+const StyledRow = styled(Row)`
+  background: #fafafa;
+  padding-top: 1rem;
+`;
 
 const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [source, setSource] = useState<SourceMap>();
@@ -88,10 +93,14 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
         {source ? (
           <>
             <QueryBuilderActionSelector onSelectAction={onSelectAction} defaultAction="select" />
-            {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
-            {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
-            {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
-            {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
+            <StyledRow>
+              <Col lg={12}>
+                {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
+                {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
+                {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
+                {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
+              </Col>
+            </StyledRow>
             <QuerySentencePreview
               operation={props.operation}
               onEditorInit={onEditorInit}
