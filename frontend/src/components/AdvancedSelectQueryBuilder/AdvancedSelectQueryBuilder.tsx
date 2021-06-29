@@ -1,12 +1,8 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AdvancedQueryColumn } from '../../types/operations';
-<<<<<<< HEAD
-import { SourceMap } from '../../types/sources';
-import { ICheck, ICheckData } from '../ICheck';
-=======
 import { ColumnList, SourceMap } from '../../types/sources';
->>>>>>>  Add umerical check for column aggregation
+import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
 import { ColumnAggregate } from './ColumnAggregate';
@@ -37,6 +33,12 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     setActiveAction(undefined);
     updateOptions!({ selectall: true, columns: [] });
   };
+  const numericalColumns = (source.get('columns') as ColumnList).filter(
+    (column) => column.get('data_type') === 'N',
+  );
+  const numericalSelectedColumns = options.columns?.filter((column) =>
+    numericalColumns.find((col) => col.get('name') === column.name),
+  );
 
   return (
     <div className="mb-3">
@@ -71,7 +73,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         <Button
           variant="danger"
           size="sm"
-          hidden={selectAll || (options.columns && !options.columns.length)}
+          hidden={
+            selectAll ||
+            (options.columns && !options.columns.length) ||
+            !numericalSelectedColumns?.length
+          }
           onClick={() => setActiveAction('aggregate')}
         >
           Aggregate
