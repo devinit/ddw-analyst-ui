@@ -1,21 +1,25 @@
-import React, { FunctionComponent, useState } from 'react';
-import { Dropdown, DropdownProps } from 'semantic-ui-react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { AdvancedQueryBuilderAction, AdvancedQueryOptions } from '../../types/operations';
-import { actions, getSelectOptionsFromActions, getSupportedActions } from './utils';
+import { ICheckData, IRadio } from '../IRadio';
+import { actions } from './utils';
 
 interface ComponentProps {
   onSelectAction?: (action: AdvancedQueryBuilderAction) => void;
   config?: AdvancedQueryOptions;
   defaultAction?: AdvancedQueryBuilderAction;
 }
-type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 
 const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) => {
-  const [supportedActions, setSupportedActions] = useState(actions);
   const [selectedAction, setSelectedAction] = useState(props.defaultAction);
-  const onSelectAction = (_event: SelectEvent, data: DropdownProps) => {
+
+  useEffect(() => {
+    if (props.onSelectAction && props.defaultAction) {
+      props.onSelectAction(props.defaultAction);
+    }
+  }, []);
+
+  const onSelectAction = (data: ICheckData) => {
     setSelectedAction(data.value as AdvancedQueryBuilderAction);
-    setSupportedActions(getSupportedActions(actions, data.value as AdvancedQueryBuilderAction));
     if (props.onSelectAction) {
       props.onSelectAction(data.value as AdvancedQueryBuilderAction);
     }
@@ -24,19 +28,20 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
   return (
     <div className="mb-3">
       <label>Active Clause</label>
-      <Dropdown
-        className="col-lg-4"
-        placeholder="Select Action"
-        fluid
-        selection
-        search
-        options={getSelectOptionsFromActions(actions, supportedActions)}
-        loading={false}
-        onChange={onSelectAction}
-        value={selectedAction}
-        data-testid="a-qb-action-selector"
-        selectOnBlur={false}
-      />
+      <div>
+        {actions.map((action) => (
+          <IRadio
+            key={action.name}
+            variant="danger"
+            id={action.name}
+            name={action.name}
+            label={action.caption}
+            onChange={onSelectAction}
+            inline
+            checked={selectedAction === action.name}
+          />
+        ))}
+      </div>
     </div>
   );
 };

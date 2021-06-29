@@ -87,7 +87,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
         <DataSourceSelector source={source} onSelect={onSelectSource} />
         {source ? (
           <>
-            <QueryBuilderActionSelector onSelectAction={onSelectAction} />
+            <QueryBuilderActionSelector onSelectAction={onSelectAction} defaultAction="select" />
             {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
             {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
             {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
