@@ -266,10 +266,10 @@ class GetOperationQuery(APIView):
 
     def get_query(self, request):
         # TODO: handle more than advanced config
-        config = request.data['config']
+        config = request.data['advanced_config']
         builder = AdvancedQueryBuilder()
         query = builder.process_config(config)
-        return query.get_sql().replace('"', "'")
+        return query.get_sql()
 
     def post(self, request):
         try:

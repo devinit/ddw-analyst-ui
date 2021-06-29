@@ -137,7 +137,6 @@ class AdvancedQueryBuilder:
                     if j:
                         all_columns.pop(j)
                 columns = provided_columns + all_columns
-
             else:
                 columns = all_columns
         else:
