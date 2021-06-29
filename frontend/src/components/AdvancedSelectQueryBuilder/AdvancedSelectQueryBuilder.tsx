@@ -67,7 +67,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
         <Button
           variant="danger"
           size="sm"
-          disabled={options.columns && options.columns.length <= 1}
+          disabled={
+            usage === 'join' && options.join
+              ? !options.join.columns || options.join.columns.length <= 1
+              : !options.columns || options.columns.length <= 1
+          }
           onClick={() => setActiveAction('order')}
         >
           Order Columns
@@ -92,9 +96,9 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
       />
       <AdvancedQueryBuilderColumnOrder
         show={activeAction === 'order'}
-        columns={options.columns || []}
+        usage={usage}
+        columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
         source={source}
-        onUpdateOptions={updateOptions}
       />
       <ColumnAggregate
         show={activeAction === 'aggregate'}
