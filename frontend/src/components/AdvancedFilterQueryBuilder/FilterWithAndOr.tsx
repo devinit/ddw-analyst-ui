@@ -55,18 +55,26 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   }, [options]);
 
   const onReplace = () => {
-    if (!isEditorContentEmpty(editorContent) && filterWith && editor && updateOptions) {
-      options.filter = editorContent;
-      updateOptions(options as AdvancedQueryOptions);
-      setErrors(validate(editor, editorContent, columns));
+    if (filterWith && editor && updateOptions) {
+      if (!isEditorContentEmpty(editorContent)) {
+        options.filter = editorContent;
+        updateOptions(options as AdvancedQueryOptions);
+        setErrors(validate(editor, editorContent, columns));
+      } else {
+        setErrors(['Replace failed because JSON is empty']);
+      }
     }
     setIsEditingExisting(false);
   };
 
   const onInsert = () => {
-    if (!isEditorContentEmpty(editorContent) && editor && filterWith) {
-      editor.replaceSelection(JSON.stringify(editorContent, null, 2));
-      setErrors(validate(editor, editorContent, columns));
+    if (editor && filterWith) {
+      if (!isEditorContentEmpty(editorContent)) {
+        editor.replaceSelection(JSON.stringify(editorContent, null, 2));
+        setErrors(validate(editor, editorContent, columns));
+      } else {
+        setErrors(['Insert failed because JSON is empty']);
+      }
     }
     setIsEditingExisting(false);
   };
