@@ -8,7 +8,7 @@ import {
   Operation,
   OperationMap,
 } from '../../types/operations';
-import { Column, SourceMap } from '../../types/sources';
+import { SourceMap } from '../../types/sources';
 import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedGroupByQueryBuilder } from '../AdvancedGroupByQueryBuilder';
 import { AdvancedJoinQueryBuilder } from '../AdvancedJoinQueryBuilder';
@@ -51,14 +51,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
       options: { ...context.options, source: source?.get('id') as number, columns: [] },
     });
   }, [source]);
-  useEffect(() => {
-    const aggregateColumns = context.options.columns?.filter((col) => col.aggregate);
-    if (aggregateColumns?.length && context.updateOptions) {
-      context.updateOptions({
-        groupby: context.options.columns?.filter((col) => !col.aggregate) as Column[],
-      });
-    }
-  }, [context.options.columns]);
 
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>) => {
     setContext({ options: { ...context.options, ...options }, updateOptions: onUpdateOptions });

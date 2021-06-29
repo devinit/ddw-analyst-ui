@@ -40,6 +40,14 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           value: column.name as string,
         })),
     );
+    const aggregateColumns = props.columns?.filter((col) => col.aggregate);
+    if (aggregateColumns?.length && props.onUpdateOptions) {
+      props.onUpdateOptions({
+        groupby: props.columns
+          ?.filter((col: AdvancedQueryColumn) => !col.aggregate)
+          .map((column: Column) => column.name) as any,
+      });
+    }
   }, [props.columns]);
 
   const onSelectColumn = (_event: SelectEvent, data: DropdownProps) => {
