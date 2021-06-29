@@ -105,16 +105,16 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
         columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
       />
       <AdvancedQueryBuilderColumnOrder
-        show={activeAction === 'order'}
         usage={usage}
+        show={activeAction === 'order'}
         columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
         source={source}
       />
       <ColumnAggregate
+        usage={usage}
         show={activeAction === 'aggregate'}
         source={source}
-        columns={options.columns || []}
-        onUpdateOptions={updateOptions}
+        columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
       />
     </div>
   );

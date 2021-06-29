@@ -1,14 +1,15 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../../types/sources';
+import { AdvancedQueryContext } from '../../QuerySentenceBuilder';
 
 interface ColumnAggregateProps {
   show: boolean;
   source: SourceMap;
   columns: AdvancedQueryColumn[];
-  onUpdateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
+  usage?: 'select' | 'join';
 }
 const aggregateOptions: DropdownItemProps[] = [
   { key: 'sum', text: 'Sum', value: 'SUM' },
@@ -20,6 +21,7 @@ const aggregateOptions: DropdownItemProps[] = [
 type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 
 const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...props }) => {
+  const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [columns, setColumns] = useState<DropdownItemProps[]>([]);
   const [selectedColumn, setSelectedColumn] = useState('');
   const [selectedAggregate, setSelectedAggregate] = useState('');
@@ -49,23 +51,29 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
     setSelectedAggregate(data.value as string);
   };
   const onAdd = () => {
-    if (props.onUpdateOptions) {
-      props.onUpdateOptions({
-        columns: props.columns.map((col) =>
-          col.name === selectedColumn ? { ...col, aggregate: selectedAggregate } : col,
-        ) as AdvancedQueryColumn[],
-      });
+    if (updateOptions) {
+      const updatedColumns = props.columns.map((col) =>
+        col.name === selectedColumn ? { ...col, aggregate: selectedAggregate } : col,
+      ) as AdvancedQueryColumn[];
+      updateOptions(
+        (props.usage === 'select'
+          ? { columns: updatedColumns }
+          : { join: { ...options.join, columns: updatedColumns } }) as AdvancedQueryOptions,
+      );
     }
   };
   const onRemove = () => {
-    if (props.onUpdateOptions) {
-      props.onUpdateOptions({
-        columns: props.columns.map((col) => {
-          if (col.name === selectedColumn && col.aggregate) delete col.aggregate;
+    if (updateOptions) {
+      const updatedColumns = props.columns.map((col) => {
+        if (col.name === selectedColumn && col.aggregate) delete col.aggregate;
 
-          return col;
-        }) as AdvancedQueryColumn[],
+        return col;
       });
+      updateOptions(
+        (props.usage === 'select'
+          ? { columns: updatedColumns }
+          : { join: { ...options.join, columns: updatedColumns } }) as AdvancedQueryOptions,
+      );
     }
   };
 
@@ -112,5 +120,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
 
   return null;
 };
+
+ColumnAggregate.defaultProps = { usage: 'select' };
 
 export { ColumnAggregate };
