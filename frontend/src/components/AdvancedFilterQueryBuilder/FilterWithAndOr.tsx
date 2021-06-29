@@ -15,7 +15,7 @@ import { CodeMirrorReact } from '../CodeMirrorReact';
 import { FilterItem } from '../FilterItem';
 import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { FilterWith } from './AdvancedFilterQueryBuilder';
-import { validate } from './utils';
+import { isEditorContentEmpty, validate } from './utils';
 import { operations } from './utils/actions';
 
 interface ComponentProps {
@@ -55,7 +55,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   }, [options]);
 
   const onReplace = () => {
-    if (filterWith && editor && updateOptions) {
+    if (!isEditorContentEmpty(editorContent) && filterWith && editor && updateOptions) {
       options.filter = editorContent;
       updateOptions(options as AdvancedQueryOptions);
       setErrors(validate(editor, editorContent, columns));
@@ -64,7 +64,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   };
 
   const onInsert = () => {
-    if (editor && filterWith) {
+    if (!isEditorContentEmpty(editorContent) && editor && filterWith) {
       editor.replaceSelection(JSON.stringify(editorContent, null, 2));
       setErrors(validate(editor, editorContent, columns));
     }
