@@ -35,6 +35,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   };
 
   const onSelectSource = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    if (options.join && options.join.columns) delete options.join.columns;
     updateOptions!({
       join: { ...options.join, source: data.value as number } as AdvancedQueryJoin,
     });
