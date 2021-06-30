@@ -3,7 +3,8 @@ import CodeMirror from 'codemirror';
 import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
-import { OperationData, OperationMap } from '../../types/operations';
+import styled from 'styled-components';
+import { AdvancedQueryOptions, OperationData, OperationMap } from '../../types/operations';
 import { previewAdvancedDatasetData } from '../../utils/hooks';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { ICheckData, IRadio } from '../IRadio';
@@ -18,21 +19,24 @@ interface QuerySentencePreviewProps {
   validated?: boolean;
 }
 
-type PreviewOption = 'config' | 'query' | 'data';
+type PreviewOption = 'clause-config' | 'config' | 'query' | 'data';
+const PreviewWrapper = styled.div`
+  min-height: 350px;
+`;
 
 const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (props) => {
   const { options } = useContext(AdvancedQueryContext);
-  const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
+  const [previewOption, setPreviewOption] = useState<PreviewOption>('clause-config');
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [alert, setAlert] = useState('');
-  const [editor, setEditor] = useState<CodeMirror.Editor>();
+  const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
   const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
 
   useEffect(() => {
-    if (previewOption === 'data') {
+    if (previewOption === 'data' && validOptions) {
       setDataLoading(true);
-      previewAdvancedDatasetData(options).then((results) => {
+      previewAdvancedDatasetData(validOptions).then((results) => {
         setDataLoading(false);
         if (results.error) {
           setAlert(`Error: ${results.error}`);
@@ -44,32 +48,34 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
     }
   }, [previewOption]);
 
-  const onEditorInit = (editr: CodeMirror.Editor) => {
-    setEditor(editr);
-    if (props.onEditorInit) props.onEditorInit(editr);
-  };
+  useEffect(() => {
+    if (props.validated) {
+      setValidOptions(options);
+    }
+  }, [props.validated, options]);
 
   const getEditorValue = () => {
-    if (props.validated) {
+    if (previewOption === 'clause-config') {
       return JSON.stringify(options || {}, null, 2);
     }
+    if (validOptions) {
+      return JSON.stringify(validOptions || {}, null, 2);
+    }
 
-    if (editor) return editor.getValue();
-
-    return JSON.stringify({}, null, 2);
+    return JSON.stringify({ error: 'Waiting for valid options' }, null, 2);
   };
 
   return (
-    <>
+    <PreviewWrapper>
       <div className="mb-2">
         <IRadio
           variant="danger"
-          id="config"
-          name="config"
-          label="Full Config"
+          id="clause-config"
+          name="clause-config"
+          label="Clause Config"
           onChange={onRadioChange}
           inline
-          checked={previewOption === 'config'}
+          checked={previewOption === 'clause-config'}
         />
         <IRadio
           variant="danger"
@@ -89,17 +95,29 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           inline
           checked={previewOption === 'data'}
         />
+        <IRadio
+          variant="danger"
+          id="config"
+          name="config"
+          label="Full Config"
+          onChange={onRadioChange}
+          inline
+          checked={previewOption === 'config'}
+        />
       </div>
-      <div className={classNames({ 'd-none': previewOption !== 'config' })}>
+      <div
+        className={classNames({
+          'd-none': previewOption !== 'clause-config' && previewOption !== 'config',
+        })}
+      >
         <CodeMirrorReact
           config={{
             mode: jsonMode,
             value: getEditorValue(),
             lineNumbers: true,
             theme: 'material',
-            readOnly: true,
           }}
-          onInit={onEditorInit}
+          onInit={props.onEditorInit}
           onChange={props.onEditorUpdate}
         />
       </div>
@@ -118,7 +136,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       <Alert variant="warning" show={!!alert}>
         {alert}
       </Alert>
-    </>
+    </PreviewWrapper>
   );
 };
 
