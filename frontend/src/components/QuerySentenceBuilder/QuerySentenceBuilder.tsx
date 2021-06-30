@@ -63,13 +63,14 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
   const onSelectAction = (selectedAction: AdvancedQueryBuilderAction) => setAction(selectedAction);
+  /**
+   * Only handles validated options & therefore doesn't need to update the context as that contains raw configs
+   * @param value JSON string of the editor content
+   */
   const onChange = (value: string) => {
     try {
       const parsedValue = JSON.parse(value);
-      setContext({
-        options: { ...context.options, ...parsedValue },
-        updateOptions: onUpdateOptions,
-      });
+
       if (props.operation) {
         props.onUpdateOperation(
           props.operation.set('advanced_config' as keyof Operation, parsedValue),
