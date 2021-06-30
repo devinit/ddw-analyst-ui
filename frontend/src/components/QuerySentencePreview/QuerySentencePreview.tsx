@@ -11,12 +11,12 @@ import { ICheckData, IRadio } from '../IRadio';
 import { OperationPreview } from '../OperationPreview';
 import { QuerySentence } from '../QuerySentence';
 import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
+import { validateOptions } from './utils';
 
 interface QuerySentencePreviewProps {
   operation?: OperationMap;
   onEditorInit: (editor: CodeMirror.Editor) => void;
   onEditorUpdate?: (value: string) => void;
-  validated?: boolean;
 }
 
 type PreviewOption = 'clause-config' | 'config' | 'query' | 'data';
@@ -49,10 +49,15 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   }, [previewOption]);
 
   useEffect(() => {
-    if (props.validated) {
+    // every options update is validated. Valid options automatically get saved & are eligible for query & data preview
+    const validationResponse = validateOptions(options);
+    if (validationResponse) {
+      setAlert(validationResponse);
+    } else {
+      setAlert('');
       setValidOptions(options);
     }
-  }, [props.validated, options]);
+  }, [options]);
 
   const getEditorValue = () => {
     if (previewOption === 'clause-config') {
