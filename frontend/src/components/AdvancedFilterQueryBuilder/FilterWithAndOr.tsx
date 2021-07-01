@@ -57,7 +57,6 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   const onUpdate = (updateAction: 'replace' | 'insert') => {
     if (filterWith && editor) {
       if (!isEditorContentEmpty(editorContent)) {
-        options.filter = editorContent;
         const validationErrors = validate(editor, editorContent, columns);
         if (validationErrors.length) {
           setErrors(validationErrors);
@@ -67,6 +66,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         // clear any existing errors
         if (errors.length) setErrors([]);
 
+        options.filter = editorContent;
         if (updateAction === 'replace' && updateOptions) {
           updateOptions(options as AdvancedQueryOptions);
         }
@@ -97,9 +97,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
     }
   };
 
-  const onUpdateFilter = (filter: ErroredFilterMap) => {
-    setActiveFilter(filter);
-  };
+  const onUpdateFilter = (filter: ErroredFilterMap) => setActiveFilter(filter);
 
   const onReset = () => setEditorContent(defaultOptions(filterWith!));
 
@@ -127,15 +125,13 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
           onUpdate={onUpdateFilter}
           onAdd={onAddFilter}
         />
-        <Alert variant="danger" hidden={errors.length <= 0}>
+        <Alert variant="danger" hidden={!errors.length}>
           <ul className="ui list">
-            {errors.map((error, i) => {
-              return (
-                <div key={i} className="item">
-                  {error}
-                </div>
-              );
-            })}
+            {errors.map((error, i) => (
+              <div key={i} className="item">
+                {error}
+              </div>
+            ))}
           </ul>
         </Alert>
         <CodeMirrorReact
