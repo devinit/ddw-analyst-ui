@@ -1,101 +1,24 @@
-import CodeMirror, { LineWidget } from 'codemirror';
-import { AdvancedQueryOptions, comp } from '../../../types/operations';
-import { FilterWith } from '../AdvancedFilterQueryBuilder';
-import { JSHINT } from 'jshint';
-import './lint.css';
-import { EditorContent } from '../FilterWithAndOr';
 import { fromJS } from 'immutable';
 import { DropdownItemProps } from 'semantic-ui-react';
-
-interface ValidationOptions {
-  action: FilterWith;
-  options: AdvancedQueryOptions;
-  editor: CodeMirror.Editor;
-}
+import { AdvancedQueryFilter, comp } from '../../../types/operations';
+import { EditorContent } from '../FilterWithAndOr';
 
 export type ValidationResponse = 'invalid' | 'create' | 'update';
 
-const widgets: LineWidget[] = [];
-
-export const validateFilter = ({ action, options }: ValidationOptions): ValidationResponse => {
-  if (options.filter) {
-    // TODO: handle path for existing filters e.g. cursor validation
-
-    return 'update';
-  }
-
-  if (action === '$and') {
-    // TODO: add filter with an AND option
-    return 'create';
-  }
-
-  return 'invalid';
-};
-
-export const validate = (
-  editor: CodeMirror.Editor,
-  editorContent: EditorContent,
+export const validateFilter = (
+  filter: AdvancedQueryFilter,
   columns: DropdownItemProps[],
-): string[] => {
-  const validationErrors: string[] = [];
-  clearErrors();
-  if (editor) {
-    editor.operation(function () {
-      for (let i = 0; i < widgets.length; ++i) editor.removeLineWidget(widgets[i]);
-      widgets.length = 0;
-      JSHINT(editor.getValue());
-      for (let i = 0; i < JSHINT.errors.length; ++i) {
-        const err = JSHINT.errors[i];
-        if (!err) continue;
-        const msg = document.createElement('div');
-        const icon = msg.appendChild(document.createElement('span'));
-        icon.innerHTML = 'x';
-        icon.className = 'lint-error-icon';
-        msg.appendChild(document.createTextNode(err.reason));
-        msg.className = 'lint-error';
-        widgets.push(
-          editor.addLineWidget(err.line - 1, msg, { coverGutter: false, noHScroll: true }),
-        );
-      }
-    });
-    const info = editor.getScrollInfo();
-    const after = editor.charCoords({ line: editor.getCursor().line + 1, ch: 0 }, 'local').top;
-    if (info.top + info.clientHeight < after) editor.scrollTo(null, after - info.clientHeight + 3);
-  }
-  const operatorErrors: string[] = validateOperators(editorContent);
-  const columnErrors: string[] = validateColumns(editorContent, columns);
-  const comparisonErrors: string[] = validateAndOr(editorContent);
-  if (operatorErrors.length > 0) {
-    operatorErrors.map((operatorError: string) => {
-      validationErrors.push(operatorError);
-    });
-  }
-  if (columnErrors.length > 0) {
-    columnErrors.map((columnError: string) => {
-      validationErrors.push(columnError);
-    });
-  }
-  if (comparisonErrors.length > 0) {
-    comparisonErrors.map((comparisonError: string) => {
-      validationErrors.push(comparisonError);
-    });
-  }
+): string[] => [
+  ...validateOperators(filter),
+  ...validateColumns(filter, columns),
+  ...validateAndOr(filter),
+];
 
-  return validationErrors;
-};
-
-export const clearErrors = (): void => {
-  for (let index = 0; index < widgets.length; index++) {
-    widgets[index].clear();
-  }
-};
-
-export const validateOperators = (content: EditorContent): string[] => {
+export const validateOperators = (filterOptions: AdvancedQueryFilter): string[] => {
   const messages: string[] = [];
-  const parsedContent: [][] = JSON.parse(JSON.stringify(content));
 
-  for (const key in parsedContent) {
-    const filter = parsedContent[key];
+  for (const key in filterOptions) {
+    const filter = (filterOptions as any)[key]; // eslint-disable-line @typescript-eslint/no-explicit-any
     for (const index in filter) {
       if (!comp.includes(filter[index]['comp'])) {
         messages.push(`The operator ${filter[index]['comp']} is invalid.`);
@@ -106,13 +29,15 @@ export const validateOperators = (content: EditorContent): string[] => {
   return messages.length > 0 ? messages : [];
 };
 
-export const validateColumns = (content: EditorContent, columns: DropdownItemProps[]): string[] => {
+export const validateColumns = (
+  filterOptions: AdvancedQueryFilter,
+  columns: DropdownItemProps[],
+): string[] => {
   let selectedColumns: string[] = [];
   const allColumns: string[] = [];
-  const parsedContent: [][] = JSON.parse(JSON.stringify(content));
 
-  for (const key in parsedContent) {
-    const filter = parsedContent[key];
+  for (const key in filterOptions) {
+    const filter = (filterOptions as any)[key]; // eslint-disable-line @typescript-eslint/no-explicit-any
     for (const index in filter) {
       selectedColumns.push(filter[index]['column']);
     }
