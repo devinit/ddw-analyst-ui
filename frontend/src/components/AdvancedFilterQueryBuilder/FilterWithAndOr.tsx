@@ -15,7 +15,7 @@ import { CodeMirrorReact } from '../CodeMirrorReact';
 import { FilterItem } from '../FilterItem';
 import { AdvancedQueryContext, jsonMode, QueryContextProps } from '../QuerySentenceBuilder';
 import { FilterWith } from './AdvancedFilterQueryBuilder';
-import { isEditorContentEmpty, validate } from './utils';
+import { isEditorContentEmpty, validateFilter } from './utils';
 import { operations } from './utils/actions';
 
 interface ComponentProps {
@@ -57,7 +57,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   const onUpdate = (updateAction: 'replace' | 'insert') => {
     if (filterWith && editor) {
       if (!isEditorContentEmpty(editorContent)) {
-        const validationErrors = validate(editor, editorContent, columns);
+        const validationErrors = validateFilter(editorContent, columns);
         if (validationErrors.length) {
           setErrors(validationErrors);
 
@@ -141,9 +141,9 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
             value: JSON.stringify(editorContent, null, 2),
             lineNumbers: true,
             theme: 'material',
-            gutters: ['CodeMirror-lint-markers'],
           }}
           onChange={onChange}
+          validateWith="jshint"
         />
         <ButtonGroup className="mr-2">
           {canEdit ? (
