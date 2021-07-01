@@ -4,16 +4,22 @@ import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
-import { AdvancedQueryOptions, OperationData, OperationMap } from '../../types/operations';
+import {
+  AdvancedQueryBuilderAction,
+  AdvancedQueryOptions,
+  OperationData,
+  OperationMap,
+} from '../../types/operations';
 import { previewAdvancedDatasetData } from '../../utils/hooks';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { ICheckData, IRadio } from '../IRadio';
 import { OperationPreview } from '../OperationPreview';
 import { QuerySentence } from '../QuerySentence';
 import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
-import { validateOptions } from './utils';
+import { getClauseOptions, validateOptions } from './utils';
 
 interface QuerySentencePreviewProps {
+  action?: AdvancedQueryBuilderAction;
   operation?: OperationMap;
   onEditorInit: (editor: CodeMirror.Editor) => void;
   onEditorUpdate?: (value: string) => void;
@@ -61,7 +67,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
 
   const getEditorValue = () => {
     if (previewOption === 'clause-config') {
-      return JSON.stringify(options || {}, null, 2);
+      return JSON.stringify(getClauseOptions(options, props.action) || {}, null, 2);
     }
     if (validOptions) {
       return JSON.stringify(validOptions || {}, null, 2);
