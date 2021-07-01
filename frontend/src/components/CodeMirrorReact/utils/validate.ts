@@ -28,7 +28,7 @@ export const validateJSHINT = (editor: CodeMirror.Editor): Promise<boolean> =>
         );
       });
 
-      resolve(!JSHINT.errors);
+      resolve(!JSHINT.errors.length);
     });
     const info = editor.getScrollInfo();
     const after = editor.charCoords({ line: editor.getCursor().line + 1, ch: 0 }, 'local').top;
