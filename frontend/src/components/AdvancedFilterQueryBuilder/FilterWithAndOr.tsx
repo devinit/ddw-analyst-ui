@@ -93,8 +93,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
       setEditorContent(parsedValue);
       setErrors([]);
     } catch (e) {
-      // errors handled internally
-      // setErrors([...errors, e.message]);
+      setErrors([...errors, e.message]);
     }
   };
 
