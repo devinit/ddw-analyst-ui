@@ -61,7 +61,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         updateOptions(options as AdvancedQueryOptions);
         setErrors(validate(editor, editorContent, columns));
       } else {
-        setErrors(['Replace failed because JSON is empty']);
+        setErrors(['Please add at least one condition to filter']);
       }
     }
     setIsEditingExisting(false);
@@ -73,7 +73,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         editor.replaceSelection(JSON.stringify(editorContent, null, 2));
         setErrors(validate(editor, editorContent, columns));
       } else {
-        setErrors(['Insert failed because JSON is empty']);
+        setErrors(['Please add at least one condition to filter']);
       }
     }
     setIsEditingExisting(false);
