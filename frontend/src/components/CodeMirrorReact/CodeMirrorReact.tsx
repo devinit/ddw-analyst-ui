@@ -40,8 +40,13 @@ const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
       setEditor(codeMirror);
       if (props.onInit) props.onInit(codeMirror);
       codeMirror.on('change', (mirror) => {
-        if (props.validateWith === 'jshint') validateJSHINT(mirror);
-        if (props.onChange) props.onChange(mirror.getValue());
+        if (props.validateWith === 'jshint') {
+          validateJSHINT(mirror).then((valid) => {
+            if (valid && props.onChange) {
+              props.onChange(mirror.getValue());
+            }
+          });
+        } else if (props.onChange) props.onChange(mirror.getValue());
       });
     }
   }, []);
