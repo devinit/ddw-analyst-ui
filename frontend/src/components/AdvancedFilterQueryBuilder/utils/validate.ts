@@ -123,12 +123,8 @@ export const validateColumns = (content: EditorContent, columns: DropdownItemPro
   }
 
   selectedColumns = selectedColumns
-    .filter((column) => {
-      return !allColumns.includes(column);
-    })
-    .map((column) => {
-      return `${column} is not a valid column name.`;
-    });
+    .filter((column) => !allColumns.includes(column))
+    .map((column) => (column ? `${column} is not a valid column name.` : 'column is required'));
 
   return selectedColumns;
 };

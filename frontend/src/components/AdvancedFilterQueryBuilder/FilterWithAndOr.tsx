@@ -54,12 +54,17 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
     setCanEdit(!!(options.filter && options.filter[filterWith!]));
   }, [options]);
 
-  const onReplace = () => {
+  const onUpdate = () => {
     if (filterWith && editor && updateOptions) {
       if (!isEditorContentEmpty(editorContent)) {
         options.filter = editorContent;
-        updateOptions(options as AdvancedQueryOptions);
-        setErrors(validate(editor, editorContent, columns));
+        const validationErrors = validate(editor, editorContent, columns);
+        if (validationErrors.length) {
+          setErrors(validationErrors);
+        } else {
+          updateOptions(options as AdvancedQueryOptions);
+          setErrors([]);
+        }
       } else {
         setErrors(['Please add at least one condition to filter']);
       }
@@ -170,7 +175,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
             data-placement="bottom"
             data-html="true"
             title={`<i>Replaces</i> existing filter config`}
-            onClick={onReplace}
+            onClick={onUpdate}
           >
             Replace
           </Button>
