@@ -54,29 +54,25 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
     setCanEdit(!!(options.filter && options.filter[filterWith!]));
   }, [options]);
 
-  const onUpdate = () => {
-    if (filterWith && editor && updateOptions) {
+  const onUpdate = (updateAction: 'replace' | 'insert') => {
+    if (filterWith && editor) {
       if (!isEditorContentEmpty(editorContent)) {
         options.filter = editorContent;
         const validationErrors = validate(editor, editorContent, columns);
         if (validationErrors.length) {
           setErrors(validationErrors);
-        } else {
-          updateOptions(options as AdvancedQueryOptions);
-          setErrors([]);
-        }
-      } else {
-        setErrors(['Please add at least one condition to filter']);
-      }
-    }
-    setIsEditingExisting(false);
-  };
 
-  const onInsert = () => {
-    if (editor && filterWith) {
-      if (!isEditorContentEmpty(editorContent)) {
-        editor.replaceSelection(JSON.stringify(editorContent, null, 2));
-        setErrors(validate(editor, editorContent, columns));
+          return;
+        }
+        // clear any existing errors
+        if (errors.length) setErrors([]);
+
+        if (updateAction === 'replace' && updateOptions) {
+          updateOptions(options as AdvancedQueryOptions);
+        }
+        if (updateAction === 'insert') {
+          editor.replaceSelection(JSON.stringify(editorContent, null, 2));
+        }
       } else {
         setErrors(['Please add at least one condition to filter']);
       }
@@ -175,7 +171,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
             data-placement="bottom"
             data-html="true"
             title={`<i>Replaces</i> existing filter config`}
-            onClick={onUpdate}
+            onClick={() => onUpdate('replace')}
           >
             Replace
           </Button>
@@ -186,7 +182,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
             data-placement="bottom"
             data-html="true"
             title={`<i>Inserts</i> config to current cursor position on the main editor. </br> <strong>NB:</strong> valid JSON will auto-format`}
-            onClick={onInsert}
+            onClick={() => onUpdate('insert')}
           >
             Insert
           </Button>
