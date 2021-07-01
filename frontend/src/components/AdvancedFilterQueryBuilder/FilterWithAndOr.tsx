@@ -91,6 +91,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
     try {
       const parsedValue = JSON.parse(value);
       setEditorContent(parsedValue);
+      setErrors([]);
     } catch (e) {
       setErrors([...errors, e.message]);
     }
@@ -100,9 +101,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
     setActiveFilter(filter);
   };
 
-  const onReset = () => {
-    setEditorContent(defaultOptions(filterWith!));
-  };
+  const onReset = () => setEditorContent(defaultOptions(filterWith!));
 
   const onAddFilter = (filter: ErroredFilterMap) => {
     if (filter.size === 3 && filterWith && editorContent[filterWith]) {
