@@ -96,7 +96,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
               operation={props.operation}
               onEditorInit={onEditorInit}
               onEditorUpdate={onChange}
-              action={action}
             />
 
             <Alert show={!!alert} variant="warning" className="mt-2">
