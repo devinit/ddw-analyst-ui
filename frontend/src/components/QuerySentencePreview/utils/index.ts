@@ -23,6 +23,11 @@ export const validateOptions = (options: AdvancedQueryOptions, source: SourceMap
 
     return validateFilter(options.filter, columnItems);
   }
+  if (options.join && !options.join.type) return ['Join type is required'];
+  if (options.join && !options.join.source) return ['Join source is required'];
+  if (options.join && !options.join.mapping.length) {
+    return ['At least one join mapping is required'];
+  }
 
   return [];
 };
