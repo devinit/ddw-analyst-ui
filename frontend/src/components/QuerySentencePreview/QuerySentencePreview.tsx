@@ -59,7 +59,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   useEffect(() => {
     // every options update is validated. Valid options automatically get saved & are eligible for query & data preview
     const validationResponse = validateOptions(options, props.source);
-    if (validationResponse) {
+    if (validationResponse.length) {
       setAlert(validationResponse);
     } else {
       setAlert([]);
@@ -147,6 +147,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
             value: getEditorValue(),
             lineNumbers: true,
             theme: 'material',
+            readOnly: previewOption === 'config',
           }}
           onInit={props.onEditorInit}
           onChange={(value: string) => setEditorValue(value)}
