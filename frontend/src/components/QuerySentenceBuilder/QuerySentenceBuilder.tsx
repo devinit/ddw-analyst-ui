@@ -25,7 +25,7 @@ interface ComponentProps {
 }
 export interface QueryContextProps {
   options: AdvancedQueryOptions;
-  updateOptions?: (options: Partial<AdvancedQueryOptions>) => void;
+  updateOptions?: (options: Partial<AdvancedQueryOptions>, replace?: boolean) => void;
   editor?: CodeMirror.Editor;
 }
 
@@ -57,8 +57,11 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     });
   }, [source]);
 
-  const onUpdateOptions = (options: Partial<AdvancedQueryOptions>) => {
-    setContext({ options: { ...context.options, ...options }, updateOptions: onUpdateOptions });
+  const onUpdateOptions = (options: Partial<AdvancedQueryOptions>, replace?: boolean) => {
+    setContext({
+      options: replace ? (options as AdvancedQueryOptions) : { ...context.options, ...options },
+      updateOptions: onUpdateOptions,
+    });
   };
   const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);

@@ -102,7 +102,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   };
 
   const onReset = () => {
-    updateOptions!(resetClauseOptions(options, props.action));
+    updateOptions!(resetClauseOptions(options, props.action), true);
   };
 
   return (
