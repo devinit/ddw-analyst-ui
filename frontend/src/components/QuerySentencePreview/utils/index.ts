@@ -28,6 +28,7 @@ export const validateOptions = (options: AdvancedQueryOptions, source: SourceMap
   if (options.join && !options.join.mapping.length) {
     return ['At least one join mapping is required'];
   }
+  if (options.groupby && !options.groupby.length) return ['Group by requires at least one column'];
 
   return [];
 };
