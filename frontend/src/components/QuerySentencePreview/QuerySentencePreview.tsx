@@ -10,6 +10,7 @@ import {
   OperationData,
   OperationMap,
 } from '../../types/operations';
+import { SourceMap } from '../../types/sources';
 import { previewAdvancedDatasetData } from '../../utils/hooks';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { ICheckData, IRadio } from '../IRadio';
@@ -19,6 +20,7 @@ import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
 import { getClauseOptions, validateOptions } from './utils';
 
 interface QuerySentencePreviewProps {
+  source: SourceMap;
   action?: AdvancedQueryBuilderAction;
   operation?: OperationMap;
   onEditorInit: (editor: CodeMirror.Editor) => void;
@@ -35,7 +37,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const [previewOption, setPreviewOption] = useState<PreviewOption>('clause-config');
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
-  const [alert, setAlert] = useState('');
+  const [alert, setAlert] = useState<string[]>([]);
   const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
   const [editorValue, setEditorValue] = useState('{}');
   const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
@@ -46,8 +48,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       previewAdvancedDatasetData(validOptions).then((results) => {
         setDataLoading(false);
         if (results.error) {
-          setAlert(`Error: ${results.error}`);
-          console.log(`Error: ${results.error}`);
+          setAlert([`Error: ${results.error}`]);
         } else {
           setData(results.data ? results.data.slice(0, 9) : []);
         }
@@ -57,11 +58,11 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
 
   useEffect(() => {
     // every options update is validated. Valid options automatically get saved & are eligible for query & data preview
-    const validationResponse = validateOptions(options);
+    const validationResponse = validateOptions(options, props.source);
     if (validationResponse) {
       setAlert(validationResponse);
     } else {
-      setAlert('');
+      setAlert([]);
       setValidOptions(options);
       if (props.onValidUpdate) props.onValidUpdate(options);
     }
@@ -71,10 +72,10 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
     try {
       const parsedValue = JSON.parse(editorValue);
       updateOptions!({ ...options, ...parsedValue });
-      setAlert('');
+      setAlert([]);
     } catch (error) {
       if (error.name === 'SyntaxError' && error.message.includes('Unexpected token')) {
-        setAlert(`Invalid JSON: ${error.message}`);
+        setAlert([`Invalid JSON: ${error.message}`]);
       }
     }
   }, [editorValue]);
@@ -130,6 +131,11 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           checked={previewOption === 'config'}
         />
       </div>
+      <Alert variant="warning" show={!!alert.length} className="mt-2">
+        {alert.map((message, index) => (
+          <p key={`${index}`}>{message}</p>
+        ))}
+      </Alert>
       <div
         className={classNames({
           'd-none': previewOption !== 'clause-config' && previewOption !== 'config',
@@ -158,9 +164,6 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           loading={dataLoading}
         />
       ) : null}
-      <Alert variant="warning" show={!!alert} className="mt-2">
-        {alert}
-      </Alert>
     </PreviewWrapper>
   );
 };
