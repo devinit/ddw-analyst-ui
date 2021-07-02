@@ -97,11 +97,8 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
     if (previewOption === 'clause-config') {
       return JSON.stringify(getClauseOptions(options, props.action) || {}, null, 2);
     }
-    if (validOptions) {
-      return JSON.stringify(validOptions || {}, null, 2);
-    }
 
-    return JSON.stringify({ error: 'Waiting for valid options' }, null, 2);
+    return JSON.stringify(validOptions || { error: 'Waiting for valid options' }, null, 2);
   };
 
   return (
