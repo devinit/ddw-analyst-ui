@@ -66,15 +66,12 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         // clear any existing errors
         if (errors.length) setErrors([]);
 
-        options.filter = editorContent;
         if (updateAction === 'replace' && updateOptions) {
+          options.filter = editorContent;
           updateOptions(options as AdvancedQueryOptions);
         }
         if (updateAction === 'insert' && updateOptions) {
           editor.replaceSelection(JSON.stringify(editorContent, null, 2));
-          const newFilter = JSON.parse(editor.getValue());
-          options.filter = newFilter.filter;
-          updateOptions(options as AdvancedQueryOptions);
         }
       } else {
         setErrors(['Please add at least one condition to filter']);
