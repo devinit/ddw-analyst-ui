@@ -92,6 +92,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
               </Col>
             </StyledRow>
             <QuerySentencePreview
+              source={source}
               action={action}
               operation={props.operation}
               onEditorInit={onEditorInit}
