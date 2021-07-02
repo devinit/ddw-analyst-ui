@@ -63,28 +63,17 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
   const onSelectAction = (selectedAction: AdvancedQueryBuilderAction) => setAction(selectedAction);
-  /**
-   * Only handles validated options & therefore doesn't need to update the context as that contains raw configs
-   * @param value JSON string of the editor content
-   */
-  const onChange = (value: string) => {
-    try {
-      const parsedValue = JSON.parse(value);
 
-      if (props.operation) {
-        props.onUpdateOperation(
-          props.operation.set('advanced_config' as keyof Operation, parsedValue),
-        );
-      } else {
-        const operation = fromJS({ advanced_config: parsedValue });
-        props.onUpdateOperation(operation);
-      }
-      setAlert('');
-    } catch (error) {
-      if (error.name === 'SyntaxError' && error.message.includes('Unexpected token')) {
-        setAlert(`Invalid JSON: ${error.message}`);
-      }
+  const onUpdate = (options: AdvancedQueryOptions) => {
+    if (props.operation) {
+      props.onUpdateOperation(
+        props.operation.set('advanced_config' as keyof Operation, fromJS(options)),
+      );
+    } else {
+      const operation = fromJS({ advanced_config: options });
+      props.onUpdateOperation(operation);
     }
+    setAlert('');
   };
 
   return (
@@ -106,7 +95,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
               action={action}
               operation={props.operation}
               onEditorInit={onEditorInit}
-              onEditorUpdate={onChange}
+              onValidUpdate={onUpdate}
             />
 
             <Alert show={!!alert} variant="warning" className="mt-2">

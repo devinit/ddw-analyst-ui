@@ -22,7 +22,7 @@ interface QuerySentencePreviewProps {
   action?: AdvancedQueryBuilderAction;
   operation?: OperationMap;
   onEditorInit: (editor: CodeMirror.Editor) => void;
-  onEditorUpdate?: (value: string) => void;
+  onValidUpdate?: (options: AdvancedQueryOptions) => void;
 }
 
 type PreviewOption = 'clause-config' | 'config' | 'query' | 'data';
@@ -31,12 +31,13 @@ const PreviewWrapper = styled.div`
 `;
 
 const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (props) => {
-  const { options } = useContext(AdvancedQueryContext);
+  const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [previewOption, setPreviewOption] = useState<PreviewOption>('clause-config');
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [alert, setAlert] = useState('');
   const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
+  const [editorValue, setEditorValue] = useState('{}');
   const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
 
   useEffect(() => {
@@ -62,8 +63,21 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
     } else {
       setAlert('');
       setValidOptions(options);
+      if (props.onValidUpdate) props.onValidUpdate(options);
     }
   }, [options]);
+
+  useEffect(() => {
+    try {
+      const parsedValue = JSON.parse(editorValue);
+      updateOptions!({ ...options, ...parsedValue });
+      setAlert('');
+    } catch (error) {
+      if (error.name === 'SyntaxError' && error.message.includes('Unexpected token')) {
+        setAlert(`Invalid JSON: ${error.message}`);
+      }
+    }
+  }, [editorValue]);
 
   const getEditorValue = () => {
     if (previewOption === 'clause-config') {
@@ -129,7 +143,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
             theme: 'material',
           }}
           onInit={props.onEditorInit}
-          onChange={props.onEditorUpdate}
+          onChange={(value: string) => setEditorValue(value)}
         />
       </div>
       {previewOption === 'query' && props.operation ? (
@@ -144,7 +158,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           loading={dataLoading}
         />
       ) : null}
-      <Alert variant="warning" show={!!alert}>
+      <Alert variant="warning" show={!!alert} className="mt-2">
         {alert}
       </Alert>
     </PreviewWrapper>
