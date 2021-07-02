@@ -61,6 +61,9 @@ const CodeMirrorReact: FunctionComponent<CodeMirrorReactProps> = (props) => {
       }
     }
   }, [props.config.value]);
+  useEffect(() => {
+    if (editor) editor.setOption('readOnly', props.config.readOnly);
+  }, [props.config.readOnly]);
 
   return <div ref={ref} className={classNames(props.className)}></div>;
 };
