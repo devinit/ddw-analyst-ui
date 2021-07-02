@@ -54,9 +54,10 @@ export const resetClauseOptions = (
   clause?: AdvancedQueryBuilderAction,
 ): AdvancedQueryOptions => {
   const _options = { ...options };
-  if (clause === 'select') {
-    return { ..._options, selectall: true, columns: [] };
-  }
+  if (clause === 'select') return { ..._options, selectall: true, columns: [] };
+  if (clause === 'filter' && options.filter) delete _options.filter;
+  if (clause === 'join' && options.join) delete _options.join;
+  if (clause === 'groupby' && options.groupby) delete _options.groupby;
 
-  return options;
+  return _options;
 };
