@@ -17,7 +17,7 @@ import { ICheckData, IRadio } from '../IRadio';
 import { OperationPreview } from '../OperationPreview';
 import { QuerySentence } from '../QuerySentence';
 import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
-import { getClauseOptions, validateOptions } from './utils';
+import { getClauseOptions, resetClauseOptions, validateOptions } from './utils';
 
 interface QuerySentencePreviewProps {
   source: SourceMap;
@@ -101,6 +101,10 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
     return JSON.stringify(validOptions || { error: 'Waiting for valid options' }, null, 2);
   };
 
+  const onReset = () => {
+    updateOptions!(resetClauseOptions(options, props.action));
+  };
+
   return (
     <PreviewWrapper>
       <div className="mb-2">
@@ -155,6 +159,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           variant="danger"
           size="sm"
           className={classNames({ 'd-none': previewOption !== 'clause-config' })}
+          onClick={onReset}
         >
           Clear
         </ResetButton>

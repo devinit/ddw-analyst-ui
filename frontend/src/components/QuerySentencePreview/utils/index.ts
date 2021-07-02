@@ -48,3 +48,15 @@ export const getClauseOptions = (
 
   return options;
 };
+
+export const resetClauseOptions = (
+  options: AdvancedQueryOptions,
+  clause?: AdvancedQueryBuilderAction,
+): AdvancedQueryOptions => {
+  const _options = { ...options };
+  if (clause === 'select') {
+    return { ..._options, selectall: true, columns: [] };
+  }
+
+  return options;
+};
