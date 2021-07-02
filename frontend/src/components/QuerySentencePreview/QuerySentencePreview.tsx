@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import CodeMirror from 'codemirror';
 import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import {
   AdvancedQueryBuilderAction,
@@ -30,6 +30,19 @@ interface QuerySentencePreviewProps {
 type PreviewOption = 'clause-config' | 'config' | 'query' | 'data';
 const PreviewWrapper = styled.div`
   min-height: 350px;
+`;
+const ResetButton = styled(Button)`
+  position: absolute;
+  top: 4px;
+  z-index: 10;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 0;
+  margin-left: 0;
+  right: 11px;
+`;
+const EditorWrapper = styled.div`
+  position: relative;
 `;
 
 const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (props) => {
@@ -136,11 +149,18 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           <p key={`${index}`}>{message}</p>
         ))}
       </Alert>
-      <div
+      <EditorWrapper
         className={classNames({
           'd-none': previewOption !== 'clause-config' && previewOption !== 'config',
         })}
       >
+        <ResetButton
+          variant="danger"
+          size="sm"
+          className={classNames({ 'd-none': previewOption !== 'clause-config' })}
+        >
+          Clear
+        </ResetButton>
         <CodeMirrorReact
           config={{
             mode: jsonMode,
@@ -152,7 +172,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           onInit={props.onEditorInit}
           onChange={(value: string) => setEditorValue(value)}
         />
-      </div>
+      </EditorWrapper>
       {previewOption === 'query' && props.operation ? (
         <QuerySentence operation={props.operation} />
       ) : null}
