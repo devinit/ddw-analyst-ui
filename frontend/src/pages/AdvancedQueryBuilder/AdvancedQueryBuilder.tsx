@@ -7,7 +7,6 @@ import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
 import { SourcesContext } from '../../context';
 import { OperationMap } from '../../types/operations';
 import { useOperation, useSources } from '../../utils/hooks';
-import { validateOperation } from './utils';
 
 type RouterParams = {
   id?: string;
@@ -17,7 +16,6 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
   const [operation, setOperation] = useState<OperationMap>();
-  const [validating, setValidating] = useState(false);
   const { loading, operation: pageOperation } = useOperation<OperationMap>(
     operationID ? parseInt(operationID) : undefined,
   );
@@ -42,21 +40,6 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     setOperation(ope);
   };
 
-  const onValidateOperation = () => {
-    if (operation) {
-      setValidating(true);
-      validateOperation(operation)
-        .then(() => {
-          setValidating(false);
-          // TODO: properly handle successful validation
-        })
-        .catch(() => {
-          setValidating(false);
-          // TODO: properly handle validation failure
-        });
-    }
-  };
-
   return (
     <Row>
       <Col>
@@ -68,11 +51,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
             <SourcesContext.Provider value={{ sources }}>
               <OperationTabContainer
                 operation={operation}
-                validating={validating}
                 onSave={onSaveOperation}
                 onDelete={onDeleteOperation}
                 onUpdate={onUpdateOperation}
-                onValidate={onValidateOperation}
               >
                 <QuerySentenceBuilder operation={operation} onUpdateOperation={onUpdateOperation} />
               </OperationTabContainer>
