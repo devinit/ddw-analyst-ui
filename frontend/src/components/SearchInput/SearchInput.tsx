@@ -7,6 +7,7 @@ interface SearchInputProps {
   className?: string;
   testid?: string;
   value?: string;
+  hidden?: boolean;
 }
 
 const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
@@ -29,6 +30,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
       onChange={(event) => setSearchText(event.currentTarget.value)}
       onKeyDown={onSearch}
       data-testid={props.testid}
+      hidden={props.hidden}
     />
   );
 };

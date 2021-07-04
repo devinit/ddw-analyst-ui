@@ -1,11 +1,14 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Button, ButtonGroup, Col } from 'react-bootstrap';
 import { SourceMap } from '../../types/sources';
+import { CheckboxGroupOption } from '../CheckboxGroup';
 import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
+import { SearchInput } from '../SearchInput';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
 import { ColumnAggregate } from './ColumnAggregate';
 import { ColumnSelector } from './ColumnSelector';
+import { getColumnGroupOptionsFromSource } from './ColumnSelector/utils';
 
 interface ComponentProps {
   source: SourceMap;
@@ -25,6 +28,9 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [activeAction, setActiveAction] = useState<'select' | 'order' | 'aggregate'>();
   const [selectAll, setSelectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
+  const [columns, setColumns] = useState<CheckboxGroupOption[]>(
+    getColumnGroupOptionsFromSource(source),
+  );
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
     if (typeof options.selectall === 'undefined') {
@@ -43,6 +49,15 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
       delete options.join.columns;
       updateOptions!({ join: options.join });
     }
+  };
+  const onSearch = (searchText: string) => {
+    const filteredColumns = getColumnGroupOptionsFromSource(source).filter((column) => {
+      if (column.text) {
+        return column.text.toString().toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+      }
+    });
+
+    setColumns(filteredColumns);
   };
 
   return (
@@ -98,11 +113,20 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           Clear/Reset
         </Button>
       </ButtonGroup>
+      <Col xs="6" lg="4" md="6">
+        <SearchInput
+          className="w-100"
+          onSearch={onSearch}
+          testid="select-checkboxgroup-search"
+          hidden={activeAction !== 'select'}
+        />
+      </Col>
       <ColumnSelector
         usage={usage}
         show={activeAction === 'select'}
         source={source}
         columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
+        checkboxOptions={columns}
       />
       <AdvancedQueryBuilderColumnOrder
         usage={usage}

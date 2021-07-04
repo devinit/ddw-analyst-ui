@@ -4,7 +4,7 @@ import { Column, ColumnList, SourceMap } from '../../../types/sources';
 import { sortObjectArrayByProperty } from '../../../utils';
 import { CheckboxGroup } from '../../CheckboxGroup';
 import { AdvancedQueryContext } from '../../QuerySentenceBuilder';
-import { CheckOption, cleanColumn, getColumnGroupOptionsFromSource } from './utils';
+import { CheckOption, cleanColumn } from './utils';
 
 interface ColumnSelectorProps {
   show?: boolean;
@@ -12,6 +12,7 @@ interface ColumnSelectorProps {
   columns: AdvancedQueryColumn[];
   usage?: 'select' | 'groupby' | 'join';
   nameOnly?: boolean; // when true, only the column name is added to the target array
+  checkboxOptions: CheckOption[];
 }
 
 const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, ...props }) => {
@@ -22,9 +23,10 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
   );
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
-
-    setColumns(getColumnGroupOptionsFromSource(source));
   }, [source]);
+  useEffect(() => {
+    setColumns(props.checkboxOptions);
+  }, [props.checkboxOptions]);
   useEffect(() => {
     if (props.columns.length === 0) setSelectedColumns([]);
   }, [props.columns]);
