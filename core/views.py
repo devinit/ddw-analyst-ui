@@ -35,6 +35,7 @@ from core.models import (FrozenData, Operation, OperationDataColumnAlias,
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
+from core.pypika_utils import QueryBuilder
 from core.serializers import (DataSerializer, FrozenDataSerializer,
                               OperationDataColumnAliasSerializer,
                               OperationSerializer, OperationStepSerializer,
@@ -214,8 +215,7 @@ class PreviewOperationData(APIView):
 
     def get_data(self, request):
         try:
-            if 'advanced_config' in request.data:
-                #data = run_query(self.get_advanced_config_query(request), fetch=True)
+            if 'advanced_config' in request.data and request.data['advanced_config']:
                 data = run_query(query.get_advanced_config_query(request.data['advanced_config']), fetch=True)
                 return {
                     'count': len(data),
@@ -250,13 +250,6 @@ class PreviewOperationData(APIView):
         page_data = paginator.paginate_queryset(data['data'], request)
         return paginator.get_paginated_response(page_data)
 
-    # def get_advanced_config_query(self, request):
-    #     config = request.data['advanced_config']
-    #     builder = AdvancedQueryBuilder()
-    #     query = builder.process_config(config)
-    #     return query.get_sql()
-
-
 class GetOperationQuery(APIView):
     """
     Return Operation Query for Review.
@@ -265,11 +258,11 @@ class GetOperationQuery(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_query(self, request):
-        # TODO: handle more than advanced config
-        config = request.data['advanced_config']
-        builder = AdvancedQueryBuilder()
-        query = builder.process_config(config)
-        return query.get_sql()
+        if 'advanced_config' in request.data and request.data['advanced_config']:
+            config = request.data['advanced_config']
+            return query.get_advanced_config_query(request.data['advanced_config'])
+        else:
+            return QueryBuilder(operation_steps=request.data['operation_steps']).get_sql_without_limit()
 
     def post(self, request):
         try:
