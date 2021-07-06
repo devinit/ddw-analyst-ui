@@ -93,7 +93,7 @@ def get_advanced_config_count_query(advanced_config, estimate_count):
 def build_advanced_queries(advanced_config, limit=None, offset=None, estimate_count=None):
     count_sql = get_advanced_config_count_query(advanced_config, estimate_count)
     data_sql = get_advanced_config_query(advanced_config, limit, offset)
-    return (count_sql, sql_without_limit)
+    return (count_sql, data_sql)
 
 def advanced_query_table(config, limit=None, offset=None, estimate_count=None):
     queries = build_advanced_queries(config, limit, offset, estimate_count)

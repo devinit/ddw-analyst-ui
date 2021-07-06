@@ -149,7 +149,7 @@ class OperationSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     theme_name = serializers.ReadOnlyField(source='theme.name')
     tags = TagSerializer(many=True, read_only=True)
-    operation_steps = OperationStepSerializer(source='operationstep_set', many=True)
+    operation_steps = OperationStepSerializer(source='operationstep_set', many=True, allow_null=True, required=False)
     reviews = ReviewSerializer(source='review_set', many=True, read_only=True)
     id = serializers.ReadOnlyField(source='pk')
     aliases = OperationDataColumnAliasSerializer(
@@ -181,15 +181,15 @@ class OperationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         try:
-            read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set', 'advanced_config')
+            read_only_fields = ('user', 'theme_name', 'tags', 'operationstep_set', 'review_set')
             read_only_dict = dict()
             for field in read_only_fields:
                 if field in validated_data:
                     read_only_dict[field] = validated_data.pop(field)
             operation = Operation.objects.create(**validated_data)
             operation.user = read_only_dict['user']
-            if read_only_dict['advanced_config'] and len(read_only_dict['advanced_config']) > 2:
-                operation.operation_query = query.get_advanced_config_query(read_only_dict['advanced_config'])
+            if operation.advanced_config and len(operation.advanced_config) > 0:
+                operation.operation_query = query.get_advanced_config_query(operation.advanced_config)
             else:
                 for step in read_only_dict['operationstep_set']:
                     OperationStep.objects.create(operation=operation, **step)
@@ -218,8 +218,8 @@ class OperationSerializer(serializers.ModelSerializer):
                     setattr(instance, attr, value)
             instance.save()
 
-            advanced_config = validated_data.pop('advanced_config')
-            if advanced_config and len(advanced_config) > 2:
+            advanced_config = validated_data.get('advanced_config')
+            if advanced_config and len(advanced_config) > 0:
                 instance.operation_query = query.get_advanced_config_query(advanced_config)
             else:
                 existing_steps = instance.operationstep_set.all()
@@ -254,8 +254,8 @@ class OperationSerializer(serializers.ModelSerializer):
             raise CustomAPIException({'detail': str(e)})
 
     def create_operation_data_aliases(self, operation):
-        if operation['advanced_config'] and len(operation['advanced_config']) > 2:
-            count, data = query.advanced_query_table(operation['advanced_config'], 1, 0, estimate_count=True)
+        if operation.advanced_config and len(operation.advanced_config) > 0:
+            count, data = query.advanced_query_table(operation.advanced_config, 1, 0, estimate_count=True)
         else:
             count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
@@ -263,8 +263,11 @@ class OperationSerializer(serializers.ModelSerializer):
         if data:
             try:
                 data_column_keys = data.keys() if isinstance(data, dict) else data[0].keys()
-                first_step = operation.get_operation_steps()[0]
-                columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+                if operation.advanced_config:
+                    columns = SourceColumnMap.objects.filter(source_id=operation.advanced_config.get('source'), name__in=data_column_keys)
+                else:
+                    first_step = operation.get_operation_steps()[0]
+                    columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
                 for column in data_column_keys:
                     matching = columns.filter(name=column).first()
                     alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
@@ -280,8 +283,8 @@ class OperationSerializer(serializers.ModelSerializer):
             operation.save()
 
     def update_operation_data_aliases(self, operation):
-        if operation['advanced_config'] and len(operation['advanced_config']) > 2:
-            count, data = query.advanced_query_table(operation['advanced_config'], 1, 0, estimate_count=True)
+        if operation.advanced_config and len(operation.advanced_config) > 0:
+            count, data = query.advanced_query_table(operation.advanced_config, 1, 0, estimate_count=True)
         else:
             count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
@@ -289,8 +292,11 @@ class OperationSerializer(serializers.ModelSerializer):
         if data:
             try:
                 data_column_keys = data.keys() if isinstance(data, dict) else data[0].keys()
-                first_step = operation.get_operation_steps()[0]
-                columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+                if operation.advanced_config:
+                    columns = SourceColumnMap.objects.filter(source_id=operation.advanced_config.get('source'), name__in=data_column_keys)
+                else:
+                    first_step = operation.get_operation_steps()[0]
+                    columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
                 # delete obsolete aliases
                 OperationDataColumnAlias.objects.filter(operation=operation).exclude(column_name__in=data_column_keys).delete()
                 for column in data_column_keys:
