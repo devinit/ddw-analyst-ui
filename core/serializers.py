@@ -41,8 +41,8 @@ class DataSerializer(serializers.BaseSerializer):
         operation = instance['operation_instance']
         self.set_operation(operation)
         try:
-            if 'advanced_config' in request.data:
-                count, data = query.advanced_query_table(request.data['advanced_config'],  limit, offset, estimate_count=True)
+            if operation.advanced_config and len(operation.advanced_config) > 0:
+                count, data = query.advanced_query_table(operation.advanced_config,  limit, offset, estimate_count=True)
             else:
                 count, data = query.query_table(operation, limit, offset, estimate_count=True, frozen_table_id=frozen_table_id)
             return {
@@ -209,19 +209,21 @@ class OperationSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         try:
             info = model_meta.get_field_info(instance)
-            updated_steps = validated_data.pop('operationstep_set')
-            for attr, value in validated_data.items():
-                if attr in info.relations and info.relations[attr].to_many:
-                    field = getattr(instance, attr)
-                    field.set(value)
-                else:
-                    setattr(instance, attr, value)
-            instance.save()
 
-            advanced_config = validated_data.get('advanced_config')
+            advanced_config = validated_data.get('advanced_config', None)
             if advanced_config and len(advanced_config) > 0:
+                instance.advanced_config = advanced_config
                 instance.operation_query = query.get_advanced_config_query(advanced_config)
+                instance.save()
             else:
+                updated_steps = validated_data.pop('operationstep_set')
+                for attr, value in validated_data.items():
+                    if attr in info.relations and info.relations[attr].to_many:
+                        field = getattr(instance, attr)
+                        field.set(value)
+                    else:
+                        setattr(instance, attr, value)
+                instance.save()
                 existing_steps = instance.operationstep_set.all()
                 existing_step_ids = [step.step_id for step in existing_steps]
                 for updated_step in updated_steps:
