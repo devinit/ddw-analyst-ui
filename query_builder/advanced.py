@@ -83,8 +83,7 @@ class AdvancedQueryBuilder:
         return Table(table_name, schema=schema_name)
 
     def get_source_columns(self, source_id):
-        # source = Source.objects.get(pk=source_id)
-        source_columns = SourceColumnMap.objects.get(source_id=source_id)
+        source_columns = SourceColumnMap.objects.filter(source_id=source_id)
         columns = []
         for source_column in source_columns:
             columns.append({'id': source_column.id, 'name': source_column.name, 'alias':source_column.alias})
@@ -136,7 +135,7 @@ class AdvancedQueryBuilder:
                     j = next((i for i, item in enumerate(all_columns) if item['name'] == provided_col['name']), False)
                     if j:
                         all_columns.pop(j)
-                columns = provided_columns + all_columns
+                columns = provided_cols + all_columns
             else:
                 columns = all_columns
         else:
@@ -227,7 +226,7 @@ class AdvancedQueryBuilder:
     def get_count_sql(self, config, estimate=True):
         if estimate:
             stats_table = Table("pg_stat_user_tables")
-            table = self.get_source_table(config.get('source'), True)
+            table_parts = self.get_source_table(config.get('source'), True)
             table_name = table_parts[0]
             schema_name = table_parts[1]
             return Query.from_(stats_table).select(stats_table.n_live_tup).where(stats_table.relname == table_name).where(stats_table.schemaname == schema_name).get_sql()
