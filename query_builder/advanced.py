@@ -126,7 +126,7 @@ class AdvancedQueryBuilder:
         if 'having' in config:
             query = self.get_having_query(table, query, config.get('having'))
 
-        if 'selectall' in config:
+        if 'selectall' in config and config.get('selectall'):
             all_columns = self.get_source_columns(config.get('source'))
             if 'columns' in config:
                 # re-arrange columns starting by those in config first
