@@ -258,11 +258,12 @@ class GetOperationQuery(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
 
     def get_query(self, request):
-        if 'advanced_config' in request.data and request.data['advanced_config']:
-            config = request.data['advanced_config']
-            return query.get_advanced_config_query(request.data['advanced_config'])
-        else:
+        if 'config' in request.data and request.data['config']:
+            return query.get_advanced_config_query(request.data['config'])
+        elif 'operation_steps' in request.data:
             return QueryBuilder(operation_steps=request.data['operation_steps']).get_sql_without_limit()
+        else:
+            return ''
 
     def post(self, request):
         try:
