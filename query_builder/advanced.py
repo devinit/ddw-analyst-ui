@@ -55,19 +55,16 @@ class AdvancedQueryBuilder:
 
         if 'join' in config:
             join_query = self.handle_join(table, query, config)
-            print(join_query)
 
             return join_query
 
         if 'filter' in config:
             filter_query = self.handle_filter(table, query, config)
-            print(filter_query)
 
             return filter_query
 
         if 'columns' in config or 'selectall' in config:
             select_query = self.get_select_query(table, query, config)
-            print(select_query)
 
             return select_query
 
