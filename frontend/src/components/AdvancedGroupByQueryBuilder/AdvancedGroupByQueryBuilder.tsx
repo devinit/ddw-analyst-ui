@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { AdvancedQueryColumn } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { ColumnSelector } from '../AdvancedSelectQueryBuilder/ColumnSelector';
+import { getColumnGroupOptionsFromSource } from '../AdvancedSelectQueryBuilder/ColumnSelector/utils';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 
 interface ComponentProps {
@@ -24,6 +25,7 @@ const AdvancedGroupByQueryBuilder: FunctionComponent<ComponentProps> = ({ source
               ? options.groupby.map<AdvancedQueryColumn>((column) => ({ name: column.name }))
               : []
           }
+          checkboxOptions={getColumnGroupOptionsFromSource(source)}
         />
       )}
     </AdvancedQueryContext.Consumer>
