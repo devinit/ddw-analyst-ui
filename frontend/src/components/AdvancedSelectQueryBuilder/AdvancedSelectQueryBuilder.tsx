@@ -38,6 +38,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     }
   }, []);
   const onToggleSelectAll = (data: ICheckData) => {
+    updateColumnOptions(data.checked);
     setSelectAll(data.checked);
     updateOptions!({ selectall: data.checked });
   };
@@ -58,6 +59,21 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     });
 
     setColumns(filteredColumns);
+  };
+  const updateColumnOptions = (selectall: boolean) => {
+    if (selectall) {
+      options.columns = columns.map((column, index) => {
+        return {
+          id: index + 1,
+          name: column.value as string,
+          alias: column.text,
+        };
+      });
+    } else {
+      options.columns = [];
+    }
+
+    return options.columns;
   };
 
   return (
@@ -125,7 +141,13 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
         usage={usage}
         show={activeAction === 'select'}
         source={source}
-        columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
+        columns={
+          (usage === 'join' && options.join
+            ? options.join.columns
+            : selectAll
+            ? updateColumnOptions(selectAll)
+            : []) || []
+        }
         checkboxOptions={columns}
       />
       <AdvancedQueryBuilderColumnOrder

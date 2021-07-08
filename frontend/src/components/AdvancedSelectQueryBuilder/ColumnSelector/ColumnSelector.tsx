@@ -18,9 +18,7 @@ interface ColumnSelectorProps {
 const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, ...props }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [columns, setColumns] = useState<CheckOption[]>([]);
-  const [selectedColumns, setSelectedColumns] = useState<string[]>(
-    props.columns.map((column) => column.name as string),
-  );
+  const [selectedColumns, setSelectedColumns] = useState<string[]>();
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
   }, [source]);
@@ -28,11 +26,14 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     setColumns(props.checkboxOptions);
   }, [props.checkboxOptions]);
   useEffect(() => {
-    if (props.columns.length === 0) setSelectedColumns([]);
+    if (props.columns.length > 0) {
+      setSelectedColumns(props.columns.map((column) => column.name as string));
+    } else {
+      setSelectedColumns([]);
+    }
   }, [props.columns]);
 
   const onUpdateColumns = (selection: string[]) => {
-    setSelectedColumns(selection);
     const updatedOptions: Partial<AdvancedQueryOptions> = {
       [props.usage === 'select' || props.usage === 'join' ? 'columns' : 'groupby']: selection
         .map((col) =>
@@ -49,6 +50,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
         ? updatedOptions
         : ({ join: { ...options.join, ...updatedOptions } } as AdvancedQueryOptions),
     );
+    setSelectedColumns(selection);
   };
 
   if (show) {
