@@ -88,7 +88,7 @@ class AdvancedQueryBuilder:
 
     def handle_filter(self, table, query, config):
         filter_config = config.get('filter')
-        if 'columns' in config and config.get('columns'):
+        if 'columns' in config and config.get('columns') or 'selectall' and config.get('selectall'):
             selectQuery = self.get_select_query(table, query, config)
             return self.get_filter_query(table, selectQuery, filter_config)
 
@@ -112,7 +112,7 @@ class AdvancedQueryBuilder:
 
             return join_query
 
-        if 'columns' in config and config.get('columns'):
+        if 'columns' in config and config.get('columns') or 'selectall' and config.get('selectall'):
             join_query = self.get_select_query(table, join_query, config)
 
         return join_query
