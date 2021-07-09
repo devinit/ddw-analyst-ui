@@ -51,14 +51,11 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     options: defaultOptions as AdvancedQueryOptions,
   });
   const [alert, setAlert] = useState('');
-  useEffect(() => {
-    setContext({
-      options: { ...context.options, source: source?.get('id') as number, columns: [] },
-    });
-  }, [source]);
-
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>) => {
-    setContext({ options: { ...context.options, ...options }, updateOptions: onUpdateOptions });
+    setContext({
+      options: { ...context.options, ...options, source: source?.get('id') as number },
+      updateOptions: onUpdateOptions,
+    });
   };
   const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);

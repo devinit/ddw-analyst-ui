@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup, Col } from 'react-bootstrap';
-import { SourceMap } from '../../types/sources';
+import { ColumnList, SourceMap } from '../../types/sources';
 import { CheckboxGroupOption } from '../CheckboxGroup';
 import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
@@ -36,6 +36,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     if (typeof options.selectall === 'undefined') {
       updateOptions!({ selectall: true });
     }
+    updateColumnOptions(selectAll);
   }, []);
   const onToggleSelectAll = (data: ICheckData) => {
     updateColumnOptions(data.checked);
@@ -62,18 +63,22 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
   };
   const updateColumnOptions = (selectall: boolean) => {
     if (selectall) {
-      options.columns = columns.map((column, index) => {
+      options.columns = columns.map((activeColumn, index) => {
+        const foundColumn = (source.get('columns') as ColumnList).find(
+          (column) => column.get('name') === activeColumn.value,
+        );
+
         return {
-          id: index + 1,
-          name: column.value as string,
-          alias: column.text,
+          id: (foundColumn ? foundColumn.get('id') : index + 1) as number,
+          name: activeColumn.value as string,
+          alias: activeColumn.text,
         };
       });
     } else {
       options.columns = [];
     }
 
-    return options.columns;
+    updateOptions!({ ...options });
   };
 
   return (
@@ -141,13 +146,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
         usage={usage}
         show={activeAction === 'select'}
         source={source}
-        columns={
-          (usage === 'join' && options.join
-            ? options.join.columns
-            : selectAll
-            ? updateColumnOptions(selectAll)
-            : []) || []
-        }
+        columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
         checkboxOptions={columns}
       />
       <AdvancedQueryBuilderColumnOrder

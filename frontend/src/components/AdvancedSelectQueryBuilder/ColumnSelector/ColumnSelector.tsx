@@ -34,6 +34,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
   }, [props.columns]);
 
   const onUpdateColumns = (selection: string[]) => {
+    setSelectedColumns(selection);
     const updatedOptions: Partial<AdvancedQueryOptions> = {
       [props.usage === 'select' || props.usage === 'join' ? 'columns' : 'groupby']: selection
         .map((col) =>
@@ -50,7 +51,6 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
         ? updatedOptions
         : ({ join: { ...options.join, ...updatedOptions } } as AdvancedQueryOptions),
     );
-    setSelectedColumns(selection);
   };
 
   if (show) {
