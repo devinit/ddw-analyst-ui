@@ -87,16 +87,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           }
         })
         .catch((error) => {
-          console.log('failed');
           props.actions.operationSaved(false);
-          // if (error.response.data.error_code === 'e') {
-          //   setAlertMessages([
-          //     'An error occured while creating column aliases for this dataset. Please contact your administrator',
-          //   ]);
-
-          //   return;
-          // }
-          // setAlertMessages(['An unknown error occured - please contact your administrator']);
         });
     }
   };
