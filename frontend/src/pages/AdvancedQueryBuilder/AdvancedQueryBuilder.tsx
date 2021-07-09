@@ -1,25 +1,25 @@
 import axios, { AxiosResponse } from 'axios';
+import { List } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import { deleteOperation, fetchOperation, setOperation } from '../../actions/operations';
+import * as sourcesActions from '../../actions/sources';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
 import { SourcesContext } from '../../context';
+import { TokenState } from '../../reducers/token';
+import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { Operation, OperationMap } from '../../types/operations';
+import { SourceMap } from '../../types/sources';
 import { api } from '../../utils';
 import { useOperation, useSources } from '../../utils/hooks';
-import { bindActionCreators } from 'redux';
 import * as pageActions from './actions';
-import * as sourcesActions from '../../actions/sources';
 import { AdvancedQueryBuilderState, queryBuilderReducerId } from './reducers';
-import { UserState } from '../../reducers/user';
-import { TokenState } from '../../reducers/token';
-import { SourceMap } from '../../types/sources';
-import { List } from 'immutable';
-// import { deleteOperation, fetchOperation, setOperation } from '../../actions/operations';
 
 type RouterParams = {
   id?: string;
@@ -57,6 +57,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       setOperation(pageOperation);
     }
   }, [pageOperation]);
+  useEffect(() => {
+    props.actions.setActiveOperation(operation);
+  }, [operation]);
 
   const onSaveOperation = (preview?: boolean) => {
     console.log('Saving:', preview);
@@ -93,7 +96,12 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   };
 
   const onDeleteOperation = (ope?: OperationMap) => {
-    console.log('Deleting:', ope);
+    const opeID = ope?.get('id') as string | undefined;
+    if (opeID) {
+      props.actions.deleteOperation(opeID, history);
+    } else {
+      props.actions.setActiveOperation();
+    }
   };
 
   const onUpdateOperation = (ope?: OperationMap) => {
@@ -110,7 +118,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           {!loading && sources.count() ? (
             <SourcesContext.Provider value={{ sources }}>
               <OperationTabContainer
-                operation={operation}
+                operation={props.activeOperation}
                 onSave={onSaveOperation}
                 onDelete={onDeleteOperation}
                 onUpdate={onUpdateOperation}
@@ -130,8 +138,10 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown
 ): ActionProps => ({
   actions: bindActionCreators(
     {
-      ...sourcesActions,
+      // ...sourcesActions,
       ...pageActions,
+      setActiveOperation: setOperation,
+      deleteOperation,
     },
     dispatch,
   ),
