@@ -40,7 +40,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const [hasFocus, setHasFocus] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [timeoutId, setTimeoutId] = useState(0);
-
   const getFormGroupClasses = (fieldName: string, value?: string | number) => {
     return classNames('bmd-form-group', {
       'is-focused': hasFocus === fieldName,
