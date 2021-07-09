@@ -1,6 +1,6 @@
 import CodeMirror from 'codemirror';
 import { fromJS } from 'immutable';
-import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
+import React, { createContext, FunctionComponent, useState } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import {
