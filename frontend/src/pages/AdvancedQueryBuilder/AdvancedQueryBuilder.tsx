@@ -61,13 +61,10 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const onSaveOperation = (preview?: boolean) => {
     console.log('Saving:', preview);
     if (!operation) {
-      console.log('no operation');
-
       return;
     }
     const url = api.routes.DATASETS;
     const data: Operation = operation.toJS() as Operation;
-    console.log(props.token);
     if (props.token) {
       axios
         .request({
@@ -80,19 +77,17 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           data,
         })
         .then((response: AxiosResponse<Operation>) => {
-          props.actions.operationSaved(true);
-          console.log('done');
-          // if (response.status === 200 || response.status === 201) {
-          //   // props.actions.operationSaved(true);
-          //   if (preview) {
-          //     history.push(`/queries/data/${response.data.id}/`);
-          //   } else {
-          //     history.push('/');
-          //   }
-          // }
+          if (response.status === 200 || response.status === 201) {
+            props.actions.operationSaved(true);
+            if (preview) {
+              history.push(`/queries/data/${response.data.id}/`);
+            } else {
+              history.push('/');
+            }
+          }
         })
         .catch((error) => {
-          console.log(failed);
+          console.log('failed');
           props.actions.operationSaved(false);
           // if (error.response.data.error_code === 'e') {
           //   setAlertMessages([
