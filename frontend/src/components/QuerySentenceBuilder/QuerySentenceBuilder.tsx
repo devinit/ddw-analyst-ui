@@ -5,15 +5,17 @@ import { Alert, Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import {
   AdvancedQueryBuilderAction,
+  AdvancedQueryColumn,
   AdvancedQueryOptions,
   Operation,
   OperationMap,
 } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { ColumnList, SourceMap } from '../../types/sources';
 import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedGroupByQueryBuilder } from '../AdvancedGroupByQueryBuilder';
 import { AdvancedJoinQueryBuilder } from '../AdvancedJoinQueryBuilder';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
+import { getColumnGroupOptionsFromSource } from '../AdvancedSelectQueryBuilder/ColumnSelector/utils';
 import { JsonModeSpec } from '../CodeMirrorReact';
 import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
@@ -43,6 +45,20 @@ const StyledRow = styled(Row)`
   padding-top: 1rem;
 `;
 
+export const initializeSelectedColumns = (source: SourceMap): AdvancedQueryColumn[] => {
+  return getColumnGroupOptionsFromSource(source).map((activeColumn, index) => {
+    const foundColumn = (source.get('columns') as ColumnList).find(
+      (column) => column.get('name') === activeColumn.value,
+    );
+
+    return {
+      id: (foundColumn ? foundColumn.get('id') : index + 1) as number,
+      name: activeColumn.value as string,
+      alias: activeColumn.text,
+    };
+  });
+};
+
 const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [source, setSource] = useState<SourceMap>();
   const [action, setAction] = useState<AdvancedQueryBuilderAction>();
@@ -52,9 +68,15 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   });
   const [alert, setAlert] = useState('');
   useEffect(() => {
-    setContext({
-      options: { ...context.options, source: source?.get('id') as number, columns: [] },
-    });
+    if (source) {
+      setContext({
+        options: {
+          ...context.options,
+          source: source.get('id') as number,
+          columns: initializeSelectedColumns(source),
+        },
+      });
+    }
   }, [source]);
 
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>, replace?: boolean) => {
