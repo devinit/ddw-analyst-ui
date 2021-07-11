@@ -26,7 +26,11 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     setColumns(getColumnGroupOptionsFromSource(source));
   }, [source]);
   useEffect(() => {
-    if (props.columns.length === 0) setSelectedColumns([]);
+    if (props.columns.length === 0) {
+      setSelectedColumns([]);
+    } else {
+      setSelectedColumns(props.columns.map((column) => column.name as string));
+    }
   }, [props.columns]);
 
   const onUpdateColumns = (selection: string[]) => {
