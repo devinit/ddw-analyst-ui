@@ -21,7 +21,7 @@ const AdvancedGroupByQueryBuilder: FunctionComponent<ComponentProps> = ({ source
           source={source}
           columns={
             options.groupby
-              ? options.groupby.map<AdvancedQueryColumn>((column) => ({ name: column.name }))
+              ? options.groupby.map<AdvancedQueryColumn>((column) => ({ name: column }))
               : []
           }
         />
