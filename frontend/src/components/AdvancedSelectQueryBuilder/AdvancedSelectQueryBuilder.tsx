@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { SourceMap } from '../../types/sources';
-import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
 import { ColumnAggregate } from './ColumnAggregate';
@@ -31,10 +30,6 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
       updateOptions!({ selectall: true });
     }
   }, []);
-  const onToggleSelectAll = (data: ICheckData) => {
-    setSelectAll(data.checked);
-    updateOptions!({ selectall: data.checked });
-  };
   const onReset = () => {
     setActiveAction(undefined);
     if (usage === 'select') {
@@ -47,16 +42,6 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
 
   return (
     <div className="mb-3">
-      {usage === 'select' ? (
-        <ICheck
-          id="selectAll"
-          name="selectAll"
-          label="Select All"
-          onChange={onToggleSelectAll}
-          variant="danger"
-          checked={selectAll}
-        />
-      ) : null}
       <ButtonGroup className="mr-2">
         <Button
           variant="danger"
