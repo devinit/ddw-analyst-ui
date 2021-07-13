@@ -50,7 +50,7 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   useEffect(() => {
     addCheckboxes(props.selectedOptions);
     setSelectAll(
-      props.selectedOptions?.length === props.options.length && props.options.length > 0,
+      props.selectedOptions?.length === props.options.length && props.options.length != 0,
     );
   }, [props.selectedOptions]);
 

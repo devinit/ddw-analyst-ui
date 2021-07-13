@@ -107,7 +107,6 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
               options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
               selectedOptions={props.columns}
               onUpdateOptions={onUpdateColumns}
-              selectall={true}
             />
           </SelectColumnValidator>
         )}
