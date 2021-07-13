@@ -116,7 +116,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
   private storeTokenPlusUser(token: string, { id, username, is_superuser }: User) {
     localForage.setItem(localForageKeys.API_KEY, token);
-    localForage.setItem(localForageKeys.USER, { id, username });
+    localForage.setItem(localForageKeys.USER, { id, username, is_superuser });
     this.props.actions.setToken(token);
     this.props.actions.setUser({ id, username, is_superuser });
   }
