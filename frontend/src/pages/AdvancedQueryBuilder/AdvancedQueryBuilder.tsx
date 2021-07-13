@@ -79,7 +79,24 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const onDeleteOperation = (ope?: OperationMap) => {
     const operationID = ope?.get('id') as string | undefined;
     if (operationID) {
-      // props.actions.deleteOperation(operationID, history);
+      const url = `${api.routes.SINGLE_DATASET}${operationID}/`;
+      axios
+        .request({
+          url,
+          method: 'delete',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${token}`,
+          },
+        })
+        .then((response: AxiosResponse<Operation>) => {
+          if (response.status === 200) {
+            history.push('/');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       setOperation(undefined);
     }
