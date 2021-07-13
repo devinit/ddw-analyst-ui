@@ -55,7 +55,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
         options={columns.sort(sortObjectArrayByProperty('text').sort)}
         selectedOptions={selectedColumns}
         onUpdateOptions={onUpdateColumns}
-        usage={props.usage}
+        selectall={true}
       />
     );
   }
