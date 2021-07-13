@@ -13,7 +13,7 @@ export interface CheckboxGroupOption {
 interface ComponentProps {
   options: CheckboxGroupOption[];
   selectedOptions?: string[];
-  usage?: 'select' | 'groupby' | 'join';
+  selectall?: boolean;
   onUpdateOptions?: (columns?: string[]) => void;
   onDeselect?: (option: string) => void;
 }
@@ -49,6 +49,9 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
 
   useEffect(() => {
     addCheckboxes(props.selectedOptions);
+    setSelectAll(
+      props.selectedOptions?.length === props.options.length && props.options.length > 0,
+    );
   }, [props.selectedOptions]);
 
   useEffect(() => {
@@ -100,7 +103,7 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
           <SearchInput className="w-100" onSearch={onSearch} testid="checkboxgroup-search" />
         </Col>
         <Col>
-          {props.usage === 'select' ? (
+          {props.selectall ? (
             <Form.Field className="col-md-4">
               <ICheck
                 variant="danger"
@@ -137,5 +140,7 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     </>
   );
 };
+
+CheckboxGroup.defaultProps = { selectall: false };
 
 export { CheckboxGroup };
