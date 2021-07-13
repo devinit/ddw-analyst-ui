@@ -38,6 +38,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
             .find((column) => column.get('name') === col)
             ?.toJS(),
         )
+        .filter((column) => !!column) // ensure no null or undefined values go through
         .map((column: Column) =>
           props.nameOnly ? column.name : cleanColumn(column, props.columns),
         ),
