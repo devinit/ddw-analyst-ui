@@ -1,7 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { Form, Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { ICheck, ICheckData } from '../ICheck';
+import { SearchInput } from '../SearchInput';
 import { groupIntoRows } from './utils';
 
 export interface CheckboxGroupOption {
@@ -11,6 +13,7 @@ export interface CheckboxGroupOption {
 interface ComponentProps {
   options: CheckboxGroupOption[];
   selectedOptions?: string[];
+  usage?: 'select' | 'groupby' | 'join';
   onUpdateOptions?: (columns?: string[]) => void;
   onDeselect?: (option: string) => void;
 }
@@ -38,13 +41,19 @@ const StyledSegment = styled(Segment)`
 `;
 
 const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
+  const [checkboxOptions, setCheckboxOptions] = useState<CheckboxGroupOption[]>(props.options);
   const [checkboxes, addCheckboxes] = useState<string[] | undefined>(
     props.selectedOptions && props.selectedOptions.length > 0 ? props.selectedOptions : [],
   );
+  const [selectAll, setSelectAll] = useState<boolean>(false);
 
   useEffect(() => {
     addCheckboxes(props.selectedOptions);
   }, [props.selectedOptions]);
+
+  useEffect(() => {
+    setCheckboxOptions(props.options);
+  }, [props.options]);
 
   const onChange = (data: ICheckData): void => {
     const updatedCheckboxes: string[] | undefined = data.checked
@@ -57,31 +66,75 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   };
 
   const isChecked = (value: string): boolean => {
-    return props.selectedOptions && props.selectedOptions.length > 0
-      ? !!props.selectedOptions.find((c: string) => c === value)
+    return checkboxes && checkboxes.length > 0
+      ? !!checkboxes.find((c: string) => c === value)
       : false;
   };
 
+  const onSelectAllChange = (data: ICheckData): void => {
+    setSelectAll(data.checked);
+    if (data.checked) {
+      const options = checkboxOptions.map((option) => option.value as string);
+      addCheckboxes(options);
+      props.onUpdateOptions ? props.onUpdateOptions(options) : null;
+    } else {
+      addCheckboxes([]);
+      props.onUpdateOptions ? props.onUpdateOptions([]) : null;
+    }
+  };
+
+  const onSearch = (searchText: string): void => {
+    const filteredColumns = props.options.filter((column) => {
+      if (column.text) {
+        return column.text.toString().toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+      }
+    });
+
+    setCheckboxOptions(filteredColumns);
+  };
+
   return (
-    <StyledSegment>
-      {groupIntoRows(props.options).map((row, index) => (
-        <div key={`${index}`} className="row">
-          {row.map(({ text, value }, index) => (
-            <Form.Field key={index} className="col-md-4">
+    <>
+      <Row>
+        <Col>
+          <SearchInput className="w-100" onSearch={onSearch} testid="checkboxgroup-search" />
+        </Col>
+        <Col>
+          {props.usage === 'select' ? (
+            <Form.Field className="col-md-4">
               <ICheck
                 variant="danger"
-                checked={isChecked(value as string)}
-                label={text}
-                id={value as string}
-                name={value as string}
-                onChange={onChange}
-                className="selectColumnCheckbox text-capitalize"
+                id="select-all"
+                name="select-all"
+                checked={selectAll}
+                label={'Select All'}
+                onChange={onSelectAllChange}
+                className={'selectColumnCheckbox text-capitalize'}
               />
             </Form.Field>
-          ))}
-        </div>
-      ))}
-    </StyledSegment>
+          ) : null}
+        </Col>
+      </Row>
+      <StyledSegment>
+        {groupIntoRows(checkboxOptions).map((row, index) => (
+          <div key={`${index}`} className="row">
+            {row.map(({ text, value }, index) => (
+              <Form.Field key={index} className="col-md-4">
+                <ICheck
+                  variant="danger"
+                  checked={isChecked(value as string)}
+                  label={text}
+                  id={value as string}
+                  name={value as string}
+                  onChange={onChange}
+                  className="selectColumnCheckbox text-capitalize"
+                />
+              </Form.Field>
+            ))}
+          </div>
+        ))}
+      </StyledSegment>
+    </>
   );
 };
 
