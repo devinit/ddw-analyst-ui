@@ -13,7 +13,7 @@ export interface CheckboxGroupOption {
 interface ComponentProps {
   options: CheckboxGroupOption[];
   selectedOptions?: string[];
-  selectall?: boolean;
+  selectAll?: boolean;
   onUpdateOptions?: (columns?: string[]) => void;
   onDeselect?: (option: string) => void;
 }
@@ -40,18 +40,21 @@ const StyledSegment = styled(Segment)`
   }
 `;
 
+const SelectAllCheck = styled(ICheck)`
+  &[class*='icheck-'] {
+    margin-top: 14px !important;
+  }
+`;
+
 const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   const [checkboxOptions, setCheckboxOptions] = useState<CheckboxGroupOption[]>(props.options);
-  const [checkboxes, addCheckboxes] = useState<string[] | undefined>(
-    props.selectedOptions && props.selectedOptions.length > 0 ? props.selectedOptions : [],
-  );
+  const [checkboxes, addCheckboxes] = useState<string[] | undefined>(props.selectedOptions || []);
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
   useEffect(() => {
     addCheckboxes(props.selectedOptions);
-    setSelectAll(
-      props.selectedOptions?.length === props.options.length && props.options.length !== 0,
-    );
+
+    setSelectAll(!!props.options.length && props.selectedOptions?.length === props.options.length);
   }, [props.selectedOptions]);
 
   useEffect(() => {
@@ -98,27 +101,27 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
 
   return (
     <>
-      <Row>
-        <Col>
-          <SearchInput className="w-100" onSearch={onSearch} testid="checkboxgroup-search" />
-        </Col>
-        <Col>
-          {props.selectall ? (
-            <Form.Field className="col-md-4">
-              <ICheck
-                variant="danger"
-                id="select-all"
-                name="select-all"
-                checked={selectAll}
-                label={'Select All'}
-                onChange={onSelectAllChange}
-                className={'selectColumnCheckbox text-capitalize'}
-              />
-            </Form.Field>
+      <StyledSegment className="pt-1">
+        <Row className="pb-3">
+          <Col md={6}>
+            <SearchInput className="w-100" onSearch={onSearch} testid="checkboxgroup-search" />
+          </Col>
+          {props.selectAll ? (
+            <Col md={6}>
+              <Form.Field className="col-md-4">
+                <SelectAllCheck
+                  variant="danger"
+                  id="select-all"
+                  name="select-all"
+                  checked={selectAll}
+                  label={'Select All'}
+                  onChange={onSelectAllChange}
+                  className={'selectColumnCheckbox text-capitalize'}
+                />
+              </Form.Field>
+            </Col>
           ) : null}
-        </Col>
-      </Row>
-      <StyledSegment>
+        </Row>
         {groupIntoRows(checkboxOptions).map((row, index) => (
           <div key={`${index}`} className="row">
             {row.map(({ text, value }, index) => (
@@ -141,6 +144,6 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   );
 };
 
-CheckboxGroup.defaultProps = { selectall: false };
+CheckboxGroup.defaultProps = { selectAll: false };
 
 export { CheckboxGroup };
