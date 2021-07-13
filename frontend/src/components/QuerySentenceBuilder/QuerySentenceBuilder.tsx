@@ -23,6 +23,8 @@ import { QuerySentencePreview } from '../QuerySentencePreview';
 interface ComponentProps {
   operation?: OperationMap;
   onUpdateOperation: (operation: OperationMap) => void;
+  editable?: boolean;
+  activeSource?: SourceMap;
 }
 export interface QueryContextProps {
   options: AdvancedQueryOptions;
@@ -62,6 +64,11 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
       options: { source: source?.get('id') as number, selectall: true },
     });
   }, [source]);
+  useEffect(() => {
+    if (props.editable) {
+      console.log(props.operation?.toJS());
+    }
+  }, [props.editable]);
 
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>, replace?: boolean) => {
     setContext({
@@ -88,20 +95,28 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   return (
     <div>
       <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions, editor }}>
-        <DataSourceSelector source={source} onSelect={onSelectSource} />
-        {source ? (
+        <DataSourceSelector source={source || props.activeSource} onSelect={onSelectSource} />
+        {source || props.activeSource ? (
           <>
             <QueryBuilderActionSelector onSelectAction={onSelectAction} defaultAction="select" />
             <StyledRow className={classNames({ 'd-none': !action })}>
               <Col lg={12}>
-                {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
-                {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
-                {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
-                {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
+                {action === 'select' ? (
+                  <AdvancedSelectQueryBuilder source={source || props.activeSource} />
+                ) : null}
+                {action === 'filter' ? (
+                  <AdvancedFilterQueryBuilder source={source || props.activeSource} />
+                ) : null}
+                {action === 'join' ? (
+                  <AdvancedJoinQueryBuilder source={source || props.activeSource} />
+                ) : null}
+                {action === 'groupby' ? (
+                  <AdvancedGroupByQueryBuilder source={source || props.activeSource} />
+                ) : null}
               </Col>
             </StyledRow>
             <QuerySentencePreview
-              source={source}
+              source={source || props.activeSource}
               action={action}
               operation={props.operation}
               onEditorInit={onEditorInit}
