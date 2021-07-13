@@ -11,6 +11,7 @@ import { SourceMap } from '../../types/sources';
 import { api, localForageKeys } from '../../utils';
 import { useOperation, useSourceFromAdvancedOperation, useSources } from '../../utils/hooks';
 import * as localForage from 'localforage';
+import { boolean } from 'yup';
 // import { fromJS, List } from 'immutable';
 
 type RouterParams = {
@@ -21,6 +22,7 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
   const [token, setToken] = useState('');
+  const [user, setUser] = useState<{ id: number; username: string; is_superuser: boolean }>();
   const [operation, setOperation] = useState<OperationMap>();
   const [editable, setEditable] = useState(false);
   const [activeSource, setActiveSource] = useState<SourceMap>();
@@ -29,7 +31,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   );
   const sources = useSources({ limit: 200, offset: 0 });
   const history = useHistory();
-  // const { source: operationSource } = useSourceFromAdvancedOperation(operation);
+  const { source: operationSource } = useSourceFromAdvancedOperation(operation);
 
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
@@ -39,11 +41,16 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   }, [pageOperation]);
   useEffect(() => {
-    // setEditable(isEditable(operation));
+    if (isEditable) {
+      setEditable(isEditable(operation));
+    }
   }, [operation]);
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((_token) => {
       if (_token) setToken(_token);
+    });
+    localForage.getItem<string>(localForageKeys.USER).then((_user) => {
+      if (_user) setUser(JSON.parse(_user));
     });
   }, []);
 
@@ -106,12 +113,13 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     setOperation(ope);
   };
 
-  // const isEditable = (operation?: OperationMap) => {
-  //   const user = props.user.get('username') as string;
-  //   const isSuperUser = props.user.get('is_superuser') as boolean;
+  const isEditable = (operation?: OperationMap): boolean => {
+    const isSuperUser = user?.is_superuser as boolean;
 
-  //   return !operation || !operation.get('id') || user === operation.get('user') || isSuperUser;
-  // };
+    return (
+      !operation || !operation.get('id') || user?.username === operation.get('user') || isSuperUser
+    );
+  };
 
   return (
     <Row>
@@ -130,7 +138,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onUpdate={onUpdateOperation}
               >
                 <QuerySentenceBuilder
-                  // activeSource={activeSource}
+                  activeSource={activeSource}
                   operation={operation}
                   onUpdateOperation={onUpdateOperation}
                   editable={editable}
