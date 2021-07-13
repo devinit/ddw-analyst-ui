@@ -47,18 +47,6 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     );
   }, [props.columns]);
 
-  const onSelectAll = () => {
-    if (props.onUpdateColumns) {
-      const columns = props.source.get('columns') as ColumnList;
-      const columnNames = columns.map((column) => column.get('name')).toJS();
-      props.onUpdateColumns(JSON.stringify({ columns: columnNames as string[] }));
-    }
-  };
-
-  const onDeselectAll = () => {
-    if (props.onUpdateColumns) props.onUpdateColumns(JSON.stringify({ columns: [] }));
-  };
-
   const handleColumnOrderClick = () => setIsOrderingColumns(!isOrderingColumns);
   const onUpdateColumns = (columns: string[]) => {
     if (props.onUpdateColumns) props.onUpdateColumns(JSON.stringify({ columns }));
@@ -77,24 +65,6 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           >
             {isOrderingColumns ? 'Select Columns' : 'Order Columns'}
           </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={onSelectAll}
-            hidden={!props.editable || isOrderingColumns}
-            data-testid="qb-select-all-button"
-          >
-            Select All
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={onDeselectAll}
-            hidden={!props.editable || isOrderingColumns}
-            data-testid="qb-select-none-button"
-          >
-            Deselect All
-          </Button>
         </Form.Row>
         {isOrderingColumns ? (
           <SelectColumnOrder
@@ -107,6 +77,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
               options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
               selectedOptions={props.columns}
               onUpdateOptions={onUpdateColumns}
+              usage={'select'}
             />
           </SelectColumnValidator>
         )}
