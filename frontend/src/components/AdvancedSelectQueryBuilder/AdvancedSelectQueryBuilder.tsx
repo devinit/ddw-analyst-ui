@@ -23,7 +23,7 @@ const getDefaultSelectAll = (usage: AdvancedSelectUsage, selectAll?: boolean): b
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, usage }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [activeAction, setActiveAction] = useState<'select' | 'order' | 'aggregate'>();
-  const [selectAll, setSelectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
+  const [selectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
     if (typeof options.selectall === 'undefined') {
