@@ -31,6 +31,10 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
       updateOptions!({ selectall: true });
     }
   }, []);
+  const onToggleSelectAll = (data: ICheckData) => {
+    setSelectAll(data.checked);
+    updateOptions!({ selectall: data.checked });
+  };
   const onReset = () => {
     setActiveAction(undefined);
     if (usage === 'select') {
@@ -39,10 +43,6 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
       delete options.join.columns;
       updateOptions!({ join: options.join });
     }
-  };
-  const onToggleSelectAll = (data: ICheckData) => {
-    setSelectAll(data.checked);
-    updateOptions!({ selectall: data.checked });
   };
 
   return (
