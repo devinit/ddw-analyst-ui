@@ -146,3 +146,10 @@ export const useSourceFromOperation = (operation?: OperationMap): UseSourceResul
 
   return useSource(sourceID ? sourceID : undefined);
 };
+
+export const useSourceFromAdvancedOperation = (operation?: OperationMap): UseSourceResult => {
+  const sourceID = operation?.toJS().advanced_config.source as number;
+  // console.log(sourceID)
+
+  return useSource(sourceID ? sourceID : undefined);
+};

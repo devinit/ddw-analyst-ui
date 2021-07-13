@@ -17,7 +17,7 @@ import { ReduxStore } from '../../store';
 import { Operation, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { api } from '../../utils';
-import { useOperation, useSources } from '../../utils/hooks';
+import { useOperation, useSourceFromAdvancedOperation, useSources } from '../../utils/hooks';
 import * as pageActions from './actions';
 import { AdvancedQueryBuilderState, queryBuilderReducerId } from './reducers';
 
@@ -45,11 +45,13 @@ type QueryBuilderProps = RouteComponentProps & ReduxState<RouterParams>;
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
   const [operation, setOperation] = useState<OperationMap>();
+  const [editable, setEditable] = useState(false);
   const { loading, operation: pageOperation } = useOperation<OperationMap>(
     operationID ? parseInt(operationID) : undefined,
   );
   const sources = useSources({ limit: 200, offset: 0 });
   const history = useHistory();
+  const { source: operationSource } = useSourceFromAdvancedOperation(props.activeOperation);
 
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
@@ -59,6 +61,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   }, [pageOperation]);
   useEffect(() => {
     props.actions.setActiveOperation(operation);
+    setEditable(isEditable(operation));
   }, [operation]);
 
   const onSaveOperation = (preview?: boolean) => {
@@ -108,6 +111,13 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     setOperation(ope);
   };
 
+  const isEditable = (operation?: OperationMap) => {
+    const user = props.user.get('username') as string;
+    const isSuperUser = props.user.get('is_superuser') as boolean;
+
+    return !operation || !operation.get('id') || user === operation.get('user') || isSuperUser;
+  };
+
   return (
     <Row>
       <Col>
@@ -118,12 +128,18 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           {!loading && sources.count() ? (
             <SourcesContext.Provider value={{ sources }}>
               <OperationTabContainer
+                editable={editable}
                 operation={props.activeOperation}
                 onSave={onSaveOperation}
                 onDelete={onDeleteOperation}
                 onUpdate={onUpdateOperation}
               >
-                <QuerySentenceBuilder operation={operation} onUpdateOperation={onUpdateOperation} />
+                <QuerySentenceBuilder
+                  activeSource={operationSource}
+                  operation={operation}
+                  onUpdateOperation={onUpdateOperation}
+                  editable={editable}
+                />
               </OperationTabContainer>
             </SourcesContext.Provider>
           ) : null}
@@ -138,7 +154,7 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown
 ): ActionProps => ({
   actions: bindActionCreators(
     {
-      // ...sourcesActions,
+      ...sourcesActions,
       ...pageActions,
       setActiveOperation: setOperation,
       deleteOperation,
