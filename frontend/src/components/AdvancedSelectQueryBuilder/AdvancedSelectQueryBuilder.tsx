@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { SourceMap } from '../../types/sources';
+import { ICheck, ICheckData } from '../ICheck';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { AdvancedQueryBuilderColumnOrder } from './AdvancedQueryBuilderColumnOrder/AdvancedQueryBuilderColumnOrder';
 import { ColumnAggregate } from './ColumnAggregate';
@@ -23,7 +24,7 @@ const getDefaultSelectAll = (usage: AdvancedSelectUsage, selectAll?: boolean): b
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, usage }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [activeAction, setActiveAction] = useState<'select' | 'order' | 'aggregate'>();
-  const [selectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
+  const [selectAll, setSelectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
     if (typeof options.selectall === 'undefined') {
@@ -39,9 +40,23 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
       updateOptions!({ join: options.join });
     }
   };
+  const onToggleSelectAll = (data: ICheckData) => {
+    setSelectAll(data.checked);
+    updateOptions!({ selectall: data.checked });
+  };
 
   return (
     <div className="mb-3">
+      {usage === 'select' ? (
+        <ICheck
+          id="selectAll"
+          name="selectAll"
+          label="Select All"
+          onChange={onToggleSelectAll}
+          variant="danger"
+          checked={selectAll}
+        />
+      ) : null}
       <ButtonGroup className="mr-2">
         <Button
           variant="danger"
