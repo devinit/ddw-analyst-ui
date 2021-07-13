@@ -20,6 +20,7 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
+  const [token, setToken] = useState('');
   const [operation, setOperation] = useState<OperationMap>();
   const [editable, setEditable] = useState(false);
   const [activeSource, setActiveSource] = useState<SourceMap>();
@@ -40,6 +41,11 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   useEffect(() => {
     // setEditable(isEditable(operation));
   }, [operation]);
+  useEffect(() => {
+    localForage.getItem<string>(localForageKeys.API_KEY).then((_token) => {
+      if (_token) setToken(_token);
+    });
+  }, []);
 
   const onSaveOperation = (preview?: boolean) => {
     console.log('Saving:', preview);
@@ -50,30 +56,24 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
     const data: Operation = operation.toJS() as Operation;
 
-    localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
-      axios
-        .request({
-          url,
-          method: id ? 'put' : 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `token ${token}`,
-          },
-          data,
-        })
-        .then((response: AxiosResponse<Operation>) => {
-          if (response.status === 200 || response.status === 201) {
-            if (preview) {
-              history.push(`/queries/data/${response.data.id}/`);
-            } else {
-              history.push('/');
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
+    axios
+      .request({
+        url,
+        method: id ? 'put' : 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+        data,
+      })
+      .then((response: AxiosResponse<Operation>) => {
+        if (response.status === 200 || response.status === 201) {
+          history.push('/');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const onDeleteOperation = (ope?: OperationMap) => {
