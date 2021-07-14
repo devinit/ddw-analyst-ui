@@ -51,31 +51,28 @@ const showAggregateButton = (
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, usage }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [activeAction, setActiveAction] = useState<'select' | 'order' | 'aggregate'>();
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const [selectAll, setSelectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
     if (typeof options.selectall === 'undefined') {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       updateOptions!({ selectall: true });
     }
   }, []);
   const onToggleSelectAll = (data: ICheckData) => {
     setSelectAll(data.checked);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     updateOptions!({ selectall: data.checked });
   };
   const onReset = () => {
     setActiveAction(undefined);
     if (usage === 'select') {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       updateOptions!({ selectall: true, columns: [] });
     } else if (options.join && options.join.columns) {
       delete options.join.columns;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       updateOptions!({ join: options.join });
     }
   };
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   return (
     <div className="mb-3">
