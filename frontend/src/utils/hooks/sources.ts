@@ -3,7 +3,7 @@ import { fromJS, List } from 'immutable';
 import * as localForage from 'localforage';
 import { useEffect, useState } from 'react';
 import { APIResponse } from '../../types/api';
-import { OperationMap } from '../../types/operations';
+import { AdvancedQueryOptions, OperationMap } from '../../types/operations';
 import { Source, SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation, localForageKeys } from '../../utils';
 import { fetchCachedSources, updateSourcesCache } from '../../utils/cache';
@@ -143,12 +143,6 @@ export const useSource = (id?: number, fetch = false): UseSourceResult => {
 
 export const useSourceFromOperation = (operation?: OperationMap): UseSourceResult => {
   const sourceID = operation && getSourceIDFromOperation(operation);
-
-  return useSource(sourceID ? sourceID : undefined);
-};
-
-export const useSourceFromAdvancedOperation = (operation?: OperationMap): UseSourceResult => {
-  const sourceID = operation && (fromJS(operation.get('advanced_config')).get('source') as number);
 
   return useSource(sourceID ? sourceID : undefined);
 };
