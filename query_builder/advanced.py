@@ -141,18 +141,9 @@ class AdvancedQueryBuilder:
 
         # Handle select for joins
         if 'join' in config:
-            join_config = config.get('join')
-            left_table = table
-            right_table = self.get_source_table(join_config.get('source'))
-            join_cols = join_config.get('columns')
-            right_cols = [FUNCTION_MAPPING[join_col.get('aggregate')](right_table[join_col.get('name')]).as_(join_col.get(
-                         'alias')) if 'aggregate' in join_col else right_table[join_col.get('name')].as_(join_col.get('alias')) for join_col in join_cols]
-            left_cols = [FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get(
-                        'alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns]
-            final_cols = left_cols + right_cols
+            final_cols = self.append_join_columns(table, config, columns)
         else:
-            final_cols = [FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get(
-            'alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns]
+            final_cols = self.process_select_columns(table, columns)
 
         # also handles aggregations and aliases...
         query = query.select(*final_cols)
@@ -220,6 +211,22 @@ class AdvancedQueryBuilder:
         if 'aggregate' in config:
             return FILTER_MAPPING[config.get('comp')](FUNCTION_MAPPING[config.get('aggregate')](table[config.get('column')]), value)
         return FILTER_MAPPING[config.get('comp')](table[config.get('column')], value)
+
+    def append_join_columns(self, table, config, columns):
+        if 'join' in config:
+            join_config = config.get('join')
+            join_cols = join_config.get('columns')
+            if join_cols:
+                right_table = self.get_source_table(join_config.get('source'))
+                right_cols = self.process_select_columns(right_table, join_cols)
+                left_cols = self.process_select_columns(table, columns)
+
+                return left_cols + right_cols
+        return self.process_select_columns(table, columns)
+
+    def process_select_columns(self, table, columns):
+        return [FUNCTION_MAPPING[column.get('aggregate')](table[column.get('name')]).as_(column.get(
+            'alias')) if 'aggregate' in column else table[column.get('name')].as_(column.get('alias')) for column in columns]
 
     def get_count_sql(self, config, estimate=True):
         if estimate:
