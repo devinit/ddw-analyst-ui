@@ -55,6 +55,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const [editorValue, setEditorValue] = useState('{}');
   const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
 
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   useEffect(() => {
     if (previewOption === 'data' && validOptions) {
       setDataLoading(true);
@@ -104,6 +105,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const onReset = () => {
     updateOptions!(resetClauseOptions(options, props.action), true);
   };
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   return (
     <PreviewWrapper>
