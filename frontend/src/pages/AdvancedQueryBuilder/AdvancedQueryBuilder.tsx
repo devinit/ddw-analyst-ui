@@ -40,7 +40,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         setActiveSource(sources.find((source) => source.get('id') === sourceID));
       }
     }
-  }, [sources]);
+  }, [pageOperation]);
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
       if (token) setToken(token);
