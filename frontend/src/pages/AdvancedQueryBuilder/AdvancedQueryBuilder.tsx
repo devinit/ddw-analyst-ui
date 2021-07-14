@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { fromJS } from 'immutable';
 import * as localForage from 'localforage';
+import deepEqual from 'fast-deep-equal';
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
@@ -30,14 +31,18 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const sources = useSources({ limit: 200, offset: 0 });
   const history = useHistory();
+  const prevPageOperation = useRef(pageOperation);
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
-    if (pageOperation) {
-      setOperation(pageOperation);
-      if (sources) {
-        const advancedConfig = pageOperation.get('advanced_config');
-        const sourceID = fromJS(advancedConfig)?.get('source');
-        setActiveSource(sources.find((source) => source.get('id') === sourceID));
+    if (!deepEqual(prevPageOperation.current, pageOperation)) {
+      if (pageOperation) {
+        setOperation(pageOperation);
+        if (sources) {
+          const advancedConfig = pageOperation.get('advanced_config');
+          const sourceID = fromJS(advancedConfig)?.get('source');
+          setActiveSource(sources.find((source) => source.get('id') === sourceID));
+        }
+        prevPageOperation.current = pageOperation;
       }
     }
   }, [pageOperation]);
