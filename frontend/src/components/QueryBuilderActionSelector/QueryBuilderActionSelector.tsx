@@ -4,7 +4,7 @@ import { ICheckData, IRadio } from '../IRadio';
 import { actions } from './utils';
 
 interface ComponentProps {
-  onSelectAction?: (action: AdvancedQueryBuilderAction) => void;
+  onSelectAction?: (action?: AdvancedQueryBuilderAction) => void;
   config?: AdvancedQueryOptions;
   defaultAction?: AdvancedQueryBuilderAction;
 }
@@ -19,9 +19,12 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
   }, []);
 
   const onSelectAction = (data: ICheckData) => {
-    setSelectedAction(data.value as AdvancedQueryBuilderAction);
-    if (props.onSelectAction) {
-      props.onSelectAction(data.value as AdvancedQueryBuilderAction);
+    if (data.value !== 'hide') {
+      setSelectedAction(data.value as AdvancedQueryBuilderAction);
+      if (props.onSelectAction) props.onSelectAction(data.value as AdvancedQueryBuilderAction);
+    } else {
+      setSelectedAction(undefined);
+      if (props.onSelectAction) props.onSelectAction();
     }
   };
 
@@ -29,18 +32,31 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
     <div className="mb-3">
       <label>Active Clause</label>
       <div>
-        {actions.map((action) => (
-          <IRadio
-            key={action.name}
-            variant="danger"
-            id={action.name}
-            name={action.name}
-            label={action.caption}
-            onChange={onSelectAction}
-            inline
-            checked={selectedAction === action.name}
-          />
-        ))}
+        {actions
+          .map((action) => (
+            <IRadio
+              key={action.name}
+              variant="danger"
+              id={action.name}
+              name={action.name}
+              label={action.caption}
+              onChange={onSelectAction}
+              inline
+              checked={selectedAction === action.name}
+            />
+          ))
+          .concat([
+            <IRadio
+              key="hide"
+              variant="danger"
+              id="hide"
+              name="hide"
+              label="Hide Helpers"
+              onChange={onSelectAction}
+              inline
+              checked={!selectedAction}
+            />,
+          ])}
       </div>
     </div>
   );

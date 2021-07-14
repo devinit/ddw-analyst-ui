@@ -1,4 +1,5 @@
 import CodeMirror from 'codemirror';
+import classNames from 'classnames';
 import { fromJS } from 'immutable';
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
@@ -64,7 +65,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   };
   const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
-  const onSelectAction = (selectedAction: AdvancedQueryBuilderAction) => setAction(selectedAction);
+  const onSelectAction = (selectedAction?: AdvancedQueryBuilderAction) => setAction(selectedAction);
 
   const onUpdate = (options: AdvancedQueryOptions) => {
     if (props.operation) {
@@ -85,7 +86,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
         {source ? (
           <>
             <QueryBuilderActionSelector onSelectAction={onSelectAction} defaultAction="select" />
-            <StyledRow>
+            <StyledRow className={classNames({ 'd-none': !action })}>
               <Col lg={12}>
                 {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
@@ -93,6 +94,9 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
               </Col>
             </StyledRow>
+            <div>
+              <label>Preview</label>
+            </div>
             <QuerySentencePreview
               source={source}
               action={action}
