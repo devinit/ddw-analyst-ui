@@ -114,6 +114,9 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
 
   return (
     <PreviewWrapper>
+      <div>
+        <label>Preview</label>
+      </div>
       <div className="mb-2">
         <IRadio
           variant="danger"
@@ -128,7 +131,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           variant="danger"
           id="query"
           name="query"
-          label="Preview Query"
+          label="Query"
           onChange={onRadioChange}
           inline
           checked={previewOption === 'query'}
@@ -137,7 +140,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           variant="danger"
           id="data"
           name="data"
-          label="Preview Data"
+          label="Data"
           onChange={onRadioChange}
           inline
           checked={previewOption === 'data'}
