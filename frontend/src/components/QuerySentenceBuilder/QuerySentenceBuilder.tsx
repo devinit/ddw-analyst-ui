@@ -94,9 +94,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
               </Col>
             </StyledRow>
-            <div>
-              <label>Preview</label>
-            </div>
             <QuerySentencePreview
               source={source}
               action={action}
