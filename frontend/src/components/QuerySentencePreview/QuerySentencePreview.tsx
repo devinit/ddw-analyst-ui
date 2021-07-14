@@ -55,18 +55,22 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const [editorValue, setEditorValue] = useState('{}');
   const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
 
+  const fetchPreviewData = (_options: AdvancedQueryOptions) => {
+    setDataLoading(true);
+    previewAdvancedDatasetData(_options).then((results) => {
+      setDataLoading(false);
+      if (results.error) {
+        setAlert([`Error: ${results.error}`]);
+      } else {
+        setData(results.data ? results.data.slice(0, 9) : []);
+      }
+    });
+  };
+
   /* eslint-disable @typescript-eslint/no-non-null-assertion */
   useEffect(() => {
     if (previewOption === 'data' && validOptions) {
-      setDataLoading(true);
-      previewAdvancedDatasetData(validOptions).then((results) => {
-        setDataLoading(false);
-        if (results.error) {
-          setAlert([`Error: ${results.error}`]);
-        } else {
-          setData(results.data ? results.data.slice(0, 9) : []);
-        }
-      });
+      fetchPreviewData(validOptions);
     }
   }, [previewOption]);
 
@@ -78,6 +82,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
     } else {
       setAlert([]);
       setValidOptions(options);
+      fetchPreviewData(options);
       if (props.onValidUpdate) props.onValidUpdate(options);
     }
   }, [options]);
