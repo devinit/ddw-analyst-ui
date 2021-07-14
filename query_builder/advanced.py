@@ -79,11 +79,12 @@ class AdvancedQueryBuilder:
 
         return Table(table_name, schema=schema_name)
 
-    def get_source_columns(self, source_id):
+    def get_source_columns(self, source_id, exclude = []):
         source_columns = SourceColumnMap.objects.filter(source_id=source_id)
         columns = []
         for source_column in source_columns:
-            columns.append({'id': source_column.id, 'name': source_column.name, 'alias':source_column.alias})
+            if not source_column.name in exclude:
+                columns.append({'id': source_column.id, 'name': source_column.name, 'alias':source_column.alias})
         return columns
 
     def handle_filter(self, table, query, config):
@@ -124,17 +125,17 @@ class AdvancedQueryBuilder:
             query = self.get_having_query(table, query, config.get('having'))
 
         if 'selectall' in config and config.get('selectall'):
-            all_columns = self.get_source_columns(config.get('source'))
             if 'columns' in config:
                 # re-arrange columns starting by those in config first
                 provided_cols = config.get('columns')
+                other_columns = self.get_source_columns(config.get('source'), [column['name'] for column in provided_cols])
                 for provided_col in provided_cols:
-                    j = next((i for i, item in enumerate(all_columns) if item['name'] == provided_col['name']), False)
+                    j = next((i for i, item in enumerate(other_columns) if item['name'] == provided_col['name']), False)
                     if j:
-                        all_columns.pop(j)
-                columns = provided_cols + all_columns
+                        other_columns.pop(j)
+                columns = provided_cols + other_columns
             else:
-                columns = all_columns
+                columns = self.get_source_columns(config.get('source'))
         else:
             columns = config.get('columns')
 
