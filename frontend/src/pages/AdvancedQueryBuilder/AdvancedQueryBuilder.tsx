@@ -6,13 +6,12 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
 import { SourcesContext } from '../../context';
-import { Operation, OperationMap } from '../../types/operations';
+import { AdvancedQueryOptions, Operation, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { api, localForageKeys } from '../../utils';
 import { useOperation, useSourceFromAdvancedOperation, useSources } from '../../utils/hooks';
 import * as localForage from 'localforage';
-import { boolean } from 'yup';
-// import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 
 type RouterParams = {
   id?: string;
@@ -29,15 +28,19 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { loading, operation: pageOperation } = useOperation<OperationMap>(
     operationID ? parseInt(operationID) : undefined,
   );
+
   const sources = useSources({ limit: 200, offset: 0 });
   const history = useHistory();
-  const { source: operationSource } = useSourceFromAdvancedOperation(operation);
 
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
     if (pageOperation) {
       setOperation(pageOperation);
-      // setActiveSource(operationSource);
+      if (sources) {
+        const advancedConfig = pageOperation.get('advanced_config');
+        const sourceID = fromJS(advancedConfig)?.get('source');
+        setActiveSource(sources.find((source) => source.get('id') === sourceID));
+      }
     }
   }, [pageOperation]);
   useEffect(() => {
@@ -46,11 +49,11 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     }
   }, [operation]);
   useEffect(() => {
-    localForage.getItem<string>(localForageKeys.API_KEY).then((_token) => {
-      if (_token) setToken(_token);
+    localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
+      if (token) setToken(token);
     });
-    localForage.getItem<string>(localForageKeys.USER).then((_user) => {
-      if (_user) setUser(JSON.parse(_user));
+    localForage.getItem<string>(localForageKeys.USER).then((user) => {
+      if (user) setUser(user as any);
     });
   }, []);
 
@@ -153,30 +156,3 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 };
 
 export default AdvancedQueryBuilder;
-
-// const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
-//   dispatch,
-// ): ActionProps => ({
-//   actions: bindActionCreators(
-//     {
-//       ...sourcesActions,
-//       ...pageActions,
-//       setActiveOperation: setOperation,
-//       deleteOperation,
-//     },
-//     dispatch,
-//   ),
-// });
-// const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
-//   return {
-//     token: reduxStore.get('token') as TokenState,
-//     operations: reduxStore.getIn(['operations', 'operations']),
-//     activeOperation: reduxStore.getIn(['operations', 'activeOperation']),
-//     page: reduxStore.get(`${queryBuilderReducerId}`),
-//     user: reduxStore.get('user') as UserState,
-//   };
-// };
-
-// const connector = connect(mapStateToProps, mapDispatchToProps)(AdvancedQueryBuilder);
-
-// export { connector as default };
