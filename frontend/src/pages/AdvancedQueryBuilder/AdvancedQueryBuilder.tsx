@@ -1,17 +1,17 @@
 import axios, { AxiosResponse } from 'axios';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { fromJS } from 'immutable';
+import * as localForage from 'localforage';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
 import { SourcesContext } from '../../context';
-import { AdvancedQueryOptions, Operation, OperationMap } from '../../types/operations';
+import { Operation, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { api, localForageKeys } from '../../utils';
-import { useOperation, useSourceFromAdvancedOperation, useSources } from '../../utils/hooks';
-import * as localForage from 'localforage';
-import { fromJS } from 'immutable';
+import { useOperation, useSources } from '../../utils/hooks';
 
 type RouterParams = {
   id?: string;
@@ -23,7 +23,6 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [token, setToken] = useState('');
   const [user, setUser] = useState<{ id: number; username: string; is_superuser: boolean }>();
   const [operation, setOperation] = useState<OperationMap>();
-  const [editable, setEditable] = useState(false);
   const [activeSource, setActiveSource] = useState<SourceMap>();
   const { loading, operation: pageOperation } = useOperation<OperationMap>(
     operationID ? parseInt(operationID) : undefined,
@@ -31,7 +30,6 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const sources = useSources({ limit: 200, offset: 0 });
   const history = useHistory();
-
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
     if (pageOperation) {
@@ -42,12 +40,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
         setActiveSource(sources.find((source) => source.get('id') === sourceID));
       }
     }
-  }, [pageOperation]);
-  useEffect(() => {
-    if (isEditable) {
-      setEditable(isEditable(operation));
-    }
-  }, [operation]);
+  }, [sources]);
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
       if (token) setToken(token);
@@ -134,7 +127,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           {!loading && sources.count() ? (
             <SourcesContext.Provider value={{ sources }}>
               <OperationTabContainer
-                editable={editable}
+                editable={isEditable(operation)}
                 operation={operation}
                 onSave={onSaveOperation}
                 onDelete={onDeleteOperation}
@@ -144,7 +137,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                   activeSource={activeSource}
                   operation={operation}
                   onUpdateOperation={onUpdateOperation}
-                  editable={editable}
+                  editable={isEditable(operation)}
                 />
               </OperationTabContainer>
             </SourcesContext.Provider>
