@@ -47,7 +47,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   }, []);
 
   const onSaveOperation = (): void => {
-    saveOperation(operation as OperationMap, history);
+    saveOperation(operation as OperationMap)
+      .then(() => history.push('/'))
+      .catch((error) => console.log(`An error occured while saving operation:`, error.message));
   };
 
   const onDeleteOperation = (ope?: OperationMap) => {
