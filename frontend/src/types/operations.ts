@@ -102,6 +102,10 @@ export interface AdvancedQueryOptions {
   groupby?: string[];
   selectall?: boolean;
 }
+export type AdvancedQueryOptionsMap = Map<
+  keyof AdvancedQueryOptions,
+  AdvancedQueryOptions[keyof AdvancedQueryOptions]
+>;
 
 export interface AdvancedQueryColumn extends Partial<Column> {
   aggregate?: 'sum' | 'avg' | 'max' | 'min' | 'std';
