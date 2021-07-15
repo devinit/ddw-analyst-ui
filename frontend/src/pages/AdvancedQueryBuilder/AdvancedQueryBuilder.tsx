@@ -40,7 +40,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   }, [pageOperation?.size, sources.count()]);
 
   const onSaveOperation = (): void => {
-    saveOperation(operation as OperationMap)
+    saveOperation(operation as OperationMap, `${token}`)
       .then(() => history.push('/'))
       .catch((error) => console.log(`An error occured while saving operation:`, error.message));
   };
