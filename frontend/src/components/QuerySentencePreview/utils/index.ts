@@ -1,5 +1,9 @@
 import { Set } from 'immutable';
-import { AdvancedQueryBuilderAction, AdvancedQueryOptions } from '../../../types/operations';
+import {
+  AdvancedQueryBuilderAction,
+  AdvancedQueryColumn,
+  AdvancedQueryOptions,
+} from '../../../types/operations';
 import { ColumnList, SourceMap } from '../../../types/sources';
 import { validateFilter } from '../../AdvancedFilterQueryBuilder/utils';
 import { QueryBuilderHandler } from '../../QueryBuilderHandler';
@@ -16,6 +20,10 @@ export const validateOptions = (options: AdvancedQueryOptions, source: SourceMap
   if (!options.selectall && !options.columns?.length) {
     return ['Select at least one column to return'];
   }
+  if (options.columns?.length) {
+    const errors = validateColumns(source, options.columns);
+    if (errors.length) return errors;
+  }
   if (options.filter) {
     const columns = source.get('columns') as ColumnList;
     const columnSet = Set(columns.map((column) => column.get('name') as string));
@@ -28,9 +36,45 @@ export const validateOptions = (options: AdvancedQueryOptions, source: SourceMap
   if (options.join && !options.join.mapping.length) {
     return ['At least one join mapping is required'];
   }
+  if (options.join && !options.join.columns?.length) {
+    return ['At least one join column is required'];
+  }
+  // TODO: validate join columns - they require to be fetched from their own source
+  // if (options.join && options.join.columns?.length) {
+  //   const errors = validateColumns(source, options.join.columns, 'join');
+  //   if (errors.length) return errors;
+  // }
   if (options.groupby && !options.groupby.length) return ['Group by requires at least one column'];
 
   return [];
+};
+
+const validateColumns = (
+  source: SourceMap,
+  columns: AdvancedQueryColumn[],
+  usage: 'select' | 'join' = 'select',
+): string[] => {
+  const errors: string[] = [];
+  // const usagePrefix = usage === 'select' ? 'Select' : 'Join';
+  const sourceColumns = source.get('columns') as ColumnList;
+  columns.forEach((column, index) => {
+    if (!column.id) {
+      errors.push(`ID is required for ${usage} column ${index + 1}`);
+    }
+    if (!column.name) {
+      errors.push(`Column name is required for ${usage} column ${index + 1}`);
+    } else {
+      const matchingColumn = sourceColumns.find((_column) => _column.get('name') === column.name);
+      if (!matchingColumn) {
+        errors.push(`Invalid column name (${column.name}) for ${usage} column ${index + 1}`);
+      }
+    }
+    if (!column.alias) {
+      errors.push(`Column alias is required for ${usage} column ${index + 1}`);
+    }
+  });
+
+  return errors;
 };
 
 export const getClauseOptions = (
