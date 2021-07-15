@@ -39,11 +39,10 @@ export const validateOptions = (options: AdvancedQueryOptions, source: SourceMap
   if (options.join && !options.join.columns?.length) {
     return ['At least one join column is required'];
   }
-  // TODO: validate join columns - they require to be fetched from their own source
-  // if (options.join && options.join.columns?.length) {
-  //   const errors = validateColumns(source, options.join.columns, 'join');
-  //   if (errors.length) return errors;
-  // }
+  if (options.join && options.join.columns?.length) {
+    const errors = validateColumns(source, options.join.columns, 'join');
+    if (errors.length) return errors;
+  }
   if (options.groupby && !options.groupby.length) return ['Group by requires at least one column'];
 
   return [];
@@ -63,7 +62,8 @@ const validateColumns = (
     }
     if (!column.name) {
       errors.push(`Column name is required for ${usage} column ${index + 1}`);
-    } else {
+    } else if (usage !== 'join') {
+      // TODO: validate join columns - they require to be fetched from their own source
       const matchingColumn = sourceColumns.find((_column) => _column.get('name') === column.name);
       if (!matchingColumn) {
         errors.push(`Invalid column name (${column.name}) for ${usage} column ${index + 1}`);
