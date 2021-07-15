@@ -51,14 +51,13 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       deleteOperation(operationID, `${token}`)
         .then(() => history.push('/'))
         .catch((error) => console.log(`An error occured while deleting operation:`, error.message));
+      setOperation(undefined);
     } else {
       setOperation(undefined);
     }
   };
 
-  const onUpdateOperation = (ope?: OperationMap) => {
-    setOperation(ope);
-  };
+  const onUpdateOperation = (ope?: OperationMap) => setOperation(ope);
 
   const isEditable = (operation?: OperationMap): boolean => {
     const isSuperUser = user?.get('is_superuser') as boolean;
