@@ -52,8 +52,14 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   });
   const [alert, setAlert] = useState('');
   useEffect(() => {
+    const options = { ...context.options };
+    // clear existing properties
+    options.columns && delete options.columns;
+    options.filter && delete options.filter;
+    options.groupby && delete options.groupby;
+    options.join && delete options.join;
     setContext({
-      options: { ...context.options, source: source?.get('id') as number },
+      options: { source: source?.get('id') as number, selectall: true },
     });
   }, [source]);
 
