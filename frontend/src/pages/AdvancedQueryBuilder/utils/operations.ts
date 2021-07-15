@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
-import { Operation, OperationMap } from '../../../types/operations';
-import { api, localForageKeys } from '../../../utils';
 import { History } from 'history';
 import * as localForage from 'localforage';
+import { Operation, OperationMap } from '../../../types/operations';
+import { api, localForageKeys } from '../../../utils';
 
 export const saveOperation = (operation: OperationMap, history: History): void => {
   if (!operation) {
