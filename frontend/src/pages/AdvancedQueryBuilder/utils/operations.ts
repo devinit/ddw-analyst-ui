@@ -1,17 +1,15 @@
 import axios from 'axios';
-import * as localForage from 'localforage';
 import { Operation, OperationMap } from '../../../types/operations';
-import { api, localForageKeys } from '../../../utils';
+import { api } from '../../../utils';
 import { clearOperationsCache } from '../../../utils/cache';
 
-export const saveOperation = async (operation: OperationMap): Promise<void> => {
+export const saveOperation = async (operation: OperationMap, token: string): Promise<void> => {
   if (!operation) {
     return;
   }
   const id = operation.get('id');
   const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
   const data: Operation = operation.toJS() as Operation;
-  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   const response = await axios.request<Operation>({
     url,
     method: id ? 'put' : 'post',
