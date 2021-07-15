@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
@@ -6,7 +5,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
 import { AppContext, SourcesContext } from '../../context';
-import { OperationMap } from '../../types/operations';
+import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { useOperation, useSources } from '../../utils/hooks';
 import { deleteOperation, saveOperation } from './utils/operations';
@@ -29,15 +28,16 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const history = useHistory();
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
-    if (pageOperation) {
-      setOperation(pageOperation);
-      if (sources) {
-        const advancedConfig = pageOperation.get('advanced_config');
-        const sourceID = fromJS(advancedConfig)?.get('source');
-        setActiveSource(sources.find((source) => source.get('id') === sourceID));
+    if (pageOperation) setOperation(pageOperation);
+    if (pageOperation && sources.count()) {
+      const advancedConfig = pageOperation.get('advanced_config') as AdvancedQueryOptionsMap;
+      if (advancedConfig && advancedConfig.get('source')) {
+        setActiveSource(
+          sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
+        );
       }
     }
-  }, [pageOperation?.size]);
+  }, [pageOperation?.size, sources.count()]);
 
   const onSaveOperation = (): void => {
     saveOperation(operation as OperationMap)
@@ -86,7 +86,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onUpdate={onUpdateOperation}
               >
                 <QuerySentenceBuilder
-                  activeSource={activeSource}
+                  source={activeSource}
                   operation={operation}
                   onUpdateOperation={onUpdateOperation}
                   editable={isEditable(operation)}

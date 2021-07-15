@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import {
   AdvancedQueryBuilderAction,
   AdvancedQueryOptions,
+  AdvancedQueryOptionsMap,
   Operation,
   OperationMap,
 } from '../../types/operations';
@@ -24,7 +25,7 @@ interface ComponentProps {
   operation?: OperationMap;
   onUpdateOperation: (operation: OperationMap) => void;
   editable?: boolean;
-  activeSource?: SourceMap;
+  source?: SourceMap;
 }
 export interface QueryContextProps {
   options: AdvancedQueryOptions;
@@ -55,21 +56,30 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [alert, setAlert] = useState('');
 
   useEffect(() => {
+    if (props.operation) setSource(props.source);
+  }, [props.source]);
+  useEffect(() => {
     const options = { ...context.options };
-    // clear existing properties
-    options.columns && delete options.columns;
-    options.filter && delete options.filter;
-    options.groupby && delete options.groupby;
-    options.join && delete options.join;
-    setContext({
-      options: { source: source?.get('id') as number, selectall: true },
-    });
+    if (!props.operation) {
+      // clear existing properties (only when NOT editing a dataset)
+      options.columns && delete options.columns;
+      options.filter && delete options.filter;
+      options.groupby && delete options.groupby;
+      options.join && delete options.join;
+      setContext({
+        options: { ...options, source: source?.get('id') as number, selectall: true },
+      });
+    } else {
+      setContext({
+        options: { ...options, source: source?.get('id') as number },
+      });
+    }
   }, [source]);
   useEffect(() => {
     if (props.editable && props.operation) {
-      const config = props.operation.get('advanced_config');
+      const config = props.operation.get('advanced_config') as AdvancedQueryOptionsMap;
       if (config) {
-        setContext({ options: config as AdvancedQueryOptions });
+        setContext({ options: config.toJS() as AdvancedQueryOptions });
       }
     }
   }, [props.editable]);
@@ -99,34 +109,20 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   return (
     <div>
       <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions, editor }}>
-        <DataSourceSelector source={source || props.activeSource} onSelect={onSelectSource} />
-        {source || props.activeSource ? (
+        <DataSourceSelector source={source} onSelect={onSelectSource} />
+        {source ? (
           <>
             <QueryBuilderActionSelector onSelectAction={onSelectAction} defaultAction="select" />
             <StyledRow className={classNames({ 'd-none': !action })}>
               <Col lg={12}>
-                {action === 'select' ? (
-                  <AdvancedSelectQueryBuilder
-                    source={(source || props.activeSource) as SourceMap}
-                  />
-                ) : null}
-                {action === 'filter' ? (
-                  <AdvancedFilterQueryBuilder
-                    source={(source || props.activeSource) as SourceMap}
-                  />
-                ) : null}
-                {action === 'join' ? (
-                  <AdvancedJoinQueryBuilder source={(source || props.activeSource) as SourceMap} />
-                ) : null}
-                {action === 'groupby' ? (
-                  <AdvancedGroupByQueryBuilder
-                    source={(source || props.activeSource) as SourceMap}
-                  />
-                ) : null}
+                {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
+                {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
+                {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
+                {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
               </Col>
             </StyledRow>
             <QuerySentencePreview
-              source={(source || props.activeSource) as SourceMap}
+              source={source}
               action={action}
               operation={props.operation}
               onEditorInit={onEditorInit}
