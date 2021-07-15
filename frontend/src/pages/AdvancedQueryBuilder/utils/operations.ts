@@ -32,3 +32,25 @@ export const saveOperation = (operation: OperationMap, history: History): void =
       });
   });
 };
+
+export const deleteOperation = (operationID: string, history: History): void => {
+  localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
+    axios
+      .request({
+        url: `${api.routes.SINGLE_DATASET}${operationID}/`,
+        method: 'delete',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+      })
+      .then((response: AxiosResponse<Operation>) => {
+        if (response.status === 200 || response.status === 204 || response.status === 201) {
+          history.push('/');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+};
