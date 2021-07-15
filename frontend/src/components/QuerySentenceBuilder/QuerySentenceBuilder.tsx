@@ -64,14 +64,13 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
       options: { source: source?.get('id') as number, selectall: true },
     });
   }, [source]);
-  // useEffect(() => {
-  //   console.log(props.operation?.get('advanced_config') as AdvancedQueryOptions)
-  //   if (props.editable) {
-  //     setContext({
-  //       options: { ...(props.operation?.get('advanced_config') as AdvancedQueryOptions) },
-  //     });
-  //   }
-  // }, [props.editable]);
+  useEffect(() => {
+    if (props.editable) {
+      setContext({
+        options: { ...props.operation?.toJS().advanced_config },
+      });
+    }
+  }, [props.editable]);
 
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>, replace?: boolean) => {
     setContext({
