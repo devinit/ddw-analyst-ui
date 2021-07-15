@@ -12,6 +12,7 @@ import { Operation, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { api, localForageKeys } from '../../utils';
 import { useOperation, useSources } from '../../utils/hooks';
+import { saveOperation } from './utils/operations';
 
 type RouterParams = {
   id?: string;
@@ -52,31 +53,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const onSaveOperation = (preview?: boolean) => {
     console.log('Saving:', preview);
-    if (!operation) {
-      return;
-    }
-    const id = operation.get('id');
-    const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
-    const data: Operation = operation.toJS() as Operation;
-
-    axios
-      .request({
-        url,
-        method: id ? 'put' : 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `token ${token}`,
-        },
-        data,
-      })
-      .then((response: AxiosResponse<Operation>) => {
-        if (response.status === 200 || response.status === 201) {
-          history.push('/');
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    saveOperation(operation as OperationMap, history);
   };
 
   const onDeleteOperation = (ope?: OperationMap) => {
