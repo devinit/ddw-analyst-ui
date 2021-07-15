@@ -1,15 +1,13 @@
 import { fromJS } from 'immutable';
-import * as localForage from 'localforage';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
-import { SourcesContext } from '../../context';
+import { AppContext, SourcesContext } from '../../context';
 import { OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
-import { localForageKeys } from '../../utils';
 import { useOperation, useSources } from '../../utils/hooks';
 import { deleteOperation, saveOperation } from './utils/operations';
 
@@ -20,7 +18,7 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
-  const [user, setUser] = useState<{ id: number; username: string; is_superuser: boolean }>();
+  const { user } = useContext(AppContext);
   const [operation, setOperation] = useState<OperationMap>();
   const [activeSource, setActiveSource] = useState<SourceMap>();
   const { loading, operation: pageOperation } = useOperation<OperationMap>(
@@ -40,11 +38,6 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       }
     }
   }, [pageOperation?.size]);
-  useEffect(() => {
-    localForage.getItem<string>(localForageKeys.USER).then((user) => {
-      if (user) setUser(user as any);
-    });
-  }, []);
 
   const onSaveOperation = (): void => {
     saveOperation(operation as OperationMap)
@@ -66,10 +59,13 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   };
 
   const isEditable = (operation?: OperationMap): boolean => {
-    const isSuperUser = user?.is_superuser as boolean;
+    const isSuperUser = user?.get('is_superuser') as boolean;
 
     return (
-      !operation || !operation.get('id') || user?.username === operation.get('user') || isSuperUser
+      !operation ||
+      !operation.get('id') ||
+      user?.get('username') === operation.get('user') ||
+      isSuperUser
     );
   };
 

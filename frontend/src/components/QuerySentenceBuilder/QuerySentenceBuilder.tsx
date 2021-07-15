@@ -53,6 +53,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     options: defaultOptions as AdvancedQueryOptions,
   });
   const [alert, setAlert] = useState('');
+
   useEffect(() => {
     const options = { ...context.options };
     // clear existing properties
