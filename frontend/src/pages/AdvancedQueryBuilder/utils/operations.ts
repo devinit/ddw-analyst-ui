@@ -29,25 +29,23 @@ export const saveOperation = async (operation: OperationMap): Promise<void> => {
   return;
 };
 
-export const deleteOperation = (operationID: string, history: History): void => {
-  localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
-    axios
-      .request({
-        url: `${api.routes.SINGLE_DATASET}${operationID}/`,
-        method: 'delete',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `token ${token}`,
-        },
-      })
-      .then((response: AxiosResponse<Operation>) => {
-        if (response.status === 200 || response.status === 204 || response.status === 201) {
-          clearOperationsCache();
-          history.push('/');
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+export const deleteOperation = async (operationID: string, token: string): Promise<void> => {
+  const response = await axios.request({
+    url: `${api.routes.SINGLE_DATASET}${operationID}/`,
+    method: 'delete',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `token ${token}`,
+    },
   });
+
+  if (response.status === 200 || response.status === 204 || response.status === 201) {
+    clearOperationsCache();
+
+    return;
+  }
+
+  throw new Error(
+    `Operation delete failed: Code: ${response.status} | Message: ${response.statusText}`,
+  );
 };

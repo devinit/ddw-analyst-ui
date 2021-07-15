@@ -17,7 +17,7 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
-  const { user } = useContext(AppContext);
+  const { user, token } = useContext(AppContext);
   const [operation, setOperation] = useState<OperationMap>();
   const [activeSource, setActiveSource] = useState<SourceMap>();
   const { loading, operation: pageOperation } = useOperation<OperationMap>(
@@ -47,8 +47,10 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const onDeleteOperation = (ope?: OperationMap) => {
     const operationID = ope?.get('id') as string | undefined;
-    if (operationID) {
-      deleteOperation(operationID, history);
+    if (operationID && token) {
+      deleteOperation(operationID, `${token}`)
+        .then(() => history.push('/'))
+        .catch((error) => console.log(`An error occured while deleting operation:`, error.message));
     } else {
       setOperation(undefined);
     }
