@@ -3,7 +3,7 @@ import { fromJS, List } from 'immutable';
 import * as localForage from 'localforage';
 import { useEffect, useState } from 'react';
 import { APIResponse } from '../../types/api';
-import { AdvancedQueryOptions, OperationMap } from '../../types/operations';
+import { OperationMap } from '../../types/operations';
 import { Source, SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation, localForageKeys } from '../../utils';
 import { fetchCachedSources, updateSourcesCache } from '../../utils/cache';

@@ -65,10 +65,11 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     });
   }, [source]);
   useEffect(() => {
-    if (props.editable) {
-      setContext({
-        options: { ...props.operation?.toJS().advanced_config },
-      });
+    if (props.editable && props.operation) {
+      const config = props.operation.get('advanced_config');
+      if (config) {
+        setContext({ options: config as AdvancedQueryOptions });
+      }
     }
   }, [props.editable]);
 
