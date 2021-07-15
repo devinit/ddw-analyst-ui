@@ -15,6 +15,7 @@ import { QueryBuilderHandler } from '../../QueryBuilderHandler';
  */
 export const validateOptions = (options: AdvancedQueryOptions, source: SourceMap): string[] => {
   // TODO: add advanced validation e.g source & column validation for select & join
+  console.log(options);
   if (!options.source) return ['A data source is required'];
   if (source.get('id') !== options.source) return ['Configured source must match selected source'];
   if (!options.selectall && !options.columns?.length) {
