@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { fromJS } from 'immutable';
 import * as localForage from 'localforage';
-import deepEqual from 'fast-deep-equal';
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
@@ -29,23 +28,19 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     operationID ? parseInt(operationID) : undefined,
   );
 
-  const sources = useSources({ limit: 200, offset: 0 });
+  const sources = useSources({ limit: 200, offset: 0 }) || null;
   const history = useHistory();
-  const prevPageOperation = useRef(pageOperation);
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
-    if (!deepEqual(prevPageOperation.current, pageOperation)) {
-      if (pageOperation) {
-        setOperation(pageOperation);
-        if (sources) {
-          const advancedConfig = pageOperation.get('advanced_config');
-          const sourceID = fromJS(advancedConfig)?.get('source');
-          setActiveSource(sources.find((source) => source.get('id') === sourceID));
-        }
-        prevPageOperation.current = pageOperation;
+    if (pageOperation) {
+      setOperation(pageOperation);
+      if (sources) {
+        const advancedConfig = pageOperation.get('advanced_config');
+        const sourceID = fromJS(advancedConfig)?.get('source');
+        setActiveSource(sources.find((source) => source.get('id') === sourceID));
       }
     }
-  }, [pageOperation]);
+  }, [pageOperation?.size]);
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
       if (token) setToken(token);
@@ -87,10 +82,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const onDeleteOperation = (ope?: OperationMap) => {
     const operationID = ope?.get('id') as string | undefined;
     if (operationID) {
-      const url = `${api.routes.SINGLE_DATASET}${operationID}/`;
       axios
         .request({
-          url,
+          url: `${api.routes.SINGLE_DATASET}${operationID}/`,
           method: 'delete',
           headers: {
             'Content-Type': 'application/json',
@@ -98,7 +92,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           },
         })
         .then((response: AxiosResponse<Operation>) => {
-          if (response.status === 200) {
+          if (response.status === 200 || response.status === 204 || response.status === 201) {
             history.push('/');
           }
         })

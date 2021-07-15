@@ -64,11 +64,14 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
       options: { source: source?.get('id') as number, selectall: true },
     });
   }, [source]);
-  useEffect(() => {
-    if (props.editable) {
-      console.log(props.operation?.toJS());
-    }
-  }, [props.editable]);
+  // useEffect(() => {
+  //   console.log(props.operation?.get('advanced_config') as AdvancedQueryOptions)
+  //   if (props.editable) {
+  //     setContext({
+  //       options: { ...(props.operation?.get('advanced_config') as AdvancedQueryOptions) },
+  //     });
+  //   }
+  // }, [props.editable]);
 
   const onUpdateOptions = (options: Partial<AdvancedQueryOptions>, replace?: boolean) => {
     setContext({
@@ -102,21 +105,27 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             <StyledRow className={classNames({ 'd-none': !action })}>
               <Col lg={12}>
                 {action === 'select' ? (
-                  <AdvancedSelectQueryBuilder source={source || props.activeSource} />
+                  <AdvancedSelectQueryBuilder
+                    source={(source || props.activeSource) as SourceMap}
+                  />
                 ) : null}
                 {action === 'filter' ? (
-                  <AdvancedFilterQueryBuilder source={source || props.activeSource} />
+                  <AdvancedFilterQueryBuilder
+                    source={(source || props.activeSource) as SourceMap}
+                  />
                 ) : null}
                 {action === 'join' ? (
-                  <AdvancedJoinQueryBuilder source={source || props.activeSource} />
+                  <AdvancedJoinQueryBuilder source={(source || props.activeSource) as SourceMap} />
                 ) : null}
                 {action === 'groupby' ? (
-                  <AdvancedGroupByQueryBuilder source={source || props.activeSource} />
+                  <AdvancedGroupByQueryBuilder
+                    source={(source || props.activeSource) as SourceMap}
+                  />
                 ) : null}
               </Col>
             </StyledRow>
             <QuerySentencePreview
-              source={source || props.activeSource}
+              source={(source || props.activeSource) as SourceMap}
               action={action}
               operation={props.operation}
               onEditorInit={onEditorInit}
