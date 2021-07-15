@@ -1,5 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
-import { History } from 'history';
+import axios from 'axios';
 import * as localForage from 'localforage';
 import { Operation, OperationMap } from '../../../types/operations';
 import { api, localForageKeys } from '../../../utils';
