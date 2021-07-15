@@ -212,6 +212,9 @@ class OperationSerializer(serializers.ModelSerializer):
 
             advanced_config = validated_data.get('advanced_config', None)
             if advanced_config and len(advanced_config) > 0:
+                instance.name = validated_data.get('name')
+                instance.description = validated_data.get('description')
+                instance.is_draft = validated_data.get('is_draft')
                 instance.advanced_config = advanced_config
                 instance.operation_query = query.get_advanced_config_query(advanced_config)
                 instance.save()
