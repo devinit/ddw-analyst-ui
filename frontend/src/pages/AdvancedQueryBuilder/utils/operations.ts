@@ -3,6 +3,7 @@ import { History } from 'history';
 import * as localForage from 'localforage';
 import { Operation, OperationMap } from '../../../types/operations';
 import { api, localForageKeys } from '../../../utils';
+import { clearOperationsCache } from '../../../utils/cache';
 
 export const saveOperation = (operation: OperationMap, history: History): void => {
   if (!operation) {
@@ -24,6 +25,7 @@ export const saveOperation = (operation: OperationMap, history: History): void =
       })
       .then((response: AxiosResponse<Operation>) => {
         if (response.status === 200 || response.status === 201) {
+          clearOperationsCache();
           history.push('/');
         }
       })
@@ -46,6 +48,7 @@ export const deleteOperation = (operationID: string, history: History): void => 
       })
       .then((response: AxiosResponse<Operation>) => {
         if (response.status === 200 || response.status === 204 || response.status === 201) {
+          clearOperationsCache();
           history.push('/');
         }
       })

@@ -46,8 +46,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     });
   }, []);
 
-  const onSaveOperation = (preview?: boolean) => {
-    console.log('Saving:', preview);
+  const onSaveOperation = (): void => {
     saveOperation(operation as OperationMap, history);
   };
 
