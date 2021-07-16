@@ -3,13 +3,13 @@ import { Form } from 'react-bootstrap';
 
 interface CheckBoxProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  defaultChecked?: boolean;
+  checked?: boolean;
   label: string;
   disabled?: boolean;
 }
 
-export const CheckBox: React.SFC<CheckBoxProps> = ({
-  defaultChecked,
+export const CheckBox: React.FunctionComponent<CheckBoxProps> = ({
+  checked,
   disabled,
   label,
   onChange,
@@ -18,11 +18,7 @@ export const CheckBox: React.SFC<CheckBoxProps> = ({
     <Form.Group>
       <Form.Check type="checkbox">
         <Form.Check.Label>
-          <Form.Check.Input
-            onChange={onChange}
-            defaultChecked={defaultChecked}
-            disabled={disabled}
-          />
+          <Form.Check.Input onChange={onChange} checked={!!checked} disabled={disabled} />
           {label}
           <span className="form-check-sign">
             <span className="check" />
