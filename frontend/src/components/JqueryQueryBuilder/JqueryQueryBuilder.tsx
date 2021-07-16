@@ -1,5 +1,7 @@
 import React, { FunctionComponent, useEffect } from 'react';
-// import * from 'react-bootstrap';
+import 'jQuery-QueryBuilder/dist/css/query-builder.default.min.css';
+import * as jQueryQueryBuilder from 'jQuery-QueryBuilder';
+import { Row } from 'react-bootstrap';
 
 interface JqueryQueryBuilder {
   show?: boolean;
@@ -33,7 +35,7 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilder> = () => {
   };
 
   useEffect(() => {
-    (window as any).$('#builder').queryBuilder({
+    const jq = new jQueryQueryBuilder((window as any).$('#builder'), {
       filters: [
         {
           id: 'name',
@@ -90,6 +92,8 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilder> = () => {
       rules: rules_basic,
     });
 
+    jq.init(rules_basic);
+
     (window as any).$('#btn-reset').on('click', function () {
       (window as any).$('#builder-basic').queryBuilder('reset');
     });
@@ -107,7 +111,11 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilder> = () => {
     });
   }, []);
 
-  return <div id="builder" />;
+  return (
+    <Row>
+      <div id="builder" />
+    </Row>
+  );
 };
 
 export { JqueryQueryBuilder };
