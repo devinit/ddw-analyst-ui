@@ -28,7 +28,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const history = useHistory();
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
-    if (pageOperation) setOperation(pageOperation);
+    setOperation(pageOperation);
     if (pageOperation && sources.count()) {
       const advancedConfig = pageOperation.get('advanced_config') as AdvancedQueryOptionsMap;
       if (advancedConfig && advancedConfig.get('source')) {
