@@ -172,7 +172,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
           </Form.Group>
 
           <CheckBox
-            defaultChecked={values.is_draft}
+            checked={values.is_draft}
             onChange={debounce(toggleDraft(setFieldValue), 1000, { leading: true })}
             label="Is Draft"
             disabled={!!values.id && !props.editable}
