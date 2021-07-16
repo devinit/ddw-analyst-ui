@@ -156,9 +156,6 @@ export const useOperation = <O = Operation | OperationMap>(
   fetch = false,
   immutable = true,
 ): UseOperationResult<O> => {
-  if (!id) {
-    return { loading: false, operation: undefined };
-  }
   const [operation, setOperation] = useState<Operation | undefined>();
   const [loading, setLoading] = useState(false);
 
@@ -209,7 +206,9 @@ export const useOperation = <O = Operation | OperationMap>(
     }
   }, [id]);
 
-  return { loading, operation: immutable ? fromJS(operation) : operation };
+  return !id
+    ? { loading: false, operation: undefined }
+    : { loading, operation: immutable ? fromJS(operation) : operation };
 };
 
 interface UseOperationQueryResult {
