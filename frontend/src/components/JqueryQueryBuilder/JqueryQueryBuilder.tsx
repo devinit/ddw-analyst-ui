@@ -1,13 +1,32 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import 'jQuery-QueryBuilder/dist/css/query-builder.default.min.css';
 import * as jQueryQueryBuilder from 'jQuery-QueryBuilder';
-import { Row } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
+import { AdvancedQueryOptions } from '../../types/operations';
+import { parseQueryBuilderRules } from './utils';
 
 interface JqueryQueryBuilder {
   show?: boolean;
 }
 
+export type QueryBuilderRules = {
+  condition?: 'AND' | 'OR';
+  rules?: (QueryBuilderRulesComparator | QueryBuilderRules)[];
+};
+
+export type QueryBuilderRulesComparator = {
+  id: string;
+  field: string;
+  type: string;
+  input: string;
+  operator: string;
+  value: string | number;
+};
+
 const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilder> = () => {
+  const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
+  const [jqBuilder, setJqBuilder] = useState<any>({});
   const rules_basic = {
     condition: 'AND',
     rules: [
@@ -94,27 +113,76 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilder> = () => {
 
     jq.init(rules_basic);
 
-    (window as any).$('#btn-reset').on('click', function () {
-      (window as any).$('#builder-basic').queryBuilder('reset');
-    });
+    setJqBuilder(jq);
 
-    (window as any).$('#btn-set').on('click', function () {
-      (window as any).$('#builder-basic').queryBuilder('setRules', rules_basic);
-    });
+    // (window as any).$('#btn-set').on('click', function () {
+    //   (window as any).$('#builder-basic').queryBuilder('setRules', rules_basic);
+    // });
 
-    (window as any).$('#btn-get').on('click', function () {
-      const result = (window as any).$('#builder-basic').queryBuilder('getRules');
-
-      if (!(window as any).$.isEmptyObject(result)) {
-        alert(JSON.stringify(result, null, 2));
-      }
-    });
+    // const result = (window as any).$('#builder-basic').queryBuilder('getRules');
+    // (window as any).$('#btn-get').on('click', function () {
+    //   if (!(window as any).$.isEmptyObject(result)) {
+    //     alert(JSON.stringify(result, null, 2));
+    //   }
+    // });
   }, []);
 
+  const onReset = () => {
+    jqBuilder?.reset();
+  };
+
+  const onReplace = () => {
+    const result = jqBuilder?.getRules();
+
+    const tru = parseQueryBuilderRules(result.rules, {}, result.condition);
+    alert(JSON.stringify(tru, null, 2));
+    options.filter = result;
+    if (updateOptions) {
+      updateOptions(options as AdvancedQueryOptions);
+    }
+  };
+
   return (
-    <Row>
-      <div id="builder" />
-    </Row>
+    <>
+      <div className="mb-3">
+        <div id="builder" />
+      </div>
+      <ButtonGroup className="mr-2">
+        <Button
+          variant="danger"
+          size="sm"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          data-html="true"
+          title={`<i>Replaces</i> existing filter config`}
+          onClick={() => onReplace()}
+        >
+          Replace
+        </Button>
+        <Button
+          variant="danger"
+          size="sm"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          data-html="true"
+          title={`<i>Inserts</i> config to current cursor position on the main editor. </br> <strong>NB:</strong> valid JSON will auto-format`}
+          // onClick={() => onUpdate('insert')}
+        >
+          Insert
+        </Button>
+        <Button
+          variant="dark"
+          size="sm"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          data-html="true"
+          title={`<i>Resets</i> config to default JSON`}
+          onClick={onReset}
+        >
+          Reset
+        </Button>
+      </ButtonGroup>
+    </>
   );
 };
 
