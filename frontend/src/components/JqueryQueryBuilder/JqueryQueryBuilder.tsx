@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import 'jQuery-QueryBuilder/dist/css/query-builder.default.min.css';
+import './jQueryQueryBuilder.css';
 import * as jQueryQueryBuilder from 'jQuery-QueryBuilder';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
@@ -107,7 +108,13 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilder> = () => {
           },
         },
       ],
-
+      icons: {
+        add_group: 'fa fa-plus-circle',
+        add_rule: 'fa fa-plus',
+        remove_group: 'fa fa-times realign',
+        remove_rule: 'fa fa-times realign',
+        error: 'fa fa-exclamation-triangle',
+      },
       rules: rules_basic,
     });
 
