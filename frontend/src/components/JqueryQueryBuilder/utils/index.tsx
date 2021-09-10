@@ -1,17 +1,23 @@
-import { QueryBuilderRules } from '..';
-
-export const parseQueryBuilderRules = (queryRules: any, current: any, condition: string) => {
-  const rules = [];
-  for (let index = 0; index < queryRules?.length; index++) {
-    const element = queryRules[index];
-
-    if (element.hasOwnProperty('condition')) {
-      const rules = parseQueryBuilderRules(element.rules, current, element.condition);
-      current = { ...current, [`${condition}`]: rules };
-    } else {
-      rules.push(element);
+export const parseQuery = (finalElement: any, condition: string, rulesObject: any) => {
+  if (rulesObject.hasOwnProperty('condition')) {
+    finalElement[rulesObject.condition] = [];
+    finalElement = parseQuery(finalElement, rulesObject.condition, rulesObject.rules);
+  } else {
+    for (let index = 0; index < rulesObject.length; index++) {
+      if (Array.isArray(rulesObject) && rulesObject[index].condition) {
+        finalElement[condition].push(
+          parseQuery({}, rulesObject[index].condition, rulesObject[index].rules),
+        );
+      } else {
+        if (finalElement.hasOwnProperty(condition)) {
+          finalElement[condition].push(rulesObject[index]);
+        } else {
+          finalElement[condition] = [];
+          finalElement[condition].push(rulesObject[index]);
+        }
+      }
     }
   }
 
-  return current;
+  return finalElement;
 };
