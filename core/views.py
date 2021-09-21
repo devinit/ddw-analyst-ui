@@ -121,7 +121,10 @@ class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
 
     def __init__(self, operation, frozen_table_id=None):
-        self.main_query = query.build_query(operation=operation, frozen_table_id=frozen_table_id)[1]
+        if operation.advanced_config: # We are dealing with advanced config here
+            self.main_query = query.build_advanced_queries(json.dumps(operation.advanced_config))[1]
+        else:
+            self.main_query = query.build_query(operation=operation, frozen_table_id=frozen_table_id)[1]
         self.operation = operation
 
     def stream(self):
