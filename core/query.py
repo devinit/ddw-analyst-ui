@@ -8,7 +8,6 @@ from core.const import DEFAULT_LIMIT_COUNT
 
 def build_query(operation=None, steps=None, limit=None, offset=None, estimate_count=None, frozen_table_id=None):
     """Build an SQL query"""
-    print(steps)
     count_query = QueryBuilder(operation=operation, operation_steps=steps).count_sql(estimate_count)
     if not count_query and estimate_count: # if count returns 0, remove estimate TODO: figure out why count would contradict actual results
         count_query = QueryBuilder(operation=operation, operation_steps=steps).count_sql(False)
