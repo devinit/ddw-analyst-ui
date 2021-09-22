@@ -236,6 +236,7 @@ class AdvancedQueryBuilder:
             schema_name = table_parts[1]
             return Query.from_(stats_table).select(stats_table.n_live_tup).where(stats_table.relname == table_name).where(stats_table.schemaname == schema_name).get_sql()
         query = self.process_config(config)
+        query = Query.from_(query)
         return query.select(fn.Count('*')).get_sql()
 
     def get_sql_with_limit(self, query, limit=DEFAULT_LIMIT_COUNT, offset=0):

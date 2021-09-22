@@ -78,7 +78,7 @@ def delete_operations(table_name):
     except Operation.DoesNotExist:
         return False
 
-def get_advanced_config_query(advanced_config, limit=DEFAULT_LIMIT_COUNT, offset=0):
+def get_advanced_config_query(advanced_config, limit=None, offset=None):
     builder = AdvancedQueryBuilder()
     query = builder.process_config(advanced_config)
     if limit is None:
@@ -90,11 +90,15 @@ def get_advanced_config_count_query(advanced_config, estimate_count):
     builder = AdvancedQueryBuilder()
     return builder.get_count_sql(advanced_config, estimate_count)
 
-def build_advanced_queries(advanced_config, limit=None, offset=None, estimate_count=None):
+def build_advanced_queries(advanced_config, limit=None, offset=None, estimate_count=False):
     count_sql = get_advanced_config_count_query(advanced_config, estimate_count)
+    if not count_sql and estimate_count: # if count returns 0, remove estimate TODO: figure out why count would contradict actual results
+        count_sql = builder.get_count_sql(advanced_config, False)
     data_sql = get_advanced_config_query(advanced_config, limit, offset)
     return (count_sql, data_sql)
 
-def advanced_query_table(config, limit=None, offset=None, estimate_count=None):
+def advanced_query_table(config, limit=None, offset=None, estimate_count=False):
+    limit = 10000 if limit is None or int(limit) > 10000 else limit
+    offset = offset or 0
     queries = build_advanced_queries(config, limit, offset, estimate_count)
     return fetch_data(queries)
