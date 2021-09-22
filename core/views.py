@@ -219,7 +219,7 @@ class PreviewOperationData(APIView):
     def get_data(self, request):
         try:
             if 'advanced_config' in request.data and request.data['advanced_config']:
-                data = run_query(query.get_advanced_config_query(request.data['advanced_config']), fetch=True)
+                data = run_query(query.get_advanced_config_query(request.data['advanced_config']))
                 return {
                     'count': len(data),
                     'data': data
