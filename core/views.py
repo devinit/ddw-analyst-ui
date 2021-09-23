@@ -218,8 +218,10 @@ class PreviewOperationData(APIView):
 
     def get_data(self, request):
         try:
+            limit=request.query_params.get('limit', 10)
+            offset=request.query_params.get('offset', 0)
             if 'advanced_config' in request.data and request.data['advanced_config']:
-                data = run_query(query.get_advanced_config_query(request.data['advanced_config']))
+                data = run_query(query.get_advanced_config_query(request.data['advanced_config'], limit=limit, offset=offset), fetch=True)
                 return {
                     'count': len(data),
                     'data': data
@@ -227,8 +229,8 @@ class PreviewOperationData(APIView):
             else:
                 count, data = query.query_table(
                     operation_steps=request.data['operation_steps'],
-                    limit=request.query_params.get('limit', 10),
-                    offset=request.query_params.get('offset', 0),
+                    limit=limit,
+                    offset=offset,
                     estimate_count=True
                 )
                 return {
