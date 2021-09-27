@@ -143,7 +143,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   <Sidebar.Item active={this.state.activeRoute === '/queries/build/advanced/'}>
                     <Sidebar.Link
                       to="/queries/build/advanced/"
-                      textNormal="Advanced Query Builder"
+                      textNormal="Advanced Query Builder (BETA)"
                       onClick={this.setActiveRoute}
                     />
                   </Sidebar.Item>
