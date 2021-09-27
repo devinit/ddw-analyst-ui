@@ -52,6 +52,7 @@ class AdvancedQueryBuilder:
         self.orKey = '$or'
 
     def process_config(self, config):
+        self.config = config
         table = self.get_source_table(config.get('source'))
         query = Query.from_(table)
 
@@ -122,8 +123,12 @@ class AdvancedQueryBuilder:
 
     def get_select_query(self, table, query, config):
         if 'groupby' in config:
-            query = self.get_groupby_query(table, query, config.get('groupby'))
-        if 'having' in config:
+            if 'columns' in config:
+                query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'))
+            else:
+                raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
+
+        if 'having' in config and 'groupby' not in config:
             query = self.get_having_query(table, query, config.get('having'))
 
         if 'selectall' in config and config.get('selectall'):
@@ -156,9 +161,16 @@ class AdvancedQueryBuilder:
 
         return query
 
-    def get_groupby_query(self, table, query, columns):
+    def get_groupby_query(self, table, query, columns, select_columns):
         # TODO: handle .having here as its usage is based on the groupby
-        return query.groupby(*[table[column] for column in columns])
+        # Check if all columns in select are present in GROUP BY CLAUSE columns
+        if all(s in columns for s in select_columns):
+            query.groupby(*[table[column] for column in columns])
+            if 'having' in self.config:
+                query = self.get_having_query(table, query, self.config.get('having'))
+            return query
+        else:
+            raise ValueError('All columns (values) in the SELECT clause must be in the GROUP BY clause')
 
     def get_filter_query(self, table, query, config):
         if self.andKey in config:
@@ -205,13 +217,18 @@ class AdvancedQueryBuilder:
             orConfig = config.get(self.orKey)
             return Criterion.any([ self.get_having_criterion(table, config) for config in orConfig ])
 
+        group_by_cols = self.config.get('groupby', {})
         value = config.get('value')
+        plain = True
         if 'plain' in value:
             value = value.get('plain')
         else:
             value = FUNCTION_MAPPING[value.get('aggregate')](table[value.get('column')])
+            plain = False
         if 'aggregate' in config:
             return FILTER_MAPPING[config.get('comp')](FUNCTION_MAPPING[config.get('aggregate')](table[config.get('column')]), value)
+        elif group_by_cols and config.get('column') not in group_by_cols and plain:
+            raise ValueError('Column {} must be in the GROUP BY clause'.format(config.get('column')))
         return FILTER_MAPPING[config.get('comp')](table[config.get('column')], value)
 
     def append_join_columns(self, table, config, columns):
