@@ -93,7 +93,7 @@ def get_advanced_config_count_query(advanced_config, estimate_count):
 def build_advanced_queries(advanced_config, limit=None, offset=None, estimate_count=False):
     count_sql = get_advanced_config_count_query(advanced_config, estimate_count)
     if not count_sql and estimate_count: # if count returns 0, remove estimate TODO: figure out why count would contradict actual results
-        count_sql = builder.get_count_sql(advanced_config, False)
+        count_sql = get_advanced_config_count_query(advanced_config, False)
     data_sql = get_advanced_config_query(advanced_config, limit, offset)
     return (count_sql, data_sql)
 
