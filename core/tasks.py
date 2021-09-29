@@ -11,19 +11,22 @@ from core.models import FrozenData, Operation, SavedQueryData, Source
 
 @app.task(bind=False)
 def count_operation_rows(id):
-    operation = Operation.objects.get(id=id)
-    if operation:
-        if operation.advanced_config and len(operation.advanced_config) > 0:
-            count_query = get_advanced_config_count_query(operation.advanced_config, False)
+    try:
+        operation = Operation.objects.get(id=id)
+        if operation:
+            if operation.advanced_config and len(operation.advanced_config):
+                count_query = get_advanced_config_count_query(operation.advanced_config, False)
+            else:
+                count_query = QueryBuilder(operation=operation, operation_steps=None).count_sql(False)
+            count = count_rows(count_query)
+            operation.row_count = count
+            operation.count_rows = False
+            operation.save()
+            return { "status": "success" }
         else:
-            count_query = QueryBuilder(operation=operation, operation_steps=None).count_sql(False)
-        count = count_rows(count_query)
-        operation.row_count = count
-        operation.count_rows = False
-        operation.save()
-        return { "status": "success" }
-    else:
-        return { "status": "failed" }
+            return { "status": "failed" }
+    except(Operation.DoesNotExist):
+        return { "status": "failed", "reason": "Operation ID {} does not exist".format(id)}
 
 
 @app.task(bind=False)
