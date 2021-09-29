@@ -1,6 +1,7 @@
 import { List } from 'immutable';
 import React, { FunctionComponent } from 'react';
 import { Card } from 'react-bootstrap';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { OperationDataMap } from '../../types/operations';
 import { OperationColumn } from '../../types/sources';
@@ -18,11 +19,19 @@ type ComponentProps = {
 const StyledIcon = styled.i`
   cursor: pointer;
 `;
+const StyledDiv = styled.div`
+  position: relative;
+  min-height: 300px;
+`;
 
 const OperationPreview: FunctionComponent<ComponentProps> = ({ show, loading, data, ...props }) => {
   const renderPreview = () => {
     if (loading) {
-      return <div>Loading ...</div>;
+      return (
+        <Dimmer inverted active>
+          <Loader content="Loading" />
+        </Dimmer>
+      );
     }
     if (data.count()) {
       const columns: OperationColumn[] = Object.keys((data.get(0) as OperationDataMap).toJS()).map(
@@ -36,7 +45,7 @@ const OperationPreview: FunctionComponent<ComponentProps> = ({ show, loading, da
   };
 
   if (props.tableOnly) {
-    return <>{show || loading ? renderPreview() : props.children}</>;
+    return <StyledDiv>{show || loading ? renderPreview() : props.children}</StyledDiv>;
   }
 
   return (
@@ -50,7 +59,9 @@ const OperationPreview: FunctionComponent<ComponentProps> = ({ show, loading, da
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        <div className="mb-2">{show || loading ? renderPreview() : props.children}</div>
+        <div className="mb-2 position-relative">
+          {show || loading ? renderPreview() : props.children}
+        </div>
       </Card.Body>
     </Card>
   );
