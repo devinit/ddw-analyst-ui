@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import { format } from 'sql-formatter';
+import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { useOperationQuery } from '../../utils/hooks';
 import { CodeMirrorReact } from '../CodeMirrorReact';
@@ -8,6 +9,11 @@ import { CodeMirrorReact } from '../CodeMirrorReact';
 interface QuerySentenceProps {
   operation: OperationMap;
 }
+
+const StyledDiv = styled.div`
+  position: relative;
+  min-height: 300px;
+`;
 
 const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => {
   const { loading, query } = useOperationQuery(operation);
@@ -21,9 +27,9 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
   const renderContent = () => {
     if (loading) {
       return (
-        <Alert show variant="dark">
-          Loading ...
-        </Alert>
+        <Dimmer inverted active>
+          <Loader content="Loading" />
+        </Dimmer>
       );
     }
 
@@ -40,13 +46,13 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
     }
 
     return (
-      <Alert show variant="dark">
-        Waiting for a valid config ...
-      </Alert>
+      <Dimmer inverted active>
+        <Loader content="waiting for a valid config" />
+      </Dimmer>
     );
   };
 
-  return <div className="mt-2">{renderContent()}</div>;
+  return <StyledDiv className="mt-2">{renderContent()}</StyledDiv>;
 };
 
 export { QuerySentence };
