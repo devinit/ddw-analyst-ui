@@ -18,9 +18,17 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
     }
   }, [loading, query]);
 
-  return (
-    <div className="mt-2">
-      {sentence ? (
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Alert show variant="dark">
+          Loading ...
+        </Alert>
+      );
+    }
+
+    if (sentence) {
+      return (
         <CodeMirrorReact
           config={{
             mode: 'text',
@@ -28,13 +36,17 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
             readOnly: true,
           }}
         />
-      ) : (
-        <Alert show={!sentence} variant="dark">
-          Waiting for a valid config ...
-        </Alert>
-      )}
-    </div>
-  );
+      );
+    }
+
+    return (
+      <Alert show variant="dark">
+        Waiting for a valid config ...
+      </Alert>
+    );
+  };
+
+  return <div className="mt-2">{renderContent()}</div>;
 };
 
 export { QuerySentence };
