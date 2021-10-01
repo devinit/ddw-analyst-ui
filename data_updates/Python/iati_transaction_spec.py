@@ -76,10 +76,10 @@ DTYPES = {
     'x_covid': 'bool_',
     'dac_policy_marker_code': 'object',
     'dac_policy_marker_significance': 'object',
-    'package_id': 'object',
-    'last_modified': 'object',
     'x_donor_transaction_type': 'object',
     'x_original_transaction_value_USDm': 'float64',
+    'package_id': 'object',
+    'last_modified': 'object',
 }
 NUMERIC_DTYPES = [column_name for column_name, dtype in DTYPES.items() if dtype not in ["object", "bool_"]]
 
