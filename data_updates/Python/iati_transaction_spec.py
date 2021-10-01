@@ -1060,7 +1060,7 @@ class IatiFlat(object):
                     x_transaction_value_usd = ""
                     x_reporting_org_type = recode_if_not_none(reporting_org_type_code, self.dictionaries["organisation_type"])
                     x_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["transaction_type"])
-                    x_donor_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["x_donor_transaction_type"])
+                    x_donor_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["donor_transaction_type"])
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
