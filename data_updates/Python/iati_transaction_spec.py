@@ -1061,6 +1061,7 @@ class IatiFlat(object):
                     x_reporting_org_type = recode_if_not_none(reporting_org_type_code, self.dictionaries["organisation_type"])
                     x_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["transaction_type"])
                     x_donor_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["donor_transaction_type"])
+                    x_donor_transaction_type = replace_default_if_none(x_donor_transaction_type, "")
                     x_finance_type = recode_if_not_none(x_finance_type_code, self.dictionaries["finance_type"])
                     x_aid_type = recode_if_not_none(transaction_aid_type_code, self.dictionaries["aid_type"])
 
@@ -1070,7 +1071,7 @@ class IatiFlat(object):
                     if transaction_convertable and x_currency:
                         if x_currency in self.dictionaries["ratedf"]:
                             x_original_transaction_value_usd = convert_usd(x_original_transaction_value, year, x_currency, self.dictionaries["ratedf"])
-                            x_original_transaction_value_USDm = (x_original_transaction_value_usd / 1000000) if x_original_transaction_value_usd and x_original_transaction_value_usd > 0 else x_original_transaction_value_usd
+                            x_original_transaction_value_USDm = (x_original_transaction_value_usd / 1000000) if x_original_transaction_value_usd else ""
 
                     x_sector_priority_order = ["1", "2"]
                     if len(x_sector_vocabulary_list) > 0:
