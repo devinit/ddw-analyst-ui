@@ -1070,7 +1070,7 @@ class IatiFlat(object):
                     if transaction_convertable and x_currency:
                         if x_currency in self.dictionaries["ratedf"]:
                             x_original_transaction_value_usd = convert_usd(x_original_transaction_value, year, x_currency, self.dictionaries["ratedf"])
-                            x_original_transaction_value_USDm = x_original_transaction_value_usd / 1000000
+                            x_original_transaction_value_USDm = (x_original_transaction_value_usd / 1000000) if x_original_transaction_value_usd else x_original_transaction_value_usd
 
                     x_sector_priority_order = ["1", "2"]
                     if len(x_sector_vocabulary_list) > 0:
