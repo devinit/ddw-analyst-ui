@@ -16,7 +16,7 @@ describe('<ScheduledEventsTableRow', () => {
     description: null,
     enabled: true,
     interval: 2,
-    start_date: new Date('2020-01-01').toISOString(),
+    start_date: new Date('2020-01-01T12:00:00.000Z').toISOString(),
     interval_type: 'sec',
     repeat: true,
   };

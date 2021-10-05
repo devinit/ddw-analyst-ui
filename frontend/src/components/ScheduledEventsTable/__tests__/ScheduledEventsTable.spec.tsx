@@ -18,7 +18,7 @@ describe('<ScheduledEventsTable', () => {
       interval: 5,
       interval_type: 'secs',
       repeat: true,
-      start_date: new Date('2020-01-01').toISOString(),
+      start_date: new Date('2020-01-01T12:00:00.000Z').toISOString(),
     },
   ];
   afterEach(cleanup);
