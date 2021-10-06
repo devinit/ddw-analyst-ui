@@ -105,18 +105,19 @@ describe('The Datasets Pages', () => {
     });
   });
 
-  it('it does not paginate when datasets are less than 10', () => {
+  it('it does not paginate when datasets are less than or equal to 10', () => {
     cy.fixture('datasets').then((datasets) => {
-      datasets.count = 10;
-      datasets.results = datasets.results.slice(0,10);
-      cy.intercept('api/datasets/?limit=10&offset=0', datasets);
+      datasets.results = datasets.results.slice(0, 9);
+      datasets.count = datasets.results.length;
+      cy.intercept('api/datasets/?limit=10&offset=0&search=', datasets);
     });
 
     cy.visit('/datasets');
+    cy.wait(100);
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
     cy.get('[data-testid="pagination-results-count"]').should(
       'contain.text',
-      'Showing 1 to 10 of 10',
+      'Showing 1 to 9 of 9',
     );
     cy.get('.pagination > li').its('length').should('eq', 3);
     cy.get('.pagination > li')
@@ -131,15 +132,16 @@ describe('The Datasets Pages', () => {
     cy.fixture('datasets').then((datasets) => {
       datasets.count = 15;
       datasets.results = datasets.results.slice(0, 10);
-      cy.intercept('api/datasets/?limit=10&offset=0', datasets);
+      cy.intercept('api/datasets/?limit=10&offset=0&search=', datasets);
     });
     cy.fixture('datasets').then((datasets) => {
       datasets.count = 15;
       datasets.results = datasets.results.slice(10, 15);
-      cy.intercept('api/datasets/?limit=10&offset=10', datasets);
+      cy.intercept('api/datasets/?limit=10&offset=10&search=', datasets);
     });
 
     cy.visit('/datasets');
+    cy.wait(100);
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
     cy.get('.dataset-row').its('length').should('eq', 10);
     cy.get('[data-testid="pagination-results-count"]').should(
@@ -265,7 +267,7 @@ describe('The Datasets Pages', () => {
   });
 
   it('freezes a dataset', () => {
-    cy.visit('/');
+    cy.visit('/datasets/');
     cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
     cy.get('[data-testid="dataset-freeze-button"]').click();
     cy.get('[data-testid="dataset-frozen-data-description"]')
@@ -328,7 +330,7 @@ describe('The Datasets Pages', () => {
 
   it('that info button logs error message incase of a dataset freeze error', () => {
     cy.intercept('GET', '/api/dataset/history/**', { fixture: 'erroredFrozenDataset' });
-    cy.visit('/');
+    cy.visit('/datasets/');
     cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
     cy.get('[data-testid="frozen-dataset-info-button"]').click({ force: true });
     cy.get('.modal-body').should('be.visible').contains('Invalid dataset');

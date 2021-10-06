@@ -31,7 +31,7 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = ({
         setSource(matchingSource.get('indicator') as string);
       }
     }
-  }, [sources]);
+  }, [sources, operation]);
 
   const renderActions = (): React.ReactNode =>
     React.Children.map(props.children, (child) => {

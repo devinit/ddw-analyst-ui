@@ -194,6 +194,50 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
       { name: 'year', caption: 'Source Usage Year', type: 'string', required: true },
     ],
   },
+  {
+    name: 'iati_publishers',
+    caption: 'IATI Publishers',
+    columns: [
+      {
+        name: 'reporting_org_ref',
+        caption: 'Reporting Organisation Reference',
+        type: 'string',
+        required: true,
+      },
+      {
+        name: 'registry_id',
+        caption: 'Registry ID',
+        type: 'string',
+        required: true,
+      },
+      { name: 'org_type', caption: 'Organisation Type (DI)', type: 'string', required: true },
+      { name: 'org_name', caption: 'Organisation Name (DI)', type: 'string', required: true },
+      { name: 'abbreviation', caption: 'Abbreviation', type: 'string', required: false },
+      { name: 'usability_score', caption: 'Usability Score', type: 'string', required: false },
+      { name: 'tracker_commit', caption: 'Tracker Commit', type: 'string', required: false },
+      { name: 'tracker_spend', caption: 'Tracker Spend', type: 'string', required: false },
+      {
+        name: 'latest_txn_year',
+        caption: 'Last Transaction Year',
+        type: 'string',
+        required: false,
+      },
+      { name: 'hq_country', caption: 'HQ Country', type: 'string', required: false },
+      { name: 'CRS_codes', caption: 'CRS Codes', type: 'string', required: false },
+      {
+        name: 'IATI_organisation_type',
+        caption: 'IATI Organisation Type',
+        type: 'string',
+        required: true,
+      },
+      {
+        name: 'IATI_organisation_name',
+        caption: 'IATI Organisation Name',
+        type: 'string',
+        required: true,
+      },
+    ],
+  },
 ];
 
 export const getUpdatableTableSelectOptions = (): DropdownItemProps[] =>

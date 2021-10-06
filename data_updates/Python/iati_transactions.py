@@ -125,7 +125,7 @@ def main(args):
         try:
             download_xml = requests_retry_session(retries=3).get(url=dataset["url"], timeout=5).content
             download_success = True
-        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError, requests.exceptions.InvalidSchema):
             download_success = False
             conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
             continue
