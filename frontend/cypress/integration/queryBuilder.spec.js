@@ -14,7 +14,7 @@ describe('The Query Builder', () => {
   it('should be navigated to from the sidebar', () => {
     cy.visit('/');
     cy.url().should('not.include', '/login');
-    cy.get('[data-testid=sidebar-link-query-builder]').click();
+    cy.get('[data-testid=sidebar-link-query-builder]').click({ force: true });
     cy.url().should('include', '/queries/build');
   });
 
