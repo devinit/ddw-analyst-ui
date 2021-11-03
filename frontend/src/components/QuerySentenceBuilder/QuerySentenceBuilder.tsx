@@ -20,6 +20,7 @@ import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
 import { QuerySentencePreview } from '../QuerySentencePreview';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder/JqueryQueryBuilder';
+import { getCurrentAction } from './utils';
 
 interface ComponentProps {
   operation?: OperationMap;
@@ -112,11 +113,16 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
         <DataSourceSelector source={source} onSelect={onSelectSource} />
         {source ? (
           <>
-            <QueryBuilderActionSelector onSelectAction={onSelectAction} defaultAction="select" />
+            <QueryBuilderActionSelector
+              onSelectAction={onSelectAction}
+              defaultAction={getCurrentAction(props.operation)}
+            />
             <StyledRow className={classNames({ 'd-none': !action })}>
               <Col lg={12}>
                 {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
-                {action === 'filter' ? <JqueryQueryBuilder source={source} /> : null}
+                {action === 'filter' ? (
+                  <JqueryQueryBuilder source={source} operation={props.operation} />
+                ) : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
               </Col>
