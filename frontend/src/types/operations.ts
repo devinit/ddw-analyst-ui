@@ -130,8 +130,31 @@ export type AdvancedQueryFilterComparator = {
   comp: FilterComp;
 };
 
+export type AdvancedJQueryFilter = {
+  condition?: string;
+  rules?: (AdvancedJqueryFilterComparator | AdvancedQueryFilter)[];
+};
+
+export type AdvancedJqueryFilterComparator = {
+  id: string;
+  field: string;
+  type: string;
+  input: string;
+  operator: JqueryQueryBuilderComps;
+  value: string | number;
+};
+
 export const comp = ['$eq', '$neq', '$gt', '$lt', '$gte', '$lte', '$btn', '$in'] as const;
 export type FilterComp = typeof comp[number];
+export type JqueryQueryBuilderComps =
+  | 'equal'
+  | 'not_equal'
+  | 'less'
+  | 'less_or_equal'
+  | 'greater'
+  | 'greater_or_equal'
+  | 'between'
+  | 'in';
 
 export type JoinType =
   | 'inner'
