@@ -5,7 +5,7 @@ import * as jQueryQueryBuilder from 'jQuery-QueryBuilder';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
 import { AdvancedQueryOptions } from '../../types/operations';
-import { parseQuery } from './utils';
+import { createQueryBuilderRules, parseQuery } from './utils';
 import { SourceMap } from '../../types/sources';
 import { getColumnGroupOptionsFromSource } from '../AdvancedSelectQueryBuilder/ColumnSelector/utils';
 
@@ -53,6 +53,11 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilder> = ({ source }) =
 
     jq.init();
 
+    const rules = createQueryBuilderRules({}, options.filter);
+    console.log('translated rules');
+    console.log(rules);
+    jq.setRules(rules);
+
     setJqBuilder(jq);
   }, [source]);
 
@@ -62,6 +67,8 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilder> = ({ source }) =
 
   const onReplace = () => {
     const rules = jqBuilder?.getRules();
+    console.log('Updated rules');
+    console.log(rules);
     options.filter = parseQuery({}, rules.condition, rules);
     if (updateOptions) {
       updateOptions(options as AdvancedQueryOptions);
