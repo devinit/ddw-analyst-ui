@@ -120,9 +120,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             <StyledRow className={classNames({ 'd-none': !action })}>
               <Col lg={12}>
                 {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
-                {action === 'filter' ? (
-                  <JqueryQueryBuilder source={source} operation={props.operation} />
-                ) : null}
+                {action === 'filter' ? <JqueryQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
               </Col>
