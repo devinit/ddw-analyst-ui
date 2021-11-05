@@ -156,6 +156,34 @@ export type JqueryQueryBuilderComps =
   | 'between'
   | 'in';
 
+export type QueryBuilderRules = {
+  condition?: 'AND' | 'OR';
+  rules?: (QueryBuilderRulesComparator | QueryBuilderRules)[];
+};
+
+export type QueryBuilderRulesComparator = {
+  id: string;
+  field: string;
+  type: string;
+  input: string;
+  operator: string;
+  value: string | number;
+};
+
+export type JqueryBuilderFieldData = {
+  id: string | number;
+  label: string;
+  type: string;
+};
+
+export type JqueryQueryBuilderIcons = {
+  add_group: string;
+  add_rule: string;
+  remove_group: string;
+  remove_rule: string;
+  error: string;
+};
+
 export type JoinType =
   | 'inner'
   | 'outer'

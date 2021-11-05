@@ -36,23 +36,25 @@ export const createQueryBuilderRules = (finalElement: any, query: any): any => {
     finalElement['rules'] = [];
     finalElement = createQueryBuilderRules(finalElement, query.$and);
   } else {
-    for (let index = 0; index < query.length; index++) {
-      if (query[index].$or) {
-        finalElement['rules'].push(createQueryBuilderRules({}, query[index]));
-      } else if (query[index].$and) {
-        finalElement['rules'].push(createQueryBuilderRules({}, query[index]));
-      } else {
-        if (!finalElement.hasOwnProperty('rules')) {
-          finalElement['rules'] = [];
+    if (query) {
+      for (let index = 0; index < query.length; index++) {
+        if (query[index].$or) {
+          finalElement['rules'].push(createQueryBuilderRules({}, query[index]));
+        } else if (query[index].$and) {
+          finalElement['rules'].push(createQueryBuilderRules({}, query[index]));
+        } else {
+          if (!finalElement.hasOwnProperty('rules')) {
+            finalElement['rules'] = [];
+          }
+          finalElement['rules'].push({
+            id: query[index].column,
+            field: query[index].column,
+            type: 'string',
+            input: 'text',
+            operator: convertDDWOperatorToJq(query[index].comp),
+            value: query[index].value,
+          });
         }
-        finalElement['rules'].push({
-          id: query[index].column,
-          field: query[index].column,
-          type: 'string',
-          input: 'text',
-          operator: convertDDWOperatorToJq(query[index].comp),
-          value: query[index].value,
-        });
       }
     }
   }
