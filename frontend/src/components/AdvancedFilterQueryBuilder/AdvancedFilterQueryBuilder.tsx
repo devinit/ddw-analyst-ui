@@ -11,6 +11,8 @@ interface ComponentProps {
   source: SourceMap;
 }
 
+export type FilterWith = '$and' | '$or';
+
 const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
