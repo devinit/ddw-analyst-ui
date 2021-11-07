@@ -1,6 +1,15 @@
-import { FilterComp, JqueryQueryBuilderComps } from '../../../types/operations';
+import {
+  AdvancedQueryFilter,
+  FilterComp,
+  JqueryQueryBuilderComps,
+  JqueryQueryBuilderFilter,
+} from '../../../types/operations';
 
-export const parseQuery = (finalElement: any, condition: string, rulesObject: any) => {
+export const parseQuery = (
+  finalElement: any,
+  condition: string,
+  rulesObject: any,
+): AdvancedQueryFilter => {
   if (rulesObject.hasOwnProperty('condition')) {
     finalElement[`$${rulesObject.condition.toLowerCase()}`] = [];
     finalElement = parseQuery(finalElement, rulesObject.condition, rulesObject.rules);
@@ -26,7 +35,10 @@ export const parseQuery = (finalElement: any, condition: string, rulesObject: an
   return finalElement;
 };
 
-export const createQueryBuilderRules = (finalElement: any, query: any): any => {
+export const createQueryBuilderRules = (
+  finalElement: any,
+  query: any,
+): JqueryQueryBuilderFilter => {
   if (query && query.hasOwnProperty('$or')) {
     finalElement['condition'] = 'OR';
     finalElement['rules'] = [];

@@ -130,12 +130,12 @@ export type AdvancedQueryFilterComparator = {
   comp: FilterComp;
 };
 
-export type AdvancedJQueryFilter = {
+export type JqueryQueryBuilderFilter = {
   condition?: string;
-  rules?: (AdvancedJqueryFilterComparator | AdvancedQueryFilter)[];
+  rules?: (JqueryQueryBuilderFilterComparator | JqueryQueryBuilderFilter)[];
 };
 
-export type AdvancedJqueryFilterComparator = {
+export type JqueryQueryBuilderFilterComparator = {
   id: string;
   field: string;
   type: string;
@@ -156,21 +156,7 @@ export type JqueryQueryBuilderComps =
   | 'between'
   | 'in';
 
-export type QueryBuilderRules = {
-  condition?: 'AND' | 'OR';
-  rules?: (QueryBuilderRulesComparator | QueryBuilderRules)[];
-};
-
-export type QueryBuilderRulesComparator = {
-  id: string;
-  field: string;
-  type: string;
-  input: string;
-  operator: string;
-  value: string | number;
-};
-
-export type JqueryBuilderFieldData = {
+export type JqueryQueryBuilderFieldData = {
   id: string | number;
   label: string;
   type: string;
