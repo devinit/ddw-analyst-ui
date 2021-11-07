@@ -3,16 +3,16 @@ import 'jQuery-QueryBuilder/dist/css/query-builder.default.min.css';
 import './jQueryQueryBuilder.css';
 import * as jQueryQueryBuilder from 'jQuery-QueryBuilder';
 import {
-  JqueryBuilderFieldData,
+  JqueryQueryBuilderFieldData,
   JqueryQueryBuilderIcons,
-  QueryBuilderRules,
+  JqueryQueryBuilderFilter,
 } from '../../types/operations';
 
 export interface JqueryQueryBuilderProps {
-  fieldData: JqueryBuilderFieldData[];
+  fieldData: JqueryQueryBuilderFieldData[];
   getJqueryBuilderInstance: (jqInstance: any) => void;
-  icons: JqueryQueryBuilderIcons;
-  rules: QueryBuilderRules;
+  icons?: JqueryQueryBuilderIcons;
+  rules: JqueryQueryBuilderFilter;
 }
 
 const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
