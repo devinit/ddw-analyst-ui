@@ -217,6 +217,7 @@ Read more [here](./core/docs/API.md)
 ### Deployment
 
 1. Create a release branch with a name format `release/v[VERSION NUMBER]`
-2. Create a GitHub release with a name format `v[VERSION NUMBER]`
-3. On the server, there should be a `deploy.sh` script in the HOME folder. If not, make one with the contents of the `deploy.sh` file in this repo
-4. Run the script to deploy a specific version e.g `bash deploy.sh 2.0.2`
+2. Update version number in `package.json`
+3. Create a GitHub release with a name format `v[VERSION NUMBER]` - this will deploy to production
+4. Create PR from release branch to master/main
+5. Merge in release branch to master/main
