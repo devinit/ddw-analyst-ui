@@ -15,7 +15,7 @@ export * from './api';
 export * from './localForage';
 export * from './update';
 
-export const getSourceIDFromOperation = (operation: OperationMap): string | undefined => {
+export const getSourceIDFromOperation = (operation: OperationMap): number | undefined => {
   if (!operation) {
     return;
   }
@@ -113,9 +113,8 @@ export const getStepSelectableColumns = (
           return Set(selectColumns);
         }
         if (queryFunction === 'aggregate') {
-          const { group_by, agg_func_name, operational_column }: AggregateOptions = JSON.parse(
-            options,
-          );
+          const { group_by, agg_func_name, operational_column }: AggregateOptions =
+            JSON.parse(options);
           const aggregateColumns: string[] = group_by || [];
           aggregateColumns.push(`${operational_column}_${agg_func_name}`);
 
@@ -154,11 +153,16 @@ export const getStepSelectableColumns = (
   return Set(columnsList.map((column) => column.get('name') as string));
 };
 
-export const getSelectOptionsFromSources = (sources: List<SourceMap>): DropdownItemProps[] =>
+export const getSelectOptionsFromSources = (
+  sources: List<SourceMap>,
+  exclude?: SourceMap,
+): DropdownItemProps[] =>
   sources
+    .filter((source) => (exclude ? source.get('id') !== exclude.get('id') : true))
     .map((source) => ({
       key: source.get('id'),
       text: source.get('indicator'),
       value: source.get('id'),
     }))
-    .toJS();
+    .toJS()
+    .sort(sortObjectArrayByProperty('text').sort);

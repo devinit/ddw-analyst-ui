@@ -112,6 +112,11 @@ class Operation(BaseEntity):
         {"type": "[error, warning, info]", "message": "", ""}
     """
     logs = models.JSONField(blank=True, null=True, default=dict)
+    """
+        Holds the JSON options for what we called the Advanced Query Builder.
+        Management code is under query_builder.advanced
+    """
+    advanced_config = models.JSONField(blank=True, null=True, default=dict)
 
     def __str__(self):
         return self.name

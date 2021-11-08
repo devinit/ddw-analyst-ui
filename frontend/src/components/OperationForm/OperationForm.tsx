@@ -15,11 +15,13 @@ interface OperationFormProps {
   valid?: boolean;
   processing?: boolean;
   previewing?: boolean;
+  validating?: boolean;
   onUpdateOperation?: (operation: OperationMap) => void;
   onDeleteOperation?: (operation: OperationMap) => void;
   onSuccess: (preview?: boolean) => void;
   onPreview?: () => void;
   onReset?: () => void;
+  onValidate?: () => void;
 }
 
 const schema = Yup.object().shape({
@@ -38,7 +40,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const [hasFocus, setHasFocus] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [timeoutId, setTimeoutId] = useState(0);
-
   const getFormGroupClasses = (fieldName: string, value?: string | number) => {
     return classNames('bmd-form-group', {
       'is-focused': hasFocus === fieldName,
@@ -55,40 +56,43 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const resetFocus = () => {
     setHasFocus('');
   };
-
-  const onChange = (setFieldValue: (field: string, value: any) => void) => ({
-    currentTarget,
-  }: React.ChangeEvent<any>) => {
-    const { name, value } = currentTarget;
-    setFieldValue(name, value);
-    if (props.onUpdateOperation) {
-      if (props.operation) {
-        props.onUpdateOperation(props.operation.set(name, value));
-      } else {
-        const operation = fromJS({ [name]: value });
-        props.onUpdateOperation(operation);
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  const onChange =
+    (setFieldValue: (field: string, value: any) => void) =>
+    ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = currentTarget;
+      setFieldValue(name, value);
+      if (props.onUpdateOperation) {
+        if (props.operation) {
+          props.onUpdateOperation(props.operation.set(name as keyof Operation, value));
+        } else {
+          const operation = fromJS({ [name]: value });
+          props.onUpdateOperation(operation);
+        }
       }
-    }
-  };
-
-  const toggleDraft = (setFieldValue: (field: string, value: any) => void) => ({
-    currentTarget,
-  }: React.ChangeEvent<any>) => {
-    const { checked } = currentTarget;
-    setFieldValue('is_draft', checked);
-    if (props.onUpdateOperation) {
-      if (props.operation) {
-        const isDraft = !!props.operation.get('is_draft');
-        const operation = props.operation.set('is_draft', !isDraft);
-        props.onUpdateOperation(operation);
-      } else {
-        const operation = fromJS({ is_draft: true });
-        props.onUpdateOperation(operation);
+    };
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  const toggleDraft =
+    (setFieldValue: (field: string, value: any) => void) =>
+    ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
+      const { checked } = currentTarget;
+      setFieldValue('is_draft', checked);
+      if (props.onUpdateOperation) {
+        if (props.operation) {
+          const isDraft = !!props.operation.get('is_draft');
+          const operation = props.operation.set('is_draft', !isDraft);
+          props.onUpdateOperation(operation);
+        } else {
+          const operation = fromJS({ is_draft: true });
+          props.onUpdateOperation(operation);
+        }
       }
-    }
-  };
+    };
 
-  const onSuccess = (preview = false) => () => props.onSuccess(preview);
+  const onSuccess =
+    (preview = false) =>
+    () =>
+      props.onSuccess(preview);
 
   const onDelete = () => {
     if (!confirmDelete) {
@@ -117,7 +121,14 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
       onSubmit={onSuccess()}
       validateOnMount
     >
-      {({ errors, isSubmitting, isValid, setFieldValue }: FormikProps<Operation>) => (
+      {({
+        errors,
+        isSubmitting,
+        isValid,
+        setFieldValue,
+        handleSubmit,
+        submitCount,
+      }: FormikProps<Operation>) => (
         <Form className="form" noValidate data-testid="operation-form">
           <Alert variant="danger" hidden={!props.alert}>
             {props.alert}
@@ -130,7 +141,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               name="name"
               type="text"
               value={values.name || ''}
-              isInvalid={!!errors.name}
+              isInvalid={submitCount > 0 && !!errors.name}
               onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
               onFocus={setFocusedField}
               onBlur={resetFocus}
@@ -148,7 +159,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               name="description"
               as="textarea"
               onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
-              isInvalid={!!errors.description}
+              isInvalid={submitCount > 0 && !!errors.description}
               onFocus={setFocusedField}
               onBlur={resetFocus}
               value={values.description ? values.description.toString() : ''}
@@ -161,7 +172,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
           </Form.Group>
 
           <CheckBox
-            defaultChecked={values.is_draft}
+            checked={values.is_draft}
             onChange={debounce(toggleDraft(setFieldValue), 1000, { leading: true })}
             label="Is Draft"
             disabled={!!values.id && !props.editable}
@@ -172,8 +183,8 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
           <Dropdown hidden={!!values.id && !props.editable} data-testid="qb-dropdown-buttons">
             <Button
               variant="danger"
-              disabled={!props.valid || !isValid || isSubmitting || props.processing}
-              onClick={onSuccess()}
+              disabled={!isValid || isSubmitting}
+              onClick={() => handleSubmit()}
               size="sm"
               data-testid="qb-save-button"
             >
@@ -189,6 +200,17 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
               data-testid="qb-preview-button"
             >
               {props.previewing ? 'Close Preview' : 'Preview'}
+            </Button>
+            <Button
+              variant="dark"
+              className={classNames({ 'd-none': !props.operation })}
+              onClick={props.onValidate}
+              size="sm"
+              hidden={!props.onValidate}
+              disabled={!props.valid}
+              data-testid="qb-validate-button"
+            >
+              {props.validating ? 'Validating' : 'Validate'}
             </Button>
             <Dropdown.Toggle
               split

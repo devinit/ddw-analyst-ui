@@ -35,6 +35,7 @@ from core.models import (FrozenData, Operation, OperationDataColumnAlias,
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
 from core.pypika_fts_utils import TableQueryBuilder
+from core.pypika_utils import QueryBuilder
 from core.serializers import (DataSerializer, FrozenDataSerializer,
                               OperationDataColumnAliasSerializer,
                               OperationSerializer, OperationStepSerializer,
@@ -46,6 +47,7 @@ from core.serializers import (DataSerializer, FrozenDataSerializer,
 from core.tasks import create_dataset_archive, create_table_archive
 from data.db_manager import run_query, update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
+from query_builder.advanced import AdvancedQueryBuilder
 
 
 class ListUpdateScripts(APIView):
@@ -119,7 +121,10 @@ class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
 
     def __init__(self, operation, frozen_table_id=None):
-        self.main_query = query.build_query(operation=operation, frozen_table_id=frozen_table_id)[1]
+        if operation.advanced_config: # We are dealing with advanced config here
+            self.main_query = query.build_advanced_queries(operation.advanced_config)[1]
+        else:
+            self.main_query = query.build_query(operation=operation, frozen_table_id=frozen_table_id)[1]
         self.operation = operation
 
     def stream(self):
@@ -213,16 +218,25 @@ class PreviewOperationData(APIView):
 
     def get_data(self, request):
         try:
-            count, data = query.query_table(
-                operation_steps=request.data['operation_steps'],
-                limit=request.query_params.get('limit', 10),
-                offset=request.query_params.get('offset', 0),
-                estimate_count=True
-            )
-            return {
-                'count': count,
-                'data': data
-            }
+            limit=request.query_params.get('limit', 10)
+            offset=request.query_params.get('offset', 0)
+            if 'advanced_config' in request.data and request.data['advanced_config']:
+                data = run_query(query.get_advanced_config_query(request.data['advanced_config'], limit=limit, offset=offset), fetch=True)
+                return {
+                    'count': len(data),
+                    'data': data
+                }
+            else:
+                count, data = query.query_table(
+                    operation_steps=request.data['operation_steps'],
+                    limit=limit,
+                    offset=offset,
+                    estimate_count=True
+                )
+                return {
+                    'count': count,
+                    'data': data
+                }
         except json.decoder.JSONDecodeError as json_error:
             return {
                 'count': 0,
@@ -240,6 +254,35 @@ class PreviewOperationData(APIView):
         paginator.set_count(data['count'])
         page_data = paginator.paginate_queryset(data['data'], request)
         return paginator.get_paginated_response(page_data)
+
+class GetOperationQuery(APIView):
+    """
+    Return Operation Query for Review.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+
+    def get_query(self, request):
+        if 'config' in request.data and request.data['config']:
+            return query.get_advanced_config_query(request.data['config'])
+        elif 'operation_steps' in request.data:
+            return QueryBuilder(operation_steps=request.data['operation_steps']).get_sql_without_limit()
+        else:
+            return ''
+
+    def post(self, request):
+        try:
+            query = self.get_query(request)
+            return JsonResponse({ 'query': query })
+        except exceptions.ParseError as json_error:
+            return JsonResponse({
+                'error': str(json_error),
+                'error_type': 'JSONDecodeError'
+            })
+        except Exception as e:
+            handle_uncaught_error(e)
+            response = {'detail': f'{str(e)}'}
+            return HttpResponse(json.dumps(response), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ChangePassword(APIView):

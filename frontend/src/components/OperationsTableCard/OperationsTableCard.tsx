@@ -1,4 +1,4 @@
-import { List } from 'immutable';
+import { fromJS, List } from 'immutable';
 import queryString from 'query-string';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, OverlayTrigger, Popover, Row } from 'react-bootstrap';
@@ -120,15 +120,19 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     props.history.push(`/queries/history/${operation.get('id')}`);
   };
 
-  const onViewSQLQuery = (operation: OperationMap) => (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
-    setInfo(operation.get('operation_query') as string);
-  };
+  const onViewSQLQuery =
+    (operation: OperationMap) => (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      setInfo(operation.get('operation_query') as string);
+    };
 
   const onEditOperation = (operation: OperationMap) => {
-    props.history.push(`/queries/build/${operation.get('id') as number}/`);
+    const advancedConfig = fromJS(operation.get('advanced_config'));
+    if (advancedConfig.size) {
+      props.history.push(`/queries/build/advanced/${operation.get('id') as number}/`);
+    } else {
+      props.history.push(`/queries/build/${operation.get('id') as number}/`);
+    }
   };
 
   const onDuplicateOperation = (operation: OperationMap) => {

@@ -1,11 +1,10 @@
 import { List, Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { DropdownItemProps } from 'semantic-ui-react';
 import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
-import { CheckboxGroup } from '../CheckboxGroup';
+import { CheckboxGroup, CheckboxGroupOption } from '../CheckboxGroup';
 import { QueryBuilderHandlerStatic as QueryBuilderHandler } from '../QueryBuilderHandler';
 import { SelectColumnOrder } from '../SelectColumnOrder';
 import { SelectColumnValidator } from '../SelectColumnValidator';
@@ -20,7 +19,7 @@ interface SelectQueryBuilderProps {
 }
 
 const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) => {
-  const [selectableColumns, setSelectableColumns] = useState<DropdownItemProps[]>([]);
+  const [selectableColumns, setSelectableColumns] = useState<CheckboxGroupOption[]>([]);
   const [isOrderingColumns, setIsOrderingColumns] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState<{ alias: string; columnName: string }[]>(
     [],
@@ -32,7 +31,10 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     const selectable = getStepSelectableColumns(step, steps, columns) as Set<string>;
     setSelectableColumns(
       selectable.count()
-        ? QueryBuilderHandler.getSelectOptionsFromColumns(selectable, columns)
+        ? (QueryBuilderHandler.getSelectOptionsFromColumns(
+            selectable,
+            columns,
+          ) as CheckboxGroupOption[])
         : [],
     );
     setSelectedColumns(() =>
@@ -54,13 +56,12 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
   };
 
   const onDeselectAll = () => {
-    if (props.onUpdateColumns) {
-      props.onUpdateColumns(JSON.stringify({ columns: [] }));
-    }
+    if (props.onUpdateColumns) props.onUpdateColumns(JSON.stringify({ columns: [] }));
   };
 
-  const handleColumnOrderClick = () => {
-    setIsOrderingColumns(!isOrderingColumns);
+  const handleColumnOrderClick = () => setIsOrderingColumns(!isOrderingColumns);
+  const onUpdateColumns = (columns: string[]) => {
+    if (props.onUpdateColumns) props.onUpdateColumns(JSON.stringify({ columns }));
   };
 
   return (
@@ -105,7 +106,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
             <CheckboxGroup
               options={selectableColumns.sort(sortObjectArrayByProperty('text').sort)}
               selectedOptions={props.columns}
-              onUpdateOptions={props.onUpdateColumns}
+              onUpdateOptions={onUpdateColumns}
             />
           </SelectColumnValidator>
         )}

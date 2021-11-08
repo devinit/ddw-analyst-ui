@@ -6,6 +6,7 @@ import { api, localForageKeys } from '..';
 import { setToken } from '../../actions/token';
 import { FetchOptions } from '../../types/api';
 import {
+  AdvancedQueryOptions,
   Operation,
   OperationData,
   OperationDataList,
@@ -145,12 +146,16 @@ export const useOperationData = (
   return { data, dataLoading, options, error, setOptions };
 };
 
-interface UseOperationResult {
-  operation?: Operation | OperationMap;
+interface UseOperationResult<O = Operation | OperationMap> {
+  operation?: O;
   loading: boolean;
 }
 
-export const useOperation = (id: number, fetch = false, immutable = true): UseOperationResult => {
+export const useOperation = <O = Operation | OperationMap>(
+  id?: number,
+  fetch = false,
+  immutable = true,
+): UseOperationResult<O> => {
   const [operation, setOperation] = useState<Operation | undefined>();
   const [loading, setLoading] = useState(false);
 
@@ -201,5 +206,94 @@ export const useOperation = (id: number, fetch = false, immutable = true): UseOp
     }
   }, [id]);
 
-  return { loading, operation: immutable ? fromJS(operation) : operation };
+  return !id
+    ? { loading: false, operation: undefined }
+    : { loading, operation: immutable ? fromJS(operation) : operation };
+};
+
+interface UseOperationQueryResult {
+  query?: string;
+  loading: boolean;
+}
+
+export const useOperationQuery = (operation?: OperationMap): UseOperationQueryResult => {
+  const [token, setAPIToken] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
+      if (token) setAPIToken(token);
+    });
+  }, []);
+
+  const fetchOperationQuery = (operation: OperationMap) => {
+    setLoading(true);
+    const config = operation.get('advanced_config');
+    if (config && token) {
+      axios
+        .request({
+          url: `${api.routes.DATASET_QUERY}`,
+          method: 'post',
+          withCredentials: false,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${token}`,
+          },
+          data: { config: (config as any).toJS() },
+        })
+        .then(({ status, data, statusText }: AxiosResponse<{ query: string }>) => {
+          if (status === 200 && data) {
+            setQuery(data.query);
+            setLoading(false);
+          } else if (status === 401) {
+            console.log('Failed to generate SQL query: ', statusText);
+            setQuery('');
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.log(
+            `Failed to generate SQL query: ${error.response.status} ${error.response.statusText}`,
+          );
+          setQuery('');
+          setLoading(false);
+        });
+    } else {
+      // TODO: implement for basic QB as well
+      setLoading(false);
+      setQuery('');
+    }
+  };
+
+  useEffect(() => {
+    if (operation && token) {
+      fetchOperationQuery(operation);
+    } else {
+      setLoading(false);
+      setQuery('');
+    }
+  }, [operation, token]);
+
+  return { loading, query };
+};
+
+export const previewAdvancedDatasetData = async (
+  options: AdvancedQueryOptions,
+): Promise<FetchResponse> => {
+  const token = await localForage.getItem<string>(localForageKeys.API_KEY);
+  const { status, data }: AxiosResponse<OperationDataResult> = await axios
+    .request({
+      url: PREVIEWBASEURL,
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `token ${token}`,
+      },
+      data: { advanced_config: options },
+    })
+    .then((response: AxiosResponse<OperationDataResult>) => response)
+    .catch((error) => error.response);
+
+  return handleDataResult(status, data);
 };

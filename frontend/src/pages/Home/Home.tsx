@@ -5,12 +5,12 @@ import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as operationsActions from '../../actions/operations';
 import { OperationsTableCard } from '../../components/OperationsTableCard';
+import { SourcesContext } from '../../context';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
+import { useSources } from '../../utils/hooks';
 import * as pageActions from './actions';
 import { homeReducerId, HomeState } from './reducers';
-import { useSources } from '../../hooks';
-import { SourcesContext } from '../../context';
 
 interface ActionProps {
   actions: typeof operationsActions & typeof pageActions;

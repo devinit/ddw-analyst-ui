@@ -17,9 +17,11 @@ import DragOverlayItem from './DragOverlayItem';
 import { SortableItem } from './SortableItem';
 
 interface SelectColumnOrderProps {
-  selectedColumns: { alias: string; columnName: string }[];
+  selectedColumns: SelectedColumn[];
   onUpdateColumns?: (options: string) => void;
 }
+
+export type SelectedColumn = { alias: string; columnName: string };
 
 const StyledSpan = styled.span`
   top: -6px;
@@ -46,7 +48,6 @@ const SelectColumnOrder: FunctionComponent<SelectColumnOrderProps> = ({
   const [orderedColumns, setOrderedColumns] = useState(
     selectedColumns?.map((column) => column.columnName),
   );
-
   useEffect(() => {
     if (onUpdateColumns) {
       onUpdateColumns(JSON.stringify({ columns: orderedColumns }));
