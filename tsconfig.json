@@ -30,7 +30,6 @@
     "include": [
       "next-env.d.ts",
       "**/*.ts",
-      "**/*.tsx",
-      "frontend/src/types/query-builder.d.ts"
+      "**/*.tsx"
     ]
 }
