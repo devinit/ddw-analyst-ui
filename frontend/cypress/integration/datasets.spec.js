@@ -242,13 +242,13 @@ describe('The Datasets Pages', () => {
       cy.intercept('api/datasets/mine/', datasets);
     });
     cy.fixture('datasetTableData').then((data) => {
-      cy.intercept('api/dataset/data/4', data);
+      cy.intercept('api/dataset/data/346', data);
     });
 
     // View dataset data in tabular form and export it as csv
     cy.visit('/');
     cy.get('.dataset-row')
-      .eq(3)
+      .eq(16)
       .then(($datasetRow) => {
         cy.wrap($datasetRow)
           .contains('View Data')
@@ -257,7 +257,7 @@ describe('The Datasets Pages', () => {
             cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 10);
             cy.get('[data-testid="dataset-data-export-form"]').then(($form) => {
               cy.wrap($form).should('have.attr', 'method', 'POST');
-              cy.wrap($form).should('have.attr', 'action', '/api/export/4/');
+              cy.wrap($form).should('have.attr', 'action', '/api/export/346/');
             });
             cy.get('[data-testid="dataset-export-button"]')
               .should('be.visible')

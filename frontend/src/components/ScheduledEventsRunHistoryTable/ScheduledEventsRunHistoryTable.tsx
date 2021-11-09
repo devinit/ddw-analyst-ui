@@ -15,35 +15,34 @@ const StyledContent = styled.p`
   overflow-y: auto;
 `;
 
-export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRunHistoryTableProps> = (
-  props,
-) => {
-  const [info, setInfo] = useState('');
-  const onViewLogs = (logs: string): void => setInfo(logs);
-  const onModalHide = () => setInfo('');
+export const ScheduledEventsRunHistoryTable: FunctionComponent<ScheduledEventRunHistoryTableProps> =
+  (props) => {
+    const [info, setInfo] = useState('');
+    const onViewLogs = (logs: string): void => setInfo(logs);
+    const onModalHide = () => setInfo('');
 
-  return (
-    <Table responsive striped>
-      <thead>
-        <tr>
-          <th>Status</th>
-          <th>Started</th>
-          <th>Ended</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.data.map((history: ScheduledEventRunHistory, index: number) => (
-          <ScheduledEventsRunHistoryTableRow
-            key={index}
-            history={history}
-            onViewLogs={onViewLogs}
-          />
-        ))}
-      </tbody>
-      <BasicModal show={!!info} onHide={onModalHide}>
-        <StyledContent>{info}</StyledContent>
-      </BasicModal>
-    </Table>
-  );
-};
+    return (
+      <Table responsive striped>
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Started</th>
+            <th>Ended</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.data.map((history: ScheduledEventRunHistory, index: number) => (
+            <ScheduledEventsRunHistoryTableRow
+              key={index}
+              history={history}
+              onViewLogs={onViewLogs}
+            />
+          ))}
+        </tbody>
+        <BasicModal show={!!info} onHide={onModalHide}>
+          <StyledContent>{info}</StyledContent>
+        </BasicModal>
+      </Table>
+    );
+  };

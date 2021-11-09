@@ -34,7 +34,10 @@ test('metadata button responds to click events', () => {
     container: document.body.appendChild(tableBody),
   });
 
-  fireEvent.click(getByTestId('sources-table-metadata-button'));
+  const button = getByTestId('sources-table-metadata-button') as HTMLElement;
+  expect(button).toBeDefined();
+  expect(button).not.toBeNull();
+  if (button) fireEvent.click(button);
 
   expect(props.onShowMetadata).toHaveBeenCalled();
 });
@@ -47,7 +50,10 @@ test('dataset button responds to click events', () => {
     container: document.body.appendChild(tableBody),
   });
 
-  fireEvent.click(getByTestId('sources-table-dataset-button'));
+  const button = getByTestId('sources-table-dataset-button') as HTMLElement;
+  expect(button).toBeDefined();
+  expect(button).not.toBeNull();
+  if (button) fireEvent.click(button);
 
   expect(props.onShowDatasets).toHaveBeenCalled();
 });
@@ -60,7 +66,10 @@ test('history button responds to click events', () => {
     container: document.body.appendChild(tableBody),
   });
 
-  fireEvent.click(getByTestId('sources-table-history-button'));
+  const button = getByTestId('sources-table-history-button') as HTMLElement;
+  expect(button).toBeDefined();
+  expect(button).not.toBeNull();
+  if (button) fireEvent.click(button);
 
   expect(props.onShowHistory).toHaveBeenCalled();
 });

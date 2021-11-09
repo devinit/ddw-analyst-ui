@@ -5,21 +5,28 @@ from ddw_analyst_ui.celery import app
 
 from core.pypika_utils import QueryBuilder
 from core.pypika_fts_utils import TableQueryBuilder
+from core.query import get_advanced_config_count_query
 from data.db_manager import count_rows, run_query
 from core.models import FrozenData, Operation, SavedQueryData, Source
 
 @app.task(bind=False)
 def count_operation_rows(id):
-    operation = Operation.objects.get(id=id)
-    if operation:
-        count_query = QueryBuilder(operation=operation, operation_steps=None).count_sql(False)
-        count = count_rows(count_query)
-        operation.row_count = count
-        operation.count_rows = False
-        operation.save()
-        return { "status": "success" }
-    else:
-        return { "status": "failed" }
+    try:
+        operation = Operation.objects.get(id=id)
+        if operation:
+            if operation.advanced_config and len(operation.advanced_config):
+                count_query = get_advanced_config_count_query(operation.advanced_config, False)
+            else:
+                count_query = QueryBuilder(operation=operation, operation_steps=None).count_sql(False)
+            count = count_rows(count_query)
+            operation.row_count = count
+            operation.count_rows = False
+            operation.save()
+            return { "status": "success" }
+        else:
+            return { "status": "failed" }
+    except(Operation.DoesNotExist):
+        return { "status": "failed", "reason": "Operation ID {} does not exist".format(id)}
 
 
 @app.task(bind=False)

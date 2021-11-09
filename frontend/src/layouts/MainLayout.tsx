@@ -15,6 +15,8 @@ import { AdminLayout } from '../components/AdminLayout';
 import { HelpNavItem } from '../components/Help';
 import { NavbarMinimise } from '../components/NavbarMinimise';
 import { Sidebar } from '../components/Sidebar';
+import { AppContext } from '../context';
+import { AsyncAdvancedQueryBuilder } from '../pages/AdvancedQueryBuilder';
 import { AsyncDataSourceHistory } from '../pages/DataSourceHistory';
 import { AsyncDataSourceQueries } from '../pages/DataSourceQueries';
 import { AsyncDataSources } from '../pages/DataSources';
@@ -76,180 +78,213 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
     return (
       <BrowserRouter>
-        <AdminLayout loading={this.state.loading}>
-          <Sidebar dataColour="danger" backgroundColour="red">
-            <Sidebar.Logo>
-              <Sidebar.Logo.Item url="/" variation="mini">
-                AI
-              </Sidebar.Logo.Item>
-              <Sidebar.Logo.Item url="/">Analyst UI</Sidebar.Logo.Item>
-            </Sidebar.Logo>
+        <AppContext.Provider value={{ user: this.props.user, token: this.props.token }}>
+          <AdminLayout loading={this.state.loading}>
+            <Sidebar dataColour="danger" backgroundColour="red">
+              <Sidebar.Logo>
+                <Sidebar.Logo.Item url="/" variation="mini">
+                  AI
+                </Sidebar.Logo.Item>
+                <Sidebar.Logo.Item url="/">Analyst UI</Sidebar.Logo.Item>
+              </Sidebar.Logo>
 
-            <Sidebar.Content mobile>
-              <Sidebar.Item collapseId="account">
-                <Sidebar.Link to="#account" root icon="person" textNormal="Account" />
-                <Sidebar.Item>
-                  <Sidebar.Link to="#" textMini="LO" textNormal="Log out" onClick={this.onLogOut} />
+              <Sidebar.Content mobile>
+                <Sidebar.Item collapseId="account">
+                  <Sidebar.Link to="#account" root icon="person" textNormal="Account" />
+                  <Sidebar.Item>
+                    <Sidebar.Link
+                      to="#"
+                      textMini="LO"
+                      textNormal="Log out"
+                      onClick={this.onLogOut}
+                    />
+                  </Sidebar.Item>
                 </Sidebar.Item>
-              </Sidebar.Item>
-            </Sidebar.Content>
+              </Sidebar.Content>
 
-            <Sidebar.Content>
-              <Sidebar.Item active={this.state.activeRoute === '/'}>
-                <Sidebar.Link
-                  to="/"
-                  single
-                  icon="home"
-                  textNormal="My Datasets"
-                  onClick={this.setActiveRoute}
-                />
-              </Sidebar.Item>
-              <Sidebar.Item active={this.state.activeRoute === '/datasets/'}>
-                <Sidebar.Link
-                  to="/datasets/"
-                  single
-                  icon="table_chart"
-                  textNormal="Published Datasets"
-                  onClick={this.setActiveRoute}
-                  data-testid="sidebar-link-published-datasets"
-                />
-              </Sidebar.Item>
-              <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
-                <Sidebar.Link
-                  to="/queries/build/"
-                  single
-                  icon="query_builder"
-                  textNormal="Query Builder"
-                  onClick={this.setActiveRoute}
-                  data-testid="sidebar-link-query-builder"
-                />
-              </Sidebar.Item>
-              <Sidebar.Item active={this.state.activeRoute === '/sources/'}>
-                <Sidebar.Link
-                  to="/sources/"
-                  single
-                  icon="storage"
-                  textNormal="Data Sources"
-                  onClick={this.setActiveRoute}
-                  data-testid="sidebar-link-sources"
-                />
-              </Sidebar.Item>
-              <Sidebar.Item active={this.state.activeRoute === '/update/'}>
-                <Sidebar.Link
-                  to="/update/"
-                  single
-                  icon="library_add"
-                  textNormal="Update Data Source"
-                  onClick={this.setActiveRoute}
-                  data-testid="sidebar-link-update"
-                />
-              </Sidebar.Item>
-              <Sidebar.Item active={this.state.activeRoute === '/scheduledevents/'}>
-                <Sidebar.Link
-                  to="/scheduledevents/"
-                  single
-                  icon="alarm"
-                  textNormal="Scheduled Events"
-                  onClick={this.setActiveRoute}
-                />
-              </Sidebar.Item>
-            </Sidebar.Content>
+              <Sidebar.Content>
+                <Sidebar.Item active={this.state.activeRoute === '/'}>
+                  <Sidebar.Link
+                    to="/"
+                    single
+                    icon="home"
+                    textNormal="My Datasets"
+                    onClick={this.setActiveRoute}
+                  />
+                </Sidebar.Item>
+                <Sidebar.Item active={this.state.activeRoute === '/datasets/'}>
+                  <Sidebar.Link
+                    to="/datasets/"
+                    single
+                    icon="table_chart"
+                    textNormal="Published Datasets"
+                    onClick={this.setActiveRoute}
+                    data-testid="sidebar-link-published-datasets"
+                  />
+                </Sidebar.Item>
+                <Sidebar.Item
+                  active={this.state.activeRoute.includes('/queries/build/')}
+                  collapseId="query-builder"
+                >
+                  <Sidebar.Link
+                    root
+                    to="#query-builder"
+                    icon="query_builder"
+                    textNormal="Query Builder"
+                  />
+                  <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
+                    <Sidebar.Link
+                      to="/queries/build/"
+                      textNormal="Basic Query Builder"
+                      onClick={this.setActiveRoute}
+                      data-testid="sidebar-link-query-builder"
+                    />
+                  </Sidebar.Item>
+                  <Sidebar.Item active={this.state.activeRoute === '/queries/build/advanced/'}>
+                    <Sidebar.Link
+                      to="/queries/build/advanced/"
+                      textNormal="Advanced Query Builder (BETA)"
+                      onClick={this.setActiveRoute}
+                    />
+                  </Sidebar.Item>
+                </Sidebar.Item>
+                <Sidebar.Item active={this.state.activeRoute === '/sources/'}>
+                  <Sidebar.Link
+                    to="/sources/"
+                    single
+                    icon="storage"
+                    textNormal="Data Sources"
+                    onClick={this.setActiveRoute}
+                    data-testid="sidebar-link-sources"
+                  />
+                </Sidebar.Item>
+                <Sidebar.Item active={this.state.activeRoute === '/update/'}>
+                  <Sidebar.Link
+                    to="/update/"
+                    single
+                    icon="library_add"
+                    textNormal="Update Data Source"
+                    onClick={this.setActiveRoute}
+                    data-testid="sidebar-link-update"
+                  />
+                </Sidebar.Item>
+                <Sidebar.Item active={this.state.activeRoute === '/scheduledevents/'}>
+                  <Sidebar.Link
+                    to="/scheduledevents/"
+                    single
+                    icon="alarm"
+                    textNormal="Scheduled Events"
+                    onClick={this.setActiveRoute}
+                  />
+                </Sidebar.Item>
+              </Sidebar.Content>
 
-            <Sidebar.Footer>
-              <StyledLogo src="/static/frontend/assets/images/logo.png" />
-            </Sidebar.Footer>
-          </Sidebar>
+              <Sidebar.Footer>
+                <StyledLogo src="/static/frontend/assets/images/logo.png" />
+              </Sidebar.Footer>
+            </Sidebar>
 
-          <Navbar
-            expand="lg"
-            variant="dark"
-            className="navbar-transparent navbar-absolute fixed-top"
-          >
-            <div className="navbar-wrapper">
-              <NavbarMinimise />
-              <Navbar.Brand href="/">
-                <Route path="/" exact component={(): ReactElement => <span>My Datasets</span>} />
+            <Navbar
+              expand="lg"
+              variant="dark"
+              className="navbar-transparent navbar-absolute fixed-top"
+            >
+              <div className="navbar-wrapper">
+                <NavbarMinimise />
+                <Navbar.Brand href="/">
+                  <Route path="/" exact component={(): ReactElement => <span>My Datasets</span>} />
+                  <Route
+                    path="/datasets"
+                    exact
+                    component={(): ReactElement => <span>Published Datasets</span>}
+                  />
+                  <Route
+                    path="/sources"
+                    exact
+                    component={(): ReactElement => <span>Data Sources</span>}
+                  />
+                  <Route
+                    path="/queries/build"
+                    component={(): ReactElement => <span>Query Builder</span>}
+                  />
+                  <Route
+                    path="/update"
+                    component={(): ReactElement => <span>Update Data Source</span>}
+                  />
+                  <Route
+                    path="/scheduledevents/"
+                    component={(): ReactElement => <span>Scheduled Events</span>}
+                  />
+                  <Route
+                    path="/source/datasets/:id/"
+                    component={(): ReactElement => <span>Source Datasets</span>}
+                  />
+                  <Route
+                    path="/source/history/:id/"
+                    component={(): ReactElement => <span>Source History</span>}
+                  />
+                </Navbar.Brand>
+              </div>
+
+              <Navbar.Toggle aria-controls="navigation-index" aria-expanded="false">
+                <span className="sr-only">Toggle navigation</span>
+                <span className="navbar-toggler-icon icon-bar" />
+                <span className="navbar-toggler-icon icon-bar" />
+                <span className="navbar-toggler-icon icon-bar" />
+              </Navbar.Toggle>
+
+              <Navbar.Collapse className="justify-content-end">
+                <Nav>
+                  <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownProfile">
+                    <Dropdown.Toggle as={Nav.Link} id="nav-dropdown" data-cy="user-options">
+                      <i className="material-icons">person</i>
+                      <p className="d-lg-none d-md-block">Account</p>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu alignRight>
+                      <Dropdown.Item data-cy="account" onClick={this.openAccountModal}>
+                        Change Password
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item onClick={this.onLogOut} data-cy="logout">
+                        Log Out
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <HelpNavItem />
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+
+            <AdminLayout.Content>
+              <Switch>
+                <Route path="/" exact component={AsyncHome} />
+                <Route path="/datasets" exact component={AsyncPublishedDatasets} />
+                <Route path="/sources" exact component={AsyncDataSources} />
                 <Route
-                  path="/datasets"
+                  path="/queries/build/advanced/"
                   exact
-                  component={(): ReactElement => <span>Published Datasets</span>}
+                  component={AsyncAdvancedQueryBuilder}
                 />
                 <Route
-                  path="/sources"
+                  path="/queries/build/advanced/:id"
                   exact
-                  component={(): ReactElement => <span>Data Sources</span>}
+                  component={AsyncAdvancedQueryBuilder}
                 />
-                <Route
-                  path="/queries/build"
-                  component={(): ReactElement => <span>Query Builder</span>}
-                />
-                <Route
-                  path="/update"
-                  component={(): ReactElement => <span>Update Data Source</span>}
-                />
-                <Route
-                  path="/scheduledevents/"
-                  component={(): ReactElement => <span>Scheduled Events</span>}
-                />
-                <Route
-                  path="/source/datasets/:id/"
-                  component={(): ReactElement => <span>Source Datasets</span>}
-                />
-                <Route
-                  path="/source/history/:id/"
-                  component={(): ReactElement => <span>Source History</span>}
-                />
-              </Navbar.Brand>
-            </div>
-
-            <Navbar.Toggle aria-controls="navigation-index" aria-expanded="false">
-              <span className="sr-only">Toggle navigation</span>
-              <span className="navbar-toggler-icon icon-bar" />
-              <span className="navbar-toggler-icon icon-bar" />
-              <span className="navbar-toggler-icon icon-bar" />
-            </Navbar.Toggle>
-
-            <Navbar.Collapse className="justify-content-end">
-              <Nav>
-                <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownProfile">
-                  <Dropdown.Toggle as={Nav.Link} id="nav-dropdown" data-cy="user-options">
-                    <i className="material-icons">person</i>
-                    <p className="d-lg-none d-md-block">Account</p>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu alignRight>
-                    <Dropdown.Item data-cy="account" onClick={this.openAccountModal}>
-                      Change Password
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item onClick={this.onLogOut} data-cy="logout">
-                      Log Out
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <HelpNavItem />
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
-
-          <AdminLayout.Content>
-            <Switch>
-              <Route path="/" exact component={AsyncHome} />
-              <Route path="/datasets" exact component={AsyncPublishedDatasets} />
-              <Route path="/sources" exact component={AsyncDataSources} />
-              <Route path="/queries/build" exact component={AsyncQueryBuilder} />
-              <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
-              <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
-              <Route path="/update" exact component={AsyncDataUpdate} />
-              <Route path="/queries/data/:id" exact component={AsyncQueryData} />
-              <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
-              <Route path="/source/datasets/:id" exact component={AsyncDataSourceQueries} />
-              <Route path="/source/history/:id" exact component={AsyncDataSourceHistory} />
-            </Switch>
-            <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
-              {ModalContent ? <ModalContent /> : null}
-            </Modal>
-          </AdminLayout.Content>
-        </AdminLayout>
+                <Route path="/queries/build" exact component={AsyncQueryBuilder} />
+                <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
+                <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
+                <Route path="/update" exact component={AsyncDataUpdate} />
+                <Route path="/queries/data/:id" exact component={AsyncQueryData} />
+                <Route path="/scheduledevents" exact component={AsyncScheduledEvents} />
+                <Route path="/source/datasets/:id" exact component={AsyncDataSourceQueries} />
+                <Route path="/source/history/:id" exact component={AsyncDataSourceHistory} />
+              </Switch>
+              <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
+                {ModalContent ? <ModalContent /> : null}
+              </Modal>
+            </AdminLayout.Content>
+          </AdminLayout>
+        </AppContext.Provider>
       </BrowserRouter>
     );
   }

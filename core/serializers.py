@@ -41,7 +41,10 @@ class DataSerializer(serializers.BaseSerializer):
         operation = instance['operation_instance']
         self.set_operation(operation)
         try:
-            count, data = query.query_table(operation, limit, offset, estimate_count=True, frozen_table_id=frozen_table_id)
+            if operation.advanced_config and len(operation.advanced_config) > 0:
+                count, data = query.advanced_query_table(operation.advanced_config,  limit, offset, estimate_count=True)
+            else:
+                count, data = query.query_table(operation, limit, offset, estimate_count=True, frozen_table_id=frozen_table_id)
             return {
                 'count': count,
                 'data': self.use_aliases(data) if use_aliases == '1' else data
@@ -146,7 +149,7 @@ class OperationSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     theme_name = serializers.ReadOnlyField(source='theme.name')
     tags = TagSerializer(many=True, read_only=True)
-    operation_steps = OperationStepSerializer(source='operationstep_set', many=True)
+    operation_steps = OperationStepSerializer(source='operationstep_set', many=True, allow_null=True, required=False)
     reviews = ReviewSerializer(source='review_set', many=True, read_only=True)
     id = serializers.ReadOnlyField(source='pk')
     aliases = OperationDataColumnAliasSerializer(
@@ -173,6 +176,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'aliases',
             'alias_creation_status',
             'logs',
+            'advanced_config',
         )
 
     def create(self, validated_data):
@@ -183,10 +187,13 @@ class OperationSerializer(serializers.ModelSerializer):
                 if field in validated_data:
                     read_only_dict[field] = validated_data.pop(field)
             operation = Operation.objects.create(**validated_data)
-            for step in read_only_dict['operationstep_set']:
-                OperationStep.objects.create(operation=operation, **step)
             operation.user = read_only_dict['user']
-            operation.operation_query = query.build_query(operation=operation)
+            if operation.advanced_config and len(operation.advanced_config) > 0:
+                operation.operation_query = query.get_advanced_config_query(operation.advanced_config)
+            else:
+                for step in read_only_dict['operationstep_set']:
+                    OperationStep.objects.create(operation=operation, **step)
+                operation.operation_query = query.build_query(operation=operation)
             operation.count_rows = True
             if not 'is_draft' in validated_data:
                 operation.is_draft = False
@@ -202,36 +209,45 @@ class OperationSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         try:
             info = model_meta.get_field_info(instance)
-            updated_steps = validated_data.pop('operationstep_set')
-            for attr, value in validated_data.items():
-                if attr in info.relations and info.relations[attr].to_many:
-                    field = getattr(instance, attr)
-                    field.set(value)
-                else:
-                    setattr(instance, attr, value)
-            instance.save()
 
-            existing_steps = instance.operationstep_set.all()
-            existing_step_ids = [step.step_id for step in existing_steps]
-            for updated_step in updated_steps:
-                updated_step_id = updated_step.get("step_id")
-                if updated_step_id in existing_step_ids:
-                    existing_step_ids.remove(updated_step_id)
-                updated_step_instance, _ = OperationStep.objects.get_or_create(operation=instance, step_id=updated_step_id)
-                step_info = model_meta.get_field_info(updated_step_instance)
-                for attr, value in updated_step.items():
-                    if attr in step_info.relations and step_info.relations[attr].to_many:
-                        field = getattr(updated_step_instance, attr)
+            advanced_config = validated_data.get('advanced_config', None)
+            if advanced_config and len(advanced_config) > 0:
+                instance.name = validated_data.get('name')
+                instance.description = validated_data.get('description')
+                instance.is_draft = validated_data.get('is_draft')
+                instance.advanced_config = advanced_config
+                instance.operation_query = query.get_advanced_config_query(advanced_config)
+                instance.save()
+            else:
+                updated_steps = validated_data.pop('operationstep_set')
+                for attr, value in validated_data.items():
+                    if attr in info.relations and info.relations[attr].to_many:
+                        field = getattr(instance, attr)
                         field.set(value)
                     else:
-                        setattr(updated_step_instance, attr, value)
-                updated_step_instance.save()
+                        setattr(instance, attr, value)
+                instance.save()
+                existing_steps = instance.operationstep_set.all()
+                existing_step_ids = [step.step_id for step in existing_steps]
+                for updated_step in updated_steps:
+                    updated_step_id = updated_step.get("step_id")
+                    if updated_step_id in existing_step_ids:
+                        existing_step_ids.remove(updated_step_id)
+                    updated_step_instance, _ = OperationStep.objects.get_or_create(operation=instance, step_id=updated_step_id)
+                    step_info = model_meta.get_field_info(updated_step_instance)
+                    for attr, value in updated_step.items():
+                        if attr in step_info.relations and step_info.relations[attr].to_many:
+                            field = getattr(updated_step_instance, attr)
+                            field.set(value)
+                        else:
+                            setattr(updated_step_instance, attr, value)
+                    updated_step_instance.save()
 
-            for step_for_delete_id in existing_step_ids:
-                step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
-                step_for_delete.delete()
+                for step_for_delete_id in existing_step_ids:
+                    step_for_delete = OperationStep.objects.get(operation=instance, step_id=step_for_delete_id)
+                    step_for_delete.delete()
 
-            instance.operation_query = query.build_query(operation=instance)
+                instance.operation_query = query.build_query(operation=instance)
             instance.count_rows = True
             instance.save()
             self.update_operation_data_aliases(instance)
@@ -243,14 +259,20 @@ class OperationSerializer(serializers.ModelSerializer):
             raise CustomAPIException({'detail': str(e)})
 
     def create_operation_data_aliases(self, operation):
-        count, data = query.query_table(operation, 1, 0, estimate_count=True)
+        if operation.advanced_config and len(operation.advanced_config) > 0:
+            count, data = query.advanced_query_table(operation.advanced_config, 1, 0, estimate_count=True)
+        else:
+            count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
         operation.save()
         if data:
             try:
                 data_column_keys = data.keys() if isinstance(data, dict) else data[0].keys()
-                first_step = operation.get_operation_steps()[0]
-                columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+                if operation.advanced_config:
+                    columns = SourceColumnMap.objects.filter(source_id=operation.advanced_config.get('source'), name__in=data_column_keys)
+                else:
+                    first_step = operation.get_operation_steps()[0]
+                    columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
                 for column in data_column_keys:
                     matching = columns.filter(name=column).first()
                     alias = self.create_operation_alias(operation, column, matching.alias if matching else column)
@@ -266,14 +288,20 @@ class OperationSerializer(serializers.ModelSerializer):
             operation.save()
 
     def update_operation_data_aliases(self, operation):
-        count, data = query.query_table(operation, 1, 0, estimate_count=True)
+        if operation.advanced_config and len(operation.advanced_config) > 0:
+            count, data = query.advanced_query_table(operation.advanced_config, 1, 0, estimate_count=True)
+        else:
+            count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
         operation.save()
         if data:
             try:
                 data_column_keys = data.keys() if isinstance(data, dict) else data[0].keys()
-                first_step = operation.get_operation_steps()[0]
-                columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
+                if operation.advanced_config:
+                    columns = SourceColumnMap.objects.filter(source_id=operation.advanced_config.get('source'), name__in=data_column_keys)
+                else:
+                    first_step = operation.get_operation_steps()[0]
+                    columns = SourceColumnMap.objects.filter(source=first_step.source, name__in=data_column_keys)
                 # delete obsolete aliases
                 OperationDataColumnAlias.objects.filter(operation=operation).exclude(column_name__in=data_column_keys).delete()
                 for column in data_column_keys:

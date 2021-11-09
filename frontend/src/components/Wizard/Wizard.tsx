@@ -4,16 +4,15 @@ import React, {
   FunctionComponent,
   isValidElement,
   ReactNode,
-  useRef,
-  useState,
   useEffect,
+  useState,
 } from 'react';
-import { Card, Tab, TabContainerProps, Button } from 'react-bootstrap';
-import ReactResizeDetector from 'react-resize-detector';
+import { Button, Card, Tab, TabContainerProps } from 'react-bootstrap';
+import { useResizeDetector } from 'react-resize-detector';
 import styled from 'styled-components';
-import { WizardBody, WizardHeader, WizardNavigation, WizardNavigationItem, WizardFooter } from '.';
+import { WizardBody, WizardFooter, WizardHeader, WizardNavigation, WizardNavigationItem } from '.';
+import { showFinishButton, showNextButton, showPreviousButton } from './utils';
 import { WizardMovingTab } from './WizardMovingTab';
-import { showPreviousButton, showNextButton, showFinishButton } from './utils';
 
 interface WizardProps extends TabContainerProps {
   steps?: WizardStep[];
@@ -49,8 +48,7 @@ const Wizard: FunctionComponent<WizardProps> = ({
   ...props
 }) => {
   const [activeStep, setActiveStep] = useState(steps?.find((step) => step.active));
-  const [width, setWidth] = useState(0);
-  const wizardNode = useRef<null | HTMLDivElement>(null);
+  const { width, ref: wizardNode } = useResizeDetector();
 
   useEffect(() => {
     const currentActiveStep = steps?.find((step) => step.active);
@@ -83,7 +81,6 @@ const Wizard: FunctionComponent<WizardProps> = ({
     return null;
   };
 
-  const onResize = (width: number): void => setWidth(width);
   const onBack = (): void => {
     if (onPrevious && activeStep) onPrevious(activeStep);
   };
@@ -151,7 +148,6 @@ const Wizard: FunctionComponent<WizardProps> = ({
             <div className="clearfix"></div>
           </WizardFooter>
         </StyledCard>
-        <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
       </Tab.Container>
     </div>
   );

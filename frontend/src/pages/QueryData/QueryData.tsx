@@ -18,6 +18,7 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
   const { id } = props.match.params;
   const { operation: activeOperation, loading: operationLoading } = useOperation(
     parseInt(id as string),
+    true,
   ) as { operation: OperationMap; loading: boolean };
   const { data, dataLoading, error, options, setOptions } = useOperationData(
     {

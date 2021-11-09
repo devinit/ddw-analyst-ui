@@ -167,7 +167,9 @@ exports[`renders correctly with default props 1`] = `
                   >
                     <a
                       aria-disabled="true"
+                      aria-label="Previous page"
                       class="page-link"
+                      rel="prev"
                       role="button"
                       tabindex="0"
                     >
@@ -204,7 +206,9 @@ exports[`renders correctly with default props 1`] = `
                   >
                     <a
                       aria-disabled="true"
+                      aria-label="Next page"
                       class="page-link"
+                      rel="next"
                       role="button"
                       tabindex="0"
                     >

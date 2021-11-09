@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { List, Map } from 'immutable';
-import { OperationColumn, OperationColumnMap } from './sources';
+import { Column, OperationColumn, OperationColumnMap } from './sources';
 
 export type QueryName = 'filter' | 'join' | 'aggregate' | 'transform';
 export interface Filter {
@@ -34,6 +34,7 @@ export interface Operation {
   user: string;
   aliases: OperationColumn[] | List<OperationColumnMap>;
   logs: Record<string, unknown>;
+  advanced_config: AdvancedQueryOptions | null;
 }
 export type OperationMap = Map<keyof Operation, Operation[keyof Operation]>;
 export interface OperationStep {
@@ -91,4 +92,61 @@ export interface WindowOptions {
   over: string[];
   term: string;
   columns: string[];
+}
+
+export interface AdvancedQueryOptions {
+  source: number;
+  columns?: AdvancedQueryColumn[];
+  filter?: AdvancedQueryFilter;
+  join?: AdvancedQueryJoin;
+  groupby?: string[];
+  selectall?: boolean;
+}
+export type AdvancedQueryOptionsMap = Map<
+  keyof AdvancedQueryOptions,
+  AdvancedQueryOptions[keyof AdvancedQueryOptions]
+>;
+
+export interface AdvancedQueryColumn extends Partial<Column> {
+  aggregate?: 'sum' | 'avg' | 'max' | 'min' | 'std';
+}
+
+export type AdvancedQueryBuilderAction =
+  | 'select'
+  | 'filter'
+  | 'join'
+  | 'having'
+  | 'groupby'
+  | 'orderby';
+
+export type AdvancedQueryFilter = {
+  $and?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
+  $or?: (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
+};
+
+export type AdvancedQueryFilterComparator = {
+  column: string;
+  value: string | number | (string | number)[];
+  comp: FilterComp;
+};
+
+export const comp = ['$eq', '$neq', '$gt', '$lt', '$gte', '$lte', '$btn', '$in'] as const;
+export type FilterComp = typeof comp[number];
+
+export type JoinType =
+  | 'inner'
+  | 'outer'
+  | 'left'
+  | 'right'
+  | 'full'
+  | 'cross'
+  | 'left_outer'
+  | 'right_outer';
+export type Aggregate = 'SUM' | 'MAX' | 'MIN' | 'AVG' | 'STD';
+
+export interface AdvancedQueryJoin {
+  type: JoinType;
+  source: number;
+  mapping: [string, string][];
+  columns?: AdvancedQueryColumn[];
 }

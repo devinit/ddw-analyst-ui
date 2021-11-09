@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { OperationsTableCard } from '../../components/OperationsTableCard';
 import { SourcesContext } from '../../context';
-import { useSources } from '../../hooks';
+import { useSources } from '../../utils/hooks';
 
 type PageProps = RouteComponentProps;
 

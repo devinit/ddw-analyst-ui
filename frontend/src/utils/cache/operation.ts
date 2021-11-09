@@ -89,3 +89,13 @@ export const isOperationsCacheExpired = async (
 
   return false;
 };
+
+export const clearOperationsCache = (): void => {
+  localForage.keys().then((keys) => {
+    keys.forEach((key) => {
+      if (key.includes(localForageKeys.MY_DATASETS)) {
+        localForage.setItem(key, null);
+      }
+    });
+  });
+};
