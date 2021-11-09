@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Alert, Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
@@ -74,6 +74,14 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     <Row>
       <Col>
         <React.Fragment>
+          <Alert variant="warning">
+            <p>
+              This feature is in <strong>BETA</strong> - <strong>for testing purposes only</strong>
+            </p>
+            <p>
+              It currently only supports creation of basic <strong>SELECT</strong> queries
+            </p>
+          </Alert>
           <Dimmer active={loading || !sources.count()} inverted>
             <Loader content="Loading" />
           </Dimmer>
