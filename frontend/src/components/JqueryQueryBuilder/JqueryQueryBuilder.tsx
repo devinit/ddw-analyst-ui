@@ -1,12 +1,12 @@
-import React, { FunctionComponent, useEffect } from 'react';
-import 'jQuery-QueryBuilder/dist/css/query-builder.default.min.css';
-import './jQueryQueryBuilder.css';
 import * as jQueryQueryBuilder from 'jQuery-QueryBuilder';
+import 'jQuery-QueryBuilder/dist/css/query-builder.default.min.css';
+import React, { FunctionComponent, useEffect } from 'react';
 import {
   JqueryQueryBuilderFieldData,
-  JqueryQueryBuilderIcons,
   JqueryQueryBuilderFilter,
+  JqueryQueryBuilderIcons,
 } from '../../types/operations';
+import './jqueryQueryBuilder.css';
 
 export interface JqueryQueryBuilderProps {
   fieldData: JqueryQueryBuilderFieldData[];
