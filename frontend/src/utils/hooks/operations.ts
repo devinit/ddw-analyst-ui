@@ -190,6 +190,7 @@ export const useOperation = <O = Operation | OperationMap>(
   };
 
   useEffect(() => {
+    if (!id) return;
     if (fetch) {
       fetchOperation();
     } else {
