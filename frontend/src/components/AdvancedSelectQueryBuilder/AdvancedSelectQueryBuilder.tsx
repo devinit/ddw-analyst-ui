@@ -59,6 +59,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
       updateOptions!({ selectall: true });
     }
   }, []);
+  useEffect(() => {
+    if (options.selectall && options.selectall !== selectAll) {
+      setSelectAll(options.selectall);
+    }
+  }, [options.selectall]);
   const onToggleSelectAll = (data: ICheckData) => {
     setSelectAll(data.checked);
     updateOptions!({ selectall: data.checked });
