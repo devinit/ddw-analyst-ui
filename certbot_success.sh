@@ -2,10 +2,9 @@
 working_directory=/root/ddw-analyst-ui
 #If successful copy certs to the correct folder and refresh nginx docker node
 cd $working_directory
-cp -f /etc/letsencrypt/live/ddw.devinit.org/privkey.pem /root/ddw-analyst-ui/ssl/
-cp -f /etc/letsencrypt/live/ddw.devinit.org/fullchain.pem /root/ddw-analyst-ui/ssl/
 
-cp -f /etc/letsencrypt/live/api.devinit.org/privkey.pem /root/ddw-analyst-ui/ssl/spotlights_privkey.pem
-cp -f /etc/letsencrypt/live/api.devinit.org/fullchain.pem /root/ddw-analyst-ui/ssl/spotlights_fullchain.pem
+cp -f /etc/letsencrypt/live/"${SITE_URL}"/privkey.pem /etc/letsencrypt/privkey.pem
+cp -f /etc/letsencrypt/live/"${SITE_URL}"/fullchain.pem /etc/letsencrypt/fullchain.pem
 
-command docker-compose exec nginx nginx -s reload
+cp -f /etc/letsencrypt/live/"${SPOTLIGHTS_URL}"/privkey.pem /etc/letsencrypt/spotlights_privkey.pem
+cp -f /etc/letsencrypt/live/"${SPOTLIGHTS_URL}"/fullchain.pem /etc/letsencrypt/spotlights_fullchain.pem
