@@ -52,6 +52,8 @@ services:
       - ./config/nginx:/etc/nginx/conf.d
       - ./static:/static
       - ./ssl:/etc/ssl/
+    restart: always
+    command: "/bin/sh -c 'while :; do sleep 12h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
       - web
     networks:
@@ -82,6 +84,20 @@ services:
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
     networks:
       - ddw_net
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    depends_on:
+      - nginx
+    env_file: .env
+    environment:
+      - SITE_URL
+    entrypoint: /bin/sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot/letsencrypt --email di-devs@devinit.org --agree-tos --no-eff-email -d $SITE_URL && certbot certonly --webroot --webroot-path=/var/www/certbot/spotlights --email di-devs@devinit.org --agree-tos --no-eff-email -d $SPOTLIGHTS_URL && trap exit TERM; while :; do certbot renew --deploy-hook /etc/letsencrypt/certbot_success.sh; sleep 12h & wait $${!}; done;"
+    volumes:
+      - ./static:/var/www/certbot/
+      - ./ssl:/etc/letsencrypt/
+      - ./certbot_logs:/var/log/letsencrypt
 
 volumes:
   metadata2:
