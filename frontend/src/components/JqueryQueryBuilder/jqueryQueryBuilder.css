@@ -132,7 +132,7 @@
 
 .query-builder .btn-xs,
 .query-builder .btn-group-xs>.btn {
-  padding: 1px 5px;
+  padding: 2px 4px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
@@ -180,4 +180,14 @@
   color: #fff;
   background-color: #ea1c0d !important;
   border-color: #de1b0c !important;
+}
+
+.group-actions .btn {
+  background-color: #c8271d !important;
+  border-color: #c8271d !important;
+  text-transform: capitalize;
+}
+
+.group-actions .btn i {
+  display: none !important;
 }
