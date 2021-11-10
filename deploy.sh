@@ -19,6 +19,8 @@ rm -rf ddw-analyst-ui-$1
 
 cd ~/ddw-analyst-ui || exit
 
+echo SITE_URL"="${SITE_URL} >> .env
+
 echo "Building docker"
 
 docker-compose build db
