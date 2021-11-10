@@ -93,6 +93,7 @@ services:
     env_file: .env
     environment:
       - SITE_URL
+      - SPOTLIGHTS_URL
     entrypoint: /bin/sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot/letsencrypt --email di-devs@devinit.org --agree-tos --no-eff-email -d $SITE_URL && certbot certonly --webroot --webroot-path=/var/www/certbot/spotlights --email di-devs@devinit.org --agree-tos --no-eff-email -d $SPOTLIGHTS_URL && trap exit TERM; while :; do certbot renew --deploy-hook /etc/letsencrypt/certbot_success.sh; sleep 12h & wait $${!}; done;"
     volumes:
       - ./static:/var/www/certbot/

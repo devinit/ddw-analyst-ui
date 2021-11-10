@@ -63,6 +63,8 @@ jobs:
     - name: Run docker build
       run: |
         docker volume create --name=metadata2
+        echo "SITE_URL=ddw.devinit.org" >> .env
+        echo "SPOTLIGHTS_URL=api.devinit.org" >> .env
         docker-compose up -d --build
 
     - name: Import CSVs
