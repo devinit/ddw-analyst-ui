@@ -152,3 +152,32 @@
   background: #FFF;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 14%);
 }
+
+.group-conditions .btn {
+  color: #fff;
+  background-color: #737373;
+  border-color: #737373;
+  box-shadow: 0 2px 2px 0 rgb(244 67 54 / 14%), 0 3px 1px -2px rgb(244 67 54 / 20%), 0 1px 5px 0 rgb(244 67 54 / 12%);
+}
+
+.group-conditions .btn:hover {
+  background-color: #999;
+  border-color: #999;
+}
+
+.group-conditions .btn:active {
+  color: #FFF;
+  background-color: #1d2124 !important;
+  border-color: #171a1d !important;
+}
+
+.group-conditions .btn.active {
+  background-color: #c8271d !important;
+  border-color: #c8271d !important;
+}
+
+.group-conditions .btn.active:active {
+  color: #fff;
+  background-color: #ea1c0d !important;
+  border-color: #de1b0c !important;
+}
