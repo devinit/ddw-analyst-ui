@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 working_directory=/root/ddw-analyst-ui
 #If successful copy certs to the correct folder and refresh nginx docker node
 cd $working_directory
