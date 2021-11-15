@@ -92,10 +92,13 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       const parsedValue = JSON.parse(editorValue);
       updateOptions!({ ...options, ...parsedValue });
       setAlert([]);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.name === 'SyntaxError' && error.message.includes('Unexpected token')) {
-        setAlert([`Invalid JSON: ${error.message}`]);
+    } catch (error) {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      if (
+        (error as any).name === 'SyntaxError' &&
+        (error as any).message.includes('Unexpected token')
+      ) {
+        setAlert([`Invalid JSON: ${(error as any).message}`]);
       }
     }
   }, [editorValue]);
