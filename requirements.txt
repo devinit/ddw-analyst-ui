@@ -8,7 +8,7 @@ djangorestframework>=3.11.0
 django-rest-knox>=4.1.0
 django-filter>=2.2.0
 gunicorn==19.9.0
-lxml==4.6.3
+lxml==4.6.5
 markdown>=3.2.2
 numpy==1.18.4
 pandas==1.0.3
