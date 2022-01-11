@@ -10,7 +10,7 @@ WORKDIR /src
 RUN apt-get update
 RUN apt-get install -y net-tools
 
-RUN pip install --no-deps -r requirements.txt
+RUN pip install -r requirements.txt
 
 # R dependencies
 RUN apt-get install -y r-base-core
