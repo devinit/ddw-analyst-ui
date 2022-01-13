@@ -23,7 +23,9 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
 }) => {
   useEffect(() => {
     const jq = new jQueryQueryBuilder((window as any).$('#builder'), {
-      filters: fieldData,
+      filters: fieldData.sort(function (a, b) {
+        return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
+      }),
       icons,
     });
 
