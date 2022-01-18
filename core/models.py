@@ -5,6 +5,8 @@ from django.conf import settings
 from django.core.mail import send_mass_mail
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import query
+from django.db.models.deletion import CASCADE
 from django.urls import reverse
 
 
@@ -325,3 +327,12 @@ class SavedQueryData(BaseEntity):
         if self.saved_query_db_table:
             return self.saved_query_db_table + ' - ' + status[0]
         return self.operation.name + ' - ' + status[0]
+
+
+class ETLQuery(BaseEntity):
+
+    query = models.ForeignKey(Operation, on_delete=CASCADE)
+    etl_process = models.CharField(max_length=20, null=False) # e.g IATI, FTS
+
+    def __str__(self) -> str:
+        return self.etl_process + '_' + str(query)

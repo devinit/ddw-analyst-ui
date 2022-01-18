@@ -16,6 +16,7 @@ from core.models import (
     UpdateHistory,
     FrozenData,
     SavedQueryData,
+    ETLQuery,
 )
 
 
@@ -38,3 +39,4 @@ admin.site.register(ScheduledEvent)
 admin.site.register(ScheduledEventRunInstance)
 admin.site.register(FrozenData)
 admin.site.register(SavedQueryData)
+admin.site.register(ETLQuery)
