@@ -24,6 +24,11 @@ class AuditLogEntryAdmin(admin.ModelAdmin):
     readonly_fields = ('timestamp', )
 
 
+class ETLQueryAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('saved_dataset',)
+
+
 admin.site.register(Sector)
 admin.site.register(Theme)
 admin.site.register(Tag)
@@ -39,4 +44,4 @@ admin.site.register(ScheduledEvent)
 admin.site.register(ScheduledEventRunInstance)
 admin.site.register(FrozenData)
 admin.site.register(SavedQueryData)
-admin.site.register(ETLQuery)
+admin.site.register(ETLQuery, ETLQueryAdmin)
