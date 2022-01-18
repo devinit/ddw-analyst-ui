@@ -242,6 +242,8 @@ LOGGING = {
     },
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:
