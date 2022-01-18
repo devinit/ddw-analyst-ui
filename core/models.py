@@ -330,6 +330,7 @@ class SavedQueryData(BaseEntity):
 
 
 class ETLQuery(BaseEntity):
+    """Holds queries that will be run after running the ETL processes to create a new frozen dataset"""
 
     query = models.ForeignKey(Operation, on_delete=CASCADE)
     etl_process = models.CharField(max_length=20, null=False) # e.g IATI, FTS
