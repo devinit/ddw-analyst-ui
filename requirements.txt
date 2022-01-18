@@ -4,6 +4,7 @@ coverage>=4.5.3,<5.0
 codecov>=2.0.15,<3.0
 celery>=4.4.7,<5.0
 Django>=3.1.13,<4.0
+django-cors-headers>=3.11.0,<4.0
 djangorestframework>=3.11.0,<4.0
 django-rest-knox>=4.1.0,<5.0
 django-filter>=2.2.0,<3.0
