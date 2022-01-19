@@ -21,7 +21,7 @@ from core.models import (
 )
 
 
-_ModelT = TypeVar('_ModelT', bound=ETLQuery)
+_ModelT = TypeVar('_ModelT', bound=ETLQuery) # To be used for type-checking
 
 
 class AuditLogEntryAdmin(admin.ModelAdmin):
