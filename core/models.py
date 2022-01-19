@@ -6,7 +6,7 @@ from django.core.mail import send_mass_mail
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import query
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, SET_NULL
 from django.urls import reverse
 
 
@@ -332,13 +332,18 @@ class SavedQueryData(BaseEntity):
 class ETLQuery(BaseEntity):
     """Holds queries that will be run after running the ETL processes to create a new frozen dataset"""
 
+    ETL_PROCESS_CHOICES = (
+        ("IATI", "IATI Data"),
+        ("FTS", "FTS Data")
+    )
+
     class Meta:
         verbose_name = 'ETL Query'
         verbose_name_plural = 'ETL Queries'
 
     query = models.ForeignKey(Operation, on_delete=CASCADE)
-    etl_process = models.CharField(max_length=20, null=False, unique=True) # e.g IATI, FTS
-    saved_dataset = models.OneToOneField(SavedQueryData, on_delete=CASCADE, null=True, blank=True)
+    etl_process = models.CharField(max_length=20, choices=ETL_PROCESS_CHOICES, null=False, unique=True) # e.g IATI, FTS
+    saved_dataset = models.OneToOneField(SavedQueryData, on_delete=SET_NULL, null=True, blank=True)
     active = models.BooleanField(default=True)
 
     def __str__(self) -> str:
