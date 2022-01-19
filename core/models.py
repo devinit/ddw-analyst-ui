@@ -347,4 +347,4 @@ class ETLQuery(BaseEntity):
     active = models.BooleanField(default=True)
 
     def __str__(self) -> str:
-        return self.etl_process + '_' + str(query)
+        return self.etl_process + '_' + str(self.query)
