@@ -1,4 +1,5 @@
 from django.contrib import admin
+from typing import Any, TypeVar
 
 from core.models import (
     AuditLogEntry,
@@ -20,13 +21,20 @@ from core.models import (
 )
 
 
+_ModelT = TypeVar('_ModelT', bound=ETLQuery)
+
+
 class AuditLogEntryAdmin(admin.ModelAdmin):
     readonly_fields = ('timestamp', )
 
 
 class ETLQueryAdmin(admin.ModelAdmin):
 
-    readonly_fields = ('saved_dataset',)
+    readonly_fields = ('saved_dataset', 'user', )
+
+    def save_model(self, request: Any, obj: _ModelT, form: Any, change: Any) -> None:
+        obj.user = request.user
+        super().save_model(request, obj, form, change)
 
 
 admin.site.register(Sector)
