@@ -1,7 +1,8 @@
 from core.pypika_utils import QueryBuilder
 from data.db_manager import fetch_data, analyse_query, run_query
 from core.models import FrozenData, Source, SourceColumnMap, Operation, FrozenData
-from pypika import Table
+from pypika import Table, Query
+from pypika import functions as pypika_fn
 from core.pypika_fts_utils import TableQueryBuilder
 from query_builder.advanced import AdvancedQueryBuilder
 from core.const import DEFAULT_LIMIT_COUNT
@@ -102,3 +103,9 @@ def advanced_query_table(config, limit=None, offset=None, estimate_count=False):
     offset = offset or 0
     queries = build_advanced_queries(config, limit, offset, estimate_count)
     return fetch_data(queries)
+
+def get_all_frozen_dataset(table, schema='dataset'):
+    table_name = Table(table, schema=schema)
+    data_query = Query.from_(table_name).select(table_name.star).get_sql()
+    count_query = Query.from_(table_name).select(pypika_fn.Count(table_name.star)).get_sql()
+    return fetch_data((count_query, data_query))

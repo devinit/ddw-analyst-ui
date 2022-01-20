@@ -52,6 +52,7 @@ urlpatterns = [
     # For handling saving query sets, and freezing data
     path('savedquerysets/', core_views.SavedQueryDataList.as_view()),
     path('savedqueryset/<int:pk>/', core_views.SavedQueryDataDetail.as_view()),
+    path('savedqueryset/data/<str:etl_process>/', core_views.ViewETLQueryData.as_view()),
     path('frozendata/', core_views.FrozenDataList.as_view()),
     path('frozendata/<int:pk>/', core_views.FrozenDataDetail.as_view()),
 ]
