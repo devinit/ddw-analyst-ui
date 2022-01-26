@@ -19,6 +19,13 @@ rm -rf ddw-analyst-ui-$1
 
 cd ~/ddw-analyst-ui || exit
 
+echo SITE_URL"="${SITE_URL} >> .env
+echo SPOTLIGHTS_URL"="${SPOTLIGHTS_URL} >> .env
+
+cp certbot_success.sh ./ssl
+chmod +x ssl/certbot_success.sh
+mkdir -p certbot_logs
+
 echo "Building docker"
 
 docker-compose build db

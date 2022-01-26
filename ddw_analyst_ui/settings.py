@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'social_django',
     'rest_social_auth',
     'knox',
+    'corsheaders',
     'ddw_analyst_ui',
 ]
 
@@ -86,6 +87,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',)
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -94,6 +96,19 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = [
+        'http://127.0.0.1',
+        'http://0.0.0.0'
+    ]
+else:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://devinit\.org$",
+        r"^https://\w+\.devinit\.org$",
+    ]
+
+CORS_URLS_REGEX = r'^/(api|v1)/.*$'
 
 ROOT_URLCONF = 'ddw_analyst_ui.urls'
 
@@ -226,6 +241,8 @@ LOGGING = {
         },
     },
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
