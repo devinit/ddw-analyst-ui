@@ -1,6 +1,6 @@
 {
   "name": "ddw-analyst-ui",
-  "version": "2.12.2",
+  "version": "2.12.3",
   "description": "The new and improved DDW Analyst UI interface",
   "main": "index.js",
   "scripts": {
