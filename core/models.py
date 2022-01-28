@@ -342,7 +342,7 @@ class ETLQuery(BaseEntity):
         verbose_name_plural = 'ETL Queries'
 
     query = models.ForeignKey(Operation, on_delete=CASCADE)
-    etl_process = models.CharField(max_length=20, choices=ETL_PROCESS_CHOICES, null=False, unique=True) # e.g IATI, FTS
+    etl_process = models.CharField(max_length=20, choices=ETL_PROCESS_CHOICES, null=False) # e.g IATI, FTS
     saved_dataset = models.OneToOneField(SavedQueryData, on_delete=SET_NULL, null=True, blank=True)
     active = models.BooleanField(default=True)
 

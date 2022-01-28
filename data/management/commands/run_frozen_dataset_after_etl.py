@@ -16,11 +16,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            etl_query = ETLQuery.objects.filter(etl_process=options["etl_process"], active=True).order_by('-id')[:1]
+            etl_queries = ETLQuery.objects.filter(etl_process=options["etl_process"], active=True).order_by('-id')
+            for etl_query in etl_queries:
+                print("Running {}".format(etl_query))
+                self.create(etl_query)
         except ETLQuery.DoesNotExist:
             raise CommandError("ETLQuery '" + options["etl_process"] + "' does not Exist")
-
-        self.create(etl_query[0])
 
     def create(self, etl_query: ETLQuery):
 
