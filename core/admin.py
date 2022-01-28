@@ -1,4 +1,5 @@
 from django.contrib import admin
+from typing import Any, TypeVar
 
 from core.models import (
     AuditLogEntry,
@@ -16,11 +17,25 @@ from core.models import (
     UpdateHistory,
     FrozenData,
     SavedQueryData,
+    ETLQuery,
 )
+
+
+_ModelT = TypeVar('_ModelT', bound=ETLQuery) # To be used for type-checking
 
 
 class AuditLogEntryAdmin(admin.ModelAdmin):
     readonly_fields = ('timestamp', )
+
+
+class ETLQueryAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('saved_dataset', 'user', )
+    list_display = ('id', 'query', 'etl_process', 'saved_dataset', 'active')
+
+    def save_model(self, request: Any, obj: _ModelT, form: Any, change: Any) -> None:
+        obj.user = request.user
+        super().save_model(request, obj, form, change)
 
 
 admin.site.register(Sector)
@@ -38,3 +53,4 @@ admin.site.register(ScheduledEvent)
 admin.site.register(ScheduledEventRunInstance)
 admin.site.register(FrozenData)
 admin.site.register(SavedQueryData)
+admin.site.register(ETLQuery, ETLQueryAdmin)
