@@ -1081,15 +1081,15 @@ class ViewETLQueryData(APIView):
     """
     permission_classes = (permissions.AllowAny,)
 
-    def get_object(self, etl_process):
+    def get_object(self, id):
         try:
-            return ETLQuery.objects.select_related().get(etl_process=etl_process)
+            return ETLQuery.objects.select_related().get(id=id)
         except ETLQuery.DoesNotExist:
             raise Http404
 
-    def get(self, request, etl_process):
+    def get(self, request, id):
         try:
-            etl_query = self.get_object(etl_process)
+            etl_query = self.get_object(id)
             count, data = query.get_all_frozen_dataset(etl_query.saved_dataset.saved_query_db_table, 'dataset')
 
             return Response({'count': count, 'data': data}, status=status.HTTP_200_OK)

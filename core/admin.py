@@ -31,6 +31,7 @@ class AuditLogEntryAdmin(admin.ModelAdmin):
 class ETLQueryAdmin(admin.ModelAdmin):
 
     readonly_fields = ('saved_dataset', 'user', )
+    list_display = ('id', 'query', 'etl_process', 'saved_dataset', 'active')
 
     def save_model(self, request: Any, obj: _ModelT, form: Any, change: Any) -> None:
         obj.user = request.user
