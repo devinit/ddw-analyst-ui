@@ -13,11 +13,11 @@ export const actions: ActionMeta[] = [
     caption: 'Select',
     visibleFor: [],
   },
-  // {
-  //   name: 'filter',
-  //   caption: 'Filter',
-  //   visibleFor: [],
-  // },
+  {
+    name: 'filter',
+    caption: 'Filter',
+    visibleFor: [],
+  },
   // {
   //   name: 'join',
   //   caption: 'Join',

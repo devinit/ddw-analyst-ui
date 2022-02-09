@@ -10,14 +10,15 @@ The new and improved DDW Analyst UI interface
 2. Create a persistent dev volume `docker volume create --name=metadata2`
 3. Create a self-signed certificate `mkdir -p ssl && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem`
 4. Build your app `docker-compose up --build -d`
-5. Migrate the database. `docker-compose exec web python manage.py migrate`
-6. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
-7. Alternatively, load the real data `export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh`
-8. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
-9. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
-10. Install frontend dependencies `npm install`
-11. Bundle frontend code and collect static files `npm run build`
-12. Restart the app. `docker-compose restart`
+5. Fetch CSV files from GitHub `docker-compose exec web python manage.py update_csv_files`
+6. Migrate the database. `docker-compose exec web python manage.py migrate`
+7. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
+8. Alternatively, load the real data `export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh`
+9. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
+10. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
+11. Install frontend dependencies `npm install`
+12. Bundle frontend code and collect static files `npm run build`
+13. Restart the app. `docker-compose restart`
 
 ### Import CSV Files
 
@@ -59,13 +60,14 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 1. Initialise a virtual environment `virtualenv env`
 2. Activate & enter virtualenv environment `source env/bin/activate`
 3. Install python dependencies `pip install -r requirements.txt`
-4. Migrate the database. `python manage.py migrate`
-5. Load test data from a fixture like so `python manage.py loaddata test_data` `python manage.py loaddata --database=datasets test_datasets`
-6. Create a superuser. `python manage.py createsuperuser`
-7. Add the bit registry to npm config to install bit dependencies ``npm config set @bit:registry https://node.bitsrc.io
-8. Install frontend dependencies `npm install`
-9. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
-10. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
+4. Fetch CSV files from GitHub `python manage.py update_csv_files`
+5. Migrate the database. `python manage.py migrate`
+6. Load test data from a fixture like so `python manage.py loaddata test_data` `python manage.py loaddata --database=datasets test_datasets`
+7. Create a superuser. `python manage.py createsuperuser`
+8. Add the bit registry to npm config to install bit dependencies ``npm config set @bit:registry https://node.bitsrc.io
+9. Install frontend dependencies `npm install`
+10. Bundle frontend code and collect static files `npm run dev` NB: is set to watch for changes and recompile
+11. Run the app. `export DJANGO_DEV='True' && python manage.py runserver`
 
 ### Docker Development
 
@@ -86,17 +88,21 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
         docker-compose -f docker-compose.dev.yml up --build
 
-5. Migrate the database:
+5. Fetch CSV files from GitHub
+
+        docker-compose exec web python manage.py update_csv_files
+
+6. Migrate the database:
 
         docker-compose exec web python manage.py migrate
 
-6. Load test data:
+7. Load test data:
 
         docker-compose exec web python manage.py loaddata test_data
 
         docker-compose exec web python manage.py loaddata --database=datasets test_datasets
 
-7. Alternatively, you can acquire a db dump of the live data (binary) and import it into your database:
+8. Alternatively, you can acquire a db dump of the live data (binary) and import it into your database:
 
         docker-compose exec db psql -U analyst_ui_user -d analyst_ui -c 'drop schema public CASCADE;'
         docker-compose exec db psql -U analyst_ui_user -d analyst_ui -c 'create schema public;'
@@ -104,21 +110,21 @@ To create a test development DB, for local development (e.g. virtualenv steps be
         docker exec ddw-analyst-ui_db_1 pg_restore -U analyst_ui_user -d analyst_ui /var/lib/postgresql/data/[DB BUMP FILE NAME].backup
         docker-compose exec web python3 manage.py migrate
 
-8. Create a superuser:
+9.  Create a superuser:
 
         docker-compose exec web python manage.py createsuperuser
 
-9.  Add the bit registry to npm config to install bit dependencies:
+10. Add the bit registry to npm config to install bit dependencies:
 
         npm config set @bit:registry https://node.bitsrc.io
 
-10. Install frontend dependencies:
+11. Install frontend dependencies:
 
         npm install
 
-11. Start frontend dev environment which watches and collects static files:
+12. Start frontend dev environment which watches and collects static files:
 
-        npm run dev
+        npm start
 
 ### Scheduled Events
 

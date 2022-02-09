@@ -93,8 +93,12 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       updateOptions!({ ...options, ...parsedValue });
       setAlert([]);
     } catch (error) {
-      if (error.name === 'SyntaxError' && error.message.includes('Unexpected token')) {
-        setAlert([`Invalid JSON: ${error.message}`]);
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      if (
+        (error as any).name === 'SyntaxError' &&
+        (error as any).message.includes('Unexpected token')
+      ) {
+        setAlert([`Invalid JSON: ${(error as any).message}`]);
       }
     }
   }, [editorValue]);
