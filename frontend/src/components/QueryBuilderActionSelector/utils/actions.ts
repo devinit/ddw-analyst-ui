@@ -23,16 +23,16 @@ export const actions: ActionMeta[] = [
   //   caption: 'Join',
   //   visibleFor: [],
   // },
-  // {
-  //   name: 'groupby',
-  //   caption: 'Group By',
-  //   visibleFor: [],
-  // },
-  // {
-  //   name: 'having',
-  //   caption: 'Having',
-  //   visibleFor: [],
-  // },
+  {
+    name: 'groupby',
+    caption: 'Group By',
+    visibleFor: [],
+  },
+  {
+    name: 'having',
+    caption: 'Having',
+    visibleFor: [],
+  },
   // {
   //   name: 'orderby',
   //   caption: 'Order By',
