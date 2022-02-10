@@ -334,7 +334,8 @@ class ETLQuery(BaseEntity):
 
     ETL_PROCESS_CHOICES = (
         ("IATI", "IATI Data"),
-        ("FTS", "FTS Data")
+        ("FTS", "FTS Data"),
+        ("Others", "Others"),
     )
 
     class Meta:
