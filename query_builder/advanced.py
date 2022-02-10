@@ -164,7 +164,7 @@ class AdvancedQueryBuilder:
     def get_groupby_query(self, table, query, columns, select_columns):
         # TODO: handle .having here as its usage is based on the groupby
         # Check if all columns in select are present in GROUP BY CLAUSE columns
-        if all(s in columns for s in select_columns):
+        if all(s['name'] in columns for s in select_columns):
             query.groupby(*[table[column] for column in columns])
             if 'having' in self.config:
                 query = self.get_having_query(table, query, self.config.get('having'))
