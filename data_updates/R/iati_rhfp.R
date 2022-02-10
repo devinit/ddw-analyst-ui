@@ -1,10 +1,11 @@
 ####Setup###/#
-list.of.packages <- c("reshape2","data.table","openxlsx","plyr","gdata","varhandle","rsdmx","rstudioapi","RCurl")
+list.of.packages <- c("reshape2","data.table","openxlsx","plyr","gdata","varhandle","rsdmx","rstudioapi","RCurl","git2rdata")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
-setwd(dirname(getActiveDocumentContext()$path))
+wd <- dirname(getActiveDocumentContext()$path)
+setwd(wd)
 
 #bring in data
 options(timeout = 1000)
@@ -21,4 +22,8 @@ dat <- mutate(dat, `Channel of delivery` = ifelse(`Transaction Receiver Organisa
 #Get transactions in correct units
 dat$x_transaction_value_usd_m_Sum <- dat$x_transaction_value_usd_m_Sum/1000000
 
-write.csv(dat,"iati_rhfp2.csv")
+repo <- repository("C:/git/di-website-data")
+pull(repo)
+write_vc(dat, file = "2022/iati_rhfp.csv", root = repo, stage = TRUE)
+commit(repo, "Update of the RHFP data for Gates")
+push(repo)
