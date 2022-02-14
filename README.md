@@ -108,6 +108,7 @@ To create a test development DB, for local development (e.g. virtualenv steps be
         docker-compose exec db psql -U analyst_ui_user -d analyst_ui -c 'create schema public;'
         docker cp [DB BUMP FILE NAME].backup ddw-analyst-ui_db_1:/var/lib/postgresql/data
         docker exec ddw-analyst-ui_db_1 pg_restore -U analyst_ui_user -d analyst_ui /var/lib/postgresql/data/[DB BUMP FILE NAME].backup
+        docker-compose exec web python manage.py update_csv_files
         docker-compose exec web python3 manage.py migrate
 
 9.  Create a superuser:
