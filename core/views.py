@@ -13,10 +13,12 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.db import connections
 from django.db.models import Q
+from django.db.models.query import prefetch_related_objects
 from django.http import Http404, HttpResponse, StreamingHttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from core import serializers
 
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
@@ -30,7 +32,7 @@ from rest_framework.views import APIView
 from core import query
 from core.errors import CustomAPIException, handle_uncaught_error
 from core.models import (FrozenData, Operation, OperationDataColumnAlias,
-                         OperationStep, Review, SavedQueryData, ScheduledEvent,
+                         OperationStep, Review, SavedQueryData, ScheduledEvent, ETLQuery,
                          ScheduledEventRunInstance, Sector, Source, Tag, Theme, SourceColumnMap, SavedQueryData)
 from core.pagination import DataPaginator
 from core.permissions import IsOwnerOrReadOnly
@@ -1068,6 +1070,29 @@ class EstimateQueryTime(APIView):
             operation = self.get_queryset(pk)
             estimate = query.querytime_estimate(operation=operation)
             return Response(estimate)
+        except Exception as e:
+            handle_uncaught_error(e)
+            raise CustomAPIException({'detail': str(e)})
+
+
+class ViewETLQueryData(APIView):
+    """
+    List all data from executing the operation query.
+    """
+    permission_classes = (permissions.AllowAny,)
+
+    def get_object(self, id):
+        try:
+            return ETLQuery.objects.select_related().get(id=id)
+        except ETLQuery.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id):
+        try:
+            etl_query = self.get_object(id)
+            count, data = query.get_all_frozen_dataset(etl_query.saved_dataset.saved_query_db_table, 'dataset')
+
+            return Response({'count': count, 'data': data}, status=status.HTTP_200_OK)
         except Exception as e:
             handle_uncaught_error(e)
             raise CustomAPIException({'detail': str(e)})
