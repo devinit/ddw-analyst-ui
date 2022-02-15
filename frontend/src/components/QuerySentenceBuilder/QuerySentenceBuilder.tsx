@@ -21,6 +21,7 @@ import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
 import { QuerySentencePreview } from '../QuerySentencePreview';
 import { getCurrentAction } from './utils';
 import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
+import { AdvancedHavingQueryBuilder } from '../AdvancedHavingQueryBuilder';
 
 interface ComponentProps {
   operation?: OperationMap;
@@ -123,6 +124,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
+                {action === 'having' ? <AdvancedHavingQueryBuilder source={source} /> : null}
               </Col>
             </StyledRow>
             <QuerySentencePreview
