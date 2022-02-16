@@ -69,7 +69,7 @@ data.loc[data['Transaction Receiver Organisation Type'].isin([90]),'Transaction 
 
 data["x_transaction_value_usd_m_Sum"] = data["x_transaction_value_usd_m_Sum"]/1000000
 
-data.to_csv("iati_rhfp.csv", encoding='utf-8', index=False)
+data.to_csv("csv/iati_rhfp.csv", encoding='utf-8', index=False)
 
 # Sample call to the function below
-# push_folder_to_github('wakibi/di-website-data', 'main', 'csv', '2022', 'Committing from API', '*.csv')
+push_folder_to_github('devinit/di-website-data', 'main', 'csv', '2022', 'Committing from API', '*.csv')
