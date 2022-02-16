@@ -38,8 +38,7 @@ def push_folder_to_github(repo_name, branch, local_folder, remote_folder, commit
     commit = repo.create_git_commit(commit_msg, tree, [parent])
     git_ref.edit(commit.sha)
 
-
-print("Starting read-in")
+# Dataset 1
 
 data = pd.read_csv("https://ddw.devinit.org/api/export/1231")
 
@@ -70,6 +69,34 @@ data.loc[data['Transaction Receiver Organisation Type'].isin([90]),'Transaction 
 data["x_transaction_value_usd_m_Sum"] = data["x_transaction_value_usd_m_Sum"]/1000000
 
 data.to_csv("csv/iati_rhfp.csv", encoding='utf-8', index=False)
+
+# Dataset 2
+
+data = pd.read_csv("https://ddw.devinit.org/api/export/1271")
+
+data = pd.DataFrame(data)
+
+data.columns = ["Code type","Year", "recipient_name","Reporting Organisation Narrative", "disbursed"]
+
+data = data[(data['Code type'] != 13010) & (data['Code type'] != 13081)]
+
+# Sector code mapping
+
+data.loc[data['Code type']==13020,'Code type'] = "Reproductive health care"
+data.loc[data['Code type']==13030,'Code type'] = "Family planning"
+
+# Summing both
+
+total_data = data.groupby(["Year","recipient_name","Reporting Organisation Narrative"]).agg({"disbursed":"sum"}).reset_index()
+total_data['Code type'] = "Reproductive health care and family planning"
+
+data = data.append(pd.DataFrame(data = total_data),ignore_index=True)
+
+# Put it in millions
+
+data["disbursed"] = data["disbursed"]/1000000
+
+data.to_csv("csv/iati_rhfp2.csv", encoding='utf-8', index=False)
 
 # Sample call to the function below
 push_folder_to_github('devinit/di-website-data', 'main', 'csv', '2022', 'Committing from API', '*.csv')
