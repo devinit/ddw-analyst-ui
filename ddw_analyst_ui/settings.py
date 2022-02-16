@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY',
                        '!brp5jw6nf-2f*=6=s$$@2he&!y+x*2gkhb6ate$ne-kt7c#h4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEV', 'False') == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = ['.devinit.org', 'localhost', '127.0.0.1', '167.99.86.10']
 
@@ -100,7 +100,9 @@ MIDDLEWARE = [
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
         'http://127.0.0.1',
-        'http://0.0.0.0'
+        'http://0.0.0.0',
+        'http://localhost:3000',
+        'https://dev.devinit.org',
     ]
 else:
     CORS_ALLOWED_ORIGIN_REGEXES = [
