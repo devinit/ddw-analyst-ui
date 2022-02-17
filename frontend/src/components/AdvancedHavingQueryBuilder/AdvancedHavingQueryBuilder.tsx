@@ -1,16 +1,20 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Alert } from 'react-bootstrap';
-import { AdvancedQueryColumn, JqueryQueryBuilderFieldData } from '../../types/operations';
+import React, { FunctionComponent, useContext, useState } from 'react';
+import { Alert, Button, ButtonGroup } from 'react-bootstrap';
+import {
+  AdvancedQueryColumn,
+  AdvancedQueryOptions,
+  JqueryQueryBuilderFieldData,
+} from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
-import { createQueryBuilderRules } from '../JqueryQueryBuilder/utils';
+import { createQueryBuilderRules, parseQuery } from '../JqueryQueryBuilder/utils';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 
 interface ComponentProps {
   source: SourceMap;
 }
 const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
-  const { options } = useContext(AdvancedQueryContext);
+  const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
 
   const getGroupColumns = () =>
@@ -38,6 +42,18 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
   const getJqueryBuilderInstance = (jqInstance: any) => {
     setJqBuilder(jqInstance);
   };
+
+  const onReplace = () => {
+    const rules = jqBuilder?.getRules();
+    options.having = parseQuery({}, rules.condition, rules);
+    if (updateOptions) {
+      updateOptions(options as AdvancedQueryOptions);
+    }
+  };
+
+  const onReset = () => {
+    jqBuilder?.reset();
+  };
   // const getAggregateColumns = () => options.columns?.filter((column) => column.aggregate);
 
   const hasAggregate = (columns: AdvancedQueryColumn[]) => {
@@ -51,18 +67,44 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
     <>
       {(options.groupby as string[])?.length > 0 ||
       hasAggregate(options.columns as AdvancedQueryColumn[]) ? (
-        <JqueryQueryBuilder
-          fieldData={fieldData}
-          getJqueryBuilderInstance={getJqueryBuilderInstance}
-          icons={{
-            add_group: 'fa fa-plus-circle',
-            add_rule: 'fa fa-plus',
-            remove_group: 'fa fa-times realign',
-            remove_rule: 'fa fa-times realign',
-            error: 'fa fa-exclamation-triangle',
-          }}
-          rules={createQueryBuilderRules({}, options.having)}
-        />
+        <>
+          <JqueryQueryBuilder
+            fieldData={fieldData}
+            getJqueryBuilderInstance={getJqueryBuilderInstance}
+            icons={{
+              add_group: 'fa fa-plus-circle',
+              add_rule: 'fa fa-plus',
+              remove_group: 'fa fa-times realign',
+              remove_rule: 'fa fa-times realign',
+              error: 'fa fa-exclamation-triangle',
+            }}
+            rules={createQueryBuilderRules({}, options.having)}
+          />
+          <ButtonGroup className="mr-2">
+            <Button
+              variant="danger"
+              size="sm"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              data-html="true"
+              title={`<i>Replaces</i> existing filter config`}
+              onClick={() => onReplace()}
+            >
+              Replace
+            </Button>
+            <Button
+              variant="dark"
+              size="sm"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              data-html="true"
+              title={`<i>Resets</i> config to default JSON`}
+              onClick={onReset}
+            >
+              Reset
+            </Button>
+          </ButtonGroup>
+        </>
       ) : (
         <Alert variant="warning" className="mt-2">
           Having clause requires groupBy or aggregate columns
