@@ -61,7 +61,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
             remove_rule: 'fa fa-times realign',
             error: 'fa fa-exclamation-triangle',
           }}
-          rules={createQueryBuilderRules({}, options.filter)}
+          rules={createQueryBuilderRules({}, options.having)}
         />
       ) : (
         <Alert variant="warning" className="mt-2">
