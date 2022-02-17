@@ -51,6 +51,7 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const onReset = () => {
     jqBuilder?.reset();
   };
+  console.log(options.filter);
 
   return (
     <>
