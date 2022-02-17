@@ -101,6 +101,7 @@ export interface AdvancedQueryOptions {
   join?: AdvancedQueryJoin;
   groupby?: string[];
   selectall?: boolean;
+  having?: AdvancedQueryFilter;
 }
 export type AdvancedQueryOptionsMap = Map<
   keyof AdvancedQueryOptions,
