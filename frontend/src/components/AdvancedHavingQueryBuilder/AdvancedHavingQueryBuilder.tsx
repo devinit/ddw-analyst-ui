@@ -28,7 +28,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
     }
   };
 
-  const fieldData: JqueryQueryBuilderFieldData[] = (getColumns() as AdvancedQueryColumn[]).map(
+  const fieldData: JqueryQueryBuilderFieldData[] = (getColumns() as AdvancedQueryColumn[])?.map(
     (column) => {
       return {
         id: column.name as string,
