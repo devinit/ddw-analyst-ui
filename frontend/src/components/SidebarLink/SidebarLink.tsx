@@ -39,7 +39,7 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
         <p>
           {' '}
           {this.props.textNormal || this.props.textMini}
-          {/* {this.props.caret ? <b className="caret" /> : null} */}
+          {this.props.caret ? <b className="caret" /> : null}
         </p>
       );
     }

@@ -138,7 +138,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                 </Sidebar.Item>
                 <Sidebar.Item
                   active={this.state.activeRoute.includes('/queries/build/')}
-                  collapseId="query-builder"
+                  // collapseId="query-builder"
                 >
                   <Sidebar.Link
                     root
