@@ -24,6 +24,7 @@ import { AsyncDataUpdate } from '../pages/DataUpdate';
 import { AsyncHome } from '../pages/Home';
 import { AsyncPublishedDatasets } from '../pages/PublishedDatasets/AsyncLoader';
 import { AsyncQueryBuilder } from '../pages/QueryBuilder';
+import { AsyncQueryBuilderChooser } from '../pages/QueryBuilderChooser';
 import { AsyncQueryData } from '../pages/QueryData';
 import { AsyncQueryHistory } from '../pages/QueryHistory/AsyncLoader';
 import { AsyncScheduledEvents } from '../pages/ScheduledEvents';
@@ -290,7 +291,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   exact
                   component={AsyncAdvancedQueryBuilder}
                 />
-                <Route path="/queries/build" exact component={AsyncQueryBuilder} />
+                <Route path="/queries/build" exact component={AsyncQueryBuilderChooser} />
                 <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
                 <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
                 <Route path="/update" exact component={AsyncDataUpdate} />
