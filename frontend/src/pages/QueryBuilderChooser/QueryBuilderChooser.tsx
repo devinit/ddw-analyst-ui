@@ -114,10 +114,19 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 =======
 import React, { FC } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+// import { BasicModal } from '../../components/BasicModal';
 
 const QueryBuilderChooser: FC<RouteComponentProps> = () => {
+<<<<<<< HEAD
   return <div>Chooser Query Builder Here</div>;
 >>>>>>> cb9f131d (Add QueryBuilderChooser)
+=======
+  return (
+    <div>
+      <div>Chooser Query Builder Here</div>;
+    </div>
+  );
+>>>>>>> 0ffec619 (Added an onClick method to the QueryBuilder)
 };
 
 export default QueryBuilderChooser;
