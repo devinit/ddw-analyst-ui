@@ -137,7 +137,14 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     data-testid="sidebar-link-published-datasets"
                   />
                 </Sidebar.Item>
+<<<<<<< HEAD
                 <Sidebar.Item active={this.state.activeRoute.includes('/queries/build/')}>
+=======
+                <Sidebar.Item
+                  active={this.state.activeRoute.includes('/queries/build/')}
+                  // collapseId="query-builder"
+                >
+>>>>>>> cb3ce03d (Removed the multiple dropdown option for querybuilder)
                   <Sidebar.Link
                     root
                     to="/queries/build/"
