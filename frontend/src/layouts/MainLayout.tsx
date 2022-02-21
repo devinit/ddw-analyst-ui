@@ -296,10 +296,15 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   exact
                   component={AsyncAdvancedQueryBuilder}
                 />
+<<<<<<< HEAD
                 <Route path="/queries/build/basic/" exact component={AsyncQueryBuilder} />
                 <Route path="/queries/build/basic/:id" exact component={AsyncQueryBuilder} />
                 <Route path="/queries/build/" exact component={AsyncQueryBuilderChooser} />
                 <Route path="/queries/build/:id" exact component={AsyncQueryBuilderChooser} />
+=======
+                <Route path="/queries/build" exact component={AsyncQueryBuilderChooser} />
+                <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
+>>>>>>> cb9f131d (Add QueryBuilderChooser)
                 <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
                 <Route path="/update" exact component={AsyncDataUpdate} />
                 <Route path="/queries/data/:id" exact component={AsyncQueryData} />

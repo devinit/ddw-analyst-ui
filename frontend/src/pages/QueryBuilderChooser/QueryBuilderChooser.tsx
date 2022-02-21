@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { FC, useState, useEffect } from 'react';
 import * as localForage from 'localforage';
 import { localForageKeys, api } from '../../utils';
@@ -110,6 +111,13 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
       </Modal>
     </div>
   );
+=======
+import React, { FC } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+
+const QueryBuilderChooser: FC<RouteComponentProps> = () => {
+  return <div>Chooser Query Builder Here</div>;
+>>>>>>> cb9f131d (Add QueryBuilderChooser)
 };
 
 export default QueryBuilderChooser;
