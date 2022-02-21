@@ -223,11 +223,22 @@ class PreviewOperationData(APIView):
             limit=request.query_params.get('limit', 10)
             offset=request.query_params.get('offset', 0)
             if 'advanced_config' in request.data and request.data['advanced_config']:
-                data = run_query(query.get_advanced_config_query(request.data['advanced_config'], limit=limit, offset=offset), fetch=True)
-                return {
-                    'count': len(data),
-                    'data': data
-                }
+                try:
+                    data = run_query(query.get_advanced_config_query(request.data['advanced_config'], limit=limit, offset=offset), fetch=True)
+                    return {
+                        'count': len(data),
+                        'data': data
+                    }
+                except LookupError as e:
+                    return {
+                        'count': 0,
+                        'data': [
+                            {
+                                'error': str(e),
+                                'error_type': 'LookupError'
+                            }
+                        ]
+                    }
             else:
                 count, data = query.query_table(
                     operation_steps=request.data['operation_steps'],
