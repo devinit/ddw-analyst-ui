@@ -79,7 +79,7 @@ const convertDDWOperatorToJq = (ddwOperator: FilterComp) => {
     $eq: 'equal',
     $neq: 'not_equal',
     $lt: 'less',
-    $lte: 'less_or_equal',
+    $le: 'less_or_equal',
     $gt: 'greater',
     $gte: 'greater_or_equal',
     $btn: 'between',
@@ -92,11 +92,11 @@ const convertDDWOperatorToJq = (ddwOperator: FilterComp) => {
 const convertJqOperatorToDDW = (operator: JqueryQueryBuilderComps) => {
   const operatorMap = {
     equal: '$eq',
-    not_equal: '$ne',
+    not_equal: '$neq',
     less: '$lt',
     less_or_equal: '$le',
     greater: '$gt',
-    greater_or_equal: '$ge',
+    greater_or_equal: '$gte',
     between: '$btn',
     in: '$in',
   };
