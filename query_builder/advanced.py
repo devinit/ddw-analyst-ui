@@ -122,6 +122,9 @@ class AdvancedQueryBuilder:
         return join_query
 
     def get_select_query(self, table, query, config):
+        if 'groupby' in config and 'selectall' in config:
+            raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
+
         if 'groupby' in config:
             if 'columns' in config:
                 query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'))

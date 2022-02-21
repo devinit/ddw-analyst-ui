@@ -44,13 +44,15 @@ const PREVIEWBASEURL = api.routes.PREVIEW_SINGLE_DATASET;
 
 const handleDataResult = (status: number, data: OperationDataResult): FetchResponse => {
   if (status === 200 || (status === 201 && data)) {
+    if (data.results && data.results.length && data.results[0].error) {
+      return { status, error: data.results[0].error as string };
+    }
+
     return { data: data.results, status };
   } else if (status === 401) {
     setToken('');
 
     return { status, error: 'invalid token' };
-  } else if (data.results && data.results.length && data.results[0].error) {
-    return { status, error: data.results[0].error as string };
   }
 
   return {
