@@ -145,9 +145,9 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     textNormal="Query Builder"
                     onClick={this.setActiveRoute}
                   />
-                  <Sidebar.Item active={this.state.activeRoute === '/queries/build/basic'}>
+                  <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
                     <Sidebar.Link
-                      to="/queries/build/basic"
+                      to="/queries/build/"
                       textNormal="Basic Query Builder"
                       onClick={this.setActiveRoute}
                       data-testid="sidebar-link-query-builder"
