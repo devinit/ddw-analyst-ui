@@ -152,9 +152,9 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     textNormal="Query Builder"
                     onClick={this.setActiveRoute}
                   />
-                  <Sidebar.Item active={this.state.activeRoute === '/queries/build/basic'}>
+                  <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
                     <Sidebar.Link
-                      to="/queries/build/basic"
+                      to="/queries/build/"
                       textNormal="Basic Query Builder"
                       onClick={this.setActiveRoute}
                       data-testid="sidebar-link-query-builder"
@@ -297,11 +297,16 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   component={AsyncAdvancedQueryBuilder}
                 />
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <Route path="/queries/build/basic/" exact component={AsyncQueryBuilder} />
                 <Route path="/queries/build/basic/:id" exact component={AsyncQueryBuilder} />
                 <Route path="/queries/build/" exact component={AsyncQueryBuilderChooser} />
                 <Route path="/queries/build/:id" exact component={AsyncQueryBuilderChooser} />
 =======
+=======
+                {/* <Route path="/queries/build/basic/" exact component={AsyncQueryBuilder} />
+                <Route path="/queries/build/basic/:id" exact component={AsyncQueryBuilder} /> */}
+>>>>>>> ea4b7fce (Enabled redirection of selected options to the matching QueryBuilder)
                 <Route path="/queries/build" exact component={AsyncQueryBuilderChooser} />
                 <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
 >>>>>>> cb9f131d (Add QueryBuilderChooser)

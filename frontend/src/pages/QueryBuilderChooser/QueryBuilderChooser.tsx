@@ -126,14 +126,21 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 import React, { FC, useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import './QueryBuilderChooser.scss';
+import { useHistory } from 'react-router-dom';
 
 const QueryBuilderChooser: FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isChecked, setIsChecked] = useState('advanced');
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
+<<<<<<< HEAD
 >>>>>>> 58273d2b (Added modal to display options Basic and Advanced)
+=======
+  const history = useHistory();
+
+>>>>>>> ea4b7fce (Enabled redirection of selected options to the matching QueryBuilder)
   return (
     <div>
       <div>Choose a Query Builder Here</div>
@@ -157,16 +164,32 @@ const QueryBuilderChooser: FC = () => {
               inline
               label="Basic Query Builder"
               name="querybuilder"
+              value="basicQ"
               type="radio"
               id="basic"
+              checked={isChecked === 'basicQ'}
+              onChange={(e) => {
+                setIsChecked(e.target.value);
+              }}
+              onClick={() => {
+                history.push('/queries/build/');
+              }}
             />
             <Form.Check
               inline
               label="Advanced Query Builder"
               name="querybuilder"
+              value="advanced"
               type="radio"
-              id="advanced"
-              checked
+              id="advance"
+              checked={isChecked === 'advanced'}
+              onChange={(e) => {
+                setIsChecked(e.target.value);
+                console.log('yesh');
+              }}
+              onClick={() => {
+                history.push('/queries/build/advanced');
+              }}
             />
           </Form>
         </Modal.Body>
