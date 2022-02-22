@@ -1,12 +1,16 @@
 import React, { FC, useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import './QueryBuilderChooser.scss';
+import { useHistory } from 'react-router-dom';
 
 const QueryBuilderChooser: FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isChecked, setIsChecked] = useState('advanced');
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
+
+  const history = useHistory();
 
   return (
     <div>
@@ -31,16 +35,32 @@ const QueryBuilderChooser: FC = () => {
               inline
               label="Basic Query Builder"
               name="querybuilder"
+              value="basicQ"
               type="radio"
               id="basic"
+              checked={isChecked === 'basicQ'}
+              onChange={(e) => {
+                setIsChecked(e.target.value);
+              }}
+              onClick={() => {
+                history.push('/queries/build/');
+              }}
             />
             <Form.Check
               inline
               label="Advanced Query Builder"
               name="querybuilder"
+              value="advanced"
               type="radio"
-              id="advanced"
-              checked
+              id="advance"
+              checked={isChecked === 'advanced'}
+              onChange={(e) => {
+                setIsChecked(e.target.value);
+                console.log('yesh');
+              }}
+              onClick={() => {
+                history.push('/queries/build/advanced');
+              }}
             />
           </Form>
         </Modal.Body>
