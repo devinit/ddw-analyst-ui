@@ -7,7 +7,7 @@ export interface SidebarLinkProps extends RouteComponentProps<{ [x: string]: str
   root?: boolean;
   textMini?: string;
   textNormal?: string;
-  caret?: boolean;
+  // caret?: boolean;
   single?: boolean;
   onClick?: (to: string) => void;
   [`data-testid`]?: string;
@@ -15,7 +15,7 @@ export interface SidebarLinkProps extends RouteComponentProps<{ [x: string]: str
 
 class SidebarLink extends React.Component<SidebarLinkProps> {
   static defaultProps: Partial<SidebarLinkProps> = {
-    caret: false,
+    // caret: false,
   };
 
   render() {
@@ -39,7 +39,7 @@ class SidebarLink extends React.Component<SidebarLinkProps> {
         <p>
           {' '}
           {this.props.textNormal || this.props.textMini}
-          {this.props.caret ? <b className="caret" /> : null}
+          {/* {this.props.caret ? <b className="caret" /> : null} */}
         </p>
       );
     }
