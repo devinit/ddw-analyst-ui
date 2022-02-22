@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'knox',
     'corsheaders',
     'ddw_analyst_ui',
+    'preference',
 ]
 
 REST_FRAMEWORK = {
