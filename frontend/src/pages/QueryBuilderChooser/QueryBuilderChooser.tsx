@@ -125,7 +125,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 =======
 import React, { FC, useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
-import './QueryBuilderChooser.scss';
 import { useHistory } from 'react-router-dom';
 
 const QueryBuilderChooser: FC = () => {
