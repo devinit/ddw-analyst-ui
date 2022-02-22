@@ -34,6 +34,7 @@ const QueryBuilderChooser: FC = () => {
             <Form.Check
               inline
               label="Basic Query Builder"
+              data-back="this is a beta version"
               name="querybuilder"
               value="basicQ"
               type="radio"
@@ -60,7 +61,9 @@ const QueryBuilderChooser: FC = () => {
               }}
               onClick={() => {
                 history.push('/queries/build/advanced');
+                alert('The Beta version');
               }}
+              className="flip"
             />
           </Form>
         </Modal.Body>
