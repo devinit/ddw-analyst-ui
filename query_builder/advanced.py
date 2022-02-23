@@ -122,11 +122,12 @@ class AdvancedQueryBuilder:
         return join_query
 
     def get_select_query(self, table, query, config):
-        if 'groupby' in config and 'selectall' in config:
-            raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
-
         if 'groupby' in config:
+            if config.get('selectall'):
+                raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
             if 'columns' in config:
+                if 'having' in config:
+                    query = self.get_having_query(table, query, config.get('having'))
                 query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'))
             else:
                 raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
@@ -168,7 +169,14 @@ class AdvancedQueryBuilder:
         # TODO: handle .having here as its usage is based on the groupby
         # Check if all columns in select are present in GROUP BY CLAUSE columns
         select_column_names = [elem['name'] for elem in select_columns]
-        if all(elem in columns for elem in select_column_names ):
+        select_column_aggregates = []
+        def get_column_aggregates():
+            for elem in select_columns:
+                if 'aggregate' in elem:
+                    select_column_aggregates.append(elem)
+        get_column_aggregates()
+
+        if all(elem in columns for elem in select_column_names) or len(select_column_aggregates) > 0:
             query.groupby(*[table[column] for column in columns])
             if 'having' in self.config:
                 query = self.get_having_query(table, query, self.config.get('having'))
@@ -192,11 +200,13 @@ class AdvancedQueryBuilder:
     def get_having_query(self, table, query, config):
         if self.andKey in config:
             rootConfig = config.get(self.andKey)
+            # a way to handle complex having configs
+            crit = Criterion.all([ self.get_having_criterion(table, config) for config in rootConfig ])
         elif self.orKey in config:
             rootConfig = config.get(self.orKey)
+            # a way to handle complex having configs
+            crit = Criterion.all([ self.get_having_criterion(table, config) for config in rootConfig ])
 
-        # a way to handle complex having configs
-        crit = Criterion.all([ self.get_having_criterion(table, config) for config in rootConfig ])
 
         # sample query
         return query.having(crit)
