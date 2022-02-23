@@ -36,7 +36,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
         return {
           id: column.name as string,
           label: `${column.aggregate}(${column.alias as string})`,
-          type: 'string',
+          type: 'integer',
           operators: ['equal', 'less', 'greater'],
         };
       }
