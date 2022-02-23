@@ -20,9 +20,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
   };
-
   const history = useHistory();
-
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
       if (key) {
