@@ -2,14 +2,13 @@ import React, { FunctionComponent, useContext, useState } from 'react';
 import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 import {
   AdvancedQueryColumn,
-  AdvancedQueryFilter,
   AdvancedQueryHaving,
   AdvancedQueryOptions,
   JqueryQueryBuilderFieldData,
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
-import { createQueryBuilderRules, parseHavingQuery, parseQuery } from '../JqueryQueryBuilder/utils';
+import { createQueryBuilderRules, parseHavingQuery } from '../JqueryQueryBuilder/utils';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 
 interface ComponentProps {
