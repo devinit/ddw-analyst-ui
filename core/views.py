@@ -277,6 +277,7 @@ class GetOperationQuery(APIView):
 
     def get_query(self, request):
         if 'config' in request.data and request.data['config']:
+            print('this runs')
             return query.get_advanced_config_query(request.data['config'])
         elif 'operation_steps' in request.data:
             return QueryBuilder(operation_steps=request.data['operation_steps']).get_sql_without_limit()
@@ -286,6 +287,7 @@ class GetOperationQuery(APIView):
     def post(self, request):
         try:
             query = self.get_query(request)
+            print(query)
             return JsonResponse({ 'query': query })
         except exceptions.ParseError as json_error:
             return JsonResponse({

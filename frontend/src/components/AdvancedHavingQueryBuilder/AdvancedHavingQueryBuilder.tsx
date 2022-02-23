@@ -2,6 +2,7 @@ import React, { FunctionComponent, useContext, useState } from 'react';
 import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 import {
   AdvancedQueryColumn,
+  AdvancedQueryFilter,
   AdvancedQueryOptions,
   JqueryQueryBuilderFieldData,
 } from '../../types/operations';
@@ -20,16 +21,26 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
   const getGroupColumns = () =>
     options.columns?.filter((col) => options.groupby?.includes(col.name as string));
 
-  const getColumns = () => {
-    if (options.groupby) {
-      const groupColumns = getGroupColumns();
+  const getAggregateColumns = () => options.columns?.filter((column) => column.aggregate);
 
-      return groupColumns;
-    }
+  const getColumns = () => {
+    const groupColumns = getGroupColumns();
+    const aggregateColumns = getAggregateColumns();
+
+    return groupColumns?.concat(aggregateColumns as AdvancedQueryColumn);
   };
 
   const fieldData: JqueryQueryBuilderFieldData[] = (getColumns() as AdvancedQueryColumn[])?.map(
     (column) => {
+      if (column.aggregate) {
+        return {
+          id: column.name as string,
+          label: `${column.aggregate}(${column.alias as string})`,
+          type: 'string',
+          operators: ['equal', 'less', 'greater'],
+        };
+      }
+
       return {
         id: column.name as string,
         label: column.alias as string,
@@ -45,7 +56,43 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
 
   const onReplace = () => {
     const rules = jqBuilder?.getRules();
-    options.having = parseQuery({}, rules.condition, rules);
+    const parsedRules = parseQuery({}, rules.condition, rules);
+    console.log(parsedRules);
+    const aggregateColumns = getAggregateColumns();
+    const withAggregates = () => {
+      aggregateColumns?.map((column) => {
+        parsedRules['$and']?.map((rule) => {
+          if (column.name === rule.column) {
+            parsedRules['$and'][0]['aggregate'] = column.aggregate;
+            parsedRules['$and'][0]['value'] = { plain: rule.value };
+          }
+        });
+      });
+
+      return parsedRules;
+    };
+    options.having = withAggregates();
+    // options.having = {
+    //   $and: [
+    //     { column: 'donor_name', aggregate: 'SUM', comp: '$eq', value: { plain: 'United States' } },
+    //     { column: 'agency_name', comp: '$eq', value: { column: 'agency_name', aggregate: 'MIN' } },
+    //     {
+    //       $or: [
+    //         {
+    //           column: 'agency_name',
+    //           aggregate: 'MAX',
+    //           comp: '$gte',
+    //           value: { column: 'donor_name', aggregate: 'MIN' }
+    //         },
+    //         {
+    //           column: 'agency_name',
+    //           comp: '$eq',
+    //           value: { column: 'donor_name', aggregate: 'MIN' }
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // };
     if (updateOptions) {
       updateOptions(options as AdvancedQueryOptions);
     }
@@ -54,7 +101,6 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
   const onReset = () => {
     jqBuilder?.reset();
   };
-  // const getAggregateColumns = () => options.columns?.filter((column) => column.aggregate);
 
   const hasAggregate = (columns: AdvancedQueryColumn[]) => {
     const aggregateColumns = columns?.find((column: AdvancedQueryColumn) => column.aggregate);
