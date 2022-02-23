@@ -1,5 +1,7 @@
 import {
+  AdvancedQueryColumn,
   AdvancedQueryFilter,
+  AdvancedQueryHaving,
   FilterComp,
   JqueryQueryBuilderComps,
   JqueryQueryBuilderFilter,
@@ -28,6 +30,60 @@ export const parseQuery = (
           comp: convertJqOperatorToDDW(rulesObject[index].operator),
           value: rulesObject[index].value,
         });
+      }
+    }
+  }
+
+  return finalElement;
+};
+
+export const parseHavingQuery = (
+  finalElement: any,
+  condition: string,
+  rulesObject: any,
+  aggregateColumns?: AdvancedQueryColumn[],
+): AdvancedQueryHaving => {
+  if (rulesObject.hasOwnProperty('condition')) {
+    finalElement[`$${rulesObject.condition.toLowerCase()}`] = [];
+    finalElement = parseHavingQuery(
+      finalElement,
+      rulesObject.condition,
+      rulesObject.rules,
+      aggregateColumns,
+    );
+  } else {
+    for (let index = 0; index < rulesObject.length; index++) {
+      if (Array.isArray(rulesObject) && rulesObject[index].condition) {
+        finalElement[`$${condition.toLowerCase()}`].push(
+          parseHavingQuery(
+            {},
+            rulesObject[index].condition,
+            rulesObject[index].rules,
+            aggregateColumns,
+          ),
+        );
+      } else {
+        if (!finalElement.hasOwnProperty(`$${condition.toLowerCase()}`)) {
+          finalElement[`$${condition.toLowerCase()}`] = [];
+        }
+        if (aggregateColumns) {
+          aggregateColumns.map((column) => {
+            if (column.name === rulesObject[index].field) {
+              finalElement[`$${condition.toLowerCase()}`].push({
+                column: rulesObject[index].field,
+                comp: convertJqOperatorToDDW(rulesObject[index].operator),
+                aggregate: column.aggregate,
+                value: { plain: rulesObject[index].value },
+              });
+            }
+          });
+        } else {
+          finalElement[`$${condition.toLowerCase()}`].push({
+            column: rulesObject[index].field,
+            comp: convertJqOperatorToDDW(rulesObject[index].operator),
+            value: { plain: rulesObject[index].value },
+          });
+        }
       }
     }
   }

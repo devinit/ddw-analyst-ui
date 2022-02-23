@@ -101,7 +101,7 @@ export interface AdvancedQueryOptions {
   join?: AdvancedQueryJoin;
   groupby?: string[];
   selectall?: boolean;
-  having?: AdvancedQueryFilter;
+  having?: AdvancedQueryHaving;
 }
 export type AdvancedQueryOptionsMap = Map<
   keyof AdvancedQueryOptions,
@@ -129,6 +129,18 @@ export type AdvancedQueryFilterComparator = {
   column: string;
   value: string | number | (string | number)[];
   comp: FilterComp;
+};
+
+export type AdvancedQueryHavingComparator = {
+  column: string;
+  value: { plain: string | number };
+  comp: FilterComp;
+  aggregate?: string;
+};
+
+export type AdvancedQueryHaving = {
+  $and?: (AdvancedQueryHavingComparator | AdvancedQueryHaving)[];
+  $or?: (AdvancedQueryHavingComparator | AdvancedQueryHaving)[];
 };
 
 export type JqueryQueryBuilderFilter = {

@@ -3,12 +3,13 @@ import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 import {
   AdvancedQueryColumn,
   AdvancedQueryFilter,
+  AdvancedQueryHaving,
   AdvancedQueryOptions,
   JqueryQueryBuilderFieldData,
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
-import { createQueryBuilderRules, parseQuery } from '../JqueryQueryBuilder/utils';
+import { createQueryBuilderRules, parseHavingQuery, parseQuery } from '../JqueryQueryBuilder/utils';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 
 interface ComponentProps {
@@ -56,43 +57,13 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
 
   const onReplace = () => {
     const rules = jqBuilder?.getRules();
-    const parsedRules = parseQuery({}, rules.condition, rules);
-    console.log(parsedRules);
     const aggregateColumns = getAggregateColumns();
-    const withAggregates = () => {
-      aggregateColumns?.map((column) => {
-        parsedRules['$and']?.map((rule) => {
-          if (column.name === rule.column) {
-            parsedRules['$and'][0]['aggregate'] = column.aggregate;
-            parsedRules['$and'][0]['value'] = { plain: rule.value };
-          }
-        });
-      });
-
-      return parsedRules;
-    };
-    options.having = withAggregates();
-    // options.having = {
-    //   $and: [
-    //     { column: 'donor_name', aggregate: 'SUM', comp: '$eq', value: { plain: 'United States' } },
-    //     { column: 'agency_name', comp: '$eq', value: { column: 'agency_name', aggregate: 'MIN' } },
-    //     {
-    //       $or: [
-    //         {
-    //           column: 'agency_name',
-    //           aggregate: 'MAX',
-    //           comp: '$gte',
-    //           value: { column: 'donor_name', aggregate: 'MIN' }
-    //         },
-    //         {
-    //           column: 'agency_name',
-    //           comp: '$eq',
-    //           value: { column: 'donor_name', aggregate: 'MIN' }
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // };
+    options.having = parseHavingQuery(
+      {},
+      rules.condition,
+      rules,
+      aggregateColumns,
+    ) as AdvancedQueryHaving;
     if (updateOptions) {
       updateOptions(options as AdvancedQueryOptions);
     }
