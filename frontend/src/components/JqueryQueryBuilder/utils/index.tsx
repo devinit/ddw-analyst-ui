@@ -84,6 +84,7 @@ const convertDDWOperatorToJq = (ddwOperator: FilterComp) => {
     $gte: 'greater_or_equal',
     $btn: 'between',
     $in: 'in',
+    $text_search: 'contains',
   };
 
   return operatorMap[ddwOperator];
@@ -99,6 +100,7 @@ const convertJqOperatorToDDW = (operator: JqueryQueryBuilderComps) => {
     greater_or_equal: '$gte',
     between: '$btn',
     in: '$in',
+    contains: '$text_search',
   };
 
   return operatorMap[operator];

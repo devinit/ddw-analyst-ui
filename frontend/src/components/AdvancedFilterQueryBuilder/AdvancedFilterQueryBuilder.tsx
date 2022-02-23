@@ -23,7 +23,15 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         id: column.value,
         label: column.text,
         type: 'string',
-        operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal'],
+        operators: [
+          'equal',
+          'not_equal',
+          'less',
+          'less_or_equal',
+          'greater',
+          'greater_or_equal',
+          'contains',
+        ],
       };
     },
   );

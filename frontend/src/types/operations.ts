@@ -144,7 +144,17 @@ export type JqueryQueryBuilderFilterComparator = {
   value: string | number;
 };
 
-export const comp = ['$eq', '$neq', '$gt', '$lt', '$gte', '$le', '$btn', '$in'] as const;
+export const comp = [
+  '$eq',
+  '$neq',
+  '$gt',
+  '$lt',
+  '$gte',
+  '$le',
+  '$btn',
+  '$in',
+  '$text_search',
+] as const;
 export type FilterComp = typeof comp[number];
 export type JqueryQueryBuilderComps =
   | 'equal'
