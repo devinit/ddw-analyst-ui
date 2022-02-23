@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, Form, Popover, OverlayTrigger } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 const QueryBuilderChooser: FC = () => {
@@ -10,6 +10,18 @@ const QueryBuilderChooser: FC = () => {
   const handleShow = () => setShowModal(true);
 
   const history = useHistory();
+
+  const popover1 = (
+    <Popover id="popover-basic">
+      <Popover.Content>Basic Query Builder</Popover.Content>
+    </Popover>
+  );
+
+  const popover2 = (
+    <Popover id="popover-basic">
+      <Popover.Content>Advanced Query Builder (BETA)</Popover.Content>
+    </Popover>
+  );
 
   return (
     <div>
@@ -30,40 +42,41 @@ const QueryBuilderChooser: FC = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Check
-              inline
-              label="Basic Query Builder"
-              data-back="this is a beta version"
-              name="querybuilder"
-              value="basicQ"
-              type="radio"
-              id="basic"
-              checked={isChecked === 'basicQ'}
-              onChange={(e) => {
-                setIsChecked(e.target.value);
-              }}
-              onClick={() => {
-                history.push('/queries/build/');
-              }}
-            />
-            <Form.Check
-              inline
-              label="Advanced Query Builder"
-              name="querybuilder"
-              value="advanced"
-              type="radio"
-              id="advance"
-              checked={isChecked === 'advanced'}
-              onChange={(e) => {
-                setIsChecked(e.target.value);
-                console.log('yesh');
-              }}
-              onClick={() => {
-                history.push('/queries/build/advanced');
-                alert('The Beta version');
-              }}
-              className="flip"
-            />
+            <OverlayTrigger trigger="focus" placement="top-end" overlay={popover1}>
+              <Form.Check
+                inline
+                label="Basic"
+                name="querybuilder"
+                value="basicQ"
+                type="radio"
+                id="base"
+                checked={isChecked === 'basicQ'}
+                onChange={(e) => {
+                  setIsChecked(e.target.value);
+                }}
+                onClick={() => {
+                  history.push('/queries/build/');
+                }}
+              />
+            </OverlayTrigger>
+            <OverlayTrigger trigger="focus" placement="top-end" overlay={popover2}>
+              <Form.Check
+                inline
+                label="Advanced"
+                name="querybuilder"
+                value="advanced"
+                type="radio"
+                id="advance"
+                checked={isChecked === 'advanced'}
+                onChange={(e) => {
+                  setIsChecked(e.target.value);
+                  console.log('yesh');
+                }}
+                onClick={() => {
+                  history.push('/queries/build/advanced');
+                }}
+              />
+            </OverlayTrigger>
           </Form>
         </Modal.Body>
         <Modal.Footer>
