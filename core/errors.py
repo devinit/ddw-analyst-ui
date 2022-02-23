@@ -3,9 +3,12 @@ import traceback
 
 from django.core.mail import mail_admins
 from django.http import Http404, HttpResponse
+from django.conf import settings
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
+
+from integrations.slack.methods import postToSlackChannel
 
 class AliasCreationError(APIException):
     """Raised when alias creation fails"""
@@ -26,4 +29,4 @@ def handle_uncaught_error(error):
     extracted_traceback = traceback.extract_tb(error_traceback)
     result = traceback.format_list(extracted_traceback)
     message = result[0]
-    mail_admins(f'DDW ANALYST UI {type(error).__name__}', message , fail_silently=False)
+    postToSlackChannel(settings.SLACK_CHANNEL_ID, f'DDW ANALYST UI {type(error).__name__} \n\n {message}')
