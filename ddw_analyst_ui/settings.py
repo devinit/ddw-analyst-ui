@@ -244,6 +244,9 @@ LOGGING = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SLACK_CHANNEL_ID = os.getenv('SLACK_CHANNEL_ID', 'C034629FPK7')
+SLACK_BOT_TOKEN = os.getenv('SLACK_BOT_TOKEN', '')
+
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:
