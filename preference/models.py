@@ -11,6 +11,7 @@ class Preference(BaseEntity):
 =======
 class Preference(BaseEntity):
     preferences = models.JSONField(blank=True, null=True, default=dict)
+    # global = models.BooleanField()
 
 Preference(preferences={
     "queryBuilder": "advanced"
