@@ -126,12 +126,15 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 import React, { FC, useState } from 'react';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import { ICheckData, IRadio } from '../../components/IRadio';
+import { RouteComponentProps } from 'react-router-dom';
 
 type SelectedQueryBuilder = 'basic' | 'advanced';
 
-const QueryBuilderChooser: FC = () => {
+type QueryBuilderChooserProps = RouteComponentProps;
+
+const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
   const [showModal, setShowModal] = useState(true);
-  const [selectedBtn, setSelectedBtn] = useState<SelectedQueryBuilder>();
+  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -140,8 +143,19 @@ const QueryBuilderChooser: FC = () => {
   const history = useHistory();
 =======
   const toggleModal = () => setShowModal(!showModal);
+<<<<<<< HEAD
   const onRadioChange = (data: ICheckData) => setSelectedBtn(data.value as SelectedQueryBuilder);
 >>>>>>> 515e69ba (Modal showing by default o clicking QueryBuilder)
+=======
+  const onRadioChange = (data: ICheckData) => {
+    setSelectedOption(data.value as SelectedQueryBuilder);
+    if (selectedOption === 'basic') {
+      props.history.push('/queries.build/basic/');
+    } else {
+      props.history.push('/queries/build/advanced/');
+    }
+  };
+>>>>>>> 8add03d1 (Selected QueryBuilder redirects to the selected QueryBuilder)
 
 <<<<<<< HEAD
 >>>>>>> ea4b7fce (Enabled redirection of selected options to the matching QueryBuilder)
@@ -157,7 +171,7 @@ const QueryBuilderChooser: FC = () => {
       <Popover.Content>Advanced Query Builder (BETA)</Popover.Content>
     </Popover>
   );
-  if (selectedBtn === undefined) {
+  if (selectedOption === undefined) {
     return (
       <div>
         <Modal show={showModal} onHide={toggleModal}>
@@ -173,7 +187,7 @@ const QueryBuilderChooser: FC = () => {
                 label="Basic"
                 onChange={onRadioChange}
                 inline
-                checked={selectedBtn === 'basic'}
+                checked={selectedOption === 'basic'}
               />
             </OverlayTrigger>
             <OverlayTrigger trigger="hover" placement="top-end" overlay={popover2}>
@@ -184,7 +198,7 @@ const QueryBuilderChooser: FC = () => {
                 label="Advanced"
                 onChange={onRadioChange}
                 inline
-                checked={selectedBtn === 'advanced'}
+                checked={selectedOption === 'advanced'}
               />
             </OverlayTrigger>
           </Modal.Body>
@@ -197,6 +211,7 @@ const QueryBuilderChooser: FC = () => {
     );
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> d5448073 (Modified the description of options Basic or Advanced with bootstrap popovers)
   return (
@@ -240,6 +255,9 @@ const QueryBuilderChooser: FC = () => {
 =======
   return <div>{selectedBtn}</div>;
 >>>>>>> 1fe9bfaa (Created a route for Basic Query Builder)
+=======
+  return <div>{selectedOption}</div>;
+>>>>>>> 8add03d1 (Selected QueryBuilder redirects to the selected QueryBuilder)
 };
 
 export default QueryBuilderChooser;
