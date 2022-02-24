@@ -148,9 +148,9 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     textNormal="Query Builder"
                     onClick={this.setActiveRoute}
                   />
-                  <Sidebar.Item active={this.state.activeRoute === '/queries/build/'}>
+                  <Sidebar.Item active={this.state.activeRoute === '/queries/build/basic'}>
                     <Sidebar.Link
-                      to="/queries/build/"
+                      to="/queries/build/basic"
                       textNormal="Basic Query Builder"
                       onClick={this.setActiveRoute}
                       data-testid="sidebar-link-query-builder"
@@ -292,10 +292,10 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   exact
                   component={AsyncAdvancedQueryBuilder}
                 />
-                {/* <Route path="/queries/build/basic/" exact component={AsyncQueryBuilder} />
-                <Route path="/queries/build/basic/:id" exact component={AsyncQueryBuilder} /> */}
-                <Route path="/queries/build" exact component={AsyncQueryBuilderChooser} />
-                <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
+                <Route path="/queries/build/basic/" exact component={AsyncQueryBuilder} />
+                <Route path="/queries/build/basic/:id" exact component={AsyncQueryBuilder} />
+                <Route path="/queries/build/" exact component={AsyncQueryBuilderChooser} />
+                <Route path="/queries/build/:id" exact component={AsyncQueryBuilderChooser} />
                 <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
                 <Route path="/update" exact component={AsyncDataUpdate} />
                 <Route path="/queries/data/:id" exact component={AsyncQueryData} />
