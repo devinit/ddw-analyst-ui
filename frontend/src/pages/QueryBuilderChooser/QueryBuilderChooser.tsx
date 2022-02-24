@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import { RouteComponentProps } from 'react-router-dom';
@@ -16,16 +16,13 @@ const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
   };
 
-  useEffect(() => {
-    console.log(selectedOption);
-    if (selectedOption) {
-      if (selectedOption === 'basic') {
-        props.history.push('/queries/build/basic/');
-      } else {
-        props.history.push('/queries/build/advanced/');
-      }
+  if (selectedOption) {
+    if (selectedOption === 'basic') {
+      props.history.push('/queries/build/basic/');
+    } else {
+      props.history.push('/queries/build/advanced/');
     }
-  }, [selectedOption]);
+  }
 
   const popover1 = (
     <Popover id="popover-basic">
