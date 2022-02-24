@@ -1,0 +1,11 @@
+# start with a base image
+FROM postgres:13.2
+LABEL maintainer="akmiller01 <Alex Miller, alex.miller@devinit.org>"
+
+# New users
+ENV POSTGRES_USER=analyst_ui_user
+ENV POSTGRES_PASSWORD=analyst_ui_pass
+
+
+# Add initialization script to initdb
+ADD ./database_setup/dba.sql /docker-entrypoint-initdb.d/
