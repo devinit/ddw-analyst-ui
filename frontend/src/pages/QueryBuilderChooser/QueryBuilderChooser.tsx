@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { FC, useState, useEffect } from 'react';
 import * as localForage from 'localforage';
 import { localForageKeys, api } from '../../utils';
@@ -128,6 +129,9 @@ import React, { FC, useState } from 'react';
 =======
 import React, { FC, useEffect, useState } from 'react';
 >>>>>>> 1146ca01 (Modified the redirects and chnaged the value for id for both basic and advanced respecteively)
+=======
+import React, { FC, useState } from 'react';
+>>>>>>> e8a7ab7c (Re-modified the method redirecting selected QueryBuilder to either Bais or Advanced Query Builder)
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import { RouteComponentProps } from 'react-router-dom';
@@ -158,6 +162,7 @@ const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea4b7fce (Enabled redirection of selected options to the matching QueryBuilder)
 =======
 =======
@@ -169,8 +174,15 @@ const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
       } else {
         props.history.push('/queries/build/advanced/');
       }
+=======
+  if (selectedOption) {
+    if (selectedOption === 'basic') {
+      props.history.push('/queries/build/basic/');
+    } else {
+      props.history.push('/queries/build/advanced/');
+>>>>>>> e8a7ab7c (Re-modified the method redirecting selected QueryBuilder to either Bais or Advanced Query Builder)
     }
-  }, [selectedOption]);
+  }
 
 >>>>>>> 1146ca01 (Modified the redirects and chnaged the value for id for both basic and advanced respecteively)
   const popover1 = (
