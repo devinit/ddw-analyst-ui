@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import { RouteComponentProps } from 'react-router-dom';
@@ -14,12 +14,18 @@ const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
-    if (selectedOption === 'basic') {
-      props.history.push('/queries.build/basic/');
-    } else {
-      props.history.push('/queries/build/advanced/');
-    }
   };
+
+  useEffect(() => {
+    console.log(selectedOption);
+    if (selectedOption) {
+      if (selectedOption === 'basic') {
+        props.history.push('/queries/build/basic/');
+      } else {
+        props.history.push('/queries/build/advanced/');
+      }
+    }
+  }, [selectedOption]);
 
   const popover1 = (
     <Popover id="popover-basic">
@@ -43,7 +49,7 @@ const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
             <OverlayTrigger trigger="hover" placement="top-end" overlay={popover1}>
               <IRadio
                 variant="danger"
-                id="base"
+                id="basic"
                 name="querybuilder"
                 label="Basic"
                 onChange={onRadioChange}
@@ -54,7 +60,7 @@ const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
             <OverlayTrigger trigger="hover" placement="top-end" overlay={popover2}>
               <IRadio
                 variant="danger"
-                id="advance"
+                id="advanced"
                 name="querybuilder"
                 label="Advanced"
                 onChange={onRadioChange}
