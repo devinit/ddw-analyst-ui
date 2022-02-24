@@ -135,7 +135,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     if (advancedConfig.size) {
       props.history.push(`/queries/build/advanced/${operation.get('id') as number}/`);
     } else {
-      props.history.push(`/queries/build/${operation.get('id') as number}/`);
+      props.history.push(`/queries/build/basic/${operation.get('id') as number}/`);
     }
   };
 
@@ -146,7 +146,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       onUpdateActiveOperation(operation);
       props.history.push('/queries/build/advanced');
     } else {
-      props.history.push('/queries/build/');
+      props.history.push('/queries/build/basic');
     }
   };
 

@@ -1,15 +1,25 @@
 import React, { FC, useState } from 'react';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import { ICheckData, IRadio } from '../../components/IRadio';
+import { RouteComponentProps } from 'react-router-dom';
 
 type SelectedQueryBuilder = 'basic' | 'advanced';
 
-const QueryBuilderChooser: FC = () => {
+type QueryBuilderChooserProps = RouteComponentProps;
+
+const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
   const [showModal, setShowModal] = useState(true);
-  const [selectedBtn, setSelectedBtn] = useState<SelectedQueryBuilder>();
+  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
 
   const toggleModal = () => setShowModal(!showModal);
-  const onRadioChange = (data: ICheckData) => setSelectedBtn(data.value as SelectedQueryBuilder);
+  const onRadioChange = (data: ICheckData) => {
+    setSelectedOption(data.value as SelectedQueryBuilder);
+    if (selectedOption === 'basic') {
+      props.history.push('/queries.build/basic/');
+    } else {
+      props.history.push('/queries/build/advanced/');
+    }
+  };
 
   const popover1 = (
     <Popover id="popover-basic">
@@ -22,7 +32,7 @@ const QueryBuilderChooser: FC = () => {
       <Popover.Content>Advanced Query Builder (BETA)</Popover.Content>
     </Popover>
   );
-  if (selectedBtn === undefined) {
+  if (selectedOption === undefined) {
     return (
       <div>
         <Modal show={showModal} onHide={toggleModal}>
@@ -38,7 +48,7 @@ const QueryBuilderChooser: FC = () => {
                 label="Basic"
                 onChange={onRadioChange}
                 inline
-                checked={selectedBtn === 'basic'}
+                checked={selectedOption === 'basic'}
               />
             </OverlayTrigger>
             <OverlayTrigger trigger="hover" placement="top-end" overlay={popover2}>
@@ -49,7 +59,7 @@ const QueryBuilderChooser: FC = () => {
                 label="Advanced"
                 onChange={onRadioChange}
                 inline
-                checked={selectedBtn === 'advanced'}
+                checked={selectedOption === 'advanced'}
               />
             </OverlayTrigger>
           </Modal.Body>
@@ -62,7 +72,7 @@ const QueryBuilderChooser: FC = () => {
     );
   }
 
-  return <div>{selectedBtn}</div>;
+  return <div>{selectedOption}</div>;
 };
 
 export default QueryBuilderChooser;
