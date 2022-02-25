@@ -29,26 +29,48 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
 
     return groupColumns?.concat(aggregateColumns as AdvancedQueryColumn);
   };
+  const aggregateOptions = ['SUM', 'AVG', 'MAX', 'MIN', 'STD'];
+  const getAggregateValues = (aggregateOptions: string[], columnName: string) => {
+    const options = aggregateOptions.map((option) => {
+      return {
+        value: { column: columnName, aggregate: option },
+        label: `${option}(${columnName})`,
+      };
+    });
 
-  const fieldData: JqueryQueryBuilderFieldData[] = (getColumns() as AdvancedQueryColumn[])?.map(
-    (column) => {
+    return options;
+  };
+
+  const fieldData = () => {
+    const data: any[] = [];
+    (getColumns() as AdvancedQueryColumn[])?.map((column) => {
       if (column.aggregate) {
-        return {
+        // {
+        //   id: column.name as string,
+        //   label: column.alias as string,
+        //   type: 'string',
+        //   operators: ['equal', 'less', 'greater'],
+        //   input: 'select',
+        //   values: getAggregateValues(aggregateOptions, column.name as string),
+        // },
+        data.push({
           id: column.name as string,
           label: `${column.aggregate}(${column.alias as string})`,
-          type: 'integer',
+          type: 'string',
           operators: ['equal', 'less', 'greater'],
-        };
+        });
+      } else {
+        data.push({
+          id: column.name as string,
+          label: column.alias as string,
+          type: 'string',
+          operators: ['equal', 'less', 'greater'],
+        });
       }
+    });
 
-      return {
-        id: column.name as string,
-        label: column.alias as string,
-        type: 'string',
-        operators: ['equal', 'less', 'greater'],
-      };
-    },
-  );
+    return data;
+  };
 
   const getJqueryBuilderInstance = (jqInstance: any) => {
     setJqBuilder(jqInstance);
@@ -56,6 +78,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
 
   const onReplace = () => {
     const rules = jqBuilder?.getRules();
+    console.log(rules);
     const aggregateColumns = getAggregateColumns();
     options.having = parseHavingQuery(
       {},
@@ -85,7 +108,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = () => {
       hasAggregate(options.columns as AdvancedQueryColumn[]) ? (
         <>
           <JqueryQueryBuilder
-            fieldData={fieldData}
+            fieldData={fieldData()}
             getJqueryBuilderInstance={getJqueryBuilderInstance}
             icons={{
               add_group: 'fa fa-plus-circle',

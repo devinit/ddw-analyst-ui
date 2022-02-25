@@ -66,8 +66,8 @@ export const parseHavingQuery = (
         if (!finalElement.hasOwnProperty(`$${condition.toLowerCase()}`)) {
           finalElement[`$${condition.toLowerCase()}`] = [];
         }
-        if (aggregateColumns) {
-          aggregateColumns.map((column) => {
+        if ((aggregateColumns as AdvancedQueryColumn[]).length > 0) {
+          aggregateColumns?.map((column) => {
             if (column.name === rulesObject[index].field) {
               finalElement[`$${condition.toLowerCase()}`].push({
                 column: rulesObject[index].field,
@@ -81,7 +81,7 @@ export const parseHavingQuery = (
           finalElement[`$${condition.toLowerCase()}`].push({
             column: rulesObject[index].field,
             comp: convertJqOperatorToDDW(rulesObject[index].operator),
-            value: { plain: rulesObject[index].value },
+            value: rulesObject[index].value,
           });
         }
       }

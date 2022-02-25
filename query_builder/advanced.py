@@ -126,9 +126,9 @@ class AdvancedQueryBuilder:
             if config.get('selectall'):
                 raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
             if 'columns' in config:
+                query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'))
                 if 'having' in config:
                     query = self.get_having_query(table, query, config.get('having'))
-                query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'))
             else:
                 raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
 
@@ -177,10 +177,10 @@ class AdvancedQueryBuilder:
         get_column_aggregates()
 
         if all(elem in columns for elem in select_column_names) or len(select_column_aggregates) > 0:
-            query.groupby(*[table[column] for column in columns])
-            if 'having' in self.config:
-                query = self.get_having_query(table, query, self.config.get('having'))
-            return query
+            return query.groupby(*[table[column] for column in columns])
+            # if 'having' in self.config:
+            #     query = self.get_having_query(table, query, self.config.get('having'))
+            #     return query
         else:
             raise ValueError('All columns (values) in the SELECT clause must be in the GROUP BY clause')
 
@@ -233,10 +233,12 @@ class AdvancedQueryBuilder:
 
         group_by_cols = self.config.get('groupby', {})
         value = config.get('value')
+        print(value)
         plain = True
         if 'plain' in value:
             value = value.get('plain')
         else:
+            print(value)
             value = FUNCTION_MAPPING[value.get('aggregate')](table[value.get('column')])
             plain = False
         if 'aggregate' in config:
