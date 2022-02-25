@@ -32,7 +32,7 @@ const defaultState: QueryBuilderState = fromJS({
   activeStep: undefined,
   editingStep: false,
   processing: false,
-});
+}) as QueryBuilderState;
 
 export const queryBuilderReducer: Reducer<QueryBuilderState, QueryBuilderAction> = (
   state = defaultState,

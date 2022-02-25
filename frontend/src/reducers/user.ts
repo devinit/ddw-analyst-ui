@@ -13,7 +13,7 @@ export type UserState = Map<keyof User, User[keyof User]>;
 const prefix = 'user';
 export const SET_USER = `${prefix}.SET`;
 
-const defaultState: UserState = fromJS({});
+const defaultState: UserState = fromJS({}) as UserState;
 
 export const userReducer: Reducer<UserState, UserAction> = (state = defaultState, action) => {
   if (action.type === SET_USER) {

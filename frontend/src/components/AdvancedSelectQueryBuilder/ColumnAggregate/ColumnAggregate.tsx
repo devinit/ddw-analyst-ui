@@ -27,7 +27,9 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   const [selectedAggregate, setSelectedAggregate] = useState('');
 
   useEffect(() => {
-    const sourceColumns: Column[] = (props.source.get('columns') as ColumnList).toJS();
+    const sourceColumns: Column[] = (
+      props.source.get('columns') as ColumnList
+    ).toJS() as unknown as Column[];
 
     setColumns(
       props.columns

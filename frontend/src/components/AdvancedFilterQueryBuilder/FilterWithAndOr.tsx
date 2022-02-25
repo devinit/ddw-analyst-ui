@@ -29,11 +29,9 @@ const defaultOptions = (use: FilterWith): EditorContent => ({
 });
 
 type FilterComparator = (AdvancedQueryFilterComparator | AdvancedQueryFilter)[];
-export type EditorContent = Partial<
-  {
-    [key in FilterWith]: FilterComparator;
-  }
->;
+export type EditorContent = Partial<{
+  [key in FilterWith]: FilterComparator;
+}>;
 
 const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, filterWith }) => {
   const { options, editor, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
@@ -93,7 +91,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
       setEditorContent(parsedValue);
       setErrors([]);
     } catch (e) {
-      setErrors([...errors, e.message]);
+      setErrors([...errors, (e as any).message]);
     }
   };
 

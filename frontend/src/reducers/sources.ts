@@ -40,7 +40,7 @@ export const defaultState: SourcesState = fromJS({
   activeSourceId: 1,
   limit: 10,
   offset: 0,
-});
+}) as SourcesState;
 
 export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (
   state = defaultState,
@@ -53,7 +53,7 @@ export const sourcesReducer: Reducer<SourcesState, SourcesAction> = (
     return state.withMutations((map) =>
       map
         .set('loading', false)
-        .set('sources', fromJS(action.sources))
+        .set('sources', fromJS(action.sources) as List<SourceMap>)
         .set('count', action.count)
         .set('limit', action.payload ? action.payload.limit : state.get('limit'))
         .set('offset', action.payload ? action.payload.offset : state.get('offset')),

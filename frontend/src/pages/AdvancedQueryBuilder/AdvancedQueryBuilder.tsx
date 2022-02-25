@@ -20,7 +20,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { user, token } = useContext(AppContext);
   const [operation, setOperation] = useState<OperationMap>();
   const [activeSource, setActiveSource] = useState<SourceMap>();
-  const { loading, operation: pageOperation } = useOperation<OperationMap>(
+  const { loading, operation: pageOperation } = useOperation(
     operationID ? parseInt(operationID) : undefined,
   );
 
@@ -28,16 +28,18 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const history = useHistory();
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
-    setOperation(pageOperation);
+    setOperation(pageOperation as OperationMap);
     if (pageOperation && sources.count()) {
-      const advancedConfig = pageOperation.get('advanced_config') as AdvancedQueryOptionsMap;
+      const advancedConfig = (pageOperation as OperationMap).get(
+        'advanced_config',
+      ) as AdvancedQueryOptionsMap;
       if (advancedConfig && advancedConfig.get('source')) {
         setActiveSource(
           sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
         );
       }
     }
-  }, [pageOperation?.size, sources.count()]);
+  }, [(pageOperation as OperationMap)?.size, sources.count()]);
 
   const onSaveOperation = (): void => {
     saveOperation(operation as OperationMap, `${token}`)

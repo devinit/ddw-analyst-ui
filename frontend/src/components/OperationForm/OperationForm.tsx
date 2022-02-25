@@ -66,7 +66,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
         if (props.operation) {
           props.onUpdateOperation(props.operation.set(name as keyof Operation, value));
         } else {
-          const operation = fromJS({ [name]: value });
+          const operation = fromJS({ [name]: value }) as unknown as OperationMap;
           props.onUpdateOperation(operation);
         }
       }
@@ -83,7 +83,7 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
           const operation = props.operation.set('is_draft', !isDraft);
           props.onUpdateOperation(operation);
         } else {
-          const operation = fromJS({ is_draft: true });
+          const operation = fromJS({ is_draft: true }) as unknown as OperationMap;
           props.onUpdateOperation(operation);
         }
       }

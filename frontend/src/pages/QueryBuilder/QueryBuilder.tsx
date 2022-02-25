@@ -19,7 +19,9 @@ import {
   AliasCreationStatus,
   Operation,
   OperationData,
+  OperationDataMap,
   OperationMap,
+  OperationStep,
   OperationStepMap,
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
@@ -198,8 +200,8 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const [updatedOperation, updatedSteps] = resetOperationLogs(operation, steps);
 
     const data: Operation = {
-      ...(updatedOperation.toJS() as Operation),
-      operation_steps: updatedSteps.toJS(),
+      ...(updatedOperation.toJS() as unknown as Operation),
+      operation_steps: updatedSteps.toJS() as unknown as List<OperationStepMap>,
     };
     if (props.token) {
       axios
@@ -254,7 +256,10 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const { activeOperation: operation } = props;
     if (!operation) return;
 
-    fetchOperationDataPreview(operation.toJS() as Operation, steps.toJS()).then((results) => {
+    fetchOperationDataPreview(
+      operation.toJS() as unknown as Operation,
+      steps.toJS() as unknown as OperationStep[],
+    ).then((results) => {
       setLoadingPreview(false);
       if (results.error) {
         setAlertMessages([`Error: ${results.error}`]);
@@ -374,7 +379,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           loading={loadingPreview}
           title="Create Query Step"
           onClose={resetAction}
-          data={fromJS(previewData)}
+          data={fromJS(previewData) as List<OperationDataMap>}
         >
           {renderOperationStepForm(activeSource, activeStep, page.get('editingStep') as boolean)}
         </OperationPreview>
@@ -400,8 +405,8 @@ const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown
 const mapStateToProps = (reduxStore: ReduxStore): ReduxState => {
   return {
     token: reduxStore.get('token') as TokenState,
-    operations: reduxStore.getIn(['operations', 'operations']),
-    activeOperation: reduxStore.getIn(['operations', 'activeOperation']),
+    operations: reduxStore.getIn(['operations', 'operations']) as List<OperationMap>,
+    activeOperation: reduxStore.getIn(['operations', 'activeOperation']) as OperationMap,
     page: reduxStore.get(`${queryBuilderReducerId}`),
     user: reduxStore.get('user') as UserState,
   };

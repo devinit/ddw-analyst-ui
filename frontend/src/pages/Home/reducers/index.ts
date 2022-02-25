@@ -24,14 +24,15 @@ export const UPDATE_OPERATIONS_INFO = `${homeReducerId}.UPDATE_OPERATIONS_INFO`;
 
 const defaultState: HomeState = fromJS({
   operations: { links: {}, limit: DEFAULT_LIMIT, offset: 0 },
-});
+}) as HomeState;
 
 export const homeReducer: Reducer<HomeState, HomeAction> = (state = defaultState, action) => {
   if (action.type === UPDATE_OPERATIONS_INFO && action.operations) {
     let { links, limit, offset } = action.operations;
-    links = links || state.getIn(['operations', 'links']);
-    limit = typeof limit === 'number' ? limit : state.getIn(['operations', 'limit']);
-    offset = typeof offset === 'number' ? offset : state.getIn(['operations', 'offset']);
+    links = links || (state.getIn(['operations', 'links']) as Links);
+    limit = typeof limit === 'number' ? limit : (state.getIn(['operations', 'limit']) as number);
+    offset =
+      typeof offset === 'number' ? offset : (state.getIn(['operations', 'offset']) as number);
 
     return state
       .setIn(['operations', 'links'], links)

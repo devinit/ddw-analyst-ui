@@ -11,7 +11,9 @@ export type DataSourcesState = Map<keyof State, State[keyof State]>;
 export const dataSourcesReducerId = 'pages/DataSources';
 export const SET_ACTIVE_SOURCE = `${dataSourcesReducerId}.SET_ACTIVE_SOURCE`;
 
-const defaultState: DataSourcesState = fromJS({ activeSource: undefined });
+const defaultState: DataSourcesState = fromJS({
+  activeSource: undefined,
+}) as unknown as DataSourcesState;
 
 export const dataSourcesReducer: Reducer<DataSourcesState, DataSourcesAction> = (
   state = defaultState,

@@ -18,13 +18,13 @@ const source: SourceMap = fromJS({
       data_type: 'N',
     },
   ],
-});
+}) as SourceMap;
 const step: OperationStepMap = fromJS({
   id: 1,
   step_id: 1,
   name: 'first step',
   description: 'first step',
-});
+}) as OperationStepMap;
 const steps: List<OperationStepMap> = List([step]);
 
 test('renders correctly with the default props', () => {

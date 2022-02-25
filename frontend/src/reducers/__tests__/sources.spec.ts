@@ -1,13 +1,13 @@
+import { fromJS, List } from 'immutable';
+import { Source, SourceMap } from '../../types/sources';
 import {
+  defaultState,
   FETCH_SOURCES,
   FETCH_SOURCES_FAILED,
   FETCH_SOURCES_SUCCESSFUL,
   SourcesAction,
-  defaultState,
   sourcesReducer,
 } from '../sources';
-import { fromJS } from 'immutable';
-import { Source } from '../../types/sources';
 
 test('should return the initial state', () => {
   expect(sourcesReducer(undefined, {} as SourcesAction)).toEqual(defaultState);
@@ -41,7 +41,7 @@ test('should handle FETCH_SOURCES_SUCCESSFUL', () => {
   ).toEqual(
     defaultState
       .set('loading', false)
-      .set('sources', fromJS([source]))
+      .set('sources', fromJS([source]) as List<SourceMap>)
       .set('count', 1),
   );
 });

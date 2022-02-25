@@ -111,7 +111,7 @@ export const SourceHistoryCard: FunctionComponent<ComponentProps> = (props) => {
           </Modal.Header>
           <Modal.Body>
             <FrozenDataForm
-              source={props.source.toJS() as Source}
+              source={props.source.toJS() as unknown as Source}
               onSave={onCreateFrozenData}
               onCancel={() => setShowFrozenDataForm(false)}
             />

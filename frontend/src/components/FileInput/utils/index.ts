@@ -69,6 +69,6 @@ export const convertCSVFileToJSON = async (file: File, config?: ParseConfig): Pr
         }
       },
     };
-    parse(file, { ...defaultConfig, ...config });
+    parse(file as any, { ...defaultConfig, ...config });
   });
 };

@@ -9,7 +9,7 @@ export const saveOperation = async (operation: OperationMap, token: string): Pro
   }
   const id = operation.get('id');
   const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
-  const data: Operation = operation.toJS() as Operation;
+  const data: Operation = operation.toJS() as unknown as Operation;
   const response = await axios.request<Operation>({
     url,
     method: id ? 'put' : 'post',

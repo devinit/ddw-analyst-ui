@@ -197,7 +197,7 @@ class JoinQueryBuilder extends React.Component<JoinQueryBuilderProps, JoinQueryB
           text: source.get('indicator'),
           value: source.get('id'),
         }))
-        .toJS();
+        .toJS() as DropdownItemProps[];
     }
 
     return [];

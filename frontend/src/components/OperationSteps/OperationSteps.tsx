@@ -103,7 +103,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
           value: source.get('id'),
         }))
         .toJS()
-        .sort(sortObjectArrayByProperty('text').sort);
+        .sort(sortObjectArrayByProperty('text').sort) as DropdownItemProps[];
     }
 
     return [];
@@ -120,7 +120,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   };
 
   const onAddStep = () => {
-    props.onAddStep(fromJS({ step_id: props.steps.count() + 1 }));
+    props.onAddStep(fromJS({ step_id: props.steps.count() + 1 }) as OperationStepMap);
   };
 
   const onClickStep = (step: OperationStepMap) => () => {
