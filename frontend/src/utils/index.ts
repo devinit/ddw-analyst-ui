@@ -24,7 +24,7 @@ export const getSourceIDFromOperation = (operation: OperationMap): number | unde
     return;
   }
 
-  return steps.getIn([0, 'source']);
+  return steps.getIn([0, 'source']) as number;
 };
 
 export const formatString = (name = ''): string =>
@@ -61,7 +61,7 @@ export const getSelectOptionsFromColumns = (columns?: ColumnList): DropdownItemP
         text: formatString(column.get('name') as string),
         value: column.get('name'),
       }))
-      .toJS();
+      .toJS() as DropdownItemProps[];
   }
 
   return [];
@@ -165,4 +165,4 @@ export const getSelectOptionsFromSources = (
       value: source.get('id'),
     }))
     .toJS()
-    .sort(sortObjectArrayByProperty('text').sort);
+    .sort(sortObjectArrayByProperty('text').sort) as DropdownItemProps[];

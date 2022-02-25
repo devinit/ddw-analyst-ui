@@ -46,7 +46,7 @@ export const defaultState: OperationsState = fromJS({
   loading: false,
   operations: [],
   activeOperationId: 1,
-});
+}) as OperationsState;
 
 export const operationsReducer: Reducer<OperationsState, OperationsAction> = (
   state = defaultState,
@@ -59,7 +59,7 @@ export const operationsReducer: Reducer<OperationsState, OperationsAction> = (
     return state.withMutations((map) =>
       map
         .set('loading', false)
-        .set('operations', fromJS(action.operations))
+        .set('operations', fromJS(action.operations) as List<OperationMap>)
         .set('count', action.count),
     );
   }

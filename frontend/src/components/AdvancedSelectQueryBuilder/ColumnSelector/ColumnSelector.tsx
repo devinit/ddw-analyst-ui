@@ -33,10 +33,11 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
     setSelectedColumns(selection);
     const updatedOptions: Partial<AdvancedQueryOptions> = {
       [props.usage === 'select' || props.usage === 'join' ? 'columns' : 'groupby']: selection
-        .map((col) =>
-          (source.get('columns') as ColumnList)
-            .find((column) => column.get('name') === col)
-            ?.toJS(),
+        .map(
+          (col) =>
+            (source.get('columns') as ColumnList)
+              .find((column) => column.get('name') === col)
+              ?.toJS() as unknown as Column,
         )
         .filter((column) => !!column) // ensure no null or undefined values go through
         .map((column: Column) =>

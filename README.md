@@ -90,29 +90,30 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
 5. Fetch CSV files from GitHub
 
-        docker-compose exec web python manage.py update_csv_files
+        docker-compose -f docker-compose.dev.yml exec web python manage.py update_csv_files
 
 6. Migrate the database:
 
-        docker-compose exec web python manage.py migrate
+        docker-compose -f docker-compose.dev.yml exec web python manage.py migrate
 
 7. Load test data:
 
-        docker-compose exec web python manage.py loaddata test_data
+        docker-compose -f docker-compose.dev.yml exec web python manage.py loaddata test_data
 
-        docker-compose exec web python manage.py loaddata --database=datasets test_datasets
+        docker-compose -f docker-compose.dev.yml exec web python manage.py loaddata --database=datasets test_datasets
 
 8. Alternatively, you can acquire a db dump of the live data (binary) and import it into your database:
 
-        docker-compose exec db psql -U analyst_ui_user -d analyst_ui -c 'drop schema public CASCADE;'
-        docker-compose exec db psql -U analyst_ui_user -d analyst_ui -c 'create schema public;'
+        docker-compose -f docker-compose.dev.yml exec db psql -U analyst_ui_user -d analyst_ui -c 'drop schema public CASCADE;'
+        docker-compose -f docker-compose.dev.yml exec db psql -U analyst_ui_user -d analyst_ui -c 'create schema public;'
         docker cp [DB BUMP FILE NAME].backup ddw-analyst-ui_db_1:/var/lib/postgresql/data
         docker exec ddw-analyst-ui_db_1 pg_restore -U analyst_ui_user -d analyst_ui /var/lib/postgresql/data/[DB BUMP FILE NAME].backup
-        docker-compose exec web python3 manage.py migrate
+        docker-compose -f docker-compose.dev.yml exec web python manage.py update_csv_files
+        docker-compose -f docker-compose.dev.yml exec web python3 manage.py migrate
 
 9.  Create a superuser:
 
-        docker-compose exec web python manage.py createsuperuser
+        docker-compose -f docker-compose.dev.yml exec web python manage.py createsuperuser
 
 10. Add the bit registry to npm config to install bit dependencies:
 

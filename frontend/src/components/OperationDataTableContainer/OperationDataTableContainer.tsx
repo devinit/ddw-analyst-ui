@@ -1,7 +1,7 @@
 import { fromJS, List } from 'immutable';
 import React, { FunctionComponent } from 'react';
 import { FetchOptions } from '../../types/api';
-import { OperationData, OperationMap } from '../../types/operations';
+import { OperationData, OperationDataMap, OperationMap } from '../../types/operations';
 import { OperationColumn, OperationColumnMap } from '../../types/sources';
 import { formatString } from '../../utils';
 import { OperationDataTable } from '../OperationDataTable';
@@ -52,7 +52,11 @@ export const OperationDataTableContainer: FunctionComponent<OperationDataTableCo
 
     return (
       <>
-        <OperationDataTable list={fromJS(list)} columns={columns} editableHeaders />
+        <OperationDataTable
+          list={fromJS(list) as unknown as List<OperationDataMap>}
+          columns={columns}
+          editableHeaders
+        />
         {count !== null ? (
           <PaginationRow
             className="pt-3"

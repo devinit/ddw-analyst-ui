@@ -24,7 +24,7 @@ const defaultOptions: Options = {
 
 export const useSources = (options: Options = defaultOptions, fetch = false): List<SourceMap> => {
   const [token, setToken] = useState('');
-  const [sources, setSources] = useState<List<SourceMap>>(fromJS([]));
+  const [sources, setSources] = useState<List<SourceMap>>(fromJS([]) as List<SourceMap>);
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((_token) => {
       if (_token) setToken(_token);
@@ -46,18 +46,18 @@ export const useSources = (options: Options = defaultOptions, fetch = false): Li
       })
       .then(({ status, data, statusText }: AxiosResponse<APIResponse<Source[]>>) => {
         if (status === 200 && data.results) {
-          setSources(fromJS(data.results));
+          setSources(fromJS(data.results) as List<SourceMap>);
           updateSourcesCache(data.results);
         } else if (status === 401) {
           console.log('Failed to fetch sources: ', statusText);
-          setSources(fromJS([]));
+          setSources(fromJS([]) as List<SourceMap>);
         }
       })
       .catch((error) => {
         console.log(
           `Failed to fetch sources: ${error.response.status} ${error.response.statusText}: ${error.response.data.detail}`,
         );
-        setSources(fromJS([]));
+        setSources(fromJS([]) as List<SourceMap>);
       });
   };
 
@@ -70,7 +70,7 @@ export const useSources = (options: Options = defaultOptions, fetch = false): Li
     } else {
       fetchCachedSources().then((sources) => {
         if (sources && sources.length) {
-          setSources(fromJS(sources));
+          setSources(fromJS(sources) as List<SourceMap>);
         } else {
           fetchSources();
         }
@@ -102,7 +102,7 @@ export const useSource = (id?: number, fetch = false): UseSourceResult => {
       })
       .then(({ status, data, statusText }: AxiosResponse<Source>) => {
         if (status === 200 && data) {
-          const activeSource = fromJS(data);
+          const activeSource = fromJS(data) as SourceMap;
           setSource(activeSource);
           setLoading(false);
         } else if (status === 401) {
@@ -129,7 +129,7 @@ export const useSource = (id?: number, fetch = false): UseSourceResult => {
         .getItem<Source | undefined>(localForageKeys.ACTIVE_SOURCE)
         .then((activeSource) => {
           if (activeSource && activeSource.id === id) {
-            setSource(fromJS(activeSource));
+            setSource(fromJS(activeSource) as SourceMap);
             setLoading(false);
           } else {
             fetchSource();

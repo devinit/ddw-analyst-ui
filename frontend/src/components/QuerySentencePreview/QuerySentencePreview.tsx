@@ -8,6 +8,7 @@ import {
   AdvancedQueryBuilderAction,
   AdvancedQueryOptions,
   OperationData,
+  OperationDataList,
   OperationMap,
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
@@ -195,7 +196,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       {previewOption === 'data' ? (
         <OperationPreview
           show
-          data={fromJS(data)}
+          data={fromJS(data) as OperationDataList}
           onClose={() => true}
           tableOnly
           loading={dataLoading}

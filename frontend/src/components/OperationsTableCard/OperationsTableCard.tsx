@@ -12,7 +12,7 @@ import { OperationsState } from '../../reducers/operations';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
-import { OperationMap } from '../../types/operations';
+import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { BasicModal } from '../BasicModal';
 import { DatasetActionLink } from '../DatasetActionLink';
@@ -127,7 +127,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     };
 
   const onEditOperation = (operation: OperationMap) => {
-    const advancedConfig = fromJS(operation.get('advanced_config'));
+    const advancedConfig = fromJS(operation.get('advanced_config')) as AdvancedQueryOptionsMap;
     if (advancedConfig.size) {
       props.history.push(`/queries/build/advanced/${operation.get('id') as number}/`);
     } else {

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { queryBuilderReducerId } from '../../pages/QueryBuilder/reducers';
 import { ReduxStore } from '../../store';
-import { Filters, OperationStepMap, WindowOptions } from '../../types/operations';
+import { FilterMap, Filters, OperationStepMap, WindowOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { formatString } from '../../utils';
 import { AggregateQueryBuilder } from '../AggregateQueryBuilder';
@@ -92,7 +92,7 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
         text: QueryBuilderHandler.getColumnAlias(column, columnsList),
         value: column,
       }))
-      .toJS();
+      .toJS() as DropdownItemProps[];
   }
 
   static getColumnAlias(columnName: string, columns: ColumnList): string {
@@ -105,7 +105,8 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
     try {
       return this.renderQueryBuilder();
     } catch (error) {
-      if (error.message && error.message.indexOf('JSON')) {
+      const err = error as Error;
+      if (err.message && err.message.indexOf('JSON')) {
         return (
           <Alert variant="warning">
             Invalid JSON in step options. Delete and recreate the step.
@@ -132,7 +133,7 @@ class QueryBuilderHandler extends React.Component<QueryBuilderHandlerProps> {
       return (
         <FilterQueryBuilder
           source={source}
-          filters={fromJS(filters)}
+          filters={fromJS(filters) as List<FilterMap>}
           step={step}
           steps={steps}
           onUpdateFilters={onUpdateOptions}

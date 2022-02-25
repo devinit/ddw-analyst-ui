@@ -80,7 +80,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     if (props.editable && props.operation) {
       const config = props.operation.get('advanced_config') as AdvancedQueryOptionsMap;
       if (config) {
-        setContext({ options: config.toJS() as AdvancedQueryOptions });
+        setContext({ options: config.toJS() as unknown as AdvancedQueryOptions });
       }
     }
   }, [props.editable]);
@@ -101,7 +101,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
         props.operation.set('advanced_config' as keyof Operation, fromJS(options)),
       );
     } else {
-      const operation = fromJS({ advanced_config: options });
+      const operation = fromJS({ advanced_config: options }) as unknown as OperationMap;
       props.onUpdateOperation(operation);
     }
     setAlert('');

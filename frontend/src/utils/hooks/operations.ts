@@ -104,14 +104,14 @@ export const useOperationData = (
 ): OperationDataHookResult => {
   const [dataLoading, setDataLoading] = useState(true);
   const [options, setOptions] = useState(defaultOptions);
-  const [data, setData] = useState<OperationDataList>();
+  const [data, setData] = useState<OperationDataList | OperationData[]>();
   const [error, setError] = useState('');
   const { payload } = options;
 
   const fetchData = () => {
     fetchOperationData(payload).then(({ data, error }) => {
       setError(error || '');
-      setData(immutable ? fromJS(data) : data);
+      setData(immutable ? (fromJS(data) as OperationDataList) : data);
       // update local storage cache
       localForage.setItem(
         `${localForageKeys.DATASET_DATA}-${payload.id}-${payload.limit}-${payload.offset}`,
@@ -136,7 +136,7 @@ export const useOperationData = (
         if (_fetch) {
           fetchData();
         } else {
-          setData(immutable ? fromJS(cachedData) : cachedData);
+          setData(immutable ? (fromJS(cachedData) as OperationDataList) : cachedData);
           setDataLoading(false);
         }
       });
@@ -145,18 +145,13 @@ export const useOperationData = (
 
   return { data, dataLoading, options, error, setOptions };
 };
-
-interface UseOperationResult<O = Operation | OperationMap> {
-  operation?: O;
+interface UseOperationResult {
+  operation?: Operation | OperationMap;
   loading: boolean;
 }
 
-export const useOperation = <O = Operation | OperationMap>(
-  id?: number,
-  fetch = false,
-  immutable = true,
-): UseOperationResult<O> => {
-  const [operation, setOperation] = useState<Operation | undefined>();
+export const useOperation = (id?: number, fetch = false, immutable = true): UseOperationResult => {
+  const [operation, setOperation] = useState<Operation>();
   const [loading, setLoading] = useState(false);
 
   const fetchOperation = () => {
@@ -209,7 +204,7 @@ export const useOperation = <O = Operation | OperationMap>(
 
   return !id
     ? { loading: false, operation: undefined }
-    : { loading, operation: immutable ? fromJS(operation) : operation };
+    : { loading, operation: immutable ? (fromJS(operation) as OperationMap) : operation };
 };
 
 interface UseOperationQueryResult {

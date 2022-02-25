@@ -12,7 +12,7 @@ import { onFetchOperationsFailed, onFetchOperationsSuccessful } from '../pages/D
 import * as localForage from 'localforage';
 import { updateOperationInfo } from '../pages/Home/actions';
 import { APIResponse } from '../types/api';
-import { Operation } from '../types/operations';
+import { Operation, OperationMap } from '../types/operations';
 import { api, getSourceIDFromOperation, localForageKeys } from '../utils';
 import { fromJS } from 'immutable';
 import {
@@ -111,7 +111,7 @@ function* fetchOperation({ payload }: OperationsAction) {
       .catch((error) => error.response);
 
     if (status === 200 || (status === 201 && data)) {
-      const operation = fromJS(data);
+      const operation = fromJS(data) as OperationMap;
       yield put(setOperation(operation, true) as OperationsAction);
       const sourceID = getSourceIDFromOperation(operation);
       if (sourceID) {

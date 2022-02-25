@@ -9,6 +9,7 @@ from pypika import Order
 
 from core.models import Source, SourceColumnMap
 from core.const import DEFAULT_LIMIT_COUNT
+from core.pypika_utils import text_search
 
 FILTER_MAPPING = {
     '$lt': operator.lt,
@@ -17,6 +18,7 @@ FILTER_MAPPING = {
     '$neq': operator.ne,
     '$gt': operator.gt,
     '$gte': operator.ge,
+    '$text_search': text_search,
 }
 
 JOIN_MAPPING = {

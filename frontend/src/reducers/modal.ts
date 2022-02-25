@@ -13,7 +13,7 @@ const prefix = 'modal';
 export const SHOW_MODAL = `${prefix}.SHOW_MODAL`;
 export const HIDE_MODAL = `${prefix}.HIDE_MODAL`;
 
-const defaultState: ModalState = fromJS({});
+const defaultState: ModalState = fromJS({}) as ModalState;
 
 export const modalReducer: Reducer<ModalState, ModalAction> = (state = defaultState, action) => {
   if (action.type === SHOW_MODAL && action.modal) {

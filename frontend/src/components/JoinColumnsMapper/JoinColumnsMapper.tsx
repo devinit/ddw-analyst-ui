@@ -30,7 +30,7 @@ export const JoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps> = (pro
           text: formatString(column.get('name') as string),
           value: column.get('name'),
         }))
-        .toJS();
+        .toJS() as DropdownItemProps[];
     }
 
     return [];

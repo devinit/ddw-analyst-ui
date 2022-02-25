@@ -29,8 +29,8 @@ const Home: FunctionComponent<HomeProps> = (props) => {
       <Col>
         <SourcesContext.Provider value={{ sources }}>
           <OperationsTableCard
-            limit={props.page.getIn(['operations', 'limit'])}
-            offset={props.page.getIn(['operations', 'offset'])}
+            limit={props.page.getIn(['operations', 'limit']) as number}
+            offset={props.page.getIn(['operations', 'offset']) as number}
             showMyQueries
           />
         </SourcesContext.Provider>

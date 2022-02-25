@@ -1,6 +1,6 @@
-import { Map, fromJS } from 'immutable';
-import { SET_ACTIVE_SOURCE, dataSourcesReducer } from '../reducers';
+import { fromJS, Map } from 'immutable';
 import { SourceMap } from '../../../types/sources';
+import { dataSourcesReducer, DataSourcesState, SET_ACTIVE_SOURCE } from '../reducers';
 
 const activeSource = Map({
   pk: 1,
@@ -13,7 +13,7 @@ const activeSource = Map({
   download_path: 'https://stats.oecd.org',
   description: 'Common RS data',
 }) as SourceMap;
-const defaultState = fromJS({ activeSource: undefined });
+const defaultState = fromJS({ activeSource: undefined }) as unknown as DataSourcesState;
 
 test('should return the initial state', () => {
   expect(dataSourcesReducer(undefined, {} as any)).toEqual(defaultState);

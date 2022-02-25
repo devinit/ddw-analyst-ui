@@ -12,14 +12,14 @@ import {
   SourcesAction,
 } from '../reducers/sources';
 import { APIResponse } from '../types/api';
-import { Source } from '../types/sources';
+import { Source, SourceMap } from '../types/sources';
 import { api, localForageKeys } from '../utils';
 import { setToken } from '../actions/token';
 import { setActiveSource } from '../actions/sources';
 
 function* fetchSources({ payload }: SourcesAction) {
   try {
-    const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const url = `${api.routes.SOURCES}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}`;
     const { status, data }: AxiosResponse<APIResponse<Source[]>> = yield axios
       .request({
@@ -60,7 +60,7 @@ function* fetchSource({ payload }: SourcesAction) {
     return;
   }
   try {
-    const token = yield localForage.getItem<string>(localForageKeys.API_KEY);
+    const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const { status, data }: AxiosResponse<APIResponse<Source>> = yield axios
       .request({
         url: `${api.routes.SOURCES}${sourceId}/`,
@@ -74,7 +74,7 @@ function* fetchSource({ payload }: SourcesAction) {
       .catch((error) => error.response);
 
     if (status === 200 || status === 201) {
-      yield put(setActiveSource(fromJS(data)) as SourcesAction);
+      yield put(setActiveSource(fromJS(data) as SourceMap) as SourcesAction);
     } else if (status === 401) {
       yield put(setToken(''));
     } else {

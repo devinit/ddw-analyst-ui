@@ -108,7 +108,7 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
           </Modal.Header>
           <Modal.Body>
             <SavedQueryDataForm
-              operation={props.dataset.toJS() as Operation}
+              operation={props.dataset.toJS() as unknown as Operation}
               onSave={onCreateSavedQuery}
               onCancel={() => setShowSavedQueryForm(false)}
             />
