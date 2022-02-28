@@ -78,6 +78,7 @@ export const parseHavingQuery = (
             }
           });
         } else {
+          console.log(rulesObject[index].value);
           finalElement[`$${condition.toLowerCase()}`].push({
             column: rulesObject[index].field,
             comp: convertJqOperatorToDDW(rulesObject[index].operator),
