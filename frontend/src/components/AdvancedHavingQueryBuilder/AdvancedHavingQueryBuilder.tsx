@@ -73,7 +73,15 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           id: column.name as string,
           label: `${column.aggregate}(${column.alias as string})`,
           type: 'string',
-          operators: ['equal', 'less', 'greater'],
+          operators: [
+            'equal',
+            'not_equal',
+            'less',
+            'less_or_equal',
+            'greater',
+            'greater_or_equal',
+            'contains',
+          ],
         });
       } else if (isNumeric(column) && !column.aggregate) {
         data.push({
@@ -82,7 +90,15 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           type: 'string',
           input: 'select',
           values: getAggregateValues(aggregateOptions, column),
-          operators: ['equal', 'less', 'greater'],
+          operators: [
+            'equal',
+            'not_equal',
+            'less',
+            'less_or_equal',
+            'greater',
+            'greater_or_equal',
+            'contains',
+          ],
         });
       }
     });
