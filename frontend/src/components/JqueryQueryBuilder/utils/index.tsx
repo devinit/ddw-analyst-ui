@@ -78,11 +78,11 @@ export const parseHavingQuery = (
             }
           });
         } else {
-          console.log(rulesObject[index].value);
+          const receivedString = rulesObject[index].value.split(',');
           finalElement[`$${condition.toLowerCase()}`].push({
             column: rulesObject[index].field,
             comp: convertJqOperatorToDDW(rulesObject[index].operator),
-            value: rulesObject[index].value,
+            value: { column: receivedString[0], aggregate: receivedString[1] },
           });
         }
       }
