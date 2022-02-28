@@ -166,7 +166,6 @@ class AdvancedQueryBuilder:
         return query
 
     def get_groupby_query(self, table, query, columns, select_columns):
-        # TODO: handle .having here as its usage is based on the groupby
         # Check if all columns in select are present in GROUP BY CLAUSE columns
         select_column_names = [elem['name'] for elem in select_columns]
         select_column_aggregates = []
@@ -178,9 +177,6 @@ class AdvancedQueryBuilder:
 
         if all(elem in columns for elem in select_column_names) or len(select_column_aggregates) > 0:
             return query.groupby(*[table[column] for column in columns])
-            # if 'having' in self.config:
-            #     query = self.get_having_query(table, query, self.config.get('having'))
-            #     return query
         else:
             raise ValueError('All columns (values) in the SELECT clause must be in the GROUP BY clause')
 
@@ -233,12 +229,10 @@ class AdvancedQueryBuilder:
 
         group_by_cols = self.config.get('groupby', {})
         value = config.get('value')
-        print(value)
         plain = True
         if 'plain' in value:
             value = value.get('plain')
         else:
-            print(value)
             value = FUNCTION_MAPPING[value.get('aggregate')](table[value.get('column')])
             plain = False
         if 'aggregate' in config:
