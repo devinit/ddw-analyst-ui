@@ -1,10 +1,9 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 import {
   AdvancedQueryColumn,
   AdvancedQueryHaving,
   AdvancedQueryOptions,
-  JqueryQueryBuilderFieldData,
 } from '../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
@@ -17,13 +16,13 @@ interface ComponentProps {
 const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
-  // const [numericalColumns, setNumericalColumns] = useState<AdvancedQueryColumn[]>();
+  const aggregateOptions = ['SUM', 'AVG', 'MAX', 'MIN', 'STD'];
 
   const getGroupColumns = () =>
     options.columns?.filter((col) => options.groupby?.includes(col.name as string));
 
   const getNumericColumns = () => {
-    const sourceColumns: Column[] = (source?.get('columns') as ColumnList).toJS();
+    const sourceColumns: Column[] = (source?.get('columns') as ColumnList).toJS() as Column[];
 
     return (getGroupColumns() as AdvancedQueryColumn[])
       .filter((column) => {
@@ -54,13 +53,11 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
     return groupColumns?.concat(aggregateColumns as AdvancedQueryColumn);
   };
-  const aggregateOptions = ['SUM', 'AVG', 'MAX', 'MIN', 'STD'];
+
   const getAggregateValues = (aggregateOptions: string[], column: AdvancedQueryColumn) => {
     const options = aggregateOptions.map((option) => {
-      const dash = { column: column.name as string, aggregate: option as string };
-
       return {
-        value: JSON.stringify(dash),
+        value: `${column.name},${option}`,
         label: `${option}(${column.alias})`,
       };
     });
