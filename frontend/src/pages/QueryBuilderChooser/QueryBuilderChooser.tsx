@@ -126,6 +126,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 =======
 =======
 import React, { FC, useState } from 'react';
+<<<<<<< HEAD
 =======
 import React, { FC, useEffect, useState } from 'react';
 >>>>>>> 1146ca01 (Modified the redirects and chnaged the value for id for both basic and advanced respecteively)
@@ -134,13 +135,18 @@ import React, { FC, useState } from 'react';
 >>>>>>> e8a7ab7c (Re-modified the method redirecting selected QueryBuilder to either Bais or Advanced Query Builder)
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import { ICheckData, IRadio } from '../../components/IRadio';
+=======
+import { Modal } from 'react-bootstrap';
+>>>>>>> 3a1bf3c5 (Basic and Advanced Querybuilders displaying within the Query Builder page once selected)
 import { RouteComponentProps } from 'react-router-dom';
+import { ICheckData, IRadio } from '../../components/IRadio';
+import AdvancedQueryBuilder from '../AdvancedQueryBuilder/AdvancedQueryBuilder';
+import QueryBuilder from '../QueryBuilder/QueryBuilder';
 
 type SelectedQueryBuilder = 'basic' | 'advanced';
 
-type QueryBuilderChooserProps = RouteComponentProps;
-
-const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps<{}>) => {
   const [showModal, setShowModal] = useState(true);
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
 
@@ -177,8 +183,9 @@ const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
 =======
   if (selectedOption) {
     if (selectedOption === 'basic') {
-      props.history.push('/queries/build/basic/');
+      return <QueryBuilder {...props} />;
     } else {
+<<<<<<< HEAD
       props.history.push('/queries/build/advanced/');
 >>>>>>> e8a7ab7c (Re-modified the method redirecting selected QueryBuilder to either Bais or Advanced Query Builder)
     }
@@ -283,6 +290,45 @@ const QueryBuilderChooser: FC<QueryBuilderChooserProps> = (props) => {
 =======
   return <div>{selectedOption}</div>;
 >>>>>>> 8add03d1 (Selected QueryBuilder redirects to the selected QueryBuilder)
+=======
+      return <AdvancedQueryBuilder {...props} />;
+    }
+  }
+
+  return (
+    <div>
+      <Modal show={showModal} onHide={toggleModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Choose your Query Builder</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <IRadio
+            variant="danger"
+            id="basic"
+            name="querybuilder"
+            label="Basic"
+            onChange={onRadioChange}
+            inline
+            checked={selectedOption === 'basic'}
+          />
+          <IRadio
+            variant="danger"
+            id="advanced"
+            name="querybuilder"
+            label="Advanced"
+            onChange={onRadioChange}
+            inline
+            checked={selectedOption === 'advanced'}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <input type="checkbox" />
+          <label>Remember my choice</label>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+>>>>>>> 3a1bf3c5 (Basic and Advanced Querybuilders displaying within the Query Builder page once selected)
 };
 
 export default QueryBuilderChooser;
