@@ -76,7 +76,7 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           title={`<i>Replaces</i> existing filter config`}
           onClick={() => onReplace()}
         >
-          Replace
+          Add
         </Button>
         <Button
           variant="dark"
