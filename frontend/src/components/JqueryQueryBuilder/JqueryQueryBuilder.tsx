@@ -6,6 +6,8 @@ import {
   JqueryQueryBuilderFilter,
   JqueryQueryBuilderIcons,
 } from '../../types/operations';
+import { aggregateOptions } from '../AdvancedHavingQueryBuilder';
+import { sortAggregateOptions } from '../AdvancedHavingQueryBuilder/utils';
 import './jqueryQueryBuilder.css';
 
 export interface JqueryQueryBuilderProps {
@@ -32,6 +34,23 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
     jq.init();
 
     if (Object.keys(rules).length > 0) {
+      if (Object.prototype.toString.call(rules?.rules[0].value) === '[object Object]') {
+        console.log(rules);
+        if ('plain' in rules.rules[0].value) {
+          rules.rules[0].value = rules.rules[0].value['plain'];
+        }
+        const previousValue = rules.rules[0].value;
+        rules.rules[0].value = rules.rules[0]['values'];
+        delete rules.rules[0].value;
+        rules.rules[0].values = sortAggregateOptions(aggregateOptions, previousValue.aggregate).map(
+          (option) => {
+            return {
+              value: `${previousValue.column},${option}`,
+              label: `${option}(${previousValue.column})`,
+            };
+          },
+        );
+      }
       jq.setRules(rules);
     }
 
