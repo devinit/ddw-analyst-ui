@@ -13,10 +13,10 @@ import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 interface ComponentProps {
   source: SourceMap;
 }
+export const aggregateOptions = ['AVG', 'SUM', 'MAX', 'MIN', 'STD'];
 const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
-  const aggregateOptions = ['SUM', 'AVG', 'MAX', 'MIN', 'STD'];
 
   const getGroupColumns = () =>
     options.columns?.filter((col) => options.groupby?.includes(col.name as string));
