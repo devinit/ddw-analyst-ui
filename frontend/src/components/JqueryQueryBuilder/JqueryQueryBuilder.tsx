@@ -2,8 +2,6 @@ import * as jQueryQueryBuilder from 'jQuery-QueryBuilder';
 import 'jQuery-QueryBuilder/dist/css/query-builder.default.min.css';
 import React, { FunctionComponent, useEffect } from 'react';
 import {
-  AdvancedQueryHaving,
-  AdvancedQueryHavingComparator,
   JqueryQueryBuilderFieldData,
   JqueryQueryBuilderFilter,
   JqueryQueryBuilderHaving,
