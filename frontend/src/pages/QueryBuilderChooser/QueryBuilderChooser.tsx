@@ -127,6 +127,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 =======
 import React, { FC, useState } from 'react';
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import React, { FC, useEffect, useState } from 'react';
 >>>>>>> 1146ca01 (Modified the redirects and chnaged the value for id for both basic and advanced respecteively)
@@ -138,6 +139,9 @@ import { ICheckData, IRadio } from '../../components/IRadio';
 =======
 import { Modal } from 'react-bootstrap';
 >>>>>>> 3a1bf3c5 (Basic and Advanced Querybuilders displaying within the Query Builder page once selected)
+=======
+import { Alert, Modal } from 'react-bootstrap';
+>>>>>>> e8329c81 (Added information describing each option)
 import { RouteComponentProps } from 'react-router-dom';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import AdvancedQueryBuilder from '../AdvancedQueryBuilder/AdvancedQueryBuilder';
@@ -311,6 +315,9 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
             inline
             checked={selectedOption === 'basic'}
           />
+          <Alert variant="secondary">
+            <p>The Basic Query Builder </p>
+          </Alert>
           <IRadio
             variant="danger"
             id="advanced"
@@ -320,6 +327,9 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
             inline
             checked={selectedOption === 'advanced'}
           />
+          <Alert variant="secondary">
+            <p>The Advanced Query Builder</p>
+          </Alert>
         </Modal.Body>
         <Modal.Footer>
           <input type="checkbox" />
