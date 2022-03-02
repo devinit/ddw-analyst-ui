@@ -48,24 +48,26 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
         const element = (
           (rules as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
         )[0];
-        if (element.value && 'plain' in (element.value as { plain: string | number })) {
+        if ('plain' in (element.value as { plain: string | number })) {
           element.value = (element.value as { plain: string | number })['plain'];
-        }
-        const previousValue: { column: string; aggregate: string } = element.value as {
-          column: string;
-          aggregate: string;
-        };
-        delete element.value;
-        element.values = sortAggregateOptions(
-          aggregateOptions,
-          (previousValue as { column: string; aggregate: string }).aggregate,
-        ).map((option) => {
-          return {
-            value: `${previousValue?.column},${option}`,
-            label: `${option}(${previousValue?.column})`,
+        } else {
+          const previousValue: { column: string; aggregate: string } = element.value as {
+            column: string;
+            aggregate: string;
           };
-        });
+          delete element.value;
+          element.values = sortAggregateOptions(
+            aggregateOptions,
+            (previousValue as { column: string; aggregate: string }).aggregate,
+          ).map((option) => {
+            return {
+              value: `${previousValue?.column},${option}`,
+              label: `${option}(${previousValue?.column})`,
+            };
+          });
+        }
       }
+
       jq.setRules(rules);
     }
 
