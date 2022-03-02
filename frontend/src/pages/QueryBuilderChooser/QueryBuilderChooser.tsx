@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import AdvancedQueryBuilder from '../AdvancedQueryBuilder/AdvancedQueryBuilder';
@@ -41,6 +41,9 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
             inline
             checked={selectedOption === 'basic'}
           />
+          <Alert variant="secondary">
+            <p>The Basic Query Builder </p>
+          </Alert>
           <IRadio
             variant="danger"
             id="advanced"
@@ -50,6 +53,9 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
             inline
             checked={selectedOption === 'advanced'}
           />
+          <Alert variant="secondary">
+            <p>The Advanced Query Builder</p>
+          </Alert>
         </Modal.Body>
         <Modal.Footer>
           <input type="checkbox" />
