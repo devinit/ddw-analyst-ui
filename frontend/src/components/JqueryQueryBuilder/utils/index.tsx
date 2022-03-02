@@ -6,6 +6,7 @@ import {
   JqueryQueryBuilderComps,
   JqueryQueryBuilderFilter,
 } from '../../../types/operations';
+import { getColumnFromAlias } from '../../AdvancedHavingQueryBuilder/utils';
 
 export const parseQuery = (
   finalElement: any,
@@ -42,6 +43,7 @@ export const parseHavingQuery = (
   condition: string,
   rulesObject: any,
   aggregateColumns?: AdvancedQueryColumn[],
+  columns?: AdvancedQueryColumn[],
 ): AdvancedQueryHaving => {
   if (rulesObject.hasOwnProperty('condition')) {
     finalElement[`$${rulesObject.condition.toLowerCase()}`] = [];
@@ -50,6 +52,7 @@ export const parseHavingQuery = (
       rulesObject.condition,
       rulesObject.rules,
       aggregateColumns,
+      columns,
     );
   } else {
     for (let index = 0; index < rulesObject.length; index++) {
@@ -60,6 +63,7 @@ export const parseHavingQuery = (
             rulesObject[index].condition,
             rulesObject[index].rules,
             aggregateColumns,
+            columns,
           ),
         );
       } else {
@@ -78,12 +82,21 @@ export const parseHavingQuery = (
             }
           });
         } else {
-          const receivedString = rulesObject[index].value.split(',');
-          finalElement[`$${condition.toLowerCase()}`].push({
-            column: rulesObject[index].field,
-            comp: convertJqOperatorToDDW(rulesObject[index].operator),
-            value: { column: receivedString[0], aggregate: receivedString[1] },
-          });
+          if (typeof rulesObject[index].value === 'number') {
+            finalElement[`$${condition.toLowerCase()}`].push({
+              column: getColumnFromAlias(rulesObject[index].field, columns as AdvancedQueryColumn[])
+                .name,
+              comp: convertJqOperatorToDDW(rulesObject[index].operator),
+              value: { plain: rulesObject[index].value },
+            });
+          } else {
+            const receivedString = rulesObject[index].value.split(',');
+            finalElement[`$${condition.toLowerCase()}`].push({
+              column: rulesObject[index].field,
+              comp: convertJqOperatorToDDW(rulesObject[index].operator),
+              value: { column: receivedString[0], aggregate: receivedString[1] },
+            });
+          }
         }
       }
     }
