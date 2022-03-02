@@ -73,33 +73,39 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           id: column.name as string,
           label: `${column.aggregate}(${column.alias as string})`,
           type: 'string',
-          operators: [
-            'equal',
-            'not_equal',
-            'less',
-            'less_or_equal',
-            'greater',
-            'greater_or_equal',
-            'contains',
-          ],
+          operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal'],
         });
       } else if (isNumeric(column) && !column.aggregate) {
-        data.push({
-          id: column.name as string,
-          label: column.alias as string,
-          type: 'string',
-          input: 'select',
-          values: getAggregateValues(aggregateOptions, column),
-          operators: [
-            'equal',
-            'not_equal',
-            'less',
-            'less_or_equal',
-            'greater',
-            'greater_or_equal',
-            'contains',
-          ],
-        });
+        data.push(
+          {
+            id: column.name as string,
+            label: `${column.alias as string}(aggregate value)`,
+            type: 'string',
+            input: 'select',
+            values: getAggregateValues(aggregateOptions, column),
+            operators: [
+              'equal',
+              'not_equal',
+              'less',
+              'less_or_equal',
+              'greater',
+              'greater_or_equal',
+            ],
+          },
+          {
+            id: column.alias as string,
+            label: `${column.alias as string}(non-aggregate value)`,
+            type: 'integer',
+            operators: [
+              'equal',
+              'not_equal',
+              'less',
+              'less_or_equal',
+              'greater',
+              'greater_or_equal',
+            ],
+          },
+        );
       }
     });
 
@@ -113,11 +119,13 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const onReplace = () => {
     const rules = jqBuilder?.getRules();
     const aggregateColumns = getAggregateColumns();
+    const columns = getGroupColumns();
     options.having = parseHavingQuery(
       {},
       rules.condition,
       rules,
       aggregateColumns,
+      columns,
     ) as AdvancedQueryHaving;
     if (updateOptions) {
       updateOptions(options as AdvancedQueryOptions);
