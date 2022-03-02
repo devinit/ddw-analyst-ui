@@ -133,7 +133,7 @@ export type AdvancedQueryFilterComparator = {
 
 export type AdvancedQueryHavingComparator = {
   column: string;
-  value: { plain: string | number };
+  value: { plain: string | number } | { column: string; aggregate: string };
   comp: FilterComp;
   aggregate?: string;
 };
@@ -146,6 +146,21 @@ export type AdvancedQueryHaving = {
 export type JqueryQueryBuilderFilter = {
   condition?: string;
   rules?: (JqueryQueryBuilderFilterComparator | JqueryQueryBuilderFilter)[];
+};
+
+export type JqueryQueryBuilderHaving = {
+  condition?: string;
+  rules?: (JqueryQueryBuilderHavingComparator | JqueryQueryBuilderHaving)[];
+};
+
+export type JqueryQueryBuilderHavingComparator = {
+  id: string;
+  field: string;
+  type: string;
+  input: string;
+  operator: JqueryQueryBuilderComps;
+  value?: string | number | { plain: string | number } | { column: string; aggregate: string };
+  values?: { value: string; label: string }[];
 };
 
 export type JqueryQueryBuilderFilterComparator = {
