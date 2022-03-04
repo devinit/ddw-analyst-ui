@@ -6,6 +6,7 @@ import { DataSourceSelector } from '../../components/DataSourceSelector';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { Mode, QueryBuilderModeSelector } from '../../components/QueryBuilderModeSelector';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
+import { SQLEditor } from '../../components/SQLEditor';
 import { AppContext, SourcesContext } from '../../context';
 import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
@@ -122,12 +123,16 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                   />
                   <QueryBuilderModeSelector onSelect={onSelectMode} className="col-lg-3" />
                 </Row>
-                <QuerySentenceBuilder
-                  source={activeSource}
-                  operation={operation}
-                  onUpdateOperation={onUpdateOperation}
-                  editable={isEditable(operation)}
-                />
+                {mode === 'gui' ? (
+                  <QuerySentenceBuilder
+                    source={activeSource}
+                    operation={operation}
+                    onUpdateOperation={onUpdateOperation}
+                    editable={isEditable(operation)}
+                  />
+                ) : (
+                  <SQLEditor />
+                )}
               </OperationTabContainer>
             </SourcesContext.Provider>
           ) : null}
