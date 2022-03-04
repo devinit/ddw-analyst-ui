@@ -2,7 +2,9 @@ import React, { FunctionComponent, useContext, useEffect, useState } from 'react
 import { Alert, Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import { DataSourceSelector } from '../../components/DataSourceSelector';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
+import { Mode, QueryBuilderModeSelector } from '../../components/QueryBuilderModeSelector';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
 import { AppContext, SourcesContext } from '../../context';
 import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
@@ -23,6 +25,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { loading, operation: pageOperation } = useOperation(
     operationID ? parseInt(operationID) : undefined,
   );
+  const [mode, setMode] = useState<Mode>('gui');
 
   const sources = useSources({ limit: 200, offset: 0 }) || null;
   const history = useHistory();
@@ -52,6 +55,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       }
     }
   }, [(pageOperation as OperationMap)?.size, sources.count()]);
+
+  const onSelectSource = (selectedSource: SourceMap) => setActiveSource(selectedSource);
+  const onSelectMode = (selectedMode: Mode) => setMode(selectedMode);
 
   const onSaveOperation = (): void => {
     saveOperation(operation as OperationMap, `${token}`)
@@ -108,6 +114,14 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onDelete={onDeleteOperation}
                 onUpdate={onUpdateOperation}
               >
+                <Row className="mb-3">
+                  <DataSourceSelector
+                    source={activeSource}
+                    onSelect={onSelectSource}
+                    className="col-lg-6"
+                  />
+                  <QueryBuilderModeSelector onSelect={onSelectMode} className="col-lg-3" />
+                </Row>
                 <QuerySentenceBuilder
                   source={activeSource}
                   operation={operation}
