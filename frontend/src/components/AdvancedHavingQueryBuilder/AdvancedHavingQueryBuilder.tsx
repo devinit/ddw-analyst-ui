@@ -145,7 +145,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
   return (
     <>
-      {(options.groupby as string[])?.length > 0 ||
+      {(getGroupColumns()?.filter((col) => isNumeric(col)) as AdvancedQueryColumn[])?.length > 0 ||
       hasAggregate(options.columns as AdvancedQueryColumn[]) ? (
         <>
           <JqueryQueryBuilder
@@ -187,7 +187,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         </>
       ) : (
         <Alert variant="warning" className="mt-2">
-          Having clause requires groupBy or aggregate columns
+          Having clause requires groupBy(with numeric values) or aggregate columns
         </Alert>
       )}
     </>

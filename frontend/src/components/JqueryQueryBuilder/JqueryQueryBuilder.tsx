@@ -65,10 +65,9 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
           });
         }
       }
-
+      console.log(rules);
       jq.setRules(rules);
     }
-
     getJqueryBuilderInstance(jq);
   }, []);
 

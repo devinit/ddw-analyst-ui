@@ -15,8 +15,4 @@ export const sortAggregateOptions = (options: string[], selected: string): strin
 export const getColumnFromAlias = (
   alias: string,
   columns: AdvancedQueryColumn[],
-): AdvancedQueryColumn => {
-  console.log(columns, alias);
-
-  return columns.find((col) => col.alias === alias) as AdvancedQueryColumn;
-};
+): AdvancedQueryColumn => columns.find((col) => col.alias === alias) as AdvancedQueryColumn;
