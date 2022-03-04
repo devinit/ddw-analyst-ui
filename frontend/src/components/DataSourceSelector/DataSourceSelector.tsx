@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, useContext } from 'react';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import { SourcesContext } from '../../context';
@@ -8,6 +9,7 @@ interface ComponentProps {
   onSelect: (source: SourceMap) => void;
   source?: SourceMap;
   label?: string;
+  className?: string;
 }
 type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 
@@ -21,10 +23,9 @@ const DataSourceSelector: FunctionComponent<ComponentProps> = ({ source, ...prop
   };
 
   return (
-    <div className="mb-3">
+    <div className={classNames(props.className)}>
       <label>{props.label}</label>
       <Dropdown
-        className="col-lg-6"
         placeholder="Select Data Source"
         fluid
         selection

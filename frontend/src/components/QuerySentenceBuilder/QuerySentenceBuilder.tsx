@@ -22,6 +22,7 @@ import { QuerySentencePreview } from '../QuerySentencePreview';
 import { getCurrentAction } from './utils';
 import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedHavingQueryBuilder } from '../AdvancedHavingQueryBuilder';
+import { Mode, QueryBuilderModeSelector } from '../QueryBuilderModeSelector';
 
 interface ComponentProps {
   operation?: OperationMap;
@@ -56,6 +57,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
     options: defaultOptions as AdvancedQueryOptions,
   });
   const [alert, setAlert] = useState('');
+  const [mode, setMode] = useState<Mode>('gui');
 
   useEffect(() => {
     if (props.operation) setSource(props.source);
@@ -95,6 +97,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
   const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
   const onSelectAction = (selectedAction?: AdvancedQueryBuilderAction) => setAction(selectedAction);
+  const onSelectMode = (selectedMode: Mode) => setMode(selectedMode);
 
   const onUpdate = (options: AdvancedQueryOptions) => {
     if (props.operation) {
@@ -111,7 +114,10 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   return (
     <div>
       <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions, editor }}>
-        <DataSourceSelector source={source} onSelect={onSelectSource} />
+        <Row className="mb-3">
+          <DataSourceSelector source={source} onSelect={onSelectSource} className="col-lg-6" />
+          <QueryBuilderModeSelector onSelect={onSelectMode} className="col-lg-3" />
+        </Row>
         {source ? (
           <>
             <QueryBuilderActionSelector
