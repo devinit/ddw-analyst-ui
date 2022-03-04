@@ -1,3 +1,4 @@
+import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
@@ -35,7 +36,9 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
     }
 
     if (sentence) {
-      return <CodeMirrorNext value={sentence} readOnly />;
+      return (
+        <CodeMirrorNext value={sentence} readOnly extensions={[sql({ dialect: PostgreSQL })]} />
+      );
     }
 
     return (
