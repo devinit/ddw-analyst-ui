@@ -5,7 +5,7 @@ import { format } from 'sql-formatter';
 import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { useOperationQuery } from '../../utils/hooks';
-import { CodeMirrorReact } from '../CodeMirrorReact';
+import { CodeMirrorNext } from '../CodeMirrorNext';
 
 interface QuerySentenceProps {
   operation: OperationMap;
@@ -35,15 +35,7 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
     }
 
     if (sentence) {
-      return (
-        <CodeMirrorReact
-          config={{
-            mode: 'text',
-            value: sentence,
-            readOnly: true,
-          }}
-        />
-      );
+      return <CodeMirrorNext value={sentence} readOnly />;
     }
 
     return (
