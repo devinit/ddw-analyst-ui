@@ -13,7 +13,7 @@ interface ComponentProps {
 const SQLEditor: FC<ComponentProps> = ({ source }) => {
   console.log(source?.toJS());
 
-  return <CodeMirrorNext extensions={[sql({ dialect: PostgreSQL })]} />;
+  return <CodeMirrorNext extensions={[sql({ dialect: PostgreSQL, upperCaseKeywords: true })]} />;
 };
 
 export { SQLEditor };
