@@ -94,7 +94,7 @@ export const fetchOperationDataPreview = async (
         'Content-Type': 'application/json',
         Authorization: `token ${token}`,
       },
-      data: { ...operation, operation_steps: steps },
+      data: operation.advanced_config ? operation : { ...operation, operation_steps: steps },
     })
     .then((response: AxiosResponse<OperationDataResult>) => response)
     .catch((error) => error.response);

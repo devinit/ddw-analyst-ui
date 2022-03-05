@@ -14,6 +14,7 @@ type ComponentProps = {
   data: List<OperationDataMap>;
   onClose: () => void;
   tableOnly?: boolean;
+  className?: string;
 };
 
 const StyledIcon = styled.i`
@@ -45,11 +46,15 @@ const OperationPreview: FunctionComponent<ComponentProps> = ({ show, loading, da
   };
 
   if (props.tableOnly) {
-    return <StyledDiv>{show || loading ? renderPreview() : props.children}</StyledDiv>;
+    return (
+      <StyledDiv className={props.className}>
+        {show || loading ? renderPreview() : props.children}
+      </StyledDiv>
+    );
   }
 
   return (
-    <Card>
+    <Card className={props.className}>
       <Card.Header>
         <Card.Title>
           {show || loading ? 'Preview Dataset' : props.title}
