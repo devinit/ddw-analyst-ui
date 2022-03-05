@@ -24,6 +24,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
     if (source && !operation) {
       const defaultQuery = format(
         `SELECT * FROM "${source.get('schema')}"."${source.get('active_mirror_name')}";`,
+        { language: 'postgresql' },
       );
       setValue(defaultQuery);
       onUpdateOperation(
@@ -39,10 +40,12 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
       // check if the source has been changed
       if (operationSource !== source.get('id')) {
         setValue(
-          format(`SELECT * FROM "${source.get('schema')}"."${source.get('active_mirror_name')}";`),
+          format(`SELECT * FROM "${source.get('schema')}"."${source.get('active_mirror_name')}";`, {
+            language: 'postgresql',
+          }),
         );
       } else {
-        setValue(format(operation.get('operation_query') as string));
+        setValue(format(operation.get('operation_query') as string, { language: 'postgresql' }));
       }
       if (!operation.get('is_raw')) {
         onUpdateOperation(operation.set('is_raw', true));
