@@ -68,6 +68,8 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
     }
   };
 
+  if (!source) return null;
+
   return (
     <>
       <CodeMirrorNext
