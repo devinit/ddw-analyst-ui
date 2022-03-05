@@ -2,10 +2,12 @@ import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { fromJS } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
 import { format } from 'sql-formatter';
-import { OperationMap } from '../../types/operations';
+import { Operation, OperationData, OperationDataList, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { getSourceIDFromOperation } from '../../utils';
+import { fetchOperationDataPreview } from '../../utils/hooks';
 import { CodeMirrorNext } from '../CodeMirrorNext';
+import { OperationPreview } from '../OperationPreview';
 
 interface ComponentProps {
   source?: SourceMap;
@@ -15,14 +17,22 @@ interface ComponentProps {
 
 const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation }) => {
   const [value, setValue] = useState('');
-  console.log(operation?.toJS());
+  const [data, setData] = useState<OperationData[]>([]);
+  const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
     if (source && !operation) {
-      setValue(
-        format(`SELECT * FROM "${source.get('schema')}"."${source.get('active_mirror_name')}";`),
+      const defaultQuery = format(
+        `SELECT * FROM "${source.get('schema')}"."${source.get('active_mirror_name')}";`,
       );
-      onUpdateOperation(fromJS({ is_raw: true }) as OperationMap);
+      setValue(defaultQuery);
+      onUpdateOperation(
+        fromJS({
+          is_raw: true,
+          operation_query: defaultQuery,
+          advanced_config: { source: source.get('id') },
+        }) as OperationMap,
+      );
     }
     if (operation && source) {
       const operationSource = getSourceIDFromOperation(operation);
@@ -37,14 +47,42 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
       if (!operation.get('is_raw')) {
         onUpdateOperation(operation.set('is_raw', true));
       }
+      fetchPreviewData(operation);
     }
   }, [source, operation]);
 
+  const fetchPreviewData = (operation: OperationMap) => {
+    console.log(operation.toJS());
+    if (operation.get('advanced_config') && operation.get('operation_query')) {
+      setDataLoading(true);
+      fetchOperationDataPreview(operation.toJS() as unknown as Operation, []).then((results) => {
+        setDataLoading(false);
+        if (results.error) {
+          console.log(results.error);
+
+          // setAlert([`Error: ${results.error}`]);
+        } else {
+          setData(results.data ? results.data.slice(0, 9) : []);
+        }
+      });
+    }
+  };
+
   return (
-    <CodeMirrorNext
-      value={value}
-      extensions={[sql({ dialect: PostgreSQL, upperCaseKeywords: true })]}
-    />
+    <>
+      <CodeMirrorNext
+        value={value}
+        extensions={[sql({ dialect: PostgreSQL, upperCaseKeywords: true })]}
+      />
+      <OperationPreview
+        className="mt-2"
+        show
+        data={fromJS(data) as OperationDataList}
+        onClose={() => true}
+        tableOnly
+        loading={dataLoading}
+      />
+    </>
   );
 };
 
