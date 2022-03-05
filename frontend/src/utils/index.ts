@@ -22,7 +22,7 @@ export const getSourceIDFromOperation = (operation: OperationMap): number | unde
     return;
   }
   const steps = operation.get('operation_steps') as List<OperationStepMap> | undefined;
-  if (steps && steps.count()) {
+  if (steps && steps.size) {
     return steps.getIn([0, 'source']) as number;
   }
 
