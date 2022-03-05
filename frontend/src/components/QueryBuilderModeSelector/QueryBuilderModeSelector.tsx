@@ -6,6 +6,7 @@ interface ComponentProps {
   onSelect: (mode: string) => void;
   label?: string;
   className?: string;
+  mode?: Mode;
 }
 type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 const MODES: DropdownItemProps[] = [
@@ -15,7 +16,7 @@ const MODES: DropdownItemProps[] = [
 export type Mode = 'gui' | 'sql';
 
 const QueryBuilderModeSelector: FC<ComponentProps> = (props) => {
-  const [selectedMode, setSelectedMode] = useState<Mode>('gui');
+  const [selectedMode, setSelectedMode] = useState<Mode>(props.mode || 'gui');
   const onSelectMode = (_event: SelectEvent, data: DropdownProps) => {
     if (data.value) {
       props.onSelect(data.value as Mode);

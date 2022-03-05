@@ -121,7 +121,11 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                     onSelect={onSelectSource}
                     className="col-lg-6"
                   />
-                  <QueryBuilderModeSelector onSelect={onSelectMode} className="col-lg-3" />
+                  <QueryBuilderModeSelector
+                    mode={mode}
+                    onSelect={onSelectMode}
+                    className="col-lg-3"
+                  />
                 </Row>
                 {mode === 'gui' ? (
                   <QuerySentenceBuilder
