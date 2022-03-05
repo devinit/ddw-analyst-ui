@@ -56,6 +56,11 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   });
   const [alert, setAlert] = useState('');
 
+  useEffect(() => {
+    if (props.operation && props.operation.get('is_raw')) {
+      props.onUpdateOperation(props.operation.set('is_raw', false));
+    }
+  }, []);
   useEffect(() => setSource(props.source), [props.source]);
   useEffect(() => {
     const options = { ...context.options };
