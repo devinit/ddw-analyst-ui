@@ -170,6 +170,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'operation_steps',
             'reviews',
             'is_draft',
+            'is_raw',
             'user',
             'created_on',
             'updated_on',

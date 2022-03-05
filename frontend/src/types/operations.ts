@@ -29,6 +29,7 @@ export interface Operation {
   sample_output_path: string;
   operation_steps: OperationStep[] | List<OperationStepMap>;
   is_draft: boolean;
+  is_raw: boolean;
   created_on: string;
   updated_on: string;
   user: string;
