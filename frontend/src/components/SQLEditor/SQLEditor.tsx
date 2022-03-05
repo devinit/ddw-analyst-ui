@@ -1,4 +1,5 @@
 import { PostgreSQL, sql } from '@codemirror/lang-sql';
+import { fromJS } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
 import { format } from 'sql-formatter';
 import { OperationMap } from '../../types/operations';
@@ -12,14 +13,16 @@ interface ComponentProps {
   onUpdateOperation: (operation: OperationMap) => void;
 }
 
-const SQLEditor: FC<ComponentProps> = ({ source, operation }) => {
+const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation }) => {
   const [value, setValue] = useState('');
+  console.log(operation?.toJS());
 
   useEffect(() => {
     if (source && !operation) {
       setValue(
         format(`SELECT * FROM "${source.get('schema')}"."${source.get('active_mirror_name')}";`),
       );
+      onUpdateOperation(fromJS({ is_raw: true }) as OperationMap);
     }
     if (operation && source) {
       const operationSource = getSourceIDFromOperation(operation);
@@ -30,6 +33,9 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation }) => {
         );
       } else {
         setValue(format(operation.get('operation_query') as string));
+      }
+      if (!operation.get('is_raw')) {
+        onUpdateOperation(operation.set('is_raw', true));
       }
     }
   }, [source, operation]);
