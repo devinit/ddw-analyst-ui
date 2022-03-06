@@ -1,6 +1,7 @@
 import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { fromJS } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { format } from 'sql-formatter';
 import { Operation, OperationData, OperationDataList, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
@@ -71,6 +72,11 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
   };
 
   const onChange = (value: string) => setValue(value);
+  const onRunQuery = () => {
+    if (operation) {
+      onUpdateOperation(operation.set('operation_query', value));
+    }
+  };
 
   if (!source) return null;
 
@@ -81,6 +87,11 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
         extensions={[sql({ dialect: PostgreSQL, upperCaseKeywords: true })]}
         onChange={onChange}
       />
+      <div className="mt-2">
+        <Button variant="dark" onClick={onRunQuery} size="sm">
+          <i className="fa fa-play mr-1" /> Run
+        </Button>
+      </div>
       <OperationPreview
         className="mt-2"
         show
