@@ -5,6 +5,7 @@ import codecs
 import csv
 import datetime
 import json
+import re
 
 import dateutil.parser
 from django.conf import settings
@@ -272,9 +273,19 @@ class PreviewOperationData(APIView):
         config = data['advanced_config']
         is_raw = data['is_raw']
         if is_raw:
-            return run_query(data['operation_query'], fetch=True)
+            return run_query(self.format_query_for_preview(data['operation_query'], limit=limit, offset=offset), fetch=True)
 
         return run_query(query.get_advanced_config_query(config, limit=limit, offset=offset), fetch=True)
+
+    def format_query_for_preview(self, operation_query, limit=10, offset=0):
+        final_query = operation_query
+        if not self.find_whole_word('limit')(operation_query) or not self.find_whole_word('offset')(operation_query):
+            final_query = '%s LIMIT %s OFFSET %s;' % (operation_query.split(';')[0], limit, offset)
+
+        return final_query
+
+    def find_whole_word(self, word):
+        return re.compile(r'\b({0})\b'.format(word), flags=re.IGNORECASE).search
 
 
 class GetOperationQuery(APIView):
