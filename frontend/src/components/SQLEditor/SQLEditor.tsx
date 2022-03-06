@@ -55,7 +55,6 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
   }, [source, operation]);
 
   const fetchPreviewData = (operation: OperationMap) => {
-    console.log(operation.toJS());
     if (operation.get('advanced_config') && operation.get('operation_query')) {
       setDataLoading(true);
       fetchOperationDataPreview(operation.toJS() as unknown as Operation, []).then((results) => {
@@ -71,6 +70,8 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
     }
   };
 
+  const onChange = (value: string) => setValue(value);
+
   if (!source) return null;
 
   return (
@@ -78,6 +79,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
       <CodeMirrorNext
         value={value}
         extensions={[sql({ dialect: PostgreSQL, upperCaseKeywords: true })]}
+        onChange={onChange}
       />
       <OperationPreview
         className="mt-2"
