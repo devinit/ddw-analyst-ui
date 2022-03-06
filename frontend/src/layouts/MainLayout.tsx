@@ -137,14 +137,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     data-testid="sidebar-link-published-datasets"
                   />
                 </Sidebar.Item>
-<<<<<<< HEAD
                 <Sidebar.Item active={this.state.activeRoute.includes('/queries/build/')}>
-=======
-                <Sidebar.Item
-                  active={this.state.activeRoute.includes('/queries/build/')}
-                  // collapseId="query-builder"
-                >
->>>>>>> cb3ce03d (Removed the multiple dropdown option for querybuilder)
                   <Sidebar.Link
                     root
                     to="/queries/build/"
@@ -296,26 +289,10 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                   exact
                   component={AsyncAdvancedQueryBuilder}
                 />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1fe9bfaa (Created a route for Basic Query Builder)
                 <Route path="/queries/build/basic/" exact component={AsyncQueryBuilder} />
                 <Route path="/queries/build/basic/:id" exact component={AsyncQueryBuilder} />
                 <Route path="/queries/build/" exact component={AsyncQueryBuilderChooser} />
                 <Route path="/queries/build/:id" exact component={AsyncQueryBuilderChooser} />
-<<<<<<< HEAD
-=======
-=======
-                {/* <Route path="/queries/build/basic/" exact component={AsyncQueryBuilder} />
-                <Route path="/queries/build/basic/:id" exact component={AsyncQueryBuilder} /> */}
->>>>>>> ea4b7fce (Enabled redirection of selected options to the matching QueryBuilder)
-                <Route path="/queries/build" exact component={AsyncQueryBuilderChooser} />
-                <Route path="/queries/build/:id" exact component={AsyncQueryBuilder} />
->>>>>>> cb9f131d (Add QueryBuilderChooser)
-=======
->>>>>>> 1fe9bfaa (Created a route for Basic Query Builder)
                 <Route path="/queries/history/:id" exact component={AsyncQueryHistory} />
                 <Route path="/update" exact component={AsyncDataUpdate} />
                 <Route path="/queries/data/:id" exact component={AsyncQueryData} />
