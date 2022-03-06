@@ -224,7 +224,7 @@ class PreviewOperationData(APIView):
             offset=request.query_params.get('offset', 0)
             if 'advanced_config' in request.data and request.data['advanced_config']:
                 try:
-                    data = run_query(query.get_advanced_config_query(request.data['advanced_config'], limit=limit, offset=offset), fetch=True)
+                    data = data = self.process_advanced_config(data=request.data)
                     return {
                         'count': len(data),
                         'data': data
@@ -267,6 +267,15 @@ class PreviewOperationData(APIView):
         paginator.set_count(data['count'])
         page_data = paginator.paginate_queryset(data['data'], request)
         return paginator.get_paginated_response(page_data)
+
+    def process_advanced_config(self, data, limit = 10, offset = 0):
+        config = data['advanced_config']
+        is_raw = data['is_raw']
+        if is_raw:
+            return run_query(data['operation_query'], fetch=True)
+
+        return run_query(query.get_advanced_config_query(config, limit=limit, offset=offset), fetch=True)
+
 
 class GetOperationQuery(APIView):
     """
