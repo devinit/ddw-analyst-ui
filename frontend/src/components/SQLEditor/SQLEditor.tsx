@@ -2,7 +2,7 @@ import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { Completion } from '@codemirror/autocomplete';
 import { fromJS } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import { format } from 'sql-formatter';
 import { Operation, OperationData, OperationDataList, OperationMap } from '../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../types/sources';
@@ -33,6 +33,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
   const [value, setValue] = useState('');
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (source) {
@@ -73,9 +74,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
       fetchOperationDataPreview(operation.toJS() as unknown as Operation, []).then((results) => {
         setDataLoading(false);
         if (results.error) {
-          console.log(results.error);
-
-          // setAlert([`Error: ${results.error}`]);
+          setError(results.error);
         } else {
           setData(results.data ? results.data.slice(0, 9) : []);
         }
@@ -94,6 +93,9 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
 
   return (
     <>
+      <Alert variant="warning" show={!!error}>
+        {error}
+      </Alert>
       <CodeMirrorNext
         value={value}
         extensions={[
