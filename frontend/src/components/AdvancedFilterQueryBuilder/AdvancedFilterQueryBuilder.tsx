@@ -1,11 +1,12 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
-import { SourceMap } from '../../types/sources';
-import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
-import { createQueryBuilderRules, parseQuery } from '../JqueryQueryBuilder/utils';
-import { AdvancedQueryOptions, JqueryQueryBuilderFieldData } from '../../types/operations';
+import { AdvancedQueryOptions } from '../../types/operations';
+import { SourceMap } from '../../types/sources';
 import { getColumnGroupOptionsFromSource } from '../AdvancedSelectQueryBuilder/ColumnSelector/utils';
+import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
+import { createQueryBuilderRules, parseQuery } from '../JqueryQueryBuilder/utils';
+import { JqueryQueryBuilderFieldData } from '../JqueryQueryBuilder/utils/types';
+import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
 
 interface ComponentProps {
   source: SourceMap;
