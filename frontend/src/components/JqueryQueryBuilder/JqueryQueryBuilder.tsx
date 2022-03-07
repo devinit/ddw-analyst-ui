@@ -15,7 +15,7 @@ export interface JqueryQueryBuilderProps {
   getJqueryBuilderInstance: (jqInstance: any) => void;
   icons?: JqueryQueryBuilderIcons;
   rules: JqueryQueryBuilderFilter | JqueryQueryBuilderHaving;
-  getHavingQueryValues: (
+  getHavingQueryValues?: (
     rules: JqueryQueryBuilderFilter | JqueryQueryBuilderHaving,
   ) => JqueryQueryBuilderFilter | JqueryQueryBuilderHaving;
 }
@@ -38,13 +38,7 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
     jq.init();
 
     if (Object.keys(rules).length) {
-      if (
-        rules &&
-        Object.prototype.toString.call(
-          ((rules as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[])[0]
-            .value,
-        ) === '[object Object]'
-      ) {
+      if (getHavingQueryValues) {
         rules = getHavingQueryValues(rules);
       }
       jq.setRules(rules);
