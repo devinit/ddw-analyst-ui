@@ -4,14 +4,12 @@ import {
   AdvancedQueryColumn,
   AdvancedQueryHaving,
   AdvancedQueryOptions,
-  JqueryQueryBuilderFilter,
-  JqueryQueryBuilderHaving,
-  JqueryQueryBuilderHavingComparator,
 } from '../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
 import { createQueryBuilderRules, parseHavingQuery } from '../JqueryQueryBuilder/utils';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
+import { getGroupColumns, getHavingQueryValues } from './utils';
 
 interface ComponentProps {
   source: SourceMap;
@@ -21,13 +19,10 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
 
-  const getGroupColumns = () =>
-    options.columns?.filter((col) => options.groupby?.includes(col.name as string));
-
   const getNumericColumns = () => {
     const sourceColumns: Column[] = (source?.get('columns') as ColumnList).toJS() as Column[];
 
-    return (getGroupColumns() as AdvancedQueryColumn[])
+    return (getGroupColumns(options) as AdvancedQueryColumn[])
       .filter((column) => {
         const matchingColumn = sourceColumns.find((col) => col.name === column.name);
 
@@ -51,7 +46,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const getAggregateColumns = () => options.columns?.filter((column) => column.aggregate);
 
   const getColumns = () => {
-    const groupColumns = getGroupColumns();
+    const groupColumns = getGroupColumns(options);
     const aggregateColumns = getAggregateColumns();
 
     return groupColumns?.concat(aggregateColumns as AdvancedQueryColumn);
@@ -100,7 +95,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const onReplace = () => {
     const rules = jqBuilder?.getRules();
     const aggregateColumns = getAggregateColumns();
-    const columns = getGroupColumns();
+    const columns = getGroupColumns(options);
     options.having = parseHavingQuery(
       {},
       rules.condition,
@@ -123,33 +118,11 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
     return false;
   };
-  const getHavingQueryValues = (query: JqueryQueryBuilderHaving) => {
-    query.rules?.map((rule, index: number) => {
-      if (rule.hasOwnProperty('condition')) {
-        getHavingQueryValues(rule as JqueryQueryBuilderHaving);
-      } else {
-        const element = (
-          (query as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
-        )[index];
-        if ('plain' in (element.value as { plain: string | number })) {
-          element.value = (element.value as { plain: string | number })['plain'];
-        } else {
-          const activeValue: { column: string; aggregate: string } = element.value as {
-            column: string;
-            aggregate: string;
-          };
-          element.value = `${activeValue?.column},${activeValue.aggregate}`;
-        }
-      }
-    });
-
-    return query;
-  };
 
   return (
     <>
-      {(getGroupColumns()?.filter((col) => isNumeric(col)) as AdvancedQueryColumn[])?.length > 0 ||
-      hasAggregate(options.columns as AdvancedQueryColumn[]) ? (
+      {(getGroupColumns(options)?.filter((col) => isNumeric(col)) as AdvancedQueryColumn[])
+        ?.length > 0 || hasAggregate(options.columns as AdvancedQueryColumn[]) ? (
         <>
           <JqueryQueryBuilder
             fieldData={fieldData()}
