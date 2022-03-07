@@ -6,7 +6,7 @@ import {
   JqueryQueryBuilderFilter,
   JqueryQueryBuilderHaving,
   JqueryQueryBuilderIcons,
-} from '../../types/operations';
+} from './utils/types';
 import './jqueryQueryBuilder.css';
 
 export interface JqueryQueryBuilderProps {
