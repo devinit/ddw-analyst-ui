@@ -54,12 +54,12 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
   };
 
   return (
-    <StyledDiv className="mt-2">
+    <div className="mt-2">
       <Alert show={!!error} variant="warning">
         {error}
       </Alert>
-      {renderContent()}
-    </StyledDiv>
+      <StyledDiv>{renderContent()}</StyledDiv>
+    </div>
   );
 };
 
