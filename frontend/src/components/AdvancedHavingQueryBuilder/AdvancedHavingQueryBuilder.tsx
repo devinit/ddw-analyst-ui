@@ -4,6 +4,7 @@ import {
   AdvancedQueryColumn,
   AdvancedQueryHaving,
   AdvancedQueryOptions,
+  JqueryQueryBuilderFilter,
   JqueryQueryBuilderHaving,
   JqueryQueryBuilderHavingComparator,
 } from '../../types/operations';
@@ -122,23 +123,27 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
     return false;
   };
-  const getHavingQueryValues = (rules) => {
-    rules.rules?.map((_rule, index) => {
-      const element = (
-        (rules as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
-      )[index];
-      if ('plain' in (element.value as { plain: string | number })) {
-        element.value = (element.value as { plain: string | number })['plain'];
+  const getHavingQueryValues = (query: JqueryQueryBuilderHaving) => {
+    query.rules?.map((rule, index: number) => {
+      if (rule.hasOwnProperty('condition')) {
+        getHavingQueryValues(rule as JqueryQueryBuilderHaving);
       } else {
-        const activeValue: { column: string; aggregate: string } = element.value as {
-          column: string;
-          aggregate: string;
-        };
-        element.value = `${activeValue?.column},${activeValue.aggregate}`;
+        const element = (
+          (query as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
+        )[index];
+        if ('plain' in (element.value as { plain: string | number })) {
+          element.value = (element.value as { plain: string | number })['plain'];
+        } else {
+          const activeValue: { column: string; aggregate: string } = element.value as {
+            column: string;
+            aggregate: string;
+          };
+          element.value = `${activeValue?.column},${activeValue.aggregate}`;
+        }
       }
     });
 
-    return rules;
+    return query;
   };
 
   return (
