@@ -137,8 +137,6 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     );
   }
 
-  return (
-    <Alert variant="warning">Having clause requires numeric columns in the Group By clause</Alert>
-  );
+  return <Alert variant="warning">Having clause requires numeric columns or aggregates</Alert>;
 };
 export { AdvancedHavingQueryBuilder };
