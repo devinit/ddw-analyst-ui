@@ -1,11 +1,12 @@
+import re
+
 from core.pypika_utils import QueryBuilder
 from data.db_manager import fetch_data, analyse_query, run_query
-from core.models import FrozenData, Source, SourceColumnMap, Operation, FrozenData
+from core.models import FrozenData, Source, Operation, FrozenData
 from pypika import Table, Query
 from pypika import functions as pypika_fn
 from core.pypika_fts_utils import TableQueryBuilder
 from query_builder.advanced import AdvancedQueryBuilder
-from core.const import DEFAULT_LIMIT_COUNT
 
 def build_query(operation=None, steps=None, limit=None, offset=None, estimate_count=None, frozen_table_id=None):
     """Build an SQL query"""
@@ -109,3 +110,14 @@ def get_all_frozen_dataset(table, schema='dataset'):
     data_query = Query.from_(table_name).select(table_name.star).get_sql()
     count_query = Query.from_(table_name).select(pypika_fn.Count(table_name.star)).get_sql()
     return fetch_data((count_query, data_query))
+
+# for raw sql queries
+def format_query_for_preview(query, limit=10, offset=0):
+    final_query = query
+    if not find_whole_word('limit')(query) or not find_whole_word('offset')(query):
+        final_query = '%s LIMIT %s OFFSET %s;' % (query.split(';')[0], limit, offset)
+
+    return final_query
+
+def find_whole_word(word):
+    return re.compile(r'\b({0})\b'.format(word), flags=re.IGNORECASE).search
