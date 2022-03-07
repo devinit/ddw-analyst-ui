@@ -5,7 +5,6 @@ import {
   JqueryQueryBuilderFieldData,
   JqueryQueryBuilderFilter,
   JqueryQueryBuilderHaving,
-  JqueryQueryBuilderHavingComparator,
   JqueryQueryBuilderIcons,
 } from '../../types/operations';
 import './jqueryQueryBuilder.css';
