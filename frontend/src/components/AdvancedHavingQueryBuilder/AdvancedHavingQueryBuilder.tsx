@@ -9,7 +9,14 @@ import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
 import { createQueryBuilderRules, parseHavingQuery } from '../JqueryQueryBuilder/utils';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
-import { getGroupColumns, getHavingQueryValues } from './utils';
+import {
+  getAggregateColumns,
+  getGroupByColumns,
+  getHavingQueryValues,
+  hasAggregate,
+  hasNumericColumns,
+  isNumeric,
+} from './utils';
 
 interface ComponentProps {
   source: SourceMap;
@@ -19,34 +26,8 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
 
-  const getNumericColumns = () => {
-    const sourceColumns: Column[] = (source?.get('columns') as ColumnList).toJS() as Column[];
-
-    return (getGroupColumns(options) as AdvancedQueryColumn[])
-      .filter((column) => {
-        const matchingColumn = sourceColumns.find((col) => col.name === column.name);
-
-        return matchingColumn && matchingColumn.data_type === 'N';
-      })
-      .map((col) => ({
-        id: col.id as number,
-        alias: col.alias as string,
-        name: col.name as string,
-      }));
-  };
-
-  const isNumeric = (column: AdvancedQueryColumn) => {
-    if (getNumericColumns()?.find((col) => col.name === column.name)) {
-      return true;
-    }
-
-    return false;
-  };
-
-  const getAggregateColumns = () => options.columns?.filter((column) => column.aggregate);
-
   const getColumns = () => {
-    const groupColumns = getGroupColumns(options);
+    const groupColumns = getGroupByColumns(options);
     const aggregateColumns = getAggregateColumns();
 
     return groupColumns?.concat(aggregateColumns as AdvancedQueryColumn);
@@ -73,7 +54,10 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           type: 'string',
           operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal'],
         });
-      } else if (isNumeric(column) && !column.aggregate) {
+      } else if (
+        isNumeric((source.get('columns') as ColumnList).toJS() as Column[], column) &&
+        !column.aggregate
+      ) {
         data.push({
           id: column.name as string,
           label: `${column.alias as string}(aggregate value)`,
@@ -95,7 +79,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const onReplace = () => {
     const rules = jqBuilder?.getRules();
     const aggregateColumns = getAggregateColumns();
-    const columns = getGroupColumns(options);
+    const columns = getGroupByColumns(options);
     options.having = parseHavingQuery(
       {},
       rules.condition,
@@ -112,62 +96,57 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     jqBuilder?.reset();
   };
 
-  const hasAggregate = (columns: AdvancedQueryColumn[]) => {
-    const aggregateColumns = columns?.find((column: AdvancedQueryColumn) => column.aggregate);
-    if (aggregateColumns) return true;
-
-    return false;
-  };
+  if (
+    hasNumericColumns(source.get('columns') as ColumnList, options) ||
+    hasAggregate(options.columns)
+  ) {
+    return (
+      <>
+        <JqueryQueryBuilder
+          fieldData={fieldData()}
+          getJqueryBuilderInstance={getJqueryBuilderInstance}
+          icons={{
+            add_group: 'fa fa-plus-circle',
+            add_rule: 'fa fa-plus',
+            remove_group: 'fa fa-times realign',
+            remove_rule: 'fa fa-times realign',
+            error: 'fa fa-exclamation-triangle',
+          }}
+          rules={createQueryBuilderRules({}, options.having)}
+          getHavingQueryValues={getHavingQueryValues}
+        />
+        <ButtonGroup className="mr-2">
+          <Button
+            variant="danger"
+            size="sm"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            data-html="true"
+            title={`<i>Replaces</i> existing filter config`}
+            onClick={() => onReplace()}
+          >
+            Add
+          </Button>
+          <Button
+            variant="dark"
+            size="sm"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            data-html="true"
+            title={`<i>Resets</i> config to default JSON`}
+            onClick={onReset}
+          >
+            Reset
+          </Button>
+        </ButtonGroup>
+      </>
+    );
+  }
 
   return (
-    <>
-      {(getGroupColumns(options)?.filter((col) => isNumeric(col)) as AdvancedQueryColumn[])
-        ?.length > 0 || hasAggregate(options.columns as AdvancedQueryColumn[]) ? (
-        <>
-          <JqueryQueryBuilder
-            fieldData={fieldData()}
-            getJqueryBuilderInstance={getJqueryBuilderInstance}
-            icons={{
-              add_group: 'fa fa-plus-circle',
-              add_rule: 'fa fa-plus',
-              remove_group: 'fa fa-times realign',
-              remove_rule: 'fa fa-times realign',
-              error: 'fa fa-exclamation-triangle',
-            }}
-            rules={createQueryBuilderRules({}, options.having)}
-            getHavingQueryValues={getHavingQueryValues}
-          />
-          <ButtonGroup className="mr-2">
-            <Button
-              variant="danger"
-              size="sm"
-              data-toggle="tooltip"
-              data-placement="bottom"
-              data-html="true"
-              title={`<i>Replaces</i> existing filter config`}
-              onClick={() => onReplace()}
-            >
-              Add
-            </Button>
-            <Button
-              variant="dark"
-              size="sm"
-              data-toggle="tooltip"
-              data-placement="bottom"
-              data-html="true"
-              title={`<i>Resets</i> config to default JSON`}
-              onClick={onReset}
-            >
-              Reset
-            </Button>
-          </ButtonGroup>
-        </>
-      ) : (
-        <Alert variant="warning" className="mt-2">
-          Having clause requires groupBy(with numeric values) or aggregate columns
-        </Alert>
-      )}
-    </>
+    <Alert variant="warning" className="mt-2">
+      Having clause requires numeric columns in the Group By clause
+    </Alert>
   );
 };
 export { AdvancedHavingQueryBuilder };
