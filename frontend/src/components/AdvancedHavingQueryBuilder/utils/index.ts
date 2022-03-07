@@ -46,10 +46,10 @@ export const getHavingQueryValues = (query: JqueryQueryBuilderHaving): JqueryQue
   return query;
 };
 export const getGroupByColumns = ({
-  columns,
+  columns = [],
   groupby: columnNames,
-}: AdvancedQueryOptions): AdvancedQueryColumn[] | undefined =>
-  columns?.filter((col) => col.name && columnNames?.includes(col.name));
+}: AdvancedQueryOptions): AdvancedQueryColumn[] =>
+  columns.filter((col) => col.name && columnNames?.includes(col.name));
 
 export const isNumeric = (columns: Column[], column: AdvancedQueryColumn): boolean =>
   !!columns.find((col) => col.name === column.name && col.data_type === 'N');
