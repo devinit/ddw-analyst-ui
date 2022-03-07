@@ -4,6 +4,8 @@ import {
   AdvancedQueryColumn,
   AdvancedQueryHaving,
   AdvancedQueryOptions,
+  JqueryQueryBuilderHaving,
+  JqueryQueryBuilderHavingComparator,
 } from '../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
@@ -120,6 +122,24 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
     return false;
   };
+  const getHavingQueryValues = (rules) => {
+    rules.rules?.map((_rule, index) => {
+      const element = (
+        (rules as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
+      )[index];
+      if ('plain' in (element.value as { plain: string | number })) {
+        element.value = (element.value as { plain: string | number })['plain'];
+      } else {
+        const activeValue: { column: string; aggregate: string } = element.value as {
+          column: string;
+          aggregate: string;
+        };
+        element.value = `${activeValue?.column},${activeValue.aggregate}`;
+      }
+    });
+
+    return rules;
+  };
 
   return (
     <>
@@ -137,6 +157,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
               error: 'fa fa-exclamation-triangle',
             }}
             rules={createQueryBuilderRules({}, options.having)}
+            getHavingQueryValues={getHavingQueryValues}
           />
           <ButtonGroup className="mr-2">
             <Button

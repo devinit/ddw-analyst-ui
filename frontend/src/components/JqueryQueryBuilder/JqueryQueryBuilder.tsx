@@ -15,6 +15,9 @@ export interface JqueryQueryBuilderProps {
   getJqueryBuilderInstance: (jqInstance: any) => void;
   icons?: JqueryQueryBuilderIcons;
   rules: JqueryQueryBuilderFilter | JqueryQueryBuilderHaving;
+  getHavingQueryValues: (
+    rules: JqueryQueryBuilderFilter | JqueryQueryBuilderHaving,
+  ) => JqueryQueryBuilderFilter | JqueryQueryBuilderHaving;
 }
 
 const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
@@ -22,6 +25,7 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
   getJqueryBuilderInstance,
   icons,
   rules,
+  getHavingQueryValues,
 }) => {
   useEffect(() => {
     const jq = new jQueryQueryBuilder((window as any).$('#builder'), {
@@ -41,20 +45,7 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
             .value,
         ) === '[object Object]'
       ) {
-        rules.rules?.map((_rule, index) => {
-          const element = (
-            (rules as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
-          )[index];
-          if ('plain' in (element.value as { plain: string | number })) {
-            element.value = (element.value as { plain: string | number })['plain'];
-          } else {
-            const activeValue: { column: string; aggregate: string } = element.value as {
-              column: string;
-              aggregate: string;
-            };
-            element.value = `${activeValue?.column},${activeValue.aggregate}`;
-          }
-        });
+        rules = getHavingQueryValues(rules);
       }
       jq.setRules(rules);
     }
