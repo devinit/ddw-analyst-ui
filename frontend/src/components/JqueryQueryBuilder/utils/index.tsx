@@ -1,12 +1,11 @@
+import { JqueryQueryBuilderComps, JqueryQueryBuilderFilter } from './types';
+import { getColumnFromAlias } from '../../AdvancedHavingQueryBuilder/utils';
 import {
   AdvancedQueryColumn,
   AdvancedQueryFilter,
   AdvancedQueryHaving,
   FilterComp,
-  JqueryQueryBuilderComps,
-  JqueryQueryBuilderFilter,
 } from '../../../types/operations';
-import { getColumnFromAlias } from '../../AdvancedHavingQueryBuilder/utils';
 
 export const parseQuery = (
   finalElement: any,
