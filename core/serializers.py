@@ -14,6 +14,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.utils import model_meta
 
+from data.db_manager import run_query
 from core import query
 from core.const import DEFAULT_LIMIT_COUNT
 from core.errors import (AliasCreationError, AliasUpdateError,
@@ -190,7 +191,8 @@ class OperationSerializer(serializers.ModelSerializer):
             operation = Operation.objects.create(**validated_data)
             operation.user = read_only_dict['user']
             if operation.advanced_config and len(operation.advanced_config) > 0:
-                operation.operation_query = query.get_advanced_config_query(operation.advanced_config)
+                if not operation.is_raw:
+                    operation.operation_query = query.get_advanced_config_query(operation.advanced_config)
             else:
                 for step in read_only_dict['operationstep_set']:
                     OperationStep.objects.create(operation=operation, **step)
@@ -217,7 +219,8 @@ class OperationSerializer(serializers.ModelSerializer):
                 instance.description = validated_data.get('description')
                 instance.is_draft = validated_data.get('is_draft')
                 instance.advanced_config = advanced_config
-                instance.operation_query = query.get_advanced_config_query(advanced_config)
+                if not instance.is_raw:
+                    instance.operation_query = query.get_advanced_config_query(advanced_config)
                 instance.save()
             else:
                 updated_steps = validated_data.pop('operationstep_set')
@@ -261,7 +264,10 @@ class OperationSerializer(serializers.ModelSerializer):
 
     def create_operation_data_aliases(self, operation):
         if operation.advanced_config and len(operation.advanced_config) > 0:
-            count, data = query.advanced_query_table(operation.advanced_config, 1, 0, estimate_count=True)
+            if operation.is_raw:
+                data = run_query(query.format_query_for_preview(operation.operation_query, 1, 0), fetch=True)
+            else:
+                count, data = query.advanced_query_table(operation.advanced_config, 1, 0, estimate_count=True)
         else:
             count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
@@ -290,7 +296,10 @@ class OperationSerializer(serializers.ModelSerializer):
 
     def update_operation_data_aliases(self, operation):
         if operation.advanced_config and len(operation.advanced_config) > 0:
-            count, data = query.advanced_query_table(operation.advanced_config, 1, 0, estimate_count=True)
+            if operation.is_raw:
+                data = run_query(query.format_query_for_preview(operation.operation_query, 1, 0), fetch=True)
+            else:
+                count, data = query.advanced_query_table(operation.advanced_config, 1, 0, estimate_count=True)
         else:
             count, data = query.query_table(operation, 1, 0, estimate_count=True)
         operation.alias_creation_status = 'p'
