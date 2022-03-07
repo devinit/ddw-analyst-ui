@@ -26,13 +26,6 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
 
-  const getColumns = () => {
-    const groupColumns = getGroupByColumns(options);
-    const aggregateColumns = getAggregateColumns();
-
-    return groupColumns?.concat(aggregateColumns as AdvancedQueryColumn);
-  };
-
   const getAggregateValues = (aggregateOptions: string[], column: AdvancedQueryColumn) => {
     const options = aggregateOptions.map((option) => {
       return {
@@ -46,7 +39,8 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
   const fieldData = () => {
     const data: any[] = [];
-    (getColumns() as AdvancedQueryColumn[])?.map((column) => {
+    const columns = getGroupByColumns(options).concat(getAggregateColumns(options.columns));
+    columns.map((column) => {
       if (column.aggregate) {
         data.push({
           id: column.name as string,
@@ -78,7 +72,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
   const onReplace = () => {
     const rules = jqBuilder?.getRules();
-    const aggregateColumns = getAggregateColumns();
+    const aggregateColumns = getAggregateColumns(options.columns);
     const columns = getGroupByColumns(options);
     options.having = parseHavingQuery(
       {},
@@ -144,9 +138,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   }
 
   return (
-    <Alert variant="warning" className="mt-2">
-      Having clause requires numeric columns in the Group By clause
-    </Alert>
+    <Alert variant="warning">Having clause requires numeric columns in the Group By clause</Alert>
   );
 };
 export { AdvancedHavingQueryBuilder };
