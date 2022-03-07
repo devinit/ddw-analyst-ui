@@ -6,3 +6,7 @@ from .serializers import PreferenceSerializer
 class PreferedQueryBuilder(generics.ListAPIView):
     queryset = Preference.objects.all()
     serializer_class = PreferenceSerializer
+
+class UpdatePreferedQueryBuilder(generics.UpdateAPIView):
+    queryset = Preference.objects.all()
+    serializer_class = PreferenceSerializer
