@@ -298,7 +298,7 @@ export const previewAdvancedDatasetData = async (
         'Content-Type': 'application/json',
         Authorization: `token ${token}`,
       },
-      data: { advanced_config: options },
+      data: { is_raw: false, advanced_config: options },
     })
     .then((response: AxiosResponse<OperationDataResult>) => response)
     .catch((error) => error.response);
