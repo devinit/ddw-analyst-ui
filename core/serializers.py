@@ -221,6 +221,8 @@ class OperationSerializer(serializers.ModelSerializer):
                 instance.advanced_config = advanced_config
                 if not instance.is_raw:
                     instance.operation_query = query.get_advanced_config_query(advanced_config)
+                else:
+                    instance.operation_query = validated_data.get('operation_query')
                 instance.save()
             else:
                 updated_steps = validated_data.pop('operationstep_set')
