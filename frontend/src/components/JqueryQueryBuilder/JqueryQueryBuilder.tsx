@@ -8,8 +8,6 @@ import {
   JqueryQueryBuilderHavingComparator,
   JqueryQueryBuilderIcons,
 } from '../../types/operations';
-import { aggregateOptions } from '../AdvancedHavingQueryBuilder';
-import { sortAggregateOptions } from '../AdvancedHavingQueryBuilder/utils';
 import './jqueryQueryBuilder.css';
 
 export interface JqueryQueryBuilderProps {
@@ -35,7 +33,7 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
 
     jq.init();
 
-    if (Object.keys(rules).length > 0) {
+    if (Object.keys(rules).length) {
       if (
         rules &&
         Object.prototype.toString.call(
@@ -43,29 +41,21 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
             .value,
         ) === '[object Object]'
       ) {
-        const element = (
-          (rules as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
-        )[0];
-        if ('plain' in (element.value as { plain: string | number })) {
-          element.value = (element.value as { plain: string | number })['plain'];
-        } else {
-          const previousValue: { column: string; aggregate: string } = element.value as {
-            column: string;
-            aggregate: string;
-          };
-          delete element.value;
-          element.values = sortAggregateOptions(
-            aggregateOptions,
-            (previousValue as { column: string; aggregate: string }).aggregate,
-          ).map((option) => {
-            return {
-              value: `${previousValue?.column},${option}`,
-              label: `${option}(${previousValue?.column})`,
+        rules.rules?.map((_rule, index) => {
+          const element = (
+            (rules as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
+          )[index];
+          if ('plain' in (element.value as { plain: string | number })) {
+            element.value = (element.value as { plain: string | number })['plain'];
+          } else {
+            const activeValue: { column: string; aggregate: string } = element.value as {
+              column: string;
+              aggregate: string;
             };
-          });
-        }
+            element.value = `${activeValue?.column},${activeValue.aggregate}`;
+          }
+        });
       }
-      console.log(rules);
       jq.setRules(rules);
     }
     getJqueryBuilderInstance(jq);
