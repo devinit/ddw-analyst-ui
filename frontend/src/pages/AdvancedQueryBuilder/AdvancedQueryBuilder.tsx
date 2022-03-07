@@ -54,6 +54,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           );
         }
       }
+      if ((pageOperation as OperationMap).get('is_raw') && mode !== 'sql') {
+        setMode('sql');
+      }
     }
   }, [(pageOperation as OperationMap)?.size, sources.count()]);
 
@@ -135,7 +138,11 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                     editable={isEditable(operation)}
                   />
                 ) : (
-                  <SQLEditor />
+                  <SQLEditor
+                    source={activeSource}
+                    operation={operation}
+                    onUpdateOperation={onUpdateOperation}
+                  />
                 )}
               </OperationTabContainer>
             </SourcesContext.Provider>

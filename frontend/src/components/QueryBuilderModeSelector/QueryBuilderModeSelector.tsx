@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 
 interface ComponentProps {
@@ -23,6 +23,10 @@ const QueryBuilderModeSelector: FC<ComponentProps> = (props) => {
     }
     setSelectedMode(data.value as Mode);
   };
+
+  useEffect(() => {
+    if (props.mode) setSelectedMode(props.mode);
+  }, [props.mode]);
 
   return (
     <div className={classNames(props.className)}>
