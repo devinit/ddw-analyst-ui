@@ -45,14 +45,25 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
         const operationSource = getSourceIDFromOperation(operation);
         // check if the source has been changed
         if (operationSource !== source.get('id')) {
+          const updatedOperation = operation
+            .set('advanced_config', fromJS({ source: source.get('id') }))
+            .set('operation_query', defaultQuery);
+          onUpdateOperation(updatedOperation);
+          fetchPreviewData(updatedOperation);
           setValue(defaultQuery);
+
+          return;
         } else if (operation.get('operation_query')) {
           setValue(format(operation.get('operation_query') as string, { language: 'postgresql' }));
         } else {
           setValue(defaultQuery);
         }
         if (!operation.get('is_raw')) {
-          onUpdateOperation(operation.set('is_raw', true));
+          const updatedOperation = operation.set('is_raw', true);
+          onUpdateOperation(updatedOperation);
+          fetchPreviewData(updatedOperation);
+
+          return;
         }
         fetchPreviewData(operation);
       } else {
