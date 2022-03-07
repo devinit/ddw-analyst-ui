@@ -1,10 +1,11 @@
 import { PostgreSQL, sql } from '@codemirror/lang-sql';
+import { Completion } from '@codemirror/autocomplete';
 import { fromJS } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { format } from 'sql-formatter';
 import { Operation, OperationData, OperationDataList, OperationMap } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { getSourceIDFromOperation } from '../../utils';
 import { fetchOperationDataPreview } from '../../utils/hooks';
 import { CodeMirrorNext } from '../CodeMirrorNext';
@@ -16,42 +17,53 @@ interface ComponentProps {
   onUpdateOperation: (operation: OperationMap) => void;
 }
 
+const getSchema = (table: string, source: SourceMap): { [table: string]: Completion[] } => {
+  const columns = (source.get('columns') as ColumnList).toJS() as Column[];
+
+  return {
+    [table]: columns.map<Completion>((column) => ({
+      label: column.name as string,
+      detail: column.alias as string,
+      info: column.description as string,
+    })),
+  };
+};
+
 const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation }) => {
   const [value, setValue] = useState('');
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
-    if (source && !operation) {
+    if (source) {
       const defaultQuery = format(
         `SELECT * FROM "${source.get('schema')}"."${source.get('active_mirror_name')}";`,
         { language: 'postgresql' },
       );
-      setValue(defaultQuery);
-      onUpdateOperation(
-        fromJS({
-          is_raw: true,
-          operation_query: defaultQuery,
-          advanced_config: { source: source.get('id') },
-        }) as OperationMap,
-      );
-    }
-    if (operation && source) {
-      const operationSource = getSourceIDFromOperation(operation);
-      // check if the source has been changed
-      if (operationSource !== source.get('id')) {
-        setValue(
-          format(`SELECT * FROM "${source.get('schema')}"."${source.get('active_mirror_name')}";`, {
-            language: 'postgresql',
-          }),
-        );
+      if (operation) {
+        const operationSource = getSourceIDFromOperation(operation);
+        // check if the source has been changed
+        if (operationSource !== source.get('id')) {
+          setValue(defaultQuery);
+        } else if (operation.get('operation_query')) {
+          setValue(format(operation.get('operation_query') as string, { language: 'postgresql' }));
+        } else {
+          setValue(defaultQuery);
+        }
+        if (!operation.get('is_raw')) {
+          onUpdateOperation(operation.set('is_raw', true));
+        }
+        fetchPreviewData(operation);
       } else {
-        setValue(format(operation.get('operation_query') as string, { language: 'postgresql' }));
+        setValue(defaultQuery);
+        onUpdateOperation(
+          fromJS({
+            is_raw: true,
+            operation_query: defaultQuery,
+            advanced_config: { source: source.get('id') },
+          }) as OperationMap,
+        );
       }
-      if (!operation.get('is_raw')) {
-        onUpdateOperation(operation.set('is_raw', true));
-      }
-      fetchPreviewData(operation);
     }
   }, [source, operation]);
 
@@ -84,7 +96,13 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
     <>
       <CodeMirrorNext
         value={value}
-        extensions={[sql({ dialect: PostgreSQL, upperCaseKeywords: true })]}
+        extensions={[
+          sql({
+            dialect: PostgreSQL,
+            upperCaseKeywords: true,
+            schema: getSchema(`${source.get('active_mirror_name')}`, source),
+          }),
+        ]}
         onChange={onChange}
       />
       <div className="mt-2">
