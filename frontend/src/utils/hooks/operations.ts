@@ -7,6 +7,7 @@ import { setToken } from '../../actions/token';
 import { FetchOptions } from '../../types/api';
 import {
   AdvancedQueryOptions,
+  AdvancedQueryOptionsMap,
   Operation,
   OperationData,
   OperationDataList,
@@ -212,12 +213,14 @@ export const useOperation = (id?: number, fetch = false, immutable = true): UseO
 interface UseOperationQueryResult {
   query?: string;
   loading: boolean;
+  error?: string;
 }
 
 export const useOperationQuery = (operation?: OperationMap): UseOperationQueryResult => {
   const [token, setAPIToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
@@ -227,7 +230,7 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
 
   const fetchOperationQuery = (operation: OperationMap) => {
     setLoading(true);
-    const config = operation.get('advanced_config');
+    const config = operation.get('advanced_config') as AdvancedQueryOptionsMap;
     if (config && token) {
       axios
         .request({
@@ -238,22 +241,27 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
             'Content-Type': 'application/json',
             Authorization: `token ${token}`,
           },
-          data: { config: (config as any).toJS() },
+          data: { config: config.toJS() },
         })
         .then(({ status, data, statusText }: AxiosResponse<{ query: string }>) => {
           if (status === 200 && data) {
             setQuery(data.query);
-            setLoading(false);
+            setError('');
           } else if (status === 401) {
             console.log('Failed to generate SQL query: ', statusText);
             setQuery('');
-            setLoading(false);
+            setError(statusText);
           }
+          setLoading(false);
         })
         .catch((error) => {
-          console.log(
-            `Failed to generate SQL query: ${error.response.status} ${error.response.statusText}`,
-          );
+          if (error.response && error.response.data && error.response.data.detail) {
+            setError(error.response.data.detail);
+          } else {
+            console.log(
+              `Failed to generate SQL query: ${error.response.status} ${error.response.statusText}`,
+            );
+          }
           setQuery('');
           setLoading(false);
         });
@@ -273,7 +281,7 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
     }
   }, [operation, token]);
 
-  return { loading, query };
+  return { loading, query, error };
 };
 
 export const previewAdvancedDatasetData = async (

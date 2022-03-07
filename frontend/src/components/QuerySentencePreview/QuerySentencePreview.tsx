@@ -83,7 +83,9 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
     } else {
       setAlert([]);
       setValidOptions(options);
-      fetchPreviewData(options);
+      if (previewOption === 'data') {
+        fetchPreviewData(options);
+      }
       if (props.onValidUpdate) props.onValidUpdate(options);
     }
   }, [options]);
