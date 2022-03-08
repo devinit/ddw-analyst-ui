@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 export interface TreeViewProps {
-  data: EnhancedNode[];
+  data: Data[];
   depth?: number;
 
   deleteElement?: ReactElement;
@@ -12,9 +12,7 @@ export interface TreeViewProps {
   isDeletable?: (node: Data, depth?: number) => void;
   isExpandable?: (node: Data, depth?: number) => void;
 
-  keywordChildren?: string;
   keywordChildrenLoading?: string;
-  keywordKey?: string;
 
   loadingElement?: ReactElement;
   noChildrenAvailableMessage?: string;
@@ -36,5 +34,3 @@ export interface Data {
   isChildrenLoading?: boolean;
   children?: Data[];
 }
-
-export type EnhancedNode = Data & { [key: string]: unknown };
