@@ -55,7 +55,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
     if (isCheckable && isCheckable(node, depth)) {
       return (
         <ICheck
-          id={`${node.id}`}
+          id={`${node.id}-${node.name.split(' ').join('')}`}
           name={node.name}
           label={label}
           onChange={(check) => handleCheckToggle(node, check)}
