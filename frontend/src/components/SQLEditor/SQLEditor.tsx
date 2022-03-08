@@ -1,5 +1,5 @@
-import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { Completion } from '@codemirror/autocomplete';
+import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { fromJS } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
 import { Alert, Button, Col, Row } from 'react-bootstrap';
@@ -10,6 +10,7 @@ import { getSourceIDFromOperation } from '../../utils';
 import { fetchOperationDataPreview } from '../../utils/hooks';
 import { CodeMirrorNext } from '../CodeMirrorNext';
 import { OperationPreview } from '../OperationPreview';
+import { SourcesMetaData } from '../SourcesMetaData';
 
 interface ComponentProps {
   source?: SourceMap;
@@ -133,7 +134,9 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
           loading={dataLoading}
         />
       </Col>
-      <Col lg={3}>Sidebar Goes Here</Col>
+      <Col lg={3}>
+        <SourcesMetaData />
+      </Col>
     </Row>
   );
 };
