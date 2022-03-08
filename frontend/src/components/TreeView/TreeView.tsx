@@ -14,37 +14,37 @@ const TreeView: FC<TreeViewProps> = (props) => {
 
   const handleCheckToggle = (node: Data, check: ICheckData) => {
     const { onCheckToggle: onCheckToggleCb, depth } = props;
-    const _data = cloneDeep(data);
-    const currentNode = find(_data, node) as Data;
+    const dataClone = cloneDeep(data);
+    const currentNode = find(dataClone, node) as Data;
     const toggledNodes = [];
     currentNode.isChecked = check.checked;
     toggledNodes.push(currentNode);
 
     if (onCheckToggleCb) onCheckToggleCb(toggledNodes, depth);
-    if (props.onUpdate) props.onUpdate(_data);
+    if (props.onUpdate) props.onUpdate(dataClone);
   };
 
   const handleDelete = (node: Data) => {
-    const { onDelete: onDeleteCb, depth } = props;
+    const { onDelete, depth } = props;
 
     const newData = cloneDeep(data).filter((nodeItem) => {
       return !isEqual(node, nodeItem);
     });
 
-    if (onDeleteCb) {
-      onDeleteCb(node, newData, depth);
+    if (onDelete) {
+      onDelete(node, newData, depth);
       if (props.onUpdate) props.onUpdate(newData);
     }
   };
 
   const renderExpandToggle = (node: Data) => {
-    const { onExpandToggle: onExpandToggleCb, depth } = props;
+    const { onExpandToggle, depth } = props;
     const updatedData = cloneDeep(data);
     const currentNode = find(updatedData, node) as Data;
 
     currentNode.isExpanded = !currentNode.isExpanded;
 
-    if (onExpandToggleCb) onExpandToggleCb(currentNode, depth);
+    if (onExpandToggle) onExpandToggle(currentNode, depth);
     if (props.onUpdate) props.onUpdate(updatedData);
   };
 
@@ -94,9 +94,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
       return (
         <div
           className={`super-treeview-triangle-btn ${className}`}
-          onClick={() => {
-            renderExpandToggle(node);
-          }}
+          onClick={() => renderExpandToggle(node)}
         />
       );
     } else {
@@ -204,30 +202,14 @@ const TreeView: FC<TreeViewProps> = (props) => {
 
 TreeView.defaultProps = {
   depth: 0,
-
-  deleteElement: <div>(X)</div>,
-
-  getStyleClass: (/* node, depth */) => {
-    return '';
-  },
-  isCheckable: (/* node, depth */) => {
-    return true;
-  },
-  isDeletable: (/* node, depth */) => {
-    return true;
-  },
-  isExpandable: (/* node, depth */) => {
-    return true;
-  },
-
+  deleteElement: <i className="fa fa-trash"></i>,
+  getStyleClass: (/* node, depth */) => '',
+  isCheckable: (/* node, depth */) => true,
+  isDeletable: (/* node, depth */) => true,
+  isExpandable: (/* node, depth */) => true,
   loadingElement: <div>loading...</div>,
-
   noChildrenAvailableMessage: 'No data found',
-
-  onDelete: (/* node, updatedData, depth */) => {
-    return true;
-  },
-
+  onDelete: (/* node, updatedData, depth */) => true,
   transitionEnterTimeout: 1200,
   transitionExitTimeout: 1200,
 };
