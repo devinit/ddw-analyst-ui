@@ -19,7 +19,7 @@ export interface TreeViewProps {
 }
 
 export interface Data {
-  id: number;
+  id: number | string;
   name: string;
   isExpanded?: boolean;
   isChecked?: boolean;
