@@ -13,14 +13,14 @@ interface ICheckProps { // eslint-disable-line
   name: string;
   label?: ReactNode;
   checked?: boolean;
-  onChange?: (data: ICheckData) => void;
+  onChange?: (data: ICheckData, event: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 }
 
 const ICheck: FunctionComponent<ICheckProps> = ({ id, name, label, checked, ...props }) => {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
-      props.onChange({ checked: event.target.checked, value: name });
+      props.onChange({ checked: event.target.checked, value: name }, event);
     }
   };
 

@@ -1,47 +1,31 @@
-import { cloneDeep, find, get, isEmpty, isEqual, isNil } from 'lodash';
+import { cloneDeep, find, get, isEmpty, isEqual } from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Data, TreeViewProps } from './utils/types';
+import { ICheck, ICheckData } from '../ICheck';
+import './styles.css';
+import { Data, EnhancedNode, TreeViewProps } from './utils/types';
 
 const TreeView: FC<TreeViewProps> = (props) => {
   const [data, setData] = useState(cloneDeep(props.data));
-  const [lastCheckToggledNodeIndex, setLastCheckToggledNodeIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setData(cloneDeep(props.data));
   }, [props.data]);
-  useEffect(() => {
-    if (props.onUpdateCb) props.onUpdateCb(data, props.depth);
-  }, data);
 
-  const handleCheckToggle = (node: Data, event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-    const { onCheckToggleCb, depth } = props;
+  const handleCheckToggle = (node: EnhancedNode, check: ICheckData) => {
+    const { onCheckToggle: onCheckToggleCb, depth } = props;
     const _data = cloneDeep(data);
-    const currentNode = find(_data, node) as Data;
-    const currentNodeIndex = _data.indexOf(currentNode);
+    const currentNode = find(_data, node) as EnhancedNode;
     const toggledNodes = [];
-    if (event.shiftKey && !isNil(lastCheckToggledNodeIndex)) {
-      const rangeStart = Math.min(currentNodeIndex, lastCheckToggledNodeIndex);
-      const rangeEnd = Math.max(currentNodeIndex, lastCheckToggledNodeIndex);
-
-      const nodeRange = _data.slice(rangeStart, rangeEnd + 1);
-
-      nodeRange.forEach((node) => {
-        node.isChecked = (event.target as any).checked;
-        toggledNodes.push(node);
-      });
-    } else {
-      currentNode.isChecked = (event.target as any).checked;
-      toggledNodes.push(currentNode);
-    }
+    currentNode.isChecked = check.checked;
+    toggledNodes.push(currentNode);
 
     if (onCheckToggleCb) onCheckToggleCb(toggledNodes, depth);
-    setLastCheckToggledNodeIndex(currentNodeIndex);
-    if (props.onUpdateCb) props.onUpdateCb(_data);
+    if (props.onUpdate) props.onUpdate(_data);
   };
 
   const handleDelete = (node: Data) => {
-    const { onDeleteCb, depth } = props;
+    const { onDelete: onDeleteCb, depth } = props;
 
     const newData = cloneDeep(data).filter((nodeItem) => {
       return !isEqual(node, nodeItem);
@@ -49,34 +33,35 @@ const TreeView: FC<TreeViewProps> = (props) => {
 
     if (onDeleteCb) {
       onDeleteCb(node, newData, depth);
-      if (props.onUpdateCb) props.onUpdateCb(newData);
+      if (props.onUpdate) props.onUpdate(newData);
     }
   };
 
   const handleExpandToggle = (node: Data) => {
-    const { onExpandToggleCb, depth } = props;
+    const { onExpandToggle: onExpandToggleCb, depth } = props;
     const updatedData = cloneDeep(data);
     const currentNode = find(updatedData, node) as Data;
 
     currentNode.isExpanded = !currentNode.isExpanded;
 
     if (onExpandToggleCb) onExpandToggleCb(currentNode, depth);
-    if (props.onUpdateCb) props.onUpdateCb(updatedData);
+    if (props.onUpdate) props.onUpdate(updatedData);
   };
 
-  const printCheckbox = (node: Data) => {
+  const printCheckbox = (node: EnhancedNode) => {
     const { isCheckable, keywordLabel, depth } = props;
+    const nodeText = keywordLabel ? (get(node, keywordLabel, '') as string) : '';
 
     if (isCheckable && isCheckable(node, depth)) {
       return (
-        <input
-          type="checkbox"
-          name={(node as any)[keywordLabel as string]}
-          onClick={(e) => {
-            handleCheckToggle(node, e);
-          }}
-          checked={!!node.isChecked}
+        <ICheck
           id={`${node.id}`}
+          name={node[keywordLabel as string] as string}
+          label={nodeText}
+          onChange={(check) => handleCheckToggle(node, check)}
+          checked={!!node.isChecked}
+          variant="danger"
+          className="d-inline"
         />
       );
     }
@@ -143,13 +128,12 @@ const TreeView: FC<TreeViewProps> = (props) => {
     );
   };
 
-  const printNodes = (nodeArray: Data[]) => {
+  const printNodes = (nodeArray: EnhancedNode[]) => {
     const {
       keywordKey,
-      keywordLabel,
       transitionEnterTimeout,
       transitionExitTimeout,
-      getStyleClassCb,
+      getStyleClass: getStyleClassCb,
     } = props;
 
     const nodeTransitionProps = {
@@ -168,12 +152,10 @@ const TreeView: FC<TreeViewProps> = (props) => {
         {isEmpty(nodeArray)
           ? printNoChildrenMessage()
           : nodeArray.map((node, index) => {
-              const nodeText = keywordLabel ? get(node, keywordLabel, '') : '';
-
               return (
                 <CSSTransition
                   {...nodeTransitionProps}
-                  key={keywordKey ? (node as any)[keywordKey] || index : index}
+                  key={keywordKey ? (node[keywordKey] as string) || index : index}
                 >
                   <div
                     className={`super-treeview-node${getStyleClassCb ? getStyleClassCb(node) : ''}`}
@@ -181,13 +163,6 @@ const TreeView: FC<TreeViewProps> = (props) => {
                     <div className="super-treeview-node-content">
                       {printExpandButton(node)}
                       {printCheckbox(node)}
-                      <label
-                        htmlFor={`${node.id}`}
-                        title={nodeText}
-                        className="super-treeview-text"
-                      >
-                        {nodeText}
-                      </label>
                       {printDeleteButton(node)}
                     </div>
                     {printChildren(node)}
@@ -199,7 +174,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
     );
   };
 
-  const printChildren = (node: Data) => {
+  const printChildren = (node: EnhancedNode) => {
     if (!node.isExpanded) {
       return null;
     }
@@ -216,21 +191,21 @@ const TreeView: FC<TreeViewProps> = (props) => {
       childrenElement = (
         <TreeView
           {...props}
-          data={keywordChildren ? (node as any)[keywordChildren] || [] : []}
+          data={keywordChildren ? (node[keywordChildren] as EnhancedNode[]) || [] : []}
           depth={(depth as number) + 1}
-          onUpdateCb={onChildrenUpdateCb.bind(this)}
+          onUpdate={onChildrenUpdateCb.bind(this)}
         />
       );
     }
 
     return <div className="super-treeview-children-container">{childrenElement}</div>;
 
-    function onChildrenUpdateCb(updatedData: Data[]) {
+    function onChildrenUpdateCb(updatedData: EnhancedNode[]) {
       const cloneData = cloneDeep(data);
-      const currentNode = find(cloneData, node);
+      const currentNode = find(cloneData, node) as EnhancedNode;
 
-      (currentNode as any)[keywordChildren as string] = updatedData;
-      if (props.onUpdateCb) props.onUpdateCb(updatedData);
+      currentNode[keywordChildren as string] = updatedData;
+      if (props.onUpdate) props.onUpdate(updatedData);
     }
   };
 
@@ -242,7 +217,7 @@ TreeView.defaultProps = {
 
   deleteElement: <div>(X)</div>,
 
-  getStyleClassCb: (/* node, depth */) => {
+  getStyleClass: (/* node, depth */) => {
     return '';
   },
   isCheckable: (/* node, depth */) => {
@@ -264,7 +239,7 @@ TreeView.defaultProps = {
 
   noChildrenAvailableMessage: 'No data found',
 
-  onDeleteCb: (/* node, updatedData, depth */) => {
+  onDelete: (/* node, updatedData, depth */) => {
     return true;
   },
 
