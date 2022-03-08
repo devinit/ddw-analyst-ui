@@ -51,11 +51,12 @@ const TreeView: FC<TreeViewProps> = (props) => {
   const renderCheckbox = (node: Data) => {
     const { isCheckable, depth } = props;
     const label = get(node, 'name', '');
+    const id = `${node.id}-${node.name.split(' ').join('')}`;
 
     if (isCheckable && isCheckable(node, depth)) {
       return (
         <ICheck
-          id={`${node.id}-${node.name.split(' ').join('')}`}
+          id={id}
           name={node.name}
           label={label}
           onChange={(check) => handleCheckToggle(node, check)}
@@ -65,6 +66,12 @@ const TreeView: FC<TreeViewProps> = (props) => {
         />
       );
     }
+
+    return (
+      <label htmlFor={id} title={label} className="super-treeview-text">
+        {label}
+      </label>
+    );
   };
 
   const renderDeleteButton = (node: Data) => {
