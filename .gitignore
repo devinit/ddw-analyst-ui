@@ -114,7 +114,7 @@ frontend/cypress/screenshots
 coverage/
 webpack-stats.json
 
-.vscode
+.vscode/settings.json
 
 # SSL certs
 ssl/
