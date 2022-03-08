@@ -98,14 +98,6 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     <Row>
       <Col>
         <React.Fragment>
-          <Alert variant="warning">
-            <p>
-              This feature is in <strong>BETA</strong> - <strong>for testing purposes only</strong>
-            </p>
-            <p>
-              It currently only supports creation of basic <strong>SELECT</strong> queries
-            </p>
-          </Alert>
           <Dimmer active={loading || !sources.count()} inverted>
             <Loader content="Loading" />
           </Dimmer>
