@@ -1,12 +1,12 @@
 import { ReactElement } from 'react';
 
 export interface TreeViewProps {
-  data: Data[];
+  data: EnhancedNode[];
   depth?: number;
 
   deleteElement?: ReactElement;
 
-  getStyleClassCb?: (node: Data) => void;
+  getStyleClass?: (node: Data) => void;
 
   isCheckable?: (node: Data, depth?: number) => void;
   isDeletable?: (node: Data, depth?: number) => void;
@@ -20,10 +20,10 @@ export interface TreeViewProps {
   loadingElement?: ReactElement;
   noChildrenAvailableMessage?: string;
 
-  onCheckToggleCb?: (data: Data[], depth?: number) => void;
-  onDeleteCb?: (node: Data, data: Data[], depth?: number) => void;
-  onExpandToggleCb?: (node: Data, depth?: number) => void;
-  onUpdateCb?: (data: unknown[], depth?: number) => void;
+  onCheckToggle?: (data: Data[], depth?: number) => void;
+  onDelete?: (node: Data, data: Data[], depth?: number) => void;
+  onExpandToggle?: (node: Data, depth?: number) => void;
+  onUpdate?: (data: unknown[], depth?: number) => void;
 
   transitionEnterTimeout?: number;
   transitionExitTimeout?: number;
@@ -37,3 +37,5 @@ export interface Data {
   isChildrenLoading?: boolean;
   children?: Data[];
 }
+
+export type EnhancedNode = Data & { [key: string]: unknown };
