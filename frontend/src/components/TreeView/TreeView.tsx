@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { ICheck, ICheckData } from '../ICheck';
 import './styles.css';
-import { Data, EnhancedNode, TreeViewProps } from './utils/types';
+import { Data, TreeViewProps } from './utils/types';
 
 const TreeView: FC<TreeViewProps> = (props) => {
   const [data, setData] = useState(cloneDeep(props.data));
@@ -12,10 +12,10 @@ const TreeView: FC<TreeViewProps> = (props) => {
     setData(cloneDeep(props.data));
   }, [props.data]);
 
-  const handleCheckToggle = (node: EnhancedNode, check: ICheckData) => {
+  const handleCheckToggle = (node: Data, check: ICheckData) => {
     const { onCheckToggle: onCheckToggleCb, depth } = props;
     const _data = cloneDeep(data);
-    const currentNode = find(_data, node) as EnhancedNode;
+    const currentNode = find(_data, node) as Data;
     const toggledNodes = [];
     currentNode.isChecked = check.checked;
     toggledNodes.push(currentNode);
@@ -48,7 +48,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
     if (props.onUpdate) props.onUpdate(updatedData);
   };
 
-  const printCheckbox = (node: EnhancedNode) => {
+  const printCheckbox = (node: Data) => {
     const { isCheckable, depth } = props;
     const label = get(node, 'name', '');
 
@@ -128,13 +128,8 @@ const TreeView: FC<TreeViewProps> = (props) => {
     );
   };
 
-  const printNodes = (nodeArray: EnhancedNode[]) => {
-    const {
-      keywordKey,
-      transitionEnterTimeout,
-      transitionExitTimeout,
-      getStyleClass: getStyleClassCb,
-    } = props;
+  const printNodes = (nodeArray: Data[]) => {
+    const { transitionEnterTimeout, transitionExitTimeout, getStyleClass: getStyleClassCb } = props;
 
     const nodeTransitionProps = {
       classNames: 'super-treeview-node-transition',
@@ -153,10 +148,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
           ? printNoChildrenMessage()
           : nodeArray.map((node, index) => {
               return (
-                <CSSTransition
-                  {...nodeTransitionProps}
-                  key={keywordKey ? (node[keywordKey] as string) || index : index}
-                >
+                <CSSTransition {...nodeTransitionProps} key={node.id || index}>
                   <div
                     className={`super-treeview-node${getStyleClassCb ? getStyleClassCb(node) : ''}`}
                   >
@@ -174,12 +166,12 @@ const TreeView: FC<TreeViewProps> = (props) => {
     );
   };
 
-  const printChildren = (node: EnhancedNode) => {
+  const printChildren = (node: Data) => {
     if (!node.isExpanded) {
       return null;
     }
 
-    const { keywordChildren, keywordChildrenLoading, depth } = props;
+    const { keywordChildrenLoading, depth } = props;
     const isChildrenLoading = keywordChildrenLoading
       ? get(node, keywordChildrenLoading, false)
       : false;
@@ -191,7 +183,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
       childrenElement = (
         <TreeView
           {...props}
-          data={keywordChildren ? (node[keywordChildren] as EnhancedNode[]) || [] : []}
+          data={node.children || []}
           depth={(depth as number) + 1}
           onUpdate={onChildrenUpdateCb.bind(this)}
         />
@@ -200,11 +192,11 @@ const TreeView: FC<TreeViewProps> = (props) => {
 
     return <div className="super-treeview-children-container">{childrenElement}</div>;
 
-    function onChildrenUpdateCb(updatedData: EnhancedNode[]) {
+    function onChildrenUpdateCb(updatedData: Data[]) {
       const cloneData = cloneDeep(data);
-      const currentNode = find(cloneData, node) as EnhancedNode;
+      const currentNode = find(cloneData, node) as Data;
 
-      currentNode[keywordChildren as string] = updatedData;
+      currentNode.children = updatedData;
       if (props.onUpdate) props.onUpdate(updatedData);
     }
   };
@@ -230,9 +222,7 @@ TreeView.defaultProps = {
     return true;
   },
 
-  keywordChildren: 'children',
   keywordChildrenLoading: 'isChildrenLoading',
-  keywordKey: 'id',
 
   loadingElement: <div>loading...</div>,
 
