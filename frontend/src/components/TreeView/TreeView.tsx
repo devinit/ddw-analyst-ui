@@ -171,10 +171,8 @@ const TreeView: FC<TreeViewProps> = (props) => {
       return null;
     }
 
-    const { keywordChildrenLoading, depth } = props;
-    const isChildrenLoading = keywordChildrenLoading
-      ? get(node, keywordChildrenLoading, false)
-      : false;
+    const { depth } = props;
+    const isChildrenLoading = get(node, 'isChildrenLoading', false);
     let childrenElement;
 
     if (isChildrenLoading) {
@@ -221,8 +219,6 @@ TreeView.defaultProps = {
   isExpandable: (/* node, depth */) => {
     return true;
   },
-
-  keywordChildrenLoading: 'isChildrenLoading',
 
   loadingElement: <div>loading...</div>,
 
