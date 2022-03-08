@@ -13,14 +13,14 @@ const TreeView: FC<TreeViewProps> = (props) => {
   }, [props.data]);
 
   const handleCheckToggle = (node: Data, check: ICheckData) => {
-    const { onCheckToggle: onCheckToggleCb, depth } = props;
+    const { onCheckToggle, depth } = props;
     const dataClone = cloneDeep(data);
     const currentNode = find(dataClone, node) as Data;
     const toggledNodes = [];
     currentNode.isChecked = check.checked;
     toggledNodes.push(currentNode);
 
-    if (onCheckToggleCb) onCheckToggleCb(toggledNodes, depth);
+    if (onCheckToggle) onCheckToggle(toggledNodes, depth);
     if (props.onUpdate) props.onUpdate(dataClone);
   };
 
@@ -37,7 +37,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
     }
   };
 
-  const renderExpandToggle = (node: Data) => {
+  const onToggleExpand = (node: Data) => {
     const { onExpandToggle, depth } = props;
     const updatedData = cloneDeep(data);
     const currentNode = find(updatedData, node) as Data;
@@ -85,16 +85,14 @@ const TreeView: FC<TreeViewProps> = (props) => {
   };
 
   const renderExpandButton = (node: Data) => {
-    const className = node.isExpanded
-      ? 'super-treeview-triangle-btn-down'
-      : 'super-treeview-triangle-btn-right';
+    const className = `super-treeview-triangle-btn-${node.isExpanded ? 'down' : 'right'}`;
     const { isExpandable, depth } = props;
 
     if (isExpandable && isExpandable(node, depth)) {
       return (
         <div
           className={`super-treeview-triangle-btn ${className}`}
-          onClick={() => renderExpandToggle(node)}
+          onClick={() => onToggleExpand(node)}
         />
       );
     } else {
@@ -127,7 +125,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
   };
 
   const renderNodes = (nodeArray: Data[]) => {
-    const { transitionEnterTimeout, transitionExitTimeout, getStyleClass: getStyleClassCb } = props;
+    const { transitionEnterTimeout, transitionExitTimeout, getStyleClass } = props;
 
     const nodeTransitionProps = {
       classNames: 'super-treeview-node-transition',
@@ -147,9 +145,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
           : nodeArray.map((node, index) => {
               return (
                 <CSSTransition {...nodeTransitionProps} key={node.id || index}>
-                  <div
-                    className={`super-treeview-node${getStyleClassCb ? getStyleClassCb(node) : ''}`}
-                  >
+                  <div className={`super-treeview-node${getStyleClass ? getStyleClass(node) : ''}`}>
                     <div className="super-treeview-node-content">
                       {renderExpandButton(node)}
                       {renderCheckbox(node)}
@@ -181,7 +177,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
           {...props}
           data={node.children || []}
           depth={(depth as number) + 1}
-          onUpdate={onChildrenUpdate.bind(this)}
+          onUpdate={onChildrenUpdate}
         />
       );
     }
@@ -193,7 +189,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
       const currentNode = find(cloneData, node) as Data;
 
       currentNode.children = updatedData;
-      if (props.onUpdate) props.onUpdate(updatedData);
+      if (props.onUpdate) props.onUpdate(cloneData);
     }
   };
 
