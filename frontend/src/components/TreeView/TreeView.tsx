@@ -59,7 +59,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
           name={node.name}
           label={label}
           onChange={(check) => handleCheckToggle(node, check)}
-          checked={node.isChecked}
+          checked={!!node.isChecked}
           variant="danger"
           className="d-inline"
         />
@@ -72,12 +72,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
 
     if (isDeletable && isDeletable(node, depth)) {
       return (
-        <div
-          className="delete-btn"
-          onClick={() => {
-            handleDelete(node);
-          }}
-        >
+        <div className="delete-btn" onClick={() => handleDelete(node)}>
           {deleteElement}
         </div>
       );
