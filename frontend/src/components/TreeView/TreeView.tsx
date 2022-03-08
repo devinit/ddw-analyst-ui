@@ -49,17 +49,17 @@ const TreeView: FC<TreeViewProps> = (props) => {
   };
 
   const printCheckbox = (node: EnhancedNode) => {
-    const { isCheckable, keywordLabel, depth } = props;
-    const nodeText = keywordLabel ? (get(node, keywordLabel, '') as string) : '';
+    const { isCheckable, depth } = props;
+    const label = get(node, 'name', '');
 
     if (isCheckable && isCheckable(node, depth)) {
       return (
         <ICheck
           id={`${node.id}`}
-          name={node[keywordLabel as string] as string}
-          label={nodeText}
+          name={node.name}
+          label={label}
           onChange={(check) => handleCheckToggle(node, check)}
-          checked={!!node.isChecked}
+          checked={node.isChecked}
           variant="danger"
           className="d-inline"
         />
@@ -232,7 +232,6 @@ TreeView.defaultProps = {
 
   keywordChildren: 'children',
   keywordChildrenLoading: 'isChildrenLoading',
-  keywordLabel: 'name',
   keywordKey: 'id',
 
   loadingElement: <div>loading...</div>,

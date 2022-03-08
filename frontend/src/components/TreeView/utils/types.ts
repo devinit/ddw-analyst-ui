@@ -15,7 +15,6 @@ export interface TreeViewProps {
   keywordChildren?: string;
   keywordChildrenLoading?: string;
   keywordKey?: string;
-  keywordLabel?: string;
 
   loadingElement?: ReactElement;
   noChildrenAvailableMessage?: string;
