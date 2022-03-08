@@ -12,8 +12,6 @@ export interface TreeViewProps {
   isDeletable?: (node: Data, depth?: number) => void;
   isExpandable?: (node: Data, depth?: number) => void;
 
-  keywordChildrenLoading?: string;
-
   loadingElement?: ReactElement;
   noChildrenAvailableMessage?: string;
 
