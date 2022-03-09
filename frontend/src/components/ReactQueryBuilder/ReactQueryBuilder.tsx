@@ -3,6 +3,7 @@ import {
   bootstrapControlElements,
 } from '@react-querybuilder/bootstrap';
 import React, { FC } from 'react';
+import { Button } from 'react-bootstrap';
 import QueryBuilder, { QueryBuilderProps } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.scss';
 import DeleteAction from './DeleteAction';
@@ -14,6 +15,13 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
     <QueryBuilder
       controlElements={{
         ...bootstrapControlElements,
+        addRuleAction: (props) => {
+          return (
+            <Button variant="danger" size="sm" onClick={props.handleOnClick}>
+              Add Rule
+            </Button>
+          );
+        },
         removeRuleAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
         removeGroupAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
       }}
