@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { cloneDeep, find, get, isEmpty, isEqual } from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -195,7 +196,7 @@ const TreeView: FC<TreeViewProps> = (props) => {
     }
   };
 
-  return <div className="super-treeview">{renderNodes(data)}</div>;
+  return <div className={classNames('super-treeview', props.className)}>{renderNodes(data)}</div>;
 };
 
 TreeView.defaultProps = {

@@ -16,6 +16,7 @@ export interface TreeViewProps {
   onUpdate?: (data: unknown[], depth?: number) => void;
   transitionEnterTimeout?: number;
   transitionExitTimeout?: number;
+  className?: string;
 }
 
 export interface Data {
