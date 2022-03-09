@@ -105,7 +105,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
 
   return (
     <Row>
-      <Col lg={9}>
+      <Col lg={9} className="border-right">
         <Alert variant="warning" show={!!error}>
           {error}
         </Alert>
