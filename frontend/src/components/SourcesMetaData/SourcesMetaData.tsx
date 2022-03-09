@@ -1,11 +1,10 @@
-import { List } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ColumnList, ColumnMap, SourceMap } from '../../types/sources';
 import { useSources } from '../../utils/hooks';
 import { SearchInput } from '../SearchInput';
 import { TreeView } from '../TreeView';
 import { Data } from '../TreeView/utils/types';
+import { createTreeDataFromSources } from './utils';
 
 const StyledWrapper = styled.div`
   max-height: 640px;
@@ -22,25 +21,6 @@ const StyledSearchInput = styled(SearchInput)`
   background: #fff !important;
   border-bottom: 1px solid #dee2e6;
 `;
-
-const createTreeDataFromColumn = (column: ColumnMap) => ({
-  id: column.get('id'),
-  name: column.get('name'),
-});
-
-const createTreeDataFromSource = (source: SourceMap): Data => {
-  const columns = source.get('columns') as ColumnList;
-  const treeData: Data = {
-    id: source.get('id') as number,
-    name: source.get('active_mirror_name') as string,
-    children: columns.map(createTreeDataFromColumn).toJS() as Data[],
-  };
-
-  return treeData;
-};
-
-const createTreeDataFromSources = (sources: List<SourceMap>): Data[] =>
-  sources.map(createTreeDataFromSource).toJS() as Data[];
 
 const SourcesMetaData: FC = () => {
   const [treeData, setTreeData] = useState<Data[]>([]);
