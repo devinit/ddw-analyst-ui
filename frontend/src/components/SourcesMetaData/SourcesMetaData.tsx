@@ -8,10 +8,9 @@ import { TreeView } from '../TreeView';
 import { Data } from '../TreeView/utils/types';
 
 const StyledWrapper = styled.div`
-  max-height: 600px;
+  max-height: 640px;
   height: 100%;
   overflow-y: scroll;
-  padding-top: 0 !important;
 
   &::-webkit-scrollbar {
     display: none;
@@ -56,8 +55,8 @@ const SourcesMetaData: FC = () => {
   }, [sources.count()]);
 
   return (
-    <StyledWrapper className="border-left p-2">
-      <StyledSearchInput />
+    <StyledWrapper>
+      <StyledSearchInput placeholder="Search tables or columns" />
       <TreeView
         data={treeData}
         onUpdate={onUpdate}
