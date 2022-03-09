@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ColumnList, ColumnMap, SourceMap } from '../../types/sources';
 import { useSources } from '../../utils/hooks';
+import { SearchInput } from '../SearchInput';
 import { TreeView } from '../TreeView';
 import { Data } from '../TreeView/utils/types';
 
@@ -10,10 +11,17 @@ const StyledWrapper = styled.div`
   max-height: 600px;
   height: 100%;
   overflow-y: scroll;
+  padding-top: 0 !important;
 
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+const StyledSearchInput = styled(SearchInput)`
+  position: sticky;
+  top: 0;
+  background: #fff !important;
+  border-bottom: 1px solid #dee2e6;
 `;
 
 const createTreeDataFromColumn = (column: ColumnMap) => ({
@@ -49,12 +57,14 @@ const SourcesMetaData: FC = () => {
 
   return (
     <StyledWrapper className="border-left p-2">
+      <StyledSearchInput />
       <TreeView
         data={treeData}
         onUpdate={onUpdate}
         isCheckable={() => false}
         isDeletable={() => false}
         isExpandable={(node) => !!node.children}
+        className="pt-2"
       />
     </StyledWrapper>
   );
