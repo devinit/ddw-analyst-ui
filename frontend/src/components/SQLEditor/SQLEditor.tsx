@@ -4,6 +4,7 @@ import { fromJS } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
 import { Alert, Button, Col, Row } from 'react-bootstrap';
 import { format } from 'sql-formatter';
+import styled from 'styled-components';
 import { Operation, OperationData, OperationDataList, OperationMap } from '../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { getSourceIDFromOperation } from '../../utils';
@@ -29,6 +30,12 @@ const getSchema = (table: string, source: SourceMap): { [table: string]: Complet
     })),
   };
 };
+
+const StyledButton = styled(Button)`
+  position: absolute;
+  top: 5px;
+  right: 25px;
+`;
 
 const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation }) => {
   const [value, setValue] = useState('');
@@ -104,7 +111,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
   if (!source) return null;
 
   return (
-    <Row className="border-top border-bottom">
+    <Row className="border-top border-bottom mb-2">
       <Col lg={9} className="border-right">
         <Alert variant="warning" show={!!error}>
           {error}
@@ -121,9 +128,9 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
           onChange={onChange}
         />
         <div className="mt-2">
-          <Button variant="dark" onClick={onRunQuery} size="sm">
-            <i className="fa fa-play mr-1" /> Run
-          </Button>
+          <StyledButton variant="dark" onClick={onRunQuery} size="sm">
+            Run
+          </StyledButton>
         </div>
         <OperationPreview
           className="mt-2"
