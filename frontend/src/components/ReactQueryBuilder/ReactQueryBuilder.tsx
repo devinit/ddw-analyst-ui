@@ -20,6 +20,7 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
         fieldSelector: (props) => (
           <CustomSelector {...props} className="col-3" dropdownProps={{ search: true }} />
         ),
+        operatorSelector: (props) => <CustomSelector {...props} className="col-2" />,
         addRuleAction: (props) => (
           <Button variant="danger" size="sm" onClick={props.handleOnClick}>
             Add Rule
