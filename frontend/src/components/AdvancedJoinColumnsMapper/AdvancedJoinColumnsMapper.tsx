@@ -6,6 +6,7 @@ import { ColumnList } from '../../types/sources';
 import { getSelectOptionsFromColumns, sortObjectArrayByProperty } from '../../utils';
 
 interface JoinColumnsMapperProps {
+  mappedColumns?: [string, string][];
   primaryColumns: DropdownItemProps[];
   secondaryColumns: ColumnList;
   onAdd?: (columnMapping: [string, string]) => void;
@@ -18,7 +19,10 @@ const StyledCol = styled(Col)`
   margin-bottom: auto;
 `;
 
-export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps> = (props) => {
+export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps> = ({
+  mappedColumns,
+  ...props
+}) => {
   const [selectedColumns, setSelectedColumns] = useState<[string, string]>(['', '']);
   const onSelectColumn = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
@@ -53,6 +57,7 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
           options={primaryColumns.sort(sortObjectArrayByProperty('text').sort)}
           onChange={onSelectColumn}
           data-testid="qb-join-primary-column-select"
+          defaultValue={mappedColumns && mappedColumns[0] ? mappedColumns[0][0] : ''}
         />
       </Col>
 
@@ -72,6 +77,7 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
           )}
           onChange={onSelectColumn}
           data-testid="qb-join-secondary-column-select"
+          defaultValue={mappedColumns && mappedColumns[0] ? mappedColumns[0][1] : ''}
         />
       </Col>
 

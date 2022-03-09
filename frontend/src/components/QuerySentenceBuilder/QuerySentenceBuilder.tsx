@@ -122,7 +122,9 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             />
             <StyledRow className="pt-0">
               <HelperCol lg={8} className="pt-2">
-                {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
+                {action === 'select' ? (
+                  <AdvancedSelectQueryBuilder source={source} activeJoinIndex={0} />
+                ) : null}
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}

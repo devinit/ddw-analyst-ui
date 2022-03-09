@@ -18,11 +18,6 @@ export const actions: ActionMeta[] = [
     caption: 'Filter',
     visibleFor: [],
   },
-  // {
-  //   name: 'join',
-  //   caption: 'Join',
-  //   visibleFor: [],
-  // },
   {
     name: 'groupby',
     caption: 'Group By',
@@ -31,6 +26,11 @@ export const actions: ActionMeta[] = [
   {
     name: 'having',
     caption: 'Having',
+    visibleFor: [],
+  },
+  {
+    name: 'join',
+    caption: 'Join',
     visibleFor: [],
   },
   // {

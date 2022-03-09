@@ -12,9 +12,17 @@ interface ColumnSelectorProps {
   columns: AdvancedQueryColumn[];
   usage?: 'select' | 'groupby' | 'join';
   nameOnly?: boolean; // when true, only the column name is added to the target array
+  activeJoinIndex: number;
+  onSelectColumns?: (options: Partial<AdvancedQueryOptions>) => void;
 }
 
-const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, ...props }) => {
+const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({
+  activeJoinIndex,
+  onSelectColumns,
+  source,
+  show,
+  ...props
+}) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [columns, setColumns] = useState<CheckOption[]>([]);
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -52,11 +60,12 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
           props.nameOnly ? column.name : cleanColumn(column, props.columns),
         ),
     };
-    updateOptions!(
-      props.usage !== 'join'
-        ? updatedOptions
-        : ({ join: { ...options.join, ...updatedOptions } } as AdvancedQueryOptions),
-    );
+
+    if (props.usage !== 'join') {
+      updateOptions!(updatedOptions);
+    } else {
+      onSelectColumns!(updatedOptions);
+    }
   };
 
   if (show) {

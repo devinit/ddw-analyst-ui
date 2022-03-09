@@ -99,7 +99,7 @@ export interface AdvancedQueryOptions {
   source: number;
   columns?: AdvancedQueryColumn[];
   filter?: AdvancedQueryFilter;
-  join?: AdvancedQueryJoin;
+  join?: AdvancedQueryJoin[];
   groupby?: string[];
   selectall?: boolean;
   having?: AdvancedQueryHaving;
