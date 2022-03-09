@@ -3,8 +3,11 @@ import { NameLabelPair, CombinatorSelectorProps, FieldSelectorProps } from 'reac
 import { DropdownProps, Dropdown } from 'semantic-ui-react';
 
 type SelectorProps = CombinatorSelectorProps | FieldSelectorProps;
+type CustomSelectorProps = React.PropsWithChildren<SelectorProps> & {
+  dropdownProps?: DropdownProps;
+};
 
-const CustomSelector: FC<React.PropsWithChildren<SelectorProps>> = (props) => {
+const CustomSelector: FC<CustomSelectorProps> = ({ dropdownProps, ...props }) => {
   const onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     props.handleOnChange(data.value);
   };
@@ -21,6 +24,7 @@ const CustomSelector: FC<React.PropsWithChildren<SelectorProps>> = (props) => {
       }))}
       onChange={onChange}
       value={props.value}
+      {...dropdownProps}
     />
   );
 };
