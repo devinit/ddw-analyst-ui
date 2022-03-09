@@ -104,7 +104,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
   if (!source) return null;
 
   return (
-    <Row>
+    <Row className="border-top border-bottom">
       <Col lg={9} className="border-right">
         <Alert variant="warning" show={!!error}>
           {error}
