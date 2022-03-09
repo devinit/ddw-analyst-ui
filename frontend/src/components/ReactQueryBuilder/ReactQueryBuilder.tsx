@@ -27,7 +27,7 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
           </Button>
         ),
         addGroupAction: (props) => (
-          <Button variant="warning" size="sm" onClick={props.handleOnClick}>
+          <Button variant="" size="sm" onClick={props.handleOnClick}>
             Add Group
           </Button>
         ),
