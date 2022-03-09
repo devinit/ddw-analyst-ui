@@ -5,13 +5,14 @@ import {
   bootstrapControlElements,
 } from '@react-querybuilder/bootstrap';
 import 'react-querybuilder/dist/query-builder.scss';
+import './styles.css';
+import { getClasses } from './utils/config';
 
 const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
   return (
     <QueryBuilder
-      independentCombinators={false}
       controlElements={bootstrapControlElements}
-      controlClassnames={bootstrapControlClassnames}
+      controlClassnames={getClasses(bootstrapControlClassnames)}
       {...props}
     />
   );
