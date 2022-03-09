@@ -7,11 +7,24 @@ import {
 import 'react-querybuilder/dist/query-builder.scss';
 import './styles.css';
 import { getClasses } from './utils/config';
+import { Button } from 'react-bootstrap';
 
 const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
   return (
     <QueryBuilder
-      controlElements={bootstrapControlElements}
+      controlElements={{
+        ...bootstrapControlElements,
+        removeRuleAction: (props) => (
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={props.handleOnClick}
+            className="btn-just-icon"
+          >
+            <span className="material-icons">delete</span>
+          </Button>
+        ),
+      }}
       controlClassnames={getClasses(bootstrapControlClassnames)}
       {...props}
     />
