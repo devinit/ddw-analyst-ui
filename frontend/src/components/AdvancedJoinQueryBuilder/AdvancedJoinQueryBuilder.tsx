@@ -4,7 +4,12 @@ import React, { FunctionComponent, SyntheticEvent, useContext, useEffect, useSta
 import { Alert, Badge, Button, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { SourcesContext } from '../../context';
-import { AdvancedQueryJoin, AdvancedQueryOptions, JoinType } from '../../types/operations';
+import {
+  AdvancedQueryColumn,
+  AdvancedQueryJoin,
+  AdvancedQueryOptions,
+  JoinType,
+} from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
 import { AdvancedJoinColumnsMapper } from '../AdvancedJoinColumnsMapper';
@@ -20,15 +25,17 @@ interface ComponentProps {
 const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
   const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [joinType, setJoinType] = useState<JoinType>('inner');
-  const [edit, setEdit] = useState<boolean>(false);
   const [joinSource, setJoinSource] = useState<SourceMap>();
   const { sources } = useContext(SourcesContext);
+
   const [display, setDisplay] = useState<boolean>(true);
+  const [edit, setEdit] = useState<boolean>(false);
   const [joinList, setJoinList] = useState<AdvancedQueryJoin[]>([]);
   const [activeJoin, setActiveJoin] = useState<AdvancedQueryJoin>({
     type: 'inner',
   } as AdvancedQueryJoin);
   const [activeJoinIndex, setActiveJoinIndex] = useState<number>(0);
+  const [selectedColumns, setSelectedColumns] = useState<AdvancedQueryColumn[]>([]);
 
   useEffect(() => {
     if (!hasJoinConfig(options)) {
@@ -131,6 +138,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       ...activeJoin,
       ...columns,
     });
+    setSelectedColumns(columns.columns ? columns.columns : []);
   };
 
   const onAddJoin = () => {
@@ -258,6 +266,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                 usage="join"
                 activeJoinIndex={activeJoinIndex}
                 onSelectColumns={onSelectColumns}
+                selectedColumns={selectedColumns}
               />
 
               <div className="mb-3">

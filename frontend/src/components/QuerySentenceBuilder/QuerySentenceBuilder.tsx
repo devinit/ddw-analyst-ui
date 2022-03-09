@@ -123,7 +123,11 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
             <StyledRow className="pt-0">
               <HelperCol lg={8} className="pt-2">
                 {action === 'select' ? (
-                  <AdvancedSelectQueryBuilder source={source} activeJoinIndex={0} />
+                  <AdvancedSelectQueryBuilder
+                    source={source}
+                    activeJoinIndex={0}
+                    selectedColumns={[]}
+                  />
                 ) : null}
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}

@@ -13,6 +13,7 @@ interface ComponentProps {
   source: SourceMap;
   usage?: AdvancedSelectUsage;
   activeJoinIndex: number;
+  selectedColumns: AdvancedQueryColumn[];
   onSelectColumns?: (options: Partial<AdvancedQueryOptions>) => void;
 }
 type AdvancedSelectUsage = 'select' | 'join';
@@ -64,6 +65,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
   source,
   usage,
   activeJoinIndex,
+  selectedColumns,
   onSelectColumns,
 }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
@@ -169,9 +171,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
         show={activeAction === 'select'}
         source={source}
         columns={
-          (usage === 'join' && options.join!.length > 0
-            ? options.join![activeJoinIndex].columns
-            : options.columns) || []
+          (usage === 'join' && selectedColumns.length > 0 ? selectedColumns : options.columns) || []
         }
         activeJoinIndex={activeJoinIndex}
         onSelectColumns={onSelectColumns}
