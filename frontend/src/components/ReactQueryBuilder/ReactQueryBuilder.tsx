@@ -15,13 +15,16 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
     <QueryBuilder
       controlElements={{
         ...bootstrapControlElements,
-        addRuleAction: (props) => {
-          return (
-            <Button variant="danger" size="sm" onClick={props.handleOnClick}>
-              Add Rule
-            </Button>
-          );
-        },
+        addRuleAction: (props) => (
+          <Button variant="danger" size="sm" onClick={props.handleOnClick}>
+            Add Rule
+          </Button>
+        ),
+        addGroupAction: (props) => (
+          <Button variant="warning" size="sm" onClick={props.handleOnClick}>
+            Add Group
+          </Button>
+        ),
         removeRuleAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
         removeGroupAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
       }}
