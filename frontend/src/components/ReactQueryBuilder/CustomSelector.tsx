@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
-import { NameLabelPair, CombinatorSelectorProps } from 'react-querybuilder';
+import { NameLabelPair, CombinatorSelectorProps, FieldSelectorProps } from 'react-querybuilder';
 import { DropdownProps, Dropdown } from 'semantic-ui-react';
 
-const CustomSelector: FC<React.PropsWithChildren<CombinatorSelectorProps>> = (props) => {
+type SelectorProps = CombinatorSelectorProps | FieldSelectorProps;
+
+const CustomSelector: FC<React.PropsWithChildren<SelectorProps>> = (props) => {
   const onChange = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     props.handleOnChange(data.value);
   };
