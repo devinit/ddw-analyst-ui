@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import QueryBuilder, { NameLabelPair, QueryBuilderProps } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.scss';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
+import CustomSelector from './CustomSelector';
 import DeleteAction from './DeleteAction';
 import './styles.css';
 import { getClasses } from './utils/config';
@@ -16,7 +17,8 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
     <QueryBuilder
       controlElements={{
         ...bootstrapControlElements,
-        combinatorSelector: (props) => {
+        combinatorSelector: (props) => <CustomSelector {...props} className="col-1" />,
+        fieldSelector: (props) => {
           const onChange = (
             _event: React.SyntheticEvent<HTMLElement, Event>,
             data: DropdownProps,
