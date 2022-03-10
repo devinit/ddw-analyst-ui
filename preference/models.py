@@ -7,5 +7,3 @@ def default_value():
 class Preference(BaseEntity):
     preferences = models.JSONField(blank=True, null=True, default=default_value)
     global_choice = models.BooleanField(default=False)
-
-
