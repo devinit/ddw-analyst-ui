@@ -4,7 +4,7 @@ import { useSources } from '../../utils/hooks';
 import { SearchInput } from '../SearchInput';
 import { TreeView } from '../TreeView';
 import { Data } from '../TreeView/utils/types';
-import { createTreeDataFromSources } from './utils';
+import { createTreeDataFromSources, findInSources } from './utils';
 
 const StyledWrapper = styled.div`
   max-height: 640px;
@@ -35,9 +35,17 @@ const SourcesMetaData: FC = () => {
     setTreeData(createTreeDataFromSources(sources));
   }, [sources.count()]);
 
+  const onSearch = (searchText: string) => {
+    if (searchText) {
+      setTreeData(createTreeDataFromSources(findInSources(sources, searchText)));
+    } else {
+      setTreeData(createTreeDataFromSources(sources));
+    }
+  };
+
   return (
     <StyledWrapper>
-      <StyledSearchInput placeholder="Search tables or columns" />
+      <StyledSearchInput placeholder="Search tables or columns" onSearch={onSearch} instant />
       <TreeView
         data={treeData}
         onUpdate={onUpdate}
