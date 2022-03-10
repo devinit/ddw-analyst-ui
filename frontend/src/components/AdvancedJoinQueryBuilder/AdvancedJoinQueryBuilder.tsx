@@ -14,6 +14,7 @@ import { ColumnList, SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
 import { AdvancedJoinColumnsMapper } from '../AdvancedJoinColumnsMapper';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
+import { StyledListItem, StyledStepContainer } from '../OperationSteps';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
 import { getSourceColumns, hasJoinConfig, joinTypes } from './utils';
 
@@ -159,21 +160,26 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       </Row>
       {display ? (
         <Row>
-          <ListGroup variant="flush" className="w-100">
-            {joinList.map((join, index) => (
-              <ListGroup.Item
-                key={index}
-                onClick={() => {
-                  onClickJoin(index);
-                }}
-              >
-                <Badge variant="secondary">{join.type}</Badge>
-                <div>
-                  {sources.find((_source) => _source.get('id') === join.source)?.get('indicator')}
-                </div>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+          <div className="mb-3 w-100">
+            <ListGroup variant="flush" className="">
+              {joinList.map((join, index) => (
+                <StyledStepContainer key={index}>
+                  <StyledListItem
+                    onClick={() => {
+                      onClickJoin(index);
+                    }}
+                  >
+                    <Badge variant="secondary">{join.type}</Badge>
+                    <div>
+                      {sources
+                        .find((_source) => _source.get('id') === join.source)
+                        ?.get('indicator')}
+                    </div>
+                  </StyledListItem>
+                </StyledStepContainer>
+              ))}
+            </ListGroup>
+          </div>
         </Row>
       ) : (
         <>
@@ -240,7 +246,11 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
               <div className="mb-3">
                 <Button
                   disabled={
-                    activeJoin.mapping && activeJoin.mapping.length > 0 && activeJoin.source
+                    activeJoin.mapping &&
+                    activeJoin.mapping.length &&
+                    activeJoin.source &&
+                    activeJoin.columns &&
+                    activeJoin.columns.length
                       ? false
                       : true
                   }
