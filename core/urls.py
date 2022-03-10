@@ -2,7 +2,7 @@ from django.urls import include, path
 from knox import views as knox_views
 from core.views import LoginView
 from core import views as core_views
-from preference.views import PreferedQueryBuilder, UpdatePreferedQueryBuilder
+from preference.views import PreferedChoice, UpdatePreferedChoice
 
 urlpatterns = [
     path('auth/login/', LoginView.as_view(), name='knox_login'),
@@ -50,8 +50,8 @@ urlpatterns = [
     path('dataset/alias/<int:pk>/', core_views.OperationColumnAlias.as_view()),
     path('dataset/estimate/<int:pk>/', core_views.EstimateQueryTime.as_view()),
     path('dataset/query/', core_views.GetOperationQuery.as_view()),
-    path('queries/build/', PreferedQueryBuilder.as_view()),
-    path('queries/build/<int:pk>/', UpdatePreferedQueryBuilder.as_view()),
+    path('preferences/', PreferedChoice.as_view()),
+    path('preferences/<int:pk>/', UpdatePreferedChoice.as_view()),
     # For handling saving query sets, and freezing data
     path('savedquerysets/', core_views.SavedQueryDataList.as_view()),
     path('savedqueryset/<int:pk>/', core_views.SavedQueryDataDetail.as_view()),
