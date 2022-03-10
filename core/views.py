@@ -123,8 +123,10 @@ class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
 
     def __init__(self, operation, frozen_table_id=None):
-        if operation.advanced_config: # We are dealing with advanced config here
+        if operation.advanced_config and not operation.is_raw: # We are dealing with advanced config here
             self.main_query = query.build_advanced_queries(operation.advanced_config)[1]
+        elif operation.advanced_config and operation.is_raw:
+            self.main_query = operation.operation_query
         else:
             self.main_query = query.build_query(operation=operation, frozen_table_id=frozen_table_id)[1]
         self.operation = operation
