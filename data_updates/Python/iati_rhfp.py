@@ -7,7 +7,12 @@ from github import Github, InputGitTreeElement
 from django.conf import settings
 
 
-GITHUB_KEY = 'you_can_put_your_github_token_here_for_testing'
+#donors_selected = pd.read_csv("https://ddw.devinit.org/api/export/1254/")
+donors_selected = pd.read_csv("C:/git/aid-tracker-interactive/input/iati_publishers.csv")
+
+donors_selected = donors_selected[donors_selected['tracker_spend'] == "Yes"]
+
+donors_selected = donors_selected[['reporting_org_ref','country']]
 
 def push_folder_to_github(repo_name, branch, local_folder, remote_folder, commit_msg, file_extension='*.*'):
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -44,39 +49,52 @@ data = pd.read_csv("https://ddw.devinit.org/api/export/1231")
 
 data = pd.DataFrame(data)
 
-data.columns = ["year","Reporting Organisation Narrative","aid_type_di_name","Sector Code - Calculated"
+data.columns = ["Reporting Organisation Reference","Reporting Organisation Narrative","year","Sector Code - Calculated"
 , "DAC3 Sector Code - Calculated","Reporting Organisation Type Code","Reporting Organisation Type Name - Calculated"
-,"Recipient Code","Recipient Name","Flow Type Code - Calculated","Transaction Receiver Organisation Type","Transaction Type","x_transaction_value_usd_m_Sum"]
+,"Recipient Code","Recipient Name","Flow Type Code - Calculated","aid_type_di_name","x_transaction_value_usd_m_Sum"]
+
+data = data[data['Reporting Organisation Reference'].isin(donors_selected['reporting_org_ref'])]
 
 data = data[(data['Sector Code - Calculated'] != 13010) & (data['Sector Code - Calculated'] != 13081)]
 
+data = pd.merge(data, donors_selected, left_on='Reporting Organisation Reference',right_on='reporting_org_ref').drop('reporting_org_ref', axis=1)
+
+data = data.groupby(["year","country","Sector Code - Calculated"
+, "DAC3 Sector Code - Calculated","Reporting Organisation Type Code","Reporting Organisation Type Name - Calculated"
+,"Recipient Code","Recipient Name","Flow Type Code - Calculated","aid_type_di_name"],dropna=False).sum().reset_index()
+
 # Sector code mapping
 
-data.loc[data['Sector Code - Calculated']==13020,'Sector Code - Calculated'] = "Reproductive health care"
-data.loc[data['Sector Code - Calculated']==13030,'Sector Code - Calculated'] = "Family planning"
+data['purpose_name'] = ""
 
-# Channel of delivery mapping
+data.loc[data['Sector Code - Calculated']==13020,'purpose_name'] = "Reproductive health care"
+data.loc[data['Sector Code - Calculated']==13030,'purpose_name'] = "Family planning"
 
-data.loc[data['Transaction Receiver Organisation Type'].isin([21,22,23,24]),'Transaction Receiver Organisation Type'] = "NGOs and Civil Society"
-data.loc[data['Transaction Receiver Organisation Type'].isin([40]),'Transaction Receiver Organisation Type'] = "Multilateral"
-data.loc[data['Transaction Receiver Organisation Type'].isin([10]),'Transaction Receiver Organisation Type'] = "Public Sector"
-data.loc[data['Transaction Receiver Organisation Type'].isin([70,73]),'Transaction Receiver Organisation Type'] = "Private Sector"
-data.loc[data['Transaction Receiver Organisation Type'].isin([80]),'Transaction Receiver Organisation Type'] = "Universities and Research Institutes"
-data.loc[data['Transaction Receiver Organisation Type'].isin([90]),'Transaction Receiver Organisation Type'] = "Other"
+# Only ODA
+
+data = data[data['Flow Type Code - Calculated'] ==10]
 
 # Put it in millions
 
 data["x_transaction_value_usd_m_Sum"] = data["x_transaction_value_usd_m_Sum"]/1000000
 
-data.to_csv("csv/iati_rhfp.csv", encoding='utf-8', index=False)
+# Rename away from country
+
+data["Reporting Organisation Narrative"] = data["country"]
+
+data = data[data['country'] != "Germany"]
+
+data.to_csv("csv/IATI-RHFP-data-v1.csv", encoding='utf-8', index=False)
 
 # Dataset 2
 
 data = pd.read_csv("https://ddw.devinit.org/api/export/1271")
 
+data = data[data['Reporting Organsation Reference'].isin(donors_selected['reporting_org_ref'])]
+
 data = pd.DataFrame(data)
 
-data.columns = ["Code type","Year", "recipient_name","Reporting Organisation Narrative", "disbursed"]
+data.columns = ["Code type","Year", "recipient_name","Reporting Organisation Narrative","Reporting Organisation Reference","Flow Type Code - Calculated","disbursed"]
 
 data = data[(data['Code type'] != 13010) & (data['Code type'] != 13081)]
 
@@ -85,10 +103,20 @@ data = data[(data['Code type'] != 13010) & (data['Code type'] != 13081)]
 data.loc[data['Code type']==13020,'Code type'] = "Reproductive health care"
 data.loc[data['Code type']==13030,'Code type'] = "Family planning"
 
+# Only ODA
+
+data = data[data['Flow Type Code - Calculated'] ==10]
+
+data = pd.merge(data, donors_selected, left_on='Reporting Organisation Reference',right_on='reporting_org_ref').drop('reporting_org_ref', axis=1)
+
 # Summing both
 
-total_data = data.groupby(["Year","recipient_name","Reporting Organisation Narrative"]).agg({"disbursed":"sum"}).reset_index()
+total_data = data.groupby(["Year","recipient_name","country"]).agg({"disbursed":"sum"}).reset_index()
 total_data['Code type'] = "Reproductive health care and family planning"
+
+# Groupby country
+
+data = data.groupby(["Year","recipient_name","country","Code type"]).agg({"disbursed":"sum"}).reset_index()
 
 data = data.append(pd.DataFrame(data = total_data),ignore_index=True)
 
@@ -96,47 +124,57 @@ data = data.append(pd.DataFrame(data = total_data),ignore_index=True)
 
 data["disbursed"] = data["disbursed"]/1000000
 
-data.to_csv("csv/iati_rhfp2.csv", encoding='utf-8', index=False)
+data = data.pivot(index=['Code type','country','recipient_name'], columns='Year', values='disbursed').reset_index()
+
+data["Reporting Organisation Narrative"] = data["country"]
+
+data = data[data['country'] != "Germany"]
+
+data.to_csv("csv/IATI-RHFP-data-v2.csv", encoding='utf-8', index=False)
 
 # Dataset 3
 
-data = pd.read_csv("https://ddw.devinit.org/api/export/1231")
+# data = pd.read_csv("https://ddw.devinit.org/api/export/1231")
 
-data = pd.DataFrame(data)
+# data.columns = ["Reporting Organisation Reference","Reporting Organisation Narrative","year","Sector Code - Calculated"
+# , "DAC3 Sector Code - Calculated","Reporting Organisation Type Code","Reporting Organisation Type Name - Calculated"
+# ,"Recipient Code","Recipient Name","Flow Type Code - Calculated","aid_type_di_name","x_transaction_value_usd_m_Sum"]
 
-data.columns = ["year","Reporting Organisation Narrative","aid_type_di_name","Sector Code - Calculated"
-, "DAC3 Sector Code - Calculated","Reporting Organisation Type Code","Reporting Organisation Type Name - Calculated"
-,"Recipient Code","Recipient Name","Flow Type Code - Calculated","Transaction Receiver Organisation Type","Transaction Type","x_transaction_value_usd_m_Sum"]
+# data = data[data['Reporting Organisation Reference'].isin(donors_selected['reporting_org_ref'])]
 
-data = data[(data['Sector Code - Calculated'] != 13010) & (data['Sector Code - Calculated'] != 13081)]
+# data = pd.DataFrame(data)
 
-# Sector code mapping
+# data = data[(data['Sector Code - Calculated'] != 13010) & (data['Sector Code - Calculated'] != 13081)]
 
-data.loc[data['Sector Code - Calculated']==13020,'Sector Code - Calculated'] = "Reproductive health care"
-data.loc[data['Sector Code - Calculated']==13030,'Sector Code - Calculated'] = "Family planning"
+# # Sector code mapping
 
-# Channel of delivery mapping
+# data.loc[data['Sector Code - Calculated']==13020,'Sector Code - Calculated'] = "Reproductive health care"
+# data.loc[data['Sector Code - Calculated']==13030,'Sector Code - Calculated'] = "Family planning"
 
-data.loc[data['Transaction Receiver Organisation Type'].isin([21,22,23,24]),'Transaction Receiver Organisation Type'] = "NGOs and Civil Society"
-data.loc[data['Transaction Receiver Organisation Type'].isin([40]),'Transaction Receiver Organisation Type'] = "Multilateral"
-data.loc[data['Transaction Receiver Organisation Type'].isin([10]),'Transaction Receiver Organisation Type'] = "Public Sector"
-data.loc[data['Transaction Receiver Organisation Type'].isin([70,73]),'Transaction Receiver Organisation Type'] = "Private Sector"
-data.loc[data['Transaction Receiver Organisation Type'].isin([80]),'Transaction Receiver Organisation Type'] = "Universities and Research Institutes"
-data.loc[data['Transaction Receiver Organisation Type'].isin([90]),'Transaction Receiver Organisation Type'] = "Other"
+# # Channel of delivery mapping
 
-data = data.groupby(['Reporting Organisation Narrative', 'year','Sector Code - Calculated','Transaction Receiver Organisation Type'])[["x_transaction_value_usd_m_Sum"]].sum().reset_index()
+# data.loc[data['Transaction Receiver Organisation Type'].isin([21,22,23,24]),'Transaction Receiver Organisation Type'] = "NGOs and Civil Society"
+# data.loc[data['Transaction Receiver Organisation Type'].isin([40]),'Transaction Receiver Organisation Type'] = "Multilateral"
+# data.loc[data['Transaction Receiver Organisation Type'].isin([10]),'Transaction Receiver Organisation Type'] = "Public Sector"
+# data.loc[data['Transaction Receiver Organisation Type'].isin([70,73]),'Transaction Receiver Organisation Type'] = "Private Sector"
+# data.loc[data['Transaction Receiver Organisation Type'].isin([80]),'Transaction Receiver Organisation Type'] = "Universities and Research Institutes"
+# data.loc[data['Transaction Receiver Organisation Type'].isin([90]),'Transaction Receiver Organisation Type'] = "Other"
 
-print(data)
+# data = data.groupby(['Reporting Organisation Narrative', 'year','Sector Code - Calculated','Transaction Receiver Organisation Type'])[["x_transaction_value_usd_m_Sum"]].sum().reset_index()
 
-data.columns = ["Year","Donor Name","Purpose Name","Channel","x_transaction_value_usd_m_Sum"]
+# print(data)
 
-print(data)
+# data.columns = ["Year","Donor Name","Purpose Name","Channel","x_transaction_value_usd_m_Sum"]
 
-# Put it in millions
+# print(data)
 
-data["x_transaction_value_usd_m_Sum"] = data["x_transaction_value_usd_m_Sum"]/1000000
+# # Put it in millions
 
-data.to_csv("csv/iati_rhfp3.csv", encoding='utf-8', index=False)
+# data["x_transaction_value_usd_m_Sum"] = data["x_transaction_value_usd_m_Sum"]/1000000
+
+# data = data[data['country'] != "Germany"]
+
+# data.to_csv("csv/iati_rhfp3.csv", encoding='utf-8', index=False)
 
 # Dataset 4
 
@@ -144,7 +182,11 @@ data = pd.read_csv("https://ddw.devinit.org/api/export/1309")
 
 data = pd.DataFrame(data)
 
-data.columns = ["Donor Name","Aid Type Di Name", "Year","Purpose Code", "Usd Disbursement Deflated Sum"]
+data.columns = ["Donor Name","Aid Type Di Name", "Year","Purpose Code","Reporting Organisation Reference", "Usd Disbursement Deflated Sum"]
+
+data = data[data["Reporting Organisation Reference"].isin(donors_selected['reporting_org_ref'])]
+
+data = pd.merge(data, donors_selected, left_on='Reporting Organisation Reference',right_on='reporting_org_ref').drop('reporting_org_ref', axis=1)
 
 data = data[(data['Purpose Code'] != 13010) & (data['Purpose Code'] != 13081)]
 
@@ -157,10 +199,13 @@ data.loc[data['Purpose Code']==13030,'Purpose Name'] = "Family planning"
 
 data["Usd Disbursement Deflated Sum"] = data["Usd Disbursement Deflated Sum"]/1000000
 
-print(data)
+data = data.groupby(["Year","Aid Type Di Name","country","Purpose Name","Purpose Code"]).agg({"Usd Disbursement Deflated Sum":"sum"}).reset_index()
+
+data["Donor Name"] = data["country"]
+
+data = data[data['country'] != "Germany"]
 
 data.to_csv("csv/iati_rhfp4.csv", encoding='utf-8', index=False)
-
 
 # Sample call to the function below
 push_folder_to_github('devinit/di-website-data', 'main', 'csv', '2022', 'Committing from API', '*.csv')
