@@ -1,3 +1,4 @@
+import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { fromJS, List } from 'immutable';
 import queryString from 'query-string';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
@@ -6,6 +7,7 @@ import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
+import { format } from 'sql-formatter';
 import * as operationsActions from '../../actions/operations';
 import { AppContext, SourcesContext } from '../../context';
 import { OperationsState } from '../../reducers/operations';
@@ -15,6 +17,7 @@ import { LinksMap } from '../../types/api';
 import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
 import { api } from '../../utils';
 import { BasicModal } from '../BasicModal';
+import { CodeMirrorNext } from '../CodeMirrorNext';
 import { DatasetActionLink } from '../DatasetActionLink';
 import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
@@ -289,8 +292,18 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
         <Card.Body className="p-0">{renderOperations(operations, showMyQueries)}</Card.Body>
         <Card.Footer className="d-block">{renderPagination()}</Card.Footer>
 
-        <BasicModal show={!!info} onHide={onModalHide} className="query-modal">
-          <code>{info}</code>
+        <BasicModal show={!!info} onHide={onModalHide} className="query-modal" size="lg">
+          <CodeMirrorNext
+            value={format(info, { language: 'postgresql' })}
+            extensions={[
+              sql({
+                dialect: PostgreSQL,
+                upperCaseKeywords: true,
+              }),
+            ]}
+            readOnly
+            className="hide-scroll"
+          />
         </BasicModal>
       </Card>
     </>

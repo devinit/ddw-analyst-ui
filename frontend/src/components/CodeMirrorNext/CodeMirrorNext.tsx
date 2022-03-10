@@ -30,7 +30,7 @@ const CodeMirrorNext: FC<ComponentProps> = ({ readOnly, ...props }) => {
     }
   }, [editor.current]);
 
-  return <StyledDiv ref={editor} contentEditable={false} />;
+  return <StyledDiv ref={editor} contentEditable={false} className={props.className} />;
 };
 
 CodeMirrorNext.defaultProps = { height: '250px' };
