@@ -10,6 +10,7 @@ const StyledWrapper = styled.div`
   max-height: 640px;
   height: 100%;
   overflow-y: scroll;
+  margin-top: 0.5rem;
 
   &::-webkit-scrollbar {
     display: none;
