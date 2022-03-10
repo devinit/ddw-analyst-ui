@@ -224,11 +224,25 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
     'handlers': {
-        'mail_admins': {
+        # 'mail_admins': {
+        #     'level': 'ERROR',
+        #     'class': 'django.utils.log.AdminEmailHandler',
+        #     'include_html': True,
+        # },
+        'slack_admins': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': True,
+            # Uncomment below line only if on localhost and debugging
+            # 'filters': ['require_debug_true'],
+            'class': 'integrations.slack.slack_exception_handler.SlackExceptionHandler',
         },
         'null': {
             'class': 'logging.NullHandler',
@@ -238,6 +252,10 @@ LOGGING = {
         'django.security.DisallowedHost': {
             'handlers': ['null'],
             'propagate': False,
+        },
+        'django': {
+            'level': 'ERROR',
+            'handlers': ['slack_admins'],
         },
     },
 }

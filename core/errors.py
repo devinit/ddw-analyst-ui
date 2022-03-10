@@ -29,4 +29,4 @@ def handle_uncaught_error(error):
     extracted_traceback = traceback.extract_tb(error_traceback)
     result = traceback.format_list(extracted_traceback)
     message = result[0]
-    postToSlackChannel(settings.SLACK_CHANNEL_ID, f'DDW ANALYST UI {type(error).__name__} \n\n {message}')
+    postToSlackChannel(settings.SLACK_CHANNEL_ID, message, f'DDW ANALYST UI {type(error).__name__}')
