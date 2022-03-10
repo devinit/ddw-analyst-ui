@@ -1,5 +1,6 @@
-import React, { FunctionComponent, KeyboardEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FunctionComponent, KeyboardEvent, useEffect, useState } from 'react';
 import { FormControl } from 'react-bootstrap';
+import { FormControlElement } from '../../types/bootstrap';
 
 interface SearchInputProps {
   onSearch?: (searchText: string) => void;
@@ -7,18 +8,23 @@ interface SearchInputProps {
   className?: string;
   testid?: string;
   value?: string;
+  instant?: boolean;
 }
 
 const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
   const [searchText, setSearchText] = useState('');
   useEffect(() => setSearchText(props.value || ''), [props.value]);
 
-  const onSearch = (event: KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && props.onSearch) {
       event.preventDefault();
       event.stopPropagation();
       props.onSearch(searchText);
     }
+  };
+  const onChange = (event: ChangeEvent<FormControlElement>) => {
+    setSearchText(event.currentTarget.value);
+    if (props.instant && props.onSearch) props.onSearch(event.currentTarget.value);
   };
 
   return (
@@ -26,8 +32,8 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
       placeholder={props.placeholder}
       className={props.className}
       value={searchText}
-      onChange={(event) => setSearchText(event.currentTarget.value)}
-      onKeyDown={onSearch}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
       data-testid={props.testid}
     />
   );
