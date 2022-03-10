@@ -345,3 +345,7 @@ th .material-icons {
     color: inherit;
   }
 }
+
+.hide-scroll ::-webkit-scrollbar {
+  display: none;
+}
