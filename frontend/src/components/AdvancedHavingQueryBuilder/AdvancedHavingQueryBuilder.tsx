@@ -9,8 +9,8 @@ import {
 import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
 import { createQueryBuilderRules } from '../JqueryQueryBuilder/utils';
+import { Field } from 'react-querybuilder';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
-<<<<<<< HEAD
 import {
   getAggregateColumns,
   getGroupByColumns,
@@ -20,9 +20,7 @@ import {
   isNumeric,
   parseHavingQuery,
 } from './utils';
-=======
 import { ReactQueryBuilder } from '../ReactQueryBuilder';
->>>>>>> 36ae55d1 (Add bootstrap customised React Query Builder)
 
 interface ComponentProps {
   source: SourceMap;
@@ -141,17 +139,17 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     );
   }
 
+  const onQueryChange = (query: any) => {
+    console.log(query);
+  };
+
   return (
-<<<<<<< HEAD
-    <Alert variant="warning">Having clause requires a groupby clause and numeric columns</Alert>
-=======
     <div>
       <Alert variant="warning" show={!!error}>
         {error}
       </Alert>
-      <ReactQueryBuilder />
+      <ReactQueryBuilder fields={fields} onQueryChange={onQueryChange} />
     </div>
->>>>>>> 36ae55d1 (Add bootstrap customised React Query Builder)
   );
 };
 export { AdvancedHavingQueryBuilder };
