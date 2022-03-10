@@ -28,7 +28,8 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   const [joinSource, setJoinSource] = useState<SourceMap>();
   const { sources } = useContext(SourcesContext);
 
-  const [display, setDisplay] = useState<boolean>(true);
+  const [show, setShow] = useState<boolean>(true);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [joinList, setJoinList] = useState<AdvancedQueryJoin[]>([]);
   const [activeJoin, setActiveJoin] = useState<AdvancedQueryJoin>({
     type: 'inner',
@@ -67,8 +68,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   };
 
   const onSelectSource = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    if (options.join && options.join.length && options.join[activeJoinIndex].columns)
-      delete options.join[activeJoinIndex].columns;
+    if (activeJoin && activeJoin.columns) delete activeJoin.columns;
     setActiveJoin({
       ...activeJoin,
       source: data.value as number,
@@ -113,8 +113,14 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   };
 
   const onAddJoin = () => {
-    setJoinList([...joinList, { ...activeJoin }]);
-    setDisplay(!display);
+    if (isEditing) {
+      joinList[activeJoinIndex] = activeJoin;
+      setJoinList([...joinList]);
+    } else {
+      setJoinList([...joinList, { ...activeJoin }]);
+    }
+    setShow(!show);
+    setIsEditing(false);
   };
 
   const onClickJoin = (activeJoinIndex: number) => {
@@ -125,7 +131,8 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     );
     if (joinSource) setJoinSource(joinSource);
     setActiveJoin(joinList[activeJoinIndex]);
-    setDisplay(!display);
+    setShow(!show);
+    setIsEditing(true);
   };
 
   // parse source columns into format consumable by FilterItem
@@ -140,13 +147,14 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
             size="sm"
             data-testid="qb-add-join-button"
             onClick={() => {
-              setDisplay(!display);
+              setShow(!show);
+              setIsEditing(false);
               setActiveJoin({
                 type: 'inner',
               } as AdvancedQueryJoin);
             }}
           >
-            {display ? (
+            {show ? (
               <span>
                 <i className="material-icons mr-1">add</i>Add Join
               </span>
@@ -158,7 +166,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
           </Button>
         </Col>
       </Row>
-      {display ? (
+      {show ? (
         <Row>
           <div className="mb-3 w-100">
             <ListGroup variant="flush" className="">
@@ -258,10 +266,10 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                   size="sm"
                   data-placement="top"
                   data-html="true"
-                  title={`Adds a join`}
+                  title={isEditing ? 'Edit join' : 'Adds a join'}
                   onClick={() => onAddJoin()}
                 >
-                  {display ? 'Add' : 'Add'}
+                  {isEditing ? 'Edit' : 'Add'}
                 </Button>
               </div>
             </Col>
