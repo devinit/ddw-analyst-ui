@@ -43,7 +43,10 @@ class DataSerializer(serializers.BaseSerializer):
         self.set_operation(operation)
         try:
             if operation.advanced_config and len(operation.advanced_config) > 0:
-                count, data = query.advanced_query_table(operation.advanced_config,  limit, offset, estimate_count=True)
+                if operation.is_raw:
+                    count, data = (0, run_query(operation.operation_query, fetch=True))
+                else:
+                    count, data = query.advanced_query_table(operation.advanced_config, limit, offset, estimate_count=True)
             else:
                 count, data = query.query_table(operation, limit, offset, estimate_count=True, frozen_table_id=frozen_table_id)
             return {
