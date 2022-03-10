@@ -1,10 +1,9 @@
+import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
+import { Column, ColumnList } from '../../../types/sources';
 import {
-  AdvancedQueryColumn,
-  AdvancedQueryOptions,
   JqueryQueryBuilderHaving,
   JqueryQueryBuilderHavingComparator,
-} from '../../../types/operations';
-import { Column, ColumnList } from '../../../types/sources';
+} from '../../JqueryQueryBuilder/utils/types';
 
 export const sortAggregateOptions = (options: string[], selected: string): string[] => {
   if (options.indexOf(selected) === 0) {
