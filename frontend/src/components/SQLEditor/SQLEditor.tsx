@@ -1,14 +1,14 @@
 import { Completion } from '@codemirror/autocomplete';
 import { PostgreSQL, sql } from '@codemirror/lang-sql';
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import React, { FC, useEffect, useState } from 'react';
 import { Alert, Button, Col, Row } from 'react-bootstrap';
 import { format } from 'sql-formatter';
 import styled from 'styled-components';
 import { Operation, OperationData, OperationDataList, OperationMap } from '../../types/operations';
-import { Column, ColumnList, SourceMap } from '../../types/sources';
+import { Column, Source, SourceMap } from '../../types/sources';
 import { getSourceIDFromOperation } from '../../utils';
-import { fetchOperationDataPreview } from '../../utils/hooks';
+import { fetchOperationDataPreview, useSources } from '../../utils/hooks';
 import { CodeMirrorNext } from '../CodeMirrorNext';
 import { OperationPreview } from '../OperationPreview';
 import { SourcesMetaData } from '../SourcesMetaData';
@@ -19,16 +19,20 @@ interface ComponentProps {
   onUpdateOperation: (operation: OperationMap) => void;
 }
 
-const getSchema = (table: string, source: SourceMap): { [table: string]: Completion[] } => {
-  const columns = (source.get('columns') as ColumnList).toJS() as Column[];
+const getSchema = (sources: List<SourceMap>): { [table: string]: Completion[] } => {
+  return (sources.toJS() as Source[]).reduce<{ [table: string]: Completion[] }>(
+    (schema, source) => {
+      const columns = source.columns as unknown as Column[];
+      schema[source.active_mirror_name as string] = columns.map<Completion>((column) => ({
+        label: column.name as string,
+        detail: column.alias as string,
+        info: column.description as string,
+      }));
 
-  return {
-    [table]: columns.map<Completion>((column) => ({
-      label: column.name as string,
-      detail: column.alias as string,
-      info: column.description as string,
-    })),
-  };
+      return schema;
+    },
+    {},
+  );
 };
 
 const StyledButton = styled(Button)`
@@ -42,6 +46,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [error, setError] = useState('');
+  const sources = useSources({ limit: 200, offset: 0 });
 
   useEffect(() => {
     if (source) {
@@ -122,7 +127,7 @@ const SQLEditor: FC<ComponentProps> = ({ source, operation, onUpdateOperation })
             sql({
               dialect: PostgreSQL,
               upperCaseKeywords: true,
-              schema: getSchema(`${source.get('active_mirror_name')}`, source),
+              schema: getSchema(sources),
             }),
           ]}
           onChange={onChange}
