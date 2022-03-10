@@ -14,7 +14,6 @@ import { ColumnList, SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
 import { AdvancedJoinColumnsMapper } from '../AdvancedJoinColumnsMapper';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
-import { StyledStepContainer, StyledListItem } from '../OperationSteps';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
 import { getSourceColumns, hasJoinConfig, joinTypes } from './utils';
 
@@ -29,7 +28,6 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   const { sources } = useContext(SourcesContext);
 
   const [display, setDisplay] = useState<boolean>(true);
-  const [edit, setEdit] = useState<boolean>(false);
   const [joinList, setJoinList] = useState<AdvancedQueryJoin[]>([]);
   const [activeJoin, setActiveJoin] = useState<AdvancedQueryJoin>({
     type: 'inner',
@@ -54,37 +52,22 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   }, []);
 
   useEffect(() => {
-    if (joinList.length > 0) {
+    if (joinList.length) {
       updateOptions!({
         join: joinList,
       });
     }
   }, [joinList]);
 
-  // useEffect(() => {
-  //   setActiveJoin({
-  //     ...activeJoin,
-  //     ...options.join,
-  //   });
-  // }, [options.join![activeJoinIndex].columns]);
-
   const onChangeJoinType = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     const value = data.value as JoinType;
     setJoinType(value);
-    // updateOptions!({ join: { ...options.join, type: value } as AdvancedQueryJoin });
     setActiveJoin({ ...activeJoin, type: value } as AdvancedQueryJoin);
   };
 
   const onSelectSource = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    if (options.join && options.join.length > 0 && options.join[activeJoinIndex].columns)
+    if (options.join && options.join.length && options.join[activeJoinIndex].columns)
       delete options.join[activeJoinIndex].columns;
-    // updateOptions!({
-    //   join: {
-    //     ...options.join,
-    //     source: data.value as number,
-    //     mapping: [],
-    //   } as AdvancedQueryJoin,
-    // });
     setActiveJoin({
       ...activeJoin,
       source: data.value as number,
@@ -96,41 +79,28 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
 
   const onAddMapping = (columnMapping: [string, string]) => {
     if (columnMapping.every((column) => !!column)) {
-      // updateOptions!({
-      //   join: {
-      //     ...options.join,
-      //     mapping:
-      //       options.join && options.join.mapping
-      //         ? options.join.mapping.concat([columnMapping])
-      //         : [columnMapping],
-      //   },
-      // });
-
       setActiveJoin({
         ...activeJoin,
         mapping: [columnMapping],
       } as AdvancedQueryJoin);
     }
   };
+
   const onRemoveMapping = (columnMapping: [string, string]) => {
     // should only attempt to remove when there's something to remove
-    // if (
-    //   options.join &&
-    //   options.join.mapping &&
-    //   options.join.mapping.length &&
-    //   columnMapping.every((column) => !!column)
-    // ) {
-    // updateOptions!({
-    //   join: {
-    //     ...options.join,
-    //     mapping:
-    //       options.join &&
-    //       options.join.mapping.filter(
-    //         (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
-    //       ),
-    //   } as AdvancedQueryJoin,
-    // });
-    // }
+    if (
+      activeJoin &&
+      activeJoin.mapping &&
+      activeJoin.mapping.length &&
+      columnMapping.every((column) => !!column)
+    ) {
+      setActiveJoin({
+        ...activeJoin,
+        mapping: activeJoin.mapping.filter(
+          (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
+        ),
+      } as AdvancedQueryJoin);
+    }
   };
 
   const onSelectColumns = (columns: Partial<AdvancedQueryOptions>) => {
@@ -148,7 +118,6 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
 
   const onClickJoin = (activeJoinIndex: number) => {
     setActiveJoinIndex(activeJoinIndex);
-    setEdit(true);
     setJoinType(joinList[activeJoinIndex].type);
     const joinSource = sources.find(
       (_source) => _source.get('id') === joinList[activeJoinIndex].source,
@@ -171,7 +140,6 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
             data-testid="qb-add-join-button"
             onClick={() => {
               setDisplay(!display);
-              setEdit(false);
               setActiveJoin({
                 type: 'inner',
               } as AdvancedQueryJoin);
@@ -283,7 +251,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                   title={`Adds a join`}
                   onClick={() => onAddJoin()}
                 >
-                  {edit ? 'Edit' : 'Add'}
+                  {display ? 'Add' : 'Add'}
                 </Button>
               </div>
             </Col>

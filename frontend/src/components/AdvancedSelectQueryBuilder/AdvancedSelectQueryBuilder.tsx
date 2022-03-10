@@ -45,7 +45,7 @@ const showAggregateButton = (
   if (
     usage === 'join' &&
     options.join &&
-    options.join!.length > 0 &&
+    options.join!.length &&
     options.join[activeJoinIndex].columns &&
     options.join[activeJoinIndex].columns!.length
   ) {
@@ -97,11 +97,6 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
     }
   };
 
-  // const checkActiveJoinColumnLength = () => {
-  //   if (options.join[activeJoinIndex].columns) {
-
-  //   }
-  // };
   /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   return (
@@ -140,7 +135,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
           variant={activeAction === 'order' ? 'danger' : 'dark'}
           size="sm"
           disabled={
-            usage === 'join' && options.join!.length > 0
+            usage === 'join' && options.join!.length
               ? !options.join![activeJoinIndex].columns ||
                 options.join![activeJoinIndex].columns!.length <= 1
               : !options.columns || options.columns.length <= 1
@@ -171,16 +166,19 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
         show={activeAction === 'select'}
         source={source}
         columns={
-          (usage === 'join' && selectedColumns.length > 0 ? selectedColumns : options.columns) || []
+          (usage === 'join' && selectedColumns.length > 0
+            ? selectedColumns
+            : usage === 'select'
+            ? options.columns
+            : []) || []
         }
-        activeJoinIndex={activeJoinIndex}
         onSelectColumns={onSelectColumns}
       />
       <AdvancedQueryBuilderColumnOrder
         usage={usage}
         show={activeAction === 'order'}
         columns={
-          (usage === 'join' && options.join!.length > 0
+          (usage === 'join' && options.join!.length
             ? options.join![activeJoinIndex].columns
             : options.columns) || []
         }
@@ -191,7 +189,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
         show={activeAction === 'aggregate'}
         source={source}
         columns={
-          (usage === 'join' && options.join!.length > 0
+          (usage === 'join' && options.join!.length
             ? options.join![activeJoinIndex].columns
             : options.columns) || []
         }

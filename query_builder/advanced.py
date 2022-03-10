@@ -100,20 +100,11 @@ class AdvancedQueryBuilder:
 
     def handle_join(self, table, query, config):
         join_config = config.get('join')
-
-        print('Join query')
-        print(query)
-
         join_query = self.create_multiple_join_query(table, query, join_config, 0)
-
-        print('Recursive query')
-        print(join_query)
 
         if 'filter' in config:
             join_query = self.handle_filter(table, join_query, config)
-
             return join_query
-
         if 'columns' in config and config.get('columns') or 'selectall' and config.get('selectall'):
             join_query = self.get_select_query(table, join_query, config)
 
@@ -123,8 +114,8 @@ class AdvancedQueryBuilder:
         join_query = query
         if index < len(join_config):
             join_table = self.get_source_table(join_config[index].get('source'))
-
             join_mapping = join_config[index].get('mapping')
+            
             if len(join_mapping) > 1:
                 join_query = query.join(join_table, JOIN_MAPPING[join_config[index].get('type')]).on(operator.and_(*[
                     operator.eq(table[mapping[0]], join_table[mapping[1]]) for mapping in join_mapping
@@ -133,8 +124,7 @@ class AdvancedQueryBuilder:
                 join_query = query.join(join_table, JOIN_MAPPING[join_config[index].get('type')]).on(*[
                     operator.eq(table[mapping[0]], join_table[mapping[1]]) for mapping in join_mapping
                 ])
-            index = index + 1
-            return self.create_multiple_join_query(table, join_query, join_config, index)
+            return self.create_multiple_join_query(table, join_query, join_config, index + 1)
         else:
             return join_query
 
