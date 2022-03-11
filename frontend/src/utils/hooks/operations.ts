@@ -54,6 +54,8 @@ const handleDataResult = (status: number, data: OperationDataResult): FetchRespo
     setToken('');
 
     return { status, error: 'invalid token' };
+  } else if (data.results && data.results.length && data.results[0].error) {
+    return { status, error: data.results[0].error as string };
   }
 
   return {
