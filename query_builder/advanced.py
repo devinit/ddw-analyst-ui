@@ -128,12 +128,10 @@ class AdvancedQueryBuilder:
             else:
                 columns = self.get_source_columns(config.get('source'))
                 final_cols = self.process_select_columns(table, columns)
-                query = query.select(*final_cols)
+                return query.select(*final_cols)
         if 'columns' in config:
             if 'groupby' in config:
-                query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'))
-                if 'having' in config:
-                    query = self.get_having_query(table, query, config.get('having'))
+                query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'), config)
 
             if 'selectall' in config and config.get('selectall'):
                 # re-arrange columns starting by those in config first
@@ -164,7 +162,7 @@ class AdvancedQueryBuilder:
 
         return query
 
-    def get_groupby_query(self, table, query, columns, select_columns):
+    def get_groupby_query(self, table, query, columns, select_columns, config):
         # Check if all columns in select are present in GROUP BY CLAUSE columns
         select_column_names = [elem['name'] for elem in select_columns]
         select_column_aggregates = []
@@ -175,9 +173,12 @@ class AdvancedQueryBuilder:
         get_column_aggregates()
 
         if all(elem in columns for elem in select_column_names) or len(select_column_aggregates) > 0:
-            return query.groupby(*[table[column] for column in columns])
+            query = query.groupby(*[table[column] for column in columns])
         else:
             raise ValueError('All columns (values) in the SELECT clause must be in the GROUP BY clause')
+        if 'having' in config:
+            query = self.get_having_query(table, query, config.get('having'))
+        return query
 
     def get_filter_query(self, table, query, config):
         if self.andKey in config:
