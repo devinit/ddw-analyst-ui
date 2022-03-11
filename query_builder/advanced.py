@@ -122,46 +122,55 @@ class AdvancedQueryBuilder:
         return join_query
 
     def get_select_query(self, table, query, config):
-        if 'groupby' in config:
-            if config.get('selectall'):
+        if config.get('selectall'):
+            if 'groupby' in config or 'having' in config:
                 raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
-            if 'columns' in config:
-                query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'))
-                if 'having' in config:
-                    query = self.get_having_query(table, query, config.get('having'))
-            else:
-                raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
-
-        if 'having' in config and 'groupby' not in config:
-            query = self.get_having_query(table, query, config.get('having'))
-
-        if 'selectall' in config and config.get('selectall'):
-            if 'columns' in config:
-                # re-arrange columns starting by those in config first
-                provided_cols = config.get('columns')
-                other_columns = self.get_source_columns(config.get('source'), [column['name'] for column in provided_cols])
-                for provided_col in provided_cols:
-                    j = next((i for i, item in enumerate(other_columns) if item['name'] == provided_col['name']), False)
-                    if j:
-                        other_columns.pop(j)
-                columns = provided_cols + other_columns
             else:
                 columns = self.get_source_columns(config.get('source'))
+                final_cols = self.process_select_columns(table, columns)
+                query = query.select(*final_cols)
+        if 'columns' in config:
+            pass
+            # handle `groupby` and `having` configs & the rest here, in that order
         else:
-            columns = config.get('columns')
+            pass
+            # raise an error
+        # if 'groupby' in config:
+        #     if 'columns' in config:
+        #         query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'))
+        #         if 'having' in config:
+        #             query = self.get_having_query(table, query, config.get('having'))
+        #     else:
+        #         raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
 
-        # Handle select for joins
-        if 'join' in config:
-            final_cols = self.append_join_columns(table, config, columns)
-        else:
-            final_cols = self.process_select_columns(table, columns)
+        # if 'selectall' in config and config.get('selectall'):
+        #     if 'columns' in config:
+        #         # re-arrange columns starting by those in config first
+        #         provided_cols = config.get('columns')
+        #         other_columns = self.get_source_columns(config.get('source'), [column['name'] for column in provided_cols])
+        #         for provided_col in provided_cols:
+        #             j = next((i for i, item in enumerate(other_columns) if item['name'] == provided_col['name']), False)
+        #             if j:
+        #                 other_columns.pop(j)
+        #         columns = provided_cols + other_columns
+        #     else:
+        #         print('this runs')
+        #         columns = self.get_source_columns(config.get('source'))
+        # else:
+        #     columns = config.get('columns')
 
-        # also handles aggregations and aliases...
-        query = query.select(*final_cols)
+        # # Handle select for joins
+        # if 'join' in config:
+        #     final_cols = self.append_join_columns(table, config, columns)
+        # else:
+        #     final_cols = self.process_select_columns(table, columns)
 
-        if 'orderby' in config:
-            orderby = config.get('orderby')
-            return query.orderby(table[orderby[0]], order=ORDERBY_MAPPING[orderby[1]])
+        # # also handles aggregations and aliases...
+        # query = query.select(*final_cols)
+
+        # if 'orderby' in config:
+        #     orderby = config.get('orderby')
+        #     return query.orderby(table[orderby[0]], order=ORDERBY_MAPPING[orderby[1]])
 
         return query
 
