@@ -1,5 +1,10 @@
-import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
+import {
+  AdvancedQueryColumn,
+  AdvancedQueryHaving,
+  AdvancedQueryOptions,
+} from '../../../types/operations';
 import { Column, ColumnList } from '../../../types/sources';
+import { convertJqOperatorToDDW } from '../../JqueryQueryBuilder/utils';
 import {
   JqueryQueryBuilderHaving,
   JqueryQueryBuilderHavingComparator,
@@ -58,3 +63,70 @@ export const hasNumericColumns = (columns: ColumnList, options: AdvancedQueryOpt
   !!getGroupByColumns(options)?.find((column) => isNumeric(columns.toJS() as Column[], column));
 export const getAggregateColumns = (columns: AdvancedQueryColumn[] = []): AdvancedQueryColumn[] =>
   columns.filter((column) => column.aggregate);
+
+export const parseHavingQuery = (
+  finalElement: any,
+  condition: string,
+  rulesObject: any,
+  aggregateColumns?: AdvancedQueryColumn[],
+  columns?: AdvancedQueryColumn[],
+): AdvancedQueryHaving => {
+  if (rulesObject.hasOwnProperty('condition')) {
+    finalElement[`$${rulesObject.condition.toLowerCase()}`] = [];
+    finalElement = parseHavingQuery(
+      finalElement,
+      rulesObject.condition,
+      rulesObject.rules,
+      aggregateColumns,
+      columns,
+    );
+  } else {
+    for (let index = 0; index < rulesObject.length; index++) {
+      if (Array.isArray(rulesObject) && rulesObject[index].condition) {
+        finalElement[`$${condition.toLowerCase()}`].push(
+          parseHavingQuery(
+            {},
+            rulesObject[index].condition,
+            rulesObject[index].rules,
+            aggregateColumns,
+            columns,
+          ),
+        );
+      } else {
+        if (!finalElement.hasOwnProperty(`$${condition.toLowerCase()}`)) {
+          finalElement[`$${condition.toLowerCase()}`] = [];
+        }
+        if ((aggregateColumns as AdvancedQueryColumn[]).length > 0) {
+          aggregateColumns?.map((column) => {
+            if (column.name === rulesObject[index].field) {
+              finalElement[`$${condition.toLowerCase()}`].push({
+                column: rulesObject[index].field,
+                comp: convertJqOperatorToDDW(rulesObject[index].operator),
+                aggregate: column.aggregate,
+                value: { plain: rulesObject[index].value },
+              });
+            }
+          });
+        } else {
+          if (typeof rulesObject[index].value === 'number') {
+            finalElement[`$${condition.toLowerCase()}`].push({
+              column: getColumnFromAlias(rulesObject[index].field, columns as AdvancedQueryColumn[])
+                .name,
+              comp: convertJqOperatorToDDW(rulesObject[index].operator),
+              value: { plain: rulesObject[index].value },
+            });
+          } else {
+            const receivedString = rulesObject[index].value.split(',');
+            finalElement[`$${condition.toLowerCase()}`].push({
+              column: rulesObject[index].field,
+              comp: convertJqOperatorToDDW(rulesObject[index].operator),
+              value: { column: receivedString[0], aggregate: receivedString[1] },
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return finalElement;
+};

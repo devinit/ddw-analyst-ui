@@ -7,7 +7,7 @@ import {
 } from '../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
-import { createQueryBuilderRules, parseHavingQuery } from '../JqueryQueryBuilder/utils';
+import { createQueryBuilderRules } from '../JqueryQueryBuilder/utils';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import {
   getAggregateColumns,
@@ -16,6 +16,7 @@ import {
   hasAggregate,
   hasNumericColumns,
   isNumeric,
+  parseHavingQuery,
 } from './utils';
 
 interface ComponentProps {
