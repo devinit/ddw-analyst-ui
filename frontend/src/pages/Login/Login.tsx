@@ -9,7 +9,7 @@ import { css } from 'glamor';
 import { bindActionCreators } from 'redux';
 import { Credentials, LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
-import { api, localForageKeys } from '../../utils';
+import { api, getPreference, localForageKeys } from '../../utils';
 import * as UserActions from '../../actions/user';
 import * as TokenActions from '../../actions/token';
 import { User } from '../../reducers/user';
@@ -107,6 +107,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
         if (token && user) {
           this.storeTokenPlusUser(token, user);
           this.props.history.push('/');
+          this.savePreference(token);
         } else if (detail) {
           this.setState({ alert: detail });
         }
@@ -114,6 +115,14 @@ export class Login extends React.Component<LoginProps, LoginState> {
       .catch(console.log); // tslint:disable-line
   };
 
+  private savePreference(token: string) {
+    console.log(token);
+    getPreference(token)
+      .then((response) => response.json())
+      .then(({ results }) => {
+        console.log(results);
+      });
+  }
   private storeTokenPlusUser(token: string, { id, username, is_superuser }: User) {
     localForage.setItem(localForageKeys.API_KEY, token);
     localForage.setItem(localForageKeys.USER, { id, username, is_superuser });

@@ -14,6 +14,7 @@ export const localForageKeys = {
   MY_DATASETS: 'MY_DATASETS',
   PUBLISHED_DATASETS: 'PUBLISHED_DATASETS',
   DATASET_COUNT: 'DATASET_COUNT',
+  PREFERENCES: 'PREFERENCES',
 };
 
 export type LocalForageActiveSource = [number, Source];

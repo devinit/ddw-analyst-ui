@@ -12,6 +12,7 @@ import {
   WindowOptions,
 } from '../types/operations';
 import { ColumnList, SourceMap } from '../types/sources';
+import { api } from './api';
 
 export * from './api';
 export * from './localForage';
@@ -178,3 +179,13 @@ export const getColumnFromName = (
   columns: AdvancedQueryColumn[],
 ): AdvancedQueryColumn | undefined =>
   columns.find((col) => col.name === name) as AdvancedQueryColumn;
+
+export const getPreference = (token: string) => {
+  return window.fetch(api.routes.PREFERENCES, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `token ${token}`,
+    },
+  });
+};
