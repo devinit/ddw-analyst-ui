@@ -40,11 +40,9 @@ const AdvancedQueryBuilderColumnOrder: FunctionComponent<ColumnOrderProps> = ({
     }));
     if (updateOptions) {
       const updatedOptions: Partial<AdvancedQueryOptions> = {
-        columns: orderedColumns.map(({ alias, columnName: name }) => ({
-          id: getColumnPropertyByName(source, name, 'id'),
-          name,
-          alias,
-        })) as AdvancedQueryColumn[],
+        columns: orderedColumns.map(
+          ({ columnName: name }) => columns.find((col) => col.name === name) as AdvancedQueryColumn,
+        ),
       };
       updateOptions(
         props.usage === 'select'
