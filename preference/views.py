@@ -8,12 +8,12 @@ from core.permissions import IsOwnerOrReadOnly
 # Create your views here.
 class PreferedChoice(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsOwnerOrReadOnly,)
     queryset = Preference.objects.all()
     serializer_class = PreferenceSerializer
 
 class UpdatePreferedChoice(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsOwnerOrReadOnly,)
     queryset = Preference.objects.all()
     serializer_class = PreferenceSerializer
