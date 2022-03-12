@@ -154,10 +154,7 @@ class AdvancedQueryBuilder:
 
         # Handle select for joins
         if 'join' in config:
-            # final_cols = self.append_join_columns(table, config, columns)
-            logs = 2
-            print(config)
-            final_cols = self.process_select_columns(table, columns)
+            final_cols = self.append_join_columns(table, config, columns)
         else:
             final_cols = self.process_select_columns(table, columns)
             if 'join' in config:
@@ -258,13 +255,18 @@ class AdvancedQueryBuilder:
     def append_join_columns(self, table, config, columns):
         if 'join' in config:
             join_config = config.get('join')
-            join_cols = join_config.get('columns')
-            if join_cols:
-                right_table = self.get_source_table(join_config.get('source'))
-                right_cols = self.process_select_columns(right_table, join_cols)
-                left_cols = self.process_select_columns(table, columns)
+            all_right_cols = []
 
-                return left_cols + right_cols
+            for join in join_config:
+                join_cols = join.get('columns')
+                if join_cols:
+                    right_table = self.get_source_table(join.get('source'))
+                    right_cols = self.process_select_columns(right_table, join_cols)
+                    all_right_cols = all_right_cols + right_cols
+            
+            left_cols = self.process_select_columns(table, columns)
+            return left_cols + all_right_cols
+        
         return self.process_select_columns(table, columns)
 
     def process_select_columns(self, table, columns):

@@ -147,6 +147,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   const onDelete = () => {
     joinList.splice(activeJoinIndex, 1);
     setJoinList([...joinList]);
+    setShow(!show);
   };
 
   // parse source columns into format consumable by FilterItem
