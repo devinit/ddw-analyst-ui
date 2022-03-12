@@ -30,7 +30,9 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
 
   const [show, setShow] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [joinList, setJoinList] = useState<AdvancedQueryJoin[]>([]);
+  const [joinList, setJoinList] = useState<AdvancedQueryJoin[]>(
+    options.join && options.join.length ? options.join : [],
+  );
   const [activeJoin, setActiveJoin] = useState<AdvancedQueryJoin>({
     type: 'inner',
   } as AdvancedQueryJoin);
@@ -82,7 +84,10 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     if (columnMapping.every((column) => !!column)) {
       setActiveJoin({
         ...activeJoin,
-        mapping: [columnMapping],
+        mapping:
+          activeJoin && activeJoin.mapping
+            ? activeJoin.mapping.concat([columnMapping])
+            : [columnMapping],
       } as AdvancedQueryJoin);
     }
   };
@@ -252,25 +257,47 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
               />
 
               <div className="mb-3">
-                <Button
-                  disabled={
-                    activeJoin.mapping &&
-                    activeJoin.mapping.length &&
-                    activeJoin.source &&
-                    activeJoin.columns &&
-                    activeJoin.columns.length
-                      ? false
-                      : true
-                  }
-                  variant="danger"
-                  size="sm"
-                  data-placement="top"
-                  data-html="true"
-                  title={isEditing ? 'Edit join' : 'Adds a join'}
-                  onClick={() => onAddJoin()}
-                >
-                  {isEditing ? 'Edit' : 'Add'}
-                </Button>
+                <Row>
+                  <Button
+                    disabled={
+                      activeJoin.mapping &&
+                      activeJoin.mapping.length &&
+                      activeJoin.source &&
+                      activeJoin.columns &&
+                      activeJoin.columns.length
+                        ? false
+                        : true
+                    }
+                    variant="danger"
+                    size="sm"
+                    data-placement="top"
+                    data-html="true"
+                    title={isEditing ? 'Edit join' : 'Adds a join'}
+                    onClick={() => onAddJoin()}
+                  >
+                    {isEditing ? 'Edit' : 'Add'}
+                  </Button>
+
+                  <Button
+                    disabled={
+                      activeJoin.mapping &&
+                      activeJoin.mapping.length &&
+                      activeJoin.source &&
+                      activeJoin.columns &&
+                      activeJoin.columns.length
+                        ? false
+                        : true
+                    }
+                    variant="danger"
+                    size="sm"
+                    data-placement="top"
+                    data-html="true"
+                    title={isEditing ? 'Edit join' : 'Adds a join'}
+                    onClick={() => onAddJoin()}
+                  >
+                    {isEditing ? 'Edit' : 'Add'}
+                  </Button>
+                </Row>
               </div>
             </Col>
           ) : null}
