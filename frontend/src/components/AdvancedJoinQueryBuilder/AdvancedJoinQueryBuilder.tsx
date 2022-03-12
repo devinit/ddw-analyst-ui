@@ -37,13 +37,19 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     type: 'inner',
   } as AdvancedQueryJoin);
   const [activeJoinIndex, setActiveJoinIndex] = useState<number>(0);
-  const [selectedColumns, setSelectedColumns] = useState<AdvancedQueryColumn[]>([]);
+  const [selectedColumns, setSelectedColumns] = useState<AdvancedQueryColumn[]>(
+    joinList.length &&
+      joinList[activeJoinIndex].columns &&
+      joinList[activeJoinIndex].columns!.length
+      ? joinList[activeJoinIndex].columns!
+      : [],
+  );
 
   useEffect(() => {
     if (!hasJoinConfig(options)) {
       updateOptions!({ join: [] as AdvancedQueryJoin[] });
     }
-    if (options.join && options.join![activeJoinIndex].source) {
+    if (options.join && options.join.length && options.join![activeJoinIndex].source) {
       const joinSource = sources.find((_source) => {
         if (options.join) {
           return _source.get('id') === options.join[activeJoinIndex].source;
@@ -56,11 +62,9 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   }, []);
 
   useEffect(() => {
-    if (joinList.length) {
-      updateOptions!({
-        join: joinList,
-      });
-    }
+    updateOptions!({
+      join: joinList,
+    });
   }, [joinList]);
 
   const onChangeJoinType = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
@@ -138,6 +142,11 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     setActiveJoin(joinList[activeJoinIndex]);
     setShow(!show);
     setIsEditing(true);
+  };
+
+  const onDelete = () => {
+    joinList.splice(activeJoinIndex, 1);
+    setJoinList([...joinList]);
   };
 
   // parse source columns into format consumable by FilterItem
@@ -257,47 +266,38 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
               />
 
               <div className="mb-3">
-                <Row>
-                  <Button
-                    disabled={
-                      activeJoin.mapping &&
-                      activeJoin.mapping.length &&
-                      activeJoin.source &&
-                      activeJoin.columns &&
-                      activeJoin.columns.length
-                        ? false
-                        : true
-                    }
-                    variant="danger"
-                    size="sm"
-                    data-placement="top"
-                    data-html="true"
-                    title={isEditing ? 'Edit join' : 'Adds a join'}
-                    onClick={() => onAddJoin()}
-                  >
-                    {isEditing ? 'Edit' : 'Add'}
-                  </Button>
+                <Button
+                  disabled={
+                    activeJoin.mapping &&
+                    activeJoin.mapping.length &&
+                    activeJoin.source &&
+                    activeJoin.columns &&
+                    activeJoin.columns.length
+                      ? false
+                      : true
+                  }
+                  variant="danger"
+                  size="sm"
+                  data-placement="top"
+                  data-html="true"
+                  title={isEditing ? 'Edit join' : 'Adds a join'}
+                  onClick={() => onAddJoin()}
+                >
+                  {isEditing ? 'Edit' : 'Add'}
+                </Button>
 
+                {isEditing ? (
                   <Button
-                    disabled={
-                      activeJoin.mapping &&
-                      activeJoin.mapping.length &&
-                      activeJoin.source &&
-                      activeJoin.columns &&
-                      activeJoin.columns.length
-                        ? false
-                        : true
-                    }
-                    variant="danger"
+                    variant="dark"
                     size="sm"
                     data-placement="top"
                     data-html="true"
-                    title={isEditing ? 'Edit join' : 'Adds a join'}
-                    onClick={() => onAddJoin()}
+                    title={'Deletes a join'}
+                    onClick={() => onDelete()}
                   >
-                    {isEditing ? 'Edit' : 'Add'}
+                    {'Delete'}
                   </Button>
-                </Row>
+                ) : null}
               </div>
             </Col>
           ) : null}
