@@ -248,7 +248,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                 fluid
                 search
                 selection
-                options={getSelectOptionsFromSources(sources, source)}
+                options={getSelectOptionsFromSources(sources)}
                 onChange={onSelectSource}
                 data-testid="qb-join-dataset-select"
                 value={joinSource?.get('id') as number}
