@@ -1,9 +1,12 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
+import * as localForage from 'localforage';
+import { localForageKeys } from '../../utils';
 import { Alert, Modal } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import AdvancedQueryBuilder from '../AdvancedQueryBuilder/AdvancedQueryBuilder';
 import QueryBuilder from '../QueryBuilder/QueryBuilder';
+import { key } from 'localforage';
 
 type SelectedQueryBuilder = 'basic' | 'advanced';
 
@@ -12,6 +15,14 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
   const [showModal, setShowModal] = useState(true);
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
 
+  const [token, setToken] = useState<string>();
+
+  useEffect(() => {
+    localForage
+      .getItem<string>(localForageKeys.PREFERENCES)
+      .then((key) => setToken(key || undefined));
+  }, []);
+  console.log(key);
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
