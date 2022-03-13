@@ -16,7 +16,7 @@ import { AdvancedJoinColumnsMapper } from '../AdvancedJoinColumnsMapper';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { StyledListItem, StyledStepContainer } from '../OperationSteps';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
-import { getSourceColumns, hasJoinConfig, joinTypes } from './utils';
+import { checkIfMappingExists, getSourceColumns, hasJoinConfig, joinTypes } from './utils';
 
 interface ComponentProps {
   source: SourceMap;
@@ -44,6 +44,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       ? joinList[activeJoinIndex].columns!
       : [],
   );
+  const [mappingMessage, setMappingMessage] = useState<string>('');
 
   useEffect(() => {
     if (!hasJoinConfig(options)) {
@@ -86,14 +87,26 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
 
   const onAddMapping = (columnMapping: [string, string]) => {
     if (columnMapping.every((column) => !!column)) {
-      setActiveJoin({
-        ...activeJoin,
-        mapping:
-          activeJoin && activeJoin.mapping
-            ? activeJoin.mapping.concat([columnMapping])
-            : [columnMapping],
-      } as AdvancedQueryJoin);
+      if (!checkIfMappingExists(activeJoin.mapping, columnMapping).length) {
+        setActiveJoin({
+          ...activeJoin,
+          mapping:
+            activeJoin && activeJoin.mapping
+              ? activeJoin.mapping.concat([columnMapping])
+              : [columnMapping],
+        } as AdvancedQueryJoin);
+        setMessage(`Added mapping ${JSON.stringify(columnMapping)}`);
+      } else {
+        setMessage(`Already added this mapping ${JSON.stringify(columnMapping)}`);
+      }
     }
+  };
+
+  const setMessage = (message: string) => {
+    setMappingMessage(message);
+    setTimeout(() => {
+      setMappingMessage('');
+    }, 3000);
   };
 
   const onRemoveMapping = (columnMapping: [string, string]) => {
@@ -110,6 +123,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
           (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
         ),
       } as AdvancedQueryJoin);
+      setMessage(`Removed mapping ${JSON.stringify(columnMapping)}`);
     }
   };
 
@@ -257,6 +271,12 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                 onRemove={onRemoveMapping}
                 mappedColumns={activeJoin.mapping ? activeJoin.mapping : [['', '']]}
               />
+
+              <Row>
+                <Col>
+                  <span>{mappingMessage}</span>
+                </Col>
+              </Row>
 
               <AdvancedSelectQueryBuilder
                 source={joinSource}
