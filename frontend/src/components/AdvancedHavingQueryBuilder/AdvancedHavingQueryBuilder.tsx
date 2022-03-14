@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
 import { Alert, Button, ButtonGroup } from 'react-bootstrap';
+import { DropdownItemProps } from 'semantic-ui-react';
 import {
   AdvancedQueryColumn,
   AdvancedQueryHaving,
@@ -27,16 +28,14 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
 
-  const getAggregateValues = (aggregateOptions: string[], column: AdvancedQueryColumn) => {
-    const options = aggregateOptions.map((option) => {
-      return {
-        value: `${column.name},${option}`,
-        label: `${option}(${column.alias})`,
-      };
-    });
-
-    return options;
-  };
+  const getDropdownOptionsForAggregateColumn = (
+    aggregateOptions: string[],
+    column: AdvancedQueryColumn,
+  ): DropdownItemProps[] =>
+    aggregateOptions.map((option) => ({
+      value: `${column.name},${option}`,
+      label: `${option}(${column.alias})`,
+    }));
 
   const fieldData = () => {
     const data: any[] = [];
@@ -58,7 +57,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           label: `${column.alias as string}(aggregate value)`,
           type: 'string',
           input: 'select',
-          values: getAggregateValues(aggregateOptions, column),
+          values: getDropdownOptionsForAggregateColumn(aggregateOptions, column),
           operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal'],
         });
       }
