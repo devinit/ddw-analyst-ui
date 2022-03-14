@@ -6,19 +6,20 @@ import { Alert, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import {
   AdvancedQueryBuilderAction,
+  AdvancedQueryColumn,
   AdvancedQueryOptions,
   OperationData,
   OperationDataList,
   OperationMap,
 } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
+import { Column, SourceMap } from '../../types/sources';
 import { previewAdvancedDatasetData } from '../../utils/hooks';
 import { CodeMirrorReact } from '../CodeMirrorReact';
 import { ICheckData, IRadio } from '../IRadio';
 import { OperationPreview } from '../OperationPreview';
 import { QuerySentence } from '../QuerySentence';
 import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
-import { getClauseOptions, resetClauseOptions, validateOptions } from './utils';
+import { resetClauseOptions, validateOptions } from './utils';
 
 interface QuerySentencePreviewProps {
   source: SourceMap;
@@ -28,7 +29,7 @@ interface QuerySentencePreviewProps {
   onValidUpdate?: (options: AdvancedQueryOptions) => void;
 }
 
-type PreviewOption = 'clause-config' | 'config' | 'query' | 'data';
+type PreviewOption = 'config' | 'query' | 'data';
 const PreviewWrapper = styled.div`
   min-height: 350px;
 `;
@@ -48,7 +49,7 @@ const EditorWrapper = styled.div`
 
 const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (props) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
-  const [previewOption, setPreviewOption] = useState<PreviewOption>('clause-config');
+  const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
   const [data, setData] = useState<OperationData[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [alert, setAlert] = useState<string[]>([]);
@@ -76,25 +77,42 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   }, [previewOption]);
 
   useEffect(() => {
-    // every options update is validated. Valid options automatically get saved & are eligible for query & data preview
-    const validationResponse = validateOptions(options, props.source);
-    if (validationResponse.length) {
-      setAlert(validationResponse);
-    } else {
-      setAlert([]);
-      setValidOptions(options);
-      if (previewOption === 'data') {
-        fetchPreviewData(options);
-      }
-      if (props.onValidUpdate) props.onValidUpdate(options);
-    }
-  }, [options]);
-
-  useEffect(() => {
     try {
       const parsedValue = JSON.parse(editorValue);
-      updateOptions!({ ...options, ...parsedValue });
-      setAlert([]);
+      const updatedOptions: AdvancedQueryOptions = { ...options, ...parsedValue };
+
+      // for aggregate columns, set required groupby config
+      const aggregateColumns = options.columns?.filter((col) => col.aggregate);
+      if (aggregateColumns?.length) {
+        const nonAggregateColumns = options.columns
+          ?.filter((col: AdvancedQueryColumn) => !col.aggregate)
+          .map((column: Column) => column.name as string);
+        if (options.groupby && options.groupby.length && nonAggregateColumns) {
+          const groupBy = options.groupby.concat(
+            nonAggregateColumns.filter((column) => !options.groupby?.includes(column as string)),
+          );
+          // check that groupby has been updated before updating to avoid an infinite loop
+          if (options.groupby.sort().join(',') !== groupBy.sort().join(',')) {
+            updatedOptions.groupby = groupBy;
+          }
+        } else {
+          updatedOptions.groupby = nonAggregateColumns;
+        }
+      }
+
+      updateOptions!(updatedOptions);
+
+      const validationResponse = validateOptions(updatedOptions, props.source);
+      if (validationResponse.length) {
+        setAlert(validationResponse);
+      } else {
+        setAlert([]);
+        setValidOptions(updatedOptions);
+        if (previewOption === 'data') {
+          fetchPreviewData(options);
+        }
+        if (props.onValidUpdate) props.onValidUpdate(updatedOptions);
+      }
     } catch (error) {
       /* eslint-disable @typescript-eslint/no-explicit-any */
       if (
@@ -107,11 +125,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   }, [editorValue]);
 
   const getEditorValue = () => {
-    if (previewOption === 'clause-config') {
-      return JSON.stringify(getClauseOptions(options, props.action) || {}, null, 2);
-    }
-
-    return JSON.stringify(validOptions || { error: 'Waiting for valid options' }, null, 2);
+    return JSON.stringify(options || {}, null, 2);
   };
 
   const onReset = () => {
@@ -127,12 +141,12 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       <div className="mb-2">
         <IRadio
           variant="danger"
-          id="clause-config"
-          name="clause-config"
-          label="Clause Config"
+          id="config"
+          name="config"
+          label="Config"
           onChange={onRadioChange}
           inline
-          checked={previewOption === 'clause-config'}
+          checked={previewOption === 'config'}
         />
         <IRadio
           variant="danger"
@@ -152,30 +166,17 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           inline
           checked={previewOption === 'data'}
         />
-        <IRadio
-          variant="danger"
-          id="config"
-          name="config"
-          label="Full Config"
-          onChange={onRadioChange}
-          inline
-          checked={previewOption === 'config'}
-        />
       </div>
       <Alert variant="warning" show={!!alert.length} className="mt-2">
         {alert.map((message, index) => (
           <p key={`${index}`}>{message}</p>
         ))}
       </Alert>
-      <EditorWrapper
-        className={classNames({
-          'd-none': previewOption !== 'clause-config' && previewOption !== 'config',
-        })}
-      >
+      <EditorWrapper className={classNames({ 'd-none': previewOption !== 'config' })}>
         <ResetButton
           variant="danger"
           size="sm"
-          className={classNames({ 'd-none': previewOption !== 'clause-config' })}
+          className={classNames({ 'd-none': previewOption !== 'config' })}
           onClick={onReset}
         >
           Clear

@@ -44,24 +44,6 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           value: column.name as string,
         })),
     );
-    // for aggregate columns, set required groupby config
-    const aggregateColumns = props.columns?.filter((col) => col.aggregate);
-    if (aggregateColumns?.length && updateOptions) {
-      const nonAggregateColumns = props.columns
-        ?.filter((col: AdvancedQueryColumn) => !col.aggregate)
-        .map((column: Column) => column.name as string);
-      if (options.groupby && options.groupby.length) {
-        const groupBy = options.groupby.concat(
-          nonAggregateColumns.filter((column) => !options.groupby?.includes(column as string)),
-        );
-        // check that groupby has been updated before updating to avoid an infinite loop
-        if (options.groupby.sort().join(',') !== groupBy.sort().join(',')) {
-          updateOptions({ groupby: groupBy });
-        }
-      } else {
-        updateOptions({ groupby: nonAggregateColumns });
-      }
-    }
   }, [props.columns]);
 
   const onSelectColumn = (_event: SelectEvent, data: DropdownProps) => {
