@@ -236,6 +236,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         type: 'string',
         required: true,
       },
+      { name: 'country', caption: 'Country', type: 'string', required: false },
     ],
   },
 ];
