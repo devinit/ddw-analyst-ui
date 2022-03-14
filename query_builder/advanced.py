@@ -201,7 +201,7 @@ class AdvancedQueryBuilder:
         elif self.orKey in config:
             rootConfig = config.get(self.orKey)
             # a way to handle complex having configs
-            crit = Criterion.all([ self.get_having_criterion(table, config) for config in rootConfig ])
+            crit = Criterion.any([ self.get_having_criterion(table, config) for config in rootConfig ])
 
 
         # sample query
