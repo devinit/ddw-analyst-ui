@@ -183,11 +183,12 @@ class AdvancedQueryBuilder:
     def get_filter_query(self, table, query, config):
         if self.andKey in config:
             rootConfig = config.get(self.andKey)
+            # a way to handle complex filter configs
+            crit = Criterion.all([ self.get_filter_criterion(table, config) for config in rootConfig ])
         elif self.orKey in config:
             rootConfig = config.get(self.orKey)
-
-         # a way to handle complex filter configs
-        crit = Criterion.any([ self.get_filter_criterion(table, config) for config in rootConfig ])
+            # a way to handle complex filter configs
+            crit = Criterion.any([ self.get_filter_criterion(table, config) for config in rootConfig ])
 
         # sample query
         return query.where(crit)
