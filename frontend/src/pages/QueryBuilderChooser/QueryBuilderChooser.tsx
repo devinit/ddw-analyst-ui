@@ -7,6 +7,7 @@ import { ICheckData, IRadio } from '../../components/IRadio';
 import AdvancedQueryBuilder from '../AdvancedQueryBuilder/AdvancedQueryBuilder';
 import QueryBuilder from '../QueryBuilder/QueryBuilder';
 import { key } from 'localforage';
+import { CheckBox } from '../../components/CheckBox';
 
 type SelectedQueryBuilder = 'basic' | 'advanced';
 
@@ -69,8 +70,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
           </Alert>
         </Modal.Body>
         <Modal.Footer>
-          <input type="checkbox" />
-          <label>Remember my choice</label>
+          <CheckBox label="Remember my choice" />
         </Modal.Footer>
       </Modal>
     </div>
