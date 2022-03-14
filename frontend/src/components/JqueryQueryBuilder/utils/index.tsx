@@ -1,9 +1,5 @@
-import {
-  AdvancedQueryFilter,
-  FilterComp,
-  JqueryQueryBuilderComps,
-  JqueryQueryBuilderFilter,
-} from '../../../types/operations';
+import { JqueryQueryBuilderComps, JqueryQueryBuilderFilter } from './types';
+import { AdvancedQueryFilter, FilterComp } from '../../../types/operations';
 
 export const parseQuery = (
   finalElement: any,
@@ -90,7 +86,7 @@ const convertDDWOperatorToJq = (ddwOperator: FilterComp) => {
   return operatorMap[ddwOperator];
 };
 
-const convertJqOperatorToDDW = (operator: JqueryQueryBuilderComps) => {
+export const convertJqOperatorToDDW = (operator: JqueryQueryBuilderComps): string => {
   const operatorMap = {
     equal: '$eq',
     not_equal: '$neq',

@@ -4,15 +4,19 @@ import React, { FunctionComponent, useEffect } from 'react';
 import {
   JqueryQueryBuilderFieldData,
   JqueryQueryBuilderFilter,
+  JqueryQueryBuilderHaving,
   JqueryQueryBuilderIcons,
-} from '../../types/operations';
+} from './utils/types';
 import './jqueryQueryBuilder.css';
 
 export interface JqueryQueryBuilderProps {
   fieldData: JqueryQueryBuilderFieldData[];
   getJqueryBuilderInstance: (jqInstance: any) => void;
   icons?: JqueryQueryBuilderIcons;
-  rules: JqueryQueryBuilderFilter;
+  rules: JqueryQueryBuilderFilter | JqueryQueryBuilderHaving;
+  getHavingQueryValues?: (
+    rules: JqueryQueryBuilderFilter | JqueryQueryBuilderHaving,
+  ) => JqueryQueryBuilderFilter | JqueryQueryBuilderHaving;
 }
 
 const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
@@ -20,6 +24,7 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
   getJqueryBuilderInstance,
   icons,
   rules,
+  getHavingQueryValues,
 }) => {
   useEffect(() => {
     const jq = new jQueryQueryBuilder((window as any).$('#builder'), {
@@ -31,10 +36,12 @@ const JqueryQueryBuilder: FunctionComponent<JqueryQueryBuilderProps> = ({
 
     jq.init();
 
-    if (Object.keys(rules).length > 0) {
+    if (Object.keys(rules).length) {
+      if (getHavingQueryValues) {
+        rules = getHavingQueryValues(rules);
+      }
       jq.setRules(rules);
     }
-
     getJqueryBuilderInstance(jq);
   }, []);
 

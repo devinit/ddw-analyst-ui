@@ -52,6 +52,7 @@ class AdvancedQueryBuilder:
         self.orKey = '$or'
 
     def process_config(self, config):
+        self.config = config
         table = self.get_source_table(config.get('source'))
         query = Query.from_(table)
 
@@ -121,13 +122,18 @@ class AdvancedQueryBuilder:
         return join_query
 
     def get_select_query(self, table, query, config):
-        if 'groupby' in config:
-            query = self.get_groupby_query(table, query, config.get('groupby'))
-        if 'having' in config:
-            query = self.get_having_query(table, query, config.get('having'))
+        if config.get('selectall'):
+            if 'groupby' in config or 'having' in config:
+                raise LookupError('Columns must be explicitly SELECTED for queries that use GROUP BY clauses')
+            else:
+                columns = self.get_source_columns(config.get('source'))
+                final_cols = self.process_select_columns(table, columns)
+                return query.select(*final_cols)
+        if 'columns' in config:
+            if 'groupby' in config:
+                query = self.get_groupby_query(table, query, config.get('groupby'), config.get('columns'), config)
 
-        if 'selectall' in config and config.get('selectall'):
-            if 'columns' in config:
+            if 'selectall' in config and config.get('selectall'):
                 # re-arrange columns starting by those in config first
                 provided_cols = config.get('columns')
                 other_columns = self.get_source_columns(config.get('source'), [column['name'] for column in provided_cols])
@@ -137,28 +143,42 @@ class AdvancedQueryBuilder:
                         other_columns.pop(j)
                 columns = provided_cols + other_columns
             else:
-                columns = self.get_source_columns(config.get('source'))
-        else:
-            columns = config.get('columns')
+                columns = config.get('columns')
 
-        # Handle select for joins
-        if 'join' in config:
-            final_cols = self.append_join_columns(table, config, columns)
-        else:
             final_cols = self.process_select_columns(table, columns)
+            if 'join' in config:
+                final_cols = self.append_join_columns(table, config, columns)
+            else:
+                final_cols = self.process_select_columns(table, columns)
 
-        # also handles aggregations and aliases...
-        query = query.select(*final_cols)
+            # also handles aggregations and aliases...
+            query = query.select(*final_cols)
 
-        if 'orderby' in config:
-            orderby = config.get('orderby')
-            return query.orderby(table[orderby[0]], order=ORDERBY_MAPPING[orderby[1]])
+            if 'orderby' in config:
+                orderby = config.get('orderby')
+                return query.orderby(table[orderby[0]], order=ORDERBY_MAPPING[orderby[1]])
+        else:
+            raise LookupError('Columns must be explicitly SELECTED')
 
         return query
 
-    def get_groupby_query(self, table, query, columns):
-        # TODO: handle .having here as its usage is based on the groupby
-        return query.groupby(*[table[column] for column in columns])
+    def get_groupby_query(self, table, query, columns, select_columns, config):
+        # Check if all columns in select are present in GROUP BY CLAUSE columns
+        select_column_names = [elem['name'] for elem in select_columns]
+        select_column_aggregates = []
+        def get_column_aggregates():
+            for elem in select_columns:
+                if 'aggregate' in elem:
+                    select_column_aggregates.append(elem)
+        get_column_aggregates()
+
+        if all(elem in columns for elem in select_column_names) or len(select_column_aggregates) > 0:
+            query = query.groupby(*[table[column] for column in columns])
+        else:
+            raise ValueError('All columns (values) in the SELECT clause must be in the GROUP BY clause')
+        if 'having' in config:
+            query = self.get_having_query(table, query, config.get('having'))
+        return query
 
     def get_filter_query(self, table, query, config):
         if self.andKey in config:
@@ -176,11 +196,13 @@ class AdvancedQueryBuilder:
     def get_having_query(self, table, query, config):
         if self.andKey in config:
             rootConfig = config.get(self.andKey)
+            # a way to handle complex having configs
+            crit = Criterion.all([ self.get_having_criterion(table, config) for config in rootConfig ])
         elif self.orKey in config:
             rootConfig = config.get(self.orKey)
+            # a way to handle complex having configs
+            crit = Criterion.any([ self.get_having_criterion(table, config) for config in rootConfig ])
 
-        # a way to handle complex having configs
-        crit = Criterion.all([ self.get_having_criterion(table, config) for config in rootConfig ])
 
         # sample query
         return query.having(crit)
@@ -205,13 +227,18 @@ class AdvancedQueryBuilder:
             orConfig = config.get(self.orKey)
             return Criterion.any([ self.get_having_criterion(table, config) for config in orConfig ])
 
+        group_by_cols = self.config.get('groupby', {})
         value = config.get('value')
+        plain = True
         if 'plain' in value:
             value = value.get('plain')
         else:
             value = FUNCTION_MAPPING[value.get('aggregate')](table[value.get('column')])
+            plain = False
         if 'aggregate' in config:
             return FILTER_MAPPING[config.get('comp')](FUNCTION_MAPPING[config.get('aggregate')](table[config.get('column')]), value)
+        elif group_by_cols and config.get('column') not in group_by_cols and plain:
+            raise ValueError('Column {} must be in the GROUP BY clause'.format(config.get('column')))
         return FILTER_MAPPING[config.get('comp')](table[config.get('column')], value)
 
     def append_join_columns(self, table, config, columns):

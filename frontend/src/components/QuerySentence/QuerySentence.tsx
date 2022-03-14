@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Alert } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { format } from 'sql-formatter';
 import styled from 'styled-components';
@@ -16,7 +17,7 @@ const StyledDiv = styled.div`
 `;
 
 const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => {
-  const { loading, query } = useOperationQuery(operation);
+  const { loading, query, error } = useOperationQuery(operation);
   const [sentence, setSentence] = useState('');
   useEffect(() => {
     if (!loading && query) {
@@ -52,7 +53,14 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
     );
   };
 
-  return <StyledDiv className="mt-2">{renderContent()}</StyledDiv>;
+  return (
+    <div className="mt-2">
+      <Alert show={!!error} variant="warning">
+        {error}
+      </Alert>
+      <StyledDiv>{renderContent()}</StyledDiv>
+    </div>
+  );
 };
 
 export { QuerySentence };
