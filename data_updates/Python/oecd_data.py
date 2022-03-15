@@ -63,6 +63,9 @@ data.to_csv(f'{CSV_FOLDER}/RH_FP_aid_type_oecd.csv', encoding='utf-8', index=Fal
 
 data = pd.read_csv(ODA_CHANNEL_TYPE_URL)
 data = pd.DataFrame(data)
+data.columns = ["year","donor_name","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","usd_disbursement_deflated_Sum"]
+
+data.to_csv(f'{CSV_FOLDER}/RH_FP_channels_oecd.csv', encoding='utf-8', index=False)
 
 # Push csv folder to github
 push_folder_to_github(DATA_REPO, REMOTE_BRANCH, CSV_FOLDER, REMOTE_FOLDER, 'Committing from API', '*.csv')
