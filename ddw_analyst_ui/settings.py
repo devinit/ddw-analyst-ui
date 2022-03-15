@@ -233,11 +233,6 @@ LOGGING = {
         },
     },
     'handlers': {
-        # 'mail_admins': {
-        #     'level': 'ERROR',
-        #     'class': 'django.utils.log.AdminEmailHandler',
-        #     'include_html': True,
-        # },
         'slack_admins': {
             'level': 'ERROR',
             # Uncomment below line only if on localhost and debugging
