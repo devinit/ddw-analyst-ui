@@ -232,6 +232,12 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugTrue',
         },
     },
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'slack_admins': {
             'level': 'ERROR',
@@ -242,6 +248,14 @@ LOGGING = {
         'null': {
             'class': 'logging.NullHandler',
         },
+        'logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': "ddw_analyst_ui.log",
+            'maxBytes': 100000,
+            'backupCount': 2,
+            'formatter': 'verbose',
+        },
     },
     'loggers': {
         'django.security.DisallowedHost': {
@@ -251,6 +265,11 @@ LOGGING = {
         'django': {
             'level': 'ERROR',
             'handlers': ['slack_admins'],
+        },
+        'integrations': {
+            'handlers': ['logfile'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
     },
 }
