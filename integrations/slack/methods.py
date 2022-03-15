@@ -6,7 +6,7 @@ from django.conf import settings
 CLIENT = WebClient(token=settings.SLACK_BOT_TOKEN)
 DIVIDER_BLOCK = {"type": "divider"}
 
-def postToSlackChannel(channel_id, message, subject=None):
+def post_to_slack_channel(channel_id, message, subject=None):
     if subject:
         subject = subject.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
         subject = '*' + subject + '* \n'

@@ -8,7 +8,7 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.exceptions import APIException
 
-from integrations.slack.methods import postToSlackChannel
+from integrations.slack.methods import post_to_slack_channel
 
 class AliasCreationError(APIException):
     """Raised when alias creation fails"""
@@ -29,4 +29,4 @@ def handle_uncaught_error(error):
     extracted_traceback = traceback.extract_tb(error_traceback)
     result = traceback.format_list(extracted_traceback)
     message = result[0]
-    postToSlackChannel(settings.SLACK_CHANNEL_ID, message, f'DDW ANALYST UI {type(error).__name__}')
+    post_to_slack_channel(settings.SLACK_CHANNEL_ID, message, f'DDW ANALYST UI {type(error).__name__}')
