@@ -152,11 +152,7 @@ class AdvancedQueryBuilder:
             else:
                 columns = config.get('columns')
 
-        # Handle select for joins
-        if 'join' in config:
-            final_cols = self.append_join_columns(table, config, columns)
-        else:
-            final_cols = self.process_select_columns(table, columns)
+            # Handle select for joins
             if 'join' in config:
                 final_cols = self.append_join_columns(table, config, columns)
             else:
