@@ -15,6 +15,7 @@ type SelectedQueryBuilder = 'basic' | 'advanced';
 const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps<{}>) => {
   const [showModal, setShowModal] = useState(true);
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
+  const [checked, setChecked] = useState(false);
 
   const [token, setToken] = useState<string>();
 
@@ -27,6 +28,10 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
+  };
+
+  const handleChange = () => {
+    setChecked(!checked);
   };
 
   if (selectedOption) {
@@ -70,7 +75,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
           </Alert>
         </Modal.Body>
         <Modal.Footer>
-          <CheckBox label="Remember my choice" />
+          <CheckBox label="Remember my choice" checked={checked} onChange={handleChange} />
         </Modal.Footer>
       </Modal>
     </div>

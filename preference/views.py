@@ -12,7 +12,7 @@ class PreferedChoice(generics.ListCreateAPIView):
     queryset = Preference.objects.all()
     serializer_class = PreferenceSerializer
 
-class UpdatePreferedChoice(generics.RetrieveUpdateAPIView):
+class UpdatePreferedChoice(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = (IsOwnerOrReadOnly,)
     queryset = Preference.objects.all()
