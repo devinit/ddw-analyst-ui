@@ -21,7 +21,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({
   show,
   ...props
 }) => {
-  const { updateOptions } = useContext(AdvancedQueryContext);
+  const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [columns, setColumns] = useState<CheckOption[]>([]);
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     props.columns.map((column) => column.name as string),
