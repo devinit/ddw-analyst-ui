@@ -1,4 +1,5 @@
 import math
+import logging
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from django.conf import settings
@@ -20,6 +21,7 @@ def post_to_slack_channel(channel_id, message, subject=None):
         }
     }
 
+    logger = logging.getLogger(__name__)
     if message:
         try:
             message_blocks = []
@@ -38,15 +40,16 @@ def post_to_slack_channel(channel_id, message, subject=None):
                             "text": detail_text
                         }
                     })
-            full_message = subject + message
+            full_message = subject + '\nn' + message
             result = CLIENT.chat_postMessage(
                 channel=channel_id,
-                text=None,
+                text=full_message,
                 blocks=[
                     DIVIDER_BLOCK,
                     title_block,
                     *message_blocks,
                 ]
             )
+            logger.warning("Result: {}".format(str(result)))
         except SlackApiError as error:
-            print(f"Got an error: {error.response['error']}.")
+            logger.warning("Error posting to slack: {}".format())
