@@ -49,7 +49,7 @@ purporse_code_data = pd.read_csv(PURPOSE_CODE_TRENDS_URL)
 purporse_code_data = pd.DataFrame(purporse_code_data)
 purporse_code_data.columns = ["year","donor_name","purpose_code","purpose_name","usd_disbursement_deflated_Sum"]
 
-purporse_code_data.to_csv(f'{CSV_FOLDER}/oecd_purpose_code_trends.csv', encoding='utf-8', index=False)
+purporse_code_data.to_csv(f'{CSV_FOLDER}/RH and FP Purpose code trends chart OECD.csv', encoding='utf-8', index=False)
 
 # RH FP aid type OECD
 
@@ -57,7 +57,7 @@ aid_type_data = pd.read_csv(ODA_AID_TYPE_URL)
 aid_type_data = pd.DataFrame(aid_type_data)
 aid_type_data.columns = ["donor_name","aid_type_di_name","year","purpose_name","purpose_code","usd_disbursement_deflated_Sum"]
 
-aid_type_data.to_csv(f'{CSV_FOLDER}/RH_FP_aid_type_oecd.csv', encoding='utf-8', index=False)
+aid_type_data.to_csv(f'{CSV_FOLDER}/RH FP aid type OECD.csv', encoding='utf-8', index=False)
 
 # RH FP channels OECD
 
@@ -65,7 +65,7 @@ channels_data = pd.read_csv(ODA_CHANNEL_TYPE_URL)
 channels_data = pd.DataFrame(channels_data)
 channels_data.columns = ["year","donor_name","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","usd_disbursement_deflated_Sum"]
 
-channels_data.to_csv(f'{CSV_FOLDER}/RH_FP_channels_oecd.csv', encoding='utf-8', index=False)
+channels_data.to_csv(f'{CSV_FOLDER}/RH FP channels OECD.csv', encoding='utf-8', index=False)
 
 # Push csv folder to github
 push_folder_to_github(DATA_REPO, REMOTE_BRANCH, CSV_FOLDER, REMOTE_FOLDER, 'Committing from API', '*.csv')
