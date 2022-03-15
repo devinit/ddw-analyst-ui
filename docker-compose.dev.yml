@@ -4,9 +4,30 @@ services:
   db:
     build:
       context: .
-      dockerfile: Dockerfile_pg
+      dockerfile: Dockerfile_dev_pg
     volumes:
       - metadata2:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    networks:
+      - ddw_net
+
+  spotlights:
+    build:
+      context: .
+      dockerfile: Dockerfile_spotlights_dev
+    expose:
+      - "8000"
+    # Replace below path with the path to your ddw-external-api repo
+    # e.g export SPOTLIGHTS_REPO_PATH=/path/to/ddw-external-api
+    volumes:
+      - "${SPOTLIGHTS_REPO_PATH}:/src/ddw-external-api"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
     networks:
       - ddw_net
   web:
