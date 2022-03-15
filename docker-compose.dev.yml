@@ -21,8 +21,9 @@ services:
     expose:
       - "8000"
     # Replace below path with the path to your ddw-external-api repo
+    # e.g export SPOTLIGHTS_REPO_PATH=/path/to/ddw-external-api
     volumes:
-      - "/Users/boss/chris/git/ddw-external-api:/src/ddw-external-api"
+      - "${SPOTLIGHTS_REPO_PATH}:/src/ddw-external-api"
     ports:
       - "8000:8000"
     depends_on:

@@ -1,6 +1,6 @@
 # start with a base image
 FROM postgres:13.2
-LABEL maintainer="akmiller01 <Alex Miller, alex.miller@devinit.org>"
+LABEL maintainer="wakibi <Chris Wakibi, chrisw@devinit.org>"
 
 # New users
 ENV POSTGRES_USER=analyst_ui_user
