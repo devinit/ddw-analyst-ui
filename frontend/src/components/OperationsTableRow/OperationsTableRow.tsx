@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { List } from 'immutable';
 import moment from 'moment';
-import React, { FunctionComponent, useContext, useEffect } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { SourcesContext } from '../../context';
-import { OperationMap, OperationStepMap } from '../../types/operations';
+import { OperationMap } from '../../types/operations';
+import { getSourceIDFromOperation } from '../../utils';
 import { OperationsTableRowActions } from '../OperationsTableRowActions';
 
 export interface OperationsTableRowProps {
@@ -18,13 +18,11 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = ({
   showDraftBadge,
   ...props
 }) => {
-  const [source, setSource] = React.useState('');
+  const [source, setSource] = useState('');
   const { sources } = useContext(SourcesContext);
 
   useEffect(() => {
-    const source = (operation.get('operation_steps') as List<OperationStepMap>)
-      .map((a) => a.get('source'))
-      .first<string>();
+    const source = getSourceIDFromOperation(operation);
     if (source) {
       const matchingSource = sources.find((src) => src.get('id') === source);
       if (matchingSource) {
