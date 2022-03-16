@@ -9,7 +9,7 @@ import {
 import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
 import { createQueryBuilderRules } from '../JqueryQueryBuilder/utils';
-import { Field } from 'react-querybuilder';
+import { Field, NameLabelPair } from 'react-querybuilder';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import {
   getAggregateColumns,
@@ -44,7 +44,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const getDropdownOptionsForAggregateColumn = (
     aggregateOptions: string[],
     column: AdvancedQueryColumn,
-  ): DropdownItemProps[] =>
+  ): NameLabelPair[] =>
     aggregateOptions.map((option) => ({
       name: `${column.name},${option}`,
       label: `${option}(${column.alias})`,
@@ -80,7 +80,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   // };
 
   const fields = () => {
-    const data: any[] = [];
+    const data: Field[] = [];
     const columns = getGroupByColumns(options).concat(getAggregateColumns(options.columns));
     columns.map((column) => {
       if (column.aggregate) {
