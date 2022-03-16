@@ -114,6 +114,10 @@ for donor in list(set(recip_data["Donor Name"])):
 
 recipient_data = pd.concat(recipient_data)
 
+recipient_data.columns = ["index","donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]
+
+recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]]
+
 recipient_data.to_csv(f'{CSV_FOLDER}/donor-by-recip-2019.csv', encoding='utf-8', index=False)
 
 # Push csv folder to github
