@@ -7,8 +7,9 @@ from github import Github, InputGitTreeElement
 from django.conf import settings
 
 
-#donors_selected = pd.read_csv("https://ddw.devinit.org/api/export/1254/")
-donors_selected = pd.read_csv("C:/git/aid-tracker-interactive/input/iati_publishers.csv")
+donors_selected = pd.read_csv("https://staging-ddw.devinit.org/api/export/1232")
+
+donors_selected.columns = ["reporting_org_ref","registry_id","org_type","org_name","abbreviation","usability_score","tracker_commit","tracker_spend","latest_txn_year","hq_country","CRS_codes","IATI_organisation_type","IATI_organisation_name","country"]
 
 donors_selected = donors_selected[donors_selected['tracker_spend'] == "Yes"]
 
@@ -208,4 +209,4 @@ data = data[data['country'] != "Germany"]
 data.to_csv("csv/iati_rhfp4.csv", encoding='utf-8', index=False)
 
 # Sample call to the function below
-push_folder_to_github('devinit/di-website-data', 'main', 'csv', '2022', 'Committing from API', '*.csv')
+# push_folder_to_github('devinit/di-website-data', 'main', 'csv', '2022', 'Committing from API', '*.csv')
