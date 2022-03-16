@@ -511,13 +511,13 @@ class ViewUserSourceDatasets(APIView):
         try:
             if self.request.user.is_authenticated:
                 operations = Operation.objects.filter(
-                    Q(user=self.request.user) & Q(operationstep__source=pk)
+                    Q(user=self.request.user) & (Q(operationstep__source=pk) | Q(advanced_config__source=pk))
                 ).order_by('-updated_on').distinct()
                 search = request.query_params.get('search')
                 if search:
                     return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on').distinct()
                 return operations
-            return Operation.objects.filter(operationstep__source=pk).order_by('-updated_on').distinct()
+            return Operation.objects.filter(Q(operationstep__source=pk) | Q(advanced_config__source=pk)).order_by('-updated_on').distinct()
         except Operation.DoesNotExist:
             raise Http404
 
