@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Row, Toast } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../../types/sources';
+import { getColumnFromName } from '../../../utils';
 import { AdvancedQueryContext } from '../../QuerySentenceBuilder';
 
 interface ColumnAggregateProps {
@@ -25,6 +26,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   const [columns, setColumns] = useState<DropdownItemProps[]>([]);
   const [selectedColumn, setSelectedColumn] = useState('');
   const [selectedAggregate, setSelectedAggregate] = useState('');
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const sourceColumns: Column[] = (
@@ -54,6 +56,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   };
   const onAdd = () => {
     if (updateOptions) {
+      setShowToast(true);
       const updatedColumns = props.columns.map((col) =>
         col.name === selectedColumn ? { ...col, aggregate: selectedAggregate } : col,
       ) as AdvancedQueryColumn[];
@@ -116,6 +119,21 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
             </Button>
           </Row>
         </Col>
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          delay={3000}
+          autohide
+          className="ml-3"
+        >
+          <Toast.Body>
+            <div>
+              Aggregate <strong>{selectedAggregate}</strong> added for{' '}
+              <strong>{getColumnFromName(selectedColumn, props.columns)?.alias}</strong>
+            </div>
+            <div>Edit above to add/remove another</div>
+          </Toast.Body>
+        </Toast>
       </Row>
     );
   }
