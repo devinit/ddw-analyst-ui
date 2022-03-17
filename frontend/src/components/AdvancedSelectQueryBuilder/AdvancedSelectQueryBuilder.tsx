@@ -1,5 +1,7 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { Dropdown } from 'semantic-ui-react';
+import styled from 'styled-components';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { ICheck, ICheckData } from '../ICheck';
@@ -48,9 +50,19 @@ const showAggregateButton = (
   return false;
 };
 
+type ActiveAction = 'select' | 'order' | 'aggregate';
+interface ActionConfigs {
+  [key: string]: ActionConfig;
+}
+
+interface ActionConfig {
+  label: string;
+  disabled?: boolean;
+}
+
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, usage }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
-  const [activeAction, setActiveAction] = useState<'select' | 'order' | 'aggregate'>();
+  const [activeAction, setActiveAction] = useState<ActiveAction>('select');
   /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const [selectAll, setSelectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
   useEffect(() => {
@@ -69,7 +81,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     updateOptions!({ selectall: data.checked });
   };
   const onReset = () => {
-    setActiveAction(undefined);
+    setActiveAction('select');
     if (usage === 'select') {
       updateOptions!({ selectall: true, columns: [] });
     } else if (options.join && options.join.columns) {
@@ -82,53 +94,47 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
   return (
     <div className="mb-3">
       {usage === 'select' ? (
-        <ICheck
-          id="selectAll"
-          name="selectAll"
-          label="Select All"
-          onChange={onToggleSelectAll}
-          variant="danger"
-          checked={selectAll}
-        />
+        <div>
+          <ICheck
+            id="selectAll"
+            name="selectAll"
+            label="Select All"
+            onChange={onToggleSelectAll}
+            variant="danger"
+            checked={selectAll}
+          />
+          <ClearButton variant="danger" size="sm" onClick={onReset}>
+            Clear/Reset
+          </ClearButton>
+        </div>
       ) : null}
-      <ButtonGroup className="mr-2">
-        <Button
-          variant="danger"
-          size="sm"
-          data-toggle="tooltip"
-          data-placement="top"
-          data-html="true"
-          title={`<i>Replaces</i> <strong>ALL</strong> columns with those selected`}
-          onClick={() => setActiveAction('select')}
-        >
-          {selectAll ? 'Select Columns for Ordering' : 'Select Column(s)'}
-        </Button>
-        <Button
-          variant="danger"
-          size="sm"
-          disabled={
-            usage === 'join' && options.join
-              ? !options.join.columns || options.join.columns.length <= 1
-              : !options.columns || options.columns.length <= 1
-          }
-          onClick={() => setActiveAction('order')}
-        >
-          Order Columns
-        </Button>
-        <Button
-          variant="danger"
-          size="sm"
-          hidden={
-            selectAll || !showAggregateButton(source.get('columns') as ColumnList, options, usage)
-          }
-          onClick={() => setActiveAction('aggregate')}
-        >
-          Aggregate
-        </Button>
-        <Button variant="danger" size="sm" onClick={onReset}>
-          Clear/Reset
-        </Button>
-      </ButtonGroup>
+      <div>
+        <label>Actions</label>
+        <Dropdown
+          placeholder="Select Action"
+          fluid
+          selection
+          options={getActionOptions({
+            select: { label: selectAll ? 'Select Columns for Ordering' : 'Select Column(s)' },
+            order: {
+              label: 'Order',
+              disabled:
+                usage === 'join' && options.join
+                  ? !options.join.columns || options.join.columns.length <= 1
+                  : !options.columns || options.columns.length <= 1,
+            },
+            aggregate: {
+              label: 'Aggregate',
+              disabled:
+                selectAll ||
+                !showAggregateButton(source.get('columns') as ColumnList, options, usage),
+            },
+          })}
+          value={activeAction}
+          onChange={(_event, data) => setActiveAction(data.value as ActiveAction)}
+          data-testid="qb-select-action"
+        />
+      </div>
       <ColumnSelector
         usage={usage}
         show={activeAction === 'select'}
@@ -152,5 +158,22 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
 };
 
 AdvancedSelectQueryBuilder.defaultProps = { usage: 'select' };
+
+const getActionOptions = (
+  config: ActionConfigs,
+): import('semantic-ui-react').DropdownItemProps[] | undefined => {
+  return ['select', 'order', 'aggregate'].map((action) => ({
+    value: action,
+    key: action,
+    text: config[action].label || action,
+    disabled: config[action].disabled,
+  }));
+};
+
+const ClearButton = styled(Button)`
+  position: absolute;
+  right: 15px;
+  top: 0;
+`;
 
 export { AdvancedSelectQueryBuilder };
