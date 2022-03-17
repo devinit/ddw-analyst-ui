@@ -109,6 +109,22 @@ export const parseHavingQueryReact = (
               });
             }
           });
+        } else {
+          if (typeof rulesObject[index].value === 'number') {
+            finalElement[`$${condition}`].push({
+              column: getColumnFromAlias(rulesObject[index].field, columns as AdvancedQueryColumn[])
+                .name,
+              comp: rulesObject[index].operator,
+              value: { plain: rulesObject[index].value },
+            });
+          } else {
+            const receivedString = rulesObject[index].value.split(',');
+            finalElement[`$${condition}`].push({
+              column: rulesObject[index].field,
+              comp: rulesObject[index].operator,
+              value: { column: receivedString[0], aggregate: receivedString[1] },
+            });
+          }
         }
       }
     }
