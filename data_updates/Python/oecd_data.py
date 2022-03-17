@@ -9,7 +9,7 @@ from django.conf import settings
 PURPOSE_CODE_TRENDS_URL = "https://staging-ddw.devinit.org/api/export/1241/"
 CSV_FOLDER = "oecd_csv"
 DATA_REPO = "devinit/di-website-data"
-REMOTE_BRANCH = "gates/oecd"
+REMOTE_BRANCH = "main"
 REMOTE_FOLDER = "2022"
 ODA_AID_TYPE_URL = "https://staging-ddw.devinit.org/api/export/1238/"
 ODA_CHANNEL_TYPE_URL = "https://staging-ddw.devinit.org/api/export/1237/"
