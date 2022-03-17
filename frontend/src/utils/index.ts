@@ -2,6 +2,7 @@
 import { List, Set } from 'immutable';
 import { DropdownItemProps } from 'semantic-ui-react';
 import {
+  AdvancedQueryColumn,
   AdvancedQueryOptionsMap,
   AggregateOptions,
   OperationDataMap,
@@ -171,3 +172,9 @@ export const getSelectOptionsFromSources = (
     }))
     .toJS()
     .sort(sortObjectArrayByProperty('text').sort) as DropdownItemProps[];
+
+export const getColumnFromName = (
+  name: string,
+  columns: AdvancedQueryColumn[],
+): AdvancedQueryColumn | undefined =>
+  columns.find((col) => col.name === name) as AdvancedQueryColumn;
