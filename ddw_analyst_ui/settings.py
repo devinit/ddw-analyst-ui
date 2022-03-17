@@ -224,14 +224,37 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
-        'mail_admins': {
+        'slack_admins': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': True,
+            # Uncomment below line only if on localhost and debugging
+            # 'filters': ['require_debug_true'],
+            'class': 'integrations.slack.slack_exception_handler.SlackExceptionHandler',
         },
         'null': {
             'class': 'logging.NullHandler',
+        },
+        'logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': "ddw_analyst_ui.log",
+            'maxBytes': 100000,
+            'backupCount': 2,
+            'formatter': 'verbose',
         },
     },
     'loggers': {
@@ -239,10 +262,22 @@ LOGGING = {
             'handlers': ['null'],
             'propagate': False,
         },
+        'django': {
+            'level': 'ERROR',
+            'handlers': ['slack_admins'],
+        },
+        'integrations': {
+            'handlers': ['logfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SLACK_CHANNEL_ID = os.getenv('SLACK_CHANNEL_ID', 'C034629FPK7')
+SLACK_BOT_TOKEN = os.getenv('SLACK_BOT_TOKEN', '')
 
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
