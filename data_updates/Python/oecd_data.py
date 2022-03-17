@@ -109,12 +109,15 @@ recipient_data = []
 for donor in list(set(recip_data["Donor Name"])):
     for purpose in list(set(recip_data["Purpose Name"])):
         subset = recip_data[(recip_data["Donor Name"]==donor) & (recip_data["Purpose Name"]==purpose)].reset_index()
-        subset["Rank"] = subset.sort_values([2019,2018,2017,2016, "Recipient Name"])["Recipient Name"].index + 1 # rank by years
+        subset = subset.sort_values(by=[2019,2018,2017,2016,"Recipient Name"],ascending=False).reset_index()
+        subset["Rank"] = subset.index + 1 # rank by years
+        if (donor == "United States") & (purpose == "Family planning"):
+            print(subset)
         recipient_data.append(subset)
 
 recipient_data = pd.concat(recipient_data)
 
-recipient_data.columns = ["index","donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]
+recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]
 
 recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]]
 
