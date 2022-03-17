@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { AdvancedQueryBuilderAction, AdvancedQueryOptions } from '../../types/operations';
 import { ICheckData, IRadio } from '../IRadio';
@@ -7,6 +8,7 @@ interface ComponentProps {
   onSelectAction?: (action?: AdvancedQueryBuilderAction) => void;
   config?: AdvancedQueryOptions;
   defaultAction?: AdvancedQueryBuilderAction;
+  className?: string;
 }
 
 const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) => {
@@ -29,7 +31,7 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
   };
 
   return (
-    <div className="mb-3">
+    <div className={classNames(props.className)}>
       <label>Active Clause</label>
       <div>
         {actions
