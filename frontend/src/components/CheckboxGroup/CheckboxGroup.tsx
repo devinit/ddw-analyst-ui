@@ -104,7 +104,12 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
       <StyledSegment className="pt-1">
         <Row className="pb-3">
           <Col md={6}>
-            <SearchInput className="w-100" onSearch={onSearch} testid="checkboxgroup-search" />
+            <SearchInput
+              className="w-100"
+              onSearch={onSearch}
+              testid="checkboxgroup-search"
+              instant
+            />
           </Col>
           {props.selectAll ? (
             <Col md={6}>
