@@ -241,8 +241,6 @@ LOGGING = {
     'handlers': {
         'slack_admins': {
             'level': 'ERROR',
-            # Uncomment below line only if on localhost and debugging
-            # 'filters': ['require_debug_true'],
             'class': 'integrations.slack.slack_exception_handler.SlackExceptionHandler',
         },
         'null': {
@@ -273,6 +271,10 @@ LOGGING = {
         },
     },
 }
+
+if DEBUG:
+    # useful if debugging on localhost
+    LOGGING['handlers']['slack_admins']['filters'] = ['require_debug_true']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
