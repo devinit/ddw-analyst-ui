@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import CodeMirror from 'codemirror';
 import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Tab, Tabs } from 'react-bootstrap';
 import styled from 'styled-components';
 import {
   AdvancedQueryBuilderAction,
@@ -15,7 +15,6 @@ import {
 import { Column, SourceMap } from '../../types/sources';
 import { previewAdvancedDatasetData } from '../../utils/hooks';
 import { CodeMirrorReact } from '../CodeMirrorReact';
-import { ICheckData, IRadio } from '../IRadio';
 import { OperationPreview } from '../OperationPreview';
 import { QuerySentence } from '../QuerySentence';
 import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
@@ -55,7 +54,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const [alert, setAlert] = useState<string[]>([]);
   const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
   const [editorValue, setEditorValue] = useState('{}');
-  const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
+  const onRadioChange = (data: string) => setPreviewOption(data as PreviewOption);
 
   const fetchPreviewData = (_options: AdvancedQueryOptions) => {
     setDataLoading(true);
@@ -135,76 +134,52 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
 
   return (
     <PreviewWrapper>
-      <div>
-        <label>Preview</label>
-      </div>
-      <div className="mb-2">
-        <IRadio
-          variant="danger"
-          id="config"
-          name="config"
-          label="Config"
-          onChange={onRadioChange}
-          inline
-          checked={previewOption === 'config'}
-        />
-        <IRadio
-          variant="danger"
-          id="query"
-          name="query"
-          label="Query"
-          onChange={onRadioChange}
-          inline
-          checked={previewOption === 'query'}
-        />
-        <IRadio
-          variant="danger"
-          id="data"
-          name="data"
-          label="Data"
-          onChange={onRadioChange}
-          inline
-          checked={previewOption === 'data'}
-        />
-      </div>
       <Alert variant="warning" show={!!alert.length} className="mt-2">
         {alert.map((message, index) => (
           <p key={`${index}`}>{message}</p>
         ))}
       </Alert>
-      <EditorWrapper className={classNames({ 'd-none': previewOption !== 'config' })}>
-        <ResetButton
-          variant="danger"
-          size="sm"
-          className={classNames({ 'd-none': previewOption !== 'config' })}
-          onClick={onReset}
-        >
-          Clear
-        </ResetButton>
-        <CodeMirrorReact
-          config={{
-            mode: jsonMode,
-            value: getEditorValue(),
-            lineNumbers: true,
-            theme: 'material',
-            readOnly: previewOption === 'config',
-          }}
-          onInit={props.onEditorInit}
-          onChange={(value: string) => setEditorValue(value)}
-        />
-      </EditorWrapper>
-      {previewOption === 'query' && props.operation ? (
-        <QuerySentence operation={props.operation} />
-      ) : null}
-      {previewOption === 'data' ? (
-        <OperationPreview
-          show
-          data={fromJS(data) as OperationDataList}
-          onClose={() => true}
-          tableOnly
-          loading={dataLoading}
-        />
-      ) : null}
+      <Tabs id="preview" activeKey={previewOption} onSelect={onRadioChange} className="ml-0 pl-0">
+        <Tab eventKey="config" title="Config">
+          <EditorWrapper className={classNames({ 'd-none': previewOption !== 'config' })}>
+            <ResetButton
+              variant="danger"
+              size="sm"
+              className={classNames({ 'd-none': previewOption !== 'config' })}
+              onClick={onReset}
+            >
+              Clear
+            </ResetButton>
+            <CodeMirrorReact
+              config={{
+                mode: jsonMode,
+                value: getEditorValue(),
+                lineNumbers: true,
+                theme: 'material',
+                readOnly: previewOption === 'config',
+              }}
+              onInit={props.onEditorInit}
+              onChange={(value: string) => setEditorValue(value)}
+            />
+          </EditorWrapper>
+        </Tab>
+        <Tab eventKey="query" title="Query">
+          {previewOption === 'query' && props.operation ? (
+            <QuerySentence operation={props.operation} />
+          ) : null}
+        </Tab>
+        <Tab eventKey="data" title="Data">
+          {previewOption === 'data' ? (
+            <OperationPreview
+              show
+              data={fromJS(data) as OperationDataList}
+              onClose={() => true}
+              tableOnly
+              loading={dataLoading}
+            />
+          ) : null}
+        </Tab>
+      </Tabs>
     </PreviewWrapper>
   );
 };
