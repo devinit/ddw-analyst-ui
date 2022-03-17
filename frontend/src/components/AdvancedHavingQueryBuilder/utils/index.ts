@@ -1,3 +1,4 @@
+import { RuleGroupType } from 'react-querybuilder';
 import {
   AdvancedQueryColumn,
   AdvancedQueryHaving,
@@ -63,6 +64,58 @@ export const hasNumericColumns = (columns: ColumnList, options: AdvancedQueryOpt
   !!getGroupByColumns(options)?.find((column) => isNumeric(columns.toJS() as Column[], column));
 export const getAggregateColumns = (columns: AdvancedQueryColumn[] = []): AdvancedQueryColumn[] =>
   columns.filter((column) => column.aggregate);
+
+export const parseHavingQueryReact = (
+  finalElement: any,
+  condition: string,
+  rulesObject: any,
+  aggregateColumns: AdvancedQueryColumn[],
+  columns: AdvancedQueryColumn[],
+): AdvancedQueryHaving => {
+  console.log(finalElement, rulesObject);
+  if (rulesObject.hasOwnProperty('combinator')) {
+    finalElement[`$${rulesObject.combinator}`] = [];
+    finalElement = parseHavingQueryReact(
+      finalElement,
+      rulesObject.combinator,
+      rulesObject.rules,
+      aggregateColumns,
+      columns,
+    );
+  } else {
+    for (let index = 0; index < rulesObject.length; index++) {
+      if (Array.isArray(rulesObject) && rulesObject[index].combinator) {
+        finalElement[`$${condition}`].push(
+          parseHavingQueryReact(
+            {},
+            rulesObject[index].combinator,
+            rulesObject[index].rules,
+            aggregateColumns,
+            columns,
+          ),
+        );
+      } else {
+        if (!finalElement.hasOwnProperty(`$${condition}`)) {
+          finalElement[`$${condition}`] = [];
+        }
+        if ((aggregateColumns as AdvancedQueryColumn[]).length > 0) {
+          aggregateColumns?.map((column) => {
+            if (column.name === rulesObject[index].field) {
+              finalElement[`$${condition}`].push({
+                column: rulesObject[index].field,
+                comp: rulesObject[index].operator,
+                aggregate: column.aggregate,
+                value: { plain: rulesObject[index].value },
+              });
+            }
+          });
+        }
+      }
+    }
+  }
+
+  return finalElement;
+};
 
 export const parseHavingQuery = (
   finalElement: any,
