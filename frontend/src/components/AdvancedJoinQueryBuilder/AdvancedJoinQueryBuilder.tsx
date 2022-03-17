@@ -39,6 +39,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   const [activeJoinIndex, setActiveJoinIndex] = useState<number>(0);
   const [selectedColumns, setSelectedColumns] = useState<AdvancedQueryColumn[]>(
     joinList.length &&
+      joinList[activeJoinIndex] &&
       joinList[activeJoinIndex].columns &&
       joinList[activeJoinIndex].columns!.length
       ? joinList[activeJoinIndex].columns!
@@ -72,6 +73,9 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     const value = data.value as JoinType;
     setJoinType(value);
     setActiveJoin({ ...activeJoin, type: value } as AdvancedQueryJoin);
+    updateJoinList({
+      type: value,
+    });
   };
 
   const onSelectSource = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
@@ -81,6 +85,10 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       source: data.value as number,
       mapping: [],
     } as AdvancedQueryJoin);
+    updateJoinList({
+      source: data.value as number,
+      mapping: [],
+    });
     const joinSource = sources.find((_source) => _source.get('id') === data.value);
     if (joinSource) setJoinSource(joinSource);
   };
@@ -95,6 +103,12 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
               ? activeJoin.mapping.concat([columnMapping])
               : [columnMapping],
         } as AdvancedQueryJoin);
+        updateJoinList({
+          mapping:
+            activeJoin && activeJoin.mapping
+              ? activeJoin.mapping.concat([columnMapping])
+              : [columnMapping],
+        });
         setMessage(`Added mapping ${JSON.stringify(columnMapping)}`);
       } else {
         setMessage(`Already added this mapping ${JSON.stringify(columnMapping)}`);
@@ -123,6 +137,11 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
           (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
         ),
       } as AdvancedQueryJoin);
+      updateJoinList({
+        mapping: activeJoin.mapping.filter(
+          (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
+        ),
+      });
       setMessage(`Removed mapping ${JSON.stringify(columnMapping)}`);
     }
   };
@@ -132,18 +151,23 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       ...activeJoin,
       ...columns,
     });
+    updateJoinList(columns);
     setSelectedColumns(columns.columns ? columns.columns : []);
   };
 
-  const onAddJoin = () => {
-    if (isEditing) {
-      joinList[activeJoinIndex] = activeJoin;
-      setJoinList([...joinList]);
+  const updateJoinList = (updatedData: any) => {
+    if (!isEditing) {
+      joinList[activeJoinIndex] = {
+        ...activeJoin,
+        ...updatedData,
+      };
     } else {
-      setJoinList([...joinList, { ...activeJoin }]);
+      joinList[activeJoinIndex] = {
+        ...joinList[activeJoinIndex],
+        ...updatedData,
+      };
     }
-    setShow(!show);
-    setIsEditing(false);
+    setJoinList([...joinList]);
   };
 
   const onClickJoin = (activeJoinIndex: number) => {
@@ -181,6 +205,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
               setActiveJoin({
                 type: 'inner',
               } as AdvancedQueryJoin);
+              setActiveJoinIndex(joinList.length ? joinList.length : 0);
             }}
           >
             {show ? (
@@ -188,9 +213,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                 <i className="material-icons mr-1">add</i>Add Join
               </span>
             ) : (
-              <span>
-                <i className="material-icons mr-1">list</i> View Joins
-              </span>
+              <span>View Joins</span>
             )}
           </Button>
         </Col>
@@ -287,26 +310,6 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
               />
 
               <div className="mb-3">
-                <Button
-                  disabled={
-                    activeJoin.mapping &&
-                    activeJoin.mapping.length &&
-                    activeJoin.source &&
-                    activeJoin.columns &&
-                    activeJoin.columns.length
-                      ? false
-                      : true
-                  }
-                  variant="danger"
-                  size="sm"
-                  data-placement="top"
-                  data-html="true"
-                  title={isEditing ? 'Edit join' : 'Adds a join'}
-                  onClick={() => onAddJoin()}
-                >
-                  {isEditing ? 'Edit' : 'Add'}
-                </Button>
-
                 {isEditing ? (
                   <Button
                     variant="dark"

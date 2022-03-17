@@ -46,6 +46,7 @@ const showAggregateButton = (
     usage === 'join' &&
     options.join &&
     options.join!.length &&
+    options.join![activeJoinIndex] &&
     options.join[activeJoinIndex].columns &&
     options.join[activeJoinIndex].columns!.length
   ) {
@@ -91,7 +92,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
     setActiveAction('select');
     if (usage === 'select') {
       updateOptions!({ selectall: true, columns: [] });
-    } else if (options.join && options.join[activeJoinIndex].columns) {
+    } else if (
+      options.join &&
+      options.join![activeJoinIndex] &&
+      options.join[activeJoinIndex].columns
+    ) {
       options.join[activeJoinIndex].columns = [];
       updateOptions!({ join: options.join });
     }
@@ -135,7 +140,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
           variant={activeAction === 'order' ? 'danger' : 'dark'}
           size="sm"
           disabled={
-            usage === 'join' && options.join!.length
+            usage === 'join' && options.join!.length && options.join![activeJoinIndex]
               ? !options.join![activeJoinIndex].columns ||
                 options.join![activeJoinIndex].columns!.length <= 1
               : !options.columns || options.columns.length <= 1
@@ -178,7 +183,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
         usage={usage}
         show={activeAction === 'order'}
         columns={
-          (usage === 'join' && options.join!.length
+          (usage === 'join' && options.join!.length && options.join![activeJoinIndex]
             ? options.join![activeJoinIndex].columns
             : options.columns) || []
         }
@@ -189,7 +194,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
         show={activeAction === 'aggregate'}
         source={source}
         columns={
-          (usage === 'join' && options.join!.length
+          (usage === 'join' && options.join!.length && options.join![activeJoinIndex]
             ? options.join![activeJoinIndex].columns
             : options.columns) || []
         }
