@@ -194,8 +194,12 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     console.log(query);
     const aggregateColumns = getAggregateColumns(options.columns);
     const columns = getGroupByColumns(options);
-    console.log(parseHavingQueryReact({}, query.combinator, query, aggregateColumns, columns));
+    options.having = parseHavingQueryReact({}, query.combinator, query, aggregateColumns, columns);
+    if (updateOptions) {
+      updateOptions(options as AdvancedQueryOptions);
+    }
   };
+  console.log(options.having);
 
   return (
     <div>
