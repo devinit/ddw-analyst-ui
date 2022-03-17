@@ -53,7 +53,7 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
               variant="danger"
               id="hide"
               name="hide"
-              label="Hide Helpers"
+              label="Hide Helper View"
               onChange={onSelectAction}
               inline
               checked={!selectedAction}
