@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 import { DropdownItemProps } from 'semantic-ui-react';
 import {
@@ -9,7 +9,7 @@ import {
 import { Column, ColumnList, SourceMap } from '../../types/sources';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
 import { createQueryBuilderRules } from '../JqueryQueryBuilder/utils';
-import { Field, NameLabelPair } from 'react-querybuilder';
+import { Field, NameLabelPair, RuleGroupType } from 'react-querybuilder';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import {
   getAggregateColumns,
@@ -19,6 +19,7 @@ import {
   hasNumericColumns,
   isNumeric,
   parseHavingQuery,
+  parseHavingQueryReact,
 } from './utils';
 import { ReactQueryBuilder } from '../ReactQueryBuilder';
 
@@ -31,6 +32,18 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
   const [error, setError] = useState('');
+  const operators = [
+    { name: '$eq', label: '=' },
+    { name: '$neq', label: '!=' },
+    { name: '$lt', label: '<' },
+    { name: '$gt', label: '>' },
+    { name: '$le', label: '<=' },
+    { name: '$gte', label: '>=' },
+  ];
+
+  // useEffect(() => {
+
+  // });
 
   // const getDropdownOptionsForAggregateColumn = (
   //   aggregateOptions: string[],
@@ -87,6 +100,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         data.push({
           name: column.name as string,
           label: `${column.aggregate}(${column.alias as string})`,
+          operators,
         });
       } else if (
         isNumeric((source.get('columns') as ColumnList).toJS() as Column[], column) &&
@@ -95,6 +109,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         data.push({
           name: column.name as string,
           label: `${column.alias as string}(aggregate value)`,
+          operators,
           valueEditorType: 'select',
           values: getDropdownOptionsForAggregateColumn(aggregateOptions, column),
         });
@@ -110,8 +125,8 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
   // const onReplace = () => {
   //   const rules = jqBuilder?.getRules();
-  //   const aggregateColumns = getAggregateColumns(options.columns);
-  //   const columns = getGroupByColumns(options);
+  // const aggregateColumns = getAggregateColumns(options.columns);
+  // const columns = getGroupByColumns(options);
   //   options.having = parseHavingQuery(
   //     {},
   //     rules.condition,
@@ -175,8 +190,11 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   //   );
   // }
 
-  const onQueryChange = (query: any) => {
+  const onQueryChange = (query: RuleGroupType) => {
     console.log(query);
+    const aggregateColumns = getAggregateColumns(options.columns);
+    const columns = getGroupByColumns(options);
+    console.log(parseHavingQueryReact({}, query.combinator, query, aggregateColumns, columns));
   };
 
   return (
