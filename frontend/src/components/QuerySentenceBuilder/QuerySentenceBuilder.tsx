@@ -119,7 +119,16 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
               defaultAction={getCurrentAction(props.operation)}
             />
             <StyledRow className={classNames({ 'd-none': !action })}>
-              <Col lg={12}>
+              <Col lg={9}>
+                <QuerySentencePreview
+                  source={source}
+                  action={action}
+                  operation={props.operation}
+                  onEditorInit={onEditorInit}
+                  onValidUpdate={onUpdate}
+                />
+              </Col>
+              <Col lg={3}>
                 {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
@@ -127,13 +136,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                 {action === 'having' ? <AdvancedHavingQueryBuilder source={source} /> : null}
               </Col>
             </StyledRow>
-            <QuerySentencePreview
-              source={source}
-              action={action}
-              operation={props.operation}
-              onEditorInit={onEditorInit}
-              onValidUpdate={onUpdate}
-            />
 
             <Alert show={!!alert} variant="warning" className="mt-2">
               {alert}
