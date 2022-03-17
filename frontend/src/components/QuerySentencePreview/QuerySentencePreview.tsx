@@ -46,6 +46,18 @@ const EditorWrapper = styled.div`
   position: relative;
 `;
 
+const StyledTabs = styled(Tabs)`
+  border-bottom: 2px solid #9c27b0;
+  padding-bottom: 0 !important;
+  border-radius: 0 !important;
+
+  > .nav-item.active,
+  > .nav-item.active:hover,
+  > .nav-item.active:focus {
+    border-color: #c8271d;
+  }
+`;
+
 const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (props) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
@@ -139,7 +151,12 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
           <p key={`${index}`}>{message}</p>
         ))}
       </Alert>
-      <Tabs id="preview" activeKey={previewOption} onSelect={onRadioChange} className="ml-0 pl-0">
+      <StyledTabs
+        id="preview"
+        activeKey={previewOption}
+        onSelect={onRadioChange}
+        className="ml-0 mr-0 pl-0 border-danger"
+      >
         <Tab eventKey="config" title="Config">
           <EditorWrapper className={classNames({ 'd-none': previewOption !== 'config' })}>
             <ResetButton
@@ -179,7 +196,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
             />
           ) : null}
         </Tab>
-      </Tabs>
+      </StyledTabs>
     </PreviewWrapper>
   );
 };
