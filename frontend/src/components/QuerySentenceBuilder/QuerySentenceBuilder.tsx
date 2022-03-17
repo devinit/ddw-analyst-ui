@@ -119,7 +119,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
               defaultAction={getCurrentAction(props.operation)}
             />
             <StyledRow>
-              <Col lg={action ? 9 : 12}>
+              <Col lg={action ? 7 : 12}>
                 <QuerySentencePreview
                   source={source}
                   action={action}
@@ -128,7 +128,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                   onValidUpdate={onUpdate}
                 />
               </Col>
-              <Col lg={3} className={classNames({ 'd-none': !action })}>
+              <Col lg={5} className={classNames({ 'd-none': !action })}>
                 {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
