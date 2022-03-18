@@ -27,7 +27,11 @@ const ICheck: FunctionComponent<ICheckProps> = ({ id, name, label, checked, ...p
   return (
     <div className={classNames(`icheck-${props.variant}`, props.className)}>
       <input type="checkbox" id={id} name={name} onChange={onChange} checked={checked} />
-      {label ? <label htmlFor={id}>{label}</label> : null}
+      {label ? (
+        <label htmlFor={id} title={typeof label === 'string' ? label : undefined}>
+          {label}
+        </label>
+      ) : null}
     </div>
   );
 };

@@ -66,6 +66,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
         selectedOptions={selectedColumns}
         onUpdateOptions={onUpdateColumns}
         selectAll
+        rowSize={12}
       />
     );
   }
