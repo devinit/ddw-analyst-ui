@@ -26,6 +26,9 @@ interface QuerySentencePreviewProps {
   operation?: OperationMap;
   onEditorInit: (editor: CodeMirror.Editor) => void;
   onValidUpdate?: (options: AdvancedQueryOptions) => void;
+  showConfig?: boolean;
+  showQuery?: boolean;
+  showData?: boolean;
 }
 
 type PreviewOption = 'config' | 'query' | 'data';
@@ -157,48 +160,56 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
         onSelect={onRadioChange}
         className="ml-0 mr-0 pl-0 border-danger"
       >
-        <Tab eventKey="config" title="Config">
-          <EditorWrapper className={classNames({ 'd-none': previewOption !== 'config' })}>
-            <ResetButton
-              variant="danger"
-              size="sm"
-              className={classNames({ 'd-none': previewOption !== 'config' })}
-              onClick={onReset}
-            >
-              Clear
-            </ResetButton>
-            <CodeMirrorReact
-              config={{
-                mode: jsonMode,
-                value: getEditorValue(),
-                lineNumbers: true,
-                theme: 'material',
-                readOnly: previewOption === 'config',
-              }}
-              onInit={props.onEditorInit}
-              onChange={(value: string) => setEditorValue(value)}
-            />
-          </EditorWrapper>
-        </Tab>
-        <Tab eventKey="query" title="Query">
-          {previewOption === 'query' && props.operation ? (
-            <QuerySentence operation={props.operation} />
-          ) : null}
-        </Tab>
-        <Tab eventKey="data" title="Data">
-          {previewOption === 'data' ? (
-            <OperationPreview
-              show
-              data={fromJS(data) as OperationDataList}
-              onClose={() => true}
-              tableOnly
-              loading={dataLoading}
-            />
-          ) : null}
-        </Tab>
+        {props.showConfig ? (
+          <Tab eventKey="config" title="Config">
+            <EditorWrapper className={classNames({ 'd-none': previewOption !== 'config' })}>
+              <ResetButton
+                variant="danger"
+                size="sm"
+                className={classNames({ 'd-none': previewOption !== 'config' })}
+                onClick={onReset}
+              >
+                Clear
+              </ResetButton>
+              <CodeMirrorReact
+                config={{
+                  mode: jsonMode,
+                  value: getEditorValue(),
+                  lineNumbers: true,
+                  theme: 'material',
+                  readOnly: previewOption === 'config',
+                }}
+                onInit={props.onEditorInit}
+                onChange={(value: string) => setEditorValue(value)}
+              />
+            </EditorWrapper>
+          </Tab>
+        ) : null}
+        {props.showQuery ? (
+          <Tab eventKey="query" title="Query">
+            {previewOption === 'query' && props.operation ? (
+              <QuerySentence operation={props.operation} />
+            ) : null}
+          </Tab>
+        ) : null}
+        {props.showData ? (
+          <Tab eventKey="data" title="Data">
+            {previewOption === 'data' ? (
+              <OperationPreview
+                show
+                data={fromJS(data) as OperationDataList}
+                onClose={() => true}
+                tableOnly
+                loading={dataLoading}
+              />
+            ) : null}
+          </Tab>
+        ) : null}
       </StyledTabs>
     </PreviewWrapper>
   );
 };
+
+QuerySentencePreview.defaultProps = { showConfig: true, showData: true, showQuery: true };
 
 export { QuerySentencePreview };
