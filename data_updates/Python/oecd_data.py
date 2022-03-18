@@ -83,6 +83,8 @@ recip_data = pd.DataFrame(recip_data)
 
 recip_data = recip_data[recip_data['Purpose Name'].isin(['Reproductive health care','Family planning'])]
 
+recip_data['Recipient Name'] = recip_data['Recipient Name'].replace(['Bilateral, unspecified'],['Unspecified'])
+
 recip_data = recip_data.groupby(["Donor Name","Purpose Name","Recipient Name","Year"]).agg({"USD Disbursement Deflated":"sum"}).reset_index()
 
 # Summing both and joining
