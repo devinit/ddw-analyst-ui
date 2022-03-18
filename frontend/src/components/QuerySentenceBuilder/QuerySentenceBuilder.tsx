@@ -16,6 +16,7 @@ import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedGroupByQueryBuilder } from '../AdvancedGroupByQueryBuilder';
 import { AdvancedHavingQueryBuilder } from '../AdvancedHavingQueryBuilder';
 import { AdvancedJoinQueryBuilder } from '../AdvancedJoinQueryBuilder';
+import { AdvancedQueryDataPreview } from '../AdvancedQueryDataPreview';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { JsonModeSpec } from '../CodeMirrorReact';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
@@ -45,6 +46,10 @@ export const AdvancedQueryContext = createContext<QueryContextProps>({
 const StyledRow = styled(Row)`
   background: #fafafa;
   padding-top: 1rem;
+`;
+
+const HelperCol = styled(Col)`
+  min-height: 485px;
 `;
 
 const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
@@ -119,21 +124,29 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
               defaultAction={getCurrentAction(props.operation)}
             />
             <StyledRow>
-              <Col lg={action ? 7 : 12}>
+              <HelperCol lg={8}>
+                {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
+                {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
+                {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
+                {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
+                {action === 'having' ? <AdvancedHavingQueryBuilder source={source} /> : null}
+              </HelperCol>
+              <Col lg={4} className={classNames('border-left', { 'd-none': !action })}>
                 <QuerySentencePreview
                   source={source}
                   action={action}
                   operation={props.operation}
                   onEditorInit={onEditorInit}
                   onValidUpdate={onUpdate}
+                  showData={false}
                 />
               </Col>
-              <Col lg={5} className={classNames('border-left', { 'd-none': !action })}>
-                {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
-                {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
-                {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
-                {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
-                {action === 'having' ? <AdvancedHavingQueryBuilder source={source} /> : null}
+              <Col lg={12}>
+                {props.operation ? (
+                  <AdvancedQueryDataPreview
+                    options={props.operation.get('advanced_config') as AdvancedQueryOptions}
+                  />
+                ) : null}
               </Col>
             </StyledRow>
 

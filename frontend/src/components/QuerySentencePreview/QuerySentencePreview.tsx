@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import CodeMirror from 'codemirror';
-import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert, Button, Tab, Tabs } from 'react-bootstrap';
 import styled from 'styled-components';
@@ -8,14 +7,11 @@ import {
   AdvancedQueryBuilderAction,
   AdvancedQueryColumn,
   AdvancedQueryOptions,
-  OperationData,
-  OperationDataList,
   OperationMap,
 } from '../../types/operations';
 import { Column, SourceMap } from '../../types/sources';
-import { previewAdvancedDatasetData } from '../../utils/hooks';
+import { AdvancedQueryDataPreview } from '../AdvancedQueryDataPreview';
 import { CodeMirrorReact } from '../CodeMirrorReact';
-import { OperationPreview } from '../OperationPreview';
 import { QuerySentence } from '../QuerySentence';
 import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
 import { resetClauseOptions, validateOptions } from './utils';
@@ -24,7 +20,7 @@ interface QuerySentencePreviewProps {
   source: SourceMap;
   action?: AdvancedQueryBuilderAction;
   operation?: OperationMap;
-  onEditorInit: (editor: CodeMirror.Editor) => void;
+  onEditorInit?: (editor: CodeMirror.Editor) => void;
   onValidUpdate?: (options: AdvancedQueryOptions) => void;
   showConfig?: boolean;
   showQuery?: boolean;
@@ -33,7 +29,7 @@ interface QuerySentencePreviewProps {
 
 type PreviewOption = 'config' | 'query' | 'data';
 const PreviewWrapper = styled.div`
-  min-height: 350px;
+  min-height: 485px;
 `;
 const ResetButton = styled(Button)`
   position: absolute;
@@ -64,31 +60,10 @@ const StyledTabs = styled(Tabs)`
 const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (props) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
-  const [data, setData] = useState<OperationData[]>([]);
-  const [dataLoading, setDataLoading] = useState(false);
   const [alert, setAlert] = useState<string[]>([]);
   const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
   const [editorValue, setEditorValue] = useState('{}');
   const onRadioChange = (data: string) => setPreviewOption(data as PreviewOption);
-
-  const fetchPreviewData = (_options: AdvancedQueryOptions) => {
-    setDataLoading(true);
-    previewAdvancedDatasetData(_options).then((results) => {
-      setDataLoading(false);
-      if (results.error) {
-        setAlert([`Error: ${results.error}`]);
-      } else {
-        setData(results.data ? results.data.slice(0, 9) : []);
-      }
-    });
-  };
-
-  /* eslint-disable @typescript-eslint/no-non-null-assertion */
-  useEffect(() => {
-    if (previewOption === 'data' && validOptions) {
-      fetchPreviewData(validOptions);
-    }
-  }, [previewOption]);
 
   useEffect(() => {
     try {
@@ -114,6 +89,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
         }
       }
 
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       updateOptions!(updatedOptions);
 
       const validationResponse = validateOptions(updatedOptions, props.source);
@@ -122,9 +98,6 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
       } else {
         setAlert([]);
         setValidOptions(updatedOptions);
-        if (previewOption === 'data') {
-          fetchPreviewData(options);
-        }
         if (props.onValidUpdate) props.onValidUpdate(updatedOptions);
       }
     } catch (error) {
@@ -194,15 +167,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
         ) : null}
         {props.showData ? (
           <Tab eventKey="data" title="Data">
-            {previewOption === 'data' ? (
-              <OperationPreview
-                show
-                data={fromJS(data) as OperationDataList}
-                onClose={() => true}
-                tableOnly
-                loading={dataLoading}
-              />
-            ) : null}
+            {previewOption === 'data' ? <AdvancedQueryDataPreview options={validOptions} /> : null}
           </Tab>
         ) : null}
       </StyledTabs>
