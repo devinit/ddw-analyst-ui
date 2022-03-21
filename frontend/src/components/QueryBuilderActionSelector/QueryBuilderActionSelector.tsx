@@ -34,31 +34,18 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
     <div className={classNames(props.className)}>
       <label>Active Clause</label>
       <div>
-        {actions
-          .map((action) => (
-            <IRadio
-              key={action.name}
-              variant="danger"
-              id={action.name}
-              name={action.name}
-              label={action.caption}
-              onChange={onSelectAction}
-              inline
-              checked={selectedAction === action.name}
-            />
-          ))
-          .concat([
-            <IRadio
-              key="hide"
-              variant="danger"
-              id="hide"
-              name="hide"
-              label="Hide Helper View"
-              onChange={onSelectAction}
-              inline
-              checked={!selectedAction}
-            />,
-          ])}
+        {actions.map((action) => (
+          <IRadio
+            key={action.name}
+            variant="danger"
+            id={action.name}
+            name={action.name}
+            label={action.caption}
+            onChange={onSelectAction}
+            inline
+            checked={selectedAction === action.name}
+          />
+        ))}
       </div>
     </div>
   );
