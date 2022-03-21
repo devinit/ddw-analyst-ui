@@ -38,7 +38,7 @@ export const hasNumericColumns = (columns: ColumnList, options: AdvancedQueryOpt
 export const getAggregateColumns = (columns: AdvancedQueryColumn[] = []): AdvancedQueryColumn[] =>
   columns.filter((column) => column.aggregate);
 
-export const parseHavingQueryReact = (
+export const parseHavingQuery = (
   finalElement: any,
   condition: string,
   rulesObject: any,
@@ -48,7 +48,7 @@ export const parseHavingQueryReact = (
   console.log(finalElement, rulesObject);
   if (rulesObject.hasOwnProperty('combinator')) {
     finalElement[`$${rulesObject.combinator}`] = [];
-    finalElement = parseHavingQueryReact(
+    finalElement = parseHavingQuery(
       finalElement,
       rulesObject.combinator,
       rulesObject.rules,
@@ -59,7 +59,7 @@ export const parseHavingQueryReact = (
     for (let index = 0; index < rulesObject.length; index++) {
       if (Array.isArray(rulesObject) && rulesObject[index].combinator) {
         finalElement[`$${condition}`].push(
-          parseHavingQueryReact(
+          parseHavingQuery(
             {},
             rulesObject[index].combinator,
             rulesObject[index].rules,
