@@ -1,4 +1,4 @@
-import { RuleGroupType } from 'react-querybuilder';
+import { RuleGroupType, generateID } from 'react-querybuilder';
 import {
   AdvancedQueryColumn,
   AdvancedQueryHaving,
@@ -199,3 +199,58 @@ export const parseHavingQuery = (
 
   return finalElement;
 };
+
+export const createQueryBuilderRules = (finalElement: any, query: any) => {
+  if (query && query.hasOwnProperty('$or')) {
+    finalElement['combinator'] = 'or';
+    finalElement['rules'] = [];
+    finalElement = createQueryBuilderRules(finalElement, query.$or);
+  } else if (query && query.hasOwnProperty('$and')) {
+    finalElement['combinator'] = 'and';
+    finalElement['rules'] = [];
+    finalElement = createQueryBuilderRules(finalElement, query.$and);
+  } else {
+    if (query) {
+      for (let index = 0; index < query.length; index++) {
+        if (query[index].$or) {
+          finalElement['rules'].push(createQueryBuilderRules({}, query[index]));
+        } else if (query[index].$and) {
+          finalElement['rules'].push(createQueryBuilderRules({}, query[index]));
+        } else {
+          if (!finalElement.hasOwnProperty('rules')) {
+            finalElement['rules'] = [];
+          } else {
+            console.log(query[index]);
+            finalElement['rules'].push({
+              id: generateID(),
+              field: query[index].column,
+              operator: query[index].comp,
+              value: `${(query[index].value.column, query[index].value.aggregate)}`,
+            });
+          }
+        }
+      }
+    }
+  }
+  console.log(finalElement);
+
+  return finalElement;
+};
+
+// query.rules?.map((rule, index: number) => {
+//   if (rule.hasOwnProperty('condition')) {
+//     getHavingQueryValues(rule as JqueryQueryBuilderHaving);
+//   } else {
+//     const element = (
+//       (query as JqueryQueryBuilderHaving)['rules'] as JqueryQueryBuilderHavingComparator[]
+//     )[index];
+//     if ('plain' in (element.value as { plain: string | number })) {
+//       element.value = (element.value as { plain: string | number })['plain'];
+//     } else {
+//       const activeValue: { column: string; aggregate: string } = element.value as {
+//         column: string;
+//         aggregate: string;
+//       };
+//       element.value = `${activeValue?.column},${activeValue.aggregate}`;
+//     }
+//   }
