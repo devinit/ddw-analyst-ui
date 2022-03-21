@@ -30,6 +30,7 @@ export const AdvancedQueryDataPreview: FC<{ options?: AdvancedQueryOptions }> = 
         setAlert([`Error: ${results.error}`]);
       } else {
         setData(results.data ? results.data.slice(0, 9) : []);
+        setAlert([]);
       }
     });
   };
