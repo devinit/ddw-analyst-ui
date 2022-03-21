@@ -1,4 +1,4 @@
-import { RuleGroupType } from 'react-querybuilder';
+import { generateID, RuleGroupType } from 'react-querybuilder';
 import { ValidationResponse } from '.';
 import { AdvancedQueryFilter } from '../../../types/operations';
 
@@ -38,6 +38,40 @@ export const parseQuery = (
           comp: rulesObject[index].operator,
           value: rulesObject[index].value,
         });
+      }
+    }
+  }
+
+  return finalElement;
+};
+
+export const createQueryBuilderRules = (finalElement: any, query: any): RuleGroupType => {
+  if (query && query.hasOwnProperty('$or')) {
+    finalElement['combinator'] = 'or';
+    finalElement['rules'] = [];
+    finalElement = createQueryBuilderRules(finalElement, query.$or);
+  } else if (query && query.hasOwnProperty('$and')) {
+    finalElement['combinator'] = 'and';
+    finalElement['rules'] = [];
+    finalElement = createQueryBuilderRules(finalElement, query.$and);
+  } else {
+    if (query) {
+      for (let index = 0; index < query.length; index++) {
+        if (query[index].$or) {
+          finalElement['rules'].push(createQueryBuilderRules({}, query[index]));
+        } else if (query[index].$and) {
+          finalElement['rules'].push(createQueryBuilderRules({}, query[index]));
+        } else {
+          if (!finalElement.hasOwnProperty('rules')) {
+            finalElement['rules'] = [];
+          }
+          finalElement['rules'].push({
+            id: generateID(),
+            field: query[index].column,
+            operator: query[index].comp,
+            value: query[index].value,
+          });
+        }
       }
     }
   }

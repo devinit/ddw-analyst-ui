@@ -1,4 +1,4 @@
-import { generateID } from 'react-querybuilder';
+import { generateID, RuleGroupType } from 'react-querybuilder';
 import {
   AdvancedQueryColumn,
   AdvancedQueryHaving,
@@ -105,7 +105,7 @@ export const parseHavingQuery = (
   return finalElement;
 };
 
-export const createQueryBuilderRules = (finalElement: any, query: any) => {
+export const createQueryBuilderRules = (finalElement: any, query: any): RuleGroupType => {
   if (query && query.hasOwnProperty('$or')) {
     finalElement['combinator'] = 'or';
     finalElement['rules'] = [];
