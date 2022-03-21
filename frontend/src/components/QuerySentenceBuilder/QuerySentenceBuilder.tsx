@@ -129,13 +129,15 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                 {action === 'having' ? <AdvancedHavingQueryBuilder source={source} /> : null}
               </HelperCol>
               <Col lg={4} className={classNames('border-left', { 'd-none': !action })}>
-                <QuerySentencePreview
-                  source={source}
-                  action={action}
-                  operation={props.operation}
-                  onValidUpdate={onUpdate}
-                  showData={false}
-                />
+                {context.options.source ? (
+                  <QuerySentencePreview
+                    source={source}
+                    action={action}
+                    operation={props.operation}
+                    onValidUpdate={onUpdate}
+                    showData={false}
+                  />
+                ) : null}
               </Col>
               <Col lg={12}>
                 {props.operation ? (

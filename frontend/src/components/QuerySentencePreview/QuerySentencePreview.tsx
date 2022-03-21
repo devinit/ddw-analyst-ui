@@ -63,7 +63,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
   const [alert, setAlert] = useState<string[]>([]);
   const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
-  const [editorValue, setEditorValue] = useState('{}');
+  const [editorValue, setEditorValue] = useState(JSON.stringify(options || {}));
   const onRadioChange = (data: string) => setPreviewOption(data as PreviewOption);
 
   useEffect(() => {
