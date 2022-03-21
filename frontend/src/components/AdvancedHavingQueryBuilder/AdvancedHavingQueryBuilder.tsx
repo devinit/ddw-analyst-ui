@@ -9,7 +9,7 @@ import {
   getAggregateColumns,
   getGroupByColumns,
   isNumeric,
-  parseHavingQueryReact,
+  parseHavingQuery,
 } from './utils';
 import { ReactQueryBuilder } from '../ReactQueryBuilder';
 
@@ -81,7 +81,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     setQuery(query);
     const aggregateColumns = getAggregateColumns(options.columns);
     const columns = getGroupByColumns(options);
-    options.having = parseHavingQueryReact({}, query.combinator, query, aggregateColumns, columns);
+    options.having = parseHavingQuery({}, query.combinator, query, aggregateColumns, columns);
     if (updateOptions) {
       updateOptions(options as AdvancedQueryOptions);
     }
