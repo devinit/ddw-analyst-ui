@@ -71,7 +71,6 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
     return data;
   };
-  console.log(options.having);
 
   const onQueryChange = (query: RuleGroupType) => {
     setQuery(query);
