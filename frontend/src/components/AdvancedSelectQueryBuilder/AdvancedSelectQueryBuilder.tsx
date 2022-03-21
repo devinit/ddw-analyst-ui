@@ -132,6 +132,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           })}
           value={activeAction}
           onChange={(_event, data) => setActiveAction(data.value as ActiveAction)}
+          className="col-md-6"
           data-testid="qb-select-action"
         />
       </div>
