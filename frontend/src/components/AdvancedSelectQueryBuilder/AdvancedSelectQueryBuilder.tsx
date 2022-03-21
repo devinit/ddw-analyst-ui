@@ -174,7 +174,7 @@ const getActionOptions = (
 const ClearButton = styled(Button)`
   position: absolute;
   right: 15px;
-  top: 0;
+  top: 8px;
 `;
 
 export { AdvancedSelectQueryBuilder };

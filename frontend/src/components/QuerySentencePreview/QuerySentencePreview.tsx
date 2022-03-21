@@ -123,7 +123,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
 
   return (
     <PreviewWrapper>
-      <Alert variant="warning" show={!!alert.length} className="mt-2">
+      <Alert variant="warning" show={!!alert.length} className="mt-2 ml-2 mr-2">
         {alert.map((message, index) => (
           <p key={`${index}`}>{message}</p>
         ))}
@@ -149,6 +149,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
                 value={getEditorValue()}
                 extensions={[sql({ dialect: PostgreSQL })]}
                 onChange={(value: string) => setEditorValue(value)}
+                height="440px"
               />
             </EditorWrapper>
           </Tab>
