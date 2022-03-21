@@ -1,12 +1,15 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import { Field, RuleGroupType } from 'react-querybuilder';
 import { AdvancedQueryOptions } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
 import { getColumnGroupOptionsFromSource } from '../AdvancedSelectQueryBuilder/ColumnSelector/utils';
 import { JqueryQueryBuilder } from '../JqueryQueryBuilder';
-import { createQueryBuilderRules, parseQuery } from '../JqueryQueryBuilder/utils';
+// import { createQueryBuilderRules, parseQuery } from '../JqueryQueryBuilder/utils';
 import { JqueryQueryBuilderFieldData } from '../JqueryQueryBuilder/utils/types';
 import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
+import { ReactQueryBuilder } from '../ReactQueryBuilder';
+import { parseQuery } from './utils/actions';
 
 interface ComponentProps {
   source: SourceMap;
@@ -18,44 +21,66 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [jqBuilder, setJqBuilder] = useState<any>({});
 
-  const fieldData: JqueryQueryBuilderFieldData[] = getColumnGroupOptionsFromSource(source).map(
-    (column) => {
-      return {
-        id: column.value,
-        label: column.text,
-        type: 'string',
-        operators: [
-          'equal',
-          'not_equal',
-          'less',
-          'less_or_equal',
-          'greater',
-          'greater_or_equal',
-          'contains',
-        ],
-      };
-    },
-  );
+  // const fieldData: JqueryQueryBuilderFieldData[] = getColumnGroupOptionsFromSource(source).map(
+  //   (column) => {
+  //     return {
+  //       id: column.value,
+  //       label: column.text,
+  //       type: 'string',
+  //       operators: [
+  //         'equal',
+  //         'not_equal',
+  //         'less',
+  //         'less_or_equal',
+  //         'greater',
+  //         'greater_or_equal',
+  //         'contains',
+  //       ],
+  //     };
+  //   },
+  // );
+  const operators = [
+    { name: '$eq', label: '=' },
+    { name: '$neq', label: '!=' },
+    { name: '$lt', label: '<' },
+    { name: '$gt', label: '>' },
+    { name: '$le', label: '<=' },
+    { name: '$gte', label: '>=' },
+    { name: 'contains', label: 'contains' },
+  ];
 
-  const getJqueryBuilderInstance = (jqInstance: any) => {
-    setJqBuilder(jqInstance);
-  };
+  const fields: Field[] = getColumnGroupOptionsFromSource(source).map((column) => {
+    return {
+      name: column.value as string,
+      label: column.text,
+      operators,
+    };
+  });
 
-  const onReplace = () => {
-    const rules = jqBuilder?.getRules();
-    options.filter = parseQuery({}, rules.condition, rules);
-    if (updateOptions) {
-      updateOptions(options as AdvancedQueryOptions);
-    }
-  };
+  // const getJqueryBuilderInstance = (jqInstance: any) => {
+  //   setJqBuilder(jqInstance);
+  // };
 
-  const onReset = () => {
-    jqBuilder?.reset();
+  // const onReplace = () => {
+  //   const rules = jqBuilder?.getRules();
+  //   options.filter = parseQuery({}, rules.condition, rules);
+  //   if (updateOptions) {
+  //     updateOptions(options as AdvancedQueryOptions);
+  //   }
+  // };
+
+  // const onReset = () => {
+  //   jqBuilder?.reset();
+  // };
+  const onQueryChange = (query: RuleGroupType) => {
+    console.log(query);
+    options.filter = parseQuery({}, query.combinator, query);
+    console.log(options.filter);
   };
 
   return (
     <>
-      <JqueryQueryBuilder
+      {/* <JqueryQueryBuilder
         fieldData={fieldData}
         getJqueryBuilderInstance={getJqueryBuilderInstance}
         icons={{
@@ -66,8 +91,9 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
           error: 'fa fa-exclamation-triangle',
         }}
         rules={createQueryBuilderRules({}, options.filter)}
-      />
-      <ButtonGroup className="mr-2">
+      /> */}
+      <ReactQueryBuilder fields={fields} onQueryChange={(q) => onQueryChange(q)} />
+      {/* <ButtonGroup className="mr-2">
         <Button
           variant="danger"
           size="sm"
@@ -90,7 +116,7 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
         >
           Reset
         </Button>
-      </ButtonGroup>
+      </ButtonGroup> */}
     </>
   );
 };
