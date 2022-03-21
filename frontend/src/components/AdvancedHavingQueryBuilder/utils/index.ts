@@ -225,14 +225,13 @@ export const createQueryBuilderRules = (finalElement: any, query: any) => {
               id: generateID(),
               field: query[index].column,
               operator: query[index].comp,
-              value: `${(query[index].value.column, query[index].value.aggregate)}`,
+              value: `${query[index].value.column},${query[index].value.aggregate}`,
             });
           }
         }
       }
     }
   }
-  console.log(finalElement);
 
   return finalElement;
 };
