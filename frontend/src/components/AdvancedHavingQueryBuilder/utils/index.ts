@@ -45,7 +45,6 @@ export const parseHavingQuery = (
   aggregateColumns: AdvancedQueryColumn[],
   columns: AdvancedQueryColumn[],
 ): AdvancedQueryHaving => {
-  console.log(finalElement, rulesObject);
   if (rulesObject.hasOwnProperty('combinator')) {
     finalElement[`$${rulesObject.combinator}`] = [];
     finalElement = parseHavingQuery(
