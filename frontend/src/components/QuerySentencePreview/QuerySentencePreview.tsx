@@ -1,3 +1,4 @@
+import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import classNames from 'classnames';
 import CodeMirror from 'codemirror';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
@@ -11,9 +12,9 @@ import {
 } from '../../types/operations';
 import { Column, SourceMap } from '../../types/sources';
 import { AdvancedQueryDataPreview } from '../AdvancedQueryDataPreview';
-import { CodeMirrorReact } from '../CodeMirrorReact';
+import { CodeMirrorNext } from '../CodeMirrorNext';
 import { QuerySentence } from '../QuerySentence';
-import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
+import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { resetClauseOptions, validateOptions } from './utils';
 
 interface QuerySentencePreviewProps {
@@ -144,15 +145,9 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
               >
                 Clear
               </ResetButton>
-              <CodeMirrorReact
-                config={{
-                  mode: jsonMode,
-                  value: getEditorValue(),
-                  lineNumbers: true,
-                  theme: 'material',
-                  readOnly: previewOption === 'config',
-                }}
-                onInit={props.onEditorInit}
+              <CodeMirrorNext
+                value={getEditorValue()}
+                extensions={[sql({ dialect: PostgreSQL })]}
                 onChange={(value: string) => setEditorValue(value)}
               />
             </EditorWrapper>
