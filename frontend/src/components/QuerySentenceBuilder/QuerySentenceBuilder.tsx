@@ -120,15 +120,15 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
               onSelectAction={onSelectAction}
               defaultAction={getCurrentAction(props.operation)}
             />
-            <StyledRow>
-              <HelperCol lg={8}>
+            <StyledRow className="pt-0">
+              <HelperCol lg={8} className="pt-2">
                 {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
                 {action === 'having' ? <AdvancedHavingQueryBuilder source={source} /> : null}
               </HelperCol>
-              <Col lg={4} className={classNames('border-left', { 'd-none': !action })}>
+              <Col lg={4} className={classNames('border-left p-0 pt-2', { 'd-none': !action })}>
                 {context.options.source ? (
                   <QuerySentencePreview
                     source={source}

@@ -37,7 +37,12 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
 
     if (sentence) {
       return (
-        <CodeMirrorNext value={sentence} readOnly extensions={[sql({ dialect: PostgreSQL })]} />
+        <CodeMirrorNext
+          value={sentence}
+          readOnly
+          extensions={[sql({ dialect: PostgreSQL })]}
+          height="440px"
+        />
       );
     }
 
