@@ -85,7 +85,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   if (show) {
     return (
       <Row className="mb-1">
-        <Col lg={4} className="my-2">
+        <Col lg={5} className="my-2">
           <Dropdown
             placeholder="Select Column"
             fluid
@@ -97,7 +97,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           />
         </Col>
 
-        <Col lg={3} className="my-2">
+        <Col lg={4} className="my-2">
           <Dropdown
             placeholder="Select Aggregation"
             fluid
@@ -109,7 +109,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           />
         </Col>
 
-        <Col lg={2}>
+        <Col lg={3}>
           <Row>
             <Button variant="link" className="btn-just-icon" onClick={onAdd}>
               <i className="material-icons">add</i>
