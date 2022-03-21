@@ -56,6 +56,9 @@ const StyledCheckboxItem = styled(ICheck)`
   }
 `;
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const MAX_ROW_SIZE = 12;
+
 const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   const [checkboxOptions, setCheckboxOptions] = useState<CheckboxGroupOption[]>(props.options);
   const [checkboxes, addCheckboxes] = useState<string[] | undefined>(props.selectedOptions || []);
@@ -137,7 +140,7 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
             </Col>
           ) : null}
         </Row>
-        {groupIntoRows(checkboxOptions).map((row, index) => (
+        {groupIntoRows(checkboxOptions, MAX_ROW_SIZE / props.rowSize!).map((row, index) => (
           <div key={`${index}`} className="row">
             {row.map(({ text, value }, index) => (
               <Form.Field key={index} className={`col-md-${props.rowSize}`}>
