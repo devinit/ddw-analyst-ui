@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../types/sources';
@@ -29,12 +29,17 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     { name: '$le', label: '<=' },
     { name: '$gte', label: '>=' },
   ];
-
   const [query, setQuery] = useState<RuleGroupType>(
     options.having
       ? createQueryBuilderRules({}, options.having)
       : { id: 'root', combinator: 'and', rules: [] },
   );
+
+  useEffect(() => {
+    if (!options.groupby) {
+      setError('Requires a groupBy clause');
+    }
+  }, [options.groupby?.length]);
 
   const getDropdownOptionsForAggregateColumn = (
     aggregateOptions: string[],
