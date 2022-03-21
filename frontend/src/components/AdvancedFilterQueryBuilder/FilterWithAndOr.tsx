@@ -34,7 +34,7 @@ export type EditorContent = Partial<{
 }>;
 
 const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, filterWith }) => {
-  const { options, editor, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
+  const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
   const [editorContent, setEditorContent] = useState<EditorContent>(defaultOptions(filterWith!));
   const [canEdit, setCanEdit] = useState(false);
   const [isEditingExisting, setIsEditingExisting] = useState(false);
@@ -53,7 +53,7 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
   }, [options]);
 
   const onUpdate = (updateAction: 'replace' | 'insert') => {
-    if (filterWith && editor) {
+    if (filterWith) {
       if (!isEditorContentEmpty(editorContent)) {
         const validationErrors = validateFilter(editorContent, columns);
         if (validationErrors.length) {
@@ -67,9 +67,6 @@ const FilterWithAndOr: FunctionComponent<ComponentProps> = ({ show, columns, fil
         if (updateAction === 'replace' && updateOptions) {
           options.filter = editorContent;
           updateOptions(options as AdvancedQueryOptions);
-        }
-        if (updateAction === 'insert' && updateOptions) {
-          editor.replaceSelection(JSON.stringify(editorContent, null, 2));
         }
       } else {
         setErrors(['Please add at least one condition to filter']);

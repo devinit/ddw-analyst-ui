@@ -32,7 +32,6 @@ interface ComponentProps {
 export interface QueryContextProps {
   options: AdvancedQueryOptions;
   updateOptions?: (options: Partial<AdvancedQueryOptions>, replace?: boolean) => void;
-  editor?: CodeMirror.Editor;
 }
 
 export const jsonMode: CodeMirror.ModeSpec<JsonModeSpec> = { name: 'javascript', json: true };
@@ -55,7 +54,6 @@ const HelperCol = styled(Col)`
 const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [source, setSource] = useState<SourceMap>();
   const [action, setAction] = useState<AdvancedQueryBuilderAction>();
-  const [editor, setEditor] = useState<CodeMirror.Editor>();
   const [context, setContext] = useState<QueryContextProps>({
     options: defaultOptions as AdvancedQueryOptions,
   });
@@ -99,7 +97,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
       updateOptions: onUpdateOptions,
     });
   };
-  const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
   const onSelectAction = (selectedAction?: AdvancedQueryBuilderAction) => setAction(selectedAction);
 
   const onUpdate = (options: AdvancedQueryOptions) => {
@@ -116,7 +113,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
 
   return (
     <div>
-      <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions, editor }}>
+      <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions }}>
         {source ? (
           <>
             <QueryBuilderActionSelector
@@ -136,7 +133,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                   source={source}
                   action={action}
                   operation={props.operation}
-                  onEditorInit={onEditorInit}
                   onValidUpdate={onUpdate}
                   showData={false}
                 />

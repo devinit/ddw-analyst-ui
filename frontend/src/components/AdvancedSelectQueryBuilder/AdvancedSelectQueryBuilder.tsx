@@ -72,7 +72,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     }
   }, []);
   useEffect(() => {
-    if (options.selectall && options.selectall !== selectAll) {
+    if (typeof options.selectall !== 'undefined' && options.selectall !== selectAll) {
       setSelectAll(options.selectall);
     }
   }, [options.selectall]);
