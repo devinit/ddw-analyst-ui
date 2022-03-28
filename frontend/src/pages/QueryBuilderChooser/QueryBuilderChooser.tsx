@@ -16,7 +16,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
-  const [token, setToken] = useState<string>();
+  // const [token, setToken] = useState<string>();
 
   useEffect(() => {
     localForage
