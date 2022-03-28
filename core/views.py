@@ -22,6 +22,7 @@ from core import serializers
 
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
+from knox.models import AuthToken
 
 from rest_framework import exceptions, filters, generics, permissions, status
 from rest_framework.authentication import BasicAuthentication
@@ -45,11 +46,12 @@ from core.serializers import (DataSerializer, FrozenDataSerializer,
                               ScheduledEventRunInstanceSerializer,
                               ScheduledEventSerializer, SectorSerializer,
                               SourceSerializer, TagSerializer, ThemeSerializer,
-                              UserSerializer)
+                              UserSerializer, PreferenceSerializer)
 from core.tasks import create_dataset_archive, create_table_archive
 from data.db_manager import run_query, update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
 from query_builder.advanced import AdvancedQueryBuilder
+from preference.models import Preference
 
 
 class ListUpdateScripts(APIView):
@@ -618,6 +620,32 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+class PreferenceList(generics.ListCreateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    queryset = Preference.objects.all()
+    serializer_class = PreferenceSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class UserPreferenceList(generics.ListCreateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    queryset = Preference.objects.all()
+    serializer_class = PreferenceSerializer
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Preference.objects.filter(user=self.request.user).order_by('-updated_on')
+        else:
+            return Preference.objects.all().order_by('-updated_on')
+
+class PreferenceDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    queryset = Preference.objects.all()
+    serializer_class = PreferenceSerializer
 
 class TagList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]

@@ -23,6 +23,7 @@ from core.models import (FrozenData, Operation, OperationDataColumnAlias,
                          OperationStep, Review, SavedQueryData, ScheduledEvent,
                          ScheduledEventRunInstance, Sector, Source,
                          SourceColumnMap, Tag, Theme, UpdateHistory)
+from preference.models import Preference
 
 
 class DataSerializer(serializers.BaseSerializer):
@@ -373,15 +374,22 @@ class PermissionSerializer(serializers.ModelSerializer):
         fields = ('name', 'codename')
 
 
+class PreferenceSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    class Meta:
+        model = Preference
+        fields = ('id', 'preferences', 'global_choice', 'user')
+
 class UserSerializer(serializers.ModelSerializer):
     tag_set = TagSerializer(many=True, read_only=True)
     operation_set = OperationSerializer(many=True, read_only=True)
     review_set = ReviewSerializer(many=True, read_only=True)
+    preferences = PreferenceSerializer(many=True, read_only=True)
     user_permissions = PermissionSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set', 'is_superuser', 'user_permissions')
+        fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set', 'is_superuser', 'preferences', 'user_permissions')
 
 
 class SourceColumnMapSerializer(serializers.ModelSerializer):
