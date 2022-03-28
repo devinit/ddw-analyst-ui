@@ -16,14 +16,14 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
-  const [token, setToken] = useState<string>();
+  // const [token, setToken] = useState<string>();
 
-  useEffect(() => {
-    localForage
-      .getItem<string>(localForageKeys.PREFERENCES)
-      .then((key) => setToken(key || undefined));
-  }, []);
-  console.log(key);
+  // useEffect(() => {
+  //   localForage
+  //     .getItem<string>(localForageKeys.PREFERENCES)
+  //     .then((key) => setToken(key || undefined));
+  // }, []);
+  // console.log(key);
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);

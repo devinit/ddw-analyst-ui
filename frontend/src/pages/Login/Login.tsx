@@ -12,7 +12,6 @@ import { PageWrapper } from '../../components/PageWrapper';
 import { api, getPreference, localForageKeys } from '../../utils';
 import * as UserActions from '../../actions/user';
 import * as TokenActions from '../../actions/token';
-import * as SelectedQueryBuilder from '../QueryBuilderChooser';
 import { User } from '../../reducers/user';
 
 interface LoginState {
@@ -20,7 +19,7 @@ interface LoginState {
   loading: boolean;
   alert?: string;
 }
-export type LoginActions = typeof UserActions & typeof TokenActions & typeof SelectedQueryBuilder;
+export type LoginActions = typeof UserActions & typeof TokenActions;
 interface ActionProps {
   actions: LoginActions;
 }
@@ -106,7 +105,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
       .then((response) => response.json())
       .then(({ detail, token, user }: { token?: string; detail?: string; user?: User }) => {
         if (token && user) {
-          this.storeTokenPlusUser(token, user, selectedOption);
+          this.storeTokenPlusUser(token, user);
           this.props.history.push('/');
           this.savePreference(token);
         } else if (detail) {
@@ -124,17 +123,11 @@ export class Login extends React.Component<LoginProps, LoginState> {
         localForage.setItem(localForageKeys.PREFERENCES, results[0].preferences);
       });
   }
-  private storeTokenPlusUser(
-    token: string,
-    { id, username, is_superuser }: User,
-    selectedOption: unknown,
-  ) {
+  private storeTokenPlusUser(token: string, { id, username, is_superuser }: User) {
     localForage.setItem(localForageKeys.API_KEY, token);
     localForage.setItem(localForageKeys.USER, { id, username, is_superuser });
-    localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
     this.props.actions.setToken(token);
     this.props.actions.setUser({ id, username, is_superuser });
-    this.props.actions.AsyncQueryBuilderChooser;
   }
 
   private removeNavOpenClass() {
@@ -147,12 +140,6 @@ export class Login extends React.Component<LoginProps, LoginState> {
 const mapDispatchToProps: MapDispatchToProps<ActionProps, Record<string, unknown>> = (
   dispatch,
 ): ActionProps => ({
-  actions: bindActionCreators(
-    { ...UserActions, ...TokenActions, ...SelectedQueryBuilder },
-    dispatch,
-  ),
+  actions: bindActionCreators({ ...UserActions, ...TokenActions }, dispatch),
 });
 export default connect(null, mapDispatchToProps)(Login);
-function selectedOption(token: string, user: User, selectedOption: any) {
-  throw new Error('Function not implemented.');
-}
