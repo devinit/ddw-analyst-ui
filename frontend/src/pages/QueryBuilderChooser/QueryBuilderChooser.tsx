@@ -1,13 +1,13 @@
 import React, { FC, useState, useEffect } from 'react';
 import * as localForage from 'localforage';
-import { localForageKeys } from '../../utils';
+import { localForageKeys, api } from '../../utils';
 import { Alert, Modal } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import AdvancedQueryBuilder from '../AdvancedQueryBuilder/AdvancedQueryBuilder';
 import QueryBuilder from '../QueryBuilder/QueryBuilder';
-import { key } from 'localforage';
 import { CheckBox } from '../../components/CheckBox';
+import axios from 'axios';
 
 type SelectedQueryBuilder = 'basic' | 'advanced';
 
@@ -17,14 +17,26 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
   const [checked, setChecked] = useState(false);
 
-  // const [token, setToken] = useState<string>();
+  const [choice, setChoice] = useState<string>();
 
-  // useEffect(() => {
-  //   localForage
-  //     .getItem<string>(localForageKeys.PREFERENCES)
-  //     .then((key) => setToken(key || undefined));
-  // }, []);
-  // console.log(key);
+  useEffect(() => {
+    localForage.getItem<string>(localForageKeys.PREFERENCES).then((token) => {
+      const userPreference = {
+        preferences: selectedOption,
+        global_choice: false,
+      };
+      axios
+        .post(api.routes.USERPREFERENCE, userPreference, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `token ${token}`,
+          },
+        })
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+    });
+  }, []);
+  // setChoice(key || undefined)
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);

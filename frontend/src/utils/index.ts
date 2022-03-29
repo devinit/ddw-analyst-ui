@@ -181,7 +181,7 @@ export const getColumnFromName = (
   columns.find((col) => col.name === name) as AdvancedQueryColumn;
 
 export const getPreference = (token: string) => {
-  return window.fetch(api.routes.PREFERENCES, {
+  return window.fetch(api.routes.USERPREFERENCE, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
