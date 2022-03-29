@@ -16,14 +16,24 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
-  // const [token, setToken] = useState<string>();
-
-  // useEffect(() => {
-  //   localForage
-  //     .getItem<string>(localForageKeys.PREFERENCES)
-  //     .then((key) => setToken(key || undefined));
-  // }, []);
-  // console.log(key);
+  useEffect(() => {
+    localForage.getItem<string>(localForageKeys.PREFERENCES).then((token) => {
+      const userPreference = {
+        preferences: selectedOption,
+        global_choice: false,
+      };
+      axios
+        .post(api.routes.USERPREFERENCE, userPreference, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `token ${token}`,
+          },
+        })
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+    });
+  }, []);
+  // setChoice(key || undefined)
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
