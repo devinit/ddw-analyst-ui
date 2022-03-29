@@ -28,6 +28,6 @@ export const api = {
     FETCH_OPERATION: '/api/operations/{id}',
     DATASET_QUERY: '/api/dataset/query/',
     PREFERENCES: '/api/preferences/',
-    USERPREFERENCE: '/api/preferences/mine',
+    USERPREFERENCE: '/api/preferences/mine/',
   },
 };

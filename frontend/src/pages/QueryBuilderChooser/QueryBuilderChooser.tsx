@@ -17,26 +17,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
   const [checked, setChecked] = useState(false);
 
-  const [choice, setChoice] = useState<string>();
-
-  useEffect(() => {
-    localForage.getItem<string>(localForageKeys.PREFERENCES).then((token) => {
-      const userPreference = {
-        preferences: selectedOption,
-        global_choice: false,
-      };
-      axios
-        .post(api.routes.USERPREFERENCE, userPreference, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `token ${token}`,
-          },
-        })
-        .then((res) => res.data)
-        .catch((err) => console.log(err));
-    });
-  }, []);
-  // setChoice(key || undefined)
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
@@ -46,8 +26,38 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
     setChecked(!checked);
   };
 
-  if (selectedOption) {
-    if (selectedOption === 'basic') {
+  const [choice, setChoice] = useState<string>();
+
+  useEffect(() => {
+    localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
+      // chooseQueryBuilder(token);
+      setChoice(key || undefined);
+    });
+  }, []);
+
+  const chooseQueryBuilder = () => {
+    localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
+      const userPreference = {
+        preferences: selectedOption,
+        global_choice: false,
+      };
+      axios
+        .post(api.routes.USERPREFERENCE, userPreference, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${token}`,
+          },
+        })
+        .then((res) => {
+          res.data;
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+      console.log(token);
+    });
+  };
+  if (selectedOption || choice) {
+    if (selectedOption === 'basic' || choice === 'basic') {
       return <QueryBuilder {...props} />;
     } else {
       return <AdvancedQueryBuilder {...props} />;
