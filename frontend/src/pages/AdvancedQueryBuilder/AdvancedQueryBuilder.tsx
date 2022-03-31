@@ -28,15 +28,27 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const history = useHistory();
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
-    setOperation(pageOperation as OperationMap);
-    if (pageOperation && sources.count()) {
-      const advancedConfig = (pageOperation as OperationMap).get(
-        'advanced_config',
-      ) as AdvancedQueryOptionsMap;
-      if (advancedConfig && advancedConfig.get('source')) {
-        setActiveSource(
-          sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
-        );
+    if (activeOperation) {
+      setOperation(activeOperation);
+      if (sources.count()) {
+        const advancedConfig = activeOperation.get('advanced_config') as AdvancedQueryOptionsMap;
+        if (advancedConfig && advancedConfig.get('source')) {
+          setActiveSource(
+            sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
+          );
+        }
+      }
+    } else {
+      setOperation(pageOperation as OperationMap);
+      if (pageOperation && sources.count()) {
+        const advancedConfig = (pageOperation as OperationMap).get(
+          'advanced_config',
+        ) as AdvancedQueryOptionsMap;
+        if (advancedConfig && advancedConfig.get('source')) {
+          setActiveSource(
+            sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
+          );
+        }
       }
     }
   }, [(pageOperation as OperationMap)?.size, sources.count()]);
