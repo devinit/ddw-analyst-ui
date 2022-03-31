@@ -630,6 +630,7 @@ class PreferenceList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 class UserPreferenceList(generics.ListCreateAPIView):
+    """ Returns a list of preferences for the current and authenticated user """
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
     queryset = Preference.objects.all()

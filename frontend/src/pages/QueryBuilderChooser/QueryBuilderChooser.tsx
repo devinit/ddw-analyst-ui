@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import * as localForage from 'localforage';
 import { localForageKeys, api } from '../../utils';
-import { Alert, Modal } from 'react-bootstrap';
+import { Alert, Button, Modal } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import AdvancedQueryBuilder from '../AdvancedQueryBuilder/AdvancedQueryBuilder';
@@ -16,6 +16,8 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
   const [showModal, setShowModal] = useState(true);
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
   const [checked, setChecked] = useState(false);
+  const [choice, setChoice] = useState<string>();
+  const [redirectPage, setRedirectPage] = useState('');
 
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
@@ -26,42 +28,42 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
     setChecked(!checked);
   };
 
-  const [choice, setChoice] = useState<string>();
-
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
-      // chooseQueryBuilder(token);
       setChoice(key || undefined);
     });
   }, []);
 
-  const chooseQueryBuilder = () => {
+  const handleSave = () => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
       const userPreference = {
         preferences: selectedOption,
         global_choice: false,
       };
-      axios
-        .post(api.routes.USERPREFERENCE, userPreference, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `token ${token}`,
-          },
-        })
-        .then((res) => {
-          res.data;
-          console.log(res.data);
+      axios({
+        method: 'post',
+        url: api.routes.USERPREFERENCE,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+        data: userPreference,
+      })
+        .then(() => {
+          if (selectedOption === 'basic') {
+            setRedirectPage('basic');
+          } else {
+            setRedirectPage('advanced');
+          }
         })
         .catch((err) => console.log(err));
-      console.log(token);
     });
   };
-  if (selectedOption || choice) {
-    if (selectedOption === 'basic' || choice === 'basic') {
-      return <QueryBuilder {...props} />;
-    } else {
-      return <AdvancedQueryBuilder {...props} />;
-    }
+
+  if (redirectPage === 'basic' || choice === 'basic') {
+    return <QueryBuilder {...props} />;
+  } else if (redirectPage === 'advanced' || choice === 'advanced') {
+    return <AdvancedQueryBuilder {...props} />;
   }
 
   return (
@@ -97,7 +99,20 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
           </Alert>
         </Modal.Body>
         <Modal.Footer>
-          <CheckBox label="Remember my choice" checked={checked} onChange={handleChange} />
+          <CheckBox
+            label="Remember my choice"
+            checked={checked}
+            onChange={() => {
+              handleChange();
+            }}
+          />
+          <Button
+            onClick={() => {
+              handleSave();
+            }}
+          >
+            Save
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
