@@ -31,6 +31,7 @@ import { ModalState } from '../reducers/modal';
 import { TokenState } from '../reducers/token';
 import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
+import { OperationMap } from '../types/operations';
 import { api, localForageKeys } from '../utils';
 
 interface ActionProps {
@@ -52,6 +53,7 @@ type MainLayoutProps = ComponentProps &
 interface MainLayoutState {
   loading: boolean;
   activeRoute: string;
+  activeOperation?: OperationMap;
 }
 
 const StyledLogo = styled.img`
@@ -66,6 +68,11 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   state: MainLayoutState = {
     loading: this.props.loading,
     activeRoute: this.props.location.pathname,
+    activeOperation: undefined,
+  };
+
+  updateActiveOperation = (operation: OperationMap) => {
+    this.setState({ activeOperation: operation });
   };
 
   render(): ReactElement {
@@ -78,7 +85,14 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
 
     return (
       <BrowserRouter>
-        <AppContext.Provider value={{ user: this.props.user, token: this.props.token }}>
+        <AppContext.Provider
+          value={{
+            user: this.props.user,
+            token: this.props.token,
+            activeOperation: this.state.activeOperation,
+            onUpdateActiveOperation: this.updateActiveOperation,
+          }}
+        >
           <AdminLayout loading={this.state.loading}>
             <Sidebar dataColour="danger" backgroundColour="red">
               <Sidebar.Logo>
