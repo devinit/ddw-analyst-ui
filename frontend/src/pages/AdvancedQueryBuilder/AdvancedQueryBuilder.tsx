@@ -17,7 +17,7 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
-  const { user, token } = useContext(AppContext);
+  const { user, token, activeOperation } = useContext(AppContext);
   const [operation, setOperation] = useState<OperationMap>();
   const [activeSource, setActiveSource] = useState<SourceMap>();
   const { loading, operation: pageOperation } = useOperation(
