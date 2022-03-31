@@ -70,7 +70,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
           }
         })
         .catch((err) => console.log(err));
-      console.log(token);
     });
     if (checked === true) {
       localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
