@@ -137,7 +137,12 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   const onDuplicateOperation = (operation: OperationMap) => {
     props.actions.setOperation(operation, true);
-    props.history.push('/queries/build/');
+    const advancedConfig = fromJS(operation.get('advanced_config')) as AdvancedQueryOptionsMap;
+    if (advancedConfig) {
+      props.history.push('/queries/build/advanced');
+    } else {
+      props.history.push('/queries/build/');
+    }
   };
 
   const onDuplicate = (operation: OperationMap) => {
