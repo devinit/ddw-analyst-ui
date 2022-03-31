@@ -18,30 +18,33 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
-      // chooseQueryBuilder(token);
       setChoice(key || undefined);
     });
   }, []);
 
-  const chooseQueryBuilder = () => {
+  const handleSave = () => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
       const userPreference = {
         preferences: selectedOption,
         global_choice: false,
       };
-      axios
-        .post(api.routes.USERPREFERENCE, userPreference, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `token ${token}`,
-          },
-        })
-        .then((res) => {
-          res.data;
-          console.log(res.data);
+      axios({
+        method: 'post',
+        url: api.routes.USERPREFERENCE,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+        data: userPreference,
+      })
+        .then(() => {
+          if (selectedOption === 'basic') {
+            setRedirectPage('basic');
+          } else {
+            setRedirectPage('advanced');
+          }
         })
         .catch((err) => console.log(err));
-      console.log(token);
     });
   };
   const history = useHistory();
