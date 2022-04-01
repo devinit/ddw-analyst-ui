@@ -123,3 +123,4 @@ ssl/
 
 # CSV files
 data_updates/manual/
+data_updates/Python/iati_csv/
