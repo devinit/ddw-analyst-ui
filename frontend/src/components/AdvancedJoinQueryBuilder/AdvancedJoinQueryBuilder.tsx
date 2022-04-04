@@ -37,6 +37,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     type: 'inner',
   } as AdvancedQueryJoin);
   const [activeJoinIndex, setActiveJoinIndex] = useState<number>(0);
+  const [activeMapping, setActiveMapping] = useState<[string, string]>(['', '']);
   const [selectedColumns, setSelectedColumns] = useState<AdvancedQueryColumn[]>(
     joinList.length &&
       joinList[activeJoinIndex] &&
@@ -45,7 +46,6 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       ? joinList[activeJoinIndex].columns!
       : [],
   );
-  const [mappingMessage, setMappingMessage] = useState<string>('');
 
   useEffect(() => {
     if (!hasJoinConfig(options)) {
@@ -93,56 +93,36 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     if (joinSource) setJoinSource(joinSource);
   };
 
-  const onAddMapping = (columnMapping: [string, string]) => {
-    if (columnMapping.every((column) => !!column)) {
-      if (!checkIfMappingExists(activeJoin.mapping, columnMapping).length) {
-        setActiveJoin({
-          ...activeJoin,
-          mapping:
-            activeJoin && activeJoin.mapping
-              ? activeJoin.mapping.concat([columnMapping])
-              : [columnMapping],
-        } as AdvancedQueryJoin);
-        updateJoinList({
-          mapping:
-            activeJoin && activeJoin.mapping
-              ? activeJoin.mapping.concat([columnMapping])
-              : [columnMapping],
-        });
-        setMessage(`Added mapping ${JSON.stringify(columnMapping)}`);
-      } else {
-        setMessage(`Already added this mapping ${JSON.stringify(columnMapping)}`);
-      }
+  const onUpdateMapping = (columnMapping: [string, string], index: number) => {
+    if (!checkIfMappingExists(activeJoin.mapping, columnMapping).length) {
+      activeJoin.mapping.splice(index, 1, columnMapping);
+      joinList[activeJoinIndex].mapping.splice(index, 1, columnMapping);
+      setActiveJoin({
+        ...activeJoin,
+        mapping:
+          activeJoin && activeJoin.mapping && activeJoin.mapping.length
+            ? activeJoin.mapping
+            : [activeMapping],
+      } as AdvancedQueryJoin);
+      updateJoinList({
+        mapping:
+          joinList[activeJoinIndex] && joinList[activeJoinIndex].mapping
+            ? joinList[activeJoinIndex].mapping
+            : [activeMapping],
+      });
     }
   };
 
-  const setMessage = (message: string) => {
-    setMappingMessage(message);
-    setTimeout(() => {
-      setMappingMessage('');
-    }, 3000);
-  };
-
-  const onRemoveMapping = (columnMapping: [string, string]) => {
+  const onRemoveMapping = (index: number) => {
     // should only attempt to remove when there's something to remove
-    if (
-      activeJoin &&
-      activeJoin.mapping &&
-      activeJoin.mapping.length &&
-      columnMapping.every((column) => !!column)
-    ) {
+    if (activeJoin && activeJoin.mapping && activeJoin.mapping.length) {
+      activeJoin.mapping.splice(index, 1);
+      updateJoinList({
+        mapping: activeJoin.mapping,
+      });
       setActiveJoin({
         ...activeJoin,
-        mapping: activeJoin.mapping.filter(
-          (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
-        ),
       } as AdvancedQueryJoin);
-      updateJoinList({
-        mapping: activeJoin.mapping.filter(
-          (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
-        ),
-      });
-      setMessage(`Removed mapping ${JSON.stringify(columnMapping)}`);
     }
   };
 
@@ -290,16 +270,12 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
               <AdvancedJoinColumnsMapper
                 primaryColumns={columnItems}
                 secondaryColumns={getSourceColumns(joinSource) as ColumnList}
-                onAdd={onAddMapping}
+                onSelect={onUpdateMapping}
                 onRemove={onRemoveMapping}
-                mappedColumns={activeJoin.mapping ? activeJoin.mapping : [['', '']]}
+                mappedColumns={
+                  activeJoin.mapping && activeJoin.mapping.length ? activeJoin.mapping : []
+                }
               />
-
-              <Row>
-                <Col>
-                  <span>{mappingMessage}</span>
-                </Col>
-              </Row>
 
               <AdvancedSelectQueryBuilder
                 source={joinSource}
