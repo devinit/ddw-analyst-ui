@@ -27,7 +27,7 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     { name: '$gt', label: '>' },
     { name: '$le', label: '<=' },
     { name: '$gte', label: '>=' },
-    { name: 'contains', label: 'contains' },
+    { name: '$text_search', label: 'contains' },
   ];
 
   const fields: Field[] = getColumnGroupOptionsFromSource(source).map((column) => {
