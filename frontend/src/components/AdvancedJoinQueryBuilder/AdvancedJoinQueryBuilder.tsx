@@ -37,7 +37,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     type: 'inner',
   } as AdvancedQueryJoin);
   const [activeJoinIndex, setActiveJoinIndex] = useState<number>(0);
-  const [activeMapping, setActiveMapping] = useState<[string, string]>(['', '']);
+  const [activeMapping] = useState<[string, string]>(['', '']);
   const [selectedColumns, setSelectedColumns] = useState<AdvancedQueryColumn[]>(
     joinList.length &&
       joinList[activeJoinIndex] &&
