@@ -7,7 +7,7 @@ import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import * as operationsActions from '../../actions/operations';
-import { SourcesContext } from '../../context';
+import { AppContext, SourcesContext } from '../../context';
 import { OperationsState } from '../../reducers/operations';
 import { UserState } from '../../reducers/user';
 import { ReduxStore } from '../../store';
@@ -63,6 +63,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   const [dropDownValues, setDropDownValues] = useState<DropdownItemProps[]>([]);
   const onModalHide = () => setInfo('');
   const { sources } = useContext(SourcesContext);
+  const { onUpdateActiveOperation } = useContext(AppContext);
   useEffect(() => {
     const queryParams = queryString.parse(location.search);
     setSearchQuery((queryParams.search as string) || '');
@@ -137,7 +138,13 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
 
   const onDuplicateOperation = (operation: OperationMap) => {
     props.actions.setOperation(operation, true);
-    props.history.push('/queries/build/');
+    const advancedConfig = fromJS(operation.get('advanced_config')) as AdvancedQueryOptionsMap;
+    if (advancedConfig && onUpdateActiveOperation) {
+      onUpdateActiveOperation(operation);
+      props.history.push('/queries/build/advanced');
+    } else {
+      props.history.push('/queries/build/');
+    }
   };
 
   const onDuplicate = (operation: OperationMap) => {

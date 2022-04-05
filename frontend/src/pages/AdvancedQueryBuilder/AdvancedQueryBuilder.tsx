@@ -17,7 +17,7 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
-  const { user, token } = useContext(AppContext);
+  const { user, token, activeOperation } = useContext(AppContext);
   const [operation, setOperation] = useState<OperationMap>();
   const [activeSource, setActiveSource] = useState<SourceMap>();
   const { loading, operation: pageOperation } = useOperation(
@@ -28,15 +28,27 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const history = useHistory();
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
-    setOperation(pageOperation as OperationMap);
-    if (pageOperation && sources.count()) {
-      const advancedConfig = (pageOperation as OperationMap).get(
-        'advanced_config',
-      ) as AdvancedQueryOptionsMap;
-      if (advancedConfig && advancedConfig.get('source')) {
-        setActiveSource(
-          sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
-        );
+    if (activeOperation) {
+      setOperation(activeOperation);
+      if (sources.count()) {
+        const advancedConfig = activeOperation.get('advanced_config') as AdvancedQueryOptionsMap;
+        if (advancedConfig && advancedConfig.get('source')) {
+          setActiveSource(
+            sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
+          );
+        }
+      }
+    } else {
+      setOperation(pageOperation as OperationMap);
+      if (pageOperation && sources.count()) {
+        const advancedConfig = (pageOperation as OperationMap).get(
+          'advanced_config',
+        ) as AdvancedQueryOptionsMap;
+        if (advancedConfig && advancedConfig.get('source')) {
+          setActiveSource(
+            sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
+          );
+        }
       }
     }
   }, [(pageOperation as OperationMap)?.size, sources.count()]);
