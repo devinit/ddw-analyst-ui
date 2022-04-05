@@ -47,9 +47,7 @@ const AdvancedFilterQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   };
 
   return (
-    <>
-      <ReactQueryBuilder query={query} fields={fields} onQueryChange={(q) => onQueryChange(q)} />
-    </>
+    <ReactQueryBuilder query={query} fields={fields} onQueryChange={(q) => onQueryChange(q)} />
   );
 };
 

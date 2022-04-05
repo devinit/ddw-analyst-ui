@@ -3,8 +3,8 @@ import {
   bootstrapControlElements,
 } from '@react-querybuilder/bootstrap';
 import React, { FC } from 'react';
-import { Button } from 'react-bootstrap';
-import QueryBuilder, { QueryBuilderProps } from 'react-querybuilder';
+import { Button, FormControl } from 'react-bootstrap';
+import QueryBuilder, { QueryBuilderProps, ValueEditorProps } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.scss';
 import CustomSelector from './CustomSelector';
 import DeleteAction from './DeleteAction';
@@ -33,6 +33,13 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
         ),
         removeRuleAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
         removeGroupAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
+        valueEditor: (props: ValueEditorProps) => (
+          <FormControl
+            value={props.value}
+            onChange={(event) => props.handleOnChange(event.target.value)}
+            autoFocus
+          />
+        ),
       }}
       controlClassnames={getClasses(bootstrapControlClassnames)}
       {...props}
