@@ -2,7 +2,7 @@ import {
   bootstrapControlClassnames,
   bootstrapControlElements,
 } from '@react-querybuilder/bootstrap';
-import React, { FC } from 'react';
+import React, { FC, KeyboardEvent } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import QueryBuilder, { QueryBuilderProps, ValueEditorProps } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.scss';
@@ -35,9 +35,12 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
         removeGroupAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
         valueEditor: (props: ValueEditorProps) => (
           <FormControl
-            value={props.value}
-            onChange={(event) => props.handleOnChange(event.target.value)}
-            autoFocus
+            defaultValue={props.value}
+            onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
+              if (event.key === 'Enter') {
+                props.handleOnChange(event.currentTarget.value);
+              }
+            }}
           />
         ),
       }}
