@@ -44,6 +44,12 @@ def push_folder_to_github(repo_name, branch, local_folder, remote_folder, commit
     commit = repo.create_git_commit(commit_msg, tree, [parent])
     git_ref.edit(commit.sha)
 
+# create csv folder if it does not exist
+path = 'data_updates/Python/oecd_csv'
+isdir = os.path.isdir(path)
+if not isdir:
+    os.mkdir('data_updates/Python/oecd_csv')
+
 # OECD purpose code trends data
 
 print("Starting read-in: Purpose")
