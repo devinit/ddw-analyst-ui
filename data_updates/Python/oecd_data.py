@@ -6,14 +6,14 @@ import pandas as pd
 from github import Github, InputGitTreeElement
 from django.conf import settings
 
-PURPOSE_CODE_TRENDS_URL = "https://staging-ddw.devinit.org/api/export/1241/"
+PURPOSE_CODE_TRENDS_URL = os.getenv(PURPOSE_CODE_TRENDS_URL) or "https://staging-ddw.devinit.org/api/export/1241/"
 CSV_FOLDER = "oecd_csv"
 DATA_REPO = "devinit/di-website-data"
 REMOTE_BRANCH = "main"
 REMOTE_FOLDER = "2022"
-ODA_AID_TYPE_URL = "https://staging-ddw.devinit.org/api/export/1238/"
-ODA_CHANNEL_TYPE_URL = "https://staging-ddw.devinit.org/api/export/1237/"
-ODA_RECIP_TYPE_URL = "https://ddw.devinit.org/api/export/1339/"
+ODA_AID_TYPE_URL = os.getenv(ODA_AID_TYPE_URL) or "https://staging-ddw.devinit.org/api/export/1238/"
+ODA_CHANNEL_TYPE_URL = os.getenv(ODA_CHANNEL_TYPE_URL) or "https://staging-ddw.devinit.org/api/export/1237/"
+ODA_RECIP_TYPE_URL = os.getenv(ODA_RECIP_TYPE_URL) or "https://ddw.devinit.org/api/export/1339/"
 
 def push_folder_to_github(repo_name, branch, local_folder, remote_folder, commit_msg, file_extension='*.*'):
     dir_path = os.path.dirname(os.path.realpath(__file__))
