@@ -10,7 +10,7 @@ from django.conf import settings
 
 current_date = datetime.datetime.now()
 PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL') or "https://staging-ddw.devinit.org/api/export/1241/"
-CSV_FOLDER = "oecd_csv"
+CSV_FILES_FOLDER = "data_updates/Python/oecd_csv"
 DATA_REPO = "devinit/di-website-data"
 REMOTE_BRANCH = "main"
 REMOTE_FOLDER = f'{current_date.year}'
@@ -51,7 +51,7 @@ def push_folder_to_github(repo_name, branch, local_folder, remote_folder, commit
 path = 'data_updates/Python/oecd_csv'
 isdir = os.path.isdir(path)
 if not isdir:
-    os.mkdir('data_updates/Python/oecd_csv')
+    os.mkdir(f'{CSV_FILES_FOLDER}')
 
 # OECD purpose code trends data
 
@@ -61,7 +61,7 @@ purporse_code_data = pd.read_csv(PURPOSE_CODE_TRENDS_URL)
 purporse_code_data = pd.DataFrame(purporse_code_data)
 purporse_code_data.columns = ["year","donor_name","purpose_code","purpose_name","usd_disbursement_deflated_Sum"]
 
-purporse_code_data.to_csv(f'{CSV_FOLDER}/RH and FP Purpose code trends chart OECD.csv', encoding='utf-8', index=False)
+purporse_code_data.to_csv(f'{CSV_FILES_FOLDER}/RH_and_FP_Purpose_code_trends_chart_OECD.csv', encoding='utf-8', index=False)
 
 # RH FP aid type OECD
 
@@ -71,7 +71,7 @@ aid_type_data = pd.read_csv(ODA_AID_TYPE_URL)
 aid_type_data = pd.DataFrame(aid_type_data)
 aid_type_data.columns = ["donor_name","aid_type_di_name","year","purpose_name","purpose_code","usd_disbursement_deflated_Sum"]
 
-aid_type_data.to_csv(f'{CSV_FOLDER}/RH FP aid type OECD.csv', encoding='utf-8', index=False)
+aid_type_data.to_csv(f'{CSV_FILES_FOLDER}/RH_FP_aid_type_OECD.csv', encoding='utf-8', index=False)
 
 # RH FP channels OECD
 
@@ -81,7 +81,7 @@ channels_data = pd.read_csv(ODA_CHANNEL_TYPE_URL)
 channels_data = pd.DataFrame(channels_data)
 channels_data.columns = ["year","donor_name","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","usd_disbursement_deflated_Sum"]
 
-channels_data.to_csv(f'{CSV_FOLDER}/RH FP channels OECD.csv', encoding='utf-8', index=False)
+channels_data.to_csv(f'{CSV_FILES_FOLDER}/RH_FP_channels_OECD.csv', encoding='utf-8', index=False)
 
 # donor-by-recip-2019.csv
 
@@ -130,7 +130,7 @@ recipient_data.columns = ["remove","index","donor_name","Code type","recipient_n
 
 recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]]
 
-recipient_data.to_csv(f'{CSV_FOLDER}/donor-by-recip-2019.csv', encoding='utf-8', index=False)
+recipient_data.to_csv(f'{CSV_FILES_FOLDER}/donor_by_recip_2019.csv', encoding='utf-8', index=False)
 
 # Push csv folder to github
-# push_folder_to_github(DATA_REPO, REMOTE_BRANCH, CSV_FOLDER, REMOTE_FOLDER, 'Committing from API', '*.csv')
+# push_folder_to_github(DATA_REPO, REMOTE_BRANCH, CSV_FILES_FOLDER, REMOTE_FOLDER, 'Committing from API', '*.csv')
