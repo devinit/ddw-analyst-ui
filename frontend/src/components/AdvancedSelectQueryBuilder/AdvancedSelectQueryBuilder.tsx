@@ -50,14 +50,6 @@ const showAggregateButton = (
 };
 
 type ActiveAction = 'select' | 'order' | 'aggregate';
-interface ActionConfigs {
-  [key: string]: ActionConfig;
-}
-
-interface ActionConfig {
-  label: string;
-  disabled?: boolean;
-}
 
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, usage }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
