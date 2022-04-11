@@ -97,6 +97,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
       options.join![activeJoinIndex] &&
       options.join[activeJoinIndex].columns
     ) {
+      onSelectColumns ? onSelectColumns({}) : null;
       options.join[activeJoinIndex].columns = [];
       updateOptions!({ join: options.join });
     }
@@ -143,6 +144,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
             usage === 'join'
               ? !(
                   options.join!.length > 0 &&
+                  options.join![activeJoinIndex] &&
                   options.join![activeJoinIndex].columns &&
                   options.join![activeJoinIndex].columns!.length > 1
                 )
