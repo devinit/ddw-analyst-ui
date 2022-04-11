@@ -102,7 +102,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             label="Advanced"
             onChange={onRadioChange}
             inline
-            checked={selectedOption === 'advanced'}
+            checked={!checked}
           />
           <Alert variant="secondary" transition>
             <p>This is the Advanced Query Builder, a better version with more functionalities</p>
