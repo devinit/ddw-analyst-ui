@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../types/operations';
@@ -62,7 +62,7 @@ const showAggregateButton = (
 
 type ActiveAction = 'select' | 'order' | 'aggregate';
 
-const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
+const AdvancedSelectQueryBuilder: React.FC<ComponentProps> = ({
   source,
   usage,
   activeJoinIndex,
