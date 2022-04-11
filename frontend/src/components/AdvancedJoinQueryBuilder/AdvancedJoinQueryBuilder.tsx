@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import classNames from 'classnames';
 import React, { FunctionComponent, SyntheticEvent, useContext, useEffect, useState } from 'react';
-import { Alert, Badge, Button, Col, Form, ListGroup, Row } from 'react-bootstrap';
+import { Alert, Badge, Button, ButtonGroup, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { SourcesContext } from '../../context';
 import {
@@ -180,27 +180,40 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     <>
       <Row>
         <Col>
-          <Button
-            variant="danger"
-            size="sm"
-            data-testid="qb-add-join-button"
-            onClick={() => {
-              setShow(!show);
-              setIsEditing(false);
-              setActiveJoin({
-                type: 'inner',
-              } as AdvancedQueryJoin);
-              setActiveJoinIndex(joinList.length ? joinList.length : 0);
-            }}
-          >
-            {show ? (
-              <span>
-                <i className="material-icons mr-1">add</i>Add Join
-              </span>
-            ) : (
-              <span>View Joins</span>
-            )}
-          </Button>
+          <ButtonGroup className="mr-2">
+            <Button
+              variant="danger"
+              size="sm"
+              data-testid="qb-add-join-button"
+              onClick={() => {
+                setShow(!show);
+                setIsEditing(false);
+                setActiveJoin({
+                  type: 'inner',
+                } as AdvancedQueryJoin);
+                setActiveJoinIndex(joinList.length ? joinList.length : 0);
+              }}
+            >
+              {show ? (
+                <span>
+                  <i className="material-icons mr-1">add</i>Add Join
+                </span>
+              ) : (
+                <span>View Joins</span>
+              )}
+            </Button>
+            <Button
+              variant="dark"
+              size="sm"
+              data-placement="top"
+              data-html="true"
+              title={'Deletes a join'}
+              onClick={() => onDelete()}
+              disabled={!isEditing}
+            >
+              {'Delete'}
+            </Button>
+          </ButtonGroup>
         </Col>
       </Row>
       {show ? (
@@ -290,20 +303,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                 selectedColumns={selectedColumns}
               />
 
-              <div className="mb-3">
-                {isEditing ? (
-                  <Button
-                    variant="dark"
-                    size="sm"
-                    data-placement="top"
-                    data-html="true"
-                    title={'Deletes a join'}
-                    onClick={() => onDelete()}
-                  >
-                    {'Delete'}
-                  </Button>
-                ) : null}
-              </div>
+              <div className="mb-3">{}</div>
             </Col>
           ) : null}
         </>
