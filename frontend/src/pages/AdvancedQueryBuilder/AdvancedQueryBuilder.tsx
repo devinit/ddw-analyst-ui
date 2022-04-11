@@ -54,7 +54,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
           );
         }
       }
-      if ((pageOperation as OperationMap).get('is_raw') && mode !== 'sql') {
+      if ((pageOperation as OperationMap | undefined)?.get('is_raw') && mode !== 'sql') {
         setMode('sql');
       }
     }
