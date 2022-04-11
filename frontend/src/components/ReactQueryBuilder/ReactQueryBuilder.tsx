@@ -16,7 +16,7 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
     <QueryBuilder
       controlElements={{
         ...bootstrapControlElements,
-        combinatorSelector: (props) => <CustomSelector {...props} className="col-1" />,
+        combinatorSelector: (props) => <CustomSelector {...props} className="col-2" />,
         fieldSelector: (props) => (
           <CustomSelector {...props} className="col-3" dropdownProps={{ search: true }} />
         ),
