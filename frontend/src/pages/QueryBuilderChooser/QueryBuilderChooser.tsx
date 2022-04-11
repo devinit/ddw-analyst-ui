@@ -92,7 +92,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
             label="Advanced"
             onChange={onRadioChange}
             inline
-            checked={selectedOption === 'advanced'}
+            checked={!checked}
           />
           <Alert variant="secondary">
             <p>The Advanced Query Builder</p>
@@ -100,7 +100,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
         </Modal.Body>
         <Modal.Footer>
           <CheckBox
-            label="Remember my choice"
+            label="Remember choice"
             checked={checked}
             onChange={() => {
               handleChange();
@@ -111,7 +111,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
               handleSave();
             }}
           >
-            Save
+            Go to querybuilder
           </Button>
         </Modal.Footer>
       </Modal>
