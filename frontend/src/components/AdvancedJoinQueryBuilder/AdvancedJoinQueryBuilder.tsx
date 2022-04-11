@@ -209,7 +209,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
               data-html="true"
               title={'Deletes a join'}
               onClick={() => onDelete()}
-              disabled={!isEditing}
+              hidden={!isEditing}
             >
               {'Delete'}
             </Button>
