@@ -33,7 +33,7 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   useEffect(() => {
-    if (props.onSelect && activeMapping.every((column) => !!column)) {
+    if (props.onSelect && activeMapping && activeMapping.every((column) => !!column)) {
       columnData.splice(activeIndex, 1, activeMapping);
       setColumnData([...columnData]);
       props.onSelect(activeMapping, activeIndex);
@@ -47,8 +47,14 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
     setActiveIndex(data.index as number);
     setActiveMapping(
       data.name === 'primaryColumn'
-        ? [data.value as string, activeMapping[1]]
-        : [activeMapping[0], data.value as string],
+        ? [
+            data.value as string,
+            data.index < columnData.length ? columnData[data.index][1] : activeMapping[1],
+          ]
+        : [
+            data.index < columnData.length ? columnData[data.index][0] : activeMapping[0],
+            data.value as string,
+          ],
     );
   };
 
@@ -78,68 +84,62 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
     <>
       {joinMappingRow.map((_column, index) => {
         return (
-          <>
-            <Row key={index} className="mb-1">
-              <Col lg={4} className="my-2">
-                <Dropdown
-                  index={index}
-                  name="primaryColumn"
-                  placeholder="Select Column"
-                  fluid
-                  selection
-                  search
-                  options={primaryColumns.sort(sortObjectArrayByProperty('text').sort)}
-                  onChange={onSelectColumn}
-                  data-testid="qb-join-primary-column-select"
-                  value={
-                    columnData && index < columnData.length
-                      ? columnData[index][0]
-                      : activeMapping[0]
-                  }
-                />
-              </Col>
+          <Row key={index} className="mb-1">
+            <Col lg={4} className="my-2">
+              <Dropdown
+                index={index}
+                name="primaryColumn"
+                placeholder="Select Column"
+                fluid
+                selection
+                search
+                options={primaryColumns.sort(sortObjectArrayByProperty('text').sort)}
+                onChange={onSelectColumn}
+                data-testid="qb-join-primary-column-select"
+                value={
+                  columnData && index < columnData.length ? columnData[index][0] : activeMapping[0]
+                }
+              />
+            </Col>
 
-              <StyledCol md={1}>
-                <i className="material-icons">arrow_forward</i>
-              </StyledCol>
+            <StyledCol md={1}>
+              <i className="material-icons">arrow_forward</i>
+            </StyledCol>
 
-              <Col lg={4} className="my-2">
-                <Dropdown
-                  index={index}
-                  name="secondaryColumn"
-                  placeholder="Select Column"
-                  fluid
-                  selection
-                  search
-                  options={getSelectOptionsFromColumns(secondaryColumns).sort(
-                    sortObjectArrayByProperty('text').sort,
-                  )}
-                  onChange={onSelectColumn}
-                  data-testid="qb-join-secondary-column-select"
-                  value={
-                    columnData && index < columnData.length
-                      ? columnData[index][1]
-                      : activeMapping[1]
-                  }
-                />
-              </Col>
+            <Col lg={4} className="my-2">
+              <Dropdown
+                index={index}
+                name="secondaryColumn"
+                placeholder="Select Column"
+                fluid
+                selection
+                search
+                options={getSelectOptionsFromColumns(secondaryColumns).sort(
+                  sortObjectArrayByProperty('text').sort,
+                )}
+                onChange={onSelectColumn}
+                data-testid="qb-join-secondary-column-select"
+                value={
+                  columnData && index < columnData.length ? columnData[index][1] : activeMapping[1]
+                }
+              />
+            </Col>
 
-              <Col lg={2}>
-                {props.onRemove ? (
-                  <Button
-                    variant="link"
-                    className="btn-just-icon"
-                    onClick={() => {
-                      onRemove(index);
-                    }}
-                    data-testid="qb-join-remove-mapping"
-                  >
-                    <i className="material-icons">remove</i>
-                  </Button>
-                ) : null}
-              </Col>
-            </Row>
-          </>
+            <Col lg={2}>
+              {props.onRemove ? (
+                <Button
+                  variant="link"
+                  className="btn-just-icon"
+                  onClick={() => {
+                    onRemove(index);
+                  }}
+                  data-testid="qb-join-remove-mapping"
+                >
+                  <i className="material-icons">remove</i>
+                </Button>
+              ) : null}
+            </Col>
+          </Row>
         );
       })}
       <Row className="mb-1">

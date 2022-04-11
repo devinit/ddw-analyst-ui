@@ -68,7 +68,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       join: joinList,
     });
     setSelectedColumns(
-      joinList[activeJoinIndex].columns
+      joinList[activeJoinIndex] && joinList[activeJoinIndex].columns
         ? (joinList[activeJoinIndex].columns as AdvancedQueryColumn[])
         : [],
     );
