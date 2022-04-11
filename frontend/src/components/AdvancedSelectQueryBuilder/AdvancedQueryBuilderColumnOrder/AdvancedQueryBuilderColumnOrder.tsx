@@ -1,5 +1,9 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
+import {
+  AdvancedQueryColumn,
+  AdvancedQueryJoin,
+  AdvancedQueryOptions,
+} from '../../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../../types/sources';
 import { AdvancedQueryContext } from '../../QuerySentenceBuilder';
 import { SelectColumnOrder, SelectedColumn } from '../../SelectColumnOrder';
@@ -9,6 +13,7 @@ interface ColumnOrderProps {
   columns: AdvancedQueryColumn[];
   source: SourceMap;
   usage?: 'select' | 'join';
+  activeJoinIndex: number;
 }
 
 const getColumnPropertyByName = (source: SourceMap, columnName: string, property: keyof Column) =>
@@ -17,6 +22,7 @@ const getColumnPropertyByName = (source: SourceMap, columnName: string, property
     ?.get(property);
 
 const AdvancedQueryBuilderColumnOrder: FunctionComponent<ColumnOrderProps> = ({
+  activeJoinIndex,
   columns,
   source,
   ...props
@@ -44,10 +50,16 @@ const AdvancedQueryBuilderColumnOrder: FunctionComponent<ColumnOrderProps> = ({
           ({ columnName: name }) => columns.find((col) => col.name === name) as AdvancedQueryColumn,
         ),
       };
+      if (props.usage === 'join' && options.join && options.join.length) {
+        options.join[activeJoinIndex] = {
+          ...options.join[activeJoinIndex],
+          ...updatedOptions,
+        };
+      }
       updateOptions(
         props.usage === 'select'
           ? updatedOptions
-          : ({ join: { ...options.join, ...updatedOptions } } as AdvancedQueryOptions),
+          : ({ join: [...(options.join as AdvancedQueryJoin[])] } as AdvancedQueryOptions),
       );
     }
   };

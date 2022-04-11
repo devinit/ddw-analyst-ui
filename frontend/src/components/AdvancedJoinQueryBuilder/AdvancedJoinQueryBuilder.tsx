@@ -67,6 +67,11 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     updateOptions!({
       join: joinList,
     });
+    setSelectedColumns(
+      joinList[activeJoinIndex].columns
+        ? (joinList[activeJoinIndex].columns as AdvancedQueryColumn[])
+        : [],
+    );
   }, [joinList]);
 
   const onChangeJoinType = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {

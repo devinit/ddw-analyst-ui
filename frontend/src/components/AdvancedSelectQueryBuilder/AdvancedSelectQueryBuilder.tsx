@@ -81,7 +81,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
   }, []);
   useEffect(() => {
     if (typeof options.selectall !== 'undefined' && options.selectall !== selectAll) {
-      setSelectAll(options.selectall);
+      setSelectAll(usage === 'join' ? false : options.selectall);
     }
   }, [options.selectall]);
   const onToggleSelectAll = (data: ICheckData) => {
@@ -140,9 +140,12 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
           variant={activeAction === 'order' ? 'danger' : 'dark'}
           size="sm"
           disabled={
-            usage === 'join' && options.join!.length && options.join![activeJoinIndex]
-              ? !options.join![activeJoinIndex].columns ||
-                options.join![activeJoinIndex].columns!.length <= 1
+            usage === 'join'
+              ? !(
+                  options.join!.length > 0 &&
+                  options.join![activeJoinIndex].columns &&
+                  options.join![activeJoinIndex].columns!.length > 1
+                )
               : !options.columns || options.columns.length <= 1
           }
           onClick={() => setActiveAction('order')}
@@ -188,6 +191,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({
             : options.columns) || []
         }
         source={source}
+        activeJoinIndex={activeJoinIndex}
       />
       <ColumnAggregate
         usage={usage}
