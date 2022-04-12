@@ -10,7 +10,7 @@ interface JoinColumnsMapperProps {
   primaryColumns: DropdownItemProps[];
   secondaryColumns: ColumnList;
   onSelect?: (columnMapping: [string, string], index: number) => void;
-  onRemove?: (index: number) => void;
+  onRemove?: (columnMapping: [string, string]) => void;
 }
 
 const StyledCol = styled(Col)`
@@ -59,18 +59,18 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
   };
 
   const onRemove = (index: number) => {
-    if (!activeMapping.every((column) => !!column)) {
-      setActiveMapping(columnData.length ? columnData[index - 1] : ['', '']);
-    }
-    columnData.splice(index, 1);
+    const updatedColumnData = columnData.filter(
+      (mapping) => !(mapping[0] === columnData[index][0] && mapping[1] === columnData[index][1]),
+    );
     joinMappingRow.splice(index, 1);
-    setColumnData([...columnData]);
+    setColumnData([...updatedColumnData]);
     setJoinMappingRow([...joinMappingRow]);
-    if (props.onRemove) props.onRemove(index);
+    if (props.onRemove) props.onRemove(columnData[index]);
+    setActiveMapping(['', '']);
   };
 
   const addMapping = () => {
-    if (activeMapping.every((column) => !!column)) {
+    if (columnData.length > 0) {
       setJoinMappingRow([...joinMappingRow, '']);
       setActiveMapping(['', '']);
     } else {
@@ -96,9 +96,7 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
                 options={primaryColumns.sort(sortObjectArrayByProperty('text').sort)}
                 onChange={onSelectColumn}
                 data-testid="qb-join-primary-column-select"
-                value={
-                  columnData && index < columnData.length ? columnData[index][0] : activeMapping[0]
-                }
+                value={index < columnData.length ? columnData[index][0] : activeMapping[0]}
               />
             </Col>
 
@@ -119,9 +117,7 @@ export const AdvancedJoinColumnsMapper: FunctionComponent<JoinColumnsMapperProps
                 )}
                 onChange={onSelectColumn}
                 data-testid="qb-join-secondary-column-select"
-                value={
-                  columnData && index < columnData.length ? columnData[index][1] : activeMapping[1]
-                }
+                value={index < columnData.length ? columnData[index][1] : activeMapping[1]}
               />
             </Col>
 

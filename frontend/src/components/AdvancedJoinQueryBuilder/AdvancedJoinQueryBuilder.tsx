@@ -23,7 +23,7 @@ interface ComponentProps {
 }
 
 const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
-  const { options, updateOptions } = useContext<QueryContextProps>(AdvancedQueryContext);
+  const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [joinType, setJoinType] = useState<JoinType>('inner');
   const [joinSource, setJoinSource] = useState<SourceMap>();
   const { sources } = useContext(SourcesContext);
@@ -37,7 +37,6 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     type: 'inner',
   } as AdvancedQueryJoin);
   const [activeJoinIndex, setActiveJoinIndex] = useState<number>(0);
-  const [activeMapping] = useState<[string, string]>(['', '']);
   const [selectedColumns, setSelectedColumns] = useState<AdvancedQueryColumn[]>(
     joinList.length &&
       joinList[activeJoinIndex] &&
@@ -64,14 +63,14 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
   }, []);
 
   useEffect(() => {
-    updateOptions!({
-      join: joinList,
-    });
     setSelectedColumns(
       joinList[activeJoinIndex] && joinList[activeJoinIndex].columns
         ? (joinList[activeJoinIndex].columns as AdvancedQueryColumn[])
         : [],
     );
+    updateOptions!({
+      join: joinList,
+    });
   }, [joinList]);
 
   const onChangeJoinType = (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
@@ -104,30 +103,27 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       joinList[activeJoinIndex].mapping.splice(index, 1, columnMapping);
       setActiveJoin({
         ...activeJoin,
-        mapping:
-          activeJoin && activeJoin.mapping && activeJoin.mapping.length
-            ? activeJoin.mapping
-            : [activeMapping],
+        mapping: [...activeJoin.mapping],
       } as AdvancedQueryJoin);
-      updateJoinList({
-        mapping:
-          joinList[activeJoinIndex] && joinList[activeJoinIndex].mapping
-            ? joinList[activeJoinIndex].mapping
-            : [activeMapping],
-      });
     }
+    updateJoinList({
+      mapping: [...joinList[activeJoinIndex].mapping],
+    });
   };
 
-  const onRemoveMapping = (index: number) => {
+  const onRemoveMapping = (columnMapping: [string, string]) => {
     // should only attempt to remove when there's something to remove
     if (activeJoin && activeJoin.mapping && activeJoin.mapping.length) {
-      activeJoin.mapping.splice(index, 1);
-      updateJoinList({
-        mapping: activeJoin.mapping,
-      });
+      const updatedMapping = activeJoin.mapping.filter(
+        (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
+      );
       setActiveJoin({
         ...activeJoin,
+        mapping: [...updatedMapping],
       } as AdvancedQueryJoin);
+      updateJoinList({
+        mapping: [...updatedMapping],
+      });
     }
   };
 
@@ -171,6 +167,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     joinList.splice(activeJoinIndex, 1);
     setJoinList([...joinList]);
     setShow(!show);
+    setIsEditing(false);
   };
 
   // parse source columns into format consumable by FilterItem
