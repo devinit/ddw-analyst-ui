@@ -24,15 +24,19 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
     setSelectedOption(data.value as SelectedQueryBuilder);
   };
 
-  const handleChange = () => {
-    setChecked(!checked);
-  };
-
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
       setChoice(key || undefined);
     });
   }, []);
+
+  const handleChange = () => {
+    setChecked(!checked);
+    if (checked === true) {
+      localForage.setItem(localForageKeys.PREFERENCES, choice);
+      console.log(choice);
+    }
+  };
 
   const handleSave = () => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
@@ -40,30 +44,35 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
         preferences: selectedOption,
         global_choice: false,
       };
-      axios({
-        method: 'post',
-        url: api.routes.USERPREFERENCE,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `token ${token}`,
-        },
-        data: userPreference,
-      })
+      axios
+        .request({
+          method: 'post',
+          url: api.routes.USERPREFERENCE,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${token}`,
+          },
+          data: userPreference,
+        })
         .then(() => {
           if (selectedOption === 'basic') {
             setRedirectPage('basic');
           } else {
             setRedirectPage('advanced');
           }
+          console.log('gggg');
         })
         .catch((err) => console.log(err));
+      console.log(token);
     });
   };
 
-  if (redirectPage === 'basic' || choice === 'basic') {
-    return <QueryBuilder {...props} />;
-  } else if (redirectPage === 'advanced' || choice === 'advanced') {
-    return <AdvancedQueryBuilder {...props} />;
+  if (redirectPage || choice) {
+    if (redirectPage === 'basic' || choice === 'basic') {
+      return <QueryBuilder {...props} />;
+    } else {
+      return <AdvancedQueryBuilder {...props} />;
+    }
   }
 
   return (
