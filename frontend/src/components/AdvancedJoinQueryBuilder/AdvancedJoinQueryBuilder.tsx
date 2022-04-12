@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import classNames from 'classnames';
 import React, { FunctionComponent, SyntheticEvent, useContext, useEffect, useState } from 'react';
-import { Alert, Badge, Button, ButtonGroup, Col, Form, ListGroup, Row } from 'react-bootstrap';
+import { Alert, Badge, Button, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { SourcesContext } from '../../context';
 import {
@@ -117,36 +117,22 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       const updatedMapping = activeJoin.mapping.filter(
         (mapping) => !(mapping[0] === columnMapping[0] && mapping[1] === columnMapping[1]),
       );
-      setActiveJoin({
-        ...activeJoin,
-        mapping: [...updatedMapping],
-      } as AdvancedQueryJoin);
-      updateJoinList({
-        mapping: [...updatedMapping],
-      });
+      setActiveJoin({ ...activeJoin, mapping: [...updatedMapping] } as AdvancedQueryJoin);
+      updateJoinList({ mapping: [...updatedMapping] });
     }
   };
 
   const onSelectColumns = (columns: Partial<AdvancedQueryOptions>) => {
-    setActiveJoin({
-      ...activeJoin,
-      ...columns,
-    });
+    setActiveJoin({ ...activeJoin, ...columns });
     updateJoinList(columns);
     setSelectedColumns(columns.columns ? columns.columns : []);
   };
 
   const updateJoinList = (updatedData: any) => {
     if (!isEditing) {
-      joinList[activeJoinIndex] = {
-        ...activeJoin,
-        ...updatedData,
-      };
+      joinList[activeJoinIndex] = { ...activeJoin, ...updatedData };
     } else {
-      joinList[activeJoinIndex] = {
-        ...joinList[activeJoinIndex],
-        ...updatedData,
-      };
+      joinList[activeJoinIndex] = { ...joinList[activeJoinIndex], ...updatedData };
     }
     setJoinList([...joinList]);
   };
@@ -177,40 +163,32 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
     <>
       <Row>
         <Col>
-          <ButtonGroup className="mr-2">
-            <Button
-              variant="danger"
-              size="sm"
-              data-testid="qb-add-join-button"
-              onClick={() => {
-                setShow(!show);
-                setIsEditing(false);
-                setActiveJoin({
-                  type: 'inner',
-                } as AdvancedQueryJoin);
-                setActiveJoinIndex(joinList.length ? joinList.length : 0);
-              }}
-            >
-              {show ? (
-                <span>
-                  <i className="material-icons mr-1">add</i>Add Join
-                </span>
-              ) : (
-                <span>View Joins</span>
-              )}
-            </Button>
-            <Button
-              variant="dark"
-              size="sm"
-              data-placement="top"
-              data-html="true"
-              title={'Deletes a join'}
-              onClick={() => onDelete()}
-              hidden={!isEditing}
-            >
-              {'Delete'}
-            </Button>
-          </ButtonGroup>
+          <Button
+            variant="danger"
+            size="sm"
+            data-testid="qb-add-join-button"
+            onClick={() => {
+              setShow(!show);
+              setIsEditing(false);
+              setActiveJoin({
+                type: 'inner',
+              } as AdvancedQueryJoin);
+              setActiveJoinIndex(joinList.length ? joinList.length : 0);
+            }}
+          >
+            {show ? <span>Add Join</span> : <span>View Joins</span>}
+          </Button>
+          <Button
+            variant="dark"
+            size="sm"
+            data-placement="top"
+            data-html="true"
+            title={'Deletes a join'}
+            onClick={() => onDelete()}
+            hidden={!isEditing}
+          >
+            {'Delete'}
+          </Button>
         </Col>
       </Row>
       {show ? (
