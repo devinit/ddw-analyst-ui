@@ -11,6 +11,7 @@ from django.conf import settings
 current_date = datetime.datetime.now()
 PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL') or "https://staging-ddw.devinit.org/api/export/1241/"
 CSV_FILES_FOLDER = "data_updates/Python/oecd_csv"
+CSV_FOLDER = "oecd_csv"
 DATA_REPO = "devinit/di-website-data"
 REMOTE_BRANCH = "main"
 REMOTE_FOLDER = f'{current_date.year}'
@@ -133,4 +134,4 @@ recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,
 recipient_data.to_csv(f'{CSV_FILES_FOLDER}/donor_by_recip_2019.csv', encoding='utf-8', index=False)
 
 # Push csv folder to github
-# push_folder_to_github(DATA_REPO, REMOTE_BRANCH, CSV_FILES_FOLDER, REMOTE_FOLDER, 'Committing from API', '*.csv')
+push_folder_to_github(DATA_REPO, REMOTE_BRANCH, CSV_FOLDER, REMOTE_FOLDER, 'Committing from API', '*.csv')
