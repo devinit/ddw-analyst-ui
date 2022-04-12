@@ -22,29 +22,40 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
     });
   }, []);
 
+  const handleChange = () => {
+    setChecked(!checked);
+    if (checked === true) {
+      localForage.setItem(localForageKeys.PREFERENCES, choice);
+      console.log(choice);
+    }
+  };
+
   const handleSave = () => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
       const userPreference = {
         preferences: selectedOption,
         global_choice: false,
       };
-      axios({
-        method: 'post',
-        url: api.routes.USERPREFERENCE,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `token ${token}`,
-        },
-        data: userPreference,
-      })
+      axios
+        .request({
+          method: 'post',
+          url: api.routes.USERPREFERENCE,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${token}`,
+          },
+          data: userPreference,
+        })
         .then(() => {
           if (selectedOption === 'basic') {
             setRedirectPage('basic');
           } else {
             setRedirectPage('advanced');
           }
+          console.log('gggg');
         })
         .catch((err) => console.log(err));
+      console.log(token);
     });
   };
   const history = useHistory();
