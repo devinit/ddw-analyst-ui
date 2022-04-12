@@ -29,6 +29,9 @@ const AdvancedHavingQueryBuilder: FunctionComponent = () => {
     if (!options.groupby) {
       setError('Requires a groupBy clause');
     }
+    if (!getAggregateColumns(options.columns).length) {
+      setError('Requires an aggregate');
+    }
   }, [options.groupby?.length]);
 
   const fields = () => {
