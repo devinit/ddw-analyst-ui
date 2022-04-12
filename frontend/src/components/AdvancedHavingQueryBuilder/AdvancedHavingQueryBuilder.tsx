@@ -52,26 +52,27 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
 
   const fields = () => {
     const data: Field[] = [];
-    const columns = getGroupByColumns(options).concat(getAggregateColumns(options.columns));
+    // const columns = getGroupByColumns(options).concat(getAggregateColumns(options.columns));
+    const columns = getAggregateColumns(options.columns);
     columns.map((column) => {
-      if (column.aggregate) {
-        data.push({
-          name: column.name as string,
-          label: `${column.aggregate}(${column.alias as string})`,
-          operators,
-        });
-      } else if (
-        isNumeric((source.get('columns') as ColumnList).toJS() as Column[], column) &&
-        !column.aggregate
-      ) {
-        data.push({
-          name: column.name as string,
-          label: `${column.alias as string}(aggregate value)`,
-          operators,
-          valueEditorType: 'select',
-          values: getDropdownOptionsForAggregateColumn(aggregateOptions, column),
-        });
-      }
+      // if (column.aggregate) {
+      data.push({
+        name: column.name as string,
+        label: `${column.aggregate}(${column.alias as string})`,
+        operators,
+      });
+      // } else if (
+      //   isNumeric((source.get('columns') as ColumnList).toJS() as Column[], column) &&
+      //   !column.aggregate
+      // ) {
+      //   data.push({
+      //     name: column.name as string,
+      //     label: `${column.alias as string}(aggregate value)`,
+      //     operators,
+      //     valueEditorType: 'select',
+      //     values: getDropdownOptionsForAggregateColumn(aggregateOptions, column),
+      //   });
+      // }
     });
 
     return data;
