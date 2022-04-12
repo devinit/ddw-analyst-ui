@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import classNames from 'classnames';
 import React, { FunctionComponent, SyntheticEvent, useContext, useEffect, useState } from 'react';
-import { Alert, Badge, Button, Col, Form, ListGroup, Row } from 'react-bootstrap';
+import { Alert, Badge, Button, Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { SourcesContext } from '../../context';
 import {
@@ -215,73 +215,75 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
           </div>
         </Row>
       ) : (
-        <>
-          <Col md={6} className="mt-2 pl-0">
-            <Form.Group>
-              <Form.Label className="bmd-label-floating">Join Type</Form.Label>
-              <Dropdown
-                name="join_how"
-                placeholder="Join Type"
-                fluid
-                search
-                selection
-                options={joinTypes}
-                value={joinType}
-                onChange={onChangeJoinType}
-                data-testid="qb-join-type"
-              />
-              <Form.Control.Feedback type="invalid" className={classNames({ 'd-block': false })}>
-                Alert Goes Here
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-          <Col md={6} className="mt-2 pl-0">
-            <Form.Group>
-              <Form.Label className="bmd-label-floating">Data Source to Join With</Form.Label>
-              <Dropdown
-                name="source"
-                placeholder="Select Data Source"
-                fluid
-                search
-                selection
-                options={getSelectOptionsFromSources(sources)}
-                onChange={onSelectSource}
-                data-testid="qb-join-dataset-select"
-                value={joinSource?.get('id') as number}
-              />
-              <Form.Control.Feedback type="invalid" className={classNames({ 'd-block': false })}>
-                Alert Goes Here
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-
-          {joinType && joinSource ? (
-            <Col md={10} className={classNames('mt-2 pl-0', { 'd-none': false })}>
-              <Alert variant="danger" hidden={true}>
-                Alert Goes Here
-              </Alert>
-              <AdvancedJoinColumnsMapper
-                primaryColumns={columnItems}
-                secondaryColumns={getSourceColumns(joinSource) as ColumnList}
-                onSelect={onUpdateMapping}
-                onRemove={onRemoveMapping}
-                mappedColumns={
-                  activeJoin.mapping && activeJoin.mapping.length ? activeJoin.mapping : []
-                }
-              />
-
-              <AdvancedSelectQueryBuilder
-                source={joinSource}
-                usage="join"
-                activeJoinIndex={activeJoinIndex}
-                onSelectColumns={onSelectColumns}
-                selectedColumns={selectedColumns}
-              />
-
-              <div className="mb-3">{}</div>
+        <Card className="mt-2">
+          <Card.Body>
+            <Col md={6} className="mt-2 pl-0">
+              <Form.Group>
+                <Form.Label className="bmd-label-floating">Join Type</Form.Label>
+                <Dropdown
+                  name="join_how"
+                  placeholder="Join Type"
+                  fluid
+                  search
+                  selection
+                  options={joinTypes}
+                  value={joinType}
+                  onChange={onChangeJoinType}
+                  data-testid="qb-join-type"
+                />
+                <Form.Control.Feedback type="invalid" className={classNames({ 'd-block': false })}>
+                  Alert Goes Here
+                </Form.Control.Feedback>
+              </Form.Group>
             </Col>
-          ) : null}
-        </>
+            <Col md={6} className="mt-2 pl-0">
+              <Form.Group>
+                <Form.Label className="bmd-label-floating">Data Source to Join With</Form.Label>
+                <Dropdown
+                  name="source"
+                  placeholder="Select Data Source"
+                  fluid
+                  search
+                  selection
+                  options={getSelectOptionsFromSources(sources)}
+                  onChange={onSelectSource}
+                  data-testid="qb-join-dataset-select"
+                  value={joinSource?.get('id') as number}
+                />
+                <Form.Control.Feedback type="invalid" className={classNames({ 'd-block': false })}>
+                  Alert Goes Here
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+
+            {joinType && joinSource ? (
+              <Col md={10} className={classNames('mt-2 pl-0', { 'd-none': false })}>
+                <Alert variant="danger" hidden={true}>
+                  Alert Goes Here
+                </Alert>
+                <AdvancedJoinColumnsMapper
+                  primaryColumns={columnItems}
+                  secondaryColumns={getSourceColumns(joinSource) as ColumnList}
+                  onSelect={onUpdateMapping}
+                  onRemove={onRemoveMapping}
+                  mappedColumns={
+                    activeJoin.mapping && activeJoin.mapping.length ? activeJoin.mapping : []
+                  }
+                />
+
+                <AdvancedSelectQueryBuilder
+                  source={joinSource}
+                  usage="join"
+                  activeJoinIndex={activeJoinIndex}
+                  onSelectColumns={onSelectColumns}
+                  selectedColumns={selectedColumns}
+                />
+
+                <div className="mb-3">{}</div>
+              </Col>
+            ) : null}
+          </Card.Body>
+        </Card>
       )}
     </>
   );
