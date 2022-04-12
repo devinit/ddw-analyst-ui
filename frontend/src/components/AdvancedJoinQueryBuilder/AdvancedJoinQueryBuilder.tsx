@@ -15,7 +15,7 @@ import { getSelectOptionsFromSources } from '../../utils';
 import { AdvancedJoinColumnsMapper } from '../AdvancedJoinColumnsMapper';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { StyledListItem, StyledStepContainer } from '../OperationSteps';
-import { AdvancedQueryContext, QueryContextProps } from '../QuerySentenceBuilder';
+import { AdvancedQueryContext } from '../QuerySentenceBuilder';
 import { checkIfMappingExists, getSourceColumns, hasJoinConfig, joinTypes } from './utils';
 
 interface ComponentProps {
