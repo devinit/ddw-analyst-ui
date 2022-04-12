@@ -1,24 +1,14 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
-import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../types/operations';
-import { Column, ColumnList, SourceMap } from '../../types/sources';
-import { Field, NameLabelPair, RuleGroupType } from 'react-querybuilder';
+import { AdvancedQueryOptions } from '../../types/operations';
+import { Field, RuleGroupType } from 'react-querybuilder';
 import { AdvancedQueryContext } from '../QuerySentenceBuilder';
-import {
-  createQueryBuilderRules,
-  getAggregateColumns,
-  getGroupByColumns,
-  isNumeric,
-  parseHavingQuery,
-} from './utils';
+import { createQueryBuilderRules, getAggregateColumns, parseHavingQuery } from './utils';
 import { ReactQueryBuilder } from '../ReactQueryBuilder';
 
-interface ComponentProps {
-  source: SourceMap;
-}
 export const aggregateOptions = ['AVG', 'SUM', 'MAX', 'MIN', 'STD'];
 
-const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source }) => {
+const AdvancedHavingQueryBuilder: FunctionComponent = () => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [error, setError] = useState('');
   const operators = [
@@ -41,38 +31,15 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
     }
   }, [options.groupby?.length]);
 
-  const getDropdownOptionsForAggregateColumn = (
-    aggregateOptions: string[],
-    column: AdvancedQueryColumn,
-  ): NameLabelPair[] =>
-    aggregateOptions.map((option) => ({
-      name: `${column.name},${option}`,
-      label: `${option}(${column.alias})`,
-    }));
-
   const fields = () => {
     const data: Field[] = [];
-    // const columns = getGroupByColumns(options).concat(getAggregateColumns(options.columns));
     const columns = getAggregateColumns(options.columns);
     columns.map((column) => {
-      // if (column.aggregate) {
       data.push({
         name: column.name as string,
         label: `${column.aggregate}(${column.alias as string})`,
         operators,
       });
-      // } else if (
-      //   isNumeric((source.get('columns') as ColumnList).toJS() as Column[], column) &&
-      //   !column.aggregate
-      // ) {
-      //   data.push({
-      //     name: column.name as string,
-      //     label: `${column.alias as string}(aggregate value)`,
-      //     operators,
-      //     valueEditorType: 'select',
-      //     values: getDropdownOptionsForAggregateColumn(aggregateOptions, column),
-      //   });
-      // }
     });
 
     return data;
@@ -81,8 +48,7 @@ const AdvancedHavingQueryBuilder: FunctionComponent<ComponentProps> = ({ source 
   const onQueryChange = (query: RuleGroupType) => {
     setQuery(query);
     const aggregateColumns = getAggregateColumns(options.columns);
-    const columns = getGroupByColumns(options);
-    options.having = parseHavingQuery({}, query.combinator, query, aggregateColumns, columns);
+    options.having = parseHavingQuery({}, query.combinator, query, aggregateColumns);
     if (updateOptions) {
       updateOptions(options as AdvancedQueryOptions);
     }
