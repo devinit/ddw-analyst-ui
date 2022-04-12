@@ -68,8 +68,10 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
               history.push('/queries/build/advanced/');
             }
           }
+          console.log('gggg');
         })
         .catch((err) => console.log(err));
+      console.log(token);
     });
     if (checked === true) {
       localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
