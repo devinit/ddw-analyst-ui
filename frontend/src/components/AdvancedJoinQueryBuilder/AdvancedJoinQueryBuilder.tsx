@@ -193,7 +193,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
       </Row>
       {show ? (
         <Row>
-          <div className="mb-3 w-100">
+          <Col className="mb-3 w-100">
             <ListGroup variant="flush" className="">
               {joinList.map((join, index) => (
                 <StyledStepContainer key={index}>
@@ -212,7 +212,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                 </StyledStepContainer>
               ))}
             </ListGroup>
-          </div>
+          </Col>
         </Row>
       ) : (
         <Card className="mt-2">
@@ -257,7 +257,8 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
             </Col>
 
             {joinType && joinSource ? (
-              <Col md={10} className={classNames('mt-2 pl-0', { 'd-none': false })}>
+              <Col className={classNames('mt-2 pl-0', { 'd-none': false })}>
+                <Form.Label className="bmd-label-floating">Column Mapping</Form.Label>
                 <Alert variant="danger" hidden={true}>
                   Alert Goes Here
                 </Alert>
