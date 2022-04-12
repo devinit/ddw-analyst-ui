@@ -204,6 +204,7 @@ const AdvancedSelectQueryBuilder: React.FC<ComponentProps> = ({
             ? options.join![activeJoinIndex].columns
             : options.columns) || []
         }
+        activeJoinIndex={activeJoinIndex}
       />
     </div>
   );
