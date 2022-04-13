@@ -109,7 +109,7 @@ describe('The Datasets Pages', () => {
     cy.fixture('datasets').then((datasets) => {
       datasets.results = datasets.results.slice(0, 9);
       datasets.count = datasets.results.length;
-      cy.intercept('api/datasets/?limit=10&offset=0&search=', datasets).as('fetchDatasets');
+      cy.intercept('api/datasets/?limit=10&offset=0', datasets).as('fetchDatasets');
     });
 
     cy.visit('/datasets');
