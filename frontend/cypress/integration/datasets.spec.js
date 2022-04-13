@@ -113,7 +113,6 @@ describe('The Datasets Pages', () => {
     });
 
     cy.visit('/datasets');
-    cy.wait(100);
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
     cy.get('[data-testid="pagination-results-count"]').should(
       'contain.text',
@@ -141,7 +140,6 @@ describe('The Datasets Pages', () => {
     });
 
     cy.visit('/datasets');
-    cy.wait(100);
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
     cy.get('.dataset-row').its('length').should('eq', 10);
     cy.get('[data-testid="pagination-results-count"]').should(
