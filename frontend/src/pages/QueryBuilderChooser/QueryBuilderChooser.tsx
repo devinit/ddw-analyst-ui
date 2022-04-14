@@ -14,7 +14,7 @@ type SelectedQueryBuilder = 'basic' | 'advanced';
 // eslint-disable-next-line @typescript-eslint/ban-types
 const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps<{}>) => {
   const [showModal, setShowModal] = useState(true);
-  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
+  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>('advanced');
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
   const [redirectPage, setRedirectPage] = useState('');
@@ -32,10 +32,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
 
   const handleChange = () => {
     setChecked(!checked);
-    if (checked === true) {
-      localForage.setItem(localForageKeys.PREFERENCES, choice);
-      console.log(choice);
-    }
   };
 
   const handleSave = () => {
@@ -60,11 +56,12 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
           } else {
             setRedirectPage('advanced');
           }
-          console.log('gggg');
         })
         .catch((err) => console.log(err));
-      console.log(token);
     });
+    if (checked === true) {
+      localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
+    }
   };
 
   if (redirectPage || choice) {
@@ -101,7 +98,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
             label="Advanced"
             onChange={onRadioChange}
             inline
-            checked={!checked}
+            checked={selectedOption === 'advanced'}
           />
           <Alert variant="secondary">
             <p>The Advanced Query Builder</p>
