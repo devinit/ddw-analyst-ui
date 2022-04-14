@@ -24,10 +24,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 
   const handleChange = () => {
     setChecked(!checked);
-    if (checked === true) {
-      localForage.setItem(localForageKeys.PREFERENCES, choice);
-      console.log(choice);
-    }
   };
 
   const handleSave = () => {
@@ -52,11 +48,12 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
           } else {
             setRedirectPage('advanced');
           }
-          console.log('gggg');
         })
         .catch((err) => console.log(err));
-      console.log(token);
     });
+    if (checked === true) {
+      localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
+    }
   };
   const history = useHistory();
   useEffect(() => {
@@ -134,7 +131,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             label="Advanced"
             onChange={onRadioChange}
             inline
-            checked={!checked}
+            checked={selectedOption === 'advanced'}
           />
           <Alert variant="secondary">
             <p>The Advanced Query Builder</p>
