@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { AdvancedQueryBuilderAction, AdvancedQueryOptions } from '../../types/operations';
 import { ICheckData, IRadio } from '../IRadio';
@@ -7,6 +8,7 @@ interface ComponentProps {
   onSelectAction?: (action?: AdvancedQueryBuilderAction) => void;
   config?: AdvancedQueryOptions;
   defaultAction?: AdvancedQueryBuilderAction;
+  className?: string;
 }
 
 const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) => {
@@ -29,34 +31,21 @@ const QueryBuilderActionSelector: FunctionComponent<ComponentProps> = (props) =>
   };
 
   return (
-    <div className="mb-3">
+    <div className={classNames(props.className)}>
       <label>Active Clause</label>
       <div>
-        {actions
-          .map((action) => (
-            <IRadio
-              key={action.name}
-              variant="danger"
-              id={action.name}
-              name={action.name}
-              label={action.caption}
-              onChange={onSelectAction}
-              inline
-              checked={selectedAction === action.name}
-            />
-          ))
-          .concat([
-            <IRadio
-              key="hide"
-              variant="danger"
-              id="hide"
-              name="hide"
-              label="Hide Helpers"
-              onChange={onSelectAction}
-              inline
-              checked={!selectedAction}
-            />,
-          ])}
+        {actions.map((action) => (
+          <IRadio
+            key={action.name}
+            variant="danger"
+            id={action.name}
+            name={action.name}
+            label={action.caption}
+            onChange={onSelectAction}
+            inline
+            checked={selectedAction === action.name}
+          />
+        ))}
       </div>
     </div>
   );

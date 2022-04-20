@@ -16,6 +16,7 @@ interface ComponentProps {
   selectAll?: boolean;
   onUpdateOptions?: (columns?: string[]) => void;
   onDeselect?: (option: string) => void;
+  rowSize?: number;
 }
 
 const StyledSegment = styled(Segment)`
@@ -45,6 +46,18 @@ const SelectAllCheck = styled(ICheck)`
     margin-top: 14px !important;
   }
 `;
+
+const StyledCheckboxItem = styled(ICheck)`
+  > label {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+  }
+`;
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const MAX_ROW_SIZE = 12;
 
 const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   const [checkboxOptions, setCheckboxOptions] = useState<CheckboxGroupOption[]>(props.options);
@@ -103,12 +116,17 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
     <>
       <StyledSegment className="pt-1">
         <Row className="pb-3">
-          <Col md={6}>
-            <SearchInput className="w-100" onSearch={onSearch} testid="checkboxgroup-search" />
+          <Col md={7}>
+            <SearchInput
+              className="w-100"
+              onSearch={onSearch}
+              testid="checkboxgroup-search"
+              instant
+            />
           </Col>
           {props.selectAll ? (
-            <Col md={6}>
-              <Form.Field className="col-md-4">
+            <Col md={5}>
+              <Form.Field>
                 <SelectAllCheck
                   variant="danger"
                   id="select-all"
@@ -122,11 +140,11 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
             </Col>
           ) : null}
         </Row>
-        {groupIntoRows(checkboxOptions).map((row, index) => (
+        {groupIntoRows(checkboxOptions, MAX_ROW_SIZE / props.rowSize!).map((row, index) => (
           <div key={`${index}`} className="row">
             {row.map(({ text, value }, index) => (
-              <Form.Field key={index} className="col-md-4">
-                <ICheck
+              <Form.Field key={index} className={`col-md-${props.rowSize}`}>
+                <StyledCheckboxItem
                   variant="danger"
                   checked={isChecked(value as string)}
                   label={text}
@@ -144,6 +162,6 @@ const CheckboxGroup: FunctionComponent<ComponentProps> = (props) => {
   );
 };
 
-CheckboxGroup.defaultProps = { selectAll: false };
+CheckboxGroup.defaultProps = { selectAll: false, rowSize: 4 };
 
 export { CheckboxGroup };

@@ -1,9 +1,12 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Alert, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import { DataSourceSelector } from '../../components/DataSourceSelector';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
+import { Mode, QueryBuilderModeSelector } from '../../components/QueryBuilderModeSelector';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
+import { SQLEditor } from '../../components/SQLEditor';
 import { AppContext, SourcesContext } from '../../context';
 import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
@@ -17,29 +20,48 @@ type QueryBuilderProps = RouteComponentProps<RouterParams>;
 
 const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const { id: operationID } = props.match.params;
-  const { user, token } = useContext(AppContext);
+  const { user, token, activeOperation } = useContext(AppContext);
   const [operation, setOperation] = useState<OperationMap>();
   const [activeSource, setActiveSource] = useState<SourceMap>();
   const { loading, operation: pageOperation } = useOperation(
     operationID ? parseInt(operationID) : undefined,
   );
+  const [mode, setMode] = useState<Mode>('gui');
 
   const sources = useSources({ limit: 200, offset: 0 }) || null;
   const history = useHistory();
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
-    setOperation(pageOperation as OperationMap);
-    if (pageOperation && sources.count()) {
-      const advancedConfig = (pageOperation as OperationMap).get(
-        'advanced_config',
-      ) as AdvancedQueryOptionsMap;
-      if (advancedConfig && advancedConfig.get('source')) {
-        setActiveSource(
-          sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
-        );
+    if (activeOperation) {
+      setOperation(activeOperation);
+      if (sources.count()) {
+        const advancedConfig = activeOperation.get('advanced_config') as AdvancedQueryOptionsMap;
+        if (advancedConfig && advancedConfig.get('source')) {
+          setActiveSource(
+            sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
+          );
+        }
+      }
+    } else {
+      setOperation(pageOperation as OperationMap);
+      if (pageOperation && sources.count()) {
+        const advancedConfig = (pageOperation as OperationMap).get(
+          'advanced_config',
+        ) as AdvancedQueryOptionsMap;
+        if (advancedConfig && advancedConfig.get('source')) {
+          setActiveSource(
+            sources.find((source) => source.get('id') === (advancedConfig.get('source') as number)),
+          );
+        }
+      }
+      if ((pageOperation as OperationMap | undefined)?.get('is_raw') && mode !== 'sql') {
+        setMode('sql');
       }
     }
   }, [(pageOperation as OperationMap)?.size, sources.count()]);
+
+  const onSelectSource = (selectedSource: SourceMap) => setActiveSource(selectedSource);
+  const onSelectMode = (selectedMode: Mode) => setMode(selectedMode);
 
   const onSaveOperation = (): void => {
     saveOperation(operation as OperationMap, `${token}`)
@@ -76,14 +98,6 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     <Row>
       <Col>
         <React.Fragment>
-          <Alert variant="warning">
-            <p>
-              This feature is in <strong>BETA</strong> - <strong>for testing purposes only</strong>
-            </p>
-            <p>
-              It currently only supports creation of basic <strong>SELECT</strong> queries
-            </p>
-          </Alert>
           <Dimmer active={loading || !sources.count()} inverted>
             <Loader content="Loading" />
           </Dimmer>
@@ -96,12 +110,32 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onDelete={onDeleteOperation}
                 onUpdate={onUpdateOperation}
               >
-                <QuerySentenceBuilder
-                  source={activeSource}
-                  operation={operation}
-                  onUpdateOperation={onUpdateOperation}
-                  editable={isEditable(operation)}
-                />
+                <Row className="mb-3">
+                  <DataSourceSelector
+                    source={activeSource}
+                    onSelect={onSelectSource}
+                    className="col-lg-6"
+                  />
+                  <QueryBuilderModeSelector
+                    mode={mode}
+                    onSelect={onSelectMode}
+                    className="col-lg-3"
+                  />
+                </Row>
+                {mode === 'gui' ? (
+                  <QuerySentenceBuilder
+                    source={activeSource}
+                    operation={operation}
+                    onUpdateOperation={onUpdateOperation}
+                    editable={isEditable(operation)}
+                  />
+                ) : (
+                  <SQLEditor
+                    source={activeSource}
+                    operation={operation}
+                    onUpdateOperation={onUpdateOperation}
+                  />
+                )}
               </OperationTabContainer>
             </SourcesContext.Provider>
           ) : null}

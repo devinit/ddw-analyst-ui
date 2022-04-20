@@ -236,6 +236,7 @@ export const UPDATABLE_TABLES: UpdateTable[] = [
         type: 'string',
         required: true,
       },
+      { name: 'country', caption: 'Country', type: 'string', required: false },
     ],
   },
 ];
@@ -278,6 +279,6 @@ export const updateTable = async (table: UpdateTable, data: CSVData): Promise<Up
 
     return { error: response as any }; // eslint-disable-line @typescript-eslint/no-explicit-any
   } catch (error) {
-    return { error: error };
+    return { error: error as AxiosError };
   }
 };

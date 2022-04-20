@@ -7,6 +7,7 @@ import { setToken } from '../../actions/token';
 import { FetchOptions } from '../../types/api';
 import {
   AdvancedQueryOptions,
+  AdvancedQueryOptionsMap,
   Operation,
   OperationData,
   OperationDataList,
@@ -44,6 +45,10 @@ const PREVIEWBASEURL = api.routes.PREVIEW_SINGLE_DATASET;
 
 const handleDataResult = (status: number, data: OperationDataResult): FetchResponse => {
   if (status === 200 || (status === 201 && data)) {
+    if (data.results && data.results.length && data.results[0].error) {
+      return { status, error: data.results[0].error as string };
+    }
+
     return { data: data.results, status };
   } else if (status === 401) {
     setToken('');
@@ -89,7 +94,7 @@ export const fetchOperationDataPreview = async (
         'Content-Type': 'application/json',
         Authorization: `token ${token}`,
       },
-      data: { ...operation, operation_steps: steps },
+      data: operation.advanced_config ? operation : { ...operation, operation_steps: steps },
     })
     .then((response: AxiosResponse<OperationDataResult>) => response)
     .catch((error) => error.response);
@@ -210,12 +215,14 @@ export const useOperation = (id?: number, fetch = false, immutable = true): UseO
 interface UseOperationQueryResult {
   query?: string;
   loading: boolean;
+  error?: string;
 }
 
 export const useOperationQuery = (operation?: OperationMap): UseOperationQueryResult => {
   const [token, setAPIToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
@@ -225,7 +232,7 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
 
   const fetchOperationQuery = (operation: OperationMap) => {
     setLoading(true);
-    const config = operation.get('advanced_config');
+    const config = operation.get('advanced_config') as AdvancedQueryOptionsMap;
     if (config && token) {
       axios
         .request({
@@ -236,22 +243,27 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
             'Content-Type': 'application/json',
             Authorization: `token ${token}`,
           },
-          data: { config: (config as any).toJS() },
+          data: { config: config.toJS() },
         })
         .then(({ status, data, statusText }: AxiosResponse<{ query: string }>) => {
           if (status === 200 && data) {
             setQuery(data.query);
-            setLoading(false);
+            setError('');
           } else if (status === 401) {
             console.log('Failed to generate SQL query: ', statusText);
             setQuery('');
-            setLoading(false);
+            setError(statusText);
           }
+          setLoading(false);
         })
         .catch((error) => {
-          console.log(
-            `Failed to generate SQL query: ${error.response.status} ${error.response.statusText}`,
-          );
+          if (error.response && error.response.data && error.response.data.detail) {
+            setError(error.response.data.detail);
+          } else {
+            console.log(
+              `Failed to generate SQL query: ${error.response.status} ${error.response.statusText}`,
+            );
+          }
           setQuery('');
           setLoading(false);
         });
@@ -271,7 +283,7 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
     }
   }, [operation, token]);
 
-  return { loading, query };
+  return { loading, query, error };
 };
 
 export const previewAdvancedDatasetData = async (
@@ -286,7 +298,7 @@ export const previewAdvancedDatasetData = async (
         'Content-Type': 'application/json',
         Authorization: `token ${token}`,
       },
-      data: { advanced_config: options },
+      data: { is_raw: false, advanced_config: options },
     })
     .then((response: AxiosResponse<OperationDataResult>) => response)
     .catch((error) => error.response);

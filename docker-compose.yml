@@ -29,6 +29,8 @@ services:
       - EMAIL_HOST_PASSWORD
       - GITHUB_TOKEN
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
+      - SLACK_BOT_TOKEN
+      - SLACK_CHANNEL_ID
     networks:
       - ddw_net
   spotlights:

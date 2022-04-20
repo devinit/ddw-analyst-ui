@@ -2,6 +2,8 @@
 import { List, Set } from 'immutable';
 import { DropdownItemProps } from 'semantic-ui-react';
 import {
+  AdvancedQueryColumn,
+  AdvancedQueryOptionsMap,
   AggregateOptions,
   OperationDataMap,
   OperationMap,
@@ -20,11 +22,15 @@ export const getSourceIDFromOperation = (operation: OperationMap): number | unde
     return;
   }
   const steps = operation.get('operation_steps') as List<OperationStepMap> | undefined;
-  if (!steps) {
-    return;
+  if (steps && steps.size) {
+    return steps.getIn([0, 'source']) as number;
   }
 
-  return steps.getIn([0, 'source']) as number;
+  if (operation.get('advanced_config')) {
+    const config = operation.get('advanced_config') as AdvancedQueryOptionsMap;
+
+    return config.get('source') as number;
+  }
 };
 
 export const formatString = (name = ''): string =>
@@ -166,3 +172,9 @@ export const getSelectOptionsFromSources = (
     }))
     .toJS()
     .sort(sortObjectArrayByProperty('text').sort) as DropdownItemProps[];
+
+export const getColumnFromName = (
+  name: string,
+  columns: AdvancedQueryColumn[],
+): AdvancedQueryColumn | undefined =>
+  columns.find((col) => col.name === name) as AdvancedQueryColumn;

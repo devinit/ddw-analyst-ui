@@ -1,5 +1,5 @@
-import CodeMirror from 'codemirror';
 import classNames from 'classnames';
+import CodeMirror from 'codemirror';
 import { fromJS } from 'immutable';
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
@@ -12,15 +12,16 @@ import {
   OperationMap,
 } from '../../types/operations';
 import { SourceMap } from '../../types/sources';
+import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 import { AdvancedGroupByQueryBuilder } from '../AdvancedGroupByQueryBuilder';
+import { AdvancedHavingQueryBuilder } from '../AdvancedHavingQueryBuilder';
 import { AdvancedJoinQueryBuilder } from '../AdvancedJoinQueryBuilder';
+import { AdvancedQueryDataPreview } from '../AdvancedQueryDataPreview';
 import { AdvancedSelectQueryBuilder } from '../AdvancedSelectQueryBuilder';
 import { JsonModeSpec } from '../CodeMirrorReact';
-import { DataSourceSelector } from '../DataSourceSelector';
 import { QueryBuilderActionSelector } from '../QueryBuilderActionSelector';
 import { QuerySentencePreview } from '../QuerySentencePreview';
 import { getCurrentAction } from './utils';
-import { AdvancedFilterQueryBuilder } from '../AdvancedFilterQueryBuilder';
 
 interface ComponentProps {
   operation?: OperationMap;
@@ -31,7 +32,6 @@ interface ComponentProps {
 export interface QueryContextProps {
   options: AdvancedQueryOptions;
   updateOptions?: (options: Partial<AdvancedQueryOptions>, replace?: boolean) => void;
-  editor?: CodeMirror.Editor;
 }
 
 export const jsonMode: CodeMirror.ModeSpec<JsonModeSpec> = { name: 'javascript', json: true };
@@ -47,18 +47,24 @@ const StyledRow = styled(Row)`
   padding-top: 1rem;
 `;
 
+const HelperCol = styled(Col)`
+  min-height: 485px;
+`;
+
 const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
   const [source, setSource] = useState<SourceMap>();
   const [action, setAction] = useState<AdvancedQueryBuilderAction>();
-  const [editor, setEditor] = useState<CodeMirror.Editor>();
   const [context, setContext] = useState<QueryContextProps>({
     options: defaultOptions as AdvancedQueryOptions,
   });
   const [alert, setAlert] = useState('');
 
   useEffect(() => {
-    if (props.operation) setSource(props.source);
-  }, [props.source]);
+    if (props.operation && props.operation.get('is_raw')) {
+      props.onUpdateOperation(props.operation.set('is_raw', false));
+    }
+  }, []);
+  useEffect(() => setSource(props.source), [props.source]);
   useEffect(() => {
     const options = { ...context.options };
     if (!props.operation) {
@@ -91,8 +97,6 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
       updateOptions: onUpdateOptions,
     });
   };
-  const onEditorInit = (_editor: CodeMirror.Editor) => setEditor(_editor);
-  const onSelectSource = (selectedSource: SourceMap) => setSource(selectedSource);
   const onSelectAction = (selectedAction?: AdvancedQueryBuilderAction) => setAction(selectedAction);
 
   const onUpdate = (options: AdvancedQueryOptions) => {
@@ -109,29 +113,40 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
 
   return (
     <div>
-      <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions, editor }}>
-        <DataSourceSelector source={source} onSelect={onSelectSource} />
+      <AdvancedQueryContext.Provider value={{ ...context, updateOptions: onUpdateOptions }}>
         {source ? (
           <>
             <QueryBuilderActionSelector
               onSelectAction={onSelectAction}
               defaultAction={getCurrentAction(props.operation)}
             />
-            <StyledRow className={classNames({ 'd-none': !action })}>
-              <Col lg={12}>
+            <StyledRow className="pt-0">
+              <HelperCol lg={8} className="pt-2">
                 {action === 'select' ? <AdvancedSelectQueryBuilder source={source} /> : null}
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
+                {action === 'having' ? <AdvancedHavingQueryBuilder source={source} /> : null}
+              </HelperCol>
+              <Col lg={4} className={classNames('border-left p-0 pt-2', { 'd-none': !action })}>
+                {context.options.source ? (
+                  <QuerySentencePreview
+                    source={source}
+                    action={action}
+                    operation={props.operation}
+                    onValidUpdate={onUpdate}
+                    showData={false}
+                  />
+                ) : null}
+              </Col>
+              <Col lg={12}>
+                {props.operation ? (
+                  <AdvancedQueryDataPreview
+                    options={props.operation.get('advanced_config') as AdvancedQueryOptions}
+                  />
+                ) : null}
               </Col>
             </StyledRow>
-            <QuerySentencePreview
-              source={source}
-              action={action}
-              operation={props.operation}
-              onEditorInit={onEditorInit}
-              onValidUpdate={onUpdate}
-            />
 
             <Alert show={!!alert} variant="warning" className="mt-2">
               {alert}

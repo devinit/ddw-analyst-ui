@@ -103,6 +103,7 @@ class Operation(BaseEntity):
     sample_output_path = models.TextField(blank=True, null=True)
     tags = models.ManyToManyField(Tag)
     is_draft = models.BooleanField(default=True)
+    is_raw = models.BooleanField(default=False) # if true, operation query is taken as is without processing steps or advanced configs
     row_count = models.IntegerField(blank=True, null=True)
     # controls whether to count rows in the post_save signal
     count_rows = models.BooleanField(default=False)

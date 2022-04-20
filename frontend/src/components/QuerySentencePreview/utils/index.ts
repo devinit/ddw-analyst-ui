@@ -82,9 +82,9 @@ export const getClauseOptions = (
   clause?: AdvancedQueryBuilderAction,
 ): Partial<AdvancedQueryOptions> => {
   if (clause === 'select') {
-    const { selectall, columns, groupby } = options;
+    const { selectall, columns, groupby, source } = options;
 
-    return { selectall, columns, groupby };
+    return { selectall, columns, groupby, source };
   }
   if (clause === 'filter') return { filter: options.filter };
   if (clause === 'join') return { join: options.join };

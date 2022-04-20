@@ -123,8 +123,10 @@ class StreamingExporter:
     """Sets up generator for streaming PSQL content"""
 
     def __init__(self, operation, frozen_table_id=None):
-        if operation.advanced_config: # We are dealing with advanced config here
+        if operation.advanced_config and not operation.is_raw: # We are dealing with advanced config here
             self.main_query = query.build_advanced_queries(operation.advanced_config)[1]
+        elif operation.advanced_config and operation.is_raw:
+            self.main_query = operation.operation_query
         else:
             self.main_query = query.build_query(operation=operation, frozen_table_id=frozen_table_id)[1]
         self.operation = operation
@@ -223,11 +225,22 @@ class PreviewOperationData(APIView):
             limit=request.query_params.get('limit', 10)
             offset=request.query_params.get('offset', 0)
             if 'advanced_config' in request.data and request.data['advanced_config']:
-                data = run_query(query.get_advanced_config_query(request.data['advanced_config'], limit=limit, offset=offset), fetch=True)
-                return {
-                    'count': len(data),
-                    'data': data
-                }
+                try:
+                    data = data = self.process_advanced_config(data=request.data)
+                    return {
+                        'count': len(data),
+                        'data': data
+                    }
+                except LookupError as e:
+                    return {
+                        'count': 0,
+                        'data': [
+                            {
+                                'error': str(e),
+                                'error_type': 'LookupError'
+                            }
+                        ]
+                    }
             else:
                 count, data = query.query_table(
                     operation_steps=request.data['operation_steps'],
@@ -256,6 +269,15 @@ class PreviewOperationData(APIView):
         paginator.set_count(data['count'])
         page_data = paginator.paginate_queryset(data['data'], request)
         return paginator.get_paginated_response(page_data)
+
+    def process_advanced_config(self, data, limit = 10, offset = 0):
+        config = data['advanced_config']
+        is_raw = data['is_raw']
+        if is_raw:
+            return run_query(query.format_query_for_preview(data['operation_query'], limit=limit, offset=offset), fetch=True)
+
+        return run_query(query.get_advanced_config_query(config, limit=limit, offset=offset), fetch=True)
+
 
 class GetOperationQuery(APIView):
     """
@@ -500,13 +522,13 @@ class ViewUserSourceDatasets(APIView):
         try:
             if self.request.user.is_authenticated:
                 operations = Operation.objects.filter(
-                    Q(user=self.request.user) & Q(operationstep__source=pk)
+                    Q(user=self.request.user) & (Q(operationstep__source=pk) | Q(advanced_config__source=pk))
                 ).order_by('-updated_on').distinct()
                 search = request.query_params.get('search')
                 if search:
                     return operations.filter(Q(name__icontains=search) | Q(description__icontains=search)).order_by('-updated_on').distinct()
                 return operations
-            return Operation.objects.filter(operationstep__source=pk).order_by('-updated_on').distinct()
+            return Operation.objects.filter(Q(operationstep__source=pk) | Q(advanced_config__source=pk)).order_by('-updated_on').distinct()
         except Operation.DoesNotExist:
             raise Http404
 

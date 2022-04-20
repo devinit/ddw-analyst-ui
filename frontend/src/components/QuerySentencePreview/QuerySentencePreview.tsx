@@ -1,36 +1,36 @@
+import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import classNames from 'classnames';
 import CodeMirror from 'codemirror';
-import { fromJS } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Tab, Tabs } from 'react-bootstrap';
 import styled from 'styled-components';
 import {
   AdvancedQueryBuilderAction,
+  AdvancedQueryColumn,
   AdvancedQueryOptions,
-  OperationData,
-  OperationDataList,
   OperationMap,
 } from '../../types/operations';
-import { SourceMap } from '../../types/sources';
-import { previewAdvancedDatasetData } from '../../utils/hooks';
-import { CodeMirrorReact } from '../CodeMirrorReact';
-import { ICheckData, IRadio } from '../IRadio';
-import { OperationPreview } from '../OperationPreview';
+import { Column, SourceMap } from '../../types/sources';
+import { AdvancedQueryDataPreview } from '../AdvancedQueryDataPreview';
+import { CodeMirrorNext } from '../CodeMirrorNext';
 import { QuerySentence } from '../QuerySentence';
-import { AdvancedQueryContext, jsonMode } from '../QuerySentenceBuilder';
-import { getClauseOptions, resetClauseOptions, validateOptions } from './utils';
+import { AdvancedQueryContext } from '../QuerySentenceBuilder';
+import { resetClauseOptions, validateOptions } from './utils';
 
 interface QuerySentencePreviewProps {
   source: SourceMap;
   action?: AdvancedQueryBuilderAction;
   operation?: OperationMap;
-  onEditorInit: (editor: CodeMirror.Editor) => void;
+  onEditorInit?: (editor: CodeMirror.Editor) => void;
   onValidUpdate?: (options: AdvancedQueryOptions) => void;
+  showConfig?: boolean;
+  showQuery?: boolean;
+  showData?: boolean;
 }
 
-type PreviewOption = 'clause-config' | 'config' | 'query' | 'data';
+type PreviewOption = 'config' | 'query' | 'data';
 const PreviewWrapper = styled.div`
-  min-height: 350px;
+  min-height: 485px;
 `;
 const ResetButton = styled(Button)`
   position: absolute;
@@ -46,53 +46,61 @@ const EditorWrapper = styled.div`
   position: relative;
 `;
 
+const StyledTabs = styled(Tabs)`
+  border-bottom: 2px solid #9c27b0;
+  padding-bottom: 0 !important;
+  border-radius: 0 !important;
+
+  > .nav-item.active,
+  > .nav-item.active:hover,
+  > .nav-item.active:focus {
+    border-color: #c8271d;
+  }
+`;
+
 const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (props) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
-  const [previewOption, setPreviewOption] = useState<PreviewOption>('clause-config');
-  const [data, setData] = useState<OperationData[]>([]);
-  const [dataLoading, setDataLoading] = useState(false);
+  const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
   const [alert, setAlert] = useState<string[]>([]);
   const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
-  const [editorValue, setEditorValue] = useState('{}');
-  const onRadioChange = (data: ICheckData) => setPreviewOption(data.value as PreviewOption);
-
-  const fetchPreviewData = (_options: AdvancedQueryOptions) => {
-    setDataLoading(true);
-    previewAdvancedDatasetData(_options).then((results) => {
-      setDataLoading(false);
-      if (results.error) {
-        setAlert([`Error: ${results.error}`]);
-      } else {
-        setData(results.data ? results.data.slice(0, 9) : []);
-      }
-    });
-  };
-
-  /* eslint-disable @typescript-eslint/no-non-null-assertion */
-  useEffect(() => {
-    if (previewOption === 'data' && validOptions) {
-      fetchPreviewData(validOptions);
-    }
-  }, [previewOption]);
-
-  useEffect(() => {
-    // every options update is validated. Valid options automatically get saved & are eligible for query & data preview
-    const validationResponse = validateOptions(options, props.source);
-    if (validationResponse.length) {
-      setAlert(validationResponse);
-    } else {
-      setAlert([]);
-      setValidOptions(options);
-      fetchPreviewData(options);
-      if (props.onValidUpdate) props.onValidUpdate(options);
-    }
-  }, [options]);
+  const [editorValue, setEditorValue] = useState(JSON.stringify(options || {}));
+  const onRadioChange = (data: string) => setPreviewOption(data as PreviewOption);
 
   useEffect(() => {
     try {
       const parsedValue = JSON.parse(editorValue);
-      updateOptions!({ ...options, ...parsedValue });
-      setAlert([]);
+      const updatedOptions: AdvancedQueryOptions = { ...options, ...parsedValue };
+
+      // for aggregate columns, set required groupby config
+      const aggregateColumns = options.columns?.filter((col) => col.aggregate);
+      if (aggregateColumns?.length) {
+        const nonAggregateColumns = options.columns
+          ?.filter((col: AdvancedQueryColumn) => !col.aggregate)
+          .map((column: Column) => column.name as string);
+        if (options.groupby && options.groupby.length && nonAggregateColumns) {
+          const groupBy = options.groupby.concat(
+            nonAggregateColumns.filter((column) => !options.groupby?.includes(column as string)),
+          );
+          // check that groupby has been updated before updating to avoid an infinite loop
+          if (options.groupby.sort().join(',') !== groupBy.sort().join(',')) {
+            updatedOptions.groupby = groupBy;
+          }
+        } else {
+          updatedOptions.groupby = nonAggregateColumns;
+        }
+      }
+
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      updateOptions!(updatedOptions);
+
+      const validationResponse = validateOptions(updatedOptions, props.source);
+      if (validationResponse.length) {
+        setAlert(validationResponse);
+      } else {
+        setAlert([]);
+        setValidOptions(updatedOptions);
+        if (props.onValidUpdate) props.onValidUpdate(updatedOptions);
+      }
     } catch (error) {
       /* eslint-disable @typescript-eslint/no-explicit-any */
       if (
@@ -105,11 +113,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   }, [editorValue]);
 
   const getEditorValue = () => {
-    if (previewOption === 'clause-config') {
-      return JSON.stringify(getClauseOptions(options, props.action) || {}, null, 2);
-    }
-
-    return JSON.stringify(validOptions || { error: 'Waiting for valid options' }, null, 2);
+    return JSON.stringify(options || {}, null, 2);
   };
 
   const onReset = () => {
@@ -119,91 +123,54 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
 
   return (
     <PreviewWrapper>
-      <div>
-        <label>Preview</label>
-      </div>
-      <div className="mb-2">
-        <IRadio
-          variant="danger"
-          id="clause-config"
-          name="clause-config"
-          label="Clause Config"
-          onChange={onRadioChange}
-          inline
-          checked={previewOption === 'clause-config'}
-        />
-        <IRadio
-          variant="danger"
-          id="query"
-          name="query"
-          label="Query"
-          onChange={onRadioChange}
-          inline
-          checked={previewOption === 'query'}
-        />
-        <IRadio
-          variant="danger"
-          id="data"
-          name="data"
-          label="Data"
-          onChange={onRadioChange}
-          inline
-          checked={previewOption === 'data'}
-        />
-        <IRadio
-          variant="danger"
-          id="config"
-          name="config"
-          label="Full Config"
-          onChange={onRadioChange}
-          inline
-          checked={previewOption === 'config'}
-        />
-      </div>
-      <Alert variant="warning" show={!!alert.length} className="mt-2">
+      <Alert variant="warning" show={!!alert.length} className="mt-2 ml-2 mr-2">
         {alert.map((message, index) => (
           <p key={`${index}`}>{message}</p>
         ))}
       </Alert>
-      <EditorWrapper
-        className={classNames({
-          'd-none': previewOption !== 'clause-config' && previewOption !== 'config',
-        })}
+      <StyledTabs
+        id="preview"
+        activeKey={previewOption}
+        onSelect={onRadioChange}
+        className="ml-0 mr-0 pl-0 border-danger"
       >
-        <ResetButton
-          variant="danger"
-          size="sm"
-          className={classNames({ 'd-none': previewOption !== 'clause-config' })}
-          onClick={onReset}
-        >
-          Clear
-        </ResetButton>
-        <CodeMirrorReact
-          config={{
-            mode: jsonMode,
-            value: getEditorValue(),
-            lineNumbers: true,
-            theme: 'material',
-            readOnly: previewOption === 'config',
-          }}
-          onInit={props.onEditorInit}
-          onChange={(value: string) => setEditorValue(value)}
-        />
-      </EditorWrapper>
-      {previewOption === 'query' && props.operation ? (
-        <QuerySentence operation={props.operation} />
-      ) : null}
-      {previewOption === 'data' ? (
-        <OperationPreview
-          show
-          data={fromJS(data) as OperationDataList}
-          onClose={() => true}
-          tableOnly
-          loading={dataLoading}
-        />
-      ) : null}
+        {props.showConfig ? (
+          <Tab eventKey="config" title="Config">
+            <EditorWrapper className={classNames({ 'd-none': previewOption !== 'config' })}>
+              <ResetButton
+                variant="danger"
+                size="sm"
+                className={classNames({ 'd-none': previewOption !== 'config' })}
+                onClick={onReset}
+              >
+                Clear
+              </ResetButton>
+              <CodeMirrorNext
+                value={getEditorValue()}
+                extensions={[sql({ dialect: PostgreSQL })]}
+                onChange={(value: string) => setEditorValue(value)}
+                height="440px"
+              />
+            </EditorWrapper>
+          </Tab>
+        ) : null}
+        {props.showQuery ? (
+          <Tab eventKey="query" title="Query">
+            {previewOption === 'query' && props.operation ? (
+              <QuerySentence operation={props.operation} />
+            ) : null}
+          </Tab>
+        ) : null}
+        {props.showData ? (
+          <Tab eventKey="data" title="Data">
+            {previewOption === 'data' ? <AdvancedQueryDataPreview options={validOptions} /> : null}
+          </Tab>
+        ) : null}
+      </StyledTabs>
     </PreviewWrapper>
   );
 };
+
+QuerySentencePreview.defaultProps = { showConfig: true, showData: true, showQuery: true };
 
 export { QuerySentencePreview };

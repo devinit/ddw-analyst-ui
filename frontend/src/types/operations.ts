@@ -29,6 +29,7 @@ export interface Operation {
   sample_output_path: string;
   operation_steps: OperationStep[] | List<OperationStepMap>;
   is_draft: boolean;
+  is_raw: boolean;
   created_on: string;
   updated_on: string;
   user: string;
@@ -101,6 +102,7 @@ export interface AdvancedQueryOptions {
   join?: AdvancedQueryJoin;
   groupby?: string[];
   selectall?: boolean;
+  having?: AdvancedQueryHaving;
 }
 export type AdvancedQueryOptionsMap = Map<
   keyof AdvancedQueryOptions,
@@ -130,18 +132,16 @@ export type AdvancedQueryFilterComparator = {
   comp: FilterComp;
 };
 
-export type JqueryQueryBuilderFilter = {
-  condition?: string;
-  rules?: (JqueryQueryBuilderFilterComparator | JqueryQueryBuilderFilter)[];
+export type AdvancedQueryHavingComparator = {
+  column: string;
+  value: { plain: string | number } | { column: string; aggregate: string };
+  comp: FilterComp;
+  aggregate?: string;
 };
 
-export type JqueryQueryBuilderFilterComparator = {
-  id: string;
-  field: string;
-  type: string;
-  input: string;
-  operator: JqueryQueryBuilderComps;
-  value: string | number;
+export type AdvancedQueryHaving = {
+  $and?: (AdvancedQueryHavingComparator | AdvancedQueryHaving)[];
+  $or?: (AdvancedQueryHavingComparator | AdvancedQueryHaving)[];
 };
 
 export const comp = [
@@ -156,29 +156,6 @@ export const comp = [
   '$text_search',
 ] as const;
 export type FilterComp = typeof comp[number];
-export type JqueryQueryBuilderComps =
-  | 'equal'
-  | 'not_equal'
-  | 'less'
-  | 'less_or_equal'
-  | 'greater'
-  | 'greater_or_equal'
-  | 'between'
-  | 'in';
-
-export type JqueryQueryBuilderFieldData = {
-  id: string | number;
-  label: string;
-  type: string;
-};
-
-export type JqueryQueryBuilderIcons = {
-  add_group: string;
-  add_rule: string;
-  remove_group: string;
-  remove_rule: string;
-  error: string;
-};
 
 export type JoinType =
   | 'inner'

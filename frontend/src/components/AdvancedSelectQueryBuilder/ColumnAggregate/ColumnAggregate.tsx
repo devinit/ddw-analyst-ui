@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Row, Toast } from 'react-bootstrap';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../../types/operations';
 import { Column, ColumnList, SourceMap } from '../../../types/sources';
+import { getColumnFromName } from '../../../utils';
 import { AdvancedQueryContext } from '../../QuerySentenceBuilder';
 
 interface ColumnAggregateProps {
@@ -25,6 +26,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   const [columns, setColumns] = useState<DropdownItemProps[]>([]);
   const [selectedColumn, setSelectedColumn] = useState('');
   const [selectedAggregate, setSelectedAggregate] = useState('');
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const sourceColumns: Column[] = (
@@ -44,24 +46,6 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           value: column.name as string,
         })),
     );
-    // for aggregate columns, set required groupby config
-    const aggregateColumns = props.columns?.filter((col) => col.aggregate);
-    if (aggregateColumns?.length && updateOptions) {
-      const nonAggregateColumns = props.columns
-        ?.filter((col: AdvancedQueryColumn) => !col.aggregate)
-        .map((column: Column) => column.name as string);
-      if (options.groupby && options.groupby.length) {
-        const groupBy = options.groupby.concat(
-          nonAggregateColumns.filter((column) => !options.groupby?.includes(column as string)),
-        );
-        // check that groupby has been updated before updating to avoid an infinite loop
-        if (options.groupby.sort().join(',') !== groupBy.sort().join(',')) {
-          updateOptions({ groupby: groupBy });
-        }
-      } else {
-        updateOptions({ groupby: nonAggregateColumns });
-      }
-    }
   }, [props.columns]);
 
   const onSelectColumn = (_event: SelectEvent, data: DropdownProps) => {
@@ -72,6 +56,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   };
   const onAdd = () => {
     if (updateOptions) {
+      setShowToast(true);
       const updatedColumns = props.columns.map((col) =>
         col.name === selectedColumn ? { ...col, aggregate: selectedAggregate } : col,
       ) as AdvancedQueryColumn[];
@@ -100,7 +85,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
   if (show) {
     return (
       <Row className="mb-1">
-        <Col lg={4} className="my-2">
+        <Col lg={5} className="my-2">
           <Dropdown
             placeholder="Select Column"
             fluid
@@ -112,7 +97,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           />
         </Col>
 
-        <Col lg={3} className="my-2">
+        <Col lg={4} className="my-2">
           <Dropdown
             placeholder="Select Aggregation"
             fluid
@@ -124,7 +109,7 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
           />
         </Col>
 
-        <Col lg={2}>
+        <Col lg={3}>
           <Row>
             <Button variant="link" className="btn-just-icon" onClick={onAdd}>
               <i className="material-icons">add</i>
@@ -134,6 +119,21 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
             </Button>
           </Row>
         </Col>
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          delay={3000}
+          autohide
+          className="ml-3"
+        >
+          <Toast.Body>
+            <div>
+              Aggregate <strong>{selectedAggregate}</strong> added for{' '}
+              <strong>{getColumnFromName(selectedColumn, props.columns)?.alias}</strong>
+            </div>
+            <div>Edit above to add/remove another</div>
+          </Toast.Body>
+        </Toast>
       </Row>
     );
   }

@@ -1,10 +1,12 @@
+import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Alert } from 'react-bootstrap';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { format } from 'sql-formatter';
 import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { useOperationQuery } from '../../utils/hooks';
-import { CodeMirrorReact } from '../CodeMirrorReact';
+import { CodeMirrorNext } from '../CodeMirrorNext';
 
 interface QuerySentenceProps {
   operation: OperationMap;
@@ -16,7 +18,7 @@ const StyledDiv = styled.div`
 `;
 
 const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => {
-  const { loading, query } = useOperationQuery(operation);
+  const { loading, query, error } = useOperationQuery(operation);
   const [sentence, setSentence] = useState('');
   useEffect(() => {
     if (!loading && query) {
@@ -35,12 +37,11 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
 
     if (sentence) {
       return (
-        <CodeMirrorReact
-          config={{
-            mode: 'text',
-            value: sentence,
-            readOnly: true,
-          }}
+        <CodeMirrorNext
+          value={sentence}
+          readOnly
+          extensions={[sql({ dialect: PostgreSQL })]}
+          height="440px"
         />
       );
     }
@@ -52,7 +53,14 @@ const QuerySentence: FunctionComponent<QuerySentenceProps> = ({ operation }) => 
     );
   };
 
-  return <StyledDiv className="mt-2">{renderContent()}</StyledDiv>;
+  return (
+    <div className="mt-2">
+      <Alert show={!!error} variant="warning">
+        {error}
+      </Alert>
+      <StyledDiv>{renderContent()}</StyledDiv>
+    </div>
+  );
 };
 
 export { QuerySentence };

@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import styled from 'styled-components';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { ICheck, ICheckData } from '../ICheck';
@@ -48,9 +49,11 @@ const showAggregateButton = (
   return false;
 };
 
+type ActiveAction = 'select' | 'order' | 'aggregate';
+
 const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, usage }) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
-  const [activeAction, setActiveAction] = useState<'select' | 'order' | 'aggregate'>();
+  const [activeAction, setActiveAction] = useState<ActiveAction>('select');
   /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const [selectAll, setSelectAll] = useState(getDefaultSelectAll(usage!, options.selectall));
   useEffect(() => {
@@ -60,7 +63,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     }
   }, []);
   useEffect(() => {
-    if (options.selectall && options.selectall !== selectAll) {
+    if (typeof options.selectall !== 'undefined' && options.selectall !== selectAll) {
       setSelectAll(options.selectall);
     }
   }, [options.selectall]);
@@ -69,7 +72,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     updateOptions!({ selectall: data.checked });
   };
   const onReset = () => {
-    setActiveAction(undefined);
+    setActiveAction('select');
     if (usage === 'select') {
       updateOptions!({ selectall: true, columns: [] });
     } else if (options.join && options.join.columns) {
@@ -82,18 +85,26 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
   return (
     <div className="mb-3">
       {usage === 'select' ? (
-        <ICheck
-          id="selectAll"
-          name="selectAll"
-          label="Select All"
-          onChange={onToggleSelectAll}
-          variant="danger"
-          checked={selectAll}
-        />
+        <div>
+          <ICheck
+            id="selectAll"
+            name="selectAll"
+            label="Select All"
+            onChange={onToggleSelectAll}
+            variant="danger"
+            checked={selectAll}
+          />
+          <ClearButton variant="danger" size="sm" onClick={onReset}>
+            Clear/Reset
+          </ClearButton>
+        </div>
       ) : null}
-      <ButtonGroup className="mr-2">
+      <div>
+        <label>Actions</label>
+      </div>
+      <ButtonGroup className="mr-2 mt-0">
         <Button
-          variant="danger"
+          variant={activeAction === 'select' ? 'danger' : 'dark'}
           size="sm"
           data-toggle="tooltip"
           data-placement="top"
@@ -104,7 +115,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           {selectAll ? 'Select Columns for Ordering' : 'Select Column(s)'}
         </Button>
         <Button
-          variant="danger"
+          variant={activeAction === 'order' ? 'danger' : 'dark'}
           size="sm"
           disabled={
             usage === 'join' && options.join
@@ -116,7 +127,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           Order Columns
         </Button>
         <Button
-          variant="danger"
+          variant={activeAction === 'aggregate' ? 'danger' : 'dark'}
           size="sm"
           hidden={
             selectAll || !showAggregateButton(source.get('columns') as ColumnList, options, usage)
@@ -124,9 +135,6 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           onClick={() => setActiveAction('aggregate')}
         >
           Aggregate
-        </Button>
-        <Button variant="danger" size="sm" onClick={onReset}>
-          Clear/Reset
         </Button>
       </ButtonGroup>
       <ColumnSelector
@@ -152,5 +160,11 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
 };
 
 AdvancedSelectQueryBuilder.defaultProps = { usage: 'select' };
+
+const ClearButton = styled(Button)`
+  position: absolute;
+  right: 15px;
+  top: 8px;
+`;
 
 export { AdvancedSelectQueryBuilder };

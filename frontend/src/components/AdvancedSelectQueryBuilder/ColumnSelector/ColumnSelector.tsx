@@ -23,7 +23,15 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
   useEffect(() => {
     (window as any).$('[data-toggle="tooltip"]').tooltip(); // eslint-disable-line
 
-    setColumns(getColumnGroupOptionsFromSource(source));
+    const sourceColumns = getColumnGroupOptionsFromSource(source);
+    if (props.usage === 'groupby' && options.columns) {
+      const groupByColumns = sourceColumns.filter((column) =>
+        options.columns?.find((col) => !col.aggregate && col.name === column.value),
+      );
+      setColumns(groupByColumns);
+    } else {
+      setColumns(sourceColumns);
+    }
   }, [source]);
   useEffect(() => {
     if (props.columns.length === 0) setSelectedColumns([]);
@@ -58,6 +66,7 @@ const ColumnSelector: FunctionComponent<ColumnSelectorProps> = ({ source, show, 
         selectedOptions={selectedColumns}
         onUpdateOptions={onUpdateColumns}
         selectAll
+        rowSize={6}
       />
     );
   }
