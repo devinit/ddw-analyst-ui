@@ -213,7 +213,7 @@ merge_crs_tables = function(file_vec){
     "integer",
     "text",
     "text",
-    "integer",
+    "text",
     "text",
     "text",
     "text",
@@ -246,7 +246,6 @@ merge_crs_tables = function(file_vec){
     "float8",
     "float8",
     "float8",
-    "integer",
     "float8",
     "integer",
     "integer",
@@ -306,12 +305,13 @@ merge_crs_tables = function(file_vec){
     ,"channel_code"
     ,"channel_name"
     ,"channel_reported_name"
-    ,"channel_parent_category"
+    # ,"channel_parent_category" # Removed 2022
     ,"geography"
     ,"expected_start_date"
     ,"completion_date"
     ,"long_description"
     ,"sdg_focus" # New for 2018
+    ,"keywords" # New for 2022
     ,"gender"
     ,"environment"
     ,"pdgg"
@@ -339,7 +339,7 @@ merge_crs_tables = function(file_vec){
     ,"usd_outstanding"
     ,"usd_arrears_principal"
     ,"usd_arrears_interest"
-    ,"budget_identifier"
+    # ,"budget_identifier" # Removed 2022
     ,"capital_expenditure"
     ,"psi_flag" # New for 2018
     ,"psi_add_type" # New for 2018
