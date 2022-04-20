@@ -213,6 +213,7 @@ merge_crs_tables = function(file_vec){
     "integer",
     "text",
     "text",
+    "integer",
     "text",
     "text",
     "text",
@@ -305,7 +306,7 @@ merge_crs_tables = function(file_vec){
     ,"channel_code"
     ,"channel_name"
     ,"channel_reported_name"
-    # ,"channel_parent_category" # Removed 2022
+    ,"channel_parent_category"
     ,"geography"
     ,"expected_start_date"
     ,"completion_date"
