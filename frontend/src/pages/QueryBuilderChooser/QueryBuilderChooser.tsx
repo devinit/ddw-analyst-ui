@@ -14,10 +14,9 @@ type SelectedQueryBuilder = 'basic' | 'advanced';
 // eslint-disable-next-line @typescript-eslint/ban-types
 const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps<{}>) => {
   const [showModal, setShowModal] = useState(true);
-  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>('advanced');
+  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
-  const [redirectPage, setRedirectPage] = useState('');
 
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
@@ -51,10 +50,10 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
           data: userPreference,
         })
         .then(() => {
-          if (selectedOption === 'basic') {
-            setRedirectPage('basic');
+          if (selectedOption === 'basic' || choice === 'basic') {
+            return <QueryBuilder {...props} />;
           } else {
-            setRedirectPage('advanced');
+            return <AdvancedQueryBuilder {...props} />;
           }
         })
         .catch((err) => console.log(err));
@@ -63,14 +62,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
       localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
     }
   };
-
-  if (redirectPage || choice) {
-    if (redirectPage === 'basic' || choice === 'basic') {
-      return <QueryBuilder {...props} />;
-    } else {
-      return <AdvancedQueryBuilder {...props} />;
-    }
-  }
 
   return (
     <div>
@@ -105,20 +96,8 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
           </Alert>
         </Modal.Body>
         <Modal.Footer>
-          <CheckBox
-            label="Remember choice"
-            checked={checked}
-            onChange={() => {
-              handleChange();
-            }}
-          />
-          <Button
-            onClick={() => {
-              handleSave();
-            }}
-          >
-            Go to querybuilder
-          </Button>
+          <CheckBox label="Remember choice" checked={checked} onChange={handleChange} />
+          <Button onClick={handleSave}>Go to querybuilder</Button>
         </Modal.Footer>
       </Modal>
     </div>

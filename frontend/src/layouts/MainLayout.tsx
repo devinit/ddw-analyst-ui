@@ -137,10 +137,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                     data-testid="sidebar-link-published-datasets"
                   />
                 </Sidebar.Item>
-                <Sidebar.Item
-                  active={this.state.activeRoute.includes('/queries/build/')}
-                  // collapseId="query-builder"
-                >
+                <Sidebar.Item active={this.state.activeRoute.includes('/queries/build/')}>
                   <Sidebar.Link
                     root
                     to="/queries/build/"

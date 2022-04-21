@@ -647,35 +647,6 @@ class UserPreferenceList(generics.ListCreateAPIView):
             return Preference.objects.filter(user=self.request.user).order_by('-updated_on')
         else:
             return Preference.objects.all().order_by('-updated_on')
-
-    # def create(self, request, **kwargs):
-    #     """
-    #     Overrides the standard create method so that we can set User,
-    #     object_id and content_type based on requesting user and kwargs
-    #     passed in URL
-    #     """
-    #     print('helo')
-    #     return super(UserPreferenceList, self).create(request, *args, **kwargs)
-        # preferences_data = self.request.data
-        # # change request data so that it's mutable, otherwise this will raise
-        # # a "This QueryDict instance is immutable." error
-        # preferences_data._mutable = True
-        # # set the requesting user ID for the User ForeignKey
-        # preferences_data['user'] = self.request.user.id
-        # preferences_data['object_id'] = self.kwargs['object_id']
-        # # pass kwarg from URL to `model` to get the corresponding object
-        # content_type = ContentType.objects.get( model=self.kwargs['content_type'] )
-        # # pass the ID from the ContentType object to `content_type`, expected
-        # # by serializer
-        # preferences_data['content_type'] = content_type.id
-
-        # serializer = PreferenceSerializer(data=preferences_data)
-
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class PreferenceDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
