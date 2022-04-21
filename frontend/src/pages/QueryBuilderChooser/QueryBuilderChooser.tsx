@@ -12,7 +12,7 @@ type SelectedQueryBuilder = 'basic' | 'advanced';
 // eslint-disable-next-line @typescript-eslint/ban-types
 const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [showModal, setShowModal] = useState(true);
-  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>('advanced');
+  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
