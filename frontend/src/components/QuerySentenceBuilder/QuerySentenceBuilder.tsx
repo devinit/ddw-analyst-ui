@@ -126,7 +126,7 @@ const QuerySentenceBuilder: FunctionComponent<ComponentProps> = (props) => {
                 {action === 'filter' ? <AdvancedFilterQueryBuilder source={source} /> : null}
                 {action === 'join' ? <AdvancedJoinQueryBuilder source={source} /> : null}
                 {action === 'groupby' ? <AdvancedGroupByQueryBuilder source={source} /> : null}
-                {action === 'having' ? <AdvancedHavingQueryBuilder source={source} /> : null}
+                {action === 'having' ? <AdvancedHavingQueryBuilder /> : null}
               </HelperCol>
               <Col lg={4} className={classNames('border-left p-0 pt-2', { 'd-none': !action })}>
                 {context.options.source ? (
