@@ -26,6 +26,11 @@ cp certbot_success.sh ./ssl
 chmod +x ssl/certbot_success.sh
 mkdir -p certbot_logs
 
+echo "Build JS"
+
+npm i
+npm run build
+
 echo "Building docker"
 
 docker-compose build db

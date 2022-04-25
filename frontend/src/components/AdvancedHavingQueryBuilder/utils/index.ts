@@ -43,7 +43,6 @@ export const parseHavingQuery = (
   condition: string,
   rulesObject: any,
   aggregateColumns: AdvancedQueryColumn[],
-  columns: AdvancedQueryColumn[],
 ): AdvancedQueryHaving => {
   if (rulesObject.hasOwnProperty('combinator')) {
     finalElement[`$${rulesObject.combinator}`] = [];
@@ -52,7 +51,6 @@ export const parseHavingQuery = (
       rulesObject.combinator,
       rulesObject.rules,
       aggregateColumns,
-      columns,
     );
   } else {
     for (let index = 0; index < rulesObject.length; index++) {
@@ -63,41 +61,22 @@ export const parseHavingQuery = (
             rulesObject[index].combinator,
             rulesObject[index].rules,
             aggregateColumns,
-            columns,
           ),
         );
       } else {
         if (!finalElement.hasOwnProperty(`$${condition}`)) {
           finalElement[`$${condition}`] = [];
         }
-        if ((aggregateColumns as AdvancedQueryColumn[]).length > 0) {
-          aggregateColumns?.map((column) => {
-            if (column.name === rulesObject[index].field) {
-              finalElement[`$${condition}`].push({
-                column: rulesObject[index].field,
-                comp: rulesObject[index].operator,
-                aggregate: column.aggregate,
-                value: { plain: rulesObject[index].value },
-              });
-            }
-          });
-        } else {
-          if (typeof rulesObject[index].value === 'number') {
-            finalElement[`$${condition}`].push({
-              column: getColumnFromAlias(rulesObject[index].field, columns as AdvancedQueryColumn[])
-                .name,
-              comp: rulesObject[index].operator,
-              value: { plain: rulesObject[index].value },
-            });
-          } else {
-            const receivedString = rulesObject[index].value.split(',');
+        aggregateColumns?.map((column) => {
+          if (column.name === rulesObject[index].field) {
             finalElement[`$${condition}`].push({
               column: rulesObject[index].field,
               comp: rulesObject[index].operator,
-              value: { column: receivedString[0], aggregate: receivedString[1] },
+              aggregate: column.aggregate,
+              value: { plain: rulesObject[index].value },
             });
           }
-        }
+        });
       }
     }
   }
