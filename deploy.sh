@@ -26,9 +26,14 @@ cp certbot_success.sh ./ssl
 chmod +x ssl/certbot_success.sh
 mkdir -p certbot_logs
 
+echo "Install JS dendencies"
+
+nvm install 16.14.2
+nvm use 16.14.2
+npm i
+
 echo "Build JS"
 
-npm i
 npm run build
 
 echo "Building docker"

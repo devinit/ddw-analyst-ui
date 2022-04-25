@@ -35,9 +35,14 @@ fi
 
 cd ~/ddw-analyst-ui || exit
 
+echo "Install JS dendencies"
+
+nvm install 16.14.2
+nvm use 16.14.2
+npm i
+
 echo "Build JS"
 
-npm i
 npm run build
 
 echo "Building docker"
