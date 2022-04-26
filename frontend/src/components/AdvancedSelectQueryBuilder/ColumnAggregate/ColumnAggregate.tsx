@@ -7,6 +7,7 @@ import { getColumnFromName } from '../../../utils';
 import { AdvancedQueryContext } from '../../QuerySentenceBuilder';
 
 interface ColumnAggregateProps {
+  activeJoinIndex: number;
   show: boolean;
   source: SourceMap;
   columns: AdvancedQueryColumn[];
@@ -21,7 +22,11 @@ const aggregateOptions: DropdownItemProps[] = [
 ];
 type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 
-const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...props }) => {
+const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({
+  activeJoinIndex,
+  show,
+  ...props
+}) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [columns, setColumns] = useState<DropdownItemProps[]>([]);
   const [selectedColumn, setSelectedColumn] = useState('');
@@ -60,10 +65,16 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
       const updatedColumns = props.columns.map((col) =>
         col.name === selectedColumn ? { ...col, aggregate: selectedAggregate } : col,
       ) as AdvancedQueryColumn[];
+      if (options.join && options.join.length) {
+        options.join[activeJoinIndex] = {
+          ...options.join[activeJoinIndex],
+          columns: [...updatedColumns],
+        };
+      }
       updateOptions(
         (props.usage === 'select'
           ? { columns: updatedColumns }
-          : { join: { ...options.join, columns: updatedColumns } }) as AdvancedQueryOptions,
+          : { join: [...(options.join as AdvancedQueryColumn[])] }) as AdvancedQueryOptions,
       );
     }
   };
@@ -74,10 +85,16 @@ const ColumnAggregate: FunctionComponent<ColumnAggregateProps> = ({ show, ...pro
 
         return col;
       });
+      if (options.join && options.join.length) {
+        options.join[activeJoinIndex] = {
+          ...options.join[activeJoinIndex],
+          columns: [...updatedColumns],
+        };
+      }
       updateOptions(
         (props.usage === 'select'
           ? { columns: updatedColumns }
-          : { join: { ...options.join, columns: updatedColumns } }) as AdvancedQueryOptions,
+          : { join: [...(options.join as AdvancedQueryColumn[])] }) as AdvancedQueryOptions,
       );
     }
   };

@@ -29,3 +29,12 @@ export const getSourceColumns = (
 
   return columns;
 };
+
+export const checkIfMappingExists = (
+  columnMapping: [string, string][],
+  map: [string, string],
+): [string, string][] => {
+  return columnMapping.filter((mapping) => {
+    return mapping[0] === map[0] && mapping[1] === map[1];
+  });
+};

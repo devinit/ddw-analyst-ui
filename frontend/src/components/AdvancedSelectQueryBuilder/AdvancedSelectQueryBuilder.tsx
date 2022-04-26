@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 import { AdvancedQueryColumn, AdvancedQueryOptions } from '../../types/operations';
@@ -12,6 +12,9 @@ import { ColumnSelector } from './ColumnSelector';
 interface ComponentProps {
   source: SourceMap;
   usage?: AdvancedSelectUsage;
+  activeJoinIndex: number;
+  selectedColumns: AdvancedQueryColumn[];
+  onSelectColumns?: (options: Partial<AdvancedQueryOptions>) => void;
 }
 type AdvancedSelectUsage = 'select' | 'join';
 
@@ -37,9 +40,17 @@ const showAggregateButton = (
   sourceColumns: ColumnList,
   options: AdvancedQueryOptions,
   usage: AdvancedSelectUsage = 'select',
+  activeJoinIndex: number,
 ) => {
-  if (usage === 'join' && options.join?.columns && options.join.columns.length) {
-    return hasNumericalColumn(sourceColumns, options.join.columns);
+  if (
+    usage === 'join' &&
+    options.join &&
+    options.join!.length &&
+    options.join![activeJoinIndex] &&
+    options.join[activeJoinIndex].columns &&
+    options.join[activeJoinIndex].columns!.length
+  ) {
+    return hasNumericalColumn(sourceColumns, options.join[activeJoinIndex].columns!);
   }
 
   if (usage === 'select' && options.columns && options.columns.length) {
@@ -51,7 +62,13 @@ const showAggregateButton = (
 
 type ActiveAction = 'select' | 'order' | 'aggregate';
 
-const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source, usage }) => {
+const AdvancedSelectQueryBuilder: React.FC<ComponentProps> = ({
+  source,
+  usage,
+  activeJoinIndex,
+  selectedColumns,
+  onSelectColumns,
+}) => {
   const { options, updateOptions } = useContext(AdvancedQueryContext);
   const [activeAction, setActiveAction] = useState<ActiveAction>('select');
   /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -64,7 +81,7 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
   }, []);
   useEffect(() => {
     if (typeof options.selectall !== 'undefined' && options.selectall !== selectAll) {
-      setSelectAll(options.selectall);
+      setSelectAll(usage === 'join' ? false : options.selectall);
     }
   }, [options.selectall]);
   const onToggleSelectAll = (data: ICheckData) => {
@@ -75,11 +92,17 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
     setActiveAction('select');
     if (usage === 'select') {
       updateOptions!({ selectall: true, columns: [] });
-    } else if (options.join && options.join.columns) {
-      delete options.join.columns;
+    } else if (
+      options.join &&
+      options.join![activeJoinIndex] &&
+      options.join[activeJoinIndex].columns
+    ) {
+      onSelectColumns ? onSelectColumns({}) : null;
+      options.join[activeJoinIndex].columns = [];
       updateOptions!({ join: options.join });
     }
   };
+
   /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   return (
@@ -118,8 +141,13 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           variant={activeAction === 'order' ? 'danger' : 'dark'}
           size="sm"
           disabled={
-            usage === 'join' && options.join
-              ? !options.join.columns || options.join.columns.length <= 1
+            usage === 'join'
+              ? !(
+                  options.join!.length > 0 &&
+                  options.join![activeJoinIndex] &&
+                  options.join![activeJoinIndex].columns &&
+                  options.join![activeJoinIndex].columns!.length > 1
+                )
               : !options.columns || options.columns.length <= 1
           }
           onClick={() => setActiveAction('order')}
@@ -130,7 +158,13 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
           variant={activeAction === 'aggregate' ? 'danger' : 'dark'}
           size="sm"
           hidden={
-            selectAll || !showAggregateButton(source.get('columns') as ColumnList, options, usage)
+            selectAll ||
+            !showAggregateButton(
+              source.get('columns') as ColumnList,
+              options,
+              usage,
+              activeJoinIndex,
+            )
           }
           onClick={() => setActiveAction('aggregate')}
         >
@@ -141,19 +175,36 @@ const AdvancedSelectQueryBuilder: FunctionComponent<ComponentProps> = ({ source,
         usage={usage}
         show={activeAction === 'select'}
         source={source}
-        columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
+        columns={
+          (usage === 'join' && selectedColumns.length > 0
+            ? selectedColumns
+            : usage === 'select'
+            ? options.columns
+            : []) || []
+        }
+        onSelectColumns={onSelectColumns}
       />
       <AdvancedQueryBuilderColumnOrder
         usage={usage}
         show={activeAction === 'order'}
-        columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
+        columns={
+          (usage === 'join' && options.join!.length && options.join![activeJoinIndex]
+            ? options.join![activeJoinIndex].columns
+            : options.columns) || []
+        }
         source={source}
+        activeJoinIndex={activeJoinIndex}
       />
       <ColumnAggregate
         usage={usage}
         show={activeAction === 'aggregate'}
         source={source}
-        columns={(usage === 'join' && options.join ? options.join.columns : options.columns) || []}
+        columns={
+          (usage === 'join' && options.join!.length && options.join![activeJoinIndex]
+            ? options.join![activeJoinIndex].columns
+            : options.columns) || []
+        }
+        activeJoinIndex={activeJoinIndex}
       />
     </div>
   );
