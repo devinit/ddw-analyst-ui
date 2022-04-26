@@ -31,18 +31,22 @@ export const validateOptions = (options: AdvancedQueryOptions, source: SourceMap
 
     return validateFilter(options.filter, columnItems);
   }
-  if (options.join && !options.join.type) return ['Join type is required'];
-  if (options.join && !options.join.source) return ['Join source is required'];
-  if (options.join && !options.join.mapping.length) {
-    return ['At least one join mapping is required'];
+
+  for (let index = 0; options.join && index < options.join.length; index++) {
+    if (options.join && !options.join[index].type) return ['Join type is required'];
+    if (options.join && !options.join[index].source) return ['Join source is required'];
+    if (options.join && !options.join[index].mapping.length) {
+      return ['At least one join mapping is required'];
+    }
+    if (options.join && !options.join[index].columns?.length) {
+      return ['At least one join column is required'];
+    }
+    if (options.join && options.join[index].columns?.length) {
+      const errors = validateColumns(source, options.join[index].columns!, 'join');
+      if (errors.length) return errors;
+    }
   }
-  if (options.join && !options.join.columns?.length) {
-    return ['At least one join column is required'];
-  }
-  if (options.join && options.join.columns?.length) {
-    const errors = validateColumns(source, options.join.columns, 'join');
-    if (errors.length) return errors;
-  }
+
   if (options.groupby && !options.groupby.length) return ['Group by requires at least one column'];
 
   return [];

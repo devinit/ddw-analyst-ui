@@ -35,11 +35,6 @@ fi
 
 cd ~/ddw-analyst-ui || exit
 
-echo "Build JS"
-
-npm i
-npm run build
-
 echo "Building docker"
 
 docker-compose build db

@@ -109,12 +109,12 @@ describe('The Datasets Pages', () => {
     cy.fixture('datasets').then((datasets) => {
       datasets.results = datasets.results.slice(0, 9);
       datasets.count = datasets.results.length;
-      cy.intercept('api/datasets/?limit=10&offset=0&search=', datasets);
+      cy.intercept('api/datasets/?limit=10&offset=0', datasets).as('fetchDatasets');
     });
 
     cy.visit('/datasets');
-    cy.wait(100);
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
+    cy.wait('@fetchDatasets');
     cy.get('[data-testid="pagination-results-count"]').should(
       'contain.text',
       'Showing 1 to 9 of 9',
@@ -141,7 +141,6 @@ describe('The Datasets Pages', () => {
     });
 
     cy.visit('/datasets');
-    cy.wait(100);
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
     cy.get('.dataset-row').its('length').should('eq', 10);
     cy.get('[data-testid="pagination-results-count"]').should(
