@@ -187,7 +187,6 @@ jobs:
           npm ci
           npm run build
           docker-compose exec -T web python manage.py collectstatic --no-input
-          docker-compose restart web
 
   end-to-end:
     name: 'Cypress End-to-End'
