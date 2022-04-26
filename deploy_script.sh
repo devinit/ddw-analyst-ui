@@ -49,13 +49,6 @@ docker-compose up -d
 
 docker-compose exec -T web python manage.py migrate
 
-echo "Generating Javascript Assets"
-
-npm i
-npm run build
-docker-compose exec -T web python manage.py collectstatic --no-input
-docker-compose restart web
-
 echo "Fetch CSV Files"
 
 docker-compose exec -T web python manage.py update_csv_files --validate
