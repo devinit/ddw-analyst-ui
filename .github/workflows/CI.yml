@@ -77,6 +77,18 @@ jobs:
       env:
         CI: true
 
+  automerge:
+    name: Auto Merge
+    needs: [test-typescript,test-python]
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3.1.4
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+
   deploy:
     name: 'Deploy'
     needs: [test-typescript,test-python]
