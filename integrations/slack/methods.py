@@ -52,4 +52,7 @@ def post_to_slack_channel(channel_id, message, subject=None):
             )
             logger.warning("Result: {}".format(str(result)))
         except SlackApiError as error:
-            logger.warning("Error posting to slack: {}".format())
+            if settings.DEBUG:
+                logger.warning("{}".format(message))
+            else:
+                logger.warning("Error posting to slack: {} \n Debug info below \n{}".format(str(error), message))
