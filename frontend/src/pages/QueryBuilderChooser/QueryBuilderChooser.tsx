@@ -2,19 +2,17 @@ import React, { FC, useState, useEffect } from 'react';
 import * as localForage from 'localforage';
 import { localForageKeys, api } from '../../utils';
 import { Alert, Button, Modal } from 'react-bootstrap';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { ICheckData, IRadio } from '../../components/IRadio';
-import AdvancedQueryBuilder from '../AdvancedQueryBuilder/AdvancedQueryBuilder';
-import QueryBuilder from '../QueryBuilder/QueryBuilder';
 import { CheckBox } from '../../components/CheckBox';
 import axios from 'axios';
 
 type SelectedQueryBuilder = 'basic' | 'advanced';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps<{}>) => {
+const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [showModal, setShowModal] = useState(true);
-  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
+  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>('advanced');
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
@@ -23,8 +21,17 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
     setSelectedOption(data.value as SelectedQueryBuilder);
   };
 
+  const history = useHistory();
+
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
+      if (key) {
+        if (key === 'advanced') {
+          history.push('/queries/build/advanced/');
+        } else {
+          history.push('/queries/build/basic/');
+        }
+      }
       setChoice(key || undefined);
     });
   }, []);
@@ -50,10 +57,12 @@ const QueryBuilderChooser: FC<RouteComponentProps> = (props: RouteComponentProps
           data: userPreference,
         })
         .then(() => {
-          if (selectedOption === 'basic' || choice === 'basic') {
-            return <QueryBuilder {...props} />;
-          } else {
-            return <AdvancedQueryBuilder {...props} />;
+          if (selectedOption || choice) {
+            if (selectedOption === 'basic' || choice === 'basic') {
+              history.push('/queries/build/basic/');
+            } else {
+              history.push('/queries/build/advanced/');
+            }
           }
         })
         .catch((err) => console.log(err));
