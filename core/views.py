@@ -642,6 +642,8 @@ class UserPreferenceList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
     def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Preference.objects.filter(user=self.request.user).order_by('-updated_on')
         else:
             return Preference.objects.all().order_by('-updated_on')
 class PreferenceDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -12,49 +12,15 @@ type SelectedQueryBuilder = 'basic' | 'advanced';
 // eslint-disable-next-line @typescript-eslint/ban-types
 const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [showModal, setShowModal] = useState(true);
-  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
+  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>('advanced');
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
-  useEffect(() => {
-    localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
-      setChoice(key || undefined);
-    });
-  }, []);
-
-  const handleChange = () => {
-    setChecked(!checked);
+  const toggleModal = () => setShowModal(!showModal);
+  const onRadioChange = (data: ICheckData) => {
+    setSelectedOption(data.value as SelectedQueryBuilder);
   };
 
-  const handleSave = () => {
-    localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
-      const userPreference = {
-        preferences: selectedOption,
-        global_choice: false,
-      };
-      axios
-        .request({
-          method: 'post',
-          url: api.routes.USERPREFERENCE,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `token ${token}`,
-          },
-          data: userPreference,
-        })
-        .then(() => {
-          if (selectedOption === 'basic' || choice === 'basic') {
-            return <QueryBuilder {...props} />;
-          } else {
-            return <AdvancedQueryBuilder {...props} />;
-          }
-        })
-        .catch((err) => console.log(err));
-    });
-    if (checked === true) {
-      localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
-    }
-  };
   const history = useHistory();
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
