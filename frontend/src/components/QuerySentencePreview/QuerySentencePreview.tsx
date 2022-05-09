@@ -63,6 +63,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
   const [alert, setAlert] = useState<string[]>([]);
   const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
+  const [resetText, setResetText] = useState<string>('Clear');
   const [editorValue, setEditorValue] = useState(JSON.stringify(options || {}));
   const onRadioChange = (data: string) => setPreviewOption(data as PreviewOption);
 
@@ -117,7 +118,15 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   };
 
   const onReset = () => {
-    updateOptions!(resetClauseOptions(options, props.action), true);
+    if (resetText === 'Clear All') {
+      updateOptions!(resetClauseOptions(options, props.action, true), true);
+    } else {
+      setResetText('Clear All');
+      updateOptions!(resetClauseOptions(options, props.action, false), true);
+      setTimeout(() => {
+        setResetText('Clear');
+      }, 3000);
+    }
   };
   /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
@@ -143,7 +152,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
                 className={classNames({ 'd-none': previewOption !== 'config' })}
                 onClick={onReset}
               >
-                Clear
+                {resetText}
               </ResetButton>
               <CodeMirrorNext
                 value={getEditorValue()}
