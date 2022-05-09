@@ -87,8 +87,8 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             inline
             checked={selectedOption === 'basic'}
           />
-          <Alert variant="secondary">
-            <p>The Basic Query Builder </p>
+          <Alert variant="secondary" transition>
+            <p>This is a Basic Query Builder </p>
           </Alert>
           <IRadio
             variant="danger"
@@ -99,8 +99,8 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             inline
             checked={selectedOption === 'advanced'}
           />
-          <Alert variant="secondary">
-            <p>The Advanced Query Builder</p>
+          <Alert variant="secondary" transition>
+            <p>This is the Advanced Query Builder, a better version with more functionalities</p>
           </Alert>
         </Modal.Body>
         <Modal.Footer>

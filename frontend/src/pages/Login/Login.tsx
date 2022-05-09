@@ -116,7 +116,6 @@ export class Login extends React.Component<LoginProps, LoginState> {
   };
 
   private savePreference(token: string) {
-    // getPreference(token).then((response) => response.json());
     getPreference(token)
       .then((response) => response.json())
       .then(({ results }) => {
