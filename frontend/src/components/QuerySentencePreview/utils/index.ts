@@ -104,12 +104,7 @@ export const resetClauseOptions = (
 ): AdvancedQueryOptions => {
   const _options = { ...options };
   if (clearAll) {
-    delete _options.columns;
-    delete _options.filter;
-    delete _options.join;
-    delete _options.groupby;
-
-    return { ..._options, selectall: true };
+    return { source: _options.source, selectall: true };
   } else {
     if (clause === 'select') {
       delete _options.columns;
