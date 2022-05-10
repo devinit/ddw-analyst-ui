@@ -63,7 +63,8 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
   const [previewOption, setPreviewOption] = useState<PreviewOption>('config');
   const [alert, setAlert] = useState<string[]>([]);
   const [validOptions, setValidOptions] = useState<AdvancedQueryOptions>();
-  const [resetText, setResetText] = useState<string>('Clear');
+  const [resetStatus, setResetStatus] = useState<'clear-all' | 'clear-current'>('clear-current');
+  const [clearButtonText, setClearButtonText] = useState<string>(`Clear ${props.action}`);
   const [editorValue, setEditorValue] = useState(JSON.stringify(options || {}));
   const onRadioChange = (data: string) => setPreviewOption(data as PreviewOption);
 
@@ -113,18 +114,24 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
     }
   }, [editorValue]);
 
+  useEffect(() => {
+    setClearButtonText(`Clear ${props.action}`);
+  }, [props.action]);
+
   const getEditorValue = () => {
     return JSON.stringify(options || {}, null, 2);
   };
 
   const onReset = () => {
-    if (resetText === 'Clear All') {
+    if (resetStatus === 'clear-all') {
       updateOptions!(resetClauseOptions(options, props.action, true), true);
     } else {
-      setResetText('Clear All');
+      setResetStatus('clear-all');
+      setClearButtonText('Clear All');
       updateOptions!(resetClauseOptions(options, props.action, false), true);
       setTimeout(() => {
-        setResetText('Clear');
+        setResetStatus('clear-current');
+        setClearButtonText(`Clear ${props.action}`);
       }, 3000);
     }
   };
@@ -152,7 +159,7 @@ const QuerySentencePreview: FunctionComponent<QuerySentencePreviewProps> = (prop
                 className={classNames({ 'd-none': previewOption !== 'config' })}
                 onClick={onReset}
               >
-                {resetText}
+                {clearButtonText}
               </ResetButton>
               <CodeMirrorNext
                 value={getEditorValue()}
