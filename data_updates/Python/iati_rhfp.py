@@ -7,7 +7,7 @@ from github import Github, InputGitTreeElement
 from django.conf import settings
 
 
-donors_selected = pd.read_csv("https://staging-ddw.devinit.org/api/export/1232")
+donors_selected = pd.read_csv("https://ddw.devinit.org/api/export/1447")
 
 donors_selected.columns = ["reporting_org_ref","registry_id","org_type","org_name","abbreviation","usability_score","tracker_commit","tracker_spend","latest_txn_year","hq_country","CRS_codes","IATI_organisation_type","IATI_organisation_name","country"]
 
