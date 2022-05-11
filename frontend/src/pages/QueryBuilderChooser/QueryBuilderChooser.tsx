@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import * as localForage from 'localforage';
 import { localForageKeys, api } from '../../utils';
-import { Alert, Button, Modal } from 'react-bootstrap';
+import { Alert, Button, Collapse, Modal } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import { CheckBox } from '../../components/CheckBox';
@@ -15,6 +15,8 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
+  const [show, setShow] = useState(true);
+  const [open, setOpen] = useState(true);
 
   useEffect(() => {
     localForage
@@ -22,8 +24,12 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
       .then((key) => setToken(key || undefined));
   }, []);
   const toggleModal = () => setShowModal(!showModal);
+  const onBasic = () => setShow(!show);
+  const onAdvanced = () => setOpen(!show);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
+    onBasic();
+    onAdvanced();
   };
 
   const history = useHistory();
@@ -92,9 +98,11 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             inline
             checked={selectedOption === 'basic'}
           />
-          <Alert variant="secondary" transition>
-            <p>This is a Basic Query Builder </p>
-          </Alert>
+          <Collapse in={show}>
+            <Alert variant="secondary" onClose={() => setShow(!show)}>
+              <p>This is a Basic Query Builder </p>
+            </Alert>
+          </Collapse>
           <IRadio
             variant="danger"
             id="advanced"
@@ -104,9 +112,11 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             inline
             checked={selectedOption === 'advanced'}
           />
-          <Alert variant="secondary" transition>
-            <p>This is the Advanced Query Builder, a better version with more functionalities</p>
-          </Alert>
+          <Collapse in={open}>
+            <Alert variant="secondary">
+              <p>This is the Advanced Query Builder, a better version with more functionalities</p>
+            </Alert>
+          </Collapse>
         </Modal.Body>
         <Modal.Footer>
           <CheckBox label="Remember choice" checked={checked} onChange={handleChange} />
