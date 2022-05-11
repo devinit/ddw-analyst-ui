@@ -19,9 +19,16 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    localForage
-      .getItem<string>(localForageKeys.PREFERENCES)
-      .then((key) => setToken(key || undefined));
+    localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
+      if (key) {
+        if (key === 'advanced') {
+          history.push('/queries/build/advanced/');
+        } else {
+          history.push('/queries/build/basic/');
+        }
+      }
+      setChoice(key || undefined);
+    });
   }, []);
   const toggleModal = () => setShowModal(!showModal);
   const onBasic = () => setShow(!show);
@@ -99,7 +106,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             checked={selectedOption === 'basic'}
           />
           <Collapse in={show}>
-            <Alert variant="secondary" onClose={() => setShow(!show)}>
+            <Alert variant="secondary">
               <p>This is a Basic Query Builder </p>
             </Alert>
           </Collapse>
