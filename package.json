@@ -158,5 +158,9 @@
   },
   "lint-staged": {
     "frontend/src/**/*.{ts,tsx}": "eslint --cache --fix"
+  },
+  "engines": {
+    "node": ">=16 <17",
+    "npm": ">=8"
   }
 }
