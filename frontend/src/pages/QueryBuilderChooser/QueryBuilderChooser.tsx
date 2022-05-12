@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import * as localForage from 'localforage';
 import { localForageKeys, api } from '../../utils';
-import { Alert, Button, Collapse, Modal } from 'react-bootstrap';
+import { Alert, Button, Modal } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { ICheckData, IRadio } from '../../components/IRadio';
 import { CheckBox } from '../../components/CheckBox';
@@ -12,11 +12,9 @@ type SelectedQueryBuilder = 'basic' | 'advanced';
 // eslint-disable-next-line @typescript-eslint/ban-types
 const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [showModal, setShowModal] = useState(true);
-  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>();
+  const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>('advanced');
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
-  const [show, setShow] = useState(true);
-  const [open, setOpen] = useState(true);
 
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
@@ -31,12 +29,8 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
     });
   }, []);
   const toggleModal = () => setShowModal(!showModal);
-  const onBasic = () => setShow(!show);
-  const onAdvanced = () => setOpen(!show);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
-    onBasic();
-    onAdvanced();
   };
 
   const history = useHistory();
@@ -88,6 +82,13 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
       localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
     }
   };
+  const alertMsg = () => {
+    if (selectedOption === 'basic') {
+      return <p>This is a Basic Query Builder</p>;
+    } else {
+      return <p>This is the Advanced Query Builder, a better version with more functionalities</p>;
+    }
+  };
 
   return (
     <div>
@@ -105,11 +106,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             inline
             checked={selectedOption === 'basic'}
           />
-          <Collapse in={show}>
-            <Alert variant="secondary">
-              <p>This is a Basic Query Builder </p>
-            </Alert>
-          </Collapse>
           <IRadio
             variant="danger"
             id="advanced"
@@ -119,11 +115,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             inline
             checked={selectedOption === 'advanced'}
           />
-          <Collapse in={open}>
-            <Alert variant="secondary">
-              <p>This is the Advanced Query Builder, a better version with more functionalities</p>
-            </Alert>
-          </Collapse>
+          <Alert variant="secondary">{alertMsg()}</Alert>
         </Modal.Body>
         <Modal.Footer>
           <CheckBox label="Remember choice" checked={checked} onChange={handleChange} />
