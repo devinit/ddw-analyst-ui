@@ -28,13 +28,13 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
       if (key) {
+        setChoice(key || undefined);
         if (key === 'advanced') {
           history.push('/queries/build/advanced/');
         } else {
           history.push('/queries/build/basic/');
         }
       }
-      setChoice(key || undefined);
     });
   }, []);
 
