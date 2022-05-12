@@ -16,7 +16,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
-  const toggleModal = () => setShowModal(!showModal);
+  const toggleModal = () => history.push('/queries/build/advanced/');
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
   };
@@ -72,9 +72,19 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   };
   const alertMsg = () => {
     if (selectedOption === 'basic') {
-      return <p>This is a Basic Query Builder</p>;
+      return (
+        <p style={{ fontSize: 14 }}>
+          The original Query Builder. Creates queries using interconnected steps - no SQL knowledge
+          required.
+        </p>
+      );
     } else {
-      return <p>This is the Advanced Query Builder, a better version with more functionalities</p>;
+      return (
+        <p style={{ fontSize: 14 }}>
+          An improved UI with a lot more flexibility & options for creating advanced queries. Some
+          of its features require a little SQL knowledge.
+        </p>
+      );
     }
   };
 
@@ -82,7 +92,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
     <div>
       <Modal show={showModal} onHide={toggleModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Choose your Query Builder</Modal.Title>
+          <Modal.Title>Select Query Builder</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <IRadio
@@ -103,11 +113,15 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             inline
             checked={selectedOption === 'advanced'}
           />
-          <Alert variant="secondary">{alertMsg()}</Alert>
+          <Alert variant="secondary" className="p-2">
+            {alertMsg()}
+          </Alert>
         </Modal.Body>
         <Modal.Footer>
-          <CheckBox label="Remember choice" checked={checked} onChange={handleChange} />
-          <Button onClick={handleSave}>Go to querybuilder</Button>
+          <CheckBox label="Remember my choice" checked={checked} onChange={handleChange} />
+          <Button onClick={handleSave} variant="btn-danger" className="btn-danger">
+            Go to Query Builder
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
