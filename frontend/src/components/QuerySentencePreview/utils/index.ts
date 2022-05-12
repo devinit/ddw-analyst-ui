@@ -100,16 +100,21 @@ export const getClauseOptions = (
 export const resetClauseOptions = (
   options: AdvancedQueryOptions,
   clause?: AdvancedQueryBuilderAction,
+  clearAll?: boolean,
 ): AdvancedQueryOptions => {
   const _options = { ...options };
-  if (clause === 'select') {
-    delete _options.columns;
+  if (clearAll) {
+    return { source: _options.source, selectall: true };
+  } else {
+    if (clause === 'select') {
+      delete _options.columns;
 
-    return { ..._options, selectall: true };
+      return { ..._options, selectall: true };
+    }
+    if (clause === 'filter' && options.filter) delete _options.filter;
+    if (clause === 'join' && options.join) delete _options.join;
+    if (clause === 'groupby' && options.groupby) delete _options.groupby;
   }
-  if (clause === 'filter' && options.filter) delete _options.filter;
-  if (clause === 'join' && options.join) delete _options.join;
-  if (clause === 'groupby' && options.groupby) delete _options.groupby;
 
   return _options;
 };
