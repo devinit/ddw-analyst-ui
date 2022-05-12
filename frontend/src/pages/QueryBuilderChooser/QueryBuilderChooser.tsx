@@ -16,18 +16,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
-  useEffect(() => {
-    localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
-      if (key) {
-        if (key === 'advanced') {
-          history.push('/queries/build/advanced/');
-        } else {
-          history.push('/queries/build/basic/');
-        }
-      }
-      setChoice(key || undefined);
-    });
-  }, []);
   const toggleModal = () => setShowModal(!showModal);
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
