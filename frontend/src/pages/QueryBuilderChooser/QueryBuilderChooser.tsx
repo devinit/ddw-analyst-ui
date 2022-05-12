@@ -16,7 +16,10 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [checked, setChecked] = useState(false);
   const [choice, setChoice] = useState<string>();
 
-  const toggleModal = () => history.push('/queries/build/advanced/');
+  const toggleModal = () => {
+    setShowModal(!showModal);
+    history.push('/queries/build/advanced/');
+  };
   const onRadioChange = (data: ICheckData) => {
     setSelectedOption(data.value as SelectedQueryBuilder);
   };
