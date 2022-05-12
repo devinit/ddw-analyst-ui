@@ -70,7 +70,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
       localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
     }
   };
-  const alertMsg = () => {
+  const alertMessage = () => {
     if (selectedOption === 'basic') {
       return (
         <p style={{ fontSize: 14 }}>
@@ -114,7 +114,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
             checked={selectedOption === 'advanced'}
           />
           <Alert variant="secondary" className="p-2">
-            {alertMsg()}
+            {alertMessage()}
           </Alert>
         </Modal.Body>
         <Modal.Footer>
