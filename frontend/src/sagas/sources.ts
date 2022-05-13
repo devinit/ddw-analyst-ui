@@ -20,7 +20,7 @@ import { setActiveSource } from '../actions/sources';
 function* fetchSources({ payload }: SourcesAction) {
   try {
     const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const url = `${api.routes.SOURCES}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}`;
+    const url = `${api.routes.SOURCES}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}&frozen=${payload.frozen}`;
     const { status, data }: AxiosResponse<APIResponse<Source[]>> = yield axios
       .request({
         url: payload.link || url,
