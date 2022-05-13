@@ -8,9 +8,10 @@ export const fetchSources = ({
   offset = 0,
   link = '',
   search = '',
+  frozen = 0,
 }: FetchOptions = {}): Partial<SourcesAction> => ({
   type: FETCH_SOURCES,
-  payload: { limit, offset, link, search },
+  payload: { limit, offset, link, search, frozen },
 });
 export const fetchActiveSource = (id: string | number) => ({ type: FETCH_SOURCE, payload: { id } });
 export const setActiveSource = (

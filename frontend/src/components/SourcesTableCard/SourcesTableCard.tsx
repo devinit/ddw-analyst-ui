@@ -1,10 +1,10 @@
 import { List } from 'immutable';
 import queryString from 'query-string';
 import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Loader, Dropdown, DropdownProps } from 'semantic-ui-react';
 import { fetchSources } from '../../actions/sources';
 import { LinksMap } from '../../types/api';
 import { SourceMap } from '../../types/sources';
@@ -25,6 +25,7 @@ type SourcesTableCardProps = ComponentProps;
 type TableFilters = {
   search?: string;
   page?: number;
+  frozen?: number;
 };
 
 export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props) => {
@@ -33,10 +34,12 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
+  const [frozenQuery, setFrozenQuery] = useState(0);
   useEffect(() => {
     const queryParams = queryString.parse(search);
     setSearchQuery((queryParams.search as string) || '');
     setPageNumber(Number(queryParams.page || 1));
+    setFrozenQuery(Number(queryParams.frozen) || 0);
   }, [search]);
   useEffect(() => {
     dispatch(
@@ -44,17 +47,25 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         limit: 10,
         offset: (pageNumber - 1) * props.limit,
         search: searchQuery,
+        frozen: frozenQuery,
       }),
     );
-  }, [searchQuery, pageNumber]);
+  }, [searchQuery, pageNumber, frozenQuery]);
 
   const updateQueryParams = (filter: TableFilters): void => {
     const queryParameters = { ...queryString.parse(search), ...filter };
     const cleanParameters: Partial<TableFilters> = {};
     if (queryParameters.search) cleanParameters.search = queryParameters.search;
     if (queryParameters.page) cleanParameters.page = queryParameters.page;
+    if (queryParameters.frozen) cleanParameters.frozen = queryParameters.frozen;
     history.push(`${pathname}?${queryString.stringify(cleanParameters)}`);
   };
+
+  const dropDownValues = [
+    { key: 'non-frozen', text: 'Non-frozen Sources', value: 2 },
+    { key: 'frozen', text: 'Frozen Sources', value: 1 },
+    { key: 'all', text: 'All Sources', value: 0 },
+  ];
 
   const onSearch = (searchText: string) => updateQueryParams({ search: searchText, page: 1 });
 
@@ -64,9 +75,19 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         limit: props.limit,
         offset: page.selected * props.limit,
         search: searchQuery,
+        frozen: frozenQuery,
       }),
     );
     updateQueryParams({ page: page.selected + 1 });
+  };
+
+  const onFilterByFrozenDataSource = (
+    _event: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps,
+  ) => {
+    const { value } = data;
+    updateQueryParams({ frozen: typeof value === 'number' ? value : undefined });
+    setFrozenQuery(Number(value) || 0);
   };
 
   const renderPagination = (): ReactNode => {
@@ -89,16 +110,30 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         <Loader content="Loading" />
       </Dimmer>
       <Card>
-        <Card.Header className="card-header-text card-header-danger">
-          <Card.Title>
-            <SearchInput
-              className="w-50"
-              value={searchQuery}
-              onSearch={onSearch}
-              testid="sources-table-search"
-            />
-          </Card.Title>
-        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col xs="6" lg="4" md="6">
+              <SearchInput
+                className="w-100"
+                value={searchQuery}
+                onSearch={onSearch}
+                testid="sources-table-search"
+              />
+            </Col>
+            <Col xs="6" lg="4" md="6">
+              <Dropdown
+                clearable
+                placeholder="Filter by Frozen Data Source"
+                fluid
+                search
+                selection
+                value={frozenQuery}
+                options={dropDownValues}
+                onChange={onFilterByFrozenDataSource}
+              />
+            </Col>
+          </Row>
+        </Card.Body>
         <Card.Body>
           <SourcesTable sources={props.sources} activeSource={props.activeSource} />
           {renderPagination()}

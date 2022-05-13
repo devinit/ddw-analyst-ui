@@ -17,4 +17,5 @@ export interface FetchOptions {
   link?: string;
   search?: string;
   id?: number;
+  frozen?: number;
 }
