@@ -11,6 +11,7 @@ import { sortObjectArrayByProperty, sortSteps } from '../../utils';
 import { useSources } from '../../utils/hooks';
 import OperationStep from '../OperationStepView';
 import { OperationStepsOrder } from '../OperationStepsOrder';
+import { DataSourceSelectorToggle } from '../DataSourceSelector/DataSourceSelectorToggle';
 
 interface OperationStepsProps {
   editable?: boolean;
@@ -46,10 +47,15 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const [isOrderingSteps, setIsOrderingSteps] = useState(false);
   const [createdSteps, setCreatedSteps] = useState<Step[]>([]);
   const sources = useSources({ limit: 200, offset: 0 });
+  const [selectedDataSource, setSelectedDataSource] = useState<List<SourceMap>>(List());
 
   useEffect(() => {
     (window as any).$('[data-toggle="sort-tooltip"]').tooltip(); // eslint-disable-line
   }, []);
+
+  useEffect(() => {
+    setSelectedDataSource(sources.filter((item) => item.get('schema') === 'repo'));
+  }, [sources]);
 
   useEffect(() => {
     setCreatedSteps(
@@ -146,17 +152,35 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
     }
   };
 
+  const onDatasourceToggle = (data: string) => {
+    if (data === 'datasources') {
+      setSelectedDataSource(sources.filter((item) => item.get('schema') === 'repo'));
+    } else {
+      setSelectedDataSource(sources.filter((item) => item.get('schema') !== 'repo'));
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="mb-3">
         <label>Active Data Source</label>
+        <DataSourceSelectorToggle
+          onSelect={onDatasourceToggle}
+          defaultSource={
+            activeSource
+              ? activeSource.get('schema') === 'repo'
+                ? 'datasources'
+                : 'frozen_datasets'
+              : 'datasources'
+          }
+        />
         <Dropdown
           placeholder="Select Data Source"
           fluid
           selection
           search
-          options={getSelectOptionsFromSources(sources)}
-          loading={sources.count() === 0}
+          options={getSelectOptionsFromSources(selectedDataSource)}
+          loading={selectedDataSource.count() === 0}
           onChange={onSelectSource}
           value={activeSource ? (activeSource.get('id') as string) : undefined}
           disabled={!editable || props.disabled}
