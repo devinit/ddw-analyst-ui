@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import { List } from 'immutable';
 import { SourcesContext } from '../../context';
