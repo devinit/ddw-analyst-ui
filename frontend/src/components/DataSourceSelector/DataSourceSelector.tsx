@@ -20,12 +20,6 @@ const DataSourceSelector: FunctionComponent<ComponentProps> = ({ source, ...prop
   const [selectedDataSource, setSelectedDataSource] = useState<List<SourceMap>>(
     sources.filter((item) => item.get('schema') === 'repo'),
   );
-  const [activeSource, setActiveSource] = useState<SourceMap>();
-  useEffect(() => {
-    const activeSourcez = sources.find((item) => item.get('id') === source?.get('id'));
-    console.log(activeSourcez);
-    setActiveSource(activeSourcez);
-  }, []);
   const onSelectSource = (_event: SelectEvent, data: DropdownProps) => {
     const selectedSource = sources.find((source) => source.get('id') === data.value);
     if (selectedSource) {
@@ -33,7 +27,6 @@ const DataSourceSelector: FunctionComponent<ComponentProps> = ({ source, ...prop
     }
   };
   const onSelect = (data: string) => {
-    console.log(data);
     if (data === 'datasources') {
       setSelectedDataSource(sources.filter((item) => item.get('schema') === 'repo'));
     } else {
@@ -47,7 +40,11 @@ const DataSourceSelector: FunctionComponent<ComponentProps> = ({ source, ...prop
       <DataSourceSelectorToggle
         onSelect={onSelect}
         defaultSource={
-          activeSource && activeSource.get('schema') === 'repo' ? 'datasources' : 'frozen_datasets'
+          source
+            ? source.get('schema') === 'repo'
+              ? 'datasources'
+              : 'frozen_datasets'
+            : 'datasources'
         }
       />
       <Dropdown

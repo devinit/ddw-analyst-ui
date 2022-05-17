@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { ICheckData, IRadio } from '../IRadio';
 
 type SelectedDatasource = 'datasources' | 'frozen_datasets';
@@ -10,8 +10,15 @@ interface ComponentProps {
 
 const DataSourceSelectorToggle: FunctionComponent<ComponentProps> = ({ ...props }) => {
   const [selectedData, setSelectedData] = useState<'datasources' | 'frozen_datasets'>(
-    props.defaultSource ? props.defaultSource : 'datasources',
+    'datasources',
   );
+  useEffect(() => {
+    if (props.defaultSource && props.defaultSource.length) {
+      setSelectedData(props.defaultSource);
+      props.onSelect(props.defaultSource);
+    }
+  }, [props.defaultSource]);
+
   const onSelectData = (data: ICheckData) => {
     if (data.value !== 'hide') {
       setSelectedData(data.value as SelectedDatasource);
