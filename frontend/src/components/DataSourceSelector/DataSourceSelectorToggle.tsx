@@ -32,8 +32,8 @@ const DataSourceSelectorToggle: FunctionComponent<ComponentProps> = ({ ...props 
     <div>
       <IRadio
         variant="danger"
-        id="datasources"
-        name="datasources"
+        id="datasources-radio-toggle"
+        name="datasources-radio"
         label="Datasources"
         onChange={onSelectData}
         inline
@@ -41,8 +41,8 @@ const DataSourceSelectorToggle: FunctionComponent<ComponentProps> = ({ ...props 
       />
       <IRadio
         variant="danger"
-        id="frozen_datasets"
-        name="frozen_datasets"
+        id="frozen-datasets-radio-toggle"
+        name="frozen-datasets-radio"
         label="Frozen Data"
         onChange={onSelectData}
         inline
