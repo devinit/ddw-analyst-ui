@@ -204,7 +204,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd ~/ddw-analyst-ui
-          npm ci
+          npm i
           npm run build
           docker-compose exec -T web python manage.py collectstatic --no-input
 
@@ -237,7 +237,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm config set '@bit:registry' https://node.bit.dev
-        npm ci
+        npm i
 
     - name: Run end-to-end tests
       run: |
