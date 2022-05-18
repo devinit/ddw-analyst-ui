@@ -44,6 +44,11 @@ dac5_path = list.files(path=table5_latest_path, pattern="*.csv", ignore.case=T, 
 dac5.table.name = "dac5_current"
 dac5.table.quote = c("repo",dac5.table.name)
 
+mums_latest_path = paste0(tmp_file_directory,"Mums_latest")
+mums_path = list.files(path=mums_latest_path, pattern="*.csv", ignore.case=T, full.names=T)
+mums.table.name = "mums_current"
+mums.table.quote = c("repo",mums.table.name)
+
 chunk_load_table = function(con, table.quote, filename, col.names, quote="\"", sep=",", field.types=NULL, allow.overwrite=TRUE, encoding="latin1", chunk.size=5000){
   index = 0
   message(filename)
@@ -115,6 +120,52 @@ clean_dac5_file = function(){
                  ,'flags'
   )
   chunk_load_table(con, dac5.table.quote, dac5_path, dac5.names)
+}
+
+clean_mums_file = function(){
+  mums.names = c("year"
+                ,"donor_code"
+                ,"donor_name"
+                ,"agency_name"
+                ,"usd_commitment"
+                ,"usd_commitment_deflated"
+                ,"usd_extended" # added
+                ,"usd_extended_deflated" # added
+                ,"aid_to_or_thru" # added
+                ,"channel_code"
+                ,"channel_name" # what is channel reported name?
+                ,"channel_reported_name"
+                ,"channel_parent_category" # this is code
+                ,"channel_parent_category_name" # added. this is name
+                ,"recipient_code"
+                ,"recipient_name"
+                ,"purpose_code"
+                ,"purpose_name"
+                ,"short_description"
+                ,"gender"
+                ,"environment"
+                ,"ftc"
+                ,"pba"
+                ,"investment_project"
+                ,"biodiversity"
+                ,"climate_mitigation"
+                ,"climate_adaptation"
+                ,"desertification"
+                ,"region_name"
+                ,"income_group_name"
+                ,"flow_code"
+                ,"flow_name"
+                ,"aid_type"
+                ,"aid_type_name" # added
+                ,"sector_code"
+                ,"sector_name"
+                ,"geography"
+                ,"project_title"
+                ,"long_description"
+                ,"crs_id"
+                ,"project_number"
+                )
+  chunk_load_table(con, mums.table.quote, mums_path, mums.names)
 }
 
 
@@ -372,5 +423,7 @@ clean_dac1_file()
 clean_dac2b_file()
 
 clean_dac5_file()
+
+clean_mums_file()
 
 dbDisconnect(con)

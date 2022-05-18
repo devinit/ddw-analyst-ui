@@ -35,6 +35,7 @@ def main(argv):
             print('\tTABLE2A\t oecd dac_table2a download')
             print('\tTABLE2B\t oecd dac_table2b download')
             print('\tCRS1\t oecd crs download')
+            print('\tMUMS\t oecd crs download')
             sys.exit()
         elif opt in ("-t", "--table"):
             if arg not in constants.OECD_DOWNLOADABLE:
@@ -54,6 +55,9 @@ def main(argv):
             elif arg == "TABLE5":
                 print('Download table Table5')
                 download(constants.TABLE5_SCRAPE_PATH, constants.OECD_DOWNLOAD_PATH, 'Table5_')
+            elif arg == "MUMS":
+                print('Download table Mums')
+                download(constants.MUMS_SCRAPE_PATH, constants.OECD_DOWNLOAD_PATH, 'Mums_')
             else:
                 printhelp()
 
