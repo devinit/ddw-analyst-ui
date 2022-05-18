@@ -243,6 +243,9 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'integrations.slack.slack_exception_handler.SlackExceptionHandler',
         },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
         'null': {
             'class': 'logging.NullHandler',
         },
@@ -263,9 +266,10 @@ LOGGING = {
         'django': {
             'level': 'ERROR',
             'handlers': ['slack_admins'],
+            'propagate': False,
         },
         'integrations': {
-            'handlers': ['logfile'],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
@@ -275,6 +279,8 @@ LOGGING = {
 if DEBUG:
     # useful if debugging on localhost
     LOGGING['handlers']['slack_admins']['filters'] = ['require_debug_true']
+    # Comment below line to see more verbose logging on console
+    LOGGING['loggers']['django']['handlers'] = ['console']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

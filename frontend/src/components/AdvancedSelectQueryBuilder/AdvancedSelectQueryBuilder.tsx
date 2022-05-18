@@ -143,10 +143,11 @@ const AdvancedSelectQueryBuilder: React.FC<ComponentProps> = ({
           disabled={
             usage === 'join'
               ? !(
-                  options.join!.length > 0 &&
-                  options.join![activeJoinIndex] &&
-                  options.join![activeJoinIndex].columns &&
-                  options.join![activeJoinIndex].columns!.length > 1
+                  options.join &&
+                  options.join.length > 0 &&
+                  options.join[activeJoinIndex] &&
+                  options.join[activeJoinIndex].columns &&
+                  options.join[activeJoinIndex].columns!.length > 1
                 )
               : !options.columns || options.columns.length <= 1
           }
@@ -188,8 +189,8 @@ const AdvancedSelectQueryBuilder: React.FC<ComponentProps> = ({
         usage={usage}
         show={activeAction === 'order'}
         columns={
-          (usage === 'join' && options.join!.length && options.join![activeJoinIndex]
-            ? options.join![activeJoinIndex].columns
+          (usage === 'join' && options.join && options.join.length && options.join[activeJoinIndex]
+            ? options.join[activeJoinIndex].columns
             : options.columns) || []
         }
         source={source}
@@ -200,8 +201,8 @@ const AdvancedSelectQueryBuilder: React.FC<ComponentProps> = ({
         show={activeAction === 'aggregate'}
         source={source}
         columns={
-          (usage === 'join' && options.join!.length && options.join![activeJoinIndex]
-            ? options.join![activeJoinIndex].columns
+          (usage === 'join' && options.join && options.join.length && options.join[activeJoinIndex]
+            ? options.join[activeJoinIndex].columns
             : options.columns) || []
         }
         activeJoinIndex={activeJoinIndex}

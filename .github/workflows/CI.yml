@@ -1,6 +1,14 @@
 name: DDW CI
 
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - "*"
+    branches:
+      - "develop"
+  pull_request:
+    branches:
+      - "*"
 
 jobs:
   test-typescript:
@@ -76,6 +84,18 @@ jobs:
         npm run coverage:py
       env:
         CI: true
+
+  automerge:
+    name: Auto Merge
+    needs: [test-typescript,test-python]
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3.1.4
+        with:
+          github-token: ${{secrets.PA_TOKEN}}
 
   deploy:
     name: 'Deploy'
