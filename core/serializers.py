@@ -384,12 +384,11 @@ class UserSerializer(serializers.ModelSerializer):
     tag_set = TagSerializer(many=True, read_only=True)
     operation_set = OperationSerializer(many=True, read_only=True)
     review_set = ReviewSerializer(many=True, read_only=True)
-    preferences_field = PreferenceSerializer(many=True, read_only=True)
     user_permissions = PermissionSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set', 'is_superuser', 'preferences_field', 'user_permissions')
+        fields = ('id', 'username', 'tag_set', 'operation_set', 'review_set', 'is_superuser', 'user_permissions')
 
 class SourceColumnMapSerializer(serializers.ModelSerializer):
     source = serializers.ReadOnlyField(source='source.indicator')
