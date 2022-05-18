@@ -62,7 +62,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
   };
 
   const dropDownValues = [
-    { key: 'non-frozen', text: 'Non-frozen Sources', value: 0 },
+    { key: 'non-frozen', text: 'Core Sources', value: 0 },
     { key: 'frozen', text: 'Frozen Sources', value: 1 },
     { key: 'all', text: 'All Sources', value: 2 },
   ];
