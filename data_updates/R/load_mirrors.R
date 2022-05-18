@@ -133,10 +133,10 @@ clean_mums_file = function(){
                 ,"usd_extended_deflated" # added
                 ,"aid_to_or_thru" # added
                 ,"channel_code"
-                ,"channel_name" # what is channel reported name?
+                ,"channel_name"
                 ,"channel_reported_name"
-                ,"channel_parent_category" # this is code
-                ,"channel_parent_category_name" # added. this is name
+                ,"channel_parent_category" 
+                ,"channel_parent_category_name" # added
                 ,"recipient_code"
                 ,"recipient_name"
                 ,"purpose_code"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # comment out below line if running outside of docker container
-# cd /src
+cd /src
 
 echo "Initializing download process"
 
