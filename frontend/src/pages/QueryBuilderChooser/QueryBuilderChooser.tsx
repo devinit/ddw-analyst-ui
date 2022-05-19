@@ -13,7 +13,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [showModal, setShowModal] = useState(true);
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>('advanced');
   const [checked, setChecked] = useState(false);
-  const [rememberChoice, setRememberChoice] = useState<string>();
   const history = useHistory();
 
   const toggleModal = () => {
@@ -26,26 +25,14 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
 
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
-      // if (key) {
-      //   history.push(`/queries/build/{$key}/`);
-      // }
-
       if (key) {
-        setRememberChoice(key || undefined);
-        if (key === 'advanced') {
-          history.push('/queries/build/advanced/');
-        } else {
-          history.push('/queries/build/basic/');
-        }
+        history.push(`/queries/build/${key}/`);
       }
     });
   }, []);
 
   const onCheckboxChange = () => {
     setChecked(!checked);
-  };
-
-  const handleSave = () => {
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
       const userPreference = {
         preferences: selectedOption,
@@ -61,14 +48,9 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
           },
           data: userPreference,
         })
-        .then(() => {
-          if (selectedOption || rememberChoice) {
-            if (selectedOption === 'basic' || rememberChoice === 'basic') {
-              history.push('/queries/build/basic/');
-            } else {
-              history.push('/queries/build/advanced/');
-            }
-          }
+        .then((response) => {
+          response.data;
+          console.log(response.data);
         })
         .catch((err) => console.log(err));
     });
@@ -76,23 +58,19 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
       localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
     }
   };
-  const alertMessage = () => {
-    if (selectedOption === 'basic') {
-      return (
-        <p style={{ fontSize: 14 }}>
-          The original Query Builder. Creates queries using interconnected steps - no SQL knowledge
-          required.
-        </p>
-      );
-    } else {
-      return (
-        <p style={{ fontSize: 14 }}>
-          An improved UI with a lot more flexibility & options for creating advanced queries. Some
-          of its features require a little SQL knowledge.
-        </p>
-      );
+
+  const handleSave = () => {
+    if (selectedOption) {
+      history.push(`/queries/build/${selectedOption}/`);
     }
   };
+
+  const basicMessage =
+    'The original Query Builder. Creates queries using interconnected steps - no SQL knowledge required.';
+  const advancedMessage =
+    'An improved UI with a lot more flexibility & options for creating advanced queries. Some of its features require a little SQL knowledge.';
+  // eslint-disable-next-line prettier/prettier
+  const alertMessage = () => selectedOption === 'basic' ? <p style={{ fontSize: 14 }}>{basicMessage}</p> : <p style={{ fontSize: 14 }}>{advancedMessage}</p>;
 
   return (
     <div>
