@@ -1,52 +1,43 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { ICheckData, IRadio } from '../IRadio';
+import classNames from 'classnames';
+import React, { FunctionComponent, useEffect } from 'react';
+import { Dropdown, DropdownProps } from 'semantic-ui-react';
+import { SelectEvent } from './DataSourceSelector';
 
-type SelectedDatasource = 'datasources' | 'frozen_datasets';
+export type SelectedDatasource = 'non-frozen' | 'frozen' | 'all';
 
 interface ComponentProps {
-  onSelect: (selectedData: string) => void;
+  className?: string;
+  onSelect: (selectedData: SelectedDatasource) => void;
   defaultSource?: SelectedDatasource;
 }
 
 const DataSourceSelectorToggle: FunctionComponent<ComponentProps> = ({ ...props }) => {
-  const [selectedData, setSelectedData] = useState<'datasources' | 'frozen_datasets'>(
-    'datasources',
-  );
   useEffect(() => {
     if (props.defaultSource && props.defaultSource.length) {
-      setSelectedData(props.defaultSource);
       props.onSelect(props.defaultSource);
     }
   }, [props.defaultSource]);
-
-  const onSelectData = (data: ICheckData) => {
-    if (data.value !== 'hide') {
-      setSelectedData(data.value as SelectedDatasource);
-      if (props.onSelect) props.onSelect(data.value);
-    } else {
-      if (props.onSelect) props.onSelect('');
-    }
+  const onSelectDataSource = (_event: SelectEvent, data: DropdownProps) => {
+    props.onSelect(data.value as SelectedDatasource);
   };
 
   return (
-    <div>
-      <IRadio
-        variant="danger"
-        id="datasources-radio-toggle"
-        name="datasources-radio"
-        label="Datasources"
-        onChange={onSelectData}
-        inline
-        checked={selectedData === 'datasources'}
-      />
-      <IRadio
-        variant="danger"
-        id="frozen-datasets-radio-toggle"
-        name="frozen-datasets-radio"
-        label="Frozen Data"
-        onChange={onSelectData}
-        inline
-        checked={selectedData === 'frozen_datasets'}
+    <div className={classNames(props.className)}>
+      <label>Data Source Type</label>
+      <Dropdown
+        placeholder="Data Source Type"
+        fluid
+        selection
+        search
+        options={[
+          { value: 'non-frozen', text: 'Core Sources' },
+          { value: 'frozen', text: 'Frozen Sources' },
+        ]}
+        onChange={onSelectDataSource}
+        defaultValue={
+          props.defaultSource && props.defaultSource.length ? props.defaultSource : undefined
+        }
+        data-testid="active-data-source"
       />
     </div>
   );
