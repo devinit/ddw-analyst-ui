@@ -1,20 +1,20 @@
-import React, { FC, useState, useEffect } from 'react';
+import axios from 'axios';
 import * as localForage from 'localforage';
-import { localForageKeys, api } from '../../utils';
+import React, { FC, useEffect, useState } from 'react';
 import { Alert, Button, Modal } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
-import { ICheckData, IRadio } from '../../components/IRadio';
 import { CheckBox } from '../../components/CheckBox';
-import axios from 'axios';
+import { ICheckData, IRadio } from '../../components/IRadio';
+import { api, localForageKeys } from '../../utils';
 
 type SelectedQueryBuilder = 'basic' | 'advanced';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   const [showModal, setShowModal] = useState(true);
   const [selectedOption, setSelectedOption] = useState<SelectedQueryBuilder>('advanced');
   const [checked, setChecked] = useState(false);
-  const [choice, setChoice] = useState<string>();
+  const [rememberChoice, setRememberChoice] = useState<string>();
+  const history = useHistory();
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -24,11 +24,14 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
     setSelectedOption(data.value as SelectedQueryBuilder);
   };
 
-  const history = useHistory();
   useEffect(() => {
     localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
+      // if (key) {
+      //   history.push(`/queries/build/{$key}/`);
+      // }
+
       if (key) {
-        setChoice(key || undefined);
+        setRememberChoice(key || undefined);
         if (key === 'advanced') {
           history.push('/queries/build/advanced/');
         } else {
@@ -38,7 +41,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
     });
   }, []);
 
-  const handleChange = () => {
+  const onCheckboxChange = () => {
     setChecked(!checked);
   };
 
@@ -59,8 +62,8 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
           data: userPreference,
         })
         .then(() => {
-          if (selectedOption || choice) {
-            if (selectedOption === 'basic' || choice === 'basic') {
+          if (selectedOption || rememberChoice) {
+            if (selectedOption === 'basic' || rememberChoice === 'basic') {
               history.push('/queries/build/basic/');
             } else {
               history.push('/queries/build/advanced/');
@@ -121,7 +124,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
           </Alert>
         </Modal.Body>
         <Modal.Footer>
-          <CheckBox label="Remember my choice" checked={checked} onChange={handleChange} />
+          <CheckBox label="Remember my choice" checked={checked} onChange={onCheckboxChange} />
           <Button onClick={handleSave} variant="btn-danger" className="btn-danger">
             Go to Query Builder
           </Button>

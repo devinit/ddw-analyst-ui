@@ -189,3 +189,22 @@ export const getPreference = (token: string) => {
     },
   });
 };
+
+// // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+// export const getPreference = async (token: string) => {
+//   try {
+//     return await window
+//       .fetch(api.routes.USERPREFERENCE, {
+//         method: 'GET',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Authorization: `token ${token}`,
+//         },
+//       })
+//       .then((response) => {
+//         response.json();
+//       });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };

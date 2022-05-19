@@ -119,7 +119,10 @@ export class Login extends React.Component<LoginProps, LoginState> {
     getPreference(token)
       .then((response) => response.json())
       .then(({ results }) => {
-        localForage.setItem(localForageKeys.PREFERENCES, results[0].preferences);
+        console.log(results);
+        if (results.length) {
+          localForage.setItem(localForageKeys.PREFERENCES, results[0].preferences);
+        }
       });
   }
   private storeTokenPlusUser(token: string, { id, username, is_superuser }: User) {
