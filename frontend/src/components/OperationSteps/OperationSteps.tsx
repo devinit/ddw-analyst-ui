@@ -153,7 +153,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   };
 
   const onDatasourceToggle = (data: string) => {
-    if (data === 'datasources') {
+    if (data === 'non-frozen') {
       setSelectedDataSource(sources.filter((item) => item.get('schema') === 'repo'));
     } else {
       setSelectedDataSource(sources.filter((item) => item.get('schema') !== 'repo'));
@@ -162,30 +162,33 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
 
   return (
     <React.Fragment>
-      <div className="mb-3">
-        <label>Active Data Source</label>
+      <div className="row mb-3">
         <DataSourceSelectorToggle
           onSelect={onDatasourceToggle}
           defaultSource={
             activeSource
               ? activeSource.get('schema') === 'repo'
-                ? 'datasources'
-                : 'frozen_datasets'
-              : 'datasources'
+                ? 'non-frozen'
+                : 'frozen'
+              : 'non-frozen'
           }
+          className={'col-lg-4'}
         />
-        <Dropdown
-          placeholder="Select Data Source"
-          fluid
-          selection
-          search
-          options={getSelectOptionsFromSources(selectedDataSource)}
-          loading={selectedDataSource.count() === 0}
-          onChange={onSelectSource}
-          value={activeSource ? (activeSource.get('id') as string) : undefined}
-          disabled={!editable || props.disabled}
-          data-testid="active-data-source"
-        />
+        <div className={'col-lg-8'}>
+          <label>Data Source</label>
+          <Dropdown
+            placeholder="Select Data Source"
+            fluid
+            selection
+            search
+            options={getSelectOptionsFromSources(selectedDataSource)}
+            loading={selectedDataSource.count() === 0}
+            onChange={onSelectSource}
+            value={activeSource ? (activeSource.get('id') as string) : undefined}
+            disabled={!editable || props.disabled}
+            data-testid="active-data-source"
+          />
+        </div>
       </div>
 
       <div className={classNames('mb-3', { 'd-none': !activeSource })}>
