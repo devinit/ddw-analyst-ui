@@ -125,7 +125,7 @@
     "@uiw/react-codemirror": "^4.5.1",
     "axios": "^0.21.2",
     "classnames": "^2.3.1",
-    "codemirror": "^5.65.3",
+    "codemirror": "^5.65.4",
     "formik": "^2.2.6",
     "glamor": "^2.20.40",
     "glamorous": "^5.0.0",
