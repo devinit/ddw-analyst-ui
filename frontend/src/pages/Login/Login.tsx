@@ -117,7 +117,6 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
   private savePreference(token: string) {
     getPreference(token).then(({ results }) => {
-      console.log(results);
       if (results.length) {
         localForage.setItem(localForageKeys.PREFERENCES, results[0].preferences);
       }

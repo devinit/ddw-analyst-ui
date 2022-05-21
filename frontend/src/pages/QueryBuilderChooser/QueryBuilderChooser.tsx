@@ -50,7 +50,6 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
         })
         .then((response) => {
           response.data;
-          console.log(response.data);
         })
         .catch((err) => console.log(err));
     });
