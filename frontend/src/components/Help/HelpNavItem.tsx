@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Dropdown, Nav } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
 import { HelpMenu } from '.';
 import {
   dataSourcesHelpMenuLinks,
@@ -18,7 +19,7 @@ const HelpNavItem: FunctionComponent = () => {
   return (
     <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp">
       <Dropdown.Toggle as={Nav.Link} id="help-nav-dropdown" data-cy="help">
-        <i className="material-icons">help</i>
+        <Button>User Guide</Button>
         <p className="d-lg-none d-md-block">Help</p>
       </Dropdown.Toggle>
       <Dropdown.Menu alignRight>
