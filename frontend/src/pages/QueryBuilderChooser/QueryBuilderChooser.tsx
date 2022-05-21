@@ -24,20 +24,20 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
   };
 
   useEffect(() => {
-    localForage.getItem<string>(localForageKeys.PREFERENCES).then((key) => {
+    localForage.getItem<any>(localForageKeys.PREFERENCES).then((key) => {
       if (key) {
-        history.push(`/queries/build/${key}/`);
+        history.push(`/queries/build/${key.queryBuilder}/`);
       }
     });
   }, []);
 
   const onCheckboxChange = () => {
     setChecked(!checked);
+    const userPreference = {
+      preferences: { queryBuilder: selectedOption },
+      global_choice: false,
+    };
     localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
-      const userPreference = {
-        preferences: selectedOption,
-        global_choice: false,
-      };
       axios
         .request({
           method: 'post',
@@ -55,7 +55,7 @@ const QueryBuilderChooser: FC<RouteComponentProps> = () => {
         .catch((err) => console.log(err));
     });
     if (checked === true) {
-      localForage.setItem(localForageKeys.PREFERENCES, selectedOption);
+      localForage.setItem(localForageKeys.PREFERENCES, userPreference.preferences);
     }
   };
 

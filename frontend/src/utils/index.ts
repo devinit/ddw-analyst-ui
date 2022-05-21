@@ -180,31 +180,21 @@ export const getColumnFromName = (
 ): AdvancedQueryColumn | undefined =>
   columns.find((col) => col.name === name) as AdvancedQueryColumn;
 
-export const getPreference = (token: string) => {
-  return window.fetch(api.routes.USERPREFERENCE, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `token ${token}`,
-    },
-  });
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const getPreference = async (token: string) => {
+  try {
+    return await window
+      .fetch(api.routes.USERPREFERENCE, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`,
+        },
+      })
+      .then((response) => {
+        return response.json();
+      });
+  } catch (err) {
+    console.log(err);
+  }
 };
-
-// // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-// export const getPreference = async (token: string) => {
-//   try {
-//     return await window
-//       .fetch(api.routes.USERPREFERENCE, {
-//         method: 'GET',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `token ${token}`,
-//         },
-//       })
-//       .then((response) => {
-//         response.json();
-//       });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
