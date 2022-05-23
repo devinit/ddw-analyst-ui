@@ -71,7 +71,7 @@
     "@types/yup": "^0.29.14",
     "babel-loader": "^8.2.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "core-js": "^3.6.5",
+    "core-js": "^3.22.6",
     "css-loader": "^5.2.4",
     "cypress": "~6.8.0",
     "dot": "^1.1.3",
