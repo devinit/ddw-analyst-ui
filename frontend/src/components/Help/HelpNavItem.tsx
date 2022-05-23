@@ -18,7 +18,7 @@ const HelpNavItem: FunctionComponent = () => {
   return (
     <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp">
       <Dropdown.Toggle as={Nav.Link} id="help-nav-dropdown" data-cy="help">
-        <Button variant="btn-secondary" className="btn-secondary">
+        <Button variant="btn-secondary" className="btn-secondary" size="sm">
           User Guide
         </Button>
       </Dropdown.Toggle>
