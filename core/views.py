@@ -649,6 +649,15 @@ class SourceList(generics.ListCreateAPIView):
     search_fields = ('indicator', 'indicator_acronym', 'source',
                      'source_acronym', 'schema', 'description')
 
+    def get_queryset(self):
+        frozen = self.request.query_params.get('frozen', None)
+        qs = self.queryset
+        if frozen and frozen == '1':
+            qs = qs.filter(Q(schema__iexact='archives') | Q(schema__iexact='dataset'))
+        elif frozen and frozen == '0':
+            qs = qs.exclude(Q(schema__iexact='archives') | Q(schema__iexact='dataset'))
+        return qs
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 

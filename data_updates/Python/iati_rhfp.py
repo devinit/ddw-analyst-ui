@@ -85,7 +85,7 @@ data["Reporting Organisation Narrative"] = data["country"]
 
 data = data[data['country'] != "Germany"]
 
-data.to_csv("csv/IATI-RHFP-data-v1.csv", encoding='utf-8', index=False)
+data.to_csv("iati_csv/IATI-RHFP-data-v1.csv", encoding='utf-8', index=False)
 
 # Dataset 2
 
@@ -131,7 +131,7 @@ data["Reporting Organisation Narrative"] = data["country"]
 
 data = data[data['country'] != "Germany"]
 
-data.to_csv("csv/IATI-RHFP-data-v2.csv", encoding='utf-8', index=False)
+data.to_csv("iati_csv/IATI-RHFP-data-v2.csv", encoding='utf-8', index=False)
 
 # Dataset 4
 
@@ -162,7 +162,7 @@ data["Donor Name"] = data["country"]
 
 data = data[data['country'] != "Germany"]
 
-data.to_csv("csv/iati_rhfp4.csv", encoding='utf-8', index=False)
+data.to_csv("iati_csv/iati_rhfp4.csv", encoding='utf-8', index=False)
 
 # Sample call to the function below
 push_folder_to_github('devinit/di-website-data', 'main', 'iati_csv', '2022', 'Committing from API', '*.csv')

@@ -13,6 +13,7 @@ export interface SourcesAction extends Action {
     link: string;
     search: string;
     id: number | string;
+    frozen: number;
   }>;
   loading?: boolean;
 }

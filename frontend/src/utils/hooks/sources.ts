@@ -13,6 +13,7 @@ interface Options {
   link?: string;
   search?: string;
   id?: number | string;
+  frozen?: number;
 }
 
 const defaultOptions: Options = {
@@ -20,6 +21,7 @@ const defaultOptions: Options = {
   offset: 0,
   link: '',
   search: '',
+  frozen: 0,
 };
 
 export const useSources = (options: Options = defaultOptions, fetch = false): List<SourceMap> => {
@@ -34,7 +36,7 @@ export const useSources = (options: Options = defaultOptions, fetch = false): Li
   const fetchSources = (): void => {
     const url = `${api.routes.SOURCES}?limit=${options.limit}&offset=${options.offset}&search=${
       options.search || ''
-    }`;
+    }&frozen=${options.frozen}`;
     axios
       .request({
         url: options.link || url,
