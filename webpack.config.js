@@ -6,7 +6,7 @@ const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: ['@babel/polyfill', './frontend/src/index.ts'],
+  entry: ['./frontend/src/index.ts'],
   output: {
     path: path.resolve(__dirname, 'frontend/static/frontend/'),
     filename: 'js/bundle.js',
