@@ -5,6 +5,7 @@ from requests.auth import HTTPBasicAuth
 import pandas as pd
 from github import Github, InputGitTreeElement
 
+os.mkdir("iati_csv")
 
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', None)
 
