@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Dropdown, Nav, Button } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
 import { HelpMenu } from '.';
@@ -15,14 +15,18 @@ import {
 } from '../../utils/help';
 
 const HelpNavItem: FunctionComponent = () => {
+  const [showGuide, setShowGuide] = useState(false);
+
+  const toggleButton = () => {
+    setShowGuide(!showGuide);
+  };
+
   return (
-    <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp">
-      <Dropdown.Toggle as={Nav.Link} id="help-nav-dropdown" data-cy="help">
-        <Button variant="btn-secondary" className="btn-secondary" size="sm">
-          User Guide
-        </Button>
-      </Dropdown.Toggle>
-      <Dropdown.Menu alignRight>
+    <>
+      <Button variant="secondary" size="sm" onClick={toggleButton} style={{ marginRight: 10 }}>
+        User Guide
+      </Button>
+      <Dropdown.Menu show={showGuide} style={{ backgroundColor: 'grey' }} alignRight>
         <Switch>
           <Route path="/" exact component={() => <HelpMenu links={myDatasetsHelpMenuLinks} />} />
           <Route
@@ -77,7 +81,7 @@ const HelpNavItem: FunctionComponent = () => {
           />
         </Switch>
       </Dropdown.Menu>
-    </Dropdown>
+    </>
   );
 };
 
