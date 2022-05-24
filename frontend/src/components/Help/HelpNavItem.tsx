@@ -1,6 +1,8 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, useState } from 'react';
-import { Dropdown, Button } from 'react-bootstrap';
+import { Dropdown, Button, Nav } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
 import { HelpMenu } from '.';
 import {
   dataSourcesHelpMenuLinks,
@@ -14,19 +16,31 @@ import {
   updateDataSourceHelpMenuLinks,
 } from '../../utils/help';
 
-const HelpNavItem: FunctionComponent = () => {
-  const [showGuide, setShowGuide] = useState(false);
+const StyledIcon = styled.i`
+  top: -1px !important;
+  margin-top: -1em !important;
+  font-size: 16px !important;
+`;
 
-  const toggleButton = () => {
-    setShowGuide(!showGuide);
-  };
+const StyledDropdownToggle = styled(Dropdown.Toggle)`
+  &:after {
+    display: none !important;
+  }
+`;
+
+const HelpNavItem: FunctionComponent = () => {
+  const [show, setShow] = useState(false);
 
   return (
-    <>
-      <Button variant="secondary" size="sm" onClick={toggleButton} style={{ marginRight: 10 }}>
-        User Guide
-      </Button>
-      <Dropdown.Menu show={showGuide} style={{ backgroundColor: 'grey' }} alignRight>
+    <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp">
+      <StyledDropdownToggle as={Nav.Link} id="help-nav-dropdown" data-cy="help">
+        <li className="nav-item mr-4">
+          <Button size="sm" variant="danger" onClick={() => setShow(!show)}>
+            <StyledIcon className="material-icons">help</StyledIcon> <span>User Guide</span>
+          </Button>
+        </li>
+      </StyledDropdownToggle>
+      <Dropdown.Menu alignRight show={show} className={classNames({ show: show })}>
         <Switch>
           <Route path="/" exact component={() => <HelpMenu links={myDatasetsHelpMenuLinks} />} />
           <Route
@@ -81,7 +95,7 @@ const HelpNavItem: FunctionComponent = () => {
           />
         </Switch>
       </Dropdown.Menu>
-    </>
+    </Dropdown>
   );
 };
 
