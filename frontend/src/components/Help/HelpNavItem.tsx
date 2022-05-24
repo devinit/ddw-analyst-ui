@@ -33,15 +33,12 @@ const HelpNavItem: FunctionComponent = () => {
   const onToggle = () => setShow(!show);
 
   return (
-    <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp" onToggle={onToggle} show={show}>
-      <StyledDropdownToggle as={Nav.Link} id="help-nav-dropdown" data-cy="help" className="pr-0">
-        <li className="nav-item">
-          <Button size="sm" variant="dark" onClick={() => setShow(!show)}>
-            <StyledIcon className="material-icons">help</StyledIcon> <span>User Guide</span>
-          </Button>
-        </li>
-      </StyledDropdownToggle>
-      <Dropdown.Menu alignRight show={show}>
+    <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp">
+      <Dropdown.Toggle as={Nav.Link} id="help-nav-dropdown" data-cy="help">
+        <i className="material-icons">help</i>
+        <p className="d-lg-none d-md-block">Help</p>
+      </Dropdown.Toggle>
+      <Dropdown.Menu align="end">
         <Switch>
           <Route path="/" exact component={() => <HelpMenu links={myDatasetsHelpMenuLinks} />} />
           <Route

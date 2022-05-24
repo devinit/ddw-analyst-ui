@@ -63,11 +63,9 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                 </StyledAlert>
                 <span className="bmd-form-group">
                   <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>
-                        <i className="material-icons">email</i>
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
+                    <InputGroup.Text>
+                      <i className="material-icons">email</i>
+                    </InputGroup.Text>
                     <Form.Control
                       required
                       name="username"
@@ -83,11 +81,9 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                 </span>
                 <span className="bmd-form-group">
                   <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>
-                        <i className="material-icons">lock_outline</i>
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
+                    <InputGroup.Text>
+                      <i className="material-icons">lock_outline</i>
+                    </InputGroup.Text>
                     <Form.Control
                       name="password"
                       type="password"
