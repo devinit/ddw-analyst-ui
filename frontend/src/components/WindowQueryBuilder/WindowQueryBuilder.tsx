@@ -72,7 +72,7 @@ export const isPositionalFunction = (windowFunction?: string): boolean => {
   return positionalFunction.includes(windowFunction);
 };
 
-export const WindowQueryBuilder: React.SFC<WindowQueryBuilderProps> = (props) => {
+export const WindowQueryBuilder: React.FunctionComponent<WindowQueryBuilderProps> = (props) => {
   const {
     alerts,
     columns,

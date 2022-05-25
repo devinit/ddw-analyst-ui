@@ -20,7 +20,7 @@ interface ModalAlert {
   type: 'danger' | 'success';
 }
 
-const AccountModal: React.SFC<AccountModalProps> = (props) => {
+const AccountModal: React.FunctionComponent<AccountModalProps> = (props) => {
   const [alert, setAlert] = React.useState<ModalAlert>({ message: '', type: 'danger' });
   const [errors, setErrors] = React.useState<Partial<ChangePasswordFields>>({});
 

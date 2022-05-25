@@ -1,6 +1,9 @@
 import * as React from 'react';
 
-export const SidebarFooter: React.SFC = (props) => (
+type ComponentProps = {
+  children?: React.ReactNode;
+};
+export const SidebarFooter: React.FunctionComponent<ComponentProps> = (props) => (
   <div className="sidebar-footer">{props.children}</div>
 );
 

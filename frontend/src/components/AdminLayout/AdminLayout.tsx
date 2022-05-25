@@ -5,6 +5,7 @@ import { Sidebar } from '../Sidebar';
 
 interface AdminLayoutProps {
   loading: boolean;
+  children?: React.ReactNode;
 }
 
 export class AdminLayout extends React.Component<AdminLayoutProps> {

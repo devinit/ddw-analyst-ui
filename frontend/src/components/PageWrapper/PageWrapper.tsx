@@ -3,9 +3,10 @@ import classNames from 'classnames';
 
 interface PageWrapperProps {
   fullPage?: boolean;
+  children?: React.ReactNode;
 }
 
-export const PageWrapper: React.SFC<PageWrapperProps> = (props) => {
+export const PageWrapper: React.FunctionComponent<PageWrapperProps> = (props) => {
   return (
     <div className={classNames('wrapper', { 'wrapper-full-page': props.fullPage })}>
       {props.children}

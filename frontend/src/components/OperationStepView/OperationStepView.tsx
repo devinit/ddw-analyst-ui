@@ -52,7 +52,11 @@ export const OperationStepView: FunctionComponent<OperationStepProps> = ({ step,
                 info
               </StyledIcon>
             }
-            content={<StyledPopContent>{step.get('description')}</StyledPopContent>}
+            content={
+              <StyledPopContent>
+                <>{step.get('description')}</>
+              </StyledPopContent>
+            }
             basic
           />
         ) : null}
@@ -75,13 +79,15 @@ export const OperationStepView: FunctionComponent<OperationStepProps> = ({ step,
   return (
     <React.Fragment>
       <div>
-        <Badge variant="secondary">
+        <Badge bg="secondary">
           {(step.get('query_func') as string).toUpperCase().split('_').join(' ')}
         </Badge>
       </div>
       <StyledContentWrapper>
-        {step.get('name')}
-        {renderStepInfo(step)}
+        <>
+          {step.get('name')}
+          {renderStepInfo(step)}
+        </>
       </StyledContentWrapper>
     </React.Fragment>
   );

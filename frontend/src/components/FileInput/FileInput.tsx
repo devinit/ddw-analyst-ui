@@ -10,6 +10,7 @@ interface FileInputProps extends FormControlProps {
   onReset?: () => void;
   label?: string;
   isProcessing?: boolean;
+  accept?: string;
 }
 
 const StyledFormFile = styled((props: FormControlProps) => <Form.Control type="file" {...props} />)`

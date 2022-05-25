@@ -1,7 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { Card, Tab } from 'react-bootstrap';
 
-const WizardBody: FunctionComponent = ({ children }) => {
+type ComponentProps = {
+  children?: React.ReactNode;
+};
+const WizardBody: FunctionComponent<ComponentProps> = ({ children }) => {
   return (
     <Card.Body>
       <Tab.Content>{children}</Tab.Content>

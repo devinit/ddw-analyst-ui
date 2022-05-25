@@ -8,6 +8,7 @@ interface ComponentProps {
   step: OperationStepMap;
   steps?: List<OperationStepMap>;
   columns: SelectColumn[];
+  children?: React.ReactNode;
 }
 
 const SelectColumnValidator: FunctionComponent<ComponentProps> = (props) => {

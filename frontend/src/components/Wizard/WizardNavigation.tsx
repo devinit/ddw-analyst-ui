@@ -10,8 +10,11 @@ const StyledNav = styled(Nav)`
     padding: inherit !important;
   }
 `;
+type ComponentProps = {
+  children: React.ReactNode;
+};
 
-const WizardNavigation: FunctionComponent = ({ children }) => {
+const WizardNavigation: FunctionComponent<ComponentProps> = ({ children }) => {
   return (
     <div className="wizard-navigation">
       <StyledNav variant="pills" className="">

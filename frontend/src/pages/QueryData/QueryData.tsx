@@ -65,7 +65,9 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
 
         <Card>
           <Card.Header className="card-header-text card-header-danger">
-            <Card.Text>{activeOperation ? activeOperation.get('name') : 'Query Data'}</Card.Text>
+            <Card.Text>
+              <>{activeOperation ? activeOperation.get('name') : 'Query Data'}</>
+            </Card.Text>
             <Form
               action={`${api.routes.EXPORT}${id}/`}
               method="POST"

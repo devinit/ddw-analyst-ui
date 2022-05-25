@@ -22,6 +22,7 @@ interface OperationFormProps {
   onPreview?: () => void;
   onReset?: () => void;
   onValidate?: () => void;
+  children?: React.ReactNode;
 }
 
 const schema = Yup.object().shape({

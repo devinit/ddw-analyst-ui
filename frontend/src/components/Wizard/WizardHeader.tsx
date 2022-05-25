@@ -1,7 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { Card } from 'react-bootstrap';
 
-const WizardHeader: FunctionComponent = ({ children }) => {
+type ComponentProps = {
+  children?: React.ReactNode;
+};
+const WizardHeader: FunctionComponent<ComponentProps> = ({ children }) => {
   return <Card.Header className="text-center">{children}</Card.Header>;
 };
 

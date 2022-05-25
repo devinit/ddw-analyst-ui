@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 interface LogoProps {
   url: LocationDescriptor;
   variation?: 'mini' | 'normal';
+  children?: React.ReactNode;
 }
 
-export const Logo: React.SFC<LogoProps> = (props) => {
+export const Logo: React.FunctionComponent<LogoProps> = (props) => {
   return (
     <Link to={props.url} className={`simple-text logo-${props.variation}`}>
       {props.children}

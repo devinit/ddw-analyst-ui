@@ -11,7 +11,7 @@ interface SocialLineProps {
   onTwitter?: () => void;
 }
 
-export const SocialLine: React.SFC<SocialLineProps> = (props) => {
+export const SocialLine: React.FunctionComponent<SocialLineProps> = (props) => {
   return (
     <div className="social-line">
       <ConditionalRender render={!!props.google}>
