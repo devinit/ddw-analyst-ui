@@ -33,7 +33,7 @@ import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
 import { OperationMap } from '../types/operations';
 import { api, localForageKeys } from '../utils';
-
+import { ToastContainer } from 'react-toastify';
 interface ActionProps {
   actions: typeof UserActions & typeof TokenActions & typeof ModalActions;
 }
@@ -296,6 +296,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               <Modal show={!!ModalContent} onHide={this.closeModal} size={modalSize}>
                 {ModalContent ? <ModalContent /> : null}
               </Modal>
+              <ToastContainer position="bottom-right" />
             </AdminLayout.Content>
           </AdminLayout>
         </AppContext.Provider>

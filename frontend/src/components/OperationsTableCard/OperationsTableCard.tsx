@@ -1,8 +1,9 @@
 import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { fromJS, List } from 'immutable';
+import { parse } from 'papaparse';
 import queryString from 'query-string';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Button, Card, Col, Form, OverlayTrigger, Popover, Row } from 'react-bootstrap';
+import { Button, Card, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -23,6 +24,9 @@ import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
 import { SearchInput } from '../SearchInput';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ExportToCsv } from 'export-to-csv';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -159,6 +163,59 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
+  const dismissToast = (toastId: string | number) => {
+    setTimeout(() => {
+      toast.dismiss(toastId);
+    }, 5000);
+  };
+
+  const parseCSV = (id: number, fileName: string, toastId: number | string) => {
+    return new Promise((resolve, reject) => {
+      const csvResults: any[] = [];
+      let columns: string[] | undefined;
+      parse(`${api.routes.EXPORT}${id}/`, {
+        step: function (results) {
+          console.log(results.data);
+          csvResults.push(results.data);
+          if (!columns) {
+            columns = results.meta.fields;
+          }
+        },
+        download: true,
+        header: true,
+        dynamicTyping: true,
+        error: function () {
+          toast.update(toastId, { render: 'Error', type: 'error', isLoading: false });
+          reject();
+        },
+        complete: function () {
+          const csvExporter = new ExportToCsv({
+            filename: fileName,
+            fieldSeparator: ',',
+            quoteStrings: '"',
+            decimalSeparator: '.',
+            showLabels: true,
+            useTextFile: false,
+            useBom: true,
+            headers: columns && columns.length ? columns : [],
+          });
+
+          toast.update(toastId, { render: 'Success', type: 'success', isLoading: false });
+          toast.done(toastId);
+          csvExporter.generateCsv(csvResults);
+          resolve('done');
+        },
+      });
+    });
+  };
+
+  const downloadCSV = (id: number, fileName: string) => {
+    const toastId = toast.loading('Please wait...');
+    parseCSV(id, fileName, toastId).finally(() => {
+      dismissToast(toastId);
+    });
+  };
+
   const renderOperations = (operations: List<OperationMap>, allowEdit = false) => {
     if (operations && operations.count()) {
       return operations.map((operation, index) => {
@@ -189,11 +246,15 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               <Button variant="dark" size="sm" onClick={onViewSQLQuery(operation)}>
                 SQL Query
               </Button>
-              <Form action={`${api.routes.EXPORT}${operation.get('id')}/`} method="POST">
-                <Button type="submit" variant="dark" size="sm">
-                  Export to CSV
-                </Button>
-              </Form>
+              <Button
+                variant="dark"
+                size="sm"
+                onClick={() => {
+                  downloadCSV(operation.get('id') as number, operation.get('name') as string);
+                }}
+              >
+                Export to CSV
+              </Button>
               <DatasetActionLink operation={operation} action="history" onClick={onViewHistory}>
                 Versions
               </DatasetActionLink>
