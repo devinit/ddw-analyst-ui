@@ -9,6 +9,7 @@ import { OperationsTableRowActions } from '../OperationsTableRowActions';
 export interface OperationsTableRowProps {
   operation: OperationMap;
   showDraftBadge?: boolean;
+  children?: React.ReactNode;
 }
 
 const extractNameFromEmail = (email: string) => email.split('@')[0].split('.').join(' ');
@@ -42,15 +43,17 @@ export const OperationsTableRow: FunctionComponent<OperationsTableRowProps> = ({
     <div className="dataset-row p-3 border-bottom">
       <div className="col-md-12">
         <div className="dataset-row-title h4">
-          {operation.get('name')}
-          {showDraftBadge && operation.get('is_draft') ? (
-            <span data-testid="draft-span" className="badge badge-warning align-middle ml-2">
-              Draft
-            </span>
-          ) : null}
+          <>
+            {operation.get('name')}
+            {showDraftBadge && operation.get('is_draft') ? (
+              <span data-testid="draft-span" className="badge badge-warning align-middle ml-2">
+                Draft
+              </span>
+            ) : null}
+          </>
         </div>
         <p className={classNames('mb-2', { 'd-none': !operation.get('description') })}>
-          {operation.get('description')}
+          <>{operation.get('description')}</>
         </p>
 
         <div className="dataset-row-actions mb-1">{renderActions()}</div>
