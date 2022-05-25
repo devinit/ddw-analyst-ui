@@ -18,6 +18,7 @@ from django.http import Http404, HttpResponse, StreamingHttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 from core import serializers
 
 from knox.auth import TokenAuthentication
@@ -199,6 +200,8 @@ class ViewData(APIView):
     def get(self, request, pk):
         try:
             operation = self.get_object(pk)
+            operation.last_accessed = timezone.now()
+            operation.save(update_fields=['last_accessed'])
             serializer = DataSerializer({
                 "request": request,
                 "operation_instance": operation
