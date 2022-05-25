@@ -116,7 +116,7 @@
     "@dnd-kit/core": "^3.1.1",
     "@dnd-kit/sortable": "^3.0.1",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@react-querybuilder/bootstrap": "^4.2.5",
     "@types/jshint": "^2.12.1",
