@@ -203,70 +203,76 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
               variant="dark"
               className="navbar-transparent navbar-absolute fixed-top"
             >
-              <div className="navbar-wrapper">
-                <NavbarMinimise />
-                <Navbar.Brand href="/">
-                  <Route path="/" exact component={(): ReactElement => <span>My Datasets</span>} />
-                  <Route
-                    path="/datasets"
-                    exact
-                    component={(): ReactElement => <span>Published Datasets</span>}
-                  />
-                  <Route
-                    path="/sources"
-                    exact
-                    component={(): ReactElement => <span>Data Sources</span>}
-                  />
-                  <Route
-                    path="/queries/build"
-                    component={(): ReactElement => <span>Query Builder</span>}
-                  />
-                  <Route
-                    path="/update"
-                    component={(): ReactElement => <span>Update Data Source</span>}
-                  />
-                  <Route
-                    path="/scheduledevents/"
-                    component={(): ReactElement => <span>Scheduled Events</span>}
-                  />
-                  <Route
-                    path="/source/datasets/:id/"
-                    component={(): ReactElement => <span>Source Datasets</span>}
-                  />
-                  <Route
-                    path="/source/history/:id/"
-                    component={(): ReactElement => <span>Source History</span>}
-                  />
-                </Navbar.Brand>
+              <div className="container-fluid">
+                <div className="navbar-wrapper">
+                  <NavbarMinimise />
+                  <Navbar.Brand href="/">
+                    <Route
+                      path="/"
+                      exact
+                      component={(): ReactElement => <span>My Datasets</span>}
+                    />
+                    <Route
+                      path="/datasets"
+                      exact
+                      component={(): ReactElement => <span>Published Datasets</span>}
+                    />
+                    <Route
+                      path="/sources"
+                      exact
+                      component={(): ReactElement => <span>Data Sources</span>}
+                    />
+                    <Route
+                      path="/queries/build"
+                      component={(): ReactElement => <span>Query Builder</span>}
+                    />
+                    <Route
+                      path="/update"
+                      component={(): ReactElement => <span>Update Data Source</span>}
+                    />
+                    <Route
+                      path="/scheduledevents/"
+                      component={(): ReactElement => <span>Scheduled Events</span>}
+                    />
+                    <Route
+                      path="/source/datasets/:id/"
+                      component={(): ReactElement => <span>Source Datasets</span>}
+                    />
+                    <Route
+                      path="/source/history/:id/"
+                      component={(): ReactElement => <span>Source History</span>}
+                    />
+                  </Navbar.Brand>
+                </div>
+
+                <Navbar.Toggle aria-controls="navigation-index" aria-expanded="false">
+                  <span className="sr-only">Toggle navigation</span>
+                  <span className="navbar-toggler-icon icon-bar" />
+                  <span className="navbar-toggler-icon icon-bar" />
+                  <span className="navbar-toggler-icon icon-bar" />
+                </Navbar.Toggle>
+
+                <Navbar.Collapse className="justify-content-end">
+                  <Nav>
+                    <HelpNavItem />
+                    <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownProfile">
+                      <Dropdown.Toggle as={Nav.Link} id="nav-dropdown" data-cy="user-options">
+                        <i className="material-icons">person</i>
+                        <p className="d-lg-none d-md-block">Account</p>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu alignRight>
+                        <Dropdown.Item data-cy="account" onClick={this.openAccountModal}>
+                          Change Password
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={this.onLogOut} data-cy="logout">
+                          Log Out
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Nav>
+                </Navbar.Collapse>
               </div>
-
-              <Navbar.Toggle aria-controls="navigation-index" aria-expanded="false">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="navbar-toggler-icon icon-bar" />
-                <span className="navbar-toggler-icon icon-bar" />
-                <span className="navbar-toggler-icon icon-bar" />
-              </Navbar.Toggle>
-
-              <Navbar.Collapse className="justify-content-end">
-                <Nav>
-                  <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownProfile">
-                    <Dropdown.Toggle as={Nav.Link} id="nav-dropdown" data-cy="user-options">
-                      <i className="material-icons">person</i>
-                      <p className="d-lg-none d-md-block">Account</p>
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu alignRight>
-                      <Dropdown.Item data-cy="account" onClick={this.openAccountModal}>
-                        Change Password
-                      </Dropdown.Item>
-                      <Dropdown.Divider />
-                      <Dropdown.Item onClick={this.onLogOut} data-cy="logout">
-                        Log Out
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                  <HelpNavItem />
-                </Nav>
-              </Navbar.Collapse>
             </Navbar>
 
             <AdminLayout.Content>
