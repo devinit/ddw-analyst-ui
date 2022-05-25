@@ -10,6 +10,11 @@ Array [
   opacity: 0.6;
 }
 
+.c0:hover,
+.c0:active {
+  color: #ffffff !important;
+}
+
 <a
     className="c0 nav-link"
     href="https://staging-ddw.devinit.org"
@@ -25,6 +30,11 @@ Array [
 
 .c0.disabled {
   opacity: 0.6;
+}
+
+.c0:hover,
+.c0:active {
+  color: #ffffff !important;
 }
 
 <a
