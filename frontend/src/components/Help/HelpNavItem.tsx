@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { Dropdown, Button, Nav } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
@@ -30,9 +30,23 @@ const StyledDropdownToggle = styled(Dropdown.Toggle)`
 
 const HelpNavItem: FunctionComponent = () => {
   const [show, setShow] = useState(false);
+  const dropdownRef = useRef();
+
+  useEffect(() => {
+    const handler = (event: { target: any }) => {
+      if (!dropdownRef.current.contains(event.target)) {
+        setShow(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+
+    return () => {
+      document.removeEventListener('mousedown', handler);
+    };
+  }, []);
 
   return (
-    <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp">
+    <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp" ref={dropdownRef}>
       <StyledDropdownToggle as={Nav.Link} id="help-nav-dropdown" data-cy="help">
         <li className="nav-item mr-4">
           <Button size="sm" variant="danger" onClick={() => setShow(!show)}>
