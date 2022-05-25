@@ -35,7 +35,7 @@ const HelpNavItem: FunctionComponent = () => {
   return (
     <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp" onToggle={onToggle} show={show}>
       <StyledDropdownToggle as={Nav.Link} id="help-nav-dropdown" data-cy="help">
-        <li className="nav-item mr-4">
+        <li className="nav-item mr-3">
           <Button size="sm" variant="danger" onClick={() => setShow(!show)}>
             <StyledIcon className="material-icons">help</StyledIcon> <span>User Guide</span>
           </Button>
