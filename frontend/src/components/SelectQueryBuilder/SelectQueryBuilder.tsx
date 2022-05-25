@@ -1,6 +1,6 @@
 import { List, Set } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Row } from 'react-bootstrap';
 import { OperationStepMap } from '../../types/operations';
 import { ColumnList, SourceMap } from '../../types/sources';
 import { getStepSelectableColumns, sortObjectArrayByProperty } from '../../utils';
@@ -68,7 +68,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     <React.Fragment>
       <Form.Group>
         <Form.Label className="bmd-label-floating">Columns</Form.Label>
-        <Form.Row>
+        <Row>
           <Button
             variant="danger"
             size="sm"
@@ -95,7 +95,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           >
             Deselect All
           </Button>
-        </Form.Row>
+        </Row>
         {isOrderingColumns ? (
           <SelectColumnOrder
             selectedColumns={selectedColumns}
