@@ -265,6 +265,31 @@ describe('The Datasets Pages', () => {
       });
   });
 
+  it('exports dataset as csv', () => {
+    cy.fixture('datasets').then((datasets) => {
+      cy.intercept('api/datasets/mine/', datasets);
+    });
+    cy.intercept('api/export/346', (req) => {
+      req.reply({
+        statusCode: 200,
+        fixture: 'exportData.json',
+        headers: {
+          'content-type': 'text/csv',
+        },
+      });
+    });
+
+    // Click export to csv and confirm progress bar is fully loaded
+    cy.visit('/');
+    cy.get('.dataset-row')
+      .eq(16)
+      .then(($datasetRow) => {
+        cy.wrap($datasetRow).contains('Export to CSV').click({ force: true });
+        cy.get('.Toastify__toast-container').should('be.visible');
+        cy.get('.Toastify__toast--success').should('have.text', 'Success');
+      });
+  });
+
   it('freezes a dataset', () => {
     cy.visit('/datasets/');
     cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
