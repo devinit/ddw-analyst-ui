@@ -1,0 +1,17 @@
+{
+    "errors": [],
+    "data": {
+        "country_name": "Afghanistan",
+        "di_id": "AF",
+        "iso3": "AFG",
+        "fragile_2018": "Extremely fragile"
+    },
+    "meta": {
+        "delimeter": ",",
+        "fields": ["country_name", "di_id", "iso3", "fragile_2018"],
+        "aborted": false,
+        "linebreak": "\r\n",
+        "truncated": false
+    }
+  }
+  
