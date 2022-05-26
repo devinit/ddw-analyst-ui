@@ -164,9 +164,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const dismissToast = (toastId: string | number) => {
-    setTimeout(() => {
-      toast.dismiss(toastId);
-    }, 5000);
+    toast.dismiss(toastId);
   };
 
   const parseCSV = (id: number, fileName: string, toastId: number | string) => {
@@ -175,7 +173,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       let columns: string[] | undefined;
       parse(`${api.routes.EXPORT}${id}/`, {
         step: function (results) {
-          console.log(results.data);
           csvResults.push(results.data);
           if (!columns) {
             columns = results.meta.fields;
@@ -201,7 +198,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
           });
 
           toast.update(toastId, { render: 'Success', type: 'success', isLoading: false });
-          toast.done(toastId);
           csvExporter.generateCsv(csvResults);
           resolve('done');
         },
