@@ -5,6 +5,10 @@ from requests.auth import HTTPBasicAuth
 import pandas as pd
 from github import Github, InputGitTreeElement
 
+try:
+    os.mkdir("iati_csv")
+except:
+    print("Folder already exists!")
 
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', None)
 
