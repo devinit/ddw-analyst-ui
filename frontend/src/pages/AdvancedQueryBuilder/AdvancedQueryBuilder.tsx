@@ -2,7 +2,7 @@ import { List } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Button, Dimmer, Loader } from 'semantic-ui-react';
 import { DataSourceSelector } from '../../components/DataSourceSelector';
 import {
   DataSourceTypeSelector,
@@ -128,6 +128,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     <Row>
       <Col>
         <React.Fragment>
+          <Button>Switch to Basic Query Builder</Button>
           <Dimmer active={loading || !sources.count()} inverted>
             <Loader content="Loading" />
           </Dimmer>
