@@ -9,6 +9,10 @@ const StyledDropdownItem = styled(Dropdown.Item)`
   &.disabled {
     opacity: 0.6;
   }
+  &:hover,
+  &:active {
+    color: #ffffff !important;
+  }
 `;
 
 type HelpMenuProps = {

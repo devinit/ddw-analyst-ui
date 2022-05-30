@@ -4,8 +4,13 @@ import glob
 from requests.auth import HTTPBasicAuth
 import pandas as pd
 from github import Github, InputGitTreeElement
-from django.conf import settings
 
+try:
+    os.mkdir("iati_csv")
+except:
+    print("Folder already exists!")
+
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', None)
 
 donors_selected = pd.read_csv("https://ddw.devinit.org/api/export/1447")
 
@@ -23,7 +28,7 @@ def push_folder_to_github(repo_name, branch, local_folder, remote_folder, commit
     if len(abs_csv_paths) < 1:
         print('Nothing to push')
         return
-    g = Github(settings.GITHUB_TOKEN)
+    g = Github(GITHUB_TOKEN)
     # Uncomment below line to use your token for testing. Make sure you do not push changes with your token to Github
     # g = Github(GITHUB_KEY)
     repo = g.get_repo(repo_name)
