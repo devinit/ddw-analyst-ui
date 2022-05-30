@@ -182,6 +182,7 @@ class OperationSerializer(serializers.ModelSerializer):
             'alias_creation_status',
             'logs',
             'advanced_config',
+            'last_accessed',
         )
 
     def create(self, validated_data):
