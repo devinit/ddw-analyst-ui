@@ -13,17 +13,13 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.db import connections
 from django.db.models import Q
-from django.db.models.query import prefetch_related_objects
 from django.http import Http404, HttpResponse, StreamingHttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.contenttypes.models import ContentType
-from core import serializers
 
 from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
-from knox.models import AuthToken
 
 from rest_framework import exceptions, filters, generics, permissions, status
 from rest_framework.authentication import BasicAuthentication
@@ -53,7 +49,6 @@ from core.serializers import (DataSerializer, FrozenDataSerializer,
 from core.tasks import create_dataset_archive, create_table_archive
 from data.db_manager import run_query, update_table_from_tuple
 from data_updates.utils import ScriptExecutor, list_update_scripts
-from query_builder.advanced import AdvancedQueryBuilder
 from preference.models import Preference
 
 
