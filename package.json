@@ -4,9 +4,9 @@
   "description": "The new and improved DDW Analyst UI interface",
   "main": "index.js",
   "scripts": {
-    "start": "gulp",
-    "dev": "gulp",
-    "build": "gulp build",
+    "start": "grunt",
+    "dev": "grunt",
+    "build": "grunt build",
     "test": "jest --coverage && python3 manage.py test --settings=ddw_analyst_ui.test_settings",
     "test:docker": "jest --coverage && docker-compose run web python3 manage.py test --settings=ddw_analyst_ui.docker_test_settings",
     "collectstatic": "python3 manage.py collectstatic --no-input",
