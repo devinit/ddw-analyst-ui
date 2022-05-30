@@ -128,7 +128,6 @@
     "codemirror": "^5.65.4",
     "formik": "^2.2.6",
     "glamor": "^2.20.40",
-    "glamorous": "^5.0.0",
     "icheck-bootstrap": "^3.0.1",
     "immutable": "^4.0.0-rc.12",
     "js-base64": "^2.6.2",
