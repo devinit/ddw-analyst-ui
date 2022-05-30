@@ -26,6 +26,7 @@ from knox.views import LoginView as KnoxLoginView
 
 from rest_framework import exceptions, filters, generics, permissions, status
 from rest_framework.authentication import BasicAuthentication
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
@@ -184,7 +185,7 @@ def streaming_export_view(request, pk):
         return HttpResponse(json.dumps(response), content_type='application/json', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class ViewData(APIView):
+class ViewData(RetrieveAPIView):
     """
     List all data from executing the operation query.
     """
@@ -197,11 +198,11 @@ class ViewData(APIView):
         except Operation.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk):
+    def retrieve(self, request, pk):
         try:
             operation = self.get_object(pk)
             operation.last_accessed = timezone.now()
-            operation.save(update_fields=['last_accessed'])
+            #operation.save(update_fields=['last_accessed'])
             serializer = DataSerializer({
                 "request": request,
                 "operation_instance": operation
@@ -210,7 +211,8 @@ class ViewData(APIView):
             paginator.set_count(serializer.data['count'])
             page_data = paginator.paginate_queryset(
                 serializer.data['data'], request)
-            return paginator.get_paginated_response(page_data)
+            response = paginator.get_paginated_response(page_data)
+            return response
         except Exception as e:
             handle_uncaught_error(e)
             raise CustomAPIException({'detail': str(e)})
