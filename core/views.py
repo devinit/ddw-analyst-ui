@@ -202,7 +202,7 @@ class ViewData(RetrieveAPIView):
         try:
             operation = self.get_object(pk)
             operation.last_accessed = timezone.now()
-            #operation.save(update_fields=['last_accessed'])
+            operation.save(update_fields=['last_accessed'])
             serializer = DataSerializer({
                 "request": request,
                 "operation_instance": operation
