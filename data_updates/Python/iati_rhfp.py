@@ -3,7 +3,7 @@ import requests
 import glob
 from requests.auth import HTTPBasicAuth
 import pandas as pd
-from data_updates.utils import push_folder_to_github
+from ..utils import push_folder_to_github
 
 try:
     os.mkdir("iati_csv")
