@@ -5,7 +5,7 @@ import glob
 import numpy
 from numpy import NaN
 import pandas as pd
-from utils.data_updates import push_folder_to_github
+from data_updates.utils import push_folder_to_github
 
 
 current_date = datetime.datetime.now()
