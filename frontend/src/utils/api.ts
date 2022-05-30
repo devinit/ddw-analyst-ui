@@ -27,6 +27,6 @@ export const api = {
     DOWNLOAD_SAVED_QUERYSET: '/api/tables/download/{table}/dataset/',
     FETCH_OPERATION: '/api/operations/{id}',
     DATASET_QUERY: '/api/dataset/query/',
-    USERPREFERENCE: '/api/preferences/mine/',
+    USERPREFERENCE: '/api/preferences/',
   },
 };
