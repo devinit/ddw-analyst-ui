@@ -619,9 +619,9 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
 class UserPreferenceList(generics.ListCreateAPIView):
-    """ Returns a list of preferences for the current and authenticated user """
+    """ Returns a list of preferences for the current authenticated user """
     authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly & IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Preference.objects.all()
     serializer_class = PreferenceSerializer
 
@@ -632,7 +632,7 @@ class UserPreferenceList(generics.ListCreateAPIView):
         if self.request.user.is_authenticated:
             return Preference.objects.filter(user=self.request.user).order_by('-updated_on')
         else:
-            return Preference.objects.all().order_by('-updated_on')
+            return []
 
 class TagList(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
