@@ -11,7 +11,7 @@ import { sortObjectArrayByProperty, sortSteps } from '../../utils';
 import { useSources } from '../../utils/hooks';
 import OperationStep from '../OperationStepView';
 import { OperationStepsOrder } from '../OperationStepsOrder';
-import { DataSourceSelectorToggle } from '../DataSourceSelector/DataSourceSelectorToggle';
+import { DataSourceTypeSelector, SourceType } from '../DataSourceSelector/DataSourceTypeSelector';
 
 interface OperationStepsProps {
   editable?: boolean;
@@ -47,15 +47,24 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const [isOrderingSteps, setIsOrderingSteps] = useState(false);
   const [createdSteps, setCreatedSteps] = useState<Step[]>([]);
   const sources = useSources({ limit: 200, offset: 0 });
-  const [selectedDataSource, setSelectedDataSource] = useState<List<SourceMap>>(List());
+  const [selectedDataSources, setSelectedDataSources] = useState<List<SourceMap>>(List());
+  const [selectedDatasourceType, setSelectedDatasourceType] = useState<'core' | 'frozen' | 'all'>(
+    'core',
+  );
 
   useEffect(() => {
     (window as any).$('[data-toggle="sort-tooltip"]').tooltip(); // eslint-disable-line
   }, []);
 
   useEffect(() => {
-    setSelectedDataSource(sources.filter((item) => item.get('schema') === 'repo'));
-  }, [sources]);
+    setSelectedDataSources(
+      sources.filter((item) => {
+        return selectedDatasourceType === 'core'
+          ? item.get('schema') === 'repo'
+          : item.get('schema') !== 'repo';
+      }),
+    );
+  }, [sources, selectedDatasourceType]);
 
   useEffect(() => {
     setCreatedSteps(
@@ -69,6 +78,12 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
         })),
     );
   }, [steps]);
+
+  useEffect(() => {
+    setSelectedDatasourceType(
+      activeSource ? (activeSource.get('schema') === 'repo' ? 'core' : 'frozen') : 'core',
+    );
+  }, [activeSource]);
 
   const renderOperationSteps = (steps: List<OperationStepMap>, activeStep?: OperationStepMap) => {
     if (steps.count()) {
@@ -152,26 +167,21 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
     }
   };
 
-  const onDatasourceToggle = (data: string) => {
-    if (data === 'non-frozen') {
-      setSelectedDataSource(sources.filter((item) => item.get('schema') === 'repo'));
-    } else {
-      setSelectedDataSource(sources.filter((item) => item.get('schema') !== 'repo'));
-    }
+  const onSelectSourceType = (data: SourceType) => {
+    setSelectedDataSources(
+      sources.filter((item) =>
+        data === 'core' ? item.get('schema') === 'repo' : item.get('schema') !== 'repo',
+      ),
+    );
+    setSelectedDatasourceType(data);
   };
 
   return (
     <React.Fragment>
       <div className="row mb-3">
-        <DataSourceSelectorToggle
-          onSelect={onDatasourceToggle}
-          defaultSource={
-            activeSource
-              ? activeSource.get('schema') === 'repo'
-                ? 'non-frozen'
-                : 'frozen'
-              : 'non-frozen'
-          }
+        <DataSourceTypeSelector
+          onSelect={onSelectSourceType}
+          activeSourceType={selectedDatasourceType}
           className={'col-lg-4'}
         />
         <div className={'col-lg-8'}>
@@ -181,8 +191,8 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
             fluid
             selection
             search
-            options={getSelectOptionsFromSources(selectedDataSource)}
-            loading={selectedDataSource.count() === 0}
+            options={getSelectOptionsFromSources(selectedDataSources)}
+            loading={!selectedDataSources.count()}
             onChange={onSelectSource}
             value={activeSource ? (activeSource.get('id') as string) : undefined}
             disabled={!editable || props.disabled}
