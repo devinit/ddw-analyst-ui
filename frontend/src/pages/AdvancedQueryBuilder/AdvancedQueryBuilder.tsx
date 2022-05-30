@@ -4,9 +4,9 @@ import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { DataSourceSelector } from '../../components/DataSourceSelector';
 import {
-  DataSourceSelectorToggle,
-  SelectedDatasource,
-} from '../../components/DataSourceSelector/DataSourceSelectorToggle';
+  DataSourceTypeSelector,
+  SourceType,
+} from '../../components/DataSourceSelector/DataSourceTypeSelector';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { Mode, QueryBuilderModeSelector } from '../../components/QueryBuilderModeSelector';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
@@ -34,9 +34,12 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const sources = useSources({ limit: 200, offset: 0 }) || null;
   const history = useHistory();
-  const [selectedDatasourceType, setSelectedDatasourceType] = useState<
-    'non-frozen' | 'frozen' | 'all'
-  >('non-frozen');
+  const [selectedDatasourceType, setSelectedDatasourceType] = useState<SourceType>('core');
+  useEffect(() => {
+    setSelectedDatasourceType(
+      activeSource ? (activeSource.get('schema') === 'repo' ? 'core' : 'frozen') : 'core',
+    );
+  }, [activeSource]);
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
     if (activeOperation) {
@@ -101,7 +104,7 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     );
   };
 
-  const onSelectSourceType = (data: SelectedDatasource) => {
+  const onSelectSourceType = (data: SourceType) => {
     setSelectedDatasourceType(data);
   };
 
@@ -122,15 +125,9 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onUpdate={onUpdateOperation}
               >
                 <Row className="mb-3">
-                  <DataSourceSelectorToggle
+                  <DataSourceTypeSelector
                     onSelect={onSelectSourceType}
-                    defaultSource={
-                      activeSource
-                        ? activeSource.get('schema') === 'repo'
-                          ? 'non-frozen'
-                          : 'frozen'
-                        : 'non-frozen'
-                    }
+                    activeSourceType={selectedDatasourceType}
                     className={'col-lg-3'}
                   />
                   <DataSourceSelector

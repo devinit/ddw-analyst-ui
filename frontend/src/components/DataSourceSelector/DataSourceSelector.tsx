@@ -5,14 +5,14 @@ import { List } from 'immutable';
 import { SourcesContext } from '../../context';
 import { SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
-import { SelectedDatasource } from './DataSourceSelectorToggle';
+import { SourceType } from './DataSourceTypeSelector';
 
 interface ComponentProps {
   onSelect: (source: SourceMap) => void;
   source?: SourceMap;
   label?: string;
   className?: string;
-  datasourceType: SelectedDatasource;
+  datasourceType: SourceType;
 }
 export type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 
@@ -20,11 +20,13 @@ const DataSourceSelector: FunctionComponent<ComponentProps> = ({ source, ...prop
   const { sources } = useContext(SourcesContext);
   const [selectedDataSource, setSelectedDataSource] = useState<List<SourceMap>>(List());
   useEffect(() => {
-    if (props.datasourceType === 'non-frozen') {
-      setSelectedDataSource(sources.filter((item) => item.get('schema') === 'repo'));
-    } else {
-      setSelectedDataSource(sources.filter((item) => item.get('schema') !== 'repo'));
-    }
+    setSelectedDataSource(
+      sources.filter((item) => {
+        return props.datasourceType === 'core'
+          ? item.get('schema') === 'repo'
+          : item.get('schema') !== 'repo';
+      }),
+    );
   }, [props.datasourceType]);
   const onSelectSource = (_event: SelectEvent, data: DropdownProps) => {
     const selectedSource = sources.find((source) => source.get('id') === data.value);
@@ -42,10 +44,10 @@ const DataSourceSelector: FunctionComponent<ComponentProps> = ({ source, ...prop
         selection
         search
         options={getSelectOptionsFromSources(selectedDataSource)}
-        loading={selectedDataSource.count() === 0}
+        loading={!selectedDataSource.count()}
         onChange={onSelectSource}
-        defaultValue={source ? (source.get('id') as string) : undefined}
-        data-testid="active-data-source"
+        value={source ? (source.get('id') as string) : undefined}
+        data-testid="data-source-selector"
       />
     </div>
   );
