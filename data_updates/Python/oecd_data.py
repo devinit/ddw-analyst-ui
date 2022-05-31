@@ -11,7 +11,7 @@ from ..utils import push_folder_to_github
 current_date = datetime.datetime.now()
 PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL', "https://staging-ddw.devinit.org/api/export/1241/")
 CSV_FILES_FOLDER = "data_updates/Python/oecd_csv"
-CSV_FOLDER = "oecd_csv"
+CSV_FOLDER = "Python/oecd_csv"
 DATA_REPO = "devinit/di-website-data"
 REMOTE_BRANCH = "main"
 REMOTE_FOLDER = f'{current_date.year}'
