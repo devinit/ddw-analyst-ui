@@ -2,7 +2,7 @@ import { List } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
-import { Button, Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import { DataSourceSelector } from '../../components/DataSourceSelector';
 import {
   DataSourceTypeSelector,
