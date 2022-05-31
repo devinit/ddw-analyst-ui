@@ -128,7 +128,6 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     <Row>
       <Col>
         <React.Fragment>
-          <Button>Switch to Basic Query Builder</Button>
           <Dimmer active={loading || !sources.count()} inverted>
             <Loader content="Loading" />
           </Dimmer>
