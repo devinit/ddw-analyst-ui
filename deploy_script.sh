@@ -38,11 +38,11 @@ cd ~/ddw-analyst-ui || exit
 echo "Building docker"
 
 docker-compose build db
-docker-compose build web
+docker-compose build --no-cache web
 docker-compose build nginx
 docker-compose build rabbitmq
-docker-compose build celery
-docker-compose build spotlights
+docker-compose build --no-cache celery
+docker-compose build --no-cache spotlights
 
 docker-compose down --remove-orphans
 docker-compose up -d
