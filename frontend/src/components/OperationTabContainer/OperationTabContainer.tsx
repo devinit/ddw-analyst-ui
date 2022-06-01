@@ -1,5 +1,5 @@
 import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
-import { Alert, Card, Tab } from 'react-bootstrap';
+import { Alert, Card, Tab, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { OperationForm } from '../OperationForm';
@@ -68,6 +68,13 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
               ))}
             </span>
           </Alert>
+
+          <Button
+            className="btn btn-sm btn-dark"
+            style={{ position: 'absolute', right: 9, top: -35 }}
+          >
+            Switch to basic Query Builder
+          </Button>
 
           <OperationForm
             operation={props.operation}

@@ -116,9 +116,6 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
 
   return (
     <>
-      <div className="btn btn-sm btn-dark" style={{ position: 'absolute', right: 9, top: -35 }}>
-        Switch to Basic Query Builder
-      </div>
       <Formik
         enableReinitialize={true}
         validationSchema={schema}
