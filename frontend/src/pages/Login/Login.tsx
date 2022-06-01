@@ -5,7 +5,6 @@ import * as localForage from 'localforage';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { MapDispatchToProps, connect } from 'react-redux';
-import { css } from 'glamor';
 import { bindActionCreators } from 'redux';
 import { Credentials, LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
@@ -13,6 +12,7 @@ import { api, localForageKeys } from '../../utils';
 import * as UserActions from '../../actions/user';
 import * as TokenActions from '../../actions/token';
 import { User } from '../../reducers/user';
+import styled from 'styled-components';
 
 interface LoginState {
   showForm: boolean;
@@ -25,12 +25,24 @@ interface ActionProps {
 }
 type LoginProps = RouteComponentProps<{ [x: string]: string | undefined }> & ActionProps;
 
+const CustomHeaderElement = (props: any) => {
+  return (
+    <div className="page-header login-page header-filter" filter-color="red">
+      {props.children}
+    </div>
+  );
+};
+
+const StyledHeaderElement = styled(CustomHeaderElement)`
+  background-size: cover;
+  background-position: top center;
+`;
+
+const StyledLoadingDiv = styled.div`
+  text-align: center;
+`;
+
 export class Login extends React.Component<LoginProps, LoginState> {
-  private headerStyles = css({
-    backgroundSize: 'cover',
-    backgroundPosition: 'top center',
-  });
-  private loadingStyles = css({ textAlign: 'center' });
   state: LoginState = {
     showForm: false,
     loading: true,
@@ -39,11 +51,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
   render() {
     return (
       <PageWrapper fullPage>
-        <div
-          className="page-header login-page header-filter"
-          filter-color="red"
-          {...this.headerStyles}
-        >
+        <StyledHeaderElement>
           <div className="container">
             <Row>
               <Col lg={4} md={6} sm={8} className="ml-auto mr-auto">
@@ -51,7 +59,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
               </Col>
             </Row>
           </div>
-        </div>
+        </StyledHeaderElement>
       </PageWrapper>
     );
   }
@@ -74,7 +82,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
   private renderContent() {
     if (this.state.loading) {
-      return <div {...this.loadingStyles}>Loading...</div>;
+      return <StyledLoadingDiv>Loading...</StyledLoadingDiv>;
     }
 
     return (
