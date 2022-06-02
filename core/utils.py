@@ -82,6 +82,6 @@ class QueryResetTokenGenerator(PasswordResetTokenGenerator):
         return f'{operation.pk}{last_accessed}{timestamp}'
 
 
-    def send_emails(subject, message, recipient_list):
-        message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
-        send_mass_mail((message_payload, ), fail_silently=False)
+def send_emails(subject, message, recipient_list):
+    message_payload = (subject, message, settings.EMAIL_HOST_USER, recipient_list)
+    send_mass_mail((message_payload, ), fail_silently=False)
