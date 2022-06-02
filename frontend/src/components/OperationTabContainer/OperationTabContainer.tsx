@@ -3,7 +3,7 @@ import { Alert, Card, Tab, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { OperationForm } from '../OperationForm';
-import { RouteComponentProps } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 type ComponentProps = {
   operation?: OperationMap;
@@ -33,6 +33,8 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const [alertMessages, setAlertMessages] = useState<string[]>(props.alertMessages || []);
   const [queryBuilder, setQueryBuilder] = useState('Basic');
 
+  const history = useHistory();
+
   useEffect(() => {
     if (props.alertMessages) {
       // FIXME: should prop alert messages clear this state?
@@ -45,11 +47,11 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const handleSwitchButton = () => {
     if (queryBuilder === 'Basic') {
       setQueryBuilder('Advanced');
+      history.push('/queries/build/');
     } else {
       setQueryBuilder('Basic');
+      history.push('/queries/build/advanced/');
     }
-
-    console.log('hi');
   };
 
   return (
