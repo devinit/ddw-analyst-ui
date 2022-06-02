@@ -3,6 +3,7 @@ import { Alert, Card, Tab, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { OperationForm } from '../OperationForm';
+import { RouteComponentProps } from 'react-router-dom';
 
 type ComponentProps = {
   operation?: OperationMap;
@@ -81,6 +82,7 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
           </Alert>
 
           <Button
+            variant="dark"
             className="btn btn-sm btn-dark"
             onClick={() => handleSwitchButton()}
             style={{ position: 'absolute', right: 9, top: -20 }}
