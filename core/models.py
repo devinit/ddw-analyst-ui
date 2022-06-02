@@ -121,6 +121,7 @@ class Operation(BaseEntity):
     """
     advanced_config = models.JSONField(blank=True, null=True, default=dict)
     last_accessed = models.DateTimeField(auto_now_add=True, null=True)
+    renewal_sent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -300,6 +301,7 @@ class FrozenData(BaseEntity):
     logs = models.TextField(blank=True, null=True)
     last_accessed = models.DateTimeField(auto_now_add=True, null=True)
     deletion_date = models.DateTimeField(null=True)
+    renewal_sent = models.BooleanField(default=False)
 
     def __str__(self):
         status = [choice[1] for choice in self.status_choices if choice[0] == self.status]
@@ -324,6 +326,7 @@ class SavedQueryData(BaseEntity):
     description = models.CharField(max_length=200, null=False)
     logs = models.TextField(blank=True, null=True)
     last_accessed = models.DateTimeField(auto_now_add=True, null=True)
+    renewal_sent = models.BooleanField(default=False)
 
     def __str__(self):
         status = [choice[1] for choice in self.status_choices if choice[0] == self.status]
