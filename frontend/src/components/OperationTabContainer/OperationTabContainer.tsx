@@ -30,6 +30,7 @@ const StyledCardBody = styled(Card.Body)`
 
 const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const [alertMessages, setAlertMessages] = useState<string[]>(props.alertMessages || []);
+  const [queryBuilder, setQueryBuilder] = useState('Basic');
 
   useEffect(() => {
     if (props.alertMessages) {
@@ -39,6 +40,16 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   }, [props.alertMessages]);
 
   const onAlertClose = (): void => setAlertMessages(['']);
+
+  const handleSwitchButton = () => {
+    if (queryBuilder === 'Basic') {
+      setQueryBuilder('Advanced');
+    } else {
+      setQueryBuilder('Basic');
+    }
+
+    console.log('hi');
+  };
 
   return (
     <Tab.Container defaultActiveKey="operation">
@@ -71,9 +82,10 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
 
           <Button
             className="btn btn-sm btn-dark"
-            style={{ position: 'absolute', right: 9, top: -35 }}
+            onClick={() => handleSwitchButton()}
+            style={{ position: 'absolute', right: 9, top: -20 }}
           >
-            Switch to basic Query Builder
+            Switch to {queryBuilder} Query Builder
           </Button>
 
           <OperationForm
