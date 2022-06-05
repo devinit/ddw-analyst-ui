@@ -48,23 +48,11 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const [createdSteps, setCreatedSteps] = useState<Step[]>([]);
   const sources = useSources({ limit: 200, offset: 0 });
   const [selectedDataSources, setSelectedDataSources] = useState<List<SourceMap>>(List());
-  const [selectedDatasourceType, setSelectedDatasourceType] = useState<'core' | 'frozen' | 'all'>(
-    'core',
-  );
+  const [selectedDatasourceType, setSelectedDatasourceType] = useState<SourceType>('core');
 
   useEffect(() => {
     (window as any).$('[data-toggle="sort-tooltip"]').tooltip(); // eslint-disable-line
   }, []);
-
-  useEffect(() => {
-    setSelectedDataSources(
-      sources.filter((item) => {
-        return selectedDatasourceType === 'core'
-          ? item.get('schema') === 'repo'
-          : item.get('schema') !== 'repo';
-      }),
-    );
-  }, [sources, selectedDatasourceType]);
 
   useEffect(() => {
     setCreatedSteps(
@@ -80,10 +68,17 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   }, [steps]);
 
   useEffect(() => {
-    setSelectedDatasourceType(
-      activeSource ? (activeSource.get('schema') === 'repo' ? 'core' : 'frozen') : 'core',
+    const sourceType =
+      activeSource && activeSource.get('schema') !== 'archives' ? 'core' : 'frozen';
+    setSelectedDatasourceType(activeSource ? sourceType : 'core');
+    setSelectedDataSources(
+      sources.filter((item) => {
+        return (activeSource ? sourceType : 'core') === 'core'
+          ? item.get('schema') !== 'archives'
+          : item.get('schema') === 'archives';
+      }),
     );
-  }, [activeSource]);
+  }, [activeSource, sources]);
 
   const renderOperationSteps = (steps: List<OperationStepMap>, activeStep?: OperationStepMap) => {
     if (steps.count()) {
@@ -170,7 +165,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const onSelectSourceType = (data: SourceType) => {
     setSelectedDataSources(
       sources.filter((item) =>
-        data === 'core' ? item.get('schema') === 'repo' : item.get('schema') !== 'repo',
+        data === 'core' ? item.get('schema') !== 'archives' : item.get('schema') === 'archives',
       ),
     );
     setSelectedDatasourceType(data);
