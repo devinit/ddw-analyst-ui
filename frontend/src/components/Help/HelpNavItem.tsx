@@ -1,7 +1,6 @@
-import React, { FunctionComponent, useState } from 'react';
-import { Button, Dropdown, Nav } from 'react-bootstrap';
+import React, { FunctionComponent } from 'react';
+import { Dropdown, Nav } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
-import styled from 'styled-components';
 import { HelpMenu } from '.';
 import {
   dataSourcesHelpMenuLinks,
@@ -15,23 +14,7 @@ import {
   updateDataSourceHelpMenuLinks,
 } from '../../utils/help';
 
-const StyledIcon = styled.i`
-  top: -1px !important;
-  margin-top: -1em !important;
-  font-size: 16px !important;
-`;
-
-const StyledDropdownToggle = styled(Dropdown.Toggle)`
-  &:after {
-    display: none !important;
-  }
-`;
-
 const HelpNavItem: FunctionComponent = () => {
-  const [show, setShow] = useState(false);
-
-  const onToggle = () => setShow(!show);
-
   return (
     <Dropdown as={Nav.Item} aria-labelledby="navbarDropdownHelp">
       <Dropdown.Toggle as={Nav.Link} id="help-nav-dropdown" data-cy="help">
