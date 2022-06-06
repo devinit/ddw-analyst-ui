@@ -11,7 +11,7 @@ const StyledNav = styled(Nav)`
   }
 `;
 type ComponentProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 const WizardNavigation: FunctionComponent<ComponentProps> = ({ children }) => {
