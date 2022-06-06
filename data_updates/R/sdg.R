@@ -96,7 +96,9 @@ con = dbConnect(drv,
                 ,port=db.port)
 # con = dbConnect(drv,
 #                 dbname="analyst_ui"
-#                 ,user="postgres")
+#                 ,user="postgres"
+#                 ,password = "TBC"
+#                 )
 
 table.name = "sdg"
 table.quote = c("repo",table.name)
@@ -185,76 +187,7 @@ raw.sdg.types = c(
   "sort" = "text"
 )
 
-fts.flow = function(boundary=NULL,auth=NULL, con, table.quote, new_table){
-  page = 1
-  base.url = paste0("https://api.hpc.tools/v1/public/fts/flow?",boundary)
-  if(is.null(boundary)){
-    stop("Boundary is a required field.")
-  }
-  if(!is.null(auth)){
-    res = GET(
-      base.url
-      ,authenticate(auth$user, auth$pass)
-    )
-  }else{
-    res = GET(base.url)
-  }
-  if(res$status_code==200){
-    dat = content(res)
-    rm(res)
-    flows = dat$data$flows
-    flow_df = rbindlist(lapply(flows,flatten_flow),fill=T)
-    flow_df = merge_isos(flow_df)
-    flow_df_name_diff = setdiff(names(raw.fts.types), names(flow_df))
-    for(name_diff in flow_df_name_diff){
-      flow_df[,name_diff]=NA
-    }
-    flow_df = flow_df[,keep.columns,with=F]
-    names(flow_df)[which(names(flow_df) %in% names(name.remapping))] = name.remapping[names(flow_df)[which(names(flow_df) %in% names(name.remapping))]]
-    dbWriteTable(con, name = table.quote, value = flow_df, row.names = F, overwrite = new_table, append = !new_table, field.types=keep.fts.types)
-    while("nextLink" %in% names(dat$meta)){
-      page = page + 1
-      if(!is.null(auth)){
-        res = GET(
-          dat$meta$nextLink
-          ,authenticate(auth$user, auth$pass)
-        )
-      }else{
-        res = GET(dat$meta$nextLink)
-      }
-      if(res$status_code==200){
-        dat = content(res)
-        rm(res)
-        flows = dat$data$flows
-        flow_df = rbindlist(lapply(flows,flatten_flow),fill=T)
-        flow_df = merge_isos(flow_df)
-        flow_df_name_diff = setdiff(names(raw.fts.types), names(flow_df))
-        for(name_diff in flow_df_name_diff){
-          flow_df[,name_diff]=NA
-        }
-        flow_df = flow_df[,keep.columns,with=F]
-        names(flow_df)[which(names(flow_df) %in% names(name.remapping))] = name.remapping[names(flow_df)[which(names(flow_df) %in% names(name.remapping))]]
-        dbWriteTable(con, name = table.quote, value = flow_df, row.names = F, overwrite = FALSE, append = TRUE, field.types=keep.fts.types)
-      }
-    }
-    return(TRUE)
-  }else{
-    stop("HTTP error: ",res$status_code)
-  }
-}
-
-args = commandArgs(trailingOnly=TRUE)
-if(length(args)==0){
-  auth=NULL
-  warning("Running without authentication")
-}else{
-  auth = list("user"=args[1],"pass"=args[2])
-}
-
-new_table = TRUE
-years = c(2000:2030)
-b = paste0("year=",paste(years,collapse="%2C"))
-fts.flow(boundary=b, auth=auth, con, table.quote, new_table)
+dbWriteTable(con, name = table.quote, value = data, row.names = F, overwrite = TRUE, append = FALSE, field.types=raw.sdg.types)
 
 dbDisconnect(con)
 
