@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
-import { SourcesContext } from '../../context';
+import { List } from 'immutable';
 import { SourceMap } from '../../types/sources';
 import { getSelectOptionsFromSources } from '../../utils';
 
@@ -10,13 +10,17 @@ interface ComponentProps {
   source?: SourceMap;
   label?: string;
   className?: string;
+  selectedDatasource: List<SourceMap>;
 }
-type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
+export type SelectEvent = React.SyntheticEvent<HTMLElement, Event>;
 
-const DataSourceSelector: FunctionComponent<ComponentProps> = ({ source, ...props }) => {
-  const { sources } = useContext(SourcesContext);
+const DataSourceSelector: FunctionComponent<ComponentProps> = ({
+  selectedDatasource,
+  source,
+  ...props
+}) => {
   const onSelectSource = (_event: SelectEvent, data: DropdownProps) => {
-    const selectedSource = sources.find((source) => source.get('id') === data.value);
+    const selectedSource = selectedDatasource.find((source) => source.get('id') === data.value);
     if (selectedSource) {
       props.onSelect(selectedSource);
     }
@@ -24,17 +28,17 @@ const DataSourceSelector: FunctionComponent<ComponentProps> = ({ source, ...prop
 
   return (
     <div className={classNames(props.className)}>
-      <label>{props.label}</label>
+      <label>Select {props.label}</label>
       <Dropdown
         placeholder="Select Data Source"
         fluid
         selection
         search
-        options={getSelectOptionsFromSources(sources)}
-        loading={sources.count() === 0}
+        options={getSelectOptionsFromSources(selectedDatasource)}
+        loading={!selectedDatasource.count()}
         onChange={onSelectSource}
         value={source ? (source.get('id') as string) : undefined}
-        data-testid="active-data-source"
+        data-testid="data-source-selector"
       />
     </div>
   );
