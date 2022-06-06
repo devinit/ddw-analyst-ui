@@ -48,7 +48,7 @@ class QueryResetTokenGenerator(PasswordResetTokenGenerator):
             return False
         now = self._now()
         # Check the timestamp is within limit.
-        if (self._num_seconds(now) - ts) > settings.PASSWORD_RESET_TIMEOUT:
+        if (self._num_seconds(now) - ts) > settings.LINK_RESET_TIMEOUT:
             return False
 
         return True
