@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { ScheduledEventRunHistory } from '../../types/scheduledEvents';
 import { convertStatus, getStatusClasses } from './utils';
@@ -8,6 +8,7 @@ import { convertStatus, getStatusClasses } from './utils';
 interface ScheduledEventsRunHistoryTableRowProps {
   history: ScheduledEventRunHistory;
   onViewLogs?: (info: string) => void;
+  children?: ReactNode;
 }
 
 export const ScheduledEventsRunHistoryTableRow: FunctionComponent<
