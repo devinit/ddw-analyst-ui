@@ -181,7 +181,8 @@ raw.sdg.types = c(
   "Population.Group"="text",
   "iso3"="text",
   "TargetLevel"="text",
-  "IndicatorLevel"="integer"
+  "IndicatorLevel"="integer",
+  "sort" = "text"
 )
 
 fts.flow = function(boundary=NULL,auth=NULL, con, table.quote, new_table){
