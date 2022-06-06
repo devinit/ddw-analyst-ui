@@ -7,6 +7,9 @@ interface LogoProps {
   variation?: 'mini' | 'normal';
   children?: React.ReactNode;
 }
+type SidebarLogoProps = {
+  children?: React.ReactNode;
+};
 
 export const Logo: React.FunctionComponent<LogoProps> = (props) => {
   return (
@@ -22,10 +25,10 @@ Logo.defaultProps = {
 
 Logo.displayName = 'Logo';
 
-export class SidebarLogo extends React.Component {
+export class SidebarLogo extends React.Component<SidebarLogoProps> {
   static Item = Logo;
 
-  render() {
+  render(): React.ReactNode {
     return <div className="logo">{this.renderContent()}</div>;
   }
 
