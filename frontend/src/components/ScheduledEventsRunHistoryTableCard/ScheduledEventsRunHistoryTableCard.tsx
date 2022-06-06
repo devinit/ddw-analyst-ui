@@ -84,12 +84,11 @@ export const ScheduledEventsRunHistoryTableCard: FunctionComponent<ComponentProp
             title={`Filter By Status = ${status ? statusMapping[status] : 'All'}`}
             variant="danger"
             size="sm"
+            onSelect={onFilter}
           >
-            <Dropdown.Item onSelect={onFilter} eventKey="">
-              All
-            </Dropdown.Item>
+            <Dropdown.Item eventKey="">All</Dropdown.Item>
             {Object.keys(statusMapping).map((status: RunInstanceStatus) => (
-              <Dropdown.Item key={status} onSelect={onFilter} eventKey={status}>
+              <Dropdown.Item key={status} eventKey={status}>
                 {statusMapping[status]}
               </Dropdown.Item>
             ))}
