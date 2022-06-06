@@ -1,6 +1,5 @@
 import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { fromJS, List } from 'immutable';
-import { parse } from 'papaparse';
 import queryString from 'query-string';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, Card, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
@@ -26,7 +25,7 @@ import { PaginationRow } from '../PaginationRow';
 import { SearchInput } from '../SearchInput';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ExportToCsv } from 'export-to-csv';
+import { fetchOperationCSV } from '../../utils/operations';
 
 interface ActionProps {
   actions: typeof operationsActions;
@@ -163,52 +162,10 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const dismissToast = (toastId: string | number) => {
-    toast.dismiss(toastId);
-  };
-
-  const parseCSV = (id: number, fileName: string, toastId: number | string) => {
-    return new Promise((resolve, reject) => {
-      const csvResults: any[] = [];
-      let columns: string[] | undefined;
-      parse(`${api.routes.EXPORT}${id}/`, {
-        step: function (results) {
-          csvResults.push(results.data);
-          if (!columns) {
-            columns = results.meta.fields;
-          }
-        },
-        download: true,
-        header: true,
-        dynamicTyping: true,
-        error: function () {
-          toast.update(toastId, { render: 'Error', type: 'error', isLoading: false });
-          reject();
-        },
-        complete: function () {
-          const csvExporter = new ExportToCsv({
-            filename: fileName,
-            fieldSeparator: ',',
-            quoteStrings: '"',
-            decimalSeparator: '.',
-            showLabels: true,
-            useTextFile: false,
-            useBom: true,
-            headers: columns && columns.length ? columns : [],
-          });
-
-          toast.update(toastId, { render: 'Success', type: 'success', isLoading: false });
-          csvExporter.generateCsv(csvResults);
-          resolve('done');
-        },
-      });
-    });
-  };
-
-  const downloadCSV = (id: number, fileName: string) => {
+  const exportCSV = (operationId: number, fileName: string) => {
     const toastId = toast.loading('Please wait...');
-    parseCSV(id, fileName, toastId).finally(() => {
-      dismissToast(toastId);
+    fetchOperationCSV(operationId, fileName, toastId).finally(() => {
+      toast.dismiss(toastId);
     });
   };
 
@@ -246,7 +203,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
                 variant="dark"
                 size="sm"
                 onClick={() => {
-                  downloadCSV(operation.get('id') as number, operation.get('name') as string);
+                  exportCSV(operation.get('id') as number, operation.get('name') as string);
                 }}
               >
                 Export to CSV
