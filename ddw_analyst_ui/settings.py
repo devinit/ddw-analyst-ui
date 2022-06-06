@@ -20,7 +20,8 @@ ADMINS = [
     ('Edwin', 'edwin.magezi@devinit.org'),
     ('Alex', 'alex.miller@devinit.org'),
     ('David', 'david.ebukali@devinit.org'),
-    ('Chris', 'chrisw@devinit.org')
+    ('Chris', 'chrisw@devinit.org'),
+    ('Dean', 'dean.breed@devinit.org')
 ]
 
 # Quick-start development settings - unsuitable for production
