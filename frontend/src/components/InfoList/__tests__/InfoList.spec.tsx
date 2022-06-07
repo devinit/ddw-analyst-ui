@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import * as React from 'react';
-import { fireEvent, render, waitForElement } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { InfoList, InfoListItems, InfoMap } from '../InfoList';
 import { List, Map } from 'immutable';
 
@@ -41,7 +41,7 @@ xtest('renders the info on hover', async () => {
   const { getByTestId } = render(<InfoList list={list} />);
 
   fireEvent.mouseEnter(getByTestId('info-trigger'));
-  const popOver = await waitForElement(() => getByTestId('info-list-info'));
+  const popOver = await waitFor(() => getByTestId('info-list-info'));
 
   expect(popOver).toMatchSnapshot();
 });
