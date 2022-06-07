@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { ConditionalRender } from '@bit/devinit.analyst-ui.components.conditional-render';
+import { FunctionComponent } from 'react';
 
 interface SocialLineProps {
   google?: boolean;
@@ -11,7 +12,7 @@ interface SocialLineProps {
   onTwitter?: () => void;
 }
 
-export const SocialLine: React.FunctionComponent<SocialLineProps> = (props) => {
+export const SocialLine: FunctionComponent = (props: SocialLineProps) => {
   return (
     <div className="social-line">
       <ConditionalRender render={!!props.google}>
