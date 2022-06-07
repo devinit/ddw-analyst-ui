@@ -12,7 +12,7 @@ interface SocialLineProps {
   onTwitter?: () => void;
 }
 
-export const SocialLine: FunctionComponent = (props: SocialLineProps) => {
+export const SocialLine: FunctionComponent<SocialLineProps> = (props) => {
   return (
     <div className="social-line">
       <ConditionalRender render={!!props.google}>
