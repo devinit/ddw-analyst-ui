@@ -85,7 +85,7 @@
     "husky": "^4.2.5",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
-    "jest-styled-components": "^7.0.5",
+    "jest-styled-components": "^7.0.7",
     "jquery-extendext": "^1.0.0",
     "jQuery-QueryBuilder": "^2.6.0",
     "jshint": "^2.13.0",
