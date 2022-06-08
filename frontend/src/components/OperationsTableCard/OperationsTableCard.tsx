@@ -18,7 +18,7 @@ import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
 import { api } from '../../utils';
-import { fetchOperationCSV } from '../../utils/operations';
+import { exportOperationToCSV } from '../../utils/operations';
 import { BasicModal } from '../BasicModal';
 import { CodeMirrorNext } from '../CodeMirrorNext';
 import { DatasetActionLink } from '../DatasetActionLink';
@@ -163,10 +163,26 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const exportCSV = (operationId: number, fileName: string) => {
-    const toastId = toast.loading(`Exporting ${fileName}.csv ...`);
-    fetchOperationCSV(operationId, fileName, toastId).finally(() => {
-      toast.dismiss(toastId);
-    });
+    const toastId = toast.loading(`Exporting ${fileName}.csv`);
+    exportOperationToCSV(operationId, fileName)
+      .then(() => {
+        toast.update(toastId, {
+          render: `Saved ${fileName}.csv`,
+          type: 'success',
+          isLoading: false,
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      })
+      .catch(() => {
+        toast.update(toastId, {
+          render: `Failed to export ${fileName}. Please try again later!`,
+          type: 'error',
+          isLoading: false,
+          position: 'top-right',
+          closeOnClick: true,
+        });
+      });
   };
 
   const renderOperations = (operations: List<OperationMap>, allowEdit = false) => {

@@ -8,7 +8,7 @@ import { OperationDataTableContainer } from '../../components/OperationDataTable
 import { FetchOptions } from '../../types/api';
 import { OperationData, OperationMap } from '../../types/operations';
 import { useOperation, useOperationData } from '../../utils/hooks/operations';
-import { fetchOperationCSV } from '../../utils/operations';
+import { exportOperationToCSV } from '../../utils/operations';
 
 interface RouteParams {
   id?: string;
@@ -53,10 +53,26 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
   };
 
   const exportCSV = (operationId: number, fileName: string) => {
-    const toastId = toast.loading(`Exporting ${fileName}.csv ...`);
-    fetchOperationCSV(operationId, fileName, toastId).finally(() => {
-      toast.dismiss(toastId);
-    });
+    const toastId = toast.loading(`Exporting ${fileName}.csv`);
+    exportOperationToCSV(operationId, fileName)
+      .then(() => {
+        toast.update(toastId, {
+          render: `Saved ${fileName}.csv`,
+          type: 'success',
+          isLoading: false,
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      })
+      .catch(() => {
+        toast.update(toastId, {
+          render: `Failed to export ${fileName}. Please try again later!`,
+          type: 'error',
+          isLoading: false,
+          position: 'top-right',
+          closeOnClick: true,
+        });
+      });
   };
 
   return (
