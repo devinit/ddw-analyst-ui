@@ -270,7 +270,7 @@ describe('The Datasets Pages', () => {
           'content-type': 'text/csv',
         },
       });
-    });
+    }).as('exportCsv');
 
     // Click export to csv and confirm progress bar is fully loaded
     cy.visit('/');
@@ -279,7 +279,7 @@ describe('The Datasets Pages', () => {
       .then(($datasetRow) => {
         cy.wrap($datasetRow).contains('Export to CSV').click({ force: true });
         cy.get('.Toastify__toast-container').should('be.visible');
-        cy.get('.Toastify__toast--success').should('have.text', 'Success');
+        cy.wait('@exportCsv').its('response.statusCode').should('equal', 200);
       });
   });
 
