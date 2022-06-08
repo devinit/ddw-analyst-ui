@@ -4,8 +4,7 @@ exports[`OperationStep renders an info button when the provided step has a descr
 Array [
   <div>
     <span
-      bg="secondary"
-      className="badge"
+      className="badge badge-secondary"
     >
       FILTER
     </span>
@@ -74,8 +73,7 @@ exports[`OperationStep renders correctly with the default props 1`] = `
 Array [
   <div>
     <span
-      bg="secondary"
-      className="badge"
+      className="badge badge-secondary"
     >
       FILTER
     </span>
