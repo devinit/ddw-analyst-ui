@@ -79,7 +79,7 @@ export const OperationStepView: FunctionComponent<OperationStepProps> = ({ step,
   return (
     <React.Fragment>
       <div>
-        <Badge bg="secondary">
+        <Badge variant="secondary">
           {(step.get('query_func') as string).toUpperCase().split('_').join(' ')}
         </Badge>
       </div>
