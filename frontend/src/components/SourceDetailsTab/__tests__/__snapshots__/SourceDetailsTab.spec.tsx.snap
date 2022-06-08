@@ -13,17 +13,18 @@ exports[`renders correctly with default props 1`] = `
       class="card-body"
     >
       <div
-        class="nav-pills-danger nav card-header-pills nav-pills"
+        class="nav-pills-danger nav nav-pills"
         role="tablist"
       >
         <div
           class="nav-item"
         >
           <a
+            aria-controls="react-aria969188250-1-tabpane-metadata"
             aria-selected="true"
             class="nav-link active"
-            data-rb-event-key="metadata"
-            href="#"
+            data-rr-ui-event-key="metadata"
+            id="react-aria969188250-1-tab-metadata"
             role="tab"
           >
             Metadata
@@ -33,11 +34,12 @@ exports[`renders correctly with default props 1`] = `
           class="nav-item"
         >
           <a
-            aria-selected="false"
+            aria-controls="react-aria969188250-1-tabpane-columns"
             class="nav-link"
-            data-rb-event-key="columns"
-            href="#"
+            data-rr-ui-event-key="columns"
+            id="react-aria969188250-1-tab-columns"
             role="tab"
+            tabindex="-1"
           >
             Columns
           </a>
@@ -46,11 +48,12 @@ exports[`renders correctly with default props 1`] = `
           class="nav-item"
         >
           <a
-            aria-selected="false"
+            aria-controls="react-aria969188250-1-tabpane-history"
             class="nav-link"
-            data-rb-event-key="history"
-            href="#"
+            data-rr-ui-event-key="history"
+            id="react-aria969188250-1-tab-history"
             role="tab"
+            tabindex="-1"
           >
             Update History
           </a>
@@ -60,8 +63,9 @@ exports[`renders correctly with default props 1`] = `
         class="tab-content"
       >
         <div
-          aria-hidden="false"
+          aria-labelledby="react-aria969188250-1-tab-metadata"
           class="fade tab-pane active show"
+          id="react-aria969188250-1-tabpane-metadata"
           role="tabpanel"
         >
           <div
@@ -123,8 +127,9 @@ exports[`renders correctly with default props 1`] = `
           </div>
         </div>
         <div
-          aria-hidden="true"
+          aria-labelledby="react-aria969188250-1-tab-columns"
           class="fade tab-pane"
+          id="react-aria969188250-1-tabpane-columns"
           role="tabpanel"
         >
           <div>
@@ -168,10 +173,10 @@ exports[`renders correctly with default props 1`] = `
                     <a
                       aria-disabled="true"
                       aria-label="Previous page"
-                      class="page-link"
+                      class="page-link "
                       rel="prev"
                       role="button"
-                      tabindex="0"
+                      tabindex="-1"
                     >
                       <span
                         aria-hidden="true"
@@ -195,8 +200,9 @@ exports[`renders correctly with default props 1`] = `
                       aria-current="page"
                       aria-label="Page 1 is your current page"
                       class="page-link"
+                      rel="canonical"
                       role="button"
-                      tabindex="0"
+                      tabindex="-1"
                     >
                       1
                     </a>
@@ -207,10 +213,10 @@ exports[`renders correctly with default props 1`] = `
                     <a
                       aria-disabled="true"
                       aria-label="Next page"
-                      class="page-link"
+                      class="page-link "
                       rel="next"
                       role="button"
-                      tabindex="0"
+                      tabindex="-1"
                     >
                       <span
                         aria-hidden="true"
@@ -233,8 +239,9 @@ exports[`renders correctly with default props 1`] = `
           </div>
         </div>
         <div
-          aria-hidden="true"
+          aria-labelledby="react-aria969188250-1-tab-history"
           class="fade tab-pane"
+          id="react-aria969188250-1-tabpane-history"
           role="tabpanel"
         >
           <div>

@@ -2,8 +2,7 @@
 
 exports[`WizardBodyContent renders no children when inactive by default 1`] = `
 <div
-  aria-hidden={true}
-  className="tab-pane"
+  className="fade tab-pane"
   data-testid="wizard-tab-pane"
   role="tabpanel"
 />
@@ -11,8 +10,7 @@ exports[`WizardBodyContent renders no children when inactive by default 1`] = `
 
 exports[`WizardBodyContent renders the default structure correctly 1`] = `
 <div
-  aria-hidden={true}
-  className="tab-pane"
+  className="fade tab-pane"
   data-testid="wizard-tab-pane"
   role="tabpanel"
 />
@@ -20,8 +18,7 @@ exports[`WizardBodyContent renders the default structure correctly 1`] = `
 
 exports[`WizardBodyContent renders with children when active 1`] = `
 <div
-  aria-hidden={false}
-  className="tab-pane active"
+  className="fade tab-pane active show"
   data-testid="wizard-tab-pane"
   role="tabpanel"
 >

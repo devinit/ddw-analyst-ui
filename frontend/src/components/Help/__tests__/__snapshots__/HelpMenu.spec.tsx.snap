@@ -17,9 +17,9 @@ Array [
 
 <a
     className="c0 nav-link"
+    disabled={false}
     href="https://staging-ddw.devinit.org"
     onClick={[Function]}
-    onKeyDown={[Function]}
     target="_blank"
   >
     Item 1
@@ -39,9 +39,9 @@ Array [
 
 <a
     className="c0 nav-link"
+    disabled={false}
     href="https://ddw.devinit.org"
     onClick={[Function]}
-    onKeyDown={[Function]}
     target="_blank"
   >
     Item 2
