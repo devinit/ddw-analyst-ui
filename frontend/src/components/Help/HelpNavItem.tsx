@@ -21,7 +21,7 @@ const HelpNavItem: FunctionComponent = () => {
         <i className="material-icons">help</i>
         <p className="d-lg-none d-md-block">Help</p>
       </Dropdown.Toggle>
-      <Dropdown.Menu align="end">
+      <Dropdown.Menu alignRight>
         <Switch>
           <Route path="/" exact component={() => <HelpMenu links={myDatasetsHelpMenuLinks} />} />
           <Route

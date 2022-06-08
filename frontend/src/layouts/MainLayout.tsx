@@ -260,7 +260,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
                         <i className="material-icons">person</i>
                         <p className="d-lg-none d-md-block">Account</p>
                       </Dropdown.Toggle>
-                      <Dropdown.Menu align="end">
+                      <Dropdown.Menu alignRight>
                         <Dropdown.Item data-cy="account" onClick={this.openAccountModal}>
                           Change Password
                         </Dropdown.Item>
