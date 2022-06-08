@@ -5,6 +5,8 @@ import React, { FunctionComponent, useContext, useEffect, useState } from 'react
 import { Button, Card, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import { format } from 'sql-formatter';
@@ -16,6 +18,7 @@ import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
 import { api } from '../../utils';
+import { fetchOperationCSV } from '../../utils/operations';
 import { BasicModal } from '../BasicModal';
 import { CodeMirrorNext } from '../CodeMirrorNext';
 import { DatasetActionLink } from '../DatasetActionLink';
@@ -23,9 +26,6 @@ import { OperationsTableRow } from '../OperationsTableRow';
 import OperationsTableRowActions from '../OperationsTableRowActions';
 import { PaginationRow } from '../PaginationRow';
 import { SearchInput } from '../SearchInput';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { fetchOperationCSV } from '../../utils/operations';
 
 interface ActionProps {
   actions: typeof operationsActions;

@@ -4,6 +4,7 @@ import React, { ReactElement } from 'react';
 import { Dropdown, Modal, Nav, Navbar } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { bindActionCreators } from 'redux';
 import { Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -33,7 +34,6 @@ import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
 import { OperationMap } from '../types/operations';
 import { api, localForageKeys } from '../utils';
-import { ToastContainer } from 'react-toastify';
 interface ActionProps {
   actions: typeof UserActions & typeof TokenActions & typeof ModalActions;
 }
