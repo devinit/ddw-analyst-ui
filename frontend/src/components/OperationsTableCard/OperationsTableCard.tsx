@@ -163,7 +163,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
   };
 
   const exportCSV = (operationId: number, fileName: string) => {
-    const toastId = toast.loading('Please wait...');
+    const toastId = toast.loading(`Exporting ${fileName}.csv ...`);
     fetchOperationCSV(operationId, fileName, toastId).finally(() => {
       toast.dismiss(toastId);
     });
