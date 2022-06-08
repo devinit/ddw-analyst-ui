@@ -23,7 +23,7 @@ exports[`Wizard renders the default structure correctly 1`] = `
       className="wizard-navigation"
     >
       <div
-        className="c1 nav nav-pills"
+        className="c1 nav card-header-pills nav-pills"
         onKeyDown={[Function]}
         role="tablist"
       />
@@ -95,7 +95,7 @@ exports[`Wizard renders with children 1`] = `
       className="wizard-navigation"
     >
       <div
-        className="c1 nav nav-pills"
+        className="c1 nav card-header-pills nav-pills"
         onKeyDown={[Function]}
         role="tablist"
       />

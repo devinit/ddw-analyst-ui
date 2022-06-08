@@ -14,7 +14,6 @@ exports[`WizardNavigationItem renders the default structure correctly 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
-    tabIndex={0}
   />
 </li>
 `;
@@ -33,7 +32,6 @@ exports[`WizardNavigationItem renders with children 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
-    tabIndex={0}
   >
     <div>
       My Child
