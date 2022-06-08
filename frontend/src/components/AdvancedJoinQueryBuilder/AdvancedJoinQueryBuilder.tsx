@@ -202,7 +202,7 @@ const AdvancedJoinQueryBuilder: FunctionComponent<ComponentProps> = ({ source })
                       onClickJoin(index);
                     }}
                   >
-                    <Badge bg="secondary">{join.type}</Badge>
+                    <Badge variant="secondary">{join.type}</Badge>
                     <div>
                       {sources
                         .find((_source) => _source.get('id') === join.source)
