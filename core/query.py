@@ -1,8 +1,9 @@
 import re
 
+from django.db import transaction
 from core.pypika_utils import QueryBuilder
 from data.db_manager import fetch_data, analyse_query, run_query
-from core.models import FrozenData, Source, Operation, FrozenData
+from core.models import FrozenData, OperationStep, Source, Operation, FrozenData
 from pypika import Table, Query
 from pypika import functions as pypika_fn
 from core.pypika_fts_utils import TableQueryBuilder
@@ -43,10 +44,18 @@ def querytime_estimate(operation=None, operation_steps=None):
     query = QueryBuilder(operation=operation, operation_steps=operation_steps).get_sql_without_limit()
     return analyse_query(query)
 
+@transaction.atomic
 def delete_archive(id):
     try:
         frozen_data = FrozenData.objects.get(pk=id)
         table_name = frozen_data.frozen_db_table
+        # Delete from sources table and operation steps
+        frozen_source = Source.objects.filter(repo='archives', active_mirror_name=table_name)
+        operation_step_qs = OperationStep.objects.filter(source_id__in=frozen_source)
+        operation = Operation.objects.filter(pk__in=operation_step_qs.values_list('operation_id', flat=True))
+        operation.delete()
+        operation_step_qs.delete()
+        frozen_source.delete()
         frozen_data.delete()
         query_builder = TableQueryBuilder(table_name, "archives")
         delete_sql = query_builder.delete_table(table_name, "archives")
