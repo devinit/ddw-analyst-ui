@@ -70,7 +70,7 @@ const Wizard: FunctionComponent<WizardProps> = ({
           active={activeStep?.key === key}
           eventKey={key}
           className={classNames(`col-sm-6 col-lg-${col}`)}
-          onSelect={onSelect as any}
+          onSelect={onSelect}
           disabled={disabled}
         >
           {caption}
