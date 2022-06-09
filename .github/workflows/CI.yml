@@ -204,6 +204,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd ~/ddw-analyst-ui
+          npm -v
           npm ci --no-optional
           npm run build
           docker-compose exec -T web python manage.py collectstatic --no-input
