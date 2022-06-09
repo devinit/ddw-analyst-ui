@@ -12,7 +12,7 @@ localForage.config({
 });
 
 const wrapper = document.getElementById('app');
-const root = createRoot(wrapper as HTMLElement);
 if (wrapper) {
+  const root = createRoot(wrapper);
   root.render(<Routes />);
 }
