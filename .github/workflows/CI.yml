@@ -35,7 +35,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm config set '@bit:registry' https://node.bit.dev
-        npm install --ignore-scripts
+        npm ci --ignore-scripts --no-optional
         npm install -g codecov
 
     - name: Run tests
@@ -204,7 +204,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd ~/ddw-analyst-ui
-          npm i
+          npm ci --no-optional
           npm run build
           docker-compose exec -T web python manage.py collectstatic --no-input
 
@@ -237,7 +237,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm config set '@bit:registry' https://node.bit.dev
-        npm i
+        npm ci
 
     - name: Run end-to-end tests
       run: |
