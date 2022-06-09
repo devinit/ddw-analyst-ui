@@ -1,18 +1,18 @@
-import { RouteComponentProps } from 'react-router-dom';
 import { FormikHelpers as FormikActions } from 'formik/dist/types';
 import { Base64 } from 'js-base64';
 import * as localForage from 'localforage';
 import * as React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { MapDispatchToProps, connect } from 'react-redux';
+import { connect, MapDispatchToProps } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
+import styled from 'styled-components';
+import * as TokenActions from '../../actions/token';
+import * as UserActions from '../../actions/user';
 import { Credentials, LoginForm } from '../../components/LoginForm';
 import { PageWrapper } from '../../components/PageWrapper';
-import { api, localForageKeys } from '../../utils';
-import * as UserActions from '../../actions/user';
-import * as TokenActions from '../../actions/token';
 import { User } from '../../reducers/user';
-import styled from 'styled-components';
+import { api, localForageKeys } from '../../utils';
 
 interface LoginState {
   showForm: boolean;

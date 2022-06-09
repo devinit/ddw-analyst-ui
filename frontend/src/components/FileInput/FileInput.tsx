@@ -13,7 +13,7 @@ interface FileInputProps extends FormControlProps {
   accept?: string;
 }
 
-const StyledFormFile = styled((props: FormControlProps) => <Form.Control type="file" {...props} />)`
+const StyledFormFile = styled(Form.File)`
   position: absolute;
   top: 0;
   right: 0;

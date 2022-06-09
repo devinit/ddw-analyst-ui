@@ -11,7 +11,7 @@ type SidebarLogoProps = {
   children?: React.ReactNode;
 };
 
-export const Logo: React.FunctionComponent<LogoProps> = (props) => {
+export const Logo: React.FC<LogoProps> = (props) => {
   return (
     <Link to={props.url} className={`simple-text logo-${props.variation}`}>
       {props.children}

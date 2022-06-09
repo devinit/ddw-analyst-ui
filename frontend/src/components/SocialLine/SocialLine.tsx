@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { ConditionalRender } from '../ConditionalRender';
-import { FunctionComponent } from 'react';
 
 interface SocialLineProps {
   google?: boolean;
@@ -12,7 +11,7 @@ interface SocialLineProps {
   onTwitter?: () => void;
 }
 
-export const SocialLine: FunctionComponent<SocialLineProps> = (props) => {
+export const SocialLine: React.FC<SocialLineProps> = (props) => {
   return (
     <div className="social-line">
       <ConditionalRender render={!!props.google}>

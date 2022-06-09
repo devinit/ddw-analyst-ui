@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { Nav } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -14,7 +14,7 @@ type ComponentProps = {
   children?: React.ReactNode;
 };
 
-const WizardNavigation: FunctionComponent<ComponentProps> = ({ children }) => {
+const WizardNavigation: FC<ComponentProps> = ({ children }) => {
   return (
     <div className="wizard-navigation">
       <StyledNav variant="pills" className="">

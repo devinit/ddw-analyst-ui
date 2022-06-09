@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Tab, TabPaneProps } from 'react-bootstrap';
 
 interface ComponentProps extends TabPaneProps {
   children?: React.ReactNode;
 }
-const WizardBodyContent: FunctionComponent<ComponentProps> = ({ children, ...props }) => {
+const WizardBodyContent: FC<ComponentProps> = ({ children, ...props }) => {
   const [viewed, setViewed] = useState(props.active);
   useEffect(() => {
     if (props.active) {
