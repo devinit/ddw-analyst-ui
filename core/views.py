@@ -20,6 +20,7 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from core import serializers
+from core.const import DATA_TYPES
 from core.utils import QueryResetTokenGenerator
 
 from knox.auth import TokenAuthentication
@@ -1144,14 +1145,14 @@ class ViewETLQueryData(APIView):
 
 
 @csrf_exempt
-def reset_operation(request, id, token):
-    operation = Operation.objects.get(pk=id)
-    if operation:
+def reset_operation(request, model, id, token):
+    object = DATA_TYPES[model].objects.get(pk=id)
+    if object:
         token_generator = QueryResetTokenGenerator()
-        if token_generator.check_token(operation, token):
-            operation.last_accessed = timezone.now()
-            operation.renewal_sent = False
-            operation.save(update_fields=['last_accessed', 'renewal_sent'])
+        if token_generator.check_token(object, token):
+            object.last_accessed = timezone.now()
+            object.renewal_sent = False
+            object.save(update_fields=['last_accessed', 'renewal_sent'])
             response = 'Successfull'
             return HttpResponse(response, status=status.HTTP_200_OK)
         raise Http404("Link expired")
