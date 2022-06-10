@@ -52,10 +52,21 @@ interface RouterParams {
   id?: string;
 }
 
+interface QueryBuilderContextValue {
+  defaultValue: string;
+}
+
 type QueryBuilderProps = ActionProps & ReduxState & RouteComponentProps<RouterParams>;
 
 const OBSOLETE_COLUMNS_LOG_MESSAGE = 'Obsolete Columns'; // eslint-disable-line @typescript-eslint/naming-convention
 
+const queryBuilderValueContext: QueryBuilderContextValue = {
+  defaultValue: 'Basic',
+};
+
+export const QueryBuilderContext =
+  React.createContext<QueryBuilderContextValue>(queryBuilderValueContext);
+console.log('parent');
 const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [showPreview, setShowPreview] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
@@ -296,16 +307,18 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       const editable = isEditable(props.activeOperation);
 
       return (
-        <OperationStepForm
-          source={source}
-          step={step}
-          onUpdateStep={props.actions.updateActiveStep}
-          onSuccess={onAddOperationStep}
-          onDeleteStep={onDeleteOperationStep}
-          onClose={resetAction}
-          editing={editing}
-          editable={editable}
-        />
+        <QueryBuilderContext.Provider value={queryBuilderValueContext}>
+          <OperationStepForm
+            source={source}
+            step={step}
+            onUpdateStep={props.actions.updateActiveStep}
+            onSuccess={onAddOperationStep}
+            onDeleteStep={onDeleteOperationStep}
+            onClose={resetAction}
+            editing={editing}
+            editable={editable}
+          />
+        </QueryBuilderContext.Provider>
       );
     }
 

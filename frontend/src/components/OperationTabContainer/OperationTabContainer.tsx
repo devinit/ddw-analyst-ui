@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { OperationForm } from '../OperationForm';
 import { useHistory } from 'react-router-dom';
+import { QueryBuilderContext } from '../../pages/QueryBuilder/QueryBuilder';
 
 type ComponentProps = {
   operation?: OperationMap;
@@ -28,10 +29,12 @@ const StyledCardBody = styled(Card.Body)`
     padding-left: 15px;
   }
 `;
+console.log('child');
 
 const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const [alertMessages, setAlertMessages] = useState<string[]>(props.alertMessages || []);
-  const [queryBuilder, setQueryBuilder] = useState('Basic');
+
+  const value = React.useContext(QueryBuilderContext);
 
   const history = useHistory();
 
@@ -45,11 +48,9 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const onAlertClose = (): void => setAlertMessages(['']);
 
   const handleSwitchButton = () => {
-    if (queryBuilder === 'Basic') {
-      setQueryBuilder('Advanced');
+    if (value) {
       history.push('/queries/build/');
     } else {
-      setQueryBuilder('Basic');
       history.push('/queries/build/advanced/');
     }
   };
@@ -89,7 +90,7 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
             onClick={() => handleSwitchButton()}
             style={{ position: 'absolute', right: 9, top: -20 }}
           >
-            Switch to {queryBuilder} Query Builder
+            Switch to {value.defaultValue} Query Builder
           </Button>
 
           <OperationForm
