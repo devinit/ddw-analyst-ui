@@ -68,7 +68,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
     <React.Fragment>
       <Form.Group>
         <Form.Label className="bmd-label-floating">Columns</Form.Label>
-        <Row>
+        <Form.Row>
           <Button
             variant="danger"
             size="sm"
@@ -95,7 +95,7 @@ const SelectQueryBuilder: FunctionComponent<SelectQueryBuilderProps> = (props) =
           >
             Deselect All
           </Button>
-        </Row>
+        </Form.Row>
         {isOrderingColumns ? (
           <SelectColumnOrder
             selectedColumns={selectedColumns}
