@@ -11,7 +11,6 @@ import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
 import { SearchInput } from '../SearchInput';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
-import { AnyAction } from 'redux';
 import { SourcesAction } from '../../reducers/sources';
 
 interface ComponentProps {
