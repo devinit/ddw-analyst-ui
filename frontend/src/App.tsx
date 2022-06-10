@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import * as localForage from 'localforage';
 import { Routes } from './Routes';
+import 'core-js/stable';
 
 import './styles/main.scss';
 
