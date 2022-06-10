@@ -55,7 +55,7 @@ urlpatterns = [
     path('savedqueryset/data/<int:id>/', core_views.ViewETLQueryData.as_view()),
     path('frozendata/', core_views.FrozenDataList.as_view()),
     path('frozendata/<int:pk>/', core_views.FrozenDataDetail.as_view()),
-    path('reset_operation/<id>/<token>/', core_views.reset_operation, name='renewal_view'),
+    path('reset/<model>/<id>/<token>/', core_views.reset_operation, name='renewal_view'),
 ]
 
 handler500 = 'rest_framework.exceptions.server_error'

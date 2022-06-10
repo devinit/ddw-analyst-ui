@@ -4,6 +4,7 @@ from django.db import transaction
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.urls import reverse
+from core.const import DATA_TYPES
 from core.models import FrozenData, Operation, OperationStep, SavedQueryData
 from core.pypika_fts_utils import TableQueryBuilder
 from core.query import delete_archive
@@ -19,25 +20,21 @@ ARCHIVE_SUBJECT = 'Frozen data renewal'
 DAYS_TO_SEND_TO_PM = 7
 DAYS_TO_DELETE = 14
 FROZEN_DATASET_SCHEMA = 'dataset'
-DATA_TYPES = {
-    'operation': Operation,
-    'frozen_table': FrozenData,
-    'frozen_dataset': SavedQueryData,
-}
 
 
 class Command(BaseCommand):
     help = 'Gets old queries and sends reminders to owners'
 
     def handle(self, *args, **options):
-        self.process_renewal_links(False, QUERY_SUBJECT, RENEWAL_MESSAGE)
-        self.process_renewal_links(True, QUERY_SUBJECT, RENEWAL_MESSAGE)
+        self.process_renewal_links(False, RENEWAL_MESSAGE)
+        self.process_renewal_links(True, RENEWAL_MESSAGE)
         self.delete_old_operations()
         self.delete_old_frozen_sources()
         self.delete_old_frozen_datasets()
 
     @transaction.atomic
-    def process_renewal_links(renewal_sent=False, subject='', message=''):
+    def process_renewal_links(renewal_sent=False, message=''):
+        subject = ''
         reset_generator = QueryResetTokenGenerator()
         time_difference = SIX_MONTHS
         # This will handle sending to Dean after expiry of 7 days since last one was sent to owner
@@ -47,10 +44,14 @@ class Command(BaseCommand):
             old_objects = model.objects.filter(
                 last_accessed__lte=datetime.now()-timedelta(days=time_difference)
             ).filter(renewal_sent=renewal_sent).select_related('user')
+            if name == 'operation':
+                subject = QUERY_SUBJECT
+            else:
+                subject = ARCHIVE_SUBJECT
             processed_objects = []
             for old_object in old_objects:
                 reset_token = reset_generator.make_token(old_object)
-                reset_link = reverse('renewal_view', kwargs={'id': old_object.id, 'token': reset_token})
+                reset_link = reverse('renewal_view', kwargs={'model': name, 'id': old_object.id, 'token': reset_token})
                 reset_link = f'{settings.BASE_URL}{reset_link}'
                 recipients = [user[1] for user in settings.ADMINS]
                 if old_object.user and old_object.user.username:
