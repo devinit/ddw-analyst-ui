@@ -43,9 +43,8 @@ describe('The Query Builder', () => {
     cy.visit('/queries/build');
     cy.get('[name="name"]').focus().type(operationName);
     cy.get('[name="description"]').focus().type(operationDescription);
-    cy.get('.search').eq(1).click({ force: true });
     cy.wait(5000);
-    cy.get('.search').eq(1).type('CRS ISO Codes{enter}');
+    cy.get('[data-testid="active-data-source"]').type('CRS ISO Codes{enter}');
 
     // Add step
     cy.get('[data-testid="qb-add-step-button"]').click();
@@ -150,7 +149,9 @@ describe('The Query Builder', () => {
     // Visit query builder, type name and choose datasource
     cy.fillOperationForm('Test Dataset', 'Test Dataset', 'Financial Tracking Service');
 
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.wait(3000);
+
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Create select query step
     cy.createSelectStep();
@@ -159,7 +160,7 @@ describe('The Query Builder', () => {
     cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
 
     // Save and create step
-    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click({ force: true });
 
     // Check that there is more than one step
     cy.get('.list-group').children().should('have.length', 2);
@@ -172,7 +173,9 @@ describe('The Query Builder', () => {
     // Visit query builder, type name and choose datasource
     cy.fillOperationForm('Test Dataset', 'Test Dataset', 'Financial Tracking Service');
 
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.wait(3000);
+
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Create select query step
     cy.createSelectStep();
@@ -181,7 +184,7 @@ describe('The Query Builder', () => {
     cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
 
     // Save and create step
-    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click({ force: true });
 
     // Navigate to reorder step view
     cy.get('[data-testid="qb-order-step-button"]').click({ force: true });

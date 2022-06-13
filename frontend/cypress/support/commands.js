@@ -37,13 +37,16 @@ Cypress.Commands.add('fillOperationForm', (name, description, dataSource = 'CRS 
   cy.visit('/queries/build');
   cy.get('[name="name"]').focus().type(name);
   cy.get('[name="description"]').focus().type(description);
-  cy.get('.search').eq(1).click({ force: true }).type(dataSource);
-  cy.get('.item', { timeout: 10000 }).eq(0).click();
+  cy.wait(3000);
+  cy.get('[data-testid="active-data-source"]')
+    .click({ force: true })
+    .type(`${dataSource}{downarrow}{downarrow}{enter}`);
+  cy.get('.item', { timeout: 10000 }).eq(0).click({ force: true });
 });
 
 Cypress.Commands.add('createFilterStep', (firstFilterValue, secondFilterValue) => {
   // Add step
-  cy.get('[data-testid="qb-add-step-button"]').click();
+  cy.get('[data-testid="qb-add-step-button"]').click({ force: true });
 
   // Fill create query step form
   cy.get('[name="name"]').eq(1).type('Dataset Step Test');
@@ -77,7 +80,7 @@ Cypress.Commands.add('createFilterStep', (firstFilterValue, secondFilterValue) =
 Cypress.Commands.add('createSelectStep', () => {
   // Fill create step form
   cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description{enter}');
   cy.get('[data-testid="qb-step-select-query"]').type('select{enter}');
 
   // Check all checkboxes
