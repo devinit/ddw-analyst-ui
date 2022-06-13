@@ -193,6 +193,7 @@ describe('The Data Sources Page', () => {
 
     it('searches for frozen data source in sources', () => {
       cy.visit('/sources');
+      cy.get('.search').eq(0).type('Frozen Sources{enter}');
       cy.get('[data-testid="sources-table-search"]').type(
         'End-to-end test freeze data source{enter}',
       );
@@ -205,9 +206,13 @@ describe('The Data Sources Page', () => {
       cy.visit('/queries/build');
       cy.get('[name="name"]').focus().type('My Test Dataset');
       cy.get('[name="description"]').focus().type('My Test Dataset Description');
-      cy.get('.search').eq(1).click({ force: true }).type('End-to-end test freeze data source');
-      cy.get('.item', { timeout: 10000 }).eq(0).click();
-      cy.get('[data-testid="qb-add-step-button"]').click();
+      cy.wait(3000);
+      cy.get('[data-testid="data-source-type-selector"]').click().type('{downarrow}{enter}');
+      cy.get('[data-testid="active-data-source"]')
+        .click()
+        .type('End-to-end test freeze data source{enter}');
+      cy.get('.item', { timeout: 10000 }).eq(0).click({ force: true });
+      cy.get('[data-testid="qb-add-step-button"]').click({ force: true });
 
       cy.get('[name="name"]').eq(1).type('Dataset Step Test');
       cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
