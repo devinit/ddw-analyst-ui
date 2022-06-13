@@ -198,10 +198,9 @@ describe('The Datasets Pages', () => {
   });
 
   it('makes a copy of my dataset', () => {
-    cy.fixture('datasets').then((datasets) => {
-      cy.intercept('api/datasets/mine/', datasets);
-    });
+    cy.intercept('api/datasets/mine/', { fixture: 'datasets' }).as('getMyDatasets');
     cy.visit('/');
+    cy.wait('@getMyDatasets');
     cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
     cy.url().should('include', '/queries/build');
     cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
