@@ -35,9 +35,9 @@ Cypress.Commands.add('login', (email, password) => {
 Cypress.Commands.add('fillOperationForm', (name, description, dataSource = 'CRS ISO codes') => {
   // Visit query builder type name and choose datasource
   cy.visit('/queries/build');
+  cy.wait(5000);
   cy.get('[name="name"]').focus().type(name);
   cy.get('[name="description"]').focus().type(description);
-  cy.wait(3000);
   cy.get('[data-testid="active-data-source"]')
     .click({ force: true })
     .type(`${dataSource}{downarrow}{downarrow}{enter}`);

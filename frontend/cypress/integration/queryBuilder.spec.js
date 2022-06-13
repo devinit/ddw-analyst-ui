@@ -74,10 +74,11 @@ describe('The Query Builder', () => {
       const aliasPendingDataset = datasets.results.find(
         (dataset) => (dataset.alias_creation_status = 'p'),
       );
-      cy.intercept('api/dataset/1/', aliasPendingDataset);
+      cy.intercept('api/dataset/1/', aliasPendingDataset).as('getDatasets');
     });
 
     cy.visit('/queries/build/1/');
+    cy.wait('@getDatasets');
     cy.get('[data-testid="qb-alert"] p').contains(
       'There was interruption while creating column aliases for this dataset. Please save the dataset again',
     );
@@ -86,10 +87,11 @@ describe('The Query Builder', () => {
   it('that has logs displays them in an alert', () => {
     // Mock datasets route
     cy.fixture('datasets').then((datasets) => {
-      cy.intercept('api/dataset/2/', datasets.results[1]);
+      cy.intercept('api/dataset/2/', datasets.results[1]).as('getDatasets');
     });
 
     cy.visit('/queries/build/2/');
+    cy.wait('@getDatasets');
     cy.get('[data-testid="qb-alert"] p')
       .first()
       .contains(`Columns donor_code, donor_name used in steps 1 are obsolete.`);
@@ -109,9 +111,10 @@ describe('The Query Builder', () => {
 
   it('that creates a copy of a step', () => {
     cy.fixture('datasets').then((datasets) => {
-      cy.intercept('api/dataset/3/', datasets.results[2]);
+      cy.intercept('api/dataset/3/', datasets.results[2]).as('getDatasets');
     });
     cy.visit('/queries/build/3/');
+    cy.wait('@getDatasets');
     cy.get('[data-testid="step-duplicate"]').click({ force: true });
     cy.url().should('include', '/queries/build');
     cy.get('[data-testid="op-step-name"]').should('have.value', 'Copy of Select');
