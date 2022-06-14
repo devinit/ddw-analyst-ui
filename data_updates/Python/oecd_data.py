@@ -9,7 +9,7 @@ from ..utils import push_folder_to_github
 
 
 current_date = datetime.datetime.now()
-PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL', "https://staging-ddw.devinit.org/api/export/1241/")
+PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL', "https://ddw.devinit.org/api/export/1486/")
 CSV_FILES_FOLDER = "data_updates/Python/oecd_csv"
 CSV_FOLDER = "Python/oecd_csv"
 DATA_REPO = "devinit/di-website-data"
@@ -17,7 +17,7 @@ REMOTE_BRANCH = "main"
 REMOTE_FOLDER = f'{current_date.year}'
 ODA_AID_TYPE_URL = os.getenv('ODA_AID_TYPE_URL', "https://ddw.devinit.org/api/export/1484/")
 ODA_CHANNEL_TYPE_URL = os.getenv('ODA_CHANNEL_TYPE_URL', "https://ddw.devinit.org/api/export/1485/")
-ODA_RECIP_TYPE_URL = os.getenv('ODA_RECIP_TYPE_URL', "https://ddw.devinit.org/api/export/1486/")
+ODA_RECIP_TYPE_URL = os.getenv('ODA_RECIP_TYPE_URL', "https://ddw.devinit.org/api/export/1339/")
 
 
 # create csv folder if it does not exist
