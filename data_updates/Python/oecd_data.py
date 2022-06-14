@@ -93,7 +93,7 @@ recipient_data = []
 for donor in list(set(recip_data["Donor Name"])):
     for purpose in list(set(recip_data["Purpose Name"])):
         subset = recip_data[(recip_data["Donor Name"]==donor) & (recip_data["Purpose Name"]==purpose)].reset_index()
-        subset = subset.sort_values(by=[2020,2019,2018,2017,2016,"Recipient Name"],ascending = [False,False,False,False,True]).reset_index()
+        subset = subset.sort_values(by=[2020,2019,2018,2017,2016,"Recipient Name"],ascending = [False,False,False,False,False,True]).reset_index()
         subset["Rank"] = subset.index + 1 # rank by years
         recipient_data.append(subset)
 
