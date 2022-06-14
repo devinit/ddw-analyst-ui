@@ -143,4 +143,4 @@ data = data[data['country'] != "Germany"]
 data.to_csv(f'{CSV_FOLDER_PATH}/iati_rhfp4.csv', encoding='utf-8', index=False)
 
 # Sample call to the function below
-# push_folder_to_github('devinit/di-website-data', 'main', 'Python/iati_csv', '2022', 'Committing from API', '*.csv')
+push_folder_to_github('devinit/di-website-data', 'main', 'Python/iati_csv', '2022', 'Committing from API', '*.csv')
