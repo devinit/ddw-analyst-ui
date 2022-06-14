@@ -5,6 +5,7 @@ import { SidebarLink, SidebarLinkProps } from '../SidebarLink';
 export interface SidebarItemProps {
   collapseId?: string;
   active?: boolean;
+  children?: React.ReactNode;
 }
 
 export class SidebarItem extends React.Component<SidebarItemProps> {

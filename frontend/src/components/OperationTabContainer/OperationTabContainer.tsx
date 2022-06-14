@@ -18,6 +18,7 @@ type ComponentProps = {
   onDelete: (operation?: OperationMap) => void;
   onReset?: () => void;
   onValidate?: () => void;
+  children?: React.ReactNode;
 };
 
 const StyledCardBody = styled(Card.Body)`

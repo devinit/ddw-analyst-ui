@@ -28,9 +28,7 @@ exports[`OperationsTableRow does not render non-action children 1`] = `
        from 
       <span
         className="text-uppercase text-danger"
-      >
-        
-      </span>
+      />
     </div>
   </div>
 </div>
@@ -70,9 +68,7 @@ exports[`OperationsTableRow renders actions when provided 1`] = `
        from 
       <span
         className="text-uppercase text-danger"
-      >
-        
-      </span>
+      />
     </div>
   </div>
 </div>
@@ -106,9 +102,7 @@ exports[`OperationsTableRow renders correctly with the default props 1`] = `
        from 
       <span
         className="text-uppercase text-danger"
-      >
-        
-      </span>
+      />
     </div>
   </div>
 </div>

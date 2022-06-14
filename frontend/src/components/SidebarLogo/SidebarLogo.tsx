@@ -5,9 +5,13 @@ import { Link } from 'react-router-dom';
 interface LogoProps {
   url: LocationDescriptor;
   variation?: 'mini' | 'normal';
+  children?: React.ReactNode;
 }
+type SidebarLogoProps = {
+  children?: React.ReactNode;
+};
 
-export const Logo: React.SFC<LogoProps> = (props) => {
+export const Logo: React.FC<LogoProps> = (props) => {
   return (
     <Link to={props.url} className={`simple-text logo-${props.variation}`}>
       {props.children}
@@ -21,10 +25,10 @@ Logo.defaultProps = {
 
 Logo.displayName = 'Logo';
 
-export class SidebarLogo extends React.Component {
+export class SidebarLogo extends React.Component<SidebarLogoProps> {
   static Item = Logo;
 
-  render() {
+  render(): React.ReactNode {
     return <div className="logo">{this.renderContent()}</div>;
   }
 

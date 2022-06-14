@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SourceMap } from '../../types/sources';
 
-export const SourceMetadata: React.SFC<{ source: SourceMap }> = (props) => {
+export const SourceMetadata: React.FC<{ source: SourceMap }> = (props) => {
   return (
     <React.Fragment>
       <div className="font-weight-bold">Source</div>

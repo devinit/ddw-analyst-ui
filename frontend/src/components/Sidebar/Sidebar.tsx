@@ -8,6 +8,7 @@ import { SidebarFooter } from '../SidebarFooter';
 interface SidebarProps {
   dataColour?: 'rose' | 'purple' | 'azure' | 'danger' | 'green' | 'orange';
   backgroundColour?: 'black' | 'white' | 'red';
+  children?: React.ReactNode;
 }
 
 export class Sidebar extends React.Component<SidebarProps> {

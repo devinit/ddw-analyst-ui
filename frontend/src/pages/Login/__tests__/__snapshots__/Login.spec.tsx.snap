@@ -1,12 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders the loading indicator while loading 1`] = `
+.c0 {
+  text-align: center;
+}
+
 <div
   className="wrapper wrapper-full-page"
 >
   <div
     className="page-header login-page header-filter"
-    data-css-cyv5ek=""
     filter-color="red"
   >
     <div
@@ -19,7 +22,7 @@ exports[`renders the loading indicator while loading 1`] = `
           className="ml-auto mr-auto col-lg-4 col-md-6 col-sm-8"
         >
           <div
-            data-css-1yv2jt6=""
+            className="c0"
           >
             Loading...
           </div>

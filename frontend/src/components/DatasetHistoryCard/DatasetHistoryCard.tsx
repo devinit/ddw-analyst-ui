@@ -86,7 +86,9 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
       </Dimmer>
       <Card className="dataset-list">
         <Card.Header className={classNames({ 'd-none': !props.dataset })}>
-          <h4>{props.dataset.get('name')}</h4>
+          <h4>
+            <>{props.dataset.get('name')}</>
+          </h4>
           <Button
             size="sm"
             variant="danger"
@@ -103,7 +105,9 @@ export const DatasetHistoryCard: FunctionComponent<ComponentProps> = (props) => 
           <Modal.Header closeButton>
             <Modal.Title>
               Freeze Current Version of{' '}
-              <span className="text-danger">{props.dataset.get('name')}</span>
+              <span className="text-danger">
+                <>{props.dataset.get('name')}</>
+              </span>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
