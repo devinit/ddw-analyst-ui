@@ -78,30 +78,30 @@ recip_data = recip_data.append(pd.DataFrame(data = total_data),ignore_index=True
 
 recip_data = recip_data.pivot_table(index=['Donor Name', 'Purpose Name','Recipient Name'], columns='Year', values='USD Disbursement Deflated').reset_index()
 
-cols_to_check = [2016,2017,2018,2019]
+cols_to_check = [2016,2017,2018,2019,2020]
 
 recip_data[cols_to_check] = recip_data[cols_to_check].fillna(0)
 
-recip_data["Removal"] = (recip_data[2016]==0) & (recip_data[2017]==0) & (recip_data[2018]==0) & (recip_data[2019]==0)
+recip_data["Removal"] = (recip_data[2016]==0) & (recip_data[2017]==0) & (recip_data[2018]==0) & (recip_data[2019]==0)&(recip_data[2020]==0)
 
 recip_data = recip_data[recip_data["Removal"]==False]
 
-recip_data = recip_data[['Donor Name','Purpose Name','Recipient Name',2016,2017,2018,2019]]
+recip_data = recip_data[['Donor Name','Purpose Name','Recipient Name',2016,2017,2018,2019,2020]]
 
 recipient_data = []
 
 for donor in list(set(recip_data["Donor Name"])):
     for purpose in list(set(recip_data["Purpose Name"])):
         subset = recip_data[(recip_data["Donor Name"]==donor) & (recip_data["Purpose Name"]==purpose)].reset_index()
-        subset = subset.sort_values(by=[2019,2018,2017,2016,"Recipient Name"],ascending = [False,False,False,False,True]).reset_index()
+        subset = subset.sort_values(by=[2020,2019,2018,2017,2016,"Recipient Name"],ascending = [False,False,False,False,True]).reset_index()
         subset["Rank"] = subset.index + 1 # rank by years
         recipient_data.append(subset)
 
 recipient_data = pd.concat(recipient_data)
 
-recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]
+recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2016,2017,2018,2019,2020,"rank"]
 
-recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]]
+recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,2020,"rank"]]
 
 recipient_data.to_csv(f'{CSV_FILES_FOLDER}/donor_by_recip_2019.csv', encoding='utf-8', index=False)
 
