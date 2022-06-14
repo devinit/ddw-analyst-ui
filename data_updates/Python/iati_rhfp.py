@@ -5,10 +5,11 @@ from requests.auth import HTTPBasicAuth
 import pandas as pd
 from ..utils import push_folder_to_github
 
-try:
-    os.mkdir("iati_csv")
-except:
-    print("Folder already exists!")
+# create csv folder if it does not exist
+path = 'data_updates/Python/iati_csv'
+isdir = os.path.isdir(path)
+if not isdir:
+    os.mkdir('data_updates/Python/iati_csv')
 
 donors_selected = pd.read_csv("https://ddw.devinit.org/api/export/1447")
 
@@ -60,7 +61,7 @@ data["Reporting Organisation Narrative"] = data["country"]
 
 data = data[data['country'] != "Germany"]
 
-data.to_csv("iati_csv/IATI-RHFP-data-v1.csv", encoding='utf-8', index=False)
+data.to_csv("data_updates/Python/iati_csv/IATI-RHFP-data-v1.csv", encoding='utf-8', index=False)
 
 # Dataset 2
 
@@ -106,7 +107,7 @@ data["Reporting Organisation Narrative"] = data["country"]
 
 data = data[data['country'] != "Germany"]
 
-data.to_csv("iati_csv/IATI-RHFP-data-v2.csv", encoding='utf-8', index=False)
+data.to_csv("data_updates/Python/iati_csv/IATI-RHFP-data-v2.csv", encoding='utf-8', index=False)
 
 # Dataset 4
 
@@ -137,7 +138,7 @@ data["Donor Name"] = data["country"]
 
 data = data[data['country'] != "Germany"]
 
-data.to_csv("iati_csv/iati_rhfp4.csv", encoding='utf-8', index=False)
+data.to_csv("data_updates/Python/iati_csv/iati_rhfp4.csv", encoding='utf-8', index=False)
 
 # Sample call to the function below
-push_folder_to_github('devinit/di-website-data', 'main', 'iati_csv', '2022', 'Committing from API', '*.csv')
+push_folder_to_github('devinit/di-website-data', 'main', 'Python/iati_csv', '2022', 'Committing from API', '*.csv')
