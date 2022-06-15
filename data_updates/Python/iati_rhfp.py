@@ -1,9 +1,6 @@
 import os
-import requests
-import glob
-from requests.auth import HTTPBasicAuth
 import pandas as pd
-from ..utils import push_folder_to_github
+from data_updates.utils import push_folder_to_github
 
 CSV_FOLDER_PATH = "data_updates/Python/iati_csv"
 
