@@ -1,22 +1,19 @@
 
 import datetime
 import os
-import glob
-import numpy
-from numpy import NaN
 import pandas as pd
-from ..utils import push_folder_to_github
+from data_updates.utils import push_folder_to_github
 
 
 current_date = datetime.datetime.now()
-PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL', "https://staging-ddw.devinit.org/api/export/1241/")
+PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL', "https://ddw.devinit.org/api/export/1486/")
 CSV_FILES_FOLDER = "data_updates/Python/oecd_csv"
 CSV_FOLDER = "Python/oecd_csv"
 DATA_REPO = "devinit/di-website-data"
 REMOTE_BRANCH = "main"
 REMOTE_FOLDER = f'{current_date.year}'
-ODA_AID_TYPE_URL = os.getenv('ODA_AID_TYPE_URL', "https://staging-ddw.devinit.org/api/export/1238/")
-ODA_CHANNEL_TYPE_URL = os.getenv('ODA_CHANNEL_TYPE_URL', "https://staging-ddw.devinit.org/api/export/1237/")
+ODA_AID_TYPE_URL = os.getenv('ODA_AID_TYPE_URL', "https://ddw.devinit.org/api/export/1484/")
+ODA_CHANNEL_TYPE_URL = os.getenv('ODA_CHANNEL_TYPE_URL', "https://ddw.devinit.org/api/export/1485/")
 ODA_RECIP_TYPE_URL = os.getenv('ODA_RECIP_TYPE_URL', "https://ddw.devinit.org/api/export/1339/")
 
 
@@ -78,30 +75,30 @@ recip_data = recip_data.append(pd.DataFrame(data = total_data),ignore_index=True
 
 recip_data = recip_data.pivot_table(index=['Donor Name', 'Purpose Name','Recipient Name'], columns='Year', values='USD Disbursement Deflated').reset_index()
 
-cols_to_check = [2016,2017,2018,2019]
+cols_to_check = [2016,2017,2018,2019,2020]
 
 recip_data[cols_to_check] = recip_data[cols_to_check].fillna(0)
 
-recip_data["Removal"] = (recip_data[2016]==0) & (recip_data[2017]==0) & (recip_data[2018]==0) & (recip_data[2019]==0)
+recip_data["Removal"] = (recip_data[2016]==0) & (recip_data[2017]==0) & (recip_data[2018]==0) & (recip_data[2019]==0)&(recip_data[2020]==0)
 
 recip_data = recip_data[recip_data["Removal"]==False]
 
-recip_data = recip_data[['Donor Name','Purpose Name','Recipient Name',2016,2017,2018,2019]]
+recip_data = recip_data[['Donor Name','Purpose Name','Recipient Name',2016,2017,2018,2019,2020]]
 
 recipient_data = []
 
 for donor in list(set(recip_data["Donor Name"])):
     for purpose in list(set(recip_data["Purpose Name"])):
         subset = recip_data[(recip_data["Donor Name"]==donor) & (recip_data["Purpose Name"]==purpose)].reset_index()
-        subset = subset.sort_values(by=[2019,2018,2017,2016,"Recipient Name"],ascending = [False,False,False,False,True]).reset_index()
+        subset = subset.sort_values(by=[2020,2019,2018,2017,2016,"Recipient Name"],ascending = [False,False,False,False,False,True]).reset_index()
         subset["Rank"] = subset.index + 1 # rank by years
         recipient_data.append(subset)
 
 recipient_data = pd.concat(recipient_data)
 
-recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]
+recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2016,2017,2018,2019,2020,"rank"]
 
-recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]]
+recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,2020,"rank"]]
 
 recipient_data.to_csv(f'{CSV_FILES_FOLDER}/donor_by_recip_2019.csv', encoding='utf-8', index=False)
 
