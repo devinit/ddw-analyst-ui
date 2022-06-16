@@ -29,7 +29,6 @@ const StyledCardBody = styled(Card.Body)`
     padding-left: 15px;
   }
 `;
-console.log('child');
 
 const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const [alertMessages, setAlertMessages] = useState<string[]>(props.alertMessages || []);

@@ -66,7 +66,7 @@ const queryBuilderValueContext: QueryBuilderContextValue = {
 
 export const QueryBuilderContext =
   React.createContext<QueryBuilderContextValue>(queryBuilderValueContext);
-console.log('parent');
+
 const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [showPreview, setShowPreview] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
@@ -307,18 +307,16 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       const editable = isEditable(props.activeOperation);
 
       return (
-        <QueryBuilderContext.Provider value={queryBuilderValueContext}>
-          <OperationStepForm
-            source={source}
-            step={step}
-            onUpdateStep={props.actions.updateActiveStep}
-            onSuccess={onAddOperationStep}
-            onDeleteStep={onDeleteOperationStep}
-            onClose={resetAction}
-            editing={editing}
-            editable={editable}
-          />
-        </QueryBuilderContext.Provider>
+        <OperationStepForm
+          source={source}
+          step={step}
+          onUpdateStep={props.actions.updateActiveStep}
+          onSuccess={onAddOperationStep}
+          onDeleteStep={onDeleteOperationStep}
+          onClose={resetAction}
+          editing={editing}
+          editable={editable}
+        />
       );
     }
 
@@ -338,32 +336,34 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const editable = isEditable(operation);
 
     return (
-      <OperationTabContainer
-        alertMessages={alertMessages}
-        operation={operation}
-        editable={editable}
-        valid={steps.count() > 0}
-        onUpdate={onUpdateOperation}
-        onSave={onSaveOperation}
-        onPreview={onTogglePreview}
-        previewing={showPreview}
-        processing={props.page.get('processing') as boolean}
-        onDelete={onDeleteOperation}
-        onReset={!id ? () => props.actions.setActiveOperation() : undefined}
-      >
-        <OperationSteps
-          steps={steps}
-          onSelectSource={(source) => setActiveSource(source)}
-          onAddStep={props.actions.updateActiveStep}
-          activeSource={activeSource}
-          activeStep={activeStep}
-          onClickStep={onClickStep}
+      <QueryBuilderContext.Provider value={queryBuilderValueContext}>
+        <OperationTabContainer
+          alertMessages={alertMessages}
+          operation={operation}
           editable={editable}
-          disabled={showPreview}
-          onDuplicateStep={onDuplicateStep}
-          onReorderSteps={onReorderSteps}
-        />
-      </OperationTabContainer>
+          valid={steps.count() > 0}
+          onUpdate={onUpdateOperation}
+          onSave={onSaveOperation}
+          onPreview={onTogglePreview}
+          previewing={showPreview}
+          processing={props.page.get('processing') as boolean}
+          onDelete={onDeleteOperation}
+          onReset={!id ? () => props.actions.setActiveOperation() : undefined}
+        >
+          <OperationSteps
+            steps={steps}
+            onSelectSource={(source) => setActiveSource(source)}
+            onAddStep={props.actions.updateActiveStep}
+            activeSource={activeSource}
+            activeStep={activeStep}
+            onClickStep={onClickStep}
+            editable={editable}
+            disabled={showPreview}
+            onDuplicateStep={onDuplicateStep}
+            onReorderSteps={onReorderSteps}
+          />
+        </OperationTabContainer>
+      </QueryBuilderContext.Provider>
     );
   };
 
