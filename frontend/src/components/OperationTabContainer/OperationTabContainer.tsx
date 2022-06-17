@@ -47,7 +47,7 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const onAlertClose = (): void => setAlertMessages(['']);
 
   const handleSwitchButton = () => {
-    if (value) {
+    if (location.pathname === '/queries/build/advanced/') {
       history.push('/queries/build/');
     } else {
       history.push('/queries/build/advanced/');
@@ -89,7 +89,8 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
             onClick={() => handleSwitchButton()}
             style={{ position: 'absolute', right: 9, top: -20 }}
           >
-            Switch to {value.defaultValue} Query Builder
+            Switch to {location.pathname === '/queries/build/' ? 'Advanced' : value.defaultValue}{' '}
+            Query Builder
           </Button>
 
           <OperationForm
