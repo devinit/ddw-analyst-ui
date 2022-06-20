@@ -34,6 +34,7 @@ const saveCSV = (fileName: string, url: string): void => {
   const tempLink = document.createElement('a');
   tempLink.href = url;
   tempLink.setAttribute('download', `${fileName}.csv`);
+  tempLink.setAttribute('target', '_blank');
   tempLink.click();
 };
 
