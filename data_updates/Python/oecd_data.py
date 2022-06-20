@@ -2,6 +2,7 @@
 import datetime
 import os
 import pandas as pd
+import sys
 from data_updates.utils import push_folder_to_github
 
 
@@ -73,13 +74,18 @@ total_data['Purpose Name'] = "Reproductive health care and family planning"
 
 recip_data = recip_data.append(pd.DataFrame(data = total_data),ignore_index=True)
 
+max_year = recip_data["Year"].max()
+
 recip_data = recip_data.pivot_table(index=['Donor Name', 'Purpose Name','Recipient Name'], columns='Year', values='USD Disbursement Deflated').reset_index()
 
-cols_to_check = [2016,2017,2018,2019,2020]
+cols_to_check = list(range(max_year-4,max_year+1))
 
 recip_data[cols_to_check] = recip_data[cols_to_check].fillna(0)
 
-recip_data["Removal"] = (recip_data[2016]==0) & (recip_data[2017]==0) & (recip_data[2018]==0) & (recip_data[2019]==0)&(recip_data[2020]==0)
+recip_data["Removal"] = [True]*len(recip_data.index)
+
+for col in cols_to_check:
+    recip_data.loc[recip_data[col]!=0,"Removal"] = False
 
 recip_data = recip_data[recip_data["Removal"]==False]
 
