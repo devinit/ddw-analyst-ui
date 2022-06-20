@@ -6,19 +6,58 @@ The new and improved DDW Analyst UI interface
 
 ### Docker Deployment
 
-1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User `docker-compose down` `docker volume rm metadata2`
-2. Create a persistent dev volume `docker volume create --name=metadata2`
-3. Create a self-signed certificate `mkdir -p ssl && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem`
-4. Build your app `docker-compose up --build -d`
-5. Fetch CSV files from GitHub `docker-compose exec web python manage.py update_csv_files`
-6. Migrate the database. `docker-compose exec web python manage.py migrate`
-7. Load test data `docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets`
-8. Alternatively, load the real data `export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh`
-9. Create a superuser. `docker-compose exec web python manage.py createsuperuser`
-10. Add the bit registry to npm config to install bit dependencies `npm config set @bit:registry https://node.bitsrc.io`
-11. Install frontend dependencies `npm install`
-12. Bundle frontend code and collect static files `npm run build`
-13. Restart the app. `docker-compose restart`
+1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User 
+
+        docker-compose down` `docker volume rm metadata2
+
+2. Create a persistent dev volume
+
+        docker volume create --name=metadata2
+
+3. Create a self-signed certificate
+
+        mkdir -p ssl && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout ssl/privkey.pem -out ssl/fullchain.pem
+
+4. Build your app
+
+        docker-compose up --build -d
+
+5. Fetch CSV files from GitHub
+
+        docker-compose exec web python manage.py update_csv_files
+
+6. Migrate the database.
+
+        docker-compose exec web python manage.py migrate
+
+7. Load test data
+
+        docker-compose exec web python manage.py loaddata test_data` `docker-compose exec web python manage.py loaddata --database=datasets test_datasets
+
+8. Alternatively, load the real data
+
+        export FTSUSER=X` `export FTSPASS=Y` `docker-compose exec web data_updates/completed_scripts.sh
+
+9.  Create a superuser.
+
+        docker-compose exec web python manage.py createsuperuser
+
+10. Add the bit registry to npm config to install bit dependencies
+
+        npm config set @bit:registry https://node.bitsrc.io
+
+11. Install frontend dependencies
+
+        npm install
+
+12. Bundle frontend code and collect static files
+
+        npm run build
+
+13. Restart the app.
+
+        docker-compose restart
+
 
 ### Import CSV Files
 

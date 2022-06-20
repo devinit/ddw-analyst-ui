@@ -43,9 +43,8 @@ describe('The Query Builder', () => {
     cy.visit('/queries/build');
     cy.get('[name="name"]').focus().type(operationName);
     cy.get('[name="description"]').focus().type(operationDescription);
-    cy.get('.search').eq(1).click({ force: true });
     cy.wait(5000);
-    cy.get('.search').eq(1).type('CRS ISO Codes{enter}');
+    cy.get('[data-testid="active-data-source"]').type('CRS ISO Codes{enter}');
 
     // Add step
     cy.get('[data-testid="qb-add-step-button"]').click();
@@ -75,10 +74,11 @@ describe('The Query Builder', () => {
       const aliasPendingDataset = datasets.results.find(
         (dataset) => (dataset.alias_creation_status = 'p'),
       );
-      cy.intercept('api/dataset/1/', aliasPendingDataset);
+      cy.intercept('api/dataset/1/', aliasPendingDataset).as('getDatasets');
     });
 
     cy.visit('/queries/build/1/');
+    cy.wait('@getDatasets');
     cy.get('[data-testid="qb-alert"] p').contains(
       'There was interruption while creating column aliases for this dataset. Please save the dataset again',
     );
@@ -87,10 +87,11 @@ describe('The Query Builder', () => {
   it('that has logs displays them in an alert', () => {
     // Mock datasets route
     cy.fixture('datasets').then((datasets) => {
-      cy.intercept('api/dataset/2/', datasets.results[1]);
+      cy.intercept('api/dataset/2/', datasets.results[1]).as('getDatasets');
     });
 
     cy.visit('/queries/build/2/');
+    cy.wait('@getDatasets');
     cy.get('[data-testid="qb-alert"] p')
       .first()
       .contains(`Columns donor_code, donor_name used in steps 1 are obsolete.`);
@@ -110,9 +111,10 @@ describe('The Query Builder', () => {
 
   it('that creates a copy of a step', () => {
     cy.fixture('datasets').then((datasets) => {
-      cy.intercept('api/dataset/3/', datasets.results[2]);
+      cy.intercept('api/dataset/3/', datasets.results[2]).as('getDatasets');
     });
     cy.visit('/queries/build/3/');
+    cy.wait('@getDatasets');
     cy.get('[data-testid="step-duplicate"]').click({ force: true });
     cy.url().should('include', '/queries/build');
     cy.get('[data-testid="op-step-name"]').should('have.value', 'Copy of Select');
@@ -150,7 +152,9 @@ describe('The Query Builder', () => {
     // Visit query builder, type name and choose datasource
     cy.fillOperationForm('Test Dataset', 'Test Dataset', 'Financial Tracking Service');
 
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.wait(3000);
+
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Create select query step
     cy.createSelectStep();
@@ -159,7 +163,7 @@ describe('The Query Builder', () => {
     cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
 
     // Save and create step
-    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click({ force: true });
 
     // Check that there is more than one step
     cy.get('.list-group').children().should('have.length', 2);
@@ -172,7 +176,9 @@ describe('The Query Builder', () => {
     // Visit query builder, type name and choose datasource
     cy.fillOperationForm('Test Dataset', 'Test Dataset', 'Financial Tracking Service');
 
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.wait(3000);
+
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Create select query step
     cy.createSelectStep();
@@ -181,7 +187,7 @@ describe('The Query Builder', () => {
     cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
 
     // Save and create step
-    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click({ force: true });
 
     // Navigate to reorder step view
     cy.get('[data-testid="qb-order-step-button"]').click({ force: true });
