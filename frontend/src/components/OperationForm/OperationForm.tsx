@@ -115,143 +115,145 @@ export const OperationForm: FunctionComponent<OperationFormProps> = (props) => {
   const values: Partial<Operation> = props.operation ? props.operation.toJS() : {};
 
   return (
-    <Formik
-      enableReinitialize={true}
-      validationSchema={schema}
-      initialValues={values}
-      onSubmit={onSuccess()}
-      validateOnMount
-    >
-      {({
-        errors,
-        isSubmitting,
-        isValid,
-        setFieldValue,
-        handleSubmit,
-        submitCount,
-      }: FormikProps<Operation>) => (
-        <Form className="form" noValidate data-testid="operation-form">
-          <Alert variant="danger" hidden={!props.alert}>
-            {props.alert}
-          </Alert>
+    <>
+      <Formik
+        enableReinitialize={true}
+        validationSchema={schema}
+        initialValues={values}
+        onSubmit={onSuccess()}
+        validateOnMount
+      >
+        {({
+          errors,
+          isSubmitting,
+          isValid,
+          setFieldValue,
+          handleSubmit,
+          submitCount,
+        }: FormikProps<Operation>) => (
+          <Form className="form" noValidate data-testid="operation-form">
+            <Alert variant="danger" hidden={!props.alert}>
+              {props.alert}
+            </Alert>
 
-          <Form.Group className={getFormGroupClasses('name', values.name)}>
-            <Form.Label className="bmd-label-floating">Name</Form.Label>
-            <Form.Control
-              required
-              name="name"
-              type="text"
-              value={values.name || ''}
-              isInvalid={submitCount > 0 && !!errors.name}
-              onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
-              onFocus={setFocusedField}
-              onBlur={resetFocus}
+            <Form.Group className={getFormGroupClasses('name', values.name)}>
+              <Form.Label className="bmd-label-floating">Name</Form.Label>
+              <Form.Control
+                required
+                name="name"
+                type="text"
+                value={values.name || ''}
+                isInvalid={submitCount > 0 && !!errors.name}
+                onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
+                onFocus={setFocusedField}
+                onBlur={resetFocus}
+                disabled={!!values.id && !props.editable}
+                data-testid="op-name-field"
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.name ? errors.name : null}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className={getFormGroupClasses('description', values.description)}>
+              <Form.Label className="bmd-label-floating">Description</Form.Label>
+              <Form.Control
+                name="description"
+                as="textarea"
+                onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
+                isInvalid={submitCount > 0 && !!errors.description}
+                onFocus={setFocusedField}
+                onBlur={resetFocus}
+                value={values.description ? values.description.toString() : ''}
+                disabled={!!values.id && !props.editable}
+                data-testid="op-description-field"
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.description ? errors.description : null}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <CheckBox
+              checked={values.is_draft}
+              onChange={debounce(toggleDraft(setFieldValue), 1000, { leading: true })}
+              label="Is Draft"
               disabled={!!values.id && !props.editable}
-              data-testid="op-name-field"
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.name ? errors.name : null}
-            </Form.Control.Feedback>
-          </Form.Group>
 
-          <Form.Group className={getFormGroupClasses('description', values.description)}>
-            <Form.Label className="bmd-label-floating">Description</Form.Label>
-            <Form.Control
-              name="description"
-              as="textarea"
-              onChange={debounce(onChange(setFieldValue), 1000, { leading: true })}
-              isInvalid={submitCount > 0 && !!errors.description}
-              onFocus={setFocusedField}
-              onBlur={resetFocus}
-              value={values.description ? values.description.toString() : ''}
-              disabled={!!values.id && !props.editable}
-              data-testid="op-description-field"
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.description ? errors.description : null}
-            </Form.Control.Feedback>
-          </Form.Group>
+            {props.children}
 
-          <CheckBox
-            checked={values.is_draft}
-            onChange={debounce(toggleDraft(setFieldValue), 1000, { leading: true })}
-            label="Is Draft"
-            disabled={!!values.id && !props.editable}
-          />
-
-          {props.children}
-
-          <Dropdown hidden={!!values.id && !props.editable} data-testid="qb-dropdown-buttons">
-            <Button
-              variant="danger"
-              disabled={!isValid || isSubmitting}
-              onClick={() => handleSubmit()}
-              size="sm"
-              data-testid="qb-save-button"
-            >
-              {props.processing ? 'Saving ...' : 'Save'}
-            </Button>
-            <Button
-              variant="dark"
-              className={classNames({ 'd-none': !props.operation })}
-              onClick={props.onPreview}
-              size="sm"
-              hidden={!props.onPreview}
-              disabled={!props.valid}
-              data-testid="qb-preview-button"
-            >
-              {props.previewing ? 'Close Preview' : 'Preview'}
-            </Button>
-            <Button
-              variant="dark"
-              className={classNames({ 'd-none': !props.operation })}
-              onClick={props.onValidate}
-              size="sm"
-              hidden={!props.onValidate}
-              disabled={!props.valid}
-              data-testid="qb-validate-button"
-            >
-              {props.validating ? 'Validating' : 'Validate'}
-            </Button>
-            <Dropdown.Toggle
-              split
-              variant="danger"
-              id="operation-form-actions"
-              size="sm"
-              disabled={!props.valid || !isValid || isSubmitting || props.processing}
-              data-testid="qb-dropdown-toggle-button"
-            />
-            <Dropdown.Menu className="transition-none">
-              <Dropdown.Item
-                eventKey="1"
-                onClick={onSuccess(true)}
-                data-testid="qb-save-preview-item"
+            <Dropdown hidden={!!values.id && !props.editable} data-testid="qb-dropdown-buttons">
+              <Button
+                variant="danger"
+                disabled={!isValid || isSubmitting}
+                onClick={() => handleSubmit()}
+                size="sm"
+                data-testid="qb-save-button"
               >
-                {props.processing ? 'Saving ...' : 'Save & Preview'}
-              </Dropdown.Item>
-              <Dropdown.Item
-                eventKey="3"
-                onClick={props.onReset}
-                hidden={!props.onReset || !!(values.id && !props.editable)}
-                data-testid="qb-refresh-item"
+                {props.processing ? 'Saving ...' : 'Save'}
+              </Button>
+              <Button
+                variant="dark"
+                className={classNames({ 'd-none': !props.operation })}
+                onClick={props.onPreview}
+                size="sm"
+                hidden={!props.onPreview}
+                disabled={!props.valid}
+                data-testid="qb-preview-button"
               >
-                Refresh
-              </Dropdown.Item>
-            </Dropdown.Menu>
-            <Button
-              variant="dark"
-              className={classNames('float-right', { 'd-none': !props.operation })}
-              onClick={onDelete}
-              size="sm"
-              hidden={!!values.id && !props.editable}
-              data-testid="qb-delete-button"
-            >
-              {`${confirmDelete ? 'Confirm ' : ''}Delete Dataset`}
-            </Button>
-          </Dropdown>
-        </Form>
-      )}
-    </Formik>
+                {props.previewing ? 'Close Preview' : 'Preview'}
+              </Button>
+              <Button
+                variant="dark"
+                className={classNames({ 'd-none': !props.operation })}
+                onClick={props.onValidate}
+                size="sm"
+                hidden={!props.onValidate}
+                disabled={!props.valid}
+                data-testid="qb-validate-button"
+              >
+                {props.validating ? 'Validating' : 'Validate'}
+              </Button>
+              <Dropdown.Toggle
+                split
+                variant="danger"
+                id="operation-form-actions"
+                size="sm"
+                disabled={!props.valid || !isValid || isSubmitting || props.processing}
+                data-testid="qb-dropdown-toggle-button"
+              />
+              <Dropdown.Menu className="transition-none">
+                <Dropdown.Item
+                  eventKey="1"
+                  onClick={onSuccess(true)}
+                  data-testid="qb-save-preview-item"
+                >
+                  {props.processing ? 'Saving ...' : 'Save & Preview'}
+                </Dropdown.Item>
+                <Dropdown.Item
+                  eventKey="3"
+                  onClick={props.onReset}
+                  hidden={!props.onReset || !!(values.id && !props.editable)}
+                  data-testid="qb-refresh-item"
+                >
+                  Refresh
+                </Dropdown.Item>
+              </Dropdown.Menu>
+              <Button
+                variant="dark"
+                className={classNames('float-right', { 'd-none': !props.operation })}
+                onClick={onDelete}
+                size="sm"
+                hidden={!!values.id && !props.editable}
+                data-testid="qb-delete-button"
+              >
+                {`${confirmDelete ? 'Confirm ' : ''}Delete Dataset`}
+              </Button>
+            </Dropdown>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 
