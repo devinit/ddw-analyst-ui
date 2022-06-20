@@ -52,20 +52,9 @@ interface RouterParams {
   id?: string;
 }
 
-interface QueryBuilderContextValue {
-  defaultValue: string;
-}
-
 type QueryBuilderProps = ActionProps & ReduxState & RouteComponentProps<RouterParams>;
 
 const OBSOLETE_COLUMNS_LOG_MESSAGE = 'Obsolete Columns'; // eslint-disable-line @typescript-eslint/naming-convention
-
-const queryBuilderValueContext: QueryBuilderContextValue = {
-  defaultValue: 'Basic',
-};
-
-export const QueryBuilderContext =
-  React.createContext<QueryBuilderContextValue>(queryBuilderValueContext);
 
 const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
   const [showPreview, setShowPreview] = useState(false);
@@ -336,34 +325,32 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     const editable = isEditable(operation);
 
     return (
-      <QueryBuilderContext.Provider value={queryBuilderValueContext}>
-        <OperationTabContainer
-          alertMessages={alertMessages}
-          operation={operation}
+      <OperationTabContainer
+        alertMessages={alertMessages}
+        operation={operation}
+        editable={editable}
+        valid={steps.count() > 0}
+        onUpdate={onUpdateOperation}
+        onSave={onSaveOperation}
+        onPreview={onTogglePreview}
+        previewing={showPreview}
+        processing={props.page.get('processing') as boolean}
+        onDelete={onDeleteOperation}
+        onReset={!id ? () => props.actions.setActiveOperation() : undefined}
+      >
+        <OperationSteps
+          steps={steps}
+          onSelectSource={(source) => setActiveSource(source)}
+          onAddStep={props.actions.updateActiveStep}
+          activeSource={activeSource}
+          activeStep={activeStep}
+          onClickStep={onClickStep}
           editable={editable}
-          valid={steps.count() > 0}
-          onUpdate={onUpdateOperation}
-          onSave={onSaveOperation}
-          onPreview={onTogglePreview}
-          previewing={showPreview}
-          processing={props.page.get('processing') as boolean}
-          onDelete={onDeleteOperation}
-          onReset={!id ? () => props.actions.setActiveOperation() : undefined}
-        >
-          <OperationSteps
-            steps={steps}
-            onSelectSource={(source) => setActiveSource(source)}
-            onAddStep={props.actions.updateActiveStep}
-            activeSource={activeSource}
-            activeStep={activeStep}
-            onClickStep={onClickStep}
-            editable={editable}
-            disabled={showPreview}
-            onDuplicateStep={onDuplicateStep}
-            onReorderSteps={onReorderSteps}
-          />
-        </OperationTabContainer>
-      </QueryBuilderContext.Provider>
+          disabled={showPreview}
+          onDuplicateStep={onDuplicateStep}
+          onReorderSteps={onReorderSteps}
+        />
+      </OperationTabContainer>
     );
   };
 

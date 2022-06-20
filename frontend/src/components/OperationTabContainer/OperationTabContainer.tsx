@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { OperationForm } from '../OperationForm';
 import { useHistory } from 'react-router-dom';
-import { QueryBuilderContext } from '../../pages/QueryBuilder/QueryBuilder';
 
 type ComponentProps = {
   operation?: OperationMap;
@@ -32,8 +31,6 @@ const StyledCardBody = styled(Card.Body)`
 
 const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const [alertMessages, setAlertMessages] = useState<string[]>(props.alertMessages || []);
-
-  const value = React.useContext(QueryBuilderContext);
 
   const history = useHistory();
 
@@ -89,8 +86,7 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
             onClick={() => handleSwitchButton()}
             style={{ position: 'absolute', right: 9, top: -20 }}
           >
-            Switch to {location.pathname === '/queries/build/' ? 'Advanced' : value.defaultValue}{' '}
-            Query Builder
+            Switch to {location.pathname === '/queries/build/' ? 'Advanced' : 'Basic'} Query Builder
           </Button>
 
           <OperationForm
