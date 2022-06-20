@@ -1,9 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.db import transaction
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.urls import reverse
+from django.utils import timezone
 from core.const import DATA_TYPES
 from core.models import FrozenData, Operation, OperationStep, SavedQueryData
 from core.pypika_fts_utils import TableQueryBuilder
@@ -14,6 +15,8 @@ from data.db_manager import run_query
 
 SIX_MONTHS = 365//2
 RENEWAL_MESSAGE = ('Your query / archived dataset has gone long without renewal.\n '
+                   'Please follow below link to renew or it will be deleted automatically in a week.\n')
+RENEWAL_MESSAGE_PM = ('Query / archived dataset has not yet been renewed by the user.\n '
                    'Please follow below link to renew or it will be deleted automatically in a week.\n')
 QUERY_SUBJECT = 'Query renewal'
 ARCHIVE_SUBJECT = 'Frozen data renewal'
@@ -27,13 +30,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.process_renewal_links(False, RENEWAL_MESSAGE)
-        self.process_renewal_links(True, RENEWAL_MESSAGE)
+        self.process_renewal_links(True, RENEWAL_MESSAGE_PM)
         self.delete_old_operations()
         self.delete_old_frozen_sources()
         self.delete_old_frozen_datasets()
 
     @transaction.atomic
-    def process_renewal_links(renewal_sent=False, message=''):
+    def process_renewal_links(self, renewal_sent=False, message=''):
         subject = ''
         reset_generator = QueryResetTokenGenerator()
         time_difference = SIX_MONTHS
@@ -42,7 +45,7 @@ class Command(BaseCommand):
             time_difference += DAYS_TO_SEND_TO_PM
         for name, model in DATA_TYPES.items():
             old_objects = model.objects.filter(
-                last_accessed__lte=datetime.now()-timedelta(days=time_difference)
+                last_accessed__lte=timezone.now()-timedelta(days=time_difference)
             ).filter(renewal_sent=renewal_sent).select_related('user')
             if name == 'operation':
                 subject = QUERY_SUBJECT
@@ -67,10 +70,10 @@ class Command(BaseCommand):
                 model.objects.bulk_update(processed_objects, ['renewal_sent'], batch_size=1000)
 
     @transaction.atomic
-    def delete_old_operations():
+    def delete_old_operations(self):
         time_difference = SIX_MONTHS + DAYS_TO_DELETE
         old_operations = Operation.objects.filter(
-            last_accessed__lte=datetime.now()-timedelta(days=time_difference)
+            last_accessed__lte=timezone.now()-timedelta(days=time_difference)
         ).filter(renewal_sent=True)
         for old_operation in old_operations:
             try:
@@ -82,11 +85,11 @@ class Command(BaseCommand):
                 pass
 
     @transaction.atomic
-    def delete_old_frozen_sources():
+    def delete_old_frozen_sources(self):
         # Delete from sources table, delete table itself
         time_difference = SIX_MONTHS + DAYS_TO_DELETE
         old_frozen_tables = FrozenData.objects.filter(
-            last_accessed__lte=datetime.now()-timedelta(days=time_difference)
+            last_accessed__lte=timezone.now()-timedelta(days=time_difference)
         ).filter(renewal_sent=True)
         for frozen_table in old_frozen_tables:
             try:
@@ -95,10 +98,10 @@ class Command(BaseCommand):
                 pass
 
     @transaction.atomic
-    def delete_old_frozen_datasets():
+    def delete_old_frozen_datasets(self):
         time_difference = SIX_MONTHS + DAYS_TO_DELETE
         old_frozen_datasets = SavedQueryData.objects.filter(
-            last_accessed__lte=datetime.now()-timedelta(days=time_difference)
+            last_accessed__lte=timezone.now()-timedelta(days=time_difference)
         ).filter(renewal_sent=True)
         for frozen_dataset in old_frozen_datasets:
             try:
