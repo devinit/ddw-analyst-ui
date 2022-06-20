@@ -176,7 +176,7 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
       })
       .catch(() => {
         toast.update(toastId, {
-          render: `Failed to export ${fileName}. Please try again later!`,
+          render: `We had trouble exporting ${fileName}. The download will now be handled by your browser.`,
           type: 'error',
           isLoading: false,
           position: 'top-right',

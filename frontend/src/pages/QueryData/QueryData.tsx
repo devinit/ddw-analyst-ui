@@ -66,7 +66,7 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
       })
       .catch(() => {
         toast.update(toastId, {
-          render: `Failed to export ${fileName}. Now using the browser.`,
+          render: `We had trouble exporting ${fileName}. The download will now be handled by your browser.`,
           type: 'error',
           isLoading: false,
           position: 'top-right',
