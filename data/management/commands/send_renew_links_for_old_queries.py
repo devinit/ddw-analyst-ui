@@ -56,11 +56,14 @@ class Command(BaseCommand):
                 reset_token = reset_generator.make_token(old_object)
                 reset_link = reverse('renewal_view', kwargs={'model': name, 'id': old_object.id, 'token': reset_token})
                 reset_link = f'{settings.BASE_URL}{reset_link}'
+                obj_url = ''
+                if name == 'operation':
+                    obj_url = f'{settings.BASE_URL}/queries/build/{old_object.id}'
                 recipients = [user[1] for user in settings.ADMINS]
                 if old_object.user and old_object.user.username:
                     recipients.append(old_object.user.username)
                 subject = f'{subject} ({old_object})'
-                message = f'{message} {reset_link}'
+                message = f'{message} \nObject link ({old_object}) - {obj_url} \nReset link {reset_link}'
                 try:
                     send_emails(subject, message, recipients)
                     old_object.renewal_sent = True
