@@ -11,6 +11,7 @@ import { sortObjectArrayByProperty, sortSteps } from '../../utils';
 import { useSources } from '../../utils/hooks';
 import OperationStep from '../OperationStepView';
 import { OperationStepsOrder } from '../OperationStepsOrder';
+import { DataSourceTypeSelector, SourceType } from '../DataSourceSelector/DataSourceTypeSelector';
 
 interface OperationStepsProps {
   editable?: boolean;
@@ -46,6 +47,8 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
   const [isOrderingSteps, setIsOrderingSteps] = useState(false);
   const [createdSteps, setCreatedSteps] = useState<Step[]>([]);
   const sources = useSources({ limit: 200, offset: 0 });
+  const [selectedDataSources, setSelectedDataSources] = useState<List<SourceMap>>(List());
+  const [selectedDatasourceType, setSelectedDatasourceType] = useState<SourceType>('core');
 
   useEffect(() => {
     (window as any).$('[data-toggle="sort-tooltip"]').tooltip(); // eslint-disable-line
@@ -63,6 +66,19 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
         })),
     );
   }, [steps]);
+
+  useEffect(() => {
+    const sourceType =
+      activeSource && activeSource.get('schema') !== 'archives' ? 'core' : 'frozen';
+    setSelectedDatasourceType(activeSource ? sourceType : 'core');
+    setSelectedDataSources(
+      sources.filter((item) => {
+        return (activeSource ? sourceType : 'core') === 'core'
+          ? item.get('schema') !== 'archives'
+          : item.get('schema') === 'archives';
+      }),
+    );
+  }, [activeSource, sources]);
 
   const renderOperationSteps = (steps: List<OperationStepMap>, activeStep?: OperationStepMap) => {
     if (steps.count()) {
@@ -146,22 +162,38 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
     }
   };
 
+  const onSelectSourceType = (data: SourceType) => {
+    setSelectedDataSources(
+      sources.filter((item) =>
+        data === 'core' ? item.get('schema') !== 'archives' : item.get('schema') === 'archives',
+      ),
+    );
+    setSelectedDatasourceType(data);
+  };
+
   return (
     <React.Fragment>
-      <div className="mb-3">
-        <label>Active Data Source</label>
-        <Dropdown
-          placeholder="Select Data Source"
-          fluid
-          selection
-          search
-          options={getSelectOptionsFromSources(sources)}
-          loading={sources.count() === 0}
-          onChange={onSelectSource}
-          value={activeSource ? (activeSource.get('id') as string) : undefined}
-          disabled={!editable || props.disabled}
-          data-testid="active-data-source"
+      <div className="row mb-3">
+        <DataSourceTypeSelector
+          onSelect={onSelectSourceType}
+          activeSourceType={selectedDatasourceType}
+          className={'col-lg-4'}
         />
+        <div className={'col-lg-8'}>
+          <label>Data Source</label>
+          <Dropdown
+            placeholder="Select Data Source"
+            fluid
+            selection
+            search
+            options={getSelectOptionsFromSources(selectedDataSources)}
+            loading={!selectedDataSources.count()}
+            onChange={onSelectSource}
+            value={activeSource ? (activeSource.get('id') as string) : undefined}
+            disabled={!editable || props.disabled}
+            data-testid="active-data-source"
+          />
+        </div>
       </div>
 
       <div className={classNames('mb-3', { 'd-none': !activeSource })}>

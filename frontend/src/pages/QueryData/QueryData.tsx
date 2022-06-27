@@ -1,13 +1,14 @@
-import * as localForage from 'localforage';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { OperationDataTableContainer } from '../../components/OperationDataTableContainer';
 import { FetchOptions } from '../../types/api';
 import { OperationData, OperationMap } from '../../types/operations';
-import { api, localForageKeys } from '../../utils';
 import { useOperation, useOperationData } from '../../utils/hooks/operations';
+import { exportOperationToCSV } from '../../utils/operations';
 
 interface RouteParams {
   id?: string;
@@ -27,11 +28,6 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
     false,
     false,
   );
-  const [token, setToken] = useState<string>();
-
-  useEffect(() => {
-    localForage.getItem<string>(localForageKeys.API_KEY).then((key) => setToken(key || undefined));
-  }, []);
 
   const onPageChange = (payload: FetchOptions) => setOptions({ payload });
 
@@ -56,6 +52,29 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
     return <div>{dataLoading ? 'Loading ...' : 'No results found'}</div>;
   };
 
+  const exportCSV = (operationId: number, fileName: string) => {
+    const toastId = toast.loading(`Exporting ${fileName}.csv`);
+    exportOperationToCSV(operationId, fileName)
+      .then(() => {
+        toast.update(toastId, {
+          render: `Saved ${fileName}.csv`,
+          type: 'success',
+          isLoading: false,
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      })
+      .catch(() => {
+        toast.update(toastId, {
+          render: `We had trouble exporting ${fileName}. The download will now be handled by your browser.`,
+          type: 'error',
+          isLoading: false,
+          position: 'top-right',
+          closeOnClick: true,
+        });
+      });
+  };
+
   return (
     <Row>
       <Col>
@@ -65,14 +84,21 @@ const QueryData: FunctionComponent<QueryDataProps> = (props) => {
 
         <Card>
           <Card.Header className="card-header-text card-header-danger">
-            <Card.Text>{activeOperation ? activeOperation.get('name') : 'Query Data'}</Card.Text>
-            <Form
-              action={`${api.routes.EXPORT}${id}/`}
-              method="POST"
-              data-testid="dataset-data-export-form"
-            >
-              {token ? <Form.Control type="hidden" name="token" value={token} /> : null}
-              <Button type="submit" variant="danger" size="sm" data-testid="dataset-export-button">
+            <Card.Text>
+              {activeOperation ? (activeOperation.get('name') as string) : 'Query Data'}
+            </Card.Text>
+            <Form>
+              <Button
+                variant="danger"
+                size="sm"
+                data-testid="dataset-export-button"
+                onClick={() => {
+                  exportCSV(
+                    activeOperation.get('id') as number,
+                    activeOperation.get('name') as string,
+                  );
+                }}
+              >
                 Export to CSV
               </Button>
             </Form>

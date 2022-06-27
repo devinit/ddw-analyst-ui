@@ -1,52 +1,22 @@
 
 import datetime
 import os
-import glob
-import numpy
-from numpy import NaN
 import pandas as pd
-from github import Github, InputGitTreeElement
+import sys
+from data_updates.utils import push_folder_to_github
+
 
 current_date = datetime.datetime.now()
-PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL', "https://staging-ddw.devinit.org/api/export/1241/")
+PURPOSE_CODE_TRENDS_URL = os.getenv('PURPOSE_CODE_TRENDS_URL', "https://ddw.devinit.org/api/export/1486/")
 CSV_FILES_FOLDER = "data_updates/Python/oecd_csv"
-CSV_FOLDER = "oecd_csv"
+CSV_FOLDER = "Python/oecd_csv"
 DATA_REPO = "devinit/di-website-data"
 REMOTE_BRANCH = "main"
 REMOTE_FOLDER = f'{current_date.year}'
-ODA_AID_TYPE_URL = os.getenv('ODA_AID_TYPE_URL', "https://staging-ddw.devinit.org/api/export/1238/")
-ODA_CHANNEL_TYPE_URL = os.getenv('ODA_CHANNEL_TYPE_URL', "https://staging-ddw.devinit.org/api/export/1237/")
+ODA_AID_TYPE_URL = os.getenv('ODA_AID_TYPE_URL', "https://ddw.devinit.org/api/export/1484/")
+ODA_CHANNEL_TYPE_URL = os.getenv('ODA_CHANNEL_TYPE_URL', "https://ddw.devinit.org/api/export/1485/")
 ODA_RECIP_TYPE_URL = os.getenv('ODA_RECIP_TYPE_URL', "https://ddw.devinit.org/api/export/1339/")
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', None)
 
-def push_folder_to_github(repo_name, branch, local_folder, remote_folder, commit_msg, file_extension='*.*'):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    glob_path = os.path.join(dir_path, local_folder, file_extension)
-    csv_paths = glob.glob(glob_path)
-    abs_csv_paths = [os.path.abspath(csv) for csv in csv_paths]
-    if len(abs_csv_paths) < 1:
-        print('Nothing to push')
-        return
-    g = Github(GITHUB_TOKEN)
-    # Uncomment below line to use your token for testing. Make sure you do not push changes with your token to Github
-    # g = Github(GITHUB_KEY)
-    repo = g.get_repo(repo_name)
-    git_ref = repo.get_git_ref('heads/' + branch)
-    branch_obj = repo.get_branch(branch=branch)
-    git_sha = branch_obj.commit.sha
-    base_tree = repo.get_git_tree(git_sha)
-    element_list = list()
-    for abs_csv_path in abs_csv_paths:
-        with open(abs_csv_path) as input_file:
-            data = input_file.read()
-        remote_file = remote_folder + '/' + os.path.basename(abs_csv_path)
-        element = InputGitTreeElement(remote_file, '100644', 'blob', data)
-        element_list.append(element)
-
-    tree = repo.create_git_tree(element_list, base_tree)
-    parent = repo.get_git_commit(git_sha)
-    commit = repo.create_git_commit(commit_msg, tree, [parent])
-    git_ref.edit(commit.sha)
 
 # create csv folder if it does not exist
 path = 'data_updates/Python/oecd_csv'
@@ -104,32 +74,37 @@ total_data['Purpose Name'] = "Reproductive health care and family planning"
 
 recip_data = recip_data.append(pd.DataFrame(data = total_data),ignore_index=True)
 
+max_year = recip_data["Year"].max()
+
 recip_data = recip_data.pivot_table(index=['Donor Name', 'Purpose Name','Recipient Name'], columns='Year', values='USD Disbursement Deflated').reset_index()
 
-cols_to_check = [2016,2017,2018,2019]
+cols_to_check = list(range(max_year-4,max_year+1))
 
 recip_data[cols_to_check] = recip_data[cols_to_check].fillna(0)
 
-recip_data["Removal"] = (recip_data[2016]==0) & (recip_data[2017]==0) & (recip_data[2018]==0) & (recip_data[2019]==0)
+recip_data["Removal"] = [True]*len(recip_data.index)
+
+for col in cols_to_check:
+    recip_data.loc[recip_data[col]!=0,"Removal"] = False
 
 recip_data = recip_data[recip_data["Removal"]==False]
 
-recip_data = recip_data[['Donor Name','Purpose Name','Recipient Name',2016,2017,2018,2019]]
+recip_data = recip_data[['Donor Name','Purpose Name','Recipient Name',2016,2017,2018,2019,2020]]
 
 recipient_data = []
 
 for donor in list(set(recip_data["Donor Name"])):
     for purpose in list(set(recip_data["Purpose Name"])):
         subset = recip_data[(recip_data["Donor Name"]==donor) & (recip_data["Purpose Name"]==purpose)].reset_index()
-        subset = subset.sort_values(by=[2019,2018,2017,2016,"Recipient Name"],ascending = [False,False,False,False,True]).reset_index()
+        subset = subset.sort_values(by=[2020,2019,2018,2017,2016,"Recipient Name"],ascending = [False,False,False,False,False,True]).reset_index()
         subset["Rank"] = subset.index + 1 # rank by years
         recipient_data.append(subset)
 
 recipient_data = pd.concat(recipient_data)
 
-recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]
+recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2016,2017,2018,2019,2020,"rank"]
 
-recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,"rank"]]
+recipient_data = recipient_data[["donor_name","Code type","recipient_name",2016,2017,2018,2019,2020,"rank"]]
 
 recipient_data.to_csv(f'{CSV_FILES_FOLDER}/donor_by_recip_2019.csv', encoding='utf-8', index=False)
 

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import * as localForage from 'localforage';
 import { Routes } from './Routes';
+import 'core-js/stable';
 
 import './styles/main.scss';
 
@@ -13,5 +14,6 @@ localForage.config({
 
 const wrapper = document.getElementById('app');
 if (wrapper) {
-  render(<Routes />, wrapper);
+  const root = createRoot(wrapper);
+  root.render(<Routes />);
 }

@@ -1,5 +1,8 @@
 import * as React from 'react';
 
-export const OperationsTableRowActions: React.FunctionComponent = (props) => {
+type Props = {
+  children?: React.ReactNode;
+};
+export const OperationsTableRowActions: React.FC<Props> = (props) => {
   return <React.Fragment>{props.children}</React.Fragment>;
 };

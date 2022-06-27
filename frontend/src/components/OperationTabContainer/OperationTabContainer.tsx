@@ -1,8 +1,9 @@
 import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
-import { Alert, Card, Tab } from 'react-bootstrap';
+import { Alert, Card, Tab, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { OperationMap } from '../../types/operations';
 import { OperationForm } from '../OperationForm';
+import { useHistory } from 'react-router-dom';
 
 type ComponentProps = {
   operation?: OperationMap;
@@ -18,6 +19,7 @@ type ComponentProps = {
   onDelete: (operation?: OperationMap) => void;
   onReset?: () => void;
   onValidate?: () => void;
+  children?: React.ReactNode;
 };
 
 const StyledCardBody = styled(Card.Body)`
@@ -30,6 +32,8 @@ const StyledCardBody = styled(Card.Body)`
 const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   const [alertMessages, setAlertMessages] = useState<string[]>(props.alertMessages || []);
 
+  const history = useHistory();
+
   useEffect(() => {
     if (props.alertMessages) {
       // FIXME: should prop alert messages clear this state?
@@ -38,6 +42,14 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
   }, [props.alertMessages]);
 
   const onAlertClose = (): void => setAlertMessages(['']);
+
+  const handleSwitchButton = () => {
+    if (location.pathname === '/queries/build/advanced/') {
+      history.push('/queries/build/');
+    } else {
+      history.push('/queries/build/advanced/');
+    }
+  };
 
   return (
     <Tab.Container defaultActiveKey="operation">
@@ -67,6 +79,15 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
               ))}
             </span>
           </Alert>
+
+          <Button
+            variant="dark"
+            className="btn btn-sm btn-dark"
+            onClick={() => handleSwitchButton()}
+            style={{ position: 'absolute', right: 9, top: -20 }}
+          >
+            Switch to {location.pathname === '/queries/build/' ? 'Advanced' : 'Basic'} Query Builder
+          </Button>
 
           <OperationForm
             operation={props.operation}

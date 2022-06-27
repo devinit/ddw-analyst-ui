@@ -11,6 +11,7 @@ import { SourceMap } from '../../types/sources';
 import { PaginationRow } from '../PaginationRow';
 import { SearchInput } from '../SearchInput';
 import { SourcesTable } from '../SourcesTable/SourcesTable';
+import { SourcesAction } from '../../reducers/sources';
 
 interface ComponentProps {
   sources: List<SourceMap>;
@@ -48,7 +49,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         offset: (pageNumber - 1) * props.limit,
         search: searchQuery,
         frozen: frozenQuery,
-      }),
+      }) as SourcesAction,
     );
   }, [searchQuery, pageNumber, frozenQuery]);
 
@@ -76,7 +77,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
         offset: page.selected * props.limit,
         search: searchQuery,
         frozen: frozenQuery,
-      }),
+      }) as SourcesAction,
     );
     updateQueryParams({ page: page.selected + 1 });
   };

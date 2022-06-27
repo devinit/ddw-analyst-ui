@@ -4,6 +4,7 @@ import { SidebarItem, SidebarItemProps } from '../SidebarItem';
 
 interface SidebarContentProps {
   mobile?: boolean;
+  children?: React.ReactNode;
 }
 
 export class SidebarContent extends React.Component<SidebarContentProps> {

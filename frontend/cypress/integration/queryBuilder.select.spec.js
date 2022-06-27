@@ -16,7 +16,7 @@ describe('The Query Builder: SELECT STEP', () => {
     cy.fillOperationForm(operationName, operationDescription);
 
     // Add step
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Fill create step form
     cy.get('[name="name"]').eq(1).type('Dataset Step Test');
@@ -41,7 +41,7 @@ describe('The Query Builder: SELECT STEP', () => {
     cy.fillOperationForm(operationName, operationDescription);
 
     // Add step
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Fill create step form
     cy.get('[name="name"]').eq(1).type('Dataset Step Test');
@@ -65,7 +65,7 @@ describe('The Query Builder: SELECT STEP', () => {
     // Visit query builder, type name and choose datasource
     cy.fillOperationForm(operationName, operationDescription);
 
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Fill create step form
     cy.get('[name="name"]').eq(1).type('Dataset Step Test');
@@ -87,7 +87,7 @@ describe('The Query Builder: SELECT STEP', () => {
     cy.fillOperationForm(operationName, operationDescription);
 
     // Add step
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Fill create step form
     cy.get('[name="name"]').eq(1).type('Dataset Step Test');
@@ -111,7 +111,7 @@ describe('The Query Builder: SELECT STEP', () => {
     cy.fillOperationForm(operationName, operationDescription);
 
     // Add step
-    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+    cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
     // Fill create step form
     cy.get('[name="name"]').eq(1).type('Dataset Step Test');
@@ -129,7 +129,7 @@ describe('The Query Builder: SELECT STEP', () => {
       // Visit query builder, type name and choose datasource
       cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
 
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
       // Create select query step
       cy.createSelectStep();
@@ -152,7 +152,7 @@ describe('The Query Builder: SELECT STEP', () => {
       // Visit query builder, type name and choose FTS datasource
       cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
 
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
       // Create select query step
       cy.createSelectStep();
@@ -188,7 +188,7 @@ describe('The Query Builder: SELECT STEP', () => {
       // Visit query builder, type name and choose datasource
       cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
 
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
       // Create select query step
       cy.createSelectStep();
@@ -221,7 +221,7 @@ describe('The Query Builder: SELECT STEP', () => {
       // Visit query builder, type name and choose datasource
       cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
 
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
       // Create select query step
       cy.createSelectStep();
@@ -253,7 +253,7 @@ describe('The Query Builder: SELECT STEP', () => {
       // Visit query builder, type name and choose datasource
       cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
 
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
       // Create select query step
       cy.createSelectStep();
@@ -286,7 +286,7 @@ describe('The Query Builder: SELECT STEP', () => {
       // Visit query builder, type name and choose datasource
       cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
 
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
 
       // Create select query step
       cy.createSelectStep();

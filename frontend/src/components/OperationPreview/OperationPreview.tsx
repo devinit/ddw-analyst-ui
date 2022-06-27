@@ -15,6 +15,7 @@ type ComponentProps = {
   onClose: () => void;
   tableOnly?: boolean;
   className?: string;
+  children?: React.ReactNode;
 };
 
 const StyledIcon = styled.i`

@@ -7,6 +7,7 @@ interface ComponentProps {
   path?: string;
   action?: 'edit' | 'data' | 'history';
   onClick?: (operation: OperationMap) => void;
+  children?: React.ReactNode;
 }
 
 const DatasetActionLink: FunctionComponent<ComponentProps> = (props) => {

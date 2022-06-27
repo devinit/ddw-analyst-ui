@@ -1,7 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { Card } from 'react-bootstrap';
 
-const WizardFooter: FunctionComponent = ({ children }) => {
+type ComponentProps = {
+  children?: React.ReactNode;
+};
+const WizardFooter: FC<ComponentProps> = ({ children }) => {
   return <Card.Footer>{children}</Card.Footer>;
 };
 

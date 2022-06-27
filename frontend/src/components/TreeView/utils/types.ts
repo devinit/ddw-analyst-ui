@@ -5,9 +5,9 @@ export interface TreeViewProps {
   depth?: number;
   deleteElement?: ReactElement;
   getStyleClass?: (node: Data) => void;
-  isCheckable?: (node: Data, depth?: number) => void;
-  isDeletable?: (node: Data, depth?: number) => void;
-  isExpandable?: (node: Data, depth?: number) => void;
+  isCheckable?: (node: Data, depth?: number) => boolean;
+  isDeletable?: (node: Data, depth?: number) => boolean;
+  isExpandable?: (node: Data, depth?: number) => boolean;
   loadingElement?: ReactElement;
   noChildrenAvailableMessage?: string;
   onCheckToggle?: (data: Data[], depth?: number) => void;

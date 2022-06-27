@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Alert, Button, Card, Form, InputGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 import * as Yup from 'yup';
-import SocialLine from '@bit/devinit.analyst-ui.components.social-line';
+import SocialLine from '../SocialLine';
 
 interface LoginFormState {
   credentials: Credentials;
@@ -63,11 +63,9 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                 </StyledAlert>
                 <span className="bmd-form-group">
                   <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>
-                        <i className="material-icons">email</i>
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
+                    <InputGroup.Text>
+                      <i className="material-icons">email</i>
+                    </InputGroup.Text>
                     <Form.Control
                       required
                       name="username"
@@ -83,11 +81,9 @@ export class LoginForm extends React.Component<LoginFormProps, LoginFormState> {
                 </span>
                 <span className="bmd-form-group">
                   <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>
-                        <i className="material-icons">lock_outline</i>
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
+                    <InputGroup.Text>
+                      <i className="material-icons">lock_outline</i>
+                    </InputGroup.Text>
                     <Form.Control
                       name="password"
                       type="password"

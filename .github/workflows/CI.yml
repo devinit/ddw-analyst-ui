@@ -35,7 +35,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm config set '@bit:registry' https://node.bit.dev
-        npm install --ignore-scripts
+        npm ci --ignore-scripts --no-optional
         npm install -g codecov
 
     - name: Run tests
@@ -161,6 +161,7 @@ jobs:
         username: ${{ env.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
+        command_timeout: 30m
         script: |
           chmod 700 "deploy_script.sh"
           ./deploy_script.sh
@@ -173,6 +174,7 @@ jobs:
         username: ${{ env.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
+        command_timeout: 30m
         script: |
           version=$(echo ${{ steps.get_version.outputs.VERSION }} | cut -c 2-)
           export SITE_URL=${{ env.SITE_URL }}
@@ -188,6 +190,7 @@ jobs:
         username: ${{ env.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
+        command_timeout: 30m
         script: |
           version=$(echo ${{ steps.get_version.outputs.VERSION }} | cut -c 2-)
           export SITE_URL=${{ env.SITE_URL }}
@@ -202,9 +205,11 @@ jobs:
         username: ${{ env.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
+        command_timeout: 30m
         script: |
           cd ~/ddw-analyst-ui
-          npm i
+          npm -v
+          npm ci --no-optional
           npm run build
           docker-compose exec -T web python manage.py collectstatic --no-input
 
@@ -237,7 +242,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm config set '@bit:registry' https://node.bit.dev
-        npm i
+        npm ci
 
     - name: Run end-to-end tests
       run: |

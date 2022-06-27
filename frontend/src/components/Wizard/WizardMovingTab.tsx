@@ -5,6 +5,7 @@ interface ComponentProps {
   steps: WizardStep[];
   activeKey: string;
   wizardWidth: number;
+  children?: React.ReactNode;
 }
 
 const getMoveDistance = (

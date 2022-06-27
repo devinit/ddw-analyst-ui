@@ -21,7 +21,7 @@ const defaultOptions: Options = {
   offset: 0,
   link: '',
   search: '',
-  frozen: 0,
+  frozen: 2,
 };
 
 export const useSources = (options: Options = defaultOptions, fetch = false): List<SourceMap> => {

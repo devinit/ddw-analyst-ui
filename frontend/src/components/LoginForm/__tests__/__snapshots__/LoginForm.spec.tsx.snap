@@ -41,19 +41,15 @@ exports[`renders a card with the class card-hidden when showForm is set to false
         <div
           className="input-group"
         >
-          <div
-            className="input-group-prepend"
+          <span
+            className="input-group-text"
           >
-            <span
-              className="input-group-text"
+            <i
+              className="material-icons"
             >
-              <i
-                className="material-icons"
-              >
-                email
-              </i>
-            </span>
-          </div>
+              email
+            </i>
+          </span>
           <input
             className="form-control"
             name="username"
@@ -73,19 +69,15 @@ exports[`renders a card with the class card-hidden when showForm is set to false
         <div
           className="input-group"
         >
-          <div
-            className="input-group-prepend"
+          <span
+            className="input-group-text"
           >
-            <span
-              className="input-group-text"
+            <i
+              className="material-icons"
             >
-              <i
-                className="material-icons"
-              >
-                lock_outline
-              </i>
-            </span>
-          </div>
+              lock_outline
+            </i>
+          </span>
           <input
             className="form-control"
             name="password"
@@ -157,19 +149,15 @@ exports[`renders an alert 1`] = `
         <div
           className="input-group"
         >
-          <div
-            className="input-group-prepend"
+          <span
+            className="input-group-text"
           >
-            <span
-              className="input-group-text"
+            <i
+              className="material-icons"
             >
-              <i
-                className="material-icons"
-              >
-                email
-              </i>
-            </span>
-          </div>
+              email
+            </i>
+          </span>
           <input
             className="form-control"
             name="username"
@@ -189,19 +177,15 @@ exports[`renders an alert 1`] = `
         <div
           className="input-group"
         >
-          <div
-            className="input-group-prepend"
+          <span
+            className="input-group-text"
           >
-            <span
-              className="input-group-text"
+            <i
+              className="material-icons"
             >
-              <i
-                className="material-icons"
-              >
-                lock_outline
-              </i>
-            </span>
-          </div>
+              lock_outline
+            </i>
+          </span>
           <input
             className="form-control"
             name="password"
@@ -271,19 +255,15 @@ exports[`renders correctly with the default props 1`] = `
         <div
           className="input-group"
         >
-          <div
-            className="input-group-prepend"
+          <span
+            className="input-group-text"
           >
-            <span
-              className="input-group-text"
+            <i
+              className="material-icons"
             >
-              <i
-                className="material-icons"
-              >
-                email
-              </i>
-            </span>
-          </div>
+              email
+            </i>
+          </span>
           <input
             className="form-control"
             name="username"
@@ -303,19 +283,15 @@ exports[`renders correctly with the default props 1`] = `
         <div
           className="input-group"
         >
-          <div
-            className="input-group-prepend"
+          <span
+            className="input-group-text"
           >
-            <span
-              className="input-group-text"
+            <i
+              className="material-icons"
             >
-              <i
-                className="material-icons"
-              >
-                lock_outline
-              </i>
-            </span>
-          </div>
+              lock_outline
+            </i>
+          </span>
           <input
             className="form-control"
             name="password"

@@ -1,8 +1,13 @@
+import { List } from 'immutable';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { DataSourceSelector } from '../../components/DataSourceSelector';
+import {
+  DataSourceTypeSelector,
+  SourceType,
+} from '../../components/DataSourceSelector/DataSourceTypeSelector';
 import { OperationTabContainer } from '../../components/OperationTabContainer';
 import { Mode, QueryBuilderModeSelector } from '../../components/QueryBuilderModeSelector';
 import { QuerySentenceBuilder } from '../../components/QuerySentenceBuilder';
@@ -30,6 +35,20 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
 
   const sources = useSources({ limit: 200, offset: 0 }) || null;
   const history = useHistory();
+  const [selectedDatasourceType, setSelectedDatasourceType] = useState<SourceType>('core');
+  const [selectedDataSources, setSelectedDataSources] = useState<List<SourceMap>>(List());
+  useEffect(() => {
+    const sourceType =
+      activeSource && activeSource.get('schema') !== 'archives' ? 'core' : 'frozen';
+    setSelectedDatasourceType(activeSource ? sourceType : 'core');
+    setSelectedDataSources(
+      sources.filter((item) => {
+        return (activeSource ? sourceType : 'core') === 'core'
+          ? item.get('schema') !== 'archives'
+          : item.get('schema') === 'archives';
+      }),
+    );
+  }, [activeSource, sources]);
   useEffect(() => {
     // the page operation has precedence i.e in the event of editing
     if (activeOperation) {
@@ -94,6 +113,17 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
     );
   };
 
+  const onSelectSourceType = (data: SourceType) => {
+    setSelectedDatasourceType(data);
+    setSelectedDataSources(
+      sources.filter((item) => {
+        return data === 'core'
+          ? item.get('schema') !== 'archives'
+          : item.get('schema') === 'archives';
+      }),
+    );
+  };
+
   return (
     <Row>
       <Col>
@@ -111,10 +141,16 @@ const AdvancedQueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
                 onUpdate={onUpdateOperation}
               >
                 <Row className="mb-3">
+                  <DataSourceTypeSelector
+                    onSelect={onSelectSourceType}
+                    activeSourceType={selectedDatasourceType}
+                    className={'col-lg-3'}
+                  />
                   <DataSourceSelector
                     source={activeSource}
                     onSelect={onSelectSource}
                     className="col-lg-6"
+                    selectedDatasource={selectedDataSources}
                   />
                   <QueryBuilderModeSelector
                     mode={mode}

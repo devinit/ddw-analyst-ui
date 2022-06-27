@@ -65,7 +65,7 @@ services:
       - ddw_net
 
   celery:
-    build: .
+    image: ddw-analyst-ui_web:latest
     command: celery -A ddw_analyst_ui worker -l info
     depends_on:
       - web

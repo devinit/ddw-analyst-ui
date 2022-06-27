@@ -2,14 +2,15 @@
  * Material Dashboard Pro File Input - https://demos.creative-tim.com/material-dashboard-pro/examples/forms/extended.html
  */
 import classNames from 'classnames';
-import React, { FunctionComponent, InputHTMLAttributes, useRef, useState } from 'react';
-import { Button, Form, FormFileProps } from 'react-bootstrap';
+import React, { FunctionComponent, useRef, useState } from 'react';
+import { Button, Form, FormControlProps } from 'react-bootstrap';
 import styled from 'styled-components';
 
-interface FileInputProps extends FormFileProps, InputHTMLAttributes<HTMLInputElement> {
+interface FileInputProps extends FormControlProps {
   onReset?: () => void;
   label?: string;
   isProcessing?: boolean;
+  accept?: string;
 }
 
 const StyledFormFile = styled(Form.File)`
