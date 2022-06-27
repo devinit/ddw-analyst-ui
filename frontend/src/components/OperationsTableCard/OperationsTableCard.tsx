@@ -5,8 +5,6 @@ import React, { FunctionComponent, useContext, useEffect, useState } from 'react
 import { Button, Card, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { bindActionCreators } from 'redux';
 import { Dimmer, Dropdown, DropdownItemProps, DropdownProps, Loader } from 'semantic-ui-react';
 import { format } from 'sql-formatter';
@@ -18,7 +16,6 @@ import { ReduxStore } from '../../store';
 import { LinksMap } from '../../types/api';
 import { AdvancedQueryOptionsMap, OperationMap } from '../../types/operations';
 import { api } from '../../utils';
-import { exportOperationToCSV } from '../../utils/operations';
 import { BasicModal } from '../BasicModal';
 import { CodeMirrorNext } from '../CodeMirrorNext';
 import { DatasetActionLink } from '../DatasetActionLink';
@@ -162,29 +159,6 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
     }
   };
 
-  const exportCSV = (operationId: number, fileName: string) => {
-    const toastId = toast.loading(`Exporting ${fileName}.csv`);
-    exportOperationToCSV(operationId, fileName)
-      .then(() => {
-        toast.update(toastId, {
-          render: `Saved ${fileName}.csv`,
-          type: 'success',
-          isLoading: false,
-          position: 'top-right',
-          autoClose: 3000,
-        });
-      })
-      .catch(() => {
-        toast.update(toastId, {
-          render: `We had trouble exporting ${fileName}. The download will now be handled by your browser.`,
-          type: 'error',
-          isLoading: false,
-          position: 'top-right',
-          closeOnClick: true,
-        });
-      });
-  };
-
   const renderOperations = (operations: List<OperationMap>, allowEdit = false) => {
     if (operations && operations.count()) {
       return operations.map((operation, index) => {
@@ -215,15 +189,14 @@ const OperationsTableCard: FunctionComponent<OperationsTableCardProps> = (props)
               <Button variant="dark" size="sm" onClick={onViewSQLQuery(operation)}>
                 SQL Query
               </Button>
-              <Button
-                variant="dark"
-                size="sm"
-                onClick={() => {
-                  exportCSV(operation.get('id') as number, operation.get('name') as string);
-                }}
+              <a
+                className="btn btn-dark btn-sm"
+                href={`${api.routes.EXPORT}${operation.get('id')}/`}
+                target="_blank"
+                rel="noreferrer"
               >
                 Export to CSV
-              </Button>
+              </a>
               <DatasetActionLink operation={operation} action="history" onClick={onViewHistory}>
                 Versions
               </DatasetActionLink>
