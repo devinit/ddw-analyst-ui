@@ -10,6 +10,8 @@ on:
     branches:
       - "*"
 
+concurrency: CI
+
 jobs:
   test-typescript:
     name: 'Test Typescript'
