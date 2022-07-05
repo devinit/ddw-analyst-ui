@@ -19,7 +19,7 @@ updates:
       interval: "daily"
 
   # Enable version updates for pip
-  - package-ecosytem: "pip"
+  - package-ecosystem: "pip"
     directory: "/"
     labels:
       - "pip"
