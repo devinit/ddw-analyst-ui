@@ -152,7 +152,7 @@
     "yup": "^0.29.1"
   },
   "optionalDependencies": {
-    "cypress": "~6.8.0",
+    "cypress": "~10.3.0",
     "fsevents": "^2.3.2"
   },
   "lint-staged": {
