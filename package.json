@@ -94,7 +94,7 @@
     "postcss-loader": "^7.0.0",
     "prettier": "^2.6.2",
     "react-test-renderer": "^18.1.0",
-    "react-toastify": "^9.0.1",
+    "react-toastify": "^9.0.5",
     "sass": "^1.52.1",
     "sass-loader": "^13.0.0",
     "style-loader": "^3.3.1",
