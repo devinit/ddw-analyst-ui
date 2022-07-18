@@ -88,7 +88,7 @@
     "jest-styled-components": "^7.0.8",
     "jquery-extendext": "^1.0.0",
     "jQuery-QueryBuilder": "^2.6.0",
-    "jshint": "^2.13.0",
+    "jshint": "^2.13.5",
     "lint-staged": "^12.4.1",
     "mini-css-extract-plugin": "^2.6.0",
     "postcss-loader": "^7.0.0",
