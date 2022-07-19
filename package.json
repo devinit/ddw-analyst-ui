@@ -81,7 +81,7 @@
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-webpack": "^5.0.0",
-    "husky": "^4.2.5",
+    "husky": "^8.0.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
