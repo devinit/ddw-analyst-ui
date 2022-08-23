@@ -31,6 +31,7 @@ services:
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
       - SLACK_BOT_TOKEN
       - SLACK_CHANNEL_ID
+      - BASE_URL
     networks:
       - ddw_net
   spotlights:

@@ -288,6 +288,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SLACK_CHANNEL_ID = os.getenv('SLACK_CHANNEL_ID', 'C034629FPK7')
 SLACK_BOT_TOKEN = os.getenv('SLACK_BOT_TOKEN', '')
 
+BASE_URL = os.getenv('BASE_URL', 'https://ddw.devinit.org')
+LINK_RESET_TIMEOUT = 604800  # 604800 seconds equivalent to 7 days (a week)
+
 try:
     from ddw_analyst_ui.local_settings import DATABASES, SECRET_KEY
 except ImportError:
