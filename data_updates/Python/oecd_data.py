@@ -3,7 +3,7 @@ import datetime
 import os
 import pandas as pd
 import sys
-from data_updates.utils import push_folder_to_github
+# from data_updates.utils import push_folder_to_github
 
 
 current_date = datetime.datetime.now()
@@ -30,7 +30,21 @@ print("Starting read-in: Purpose")
 
 purporse_code_data = pd.read_csv(PURPOSE_CODE_TRENDS_URL)
 purporse_code_data = pd.DataFrame(purporse_code_data)
-purporse_code_data.columns = ["year","donor_name","purpose_code","purpose_name","usd_disbursement_deflated_Sum"]
+purporse_code_data.columns = ["year","donor_name","purpose_code","purpose_name","donor_type","usd_disbursement_deflated_Sum"]
+
+purporse_code_data2 = purporse_code_data.groupby(["year","purpose_code","purpose_name","donor_type"]).agg({"usd_disbursement_deflated_Sum":"sum"}).reset_index()
+
+purporse_code_data2.columns = ["year","purpose_code","purpose_name","donor_name","usd_disbursement_deflated_Sum"]
+purporse_code_data2['donor_name'] = purporse_code_data2['donor_name'].replace(['DAC'],['DAC donors (total)'])
+purporse_code_data2['donor_name'] = purporse_code_data2['donor_name'].replace(['Non-DAC'],['Non-DAC donors (total)'])
+purporse_code_data2['donor_name'] = purporse_code_data2['donor_name'].replace(['Multilateral'],['Multilateral donors (total)'])
+
+purporse_code_data3 = purporse_code_data2.groupby(["year","purpose_code","purpose_name"]).agg({"usd_disbursement_deflated_Sum":"sum"}).reset_index()
+purporse_code_data3['donor_name'] = 'All donors (total)'
+
+purporse_code_data = purporse_code_data.drop(['donor_type'],axis=1)
+purporse_code_data = pd.concat([purporse_code_data, purporse_code_data2]).reset_index(drop=True)
+purporse_code_data = pd.concat([purporse_code_data, purporse_code_data3]).reset_index(drop=True)
 
 purporse_code_data.to_csv(f'{CSV_FILES_FOLDER}/RH_and_FP_Purpose_code_trends_chart_OECD.csv', encoding='utf-8', index=False)
 
@@ -40,7 +54,21 @@ print("Starting read-in: Aid type")
 
 aid_type_data = pd.read_csv(ODA_AID_TYPE_URL)
 aid_type_data = pd.DataFrame(aid_type_data)
-aid_type_data.columns = ["donor_name","aid_type_di_name","year","purpose_name","purpose_code","usd_disbursement_deflated_Sum"]
+aid_type_data.columns = ["donor_name","aid_type_di_name","year","purpose_name","purpose_code","usd_disbursement_deflated_Sum","donor_type"]
+
+aid_type_data2 = aid_type_data.groupby(["year","purpose_code","purpose_name","aid_type_di_name","donor_type"]).agg({"usd_disbursement_deflated_Sum":"sum"}).reset_index()
+
+aid_type_data2.columns = ["year","purpose_code","purpose_name","aid_type_di_name","donor_name","usd_disbursement_deflated_Sum"]
+aid_type_data2['donor_name'] = aid_type_data2['donor_name'].replace(['DAC'],['DAC donors (total)'])
+aid_type_data2['donor_name'] = aid_type_data2['donor_name'].replace(['Non-DAC'],['Non-DAC donors (total)'])
+aid_type_data2['donor_name'] = aid_type_data2['donor_name'].replace(['Multilateral'],['Multilateral donors (total)'])
+
+aid_type_data3 = aid_type_data2.groupby(["year","purpose_code","purpose_name","aid_type_di_name"]).agg({"usd_disbursement_deflated_Sum":"sum"}).reset_index()
+aid_type_data3['donor_name'] = 'All donors (total)'
+
+aid_type_data = aid_type_data.drop(['donor_type'],axis=1)
+aid_type_data = pd.concat([aid_type_data, aid_type_data2]).reset_index(drop=True)
+aid_type_data = pd.concat([aid_type_data, aid_type_data3]).reset_index(drop=True)
 
 aid_type_data.to_csv(f'{CSV_FILES_FOLDER}/RH_FP_aid_type_OECD.csv', encoding='utf-8', index=False)
 
@@ -50,7 +78,24 @@ print("Starting read-in: Channels")
 
 channels_data = pd.read_csv(ODA_CHANNEL_TYPE_URL)
 channels_data = pd.DataFrame(channels_data)
-channels_data.columns = ["year","donor_name","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","usd_disbursement_deflated_Sum"]
+channels_data.columns = ["year","donor_name","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","donor_type","usd_disbursement_deflated_Sum"]
+
+channels_data['oecd_channel_parent_name'] = channels_data['oecd_channel_parent_name'].replace([''],['Unspecified'])
+channels_data['oecd_aggregated_channel'] = channels_data['oecd_aggregated_channel'].replace([''],['Unspecified'])
+
+channels_data2 = channels_data.groupby(["year","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","donor_type"]).agg({"usd_disbursement_deflated_Sum":"sum"}).reset_index()
+
+channels_data2.columns = ["year","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","donor_name","usd_disbursement_deflated_Sum"]
+channels_data2['donor_name'] = channels_data2['donor_name'].replace(['DAC'],['DAC donors (total)'])
+channels_data2['donor_name'] = channels_data2['donor_name'].replace(['Non-DAC'],['Non-DAC donors (total)'])
+channels_data2['donor_name'] = channels_data2['donor_name'].replace(['Multilateral'],['Multilateral donors (total)'])
+
+channels_data3 = channels_data2.groupby(["year","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel"]).agg({"usd_disbursement_deflated_Sum":"sum"}).reset_index()
+channels_data3['donor_name'] = 'All donors (total)'
+
+channels_data = channels_data.drop(['donor_type'],axis=1)
+channels_data = pd.concat([channels_data, channels_data2]).reset_index(drop=True)
+channels_data = pd.concat([channels_data, channels_data3]).reset_index(drop=True)
 
 channels_data.to_csv(f'{CSV_FILES_FOLDER}/RH_FP_channels_OECD.csv', encoding='utf-8', index=False)
 
@@ -65,7 +110,20 @@ recip_data = recip_data[recip_data['Purpose Name'].isin(['Reproductive health ca
 
 recip_data['Recipient Name'] = recip_data['Recipient Name'].replace(['Bilateral, unspecified'],['Unspecified'])
 
-recip_data = recip_data.groupby(["Donor Name","Purpose Name","Recipient Name","Year"]).agg({"USD Disbursement Deflated":"sum"}).reset_index()
+recip_data1 = recip_data.groupby(["Donor Name","Purpose Name","Recipient Name","Year"]).agg({"USD Disbursement Deflated":"sum"}).reset_index()
+
+recip_data2 = recip_data.groupby(["donor_type","Purpose Name","Recipient Name","Year"]).agg({"USD Disbursement Deflated":"sum"}).reset_index()
+
+recip_data2.columns = ["Donor Name","Purpose Name","Recipient Name","Year","USD Disbursement Deflated"]
+recip_data2['Donor Name'] = recip_data2['Donor Name'].replace(['DAC'],['DAC donors (total)'])
+recip_data2['Donor Name'] = recip_data2['Donor Name'].replace(['Non-DAC'],['Non-DAC donors (total)'])
+recip_data2['Donor Name'] = recip_data2['Donor Name'].replace(['Multilateral'],['Multilateral donors (total)'])
+
+recip_data3 = recip_data2.groupby(["Donor Name","Purpose Name","Recipient Name","Year"]).agg({"USD Disbursement Deflated":"sum"}).reset_index()
+recip_data3['Donor Name'] = 'All donors (total)'
+
+recip_data = pd.concat([recip_data1, recip_data2]).reset_index(drop=True)
+recip_data = pd.concat([recip_data, recip_data3]).reset_index(drop=True)
 
 # Summing both and joining
 
