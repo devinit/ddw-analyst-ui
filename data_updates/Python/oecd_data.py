@@ -80,8 +80,12 @@ channels_data = pd.read_csv(ODA_CHANNEL_TYPE_URL)
 channels_data = pd.DataFrame(channels_data)
 channels_data.columns = ["year","donor_name","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","donor_type","usd_disbursement_deflated_Sum"]
 
-channels_data['oecd_channel_parent_name'] = channels_data['oecd_channel_parent_name'].replace([''],['Unspecified'])
-channels_data['oecd_aggregated_channel'] = channels_data['oecd_aggregated_channel'].replace([''],['Unspecified'])
+channels_data['oecd_channel_parent_name'].fillna('Unspecified', inplace=True)
+channels_data['oecd_aggregated_channel'].fillna('Unspecified', inplace=True)
+
+channels_data['oecd_channel_parent_name'] = channels_data['oecd_channel_parent_name'].replace(['United Nations Agency, Fund Or Commission (UN)'],['United Nations agency, fund or commission (UN)'])
+
+channels_data = channels_data.groupby(["year","donor_name","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","donor_type"]).agg({"usd_disbursement_deflated_Sum":"sum"}).reset_index()
 
 channels_data2 = channels_data.groupby(["year","purpose_code","purpose_name","oecd_channel_parent_name","oecd_aggregated_channel","donor_type"]).agg({"usd_disbursement_deflated_Sum":"sum"}).reset_index()
 
