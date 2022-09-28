@@ -36,6 +36,5 @@ python3 manage.py update_meta dac1_current
 python3 manage.py update_meta dac2a_current
 python3 manage.py update_meta dac2b_current
 python3 manage.py update_meta dac5_current
-python3 manage.py update_meta mums
 
 echo "=============== Successfully processed OECD mirrors==============="
