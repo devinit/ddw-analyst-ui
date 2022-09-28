@@ -23,9 +23,6 @@ python3 data_updates/Python/download_oecd.py -t TABLE2B
 echo "================ Fetcing DAC Table5 ====================="
 python3 data_updates/Python/download_oecd.py -t TABLE5
 
-echo "================ Fetcing MUMS table ====================="
-python3 data_updates/Python/download_oecd.py -t MUMS
-
 
 echo "Using R scripts to cleanup downloaded data and load to postgres DB"
 
