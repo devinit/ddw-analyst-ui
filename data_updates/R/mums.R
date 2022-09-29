@@ -6,8 +6,8 @@ lapply(list.of.packages, require, character.only=T)
 # Only works while running with `Rscript` from repo root, use commented below if running manually
 # script.dir <- here()
 # script.dir = "/src"
-script.dir = "C:/git/ddw-analyst-ui"
-setwd("C:/git/ddw-analyst-ui/data_updates/R")
+# script.dir = "C:/git/ddw-analyst-ui"
+# setwd("C:/git/ddw-analyst-ui/data_updates/R")
 source(paste0(script.dir,"/data_updates/R/constants.R"))
 
 drv = dbDriver("PostgreSQL")
