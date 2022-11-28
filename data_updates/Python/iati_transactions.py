@@ -129,7 +129,8 @@ def main(args):
             datasets.c.error == False
         )
 
-    if_exists = "replace"
+    activity_if_exists = "replace"
+    transaction_if_exists = "replace"
     bar = progressbar.ProgressBar()
     new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
     modified_package_ids = [dataset["id"] for dataset in new_datasets if dataset["modified"] or dataset["error"]]
@@ -165,6 +166,20 @@ def main(args):
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
 
+        if first_run:
+            flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=activity_if_exists)
+            if activity_if_exists == "replace":
+                activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
+                activity_if_exists = "append"
+        else:
+            flat_activity_data.to_sql(name=TMP_ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=activity_if_exists)
+
+            if activity_if_exists == "replace":
+                activity_if_exists = "append"
+
+        if not flat_transactions:
+            continue
+
         flat_transaction_data = pd.DataFrame(flat_transactions)
         flat_transaction_data.columns = transaction_header
         flat_transaction_data["package_id"] = dataset["id"]
@@ -173,18 +188,15 @@ def main(args):
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
 
         if first_run:
-            flat_transaction_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
-            flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
-            if if_exists == "replace":
+            flat_transaction_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=transaction_if_exists)
+            if transaction_if_exists == "replace":
                 transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
-                activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
-                if_exists = "append"
+                transaction_if_exists = "append"
         else:
-            flat_transaction_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
-            flat_activity_data.to_sql(name=TMP_ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=if_exists)
+            flat_transaction_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=transaction_if_exists)
 
-            if if_exists == "replace":
-                if_exists = "append"
+            if transaction_if_exists == "replace":
+                transaction_if_exists = "append"
 
     # Delete repeats, insert tmp into permanent, erase tmp
     if not first_run:
