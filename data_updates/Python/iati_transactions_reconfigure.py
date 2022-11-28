@@ -43,8 +43,8 @@ def main():
     activity_header = iatiflat.activity_header
     transaction_header = iatiflat.transaction_header
 
-    # engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
-    engine = create_engine('postgresql://postgres@:5432/analyst_ui')
+    engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
+    # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
     conn = engine.connect()
 
     truncate_command = "TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME)
@@ -79,6 +79,10 @@ def main():
         for numeric_column in A_NUMERIC_DTYPES:
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
+        flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists="append")
+
+        if not flat_transactions:
+            continue
 
         flat_transaction_data = pd.DataFrame(flat_transactions)
         flat_transaction_data.columns = transaction_header
@@ -86,9 +90,7 @@ def main():
         for numeric_column in T_NUMERIC_DTYPES:
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
-
         flat_transaction_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists="append")
-        flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists="append")
 
     engine.dispose()
 
