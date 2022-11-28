@@ -2,14 +2,36 @@ import json
 import os
 
 
-DTYPES = {
+A_DTYPES = {
     'iati_identifier': 'object',
-    'x_transaction_number': 'float64',
     'reporting_org_ref': 'object',
     'reporting_org_narrative': 'object',
     'reporting_org_secondary_reporter': 'object',
     'reporting_org_type_code': 'object',
     'title_narrative': 'object',
+    'collaboration_type': 'object',
+    'description_narrative': 'object',
+    'humanitarian': 'object',
+    'humanitarian_scope_narrative': 'object',
+    'x_hum_emergency_code': 'object',
+    'x_hum_appeal_code': 'object',
+    'funding_orgs': 'object',
+    'accountable_orgs': 'object',
+    'extending_orgs': 'object',
+    'implementing_orgs': 'object',
+    'tag_narrative': 'object',
+    'tag_vocabulary': 'object',
+    'tag_code': 'object',
+    'x_reporting_org_type': 'object',
+    'dac_policy_marker_code': 'object',
+    'dac_policy_marker_significance': 'object',
+    'package_id': 'object',
+    'last_modified': 'object',
+}
+A_NUMERIC_DTYPES = [column_name for column_name, dtype in A_DTYPES.items() if dtype not in ["object", "bool_"]]
+T_DTYPES = {
+    'iati_identifier': 'object',
+    'x_transaction_number': 'float64',
     'x_original_transaction_value': 'float64',
     'x_original_transaction_value_usd': 'float64',
     'x_country_code': 'object',  # For compatibility with older queries
@@ -41,15 +63,9 @@ DTYPES = {
     'x_mod_aid_type_code': 'object',
     'x_dac_aid_type_code': 'object',
     'x_tied_status_code': 'object',
-    'collaboration_type': 'object',
     'transaction_disbursement_channel_code': 'object',
-    'description_narrative': 'object',
     'transaction_description_narrative': 'object',
-    'humanitarian': 'object',
     'transaction_humanitarian': 'object',
-    'humanitarian_scope_narrative': 'object',
-    'x_hum_emergency_code': 'object',
-    'x_hum_appeal_code': 'object',
     'transaction_provider_org_narrative': 'object',
     'transaction_provider_org_provider_activity_id': 'object',
     'transaction_provider_org_ref': 'object',
@@ -59,14 +75,6 @@ DTYPES = {
     'transaction_receiver_org_ref': 'object',
     'transaction_receiver_org_type': 'object',
     'transaction_ref': 'object',
-    'funding_orgs': 'object',
-    'accountable_orgs': 'object',
-    'extending_orgs': 'object',
-    'implementing_orgs': 'object',
-    'tag_narrative': 'object',
-    'tag_vocabulary': 'object',
-    'tag_code': 'object',
-    'x_reporting_org_type': 'object',
     'x_transaction_type': 'object',
     'x_finance_type': 'object',
     'x_aid_type': 'object',
@@ -74,14 +82,11 @@ DTYPES = {
     'x_di_sector': 'object',
     'x_yyyymm': 'object',
     'x_covid': 'bool_',
-    'dac_policy_marker_code': 'object',
-    'dac_policy_marker_significance': 'object',
     'x_donor_transaction_type': 'object',
     'x_original_transaction_value_USDm': 'float64',
     'package_id': 'object',
-    'last_modified': 'object',
 }
-NUMERIC_DTYPES = [column_name for column_name, dtype in DTYPES.items() if dtype not in ["object", "bool_"]]
+T_NUMERIC_DTYPES = [column_name for column_name, dtype in T_DTYPES.items() if dtype not in ["object", "bool_"]]
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -160,7 +165,8 @@ def convert_usd(value, year, currency, ratedf):
 # A class that will hold the flattening function and dictionary definitions
 class IatiFlat(object):
     def __init__(self):
-        self.header = ["iati_identifier", "x_transaction_number", "reporting_org_ref", "reporting_org_narrative", "reporting_org_secondary_reporter", "reporting_org_type_code", "title_narrative", "x_original_transaction_value", "x_original_transaction_value_usd", "x_country_code", "x_country", "x_country_percentage", "x_recipient_number", "x_recipient_code", "x_recipient", "x_recipient_percentage", "x_recipient_type", "x_recipient_vocabulary","x_recipient_transaction_value", "x_recipient_transaction_value_usd", "x_sector_number", "x_sector_vocabulary", "x_vocabulary_number", "x_sector_code", "x_sector_percentage", "x_dac3_sector_code", "transaction_type_code", "x_transaction_date", "x_transaction_year", "x_currency", "x_transaction_value", "x_transaction_value_usd", "x_flow_type_code", "x_finance_type_code", "x_mod_aid_type_vocabulary", "x_mod_aid_type_code", "x_dac_aid_type_code", "x_tied_status_code", "collaboration_type", "transaction_disbursement_channel_code", "description_narrative", "transaction_description_narrative", "humanitarian", "transaction_humanitarian", "humanitarian_scope_narrative", "x_hum_emergency_code", "x_hum_appeal_code", "transaction_provider_org_narrative", "transaction_provider_org_provider_activity_id", "transaction_provider_org_ref", "transaction_provider_org_type", "transaction_receiver_org_narrative", "transaction_receiver_org_receiver_activity_id", "transaction_receiver_org_ref", "transaction_receiver_org_type", "transaction_ref", "funding_orgs", "accountable_orgs", "extending_orgs", "implementing_orgs", "tag_narrative", "tag_vocabulary", "tag_code", "x_reporting_org_type", "x_transaction_type", "x_finance_type", "x_aid_type", "x_dac3_sector", "x_di_sector", "x_yyyymm", "x_covid", "dac_policy_marker_code", "dac_policy_marker_significance", "x_donor_transaction_type", "x_original_transaction_value_USDm"]
+        self.activity_header = ["iati_identifier", "reporting_org_ref", "reporting_org_narrative", "reporting_org_secondary_reporter", "reporting_org_type_code", "title_narrative", "collaboration_type", "description_narrative", "humanitarian", "humanitarian_scope_narrative", "x_hum_emergency_code", "x_hum_appeal_code", "funding_orgs", "accountable_orgs", "extending_orgs", "implementing_orgs", "tag_narrative", "tag_vocabulary", "tag_code", "x_reporting_org_type", "dac_policy_marker_code", "dac_policy_marker_significance"]
+        self.transaction_header = ["iati_identifier", "x_transaction_number", "x_original_transaction_value", "x_original_transaction_value_usd", "x_country_code", "x_country", "x_country_percentage", "x_recipient_number", "x_recipient_code", "x_recipient", "x_recipient_percentage", "x_recipient_type", "x_recipient_vocabulary","x_recipient_transaction_value", "x_recipient_transaction_value_usd", "x_sector_number", "x_sector_vocabulary", "x_vocabulary_number", "x_sector_code", "x_sector_percentage", "x_dac3_sector_code", "transaction_type_code", "x_transaction_date", "x_transaction_year", "x_currency", "x_transaction_value", "x_transaction_value_usd", "x_flow_type_code", "x_finance_type_code", "x_mod_aid_type_vocabulary", "x_mod_aid_type_code", "x_dac_aid_type_code", "x_tied_status_code", "transaction_disbursement_channel_code", "transaction_description_narrative", "transaction_humanitarian", "transaction_provider_org_narrative", "transaction_provider_org_provider_activity_id", "transaction_provider_org_ref", "transaction_provider_org_type", "transaction_receiver_org_narrative", "transaction_receiver_org_receiver_activity_id", "transaction_receiver_org_ref", "transaction_receiver_org_type", "transaction_ref", "x_transaction_type", "x_finance_type", "x_aid_type", "x_dac3_sector", "x_di_sector", "x_yyyymm", "x_covid", "x_donor_transaction_type", "x_original_transaction_value_USDm"]
         self.dictionaries = {}
         # Defaults, can be overwritten with next function
         self.dictionaries["ratedf"] = ratedf
@@ -683,7 +689,8 @@ class IatiFlat(object):
     def flatten_activities(self, root):
         for dictionary_name in ["ratedf"]:
             assert dictionary_name in self.dictionaries, "Missing dictionary: {}".format(dictionary_name)
-        output = list()
+        activity_output = list()
+        transaction_output = list()
         try:
             version = root.attrib["version"]
         except KeyError:
@@ -837,6 +844,12 @@ class IatiFlat(object):
                     defaults[tag] = None
                     defaults[tag+"-code"] = None
                     defaults[tag+"-vocabulary"] = None
+
+            x_reporting_org_type = ""
+            x_reporting_org_type = recode_if_not_none(reporting_org_type_code, self.dictionaries["organisation_type"])
+
+            activity_row = [iati_identifier, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, collaboration_type, description_narrative, humanitarian, humanitarian_scope_narrative, x_hum_emergency_code, x_hum_appeal_code, funding_orgs, accountable_orgs, extending_orgs, implementing_orgs, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, dac_policy_marker_code, dac_policy_marker_significance]
+            activity_output.append(activity_row)
 
             has_transactions = "transaction" in child_tags
             if has_transactions:
@@ -1035,7 +1048,6 @@ class IatiFlat(object):
                         x_recipient_vocabulary_list = x_region_vocabulary_list.copy()
                         x_recipient_type_list = ["Region"] * len(x_region_code_list)
 
-                    x_reporting_org_type = ""
                     x_transaction_type = ""
                     x_donor_transaction_type = ""
                     x_finance_type = ""
@@ -1058,7 +1070,6 @@ class IatiFlat(object):
                     x_di_sector = ""
                     x_transaction_value = transaction_value
                     x_transaction_value_usd = ""
-                    x_reporting_org_type = recode_if_not_none(reporting_org_type_code, self.dictionaries["organisation_type"])
                     x_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["transaction_type"])
                     x_donor_transaction_type = recode_if_not_none(transaction_type_code, self.dictionaries["donor_transaction_type"])
                     x_donor_transaction_type = replace_default_if_none(x_donor_transaction_type, "")
@@ -1145,8 +1156,8 @@ class IatiFlat(object):
                                     x_country_code = x_recipient_code
                                     x_country = x_recipient
                                     x_country_percentage = x_recipient_percentage
-                                    row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_original_transaction_value, x_original_transaction_value_usd, x_country_code, x_country, x_country_percentage, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_vocabulary, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_number, x_sector_vocabulary, x_vocabulary_number, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, collaboration_type, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, funding_orgs, accountable_orgs, extending_orgs, implementing_orgs, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid, dac_policy_marker_code, dac_policy_marker_significance, x_donor_transaction_type, x_original_transaction_value_USDm]
-                                    output.append(row)
+                                    row = [iati_identifier, x_transaction_number, x_original_transaction_value, x_original_transaction_value_usd, x_country_code, x_country, x_country_percentage, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_vocabulary, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_number, x_sector_vocabulary, x_vocabulary_number, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, transaction_description_narrative, transaction_humanitarian, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid, x_donor_transaction_type, x_original_transaction_value_USDm]
+                                    transaction_output.append(row)
                                     # Reset sector-split specific defaults
                                     x_sector_number = 1
                                     x_sector_code = ""
@@ -1164,8 +1175,8 @@ class IatiFlat(object):
                                 x_country_code = x_recipient_code
                                 x_country = x_recipient
                                 x_country_percentage = x_recipient_percentage
-                                row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_original_transaction_value, x_original_transaction_value_usd, x_country_code, x_country, x_country_percentage, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_vocabulary, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_number, x_sector_vocabulary, x_vocabulary_number, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, collaboration_type, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, funding_orgs, accountable_orgs, extending_orgs, implementing_orgs, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid, dac_policy_marker_code, dac_policy_marker_significance, x_donor_transaction_type, x_original_transaction_value_USDm]
-                                output.append(row)
+                                row = [iati_identifier, x_transaction_number, x_original_transaction_value, x_original_transaction_value_usd, x_country_code, x_country, x_country_percentage, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_vocabulary, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_number, x_sector_vocabulary, x_vocabulary_number, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, transaction_description_narrative, transaction_humanitarian, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid, x_donor_transaction_type, x_original_transaction_value_USDm]
+                                transaction_output.append(row)
                                 # Reset missing sector-split specific defaults
                                 x_transaction_value = transaction_value
                                 x_transaction_value_usd = ""
@@ -1213,8 +1224,8 @@ class IatiFlat(object):
                                 x_country_code = x_recipient_code
                                 x_country = x_recipient
                                 x_country_percentage = x_recipient_percentage
-                                row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_original_transaction_value, x_original_transaction_value_usd, x_country_code, x_country, x_country_percentage, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_vocabulary, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_number, x_sector_vocabulary, x_vocabulary_number, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, collaboration_type, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, funding_orgs, accountable_orgs, extending_orgs, implementing_orgs, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid, dac_policy_marker_code, dac_policy_marker_significance, x_donor_transaction_type, x_original_transaction_value_USDm]
-                                output.append(row)
+                                row = [iati_identifier, x_transaction_number, x_original_transaction_value, x_original_transaction_value_usd, x_country_code, x_country, x_country_percentage, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_vocabulary, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_number, x_sector_vocabulary, x_vocabulary_number, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, transaction_description_narrative, transaction_humanitarian, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid, x_donor_transaction_type, x_original_transaction_value_USDm]
+                                transaction_output.append(row)
                                 # Reset sector-split specific defaults
                                 x_sector_number = 1
                                 x_sector_code = ""
@@ -1232,12 +1243,12 @@ class IatiFlat(object):
                             x_country_code = x_recipient_code
                             x_country = x_recipient
                             x_country_percentage = x_recipient_percentage
-                            row = [iati_identifier, x_transaction_number, reporting_org_ref, reporting_org_narrative, reporting_org_secondary_reporter, reporting_org_type_code, title_narrative, x_original_transaction_value, x_original_transaction_value_usd, x_country_code, x_country, x_country_percentage, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_vocabulary, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_number, x_sector_vocabulary, x_vocabulary_number, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, collaboration_type, transaction_disbursement_channel_code, description_narrative, transaction_description_narrative, humanitarian, transaction_humanitarian, humanitarian_scope_narrative,  x_hum_emergency_code, x_hum_appeal_code, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, funding_orgs, accountable_orgs, extending_orgs, implementing_orgs, tag_narrative, tag_vocabulary, tag_code, x_reporting_org_type, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid, dac_policy_marker_code, dac_policy_marker_significance, x_donor_transaction_type, x_original_transaction_value_USDm]
-                            output.append(row)
+                            row = [iati_identifier, x_transaction_number, x_original_transaction_value, x_original_transaction_value_usd, x_country_code, x_country, x_country_percentage, x_recipient_number, x_recipient_code, x_recipient, x_recipient_percentage, x_recipient_type, x_recipient_vocabulary, x_recipient_transaction_value, x_recipient_transaction_value_usd, x_sector_number, x_sector_vocabulary, x_vocabulary_number, x_sector_code, x_sector_percentage, x_dac3_sector_code, transaction_type_code, x_transaction_date, x_transaction_year, x_currency, x_transaction_value, x_transaction_value_usd, x_flow_type_code, x_finance_type_code, x_mod_aid_type_vocabulary, x_mod_aid_type_code, x_dac_aid_type_code, x_tied_status_code, transaction_disbursement_channel_code, transaction_description_narrative, transaction_humanitarian, transaction_provider_org_narrative, transaction_provider_org_provider_activity_id, transaction_provider_org_ref, transaction_provider_org_type, transaction_receiver_org_narrative, transaction_receiver_org_receiver_activity_id, transaction_receiver_org_ref, transaction_receiver_org_type, transaction_ref, x_transaction_type, x_finance_type, x_aid_type, x_dac3_sector, x_di_sector, x_yyyymm, x_covid, x_donor_transaction_type, x_original_transaction_value_USDm]
+                            transaction_output.append(row)
                             # Reset missing sector-split specific defaults
                             x_transaction_value = transaction_value
                             x_transaction_value_usd = ""
                             x_recipient_transaction_value = transaction_value
                             x_recipient_transaction_value_usd = ""
 
-        return output
+        return activity_output, transaction_output

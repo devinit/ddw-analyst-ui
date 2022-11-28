@@ -2,7 +2,7 @@ from sqlalchemy import distinct, create_engine, MetaData, select, Table
 from sqlalchemy.sql import func
 
 DATA_SCHEMA = "repo"
-TXNS_TABLE_NAME = "iati_transactions"
+TXNS_TABLE_NAME = "iati_activities"
 PUBLISHERS_TABLE_NAME = "iati_publishers"
 
 
