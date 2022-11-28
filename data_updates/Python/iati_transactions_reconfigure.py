@@ -43,8 +43,8 @@ def main():
     activity_header = iatiflat.activity_header
     transaction_header = iatiflat.transaction_header
 
-    engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
-    # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
+    # engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
+    engine = create_engine('postgresql://postgres@:5432/analyst_ui')
     conn = engine.connect()
 
     truncate_command = "TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME)
@@ -74,7 +74,7 @@ def main():
 
         flat_activity_data = pd.DataFrame(flat_activities)
         flat_activity_data.columns = activity_header
-        flat_activity_data["package_id"] = dataset["id"]
+        flat_activity_data["package_id"] = dataset_id
         flat_activity_data["last_modified"] = current_timestamp
         for numeric_column in A_NUMERIC_DTYPES:
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
@@ -82,7 +82,7 @@ def main():
 
         flat_transaction_data = pd.DataFrame(flat_transactions)
         flat_transaction_data.columns = transaction_header
-        flat_transaction_data["package_id"] = dataset["id"]
+        flat_transaction_data["package_id"] = dataset_id
         for numeric_column in T_NUMERIC_DTYPES:
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
