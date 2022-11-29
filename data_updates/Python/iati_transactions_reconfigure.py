@@ -31,7 +31,7 @@ else:
 
 
 DATA_SCHEMA = "repo"
-DATA_TABLENAME = "iati_transactions"
+DATA_TABLENAME = "iati_transactions2"
 ACTIVITY_DATA_TABLENAME = "iati_activities"
 IATI_BUCKET_NAME = "di-s3"
 IATI_FOLDER_NAME = "iati_registry/"

@@ -41,7 +41,7 @@ else:
 METADATA_SCHEMA = "repo"
 METADATA_TABLENAME = "iati_registry_metadata"
 DATA_SCHEMA = "repo"
-DATA_TABLENAME = "iati_transactions"
+DATA_TABLENAME = "iati_transactions2"
 ACTIVITY_DATA_TABLENAME = "iati_activities"
 TMP_DATA_SCHEMA = "repo"
 TMP_DATA_TABLENAME = "tmpiati_transactions"
