@@ -25,7 +25,8 @@
         "sourceMap": true
     },
     "exclude": [
-        "node_modules/"
+        "node_modules/",
+        "cypress*config.ts"
     ],
     "include": [
       "next-env.d.ts",
