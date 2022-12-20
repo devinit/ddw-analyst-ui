@@ -132,6 +132,17 @@ Cypress.Commands.add('navFromSidebar', (testSelector, testUrl) => {
   cy.url().should('include', testUrl);
 });
 
+Cypress.Commands.add('countPagination', () => {
+  cy.get('[data-testid="pagination-results-count"]').should(
+    'contain.text',
+    'Showing 1 to 10 of 10',
+  );
+  cy.get('.pagination > li').its('length').should('eq', 3);
+  cy.get('.pagination > li').eq(0).should('have.class', 'disabled').and('contain.text', 'Previous');
+  cy.get('.pagination > li').eq(1).should('have.class', 'active').and('contain.text', 1);
+  cy.get('.pagination > li').eq(2).should('have.class', 'disabled').and('contain.text', 'Next');
+});
+
 //
 //
 // -- This is a child command --

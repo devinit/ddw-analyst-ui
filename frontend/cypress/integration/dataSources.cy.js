@@ -33,17 +33,7 @@ describe('The Data Sources Page', () => {
       });
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
-      cy.get('[data-testid="pagination-results-count"]').should(
-        'contain.text',
-        'Showing 1 to 10 of 10',
-      );
-      cy.get('.pagination > li').its('length').should('eq', 3);
-      cy.get('.pagination > li')
-        .eq(0)
-        .should('have.class', 'disabled')
-        .and('contain.text', 'Previous');
-      cy.get('.pagination > li').eq(1).should('have.class', 'active').and('contain.text', 1);
-      cy.get('.pagination > li').eq(2).should('have.class', 'disabled').and('contain.text', 'Next');
+      cy.countPagination();
     });
 
     it('it paginates when sources exceed 10', () => {
