@@ -2,18 +2,11 @@
 
 describe('The Update Data Source Page', () => {
   beforeEach(() => {
-    cy.fixture('users').then((users) => {
-      const { username, password } = users.find((user) => user.role === 'admin');
-
-      cy.login(username, password);
-    });
+    cy.setupUser();
   });
 
   it('should be navigated to from the sidebar', () => {
-    cy.visit('/');
-    cy.url().should('not.include', '/login');
-    cy.get('[data-testid=sidebar-link-update]').click();
-    cy.url().should('include', '/update');
+    cy.navFromSidebar('[data-testid=sidebar-link-update]', '/update');
   });
 
   it('renders its own help menu', () => {

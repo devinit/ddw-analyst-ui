@@ -2,18 +2,11 @@
 
 describe('The Data Sources Page', () => {
   beforeEach(() => {
-    cy.fixture('users').then((users) => {
-      const { username, password } = users.find((user) => user.role === 'admin');
-
-      cy.login(username, password);
-    });
+    cy.setupUser();
   });
 
   it('should be navigated to from the sidebar', () => {
-    cy.visit('/');
-    cy.url().should('not.include', '/login');
-    cy.get('[data-testid=sidebar-link-sources]').click();
-    cy.url().should('include', '/sources');
+    cy.navFromSidebar('[data-testid=sidebar-link-sources]', '/sources');
   });
 
   it('renders the sources in a data table', () => {

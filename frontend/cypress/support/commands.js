@@ -117,6 +117,21 @@ Cypress.Commands.add('checkRenderOwnMenu', () => {
     });
 });
 
+Cypress.Commands.add('setupUser', () => {
+  cy.fixture('users').then((users) => {
+    const { username, password } = users.find((user) => user.role === 'admin');
+
+    cy.login(username, password);
+  });
+});
+
+Cypress.Commands.add('navFromSidebar', (testSelector, testUrl) => {
+  cy.visit('/');
+  cy.url().should('not.include', '/login');
+  cy.get(testSelector).click();
+  cy.url().should('include', testUrl);
+});
+
 //
 //
 // -- This is a child command --

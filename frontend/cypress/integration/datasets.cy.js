@@ -2,20 +2,13 @@
 
 describe('The Datasets Pages', () => {
   beforeEach(() => {
-    cy.fixture('users').then((users) => {
-      const { username, password } = users.find((user) => user.role === 'admin');
-
-      cy.login(username, password);
-    });
+    cy.setupUser();
   });
 
   // TODO: run each test for both my datasets & published datasets
 
   it('that are published should be navigated to from the sidebar', () => {
-    cy.visit('/');
-    cy.url().should('not.include', '/login');
-    cy.get('[data-testid=sidebar-link-published-datasets]').click();
-    cy.url().should('include', '/datasets');
+    cy.navFromSidebar('[data-testid=sidebar-link-published-datasets]', '/datasets');
   });
 
   it('renders its own help menu', () => {
