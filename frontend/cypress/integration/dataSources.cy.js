@@ -29,7 +29,7 @@ describe('The Data Sources Page', () => {
       cy.fixture('dataSources').then((sources) => {
         sources.count = 10;
         sources.results = sources.results.slice(0, 10);
-        cy.intercept('api/sources/?limit=10&offset=0', sources);
+        cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0', sources);
       });
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
@@ -40,12 +40,12 @@ describe('The Data Sources Page', () => {
       cy.fixture('dataSources').then((sources) => {
         sources.count = 15;
         sources.results = sources.results.slice(0, 10);
-        cy.intercept('api/sources/?limit=10&offset=0&search=', sources);
+        cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0', sources);
       });
       cy.fixture('dataSources').then((sources) => {
         sources.count = 15;
         sources.results = sources.results.slice(10, 15);
-        cy.intercept('api/sources/?limit=10&offset=10&search=', sources);
+        cy.intercept('api/sources/?limit=10&offset=10&search=&frozen=0', sources);
       });
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
@@ -63,7 +63,7 @@ describe('The Data Sources Page', () => {
     });
 
     it('it filters by text', () => {
-      cy.intercept('/api/sources/?limit=10&offset=0').as('datasources');
+      cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0').as('datasources');
 
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
