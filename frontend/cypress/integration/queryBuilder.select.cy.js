@@ -10,6 +10,16 @@ const startCreateStep = (operationName, operationDescription, filterStepDataSour
   cy.createSelectStep();
 };
 
+const createAnotherStepForm = (downArrows, inputSelect) => {
+  // Go to create another query step form
+  cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+
+  cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+  cy.get('[data-testid="qb-step-select-query"]').type(downArrows);
+  cy.get(inputSelect).type('{downarrow}add{enter}', { force: true });
+};
+
 const saveAndCheckStep = () => {
   // Save and create step
   cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
@@ -199,14 +209,9 @@ describe('The Query Builder: SELECT STEP', () => {
 
     it('affecting the SCALAR TRANSFORM step', () => {
       startCreateStep(operationName, operationDescription, filterStepDataSource);
-
-      // Go to create another query step form
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
-
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type(
+      createAnotherStepForm(
         '{downarrow}{downarrow}{downarrow}{downarrow}{enter}',
+        '[name="trans_func_name"] > input',
       );
       cy.get('[name="trans_func_name"] > input').type('{downarrow}add{enter}', { force: true });
       cy.get('[name="operational_column"] > input').type('{enter}', { force: true });
@@ -218,16 +223,10 @@ describe('The Query Builder: SELECT STEP', () => {
     it('affecting the MULTI TRANSFORM step', () => {
       startCreateStep(operationName, operationDescription, filterStepDataSource);
 
-      // Go to create another query step form
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
-
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type(
+      createAnotherStepForm(
         '{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{enter}',
+        '[name="trans_func_name"] > input',
       );
-      cy.get('[name="trans_func_name"] > input').type('{downarrow}add{enter}', { force: true });
-
       cy.get('[name="operational_columns"] > input').type('{enter}', { force: true });
       cy.get('[name="operational_columns"] > input').type('{downarrow}{enter}', { force: true });
 
@@ -237,16 +236,10 @@ describe('The Query Builder: SELECT STEP', () => {
     it('affecting the WINDOW step', () => {
       startCreateStep(operationName, operationDescription, filterStepDataSource);
 
-      // Go to create another query step form
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
-
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type(
+      createAnotherStepForm(
         '{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{enter}',
+        '[name="window_fn"] > input',
       );
-      cy.get('[name="window_fn"] > input').type('{downarrow}add{enter}', { force: true });
-
       cy.get('[name="term"] > input').type('{enter}', { force: true });
       cy.get('[name="over"] > input').type('{downarrow}{enter}', { force: true });
       cy.get('[name="order_by"] > input').type('{downarrow}{enter}', { force: true });
