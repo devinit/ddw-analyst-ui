@@ -1,5 +1,18 @@
 /// <reference types="Cypress"/>
 
+const checkCopiedDataset = (checkedStatus) => {
+  cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
+  cy.url().should('include', '/queries/build');
+  cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
+  cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
+  cy.get('.form-check-input').should(checkedStatus);
+  cy.get('[data-testid="active-data-source"]')
+    .children()
+    .eq(1)
+    .not()
+    .contains('Select Data Source');
+};
+
 describe('The Datasets Pages', () => {
   beforeEach(() => {
     cy.setupUser();
@@ -174,16 +187,7 @@ describe('The Datasets Pages', () => {
     cy.intercept('api/datasets/mine/', { fixture: 'datasets' }).as('getMyDatasets');
     cy.visit('/');
     cy.wait('@getMyDatasets');
-    cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
-    cy.url().should('include', '/queries/build');
-    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
-    cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
-    cy.get('.form-check-input').should('be.checked');
-    cy.get('[data-testid="active-data-source"]')
-      .children()
-      .eq(1)
-      .not()
-      .contains('Select Data Source');
+    checkCopiedDataset('be.checked');
   });
 
   it('makes a copy of a published dataset', () => {
@@ -196,16 +200,7 @@ describe('The Datasets Pages', () => {
       cy.intercept('api/datasets/', datasets);
     });
     cy.visit('/datasets/');
-    cy.get('[data-testid="dataset-duplicate"]').first().click({ force: true });
-    cy.url().should('include', '/queries/build');
-    cy.get('[data-testid="op-name-field"]').should('have.value', 'Copy of Test');
-    cy.get('[data-testid="op-description-field"]').should('have.value', 'Test');
-    cy.get('.form-check-input').should('not.be.checked');
-    cy.get('[data-testid="active-data-source"]')
-      .children()
-      .eq(1)
-      .not()
-      .contains('Select Data Source');
+    checkCopiedDataset('not.be.checked');
   });
 
   it('views data in datasets', () => {
