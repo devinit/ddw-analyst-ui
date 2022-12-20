@@ -1,6 +1,6 @@
 /// <reference types="Cypress"/>
 
-const startCreateStep = () => {
+const startCreateStep = (operationName, operationDescription, filterStepDataSource) => {
   // Visit query builder, type name and choose datasource
   cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
 
@@ -148,7 +148,7 @@ describe('The Query Builder: SELECT STEP', () => {
     const filterStepDataSource = 'Financial Tracking Service';
 
     it('affecting the FILTER step', () => {
-      startCreateStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Fill create step form with 2 filters
       cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
@@ -157,7 +157,7 @@ describe('The Query Builder: SELECT STEP', () => {
     });
 
     it('affecting the JOIN step', () => {
-      startCreateStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
@@ -179,7 +179,7 @@ describe('The Query Builder: SELECT STEP', () => {
     });
 
     it('affecting the AGGREGATE step', () => {
-      startCreateStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
@@ -198,7 +198,7 @@ describe('The Query Builder: SELECT STEP', () => {
     });
 
     it('affecting the SCALAR TRANSFORM step', () => {
-      startCreateStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
@@ -216,7 +216,7 @@ describe('The Query Builder: SELECT STEP', () => {
     });
 
     it('affecting the MULTI TRANSFORM step', () => {
-      startCreateStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
@@ -235,7 +235,7 @@ describe('The Query Builder: SELECT STEP', () => {
     });
 
     it('affecting the WINDOW step', () => {
-      startCreateStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
