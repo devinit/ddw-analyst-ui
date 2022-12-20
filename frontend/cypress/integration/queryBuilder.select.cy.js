@@ -32,6 +32,11 @@ const saveAndCheckStep = () => {
   cy.get('.modal-content').should('be.visible');
 };
 
+const enterColumns = (column_selector, operational_value) => {
+  cy.get(column_selector).type('{enter}', { force: true });
+  cy.get(column_selector).type(operational_value, { force: true });
+};
+
 describe('The Query Builder: SELECT STEP', () => {
   beforeEach(() => {
     cy.fixture('users').then((users) => {
@@ -182,8 +187,7 @@ describe('The Query Builder: SELECT STEP', () => {
 
       cy.get('[data-testid="qb-join-add-mapping-button"]', { timeout: 10000 }).click();
 
-      cy.get('[data-testid="qb-join-primary-column-select"]').type('{enter}');
-      cy.get('[data-testid="qb-join-secondary-column-select"]').type('{enter}');
+      enterColumns('[data-testid="qb-join-primary-column-select"]', '{enter}');
 
       saveAndCheckStep();
     });
@@ -227,9 +231,7 @@ describe('The Query Builder: SELECT STEP', () => {
         '{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{enter}',
         '[name="trans_func_name"] > input',
       );
-      cy.get('[name="operational_columns"] > input').type('{enter}', { force: true });
-      cy.get('[name="operational_columns"] > input').type('{downarrow}{enter}', { force: true });
-
+      enterColumns('[name="operational_columns"] > input', '{downarrow}{enter}');
       saveAndCheckStep();
     });
 
@@ -243,8 +245,7 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[name="term"] > input').type('{enter}', { force: true });
       cy.get('[name="over"] > input').type('{downarrow}{enter}', { force: true });
       cy.get('[name="order_by"] > input').type('{downarrow}{enter}', { force: true });
-      cy.get('[name="columns"] > input').type('{enter}', { force: true });
-      cy.get('[name="columns"] > input').type('{downarrow}{enter}', { force: true });
+      enterColumns('[name="columns"] > input', '{downarrow}{enter}');
 
       saveAndCheckStep();
     });
