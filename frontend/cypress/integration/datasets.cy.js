@@ -52,7 +52,7 @@ describe('The Datasets Pages', () => {
   });
 
   it('filters datasets by search text', () => {
-    cy.intercept('/api/datasets/?limit=10&offset=0').as('datasets');
+    cy.intercept('/api/datasets/*').as('datasets');
 
     cy.visit('/datasets/');
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
@@ -81,7 +81,7 @@ describe('The Datasets Pages', () => {
   });
 
   it('filters datasets by data source', () => {
-    cy.intercept('/api/datasets/?limit=10&offset=0').as('datasets');
+    cy.intercept('/api/datasets/*').as('datasets');
 
     cy.visit('/datasets/');
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
@@ -113,9 +113,9 @@ describe('The Datasets Pages', () => {
 
   it('it does not paginate when datasets are less than or equal to 10', () => {
     cy.fixture('datasets').then((datasets) => {
-      datasets.results = datasets.results.slice(0, 9);
+      datasets.results = datasets.results.slice(0, 10);
       datasets.count = datasets.results.length;
-      cy.intercept('api/datasets/?limit=10&offset=0', datasets).as('fetchDatasets');
+      cy.intercept('/api/datasets/*', datasets).as('fetchDatasets');
     });
 
     cy.visit('/datasets');
@@ -128,12 +128,12 @@ describe('The Datasets Pages', () => {
     cy.fixture('datasets').then((datasets) => {
       datasets.count = 15;
       datasets.results = datasets.results.slice(0, 10);
-      cy.intercept('api/datasets/?limit=10&offset=0&search=', datasets);
+      cy.intercept('/api/datasets/?limit=10&offset=0&search=', datasets);
     });
     cy.fixture('datasets').then((datasets) => {
       datasets.count = 15;
       datasets.results = datasets.results.slice(10, 15);
-      cy.intercept('api/datasets/?limit=10&offset=10&search=', datasets);
+      cy.intercept('/api/datasets/?limit=10&offset=10&search=', datasets);
     });
 
     cy.visit('/datasets');
@@ -184,7 +184,7 @@ describe('The Datasets Pages', () => {
   });
 
   it('makes a copy of my dataset', () => {
-    cy.intercept('api/datasets/mine/', { fixture: 'datasets' }).as('getMyDatasets');
+    cy.intercept('/api/datasets/mine/?limit=10&offset=0&search=', { fixture: 'datasets' }).as('getMyDatasets');
     cy.visit('/');
     cy.wait('@getMyDatasets');
     checkCopiedDataset('be.checked');
@@ -197,7 +197,7 @@ describe('The Datasets Pages', () => {
 
         return dataset;
       });
-      cy.intercept('api/datasets/', datasets);
+      cy.intercept('/api/datasets/?limit=10&offset=0&search=', datasets);
     });
     cy.visit('/datasets/');
     checkCopiedDataset('not.be.checked');
@@ -205,10 +205,10 @@ describe('The Datasets Pages', () => {
 
   it('views data in datasets', () => {
     cy.fixture('datasets').then((datasets) => {
-      cy.intercept('api/datasets/mine/', datasets);
+      cy.intercept('/api/datasets/mine/?limit=10&offset=0&search=', datasets);
     });
     cy.fixture('datasetTableData').then((data) => {
-      cy.intercept('api/dataset/data/346', data);
+      cy.intercept('/api/dataset/data/346', data);
     });
 
     // View dataset data in tabular form
@@ -220,7 +220,7 @@ describe('The Datasets Pages', () => {
           .contains('View Data')
           .click({ force: true })
           .then(() => {
-            cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 10);
+            cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 15);
             cy.get('[data-testid="dataset-export-button"]').should('be.visible');
           });
       });

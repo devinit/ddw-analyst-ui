@@ -187,7 +187,8 @@ describe('The Query Builder: SELECT STEP', () => {
 
       cy.get('[data-testid="qb-join-add-mapping-button"]', { timeout: 10000 }).click();
 
-      enterColumns('[data-testid="qb-join-primary-column-select"]', '{enter}');
+      cy.get('[data-testid="qb-join-primary-column-select"]').type('{enter}');
+      cy.get('[data-testid="qb-join-secondary-column-select"]').type('{enter}');
 
       saveAndCheckStep();
     });
