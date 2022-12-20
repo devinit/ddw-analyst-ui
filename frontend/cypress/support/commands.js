@@ -143,6 +143,18 @@ Cypress.Commands.add('countPagination', () => {
   cy.get('.pagination > li').eq(2).should('have.class', 'disabled').and('contain.text', 'Next');
 });
 
+Cypress.Commands.add('checkPaginationNext', () => {
+  cy.get('[data-testid="pagination-results-count"]').should(
+    'contain.text',
+    'Showing 1 to 10 of 15',
+  );
+  cy.get('.pagination > li').its('length').should('eq', 4);
+  cy.get('.pagination > li').eq(3).should('not.have.class', 'disabled').and('contain.text', 'Next');
+  cy.get('.pagination > li').find('a').eq(2).click();
+  cy.wait(100);
+  cy.get('.pagination > li').eq(2).should('have.class', 'active');
+});
+
 //
 //
 // -- This is a child command --

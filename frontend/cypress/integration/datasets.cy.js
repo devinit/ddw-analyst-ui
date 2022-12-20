@@ -126,17 +126,7 @@ describe('The Datasets Pages', () => {
     cy.visit('/datasets');
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/`);
     cy.get('.dataset-row').its('length').should('eq', 10);
-    cy.get('[data-testid="pagination-results-count"]').should(
-      'contain.text',
-      'Showing 1 to 10 of 15',
-    );
-    cy.get('.pagination > li').its('length').should('eq', 4);
-    cy.get('.pagination > li')
-      .eq(3)
-      .should('not.have.class', 'disabled')
-      .and('contain.text', 'Next');
-    cy.get('.pagination > li').find('a').eq(2).click();
-    cy.get('.pagination > li').eq(2).should('have.class', 'active');
+    cy.checkPaginationNext();
     cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/?page=2`);
     cy.get('[data-testid="pagination-results-count"]').should(
       'contain.text',
