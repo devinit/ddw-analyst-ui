@@ -2,18 +2,11 @@
 
 describe('The Data Sources Page', () => {
   beforeEach(() => {
-    cy.fixture('users').then((users) => {
-      const { username, password } = users.find((user) => user.role === 'admin');
-
-      cy.login(username, password);
-    });
+    cy.setupUser();
   });
 
   it('should be navigated to from the sidebar', () => {
-    cy.visit('/');
-    cy.url().should('not.include', '/login');
-    cy.get('[data-testid=sidebar-link-sources]').click();
-    cy.url().should('include', '/sources');
+    cy.navFromSidebar('[data-testid=sidebar-link-sources]', '/sources');
   });
 
   it('renders the sources in a data table', () => {
@@ -36,49 +29,28 @@ describe('The Data Sources Page', () => {
       cy.fixture('dataSources').then((sources) => {
         sources.count = 10;
         sources.results = sources.results.slice(0, 10);
-        cy.intercept('api/sources/?limit=10&offset=0', sources);
+        cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0', sources);
       });
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
-      cy.get('[data-testid="pagination-results-count"]').should(
-        'contain.text',
-        'Showing 1 to 10 of 10',
-      );
-      cy.get('.pagination > li').its('length').should('eq', 3);
-      cy.get('.pagination > li')
-        .eq(0)
-        .should('have.class', 'disabled')
-        .and('contain.text', 'Previous');
-      cy.get('.pagination > li').eq(1).should('have.class', 'active').and('contain.text', 1);
-      cy.get('.pagination > li').eq(2).should('have.class', 'disabled').and('contain.text', 'Next');
+      cy.countPagination();
     });
 
     it('it paginates when sources exceed 10', () => {
       cy.fixture('dataSources').then((sources) => {
         sources.count = 15;
         sources.results = sources.results.slice(0, 10);
-        cy.intercept('api/sources/?limit=10&offset=0&search=', sources);
+        cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0', sources);
       });
       cy.fixture('dataSources').then((sources) => {
         sources.count = 15;
         sources.results = sources.results.slice(10, 15);
-        cy.intercept('api/sources/?limit=10&offset=10&search=', sources);
+        cy.intercept('api/sources/?limit=10&offset=10&search=&frozen=0', sources);
       });
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
       cy.get('[data-testid="sources-table-row"]').its('length').should('eq', 10);
-      cy.get('[data-testid="pagination-results-count"]').should(
-        'contain.text',
-        'Showing 1 to 10 of 15',
-      );
-      cy.get('.pagination > li').its('length').should('eq', 4);
-      cy.get('.pagination > li')
-        .eq(3)
-        .should('not.have.class', 'disabled')
-        .and('contain.text', 'Next');
-      cy.get('.pagination > li').find('a').eq(2).click();
-      cy.wait(100);
-      cy.get('.pagination > li').eq(2).should('have.class', 'active');
+      cy.checkPaginationNext();
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?page=2`);
       cy.get('[data-testid="pagination-results-count"]').should(
         'contain.text',
@@ -91,7 +63,7 @@ describe('The Data Sources Page', () => {
     });
 
     it('it filters by text', () => {
-      cy.intercept('/api/sources/?limit=10&offset=0').as('datasources');
+      cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0').as('datasources');
 
       cy.visit('/sources');
       cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
@@ -125,23 +97,7 @@ describe('The Data Sources Page', () => {
   });
 
   it('renders its own help menu', () => {
-    cy.visit('/sources');
-    cy.get('[id=help-nav-dropdown]').click();
-    cy.get('.dropdown-menu.show .nav-link')
-      .should('have.length.greaterThan', 0)
-      .then((links) => {
-        Array.prototype.forEach.call(links, (link, index) => {
-          if (index === links.length - 1) {
-            expect(link.href).to.equal('https://github.com/devinit/ddw-analyst-ui/issues/new');
-            expect(link.innerHTML).to.equal('Report Issue');
-          } else {
-            if (index === 0) {
-              expect(link.innerHTML).to.equal('About Page');
-            }
-            expect(link.href).to.contain('docs.google');
-          }
-        });
-      });
+    cy.checkRenderOwnMenu();
   });
 
   describe('data source update', () => {

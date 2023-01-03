@@ -97,6 +97,64 @@ Cypress.Commands.add('getAccessToken', () => {
   return token;
 });
 
+Cypress.Commands.add('checkRenderOwnMenu', () => {
+  cy.visit('/queries/build');
+  cy.get('[id=help-nav-dropdown]').click();
+  cy.get('.dropdown-menu.show .nav-link')
+    .should('have.length.greaterThan', 0)
+    .then((links) => {
+      Array.prototype.forEach.call(links, (link, index) => {
+        if (index === links.length - 1) {
+          expect(link.href).to.equal('https://github.com/devinit/ddw-analyst-ui/issues/new');
+          expect(link.innerHTML).to.equal('Report Issue');
+        } else {
+          if (index === 0) {
+            expect(link.innerHTML).to.equal('About Page');
+          }
+          expect(link.href).to.contain('docs.google');
+        }
+      });
+    });
+});
+
+Cypress.Commands.add('setupUser', () => {
+  cy.fixture('users').then((users) => {
+    const { username, password } = users.find((user) => user.role === 'admin');
+
+    cy.login(username, password);
+  });
+});
+
+Cypress.Commands.add('navFromSidebar', (testSelector, testUrl) => {
+  cy.visit('/');
+  cy.url().should('not.include', '/login');
+  cy.get(testSelector).click();
+  cy.url().should('include', testUrl);
+});
+
+Cypress.Commands.add('countPagination', () => {
+  cy.get('[data-testid="pagination-results-count"]').should(
+    'contain.text',
+    'Showing 1 to 10 of 10',
+  );
+  cy.get('.pagination > li').its('length').should('eq', 3);
+  cy.get('.pagination > li').eq(0).should('have.class', 'disabled').and('contain.text', 'Previous');
+  cy.get('.pagination > li').eq(1).should('have.class', 'active').and('contain.text', 1);
+  cy.get('.pagination > li').eq(2).should('have.class', 'disabled').and('contain.text', 'Next');
+});
+
+Cypress.Commands.add('checkPaginationNext', () => {
+  cy.get('[data-testid="pagination-results-count"]').should(
+    'contain.text',
+    'Showing 1 to 10 of 15',
+  );
+  cy.get('.pagination > li').its('length').should('eq', 4);
+  cy.get('.pagination > li').eq(3).should('not.have.class', 'disabled').and('contain.text', 'Next');
+  cy.get('.pagination > li').find('a').eq(2).click();
+  cy.wait(100);
+  cy.get('.pagination > li').eq(2).should('have.class', 'active');
+});
+
 //
 //
 // -- This is a child command --
