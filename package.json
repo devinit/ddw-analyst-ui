@@ -18,7 +18,7 @@
     "coverage:py": "docker-compose run web python3 -m coverage run manage.py test --settings=ddw_analyst_ui.docker_test_settings && docker-compose run web python3 -m coverage xml && python3 -m codecov",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "cy:run-ci": "cypress run --config-file cypress.ci.json"
+    "cy:run-ci": "cypress run --config-file cypress.ci.config.ts"
   },
   "repository": {
     "type": "git",

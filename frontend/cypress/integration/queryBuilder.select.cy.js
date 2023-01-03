@@ -1,5 +1,42 @@
 /// <reference types="Cypress"/>
 
+const startCreateStep = (operationName, operationDescription, filterStepDataSource) => {
+  // Visit query builder, type name and choose datasource
+  cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
+
+  cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
+
+  // Create select query step
+  cy.createSelectStep();
+};
+
+const createAnotherStepForm = (downArrows, inputSelect) => {
+  // Go to create another query step form
+  cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
+
+  cy.get('[name="name"]').eq(1).type('Dataset Step Test');
+  cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
+  cy.get('[data-testid="qb-step-select-query"]').type(downArrows);
+  cy.get(inputSelect).type('{downarrow}add{enter}', { force: true });
+};
+
+const saveAndCheckStep = () => {
+  // Save and create step
+  cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
+
+  cy.get('.list-group').find('.list-group-item').eq(0).click({ force: true });
+
+  // Uncheck the first checkbox
+  cy.get('.selectColumnCheckbox > input').eq(0).uncheck({ force: true });
+
+  cy.get('.modal-content').should('be.visible');
+};
+
+const enterColumns = (column_selector, operational_value) => {
+  cy.get(column_selector).type('{enter}', { force: true });
+  cy.get(column_selector).type(operational_value, { force: true });
+};
+
 describe('The Query Builder: SELECT STEP', () => {
   beforeEach(() => {
     cy.fixture('users').then((users) => {
@@ -126,36 +163,16 @@ describe('The Query Builder: SELECT STEP', () => {
     const filterStepDataSource = 'Financial Tracking Service';
 
     it('affecting the FILTER step', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
-
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
-
-      // Create select query step
-      cy.createSelectStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Fill create step form with 2 filters
       cy.createFilterStep('amount{enter}', '{downarrow}boundary{downarrow}');
 
-      // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]', { timeout: 10000 }).click();
-
-      cy.get('.list-group').find('.list-group-item').eq(0).click({ force: true });
-
-      // Uncheck the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({ force: true });
-
-      cy.get('.modal-content').should('be.visible');
+      saveAndCheckStep();
     });
 
     it('affecting the JOIN step', () => {
-      // Visit query builder, type name and choose FTS datasource
-      cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
-
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
-
-      // Create select query step
-      cy.createSelectStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
@@ -173,25 +190,11 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[data-testid="qb-join-primary-column-select"]').type('{enter}');
       cy.get('[data-testid="qb-join-secondary-column-select"]').type('{enter}');
 
-      // Save and create join step
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-
-      cy.get('.list-group').find('.list-group-item').eq(0).click({ force: true });
-
-      // Uncheck the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({ force: true });
-
-      cy.get('.modal-content').should('be.visible');
+      saveAndCheckStep();
     });
 
     it('affecting the AGGREGATE step', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
-
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
-
-      // Create select query step
-      cy.createSelectStep();
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
       // Go to create another query step form
       cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
@@ -206,116 +209,46 @@ describe('The Query Builder: SELECT STEP', () => {
       cy.get('[name="group_by"] > input').eq(0).type('{enter}', { force: true });
       cy.get('[name="group_by"] > input').eq(0).type('{downarrow}{enter}', { force: true });
 
-      // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-
-      cy.get('.list-group').find('.list-group-item').eq(0).click({ force: true });
-
-      // // Uncheck the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({ force: true });
-
-      cy.get('.modal-content').should('be.visible');
+      saveAndCheckStep();
     });
 
     it('affecting the SCALAR TRANSFORM step', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
-
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
-
-      // Create select query step
-      cy.createSelectStep();
-
-      // Go to create another query step form
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
-
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type(
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
+      createAnotherStepForm(
         '{downarrow}{downarrow}{downarrow}{downarrow}{enter}',
+        '[name="trans_func_name"] > input',
       );
       cy.get('[name="trans_func_name"] > input').type('{downarrow}add{enter}', { force: true });
       cy.get('[name="operational_column"] > input').type('{enter}', { force: true });
       cy.get('[name="operational_value"]').type('5', { force: true });
 
-      // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-
-      cy.get('.list-group').find('.list-group-item').eq(0).click({ force: true });
-
-      // Uncheck the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({ force: true });
-
-      cy.get('.modal-content').should('be.visible');
+      saveAndCheckStep();
     });
 
     it('affecting the MULTI TRANSFORM step', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
-
-      // Create select query step
-      cy.createSelectStep();
-
-      // Go to create another query step form
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
-
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type(
+      createAnotherStepForm(
         '{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{enter}',
+        '[name="trans_func_name"] > input',
       );
-      cy.get('[name="trans_func_name"] > input').type('{downarrow}add{enter}', { force: true });
-
-      cy.get('[name="operational_columns"] > input').type('{enter}', { force: true });
-      cy.get('[name="operational_columns"] > input').type('{downarrow}{enter}', { force: true });
-
-      // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-
-      cy.get('.list-group').find('.list-group-item').eq(0).click({ force: true });
-
-      // Uncheck the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({ force: true });
-
-      cy.get('.modal-content').should('be.visible');
+      enterColumns('[name="operational_columns"] > input', '{downarrow}{enter}');
+      saveAndCheckStep();
     });
 
     it('affecting the WINDOW step', () => {
-      // Visit query builder, type name and choose datasource
-      cy.fillOperationForm(operationName, operationDescription, filterStepDataSource);
+      startCreateStep(operationName, operationDescription, filterStepDataSource);
 
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click({ force: true });
-
-      // Create select query step
-      cy.createSelectStep();
-
-      // Go to create another query step form
-      cy.get('[data-testid="qb-add-step-button"]', { timeout: 10000 }).click();
-
-      cy.get('[name="name"]').eq(1).type('Dataset Step Test');
-      cy.get('[name="description"]').eq(1).type('Dataset Step Test Description');
-      cy.get('[data-testid="qb-step-select-query"]').type(
+      createAnotherStepForm(
         '{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{enter}',
+        '[name="window_fn"] > input',
       );
-      cy.get('[name="window_fn"] > input').type('{downarrow}add{enter}', { force: true });
-
       cy.get('[name="term"] > input').type('{enter}', { force: true });
       cy.get('[name="over"] > input').type('{downarrow}{enter}', { force: true });
       cy.get('[name="order_by"] > input').type('{downarrow}{enter}', { force: true });
-      cy.get('[name="columns"] > input').type('{enter}', { force: true });
-      cy.get('[name="columns"] > input').type('{downarrow}{enter}', { force: true });
+      enterColumns('[name="columns"] > input', '{downarrow}{enter}');
 
-      // Save and create step
-      cy.get('[data-testid="qb-step-preview-button"]').click();
-
-      cy.get('.list-group').find('.list-group-item').eq(0).click({ force: true });
-
-      // Uncheck the first checkbox
-      cy.get('.selectColumnCheckbox > input').eq(0).uncheck({ force: true });
-
-      cy.get('.modal-content').should('be.visible');
+      saveAndCheckStep();
     });
   });
 });
