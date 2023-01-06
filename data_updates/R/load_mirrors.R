@@ -220,6 +220,8 @@ merge_crs_tables = function(file_vec){
     "text",
     "text",
     "text",
+    "text",
+    "text",
     "integer",
     "integer",
     "integer",
@@ -308,6 +310,8 @@ merge_crs_tables = function(file_vec){
     ,"channel_reported_name"
     ,"channel_parent_category"
     ,"geography"
+    ,"ldc_flag" # New for 2023
+    ,"ldc_flag_name" # New for 2023
     ,"expected_start_date"
     ,"completion_date"
     ,"long_description"
