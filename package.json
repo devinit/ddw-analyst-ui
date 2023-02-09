@@ -89,7 +89,7 @@
     "jquery-extendext": "^1.0.0",
     "jQuery-QueryBuilder": "^2.6.0",
     "jshint": "^2.13.5",
-    "lint-staged": "^12.4.1",
+    "lint-staged": "^13.1.1",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss-loader": "^7.0.0",
     "prettier": "^2.7.1",
