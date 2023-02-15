@@ -7,10 +7,10 @@ import { Button } from 'react-bootstrap';
 import QueryBuilder, { QueryBuilderProps } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.scss';
 import CustomSelector from './CustomSelector';
+import { CustomValueEditor } from './CustomValueEditor';
 import DeleteAction from './DeleteAction';
 import './styles.css';
 import { getClasses } from './utils/config';
-import { CustomValueEditor } from './CustomValueEditor';
 
 const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
   return (
