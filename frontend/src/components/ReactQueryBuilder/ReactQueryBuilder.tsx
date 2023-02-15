@@ -2,7 +2,7 @@ import {
   bootstrapControlClassnames,
   bootstrapControlElements,
 } from '@react-querybuilder/bootstrap';
-import React, { FC, KeyboardEvent } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import QueryBuilder, { QueryBuilderProps, ValueEditorProps } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.scss';
@@ -10,6 +10,20 @@ import CustomSelector from './CustomSelector';
 import DeleteAction from './DeleteAction';
 import './styles.css';
 import { getClasses } from './utils/config';
+
+const CustomValueEditor = (props: ValueEditorProps) => {
+  const [value, setValue] = useState(props.value);
+
+  return (
+    <FormControl
+      value={value}
+      onChange={(event) => {
+        setValue(event.currentTarget.value);
+        props.handleOnChange(event.currentTarget.value);
+      }}
+    />
+  );
+};
 
 const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
   return (
@@ -33,16 +47,7 @@ const ReactQueryBuilder: FC<QueryBuilderProps> = (props) => {
         ),
         removeRuleAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
         removeGroupAction: (props) => <DeleteAction onClick={props.handleOnClick} />,
-        valueEditor: (props: ValueEditorProps) => (
-          <FormControl
-            defaultValue={props.value}
-            onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
-              if (event.key === 'Enter') {
-                props.handleOnChange(event.currentTarget.value);
-              }
-            }}
-          />
-        ),
+        valueEditor: CustomValueEditor,
       }}
       controlClassnames={getClasses(bootstrapControlClassnames)}
       {...props}
