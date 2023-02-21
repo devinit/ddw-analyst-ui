@@ -1,9 +1,13 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { FormControl } from 'react-bootstrap';
 import { ValueEditorProps } from 'react-querybuilder';
 
 const CustomValueEditor: FC<ValueEditorProps> = (props) => {
   const [value, setValue] = useState(props.value);
+
+  useEffect(() => {
+    setValue(props.value);
+  }, [props.value]);
 
   return (
     <FormControl
