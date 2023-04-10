@@ -9,7 +9,7 @@ djangorestframework>=3.11.0,<4.0
 django-rest-knox>=4.1.0,<5.0
 django-filter>=2.2.0,<24.0
 gunicorn>=19.9.0,<21.0
-importlib-metadata==4.13.0
+importlib-metadata==6.3.0
 lxml>=4.6.3,<5.0
 markdown>=3.2.2,<4.0
 numpy>=1.18.4,<2.0
