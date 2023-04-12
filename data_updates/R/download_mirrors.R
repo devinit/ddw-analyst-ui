@@ -1,15 +1,17 @@
 # Check whether packages are installed, and install them
-list.of.packages <- c("scrapeR")
+list.of.packages <- c("httr", "XML")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
+
+options(timeout = max(300, getOption("timeout")))
 
 download_oecd_zip = function(table_name, zip_location){
   download_url = paste0("https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=",table_name)
   data_root = "https://stats.oecd.org/FileView2.aspx?IDFile="
   
   # Download the page source
-  download_source = scrape(download_url, headers=T,follow=T,parse=T)[[1]]
+  download_source = htmlParse(content(GET(download_url), as="text"))
   
   # Extract the link elements
   link_elems = getNodeSet(download_source,"//a")
