@@ -119,7 +119,7 @@ clean_dac5_file = function(){
 
 
 clean_dac1_file = function(){
-  dac1 <- fread(dac1_path)
+  dac1 <- fread(dac1_path, encoding="Latin-1")
   setnames(dac1,
            c('DONOR'
              ,'Donor'
