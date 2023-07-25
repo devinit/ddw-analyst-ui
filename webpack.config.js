@@ -3,6 +3,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',
@@ -42,5 +43,6 @@ module.exports = {
     }),
     // new BundleAnalyzerPlugin(),
     new LiveReloadPlugin(),
+    new Dotenv(),
   ],
 };

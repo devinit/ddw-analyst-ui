@@ -1,5 +1,7 @@
-const config: { BASE_URL: string } = {
-  BASE_URL: 'http://localhost/',
-};
+import axios from 'axios';
 
-export default config;
+const axiosConfig = axios.create({
+  baseURL: process.env.BASE_URL,
+});
+
+export default axiosConfig;
