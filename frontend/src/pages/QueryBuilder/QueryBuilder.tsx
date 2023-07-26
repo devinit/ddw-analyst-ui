@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 import React, { FunctionComponent, useEffect, useState } from 'react';
@@ -31,6 +31,7 @@ import { fetchOperationDataPreview } from '../../utils/hooks/operations';
 import * as pageActions from './actions';
 import './QueryBuilder.scss';
 import { queryBuilderReducerId, QueryBuilderState } from './reducers';
+import axiosConfig from '../../config';
 
 interface ActionProps {
   actions: typeof sourcesActions &
@@ -204,7 +205,7 @@ const QueryBuilder: FunctionComponent<QueryBuilderProps> = (props) => {
       operation_steps: updatedSteps.toJS() as unknown as List<OperationStepMap>,
     };
     if (props.token) {
-      axios
+      axiosConfig
         .request({
           url,
           method: id ? 'put' : 'post',

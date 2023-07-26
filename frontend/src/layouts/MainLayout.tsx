@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
 import React, { ReactElement } from 'react';
 import { Dropdown, Modal, Nav, Navbar } from 'react-bootstrap';
@@ -33,6 +33,7 @@ import { User, UserState } from '../reducers/user';
 import { ReduxStore } from '../store';
 import { OperationMap } from '../types/operations';
 import { api, localForageKeys } from '../utils';
+import axiosConfig from '../config';
 interface ActionProps {
   actions: typeof UserActions & typeof TokenActions & typeof ModalActions;
 }
@@ -336,7 +337,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
       .getItem<string>(localForageKeys.API_KEY)
       .then((token) => {
         if (token) {
-          axios
+          axiosConfig
             .request({
               url: api.routes.LOGOUT,
               method: 'post',
@@ -367,7 +368,7 @@ class MainLayout extends React.Component<MainLayoutProps, MainLayoutState> {
   };
 
   private validateToken(token: string, user: User): void {
-    axios
+    axiosConfig
       .request({
         url: `${api.routes.USERS}${user.id}/`,
         method: 'get',

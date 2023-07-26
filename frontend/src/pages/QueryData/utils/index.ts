@@ -1,7 +1,7 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import { api, localForageKeys } from '../../../utils';
 import moment from 'moment';
+import axiosConfig from '../../../config';
 
 const BASEPATH = api.routes.FETCH_OPERATION;
 
@@ -24,7 +24,7 @@ export const fetchOperationById = async (id: number): Promise<QueryResult> => {
     Authorization: `token ${token}`,
   };
 
-  return await axios(`${BASEPATH.replace('{id}', id.toString())}`, { headers });
+  return await axiosConfig(`${BASEPATH.replace('{id}', id.toString())}`, { headers });
 };
 
 export const isCacheExpired = async (id: number): Promise<boolean> => {

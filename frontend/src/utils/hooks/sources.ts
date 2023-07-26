@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { fromJS, List } from 'immutable';
 import * as localForage from 'localforage';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import { OperationMap } from '../../types/operations';
 import { Source, SourceMap } from '../../types/sources';
 import { api, getSourceIDFromOperation, localForageKeys } from '../../utils';
 import { fetchCachedSources, updateSourcesCache } from '../../utils/cache';
+import axiosConfig from '../../config';
 interface Options {
   limit: number;
   offset: number;
@@ -37,7 +38,7 @@ export const useSources = (options: Options = defaultOptions, fetch = false): Li
     const url = `${api.routes.SOURCES}?limit=${options.limit}&offset=${options.offset}&search=${
       options.search || ''
     }&frozen=${options.frozen}`;
-    axios
+    axiosConfig
       .request({
         url: options.link || url,
         method: 'get',
@@ -94,7 +95,7 @@ export const useSource = (id?: number, fetch = false): UseSourceResult => {
 
   const fetchSource = () => {
     setLoading(true);
-    axios
+    axiosConfig
       .request({
         url: `${api.routes.SOURCES}${id}`,
         method: 'get',

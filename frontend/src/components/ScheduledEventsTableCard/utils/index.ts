@@ -1,7 +1,7 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import { ScheduledEvent } from '../../../types/scheduledEvents';
 import { api, localForageKeys } from '../../../utils';
+import axiosConfig from '../../../config';
 
 const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
 
@@ -23,5 +23,5 @@ export const fetchDataPerPage = async (
   };
   const offset = currentPage === 1 ? 0 : (currentPage - 1) * limit;
 
-  return await axios(`${BASEPATH}?limit=${limit}&offset=${offset}`, { headers });
+  return await axiosConfig(`${BASEPATH}?limit=${limit}&offset=${offset}`, { headers });
 };

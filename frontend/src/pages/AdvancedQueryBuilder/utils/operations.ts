@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { Operation, OperationMap } from '../../../types/operations';
 import { api } from '../../../utils';
 import { clearOperationsCache } from '../../../utils/cache';
+import axiosConfig from '../../../config';
 
 export const saveOperation = async (operation: OperationMap, token: string): Promise<void> => {
   if (!operation) {
@@ -10,7 +10,7 @@ export const saveOperation = async (operation: OperationMap, token: string): Pro
   const id = operation.get('id');
   const url = id ? `${api.routes.SINGLE_DATASET}${id}/` : api.routes.DATASETS;
   const data: Operation = operation.toJS() as unknown as Operation;
-  const response = await axios.request<Operation>({
+  const response = await axiosConfig.request<Operation>({
     url,
     method: id ? 'put' : 'post',
     headers: {
@@ -27,7 +27,7 @@ export const saveOperation = async (operation: OperationMap, token: string): Pro
 };
 
 export const deleteOperation = async (operationID: string, token: string): Promise<void> => {
-  const response = await axios.request({
+  const response = await axiosConfig.request({
     url: `${api.routes.SINGLE_DATASET}${operationID}/`,
     method: 'delete',
     headers: {

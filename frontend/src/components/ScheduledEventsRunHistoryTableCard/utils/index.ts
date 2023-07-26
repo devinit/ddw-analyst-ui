@@ -1,8 +1,8 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import { RunInstanceStatus } from '../../../pages/ScheduledEvents';
 import { ScheduledEventRunHistory } from '../../../types/scheduledEvents';
 import { api, localForageKeys } from '../../../utils';
+import axiosConfig from '../../../config';
 
 export const LIMIT = 10;
 const BASEPATH = api.routes.FETCH_RUN_INSTANCES;
@@ -16,7 +16,7 @@ export const fetchScheduledEventRunHistory = async (
     Authorization: `token ${token}`,
   };
 
-  return await axios(`${BASEPATH.replace('{id}', eventId.toString())}`, { headers });
+  return await axiosConfig(`${BASEPATH.replace('{id}', eventId.toString())}`, { headers });
 };
 
 export const fetchDataPerPage = async (
@@ -37,7 +37,7 @@ export const fetchDataPerPage = async (
   };
   const offset = currentPage === 1 ? 0 : (currentPage - 1) * limit;
 
-  return await axios(
+  return await axiosConfig(
     `${BASEPATH.replace(
       '{id}',
       eventId.toString(),

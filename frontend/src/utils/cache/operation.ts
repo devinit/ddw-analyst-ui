@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import moment from 'moment';
 import { localForageKeys } from '..';
@@ -6,6 +5,7 @@ import { fetchOperationById } from '../../pages/QueryData/utils';
 import { FetchOptions } from '../../types/api';
 import { OperationData } from '../../types/operations';
 import { OperationDataAPIResponse } from '../../types/operations';
+import axiosConfig from '../../config';
 
 export interface QueryResult {
   data: OperationDataAPIResponse;
@@ -65,7 +65,7 @@ export const fetchOperations = async (path: string): Promise<QueryResult> => {
     Authorization: `token ${token}`,
   };
 
-  return await axios(path, { headers });
+  return await axiosConfig(path, { headers });
 };
 
 export const isOperationsCacheExpired = async (

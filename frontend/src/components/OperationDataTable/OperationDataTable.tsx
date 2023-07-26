@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { List } from 'immutable';
 import * as localForage from 'localforage';
 import React, { FunctionComponent, KeyboardEvent, useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import { OperationDataMap } from '../../types/operations';
 import { OperationColumn } from '../../types/sources';
 import { api, formatString, localForageKeys } from '../../utils';
 import { BasicModal, ModalMessage } from '../BasicModal';
+import axiosConfig from '../../config';
 
 interface OperationDataTableProps {
   list: List<OperationDataMap>;
@@ -69,7 +70,7 @@ export const OperationDataTable: FunctionComponent<OperationDataTableProps> = ({
     if (event.key.toLowerCase() === 'enter') {
       const alias = event.currentTarget.value;
       localForage.getItem<string>(localForageKeys.API_KEY).then((token) => {
-        axios
+        axiosConfig
           .request({
             url: `${api.routes.DATASET_ALIAS}${column.id}/`,
             method: 'put',
