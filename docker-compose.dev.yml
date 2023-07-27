@@ -15,13 +15,13 @@ services:
       context: .
       dockerfile: Dockerfile_spotlights_dev
     expose:
-      - '8000'
+      - "8000"
     # Replace below path with the path to your ddw-external-api repo
     # e.g export SPOTLIGHTS_REPO_PATH=/path/to/ddw-external-api
     volumes:
-      - '${SPOTLIGHTS_REPO_PATH}:/src/ddw-external-api'
+      - "${SPOTLIGHTS_REPO_PATH}:/src/ddw-external-api"
     ports:
-      - '8000:8000'
+      - "8000:8000"
     depends_on:
       - db
     networks:
@@ -31,9 +31,9 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - '.:/src'
+      - ".:/src"
     expose:
-      - '80'
+      - "80"
     depends_on:
       - db
     environment:
@@ -46,7 +46,7 @@ services:
       - API_BASE_URL
     command: bash -c "export DJANGO_DEV='True' && python manage.py runserver 0.0.0.0:80"
     ports:
-      - '80:80'
+      - "80:80"
     networks:
       - ddw_net
 

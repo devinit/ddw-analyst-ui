@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 services:
   db:
@@ -14,9 +14,9 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - '.:/src'
+      - ".:/src"
     expose:
-      - '80'
+      - "80"
     depends_on:
       - db
     environment:
@@ -40,7 +40,7 @@ services:
       context: .
       dockerfile: Dockerfile_spotlights_api
     expose:
-      - '8000'
+      - "8000"
     depends_on:
       - db
     networks:
@@ -48,8 +48,8 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - '80:80'
-      - '443:443'
+      - "80:80"
+      - "443:443"
     environment:
       - VIRTUAL_HOST=ddw.devinit.org
     volumes:
@@ -57,7 +57,7 @@ services:
       - ./static:/static
       - ./ssl:/etc/ssl/
     restart: always
-    command: '/bin/sh -c ''while :; do sleep 12h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    command: "/bin/sh -c 'while :; do sleep 12h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
       - web
     networks:
