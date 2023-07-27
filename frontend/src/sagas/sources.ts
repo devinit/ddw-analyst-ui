@@ -1,5 +1,5 @@
 import { SET_ACTIVE_SOURCE } from '../pages/DataSources/reducers';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
 import { put, takeLatest } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime';
@@ -16,13 +16,12 @@ import { Source, SourceMap } from '../types/sources';
 import { api, localForageKeys } from '../utils';
 import { setToken } from '../actions/token';
 import { setActiveSource } from '../actions/sources';
-import axiosConfig from '../config';
 
 function* fetchSources({ payload }: SourcesAction) {
   try {
     const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
     const url = `${api.routes.SOURCES}?limit=${payload.limit}&offset=${payload.offset}&search=${payload.search}&frozen=${payload.frozen}`;
-    const { status, data }: AxiosResponse<APIResponse<Source[]>> = yield axiosConfig
+    const { status, data }: AxiosResponse<APIResponse<Source[]>> = yield axios
       .request({
         url: payload.link || url,
         method: 'get',
@@ -62,7 +61,7 @@ function* fetchSource({ payload }: SourcesAction) {
   }
   try {
     const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const { status, data }: AxiosResponse<APIResponse<Source>> = yield axiosConfig
+    const { status, data }: AxiosResponse<APIResponse<Source>> = yield axios
       .request({
         url: `${api.routes.SOURCES}${sourceId}/`,
         method: 'get',

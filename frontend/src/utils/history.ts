@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import * as localForage from 'localforage';
 import { api, localForageKeys } from '.';
 import { FrozenData } from '../components/SourceHistoryListItem/utils';
 import { SavedQueryData } from '../components/DatasetHistoryCard/utils/types';
-import axiosConfig from '../config';
 
 const SOURCE_HISTORY_BASEPATH = api.routes.FETCH_SOURCE_HISTORY;
 const OPERATION_HISTORY_BASEPATH = api.routes.FETCH_DATASET_HISTORY;
@@ -31,7 +30,7 @@ export const fetchDataSourceHistory = async (
     Authorization: `token ${token}`,
   };
 
-  return await axiosConfig(
+  return await axios(
     `${SOURCE_HISTORY_BASEPATH}${id}?limit=${options.limit || 10}&offset=${options.offset || 0}`,
     { headers },
   );
@@ -44,12 +43,12 @@ export const fetchFrozenData = async (id: number): Promise<AxiosResponse<FrozenD
     Authorization: `token ${token}`,
   };
 
-  return await axiosConfig(`${api.routes.FROZEN_DATA}${id}`, { headers });
+  return await axios(`${api.routes.FROZEN_DATA}${id}`, { headers });
 };
 
 export const createFrozenData = async (data: FrozenData): Promise<AxiosResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const response = await axiosConfig.request({
+  const response = await axios.request({
     url: api.routes.FROZEN_DATA,
     method: 'post',
     headers: {
@@ -64,7 +63,7 @@ export const createFrozenData = async (data: FrozenData): Promise<AxiosResponse>
 
 export const deleteFrozeData = async (id: number): Promise<AxiosResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const response = await axiosConfig.request({
+  const response = await axios.request({
     url: `${api.routes.FROZEN_DATA}${id}`,
     method: 'delete',
     headers: {
@@ -86,7 +85,7 @@ export const fetchOperationHistory = async (
     Authorization: `token ${token}`,
   };
 
-  return await axiosConfig(
+  return await axios(
     `${OPERATION_HISTORY_BASEPATH}${id}?limit=${options.limit || 10}&offset=${options.offset || 0}`,
     { headers },
   );
@@ -99,12 +98,12 @@ export const fetchSavedQueryData = async (id: number): Promise<AxiosResponse<Sav
     Authorization: `token ${token}`,
   };
 
-  return await axiosConfig(`${api.routes.SINGLE_SAVED_QUERYSET}${id}`, { headers });
+  return await axios(`${api.routes.SINGLE_SAVED_QUERYSET}${id}`, { headers });
 };
 
 export const createSavedQueryData = async (data: SavedQueryData): Promise<AxiosResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const response = await axiosConfig.request({
+  const response = await axios.request({
     url: api.routes.SAVED_QUERYSETS,
     method: 'post',
     headers: {
@@ -119,7 +118,7 @@ export const createSavedQueryData = async (data: SavedQueryData): Promise<AxiosR
 
 export const deleteSavedQueryData = async (id: number): Promise<AxiosResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const response = await axiosConfig.request({
+  const response = await axios.request({
     url: `${api.routes.SINGLE_SAVED_QUERYSET}${id}`,
     method: 'delete',
     headers: {

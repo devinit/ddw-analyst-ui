@@ -1,6 +1,6 @@
 import * as localForage from 'localforage';
 import { api, localForageKeys } from '../../../utils';
-import axiosConfig from '../../../config';
+import axios from 'axios';
 
 const BASEPATH = api.routes.FETCH_SOURCE_DATASETS;
 
@@ -23,5 +23,5 @@ export const fetchQueriesOnDataset = async (id: number): Promise<QueryResult> =>
     Authorization: `token ${token}`,
   };
 
-  return await axiosConfig(`${BASEPATH}${id}`, { headers });
+  return await axios(`${BASEPATH}${id}`, { headers });
 };

@@ -1,7 +1,7 @@
 import * as localForage from 'localforage';
 import { Moment } from 'moment';
 import { api, localForageKeys } from '../../../utils';
-import axiosConfig from '../../../config';
+import axios from 'axios';
 
 interface RunInstancePayload {
   start_at: Moment;
@@ -33,7 +33,7 @@ export const createRunInstance = async (
 ): Promise<RunInstanceResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
 
-  return await axiosConfig.request({
+  return await axios.request({
     url: api.routes.CREATE_SCHEDULED_INSTANCE.replace('{scheduleId}', `${scheduleId}`),
     method: 'post',
     headers: {

@@ -5,7 +5,7 @@ import { fetchOperationById } from '../../pages/QueryData/utils';
 import { FetchOptions } from '../../types/api';
 import { OperationData } from '../../types/operations';
 import { OperationDataAPIResponse } from '../../types/operations';
-import axiosConfig from '../../config';
+import axios from 'axios';
 
 export interface QueryResult {
   data: OperationDataAPIResponse;
@@ -65,7 +65,7 @@ export const fetchOperations = async (path: string): Promise<QueryResult> => {
     Authorization: `token ${token}`,
   };
 
-  return await axiosConfig(path, { headers });
+  return await axios(path, { headers });
 };
 
 export const isOperationsCacheExpired = async (

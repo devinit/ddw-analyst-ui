@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import {
   DELETE_OPERATION,
   FETCH_OPERATION,
@@ -23,7 +23,6 @@ import {
 } from '../actions/operations';
 import { fetchActiveSource } from '../actions/sources';
 import { isOperationsCacheExpired } from '../utils/cache';
-import axiosConfig from '../config';
 
 function* fetchOperations({ payload }: OperationsAction) {
   try {
@@ -58,7 +57,7 @@ function* fetchOperations({ payload }: OperationsAction) {
 
     if (fetch) {
       const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
-      const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axiosConfig
+      const { status, data }: AxiosResponse<APIResponse<Operation[]>> = yield axios
         .request({
           url:
             payload.link ||
@@ -99,7 +98,7 @@ function* fetchOperations({ payload }: OperationsAction) {
 function* fetchOperation({ payload }: OperationsAction) {
   try {
     const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const { status, data }: AxiosResponse<Operation> = yield axiosConfig
+    const { status, data }: AxiosResponse<Operation> = yield axios
       .request({
         url: `${api.routes.SINGLE_DATASET}${payload.id}/`,
         method: 'get',
@@ -132,7 +131,7 @@ function* fetchOperation({ payload }: OperationsAction) {
 function* deleteOperation({ payload }: OperationsAction) {
   try {
     const token: string = yield localForage.getItem<string>(localForageKeys.API_KEY);
-    const { status }: AxiosResponse<Operation> = yield axiosConfig
+    const { status }: AxiosResponse<Operation> = yield axios
       .request({
         url: `${api.routes.SINGLE_DATASET}${payload.id}/`,
         method: 'delete',

@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import * as React from 'react';
 import { Alert, Modal } from 'react-bootstrap';
 import { connect, MapDispatchToProps } from 'react-redux';
@@ -8,7 +8,6 @@ import { TokenState } from '../../reducers/token';
 import { ReduxStore } from '../../store';
 import { api } from '../../utils';
 import { ChangePasswordFields, ChangePasswordForm } from '../ChangePasswordForm';
-import axiosConfig from '../../config';
 interface ActionProps {
   actions: typeof ModalActions;
 }
@@ -28,7 +27,7 @@ const AccountModal: React.FC<AccountModalProps> = (props) => {
   const onSuccess = (values: ChangePasswordFields) => {
     const { token } = props;
     if (token) {
-      axiosConfig
+      axios
         .request({
           url: api.routes.CHANGE_PASSWORD,
           method: 'post',

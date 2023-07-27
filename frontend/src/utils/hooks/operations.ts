@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { fromJS } from 'immutable';
 import * as localForage from 'localforage';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -15,7 +15,6 @@ import {
   OperationStep,
 } from '../../types/operations';
 import { getCachedOperationData } from '../cache';
-import axiosConfig from '../../config';
 
 interface OperationDataHookOptions {
   payload: FetchOptions;
@@ -67,7 +66,7 @@ const handleDataResult = (status: number, data: OperationDataResult): FetchRespo
 
 const fetchOperationData = async (payload: FetchOptions): Promise<FetchResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const { status, data }: AxiosResponse<OperationDataResult> = await axiosConfig
+  const { status, data }: AxiosResponse<OperationDataResult> = await axios
     .request({
       url: `${BASEURL}data/${payload.id}/?limit=${payload.limit}&offset=${payload.offset}`,
       method: 'get',
@@ -87,7 +86,7 @@ export const fetchOperationDataPreview = async (
   steps: OperationStep[],
 ): Promise<FetchResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const { status, data }: AxiosResponse<OperationDataResult> = await axiosConfig
+  const { status, data }: AxiosResponse<OperationDataResult> = await axios
     .request({
       url: PREVIEWBASEURL,
       method: 'post',
@@ -162,7 +161,7 @@ export const useOperation = (id?: number, fetch = false, immutable = true): UseO
 
   const fetchOperation = () => {
     setLoading(true);
-    axiosConfig
+    axios
       .request({
         url: `${api.routes.SINGLE_DATASET}${id}`,
         method: 'get',
@@ -235,7 +234,7 @@ export const useOperationQuery = (operation?: OperationMap): UseOperationQueryRe
     setLoading(true);
     const config = operation.get('advanced_config') as AdvancedQueryOptionsMap;
     if (config && token) {
-      axiosConfig
+      axios
         .request({
           url: `${api.routes.DATASET_QUERY}`,
           method: 'post',
@@ -291,7 +290,7 @@ export const previewAdvancedDatasetData = async (
   options: AdvancedQueryOptions,
 ): Promise<FetchResponse> => {
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
-  const { status, data }: AxiosResponse<OperationDataResult> = await axiosConfig
+  const { status, data }: AxiosResponse<OperationDataResult> = await axios
     .request({
       url: PREVIEWBASEURL,
       method: 'post',

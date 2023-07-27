@@ -1,10 +1,9 @@
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import * as localForage from 'localforage';
 import { DropdownItemProps } from 'semantic-ui-react';
 import { CSVData, CSVDataOnly } from '../components/FileInput';
 import { api } from './api';
 import { localForageKeys } from './localForage';
-import axiosConfig from '../config';
 
 export interface UpdateTable {
   name: string;
@@ -263,7 +262,7 @@ export const updateTable = async (table: UpdateTable, data: CSVData): Promise<Up
   const url = `${api.routes.UPDATE_TABLE}${table.name}/`;
   const token = await localForage.getItem<string>(localForageKeys.API_KEY);
   try {
-    const response = await axiosConfig.request<string>({
+    const response = await axios.request<string>({
       url,
       method: 'put',
       headers: {
