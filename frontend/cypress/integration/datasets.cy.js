@@ -88,8 +88,7 @@ describe('The Datasets Pages', () => {
 
     cy.wait('@datasets').then((res) => {
       cy.get('.search').first().click({ force: true });
-      cy.wait(4000);
-      cy.get('.search').first().type('FTS dependency codenames{enter}');
+      cy.get('.search').first().type('FTS dependency codenames{enter}', { delay: 200 });
       cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/?page=1&source=43`);
       cy.get('.text').eq(1).should('have.text', 'FTS dependency codenames');
       cy.getAccessToken().then((token) => {
