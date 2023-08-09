@@ -123,7 +123,7 @@ recip_data2['Donor Name'] = recip_data2['Donor Name'].replace(['DAC'],['DAC dono
 recip_data2['Donor Name'] = recip_data2['Donor Name'].replace(['Non-DAC'],['Non-DAC donors (total)'])
 recip_data2['Donor Name'] = recip_data2['Donor Name'].replace(['Multilateral'],['Multilateral donors (total)'])
 
-recip_data3 = recip_data2.groupby(["Donor Name","Purpose Name","Recipient Name","Year"]).agg({"USD Disbursement Deflated":"sum"}).reset_index()
+recip_data3 = recip_data2.groupby(["Purpose Name","Recipient Name","Year"]).agg({"USD Disbursement Deflated":"sum"}).reset_index()
 recip_data3['Donor Name'] = 'All donors (total)'
 
 recip_data = pd.concat([recip_data1, recip_data2]).reset_index(drop=True)
