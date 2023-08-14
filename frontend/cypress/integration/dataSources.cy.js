@@ -124,26 +124,35 @@ describe('The Data Sources Page', () => {
     });
 
     it('downloads a successfully frozen data source', () => {
-      cy.wait(100);
-      cy.get('.dataset-row')
+      cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0').as('datasources');
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}');
+      cy.get('[data-testid="sources-table-row"]')
         .first()
-        .then((row) => {
-          const badge = row.find('[data-testid="frozen-data-status"]');
-          if (badge[0].innerHTML === 'Completed') {
-            cy.document().then((doc) => {
-              const frozenDatasetUrl = doc
-                .querySelector('[data-testid="frozen-source-download-button"]')
-                .getAttribute('href');
-              cy.request({
-                url: `${Cypress.config('baseUrl')}${frozenDatasetUrl}`,
-                encoding: 'base64',
-              }).then((response) => {
-                expect(response.status).to.equal(200);
-              });
+        .then(($element) => {
+          cy.wrap($element).contains('Versions').click();
+          cy.get('.dataset-row')
+            .first()
+            .then((row) => {
+              const badge = row.find('[data-testid="frozen-data-status"]');
+              if (badge[0].innerHTML === 'Completed') {
+                cy.document().then((doc) => {
+                  const frozenDatasetUrl = doc
+                    .querySelector('[data-testid="frozen-source-download-button"]')
+                    .getAttribute('href');
+                  cy.request({
+                    url: `${Cypress.config('baseUrl')}${frozenDatasetUrl}`,
+                    encoding: 'base64',
+                  }).then((response) => {
+                    expect(response.status).to.equal(200);
+                  });
+                });
+              } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
+                cy.get(row.find('[data-testid="frozen-source-download-button"]')).should(
+                  'not.exist',
+                );
+              }
             });
-          } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
-            cy.get(row.find('[data-testid="frozen-source-download-button"]')).should('not.exist');
-          }
         });
     });
 
