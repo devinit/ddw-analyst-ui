@@ -13,7 +13,9 @@ localForage.config({
   storeName: 'ddw-store',
 });
 
-axios.defaults.baseURL = process.env.API_BASE_URL;
+if (process.env.API_BASE_URL) {
+  axios.defaults.baseURL = process.env.API_BASE_URL;
+}
 
 const wrapper = document.getElementById('app');
 if (wrapper) {
