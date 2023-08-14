@@ -1,7 +1,7 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import { api, localForageKeys } from '../../../utils';
 import moment from 'moment';
+import axios from 'axios';
 
 const BASEPATH = api.routes.FETCH_OPERATION;
 

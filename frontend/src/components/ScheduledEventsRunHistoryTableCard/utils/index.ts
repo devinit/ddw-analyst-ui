@@ -1,8 +1,8 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import { RunInstanceStatus } from '../../../pages/ScheduledEvents';
 import { ScheduledEventRunHistory } from '../../../types/scheduledEvents';
 import { api, localForageKeys } from '../../../utils';
+import axios from 'axios';
 
 export const LIMIT = 10;
 const BASEPATH = api.routes.FETCH_RUN_INSTANCES;

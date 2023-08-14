@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import moment from 'moment';
 import { localForageKeys } from '..';
@@ -6,6 +5,7 @@ import { fetchOperationById } from '../../pages/QueryData/utils';
 import { FetchOptions } from '../../types/api';
 import { OperationData } from '../../types/operations';
 import { OperationDataAPIResponse } from '../../types/operations';
+import axios from 'axios';
 
 export interface QueryResult {
   data: OperationDataAPIResponse;

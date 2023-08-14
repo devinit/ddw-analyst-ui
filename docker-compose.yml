@@ -32,6 +32,7 @@ services:
       - SLACK_BOT_TOKEN
       - SLACK_CHANNEL_ID
       - BASE_URL
+      - API_BASE_URL
     networks:
       - ddw_net
   spotlights:

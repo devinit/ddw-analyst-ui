@@ -1,7 +1,7 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import { ScheduledEvent } from '../../../types/scheduledEvents';
 import { api, localForageKeys } from '../../../utils';
+import axios from 'axios';
 
 const BASEPATH = api.routes.VIEW_SCHEDULED_EVENTS;
 

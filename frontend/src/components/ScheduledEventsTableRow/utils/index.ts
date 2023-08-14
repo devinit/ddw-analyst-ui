@@ -1,7 +1,7 @@
-import axios from 'axios';
 import * as localForage from 'localforage';
 import { Moment } from 'moment';
 import { api, localForageKeys } from '../../../utils';
+import axios from 'axios';
 
 interface RunInstancePayload {
   start_at: Moment;

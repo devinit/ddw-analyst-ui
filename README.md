@@ -6,7 +6,7 @@ The new and improved DDW Analyst UI interface
 
 ### Docker Deployment
 
-1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User 
+1. Make sure you're starting with a clean DB volume, so Docker knows to create the new User
 
         docker-compose down` `docker volume rm metadata2
 
@@ -162,7 +162,11 @@ To create a test development DB, for local development (e.g. virtualenv steps be
 
         npm install
 
-12. Start frontend dev environment which watches and collects static files:
+12. Dynamic API base URL setting
+
+    Add an `API_BASE_URL` in the `.env` file and assign it either a localhost, staging, or production url. If not set, this defaults to the url of the current environment in which the application is running.
+
+13. Start frontend dev environment which watches and collects static files:
 
         npm start
 
