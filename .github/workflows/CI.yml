@@ -6,7 +6,6 @@ on:
       - "*"
     branches:
       - "develop"
-      - "fix/scp-action"
   pull_request:
     branches:
       - "*"
@@ -107,12 +106,12 @@ jobs:
     if:
       contains('
         refs/heads/develop
-      ', github.ref) || startsWith(github.ref, 'refs/tags/v') || endsWith(github.ref, '/scp-action')
+      ', github.ref) || startsWith(github.ref, 'refs/tags/v')
 
     steps:
     - uses: actions/checkout@v3
     - name: Set env for develop branch
-      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta') || endsWith(github.ref, '/scp-action')
+      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta')
       run: |
         echo "HOST=${{ secrets.DEV_HOST }}" >> $GITHUB_ENV
         echo "USERNAME=${{ secrets.DEV_USER }}" >> $GITHUB_ENV
@@ -133,12 +132,12 @@ jobs:
       run: echo VERSION=$(echo $GITHUB_REF | cut -d / -f 3) >> $GITHUB_OUTPUT
 
     - name: copy deploy scripts to dev server
-      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta') || endsWith(github.ref, '/scp-action')
+      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta')
       uses: appleboy/scp-action@v0.1.4
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
-        post: ${{ secrets.PORT }}
+        port: ${{ secrets.PORT }}
         key: ${{ secrets.KEY }}
         source: "deploy_script.sh,deploy.sh"
         target: "."
