@@ -88,8 +88,7 @@ describe('The Datasets Pages', () => {
 
     cy.wait('@datasets').then((res) => {
       cy.get('.search').first().click({ force: true });
-      cy.wait(4000);
-      cy.get('.search').first().type('FTS dependency codenames{enter}');
+      cy.get('.search').first().type('FTS dependency codenames{enter}', { delay: 200 });
       cy.url().should('eq', `${Cypress.config('baseUrl')}/datasets/?page=1&source=43`);
       cy.get('.text').eq(1).should('have.text', 'FTS dependency codenames');
       cy.getAccessToken().then((token) => {
@@ -184,7 +183,9 @@ describe('The Datasets Pages', () => {
   });
 
   it('makes a copy of my dataset', () => {
-    cy.intercept('/api/datasets/mine/?limit=10&offset=0&search=', { fixture: 'datasets' }).as('getMyDatasets');
+    cy.intercept('/api/datasets/mine/?limit=10&offset=0&search=', { fixture: 'datasets' }).as(
+      'getMyDatasets',
+    );
     cy.visit('/');
     cy.wait('@getMyDatasets');
     checkCopiedDataset('be.checked');
@@ -276,6 +277,11 @@ describe('The Datasets Pages', () => {
   });
 
   it('deletes a frozen dataset', () => {
+    cy.intercept(`/api/dataset/history/*/?limit=10&offset=0`).as('getFrozenDatasets');
+
+    cy.visit('/datasets/');
+    cy.get('.dataset-row').eq(0).contains('Versions').click({ force: true });
+
     // Get initial frozen datasets row count
     cy.get('[data-testid="datasetRows"]')
       .its('length')
@@ -284,7 +290,10 @@ describe('The Datasets Pages', () => {
       });
 
     // Delete frozen dataset
-    cy.get('[data-testid="frozen-dataset-delete-button"]').first().dblclick({ force: true });
+    cy.get('[data-testid="frozen-dataset-delete-button"]')
+      .first()
+      .click({ force: true })
+      .click({ force: true });
     cy.get('@datasetRowNumber').then((datasetRowNumber) => {
       cy.get('[data-testid="datasetRows"]').should('have.length', datasetRowNumber - 1);
     });
