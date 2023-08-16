@@ -3,7 +3,7 @@ import re
 from django.db import transaction
 from core.pypika_utils import QueryBuilder
 from data.db_manager import fetch_data, analyse_query, run_query
-from core.models import FrozenData, OperationStep, Source, Operation, FrozenData
+from core.models import FrozenData, OperationStep, Source, Operation, FrozenData, SourceColumnMap
 from pypika import Table, Query
 from pypika import functions as pypika_fn
 from core.pypika_fts_utils import TableQueryBuilder
@@ -52,9 +52,13 @@ def delete_archive(id):
         # Delete from sources table and operation steps
         frozen_source = Source.objects.filter(schema='archives', active_mirror_name=table_name)
         operation_step_qs = OperationStep.objects.filter(source_id__in=frozen_source)
+        frozen_column_maps = SourceColumnMap.objects.filter(source_id__in=frozen_source)
         operation = Operation.objects.filter(pk__in=operation_step_qs.values_list('operation_id', flat=True))
         operation.delete()
         operation_step_qs.delete()
+        #Delete frozen column maps before deleting frozen source
+        for column_map in frozen_column_maps:
+            column_map.delete()
         frozen_source.delete()
         frozen_data.delete()
         query_builder = TableQueryBuilder(table_name, "archives")
