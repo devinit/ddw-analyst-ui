@@ -6,6 +6,7 @@ on:
       - "*"
     branches:
       - "develop"
+      - "fix/scp-action"
   pull_request:
     branches:
       - "*"
@@ -111,7 +112,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set env for develop branch
-      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta')
+      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta') || endsWith(github.ref, '/scp-action')
       run: |
         echo "HOST=${{ secrets.DEV_HOST }}" >> $GITHUB_ENV
         echo "USERNAME=${{ secrets.DEV_USER }}" >> $GITHUB_ENV
@@ -132,32 +133,30 @@ jobs:
       run: echo VERSION=$(echo $GITHUB_REF | cut -d / -f 3) >> $GITHUB_OUTPUT
 
     - name: copy deploy scripts to dev server
-      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta')
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ env.HOST }}
-        USERNAME: ${{ env.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.KEY }}
+      if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta') || endsWith(github.ref, '/scp-action')
+      uses: appleboy/scp-action@v0.1.4
       with:
+        host: ${{ env.HOST }}
+        username: ${{ env.USERNAME }}
+        post: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
         source: "deploy_script.sh,deploy.sh"
         target: "."
 
     - name: copy deploy script to production server
       if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-beta')
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ env.HOST }}
-        USERNAME: ${{ env.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.KEY }}
+      uses: appleboy/scp-action@v0.1.4
       with:
+        host: ${{ env.HOST }}
+        username: ${{ env.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
         source: "deploy.sh"
         target: "."
 
     - name: ssh into remote dev server for develop branch
       if: endsWith(github.ref, '/develop')
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1.0.0
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
@@ -170,7 +169,7 @@ jobs:
 
     - name: ssh into remote dev server for beta tag
       if: endsWith(github.ref, '-beta')
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1.0.0
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
@@ -186,7 +185,7 @@ jobs:
 
     - name: ssh into remote production server
       if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-beta')
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1.0.0
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
@@ -201,7 +200,7 @@ jobs:
           ./deploy.sh $version
 
     - name: Build JS
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1.0.0
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
