@@ -50,7 +50,7 @@ def delete_archive(id):
         frozen_data = FrozenData.objects.get(pk=id)
         table_name = frozen_data.frozen_db_table
         # Delete from sources table and operation steps
-        frozen_source = Source.objects.filter(repo='archives', active_mirror_name=table_name)
+        frozen_source = Source.objects.filter(schema='archives', active_mirror_name=table_name)
         operation_step_qs = OperationStep.objects.filter(source_id__in=frozen_source)
         operation = Operation.objects.filter(pk__in=operation_step_qs.values_list('operation_id', flat=True))
         operation.delete()
