@@ -93,7 +93,7 @@
     "lint-staged": "^13.1.1",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss-loader": "^7.2.4",
-    "prettier": "^2.7.1",
+    "prettier": "^3.0.2",
     "react-test-renderer": "^18.1.0",
     "react-toastify": "^9.0.6",
     "sass": "^1.54.5",
