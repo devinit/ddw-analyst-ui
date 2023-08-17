@@ -206,7 +206,7 @@ describe('The Datasets Pages', () => {
 
   it('views data in datasets', () => {
     cy.fixture('datasets').then((datasets) => {
-      cy.intercept('/api/datasets/mine/?limit=10&offset=0&search=', datasets);
+      cy.intercept('/api/datasets/mine/?limit=10&offset=0&search=', datasets).as('datasets');
     });
     cy.fixture('datasetTableData').then((data) => {
       cy.intercept('/api/dataset/data/346', data);
@@ -214,6 +214,7 @@ describe('The Datasets Pages', () => {
 
     // View dataset data in tabular form
     cy.visit('/');
+    cy.wait('@datasets');
     cy.get('.dataset-row')
       .eq(16)
       .then(($datasetRow) => {
