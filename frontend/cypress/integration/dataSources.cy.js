@@ -203,7 +203,10 @@ describe('The Data Sources Page', () => {
           cy.get('[data-testid="frozen-data-description"]')
             .first()
             .contains('End-to-end test freeze data source');
-          cy.get('[data-testid="frozen-data-delete-button"]').first().dblclick({ force: true });
+          cy.get('[data-testid="frozen-data-delete-button"]')
+            .first()
+            .click({ force: true })
+            .click({ force: true });
 
           // Check row count after deleting
           cy.get('@dataSourceRowNumber').then((dataSourceRowNumber) => {
