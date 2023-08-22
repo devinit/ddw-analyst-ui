@@ -90,7 +90,7 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
             onClick={() => handleSwitchButton()}
             style={{ position: 'absolute', right: 9, top: -20 }}
           >
-            Switch to {modifyPath(location.pathname) === '/queries/build/' ? 'Advanced' : 'Basic'}
+            Switch to {modifyPath(location.pathname) === '/queries/build/' ? 'Advanced' : 'Basic'}{' '}
             Query Builder
           </Button>
 
