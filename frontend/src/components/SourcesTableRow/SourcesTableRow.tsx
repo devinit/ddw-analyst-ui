@@ -9,6 +9,7 @@ export interface SourcesTableRowProps {
   onShowDatasets: (source: SourceMap) => void;
   onShowMetadata: (source: SourceMap) => void;
   onShowHistory: (source: SourceMap) => void;
+  value: number;
 }
 
 const StyledTD = styled.td`
@@ -45,14 +46,16 @@ export const SourcesTableRow: FunctionComponent<SourcesTableRowProps> = ({ sourc
           >
             Datasets
           </Button>
-          <Button
-            variant="dark"
-            size="sm"
-            onClick={() => props.onShowHistory(source)}
-            data-testid="sources-table-history-button"
-          >
-            Versions
-          </Button>
+          {props.value === 0 && (
+            <Button
+              variant="dark"
+              size="sm"
+              onClick={() => props.onShowHistory(source)}
+              data-testid="sources-table-history-button"
+            >
+              Versions
+            </Button>
+          )}
         </ButtonGroup>
       </StyledTD>
     </tr>
