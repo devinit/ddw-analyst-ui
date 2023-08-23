@@ -51,6 +51,10 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
     }
   };
 
+  const modifyPath = (path: string) => {
+    return path.replace(/\/\d+\/?$/, '/');
+  };
+
   return (
     <Tab.Container defaultActiveKey="operation">
       <Card className="source-details">
@@ -86,7 +90,8 @@ const OperationTabContainer: FunctionComponent<ComponentProps> = (props) => {
             onClick={() => handleSwitchButton()}
             style={{ position: 'absolute', right: 9, top: -20 }}
           >
-            Switch to {location.pathname === '/queries/build/' ? 'Advanced' : 'Basic'} Query Builder
+            Switch to {modifyPath(location.pathname) === '/queries/build/' ? 'Advanced' : 'Basic'}{' '}
+            Query Builder
           </Button>
 
           <OperationForm
