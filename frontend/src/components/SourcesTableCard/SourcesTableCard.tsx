@@ -132,6 +132,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
                 value={frozenQuery}
                 options={dropDownValues}
                 onChange={onFilterByFrozenDataSource}
+                data-testid="sources-dropdown-filter"
               />
             </Col>
           </Row>

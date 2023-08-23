@@ -91,6 +91,23 @@ describe('The Data Sources Page', () => {
       });
     });
 
+    it('versions button is hidden for frozen data sources', () => {
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-dropdown-filter"]').type('frozen{enter}');
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(() => {
+          cy.get('[data-testid="source-table-row-actions"]').should('not.contain', 'Versions');
+        });
+
+      cy.get('[data-testid="sources-dropdown-filter"]').type('all{enter}');
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(() => {
+          cy.get('[data-testid="source-table-row-actions"]').should('not.contain', 'Versions');
+        });
+    });
+
     xit('actions buttons function properly', () => {
       // TODO: add test
     });
