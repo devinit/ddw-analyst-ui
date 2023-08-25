@@ -21,7 +21,7 @@ interface ComponentProps {
   offset: number;
   links?: LinksMap;
   count: number;
-  value: number;
+  value?: number;
 }
 type SourcesTableCardProps = ComponentProps;
 type TableFilters = {

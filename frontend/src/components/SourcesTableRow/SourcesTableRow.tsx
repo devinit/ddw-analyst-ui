@@ -9,7 +9,7 @@ export interface SourcesTableRowProps {
   onShowDatasets: (source: SourceMap) => void;
   onShowMetadata: (source: SourceMap) => void;
   onShowHistory: (source: SourceMap) => void;
-  value: number;
+  value?: number;
 }
 
 const StyledTD = styled.td`
