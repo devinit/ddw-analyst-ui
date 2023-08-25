@@ -108,6 +108,36 @@ describe('The Data Sources Page', () => {
         });
     });
 
+    it('filters by dropdown selection', () => {
+      cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0').as('datasources');
+
+      cy.visit('/sources');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
+
+      cy.wait('@datasources').then((res) => {
+        cy.get('[data-testid="sources-dropdown-filter"]').type('frozen{enter}');
+        cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?frozen=1`);
+        cy.get('[data-testid="sources-dropdown-filter"] > .divider').should(
+          'contain',
+          'Frozen Sources',
+        );
+
+        cy.getAccessToken().then((token) => {
+          if (token) {
+            const options = {
+              url: `${Cypress.config('baseUrl')}/api/sources/?&offset=0&frozen=1`,
+              headers: {
+                Authorization: `token ${token.replaceAll('"', '')}`,
+              },
+            };
+            cy.request(options).then((response) => {
+              expect(res.response.body.count).to.not.equal(response.body.count);
+            });
+          }
+        });
+      });
+    });
+
     xit('actions buttons function properly', () => {
       // TODO: add test
     });
