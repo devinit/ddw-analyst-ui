@@ -18,6 +18,19 @@ const props: SourcesTableRowProps = {
   onShowDatasets: jest.fn(),
   onShowMetadata: jest.fn(),
   onShowHistory: jest.fn(),
+  value: 0,
+};
+
+const props1: SourcesTableRowProps = {
+  source: Map({
+    indicator: 'Frozen Common Reporting Standard End-to-end test freeze data source 20230822',
+    indicator_acronym: 'crs',
+    last_updated_on: '2023-08-22T08:38:29.764694Z',
+  }) as SourceMap,
+  onShowDatasets: jest.fn(),
+  onShowMetadata: jest.fn(),
+  onShowHistory: jest.fn(),
+  value: 1,
 };
 
 test('renders correctly with the default props', () => {
@@ -72,4 +85,17 @@ test('history button responds to click events', () => {
   if (button) fireEvent.click(button);
 
   expect(props.onShowHistory).toHaveBeenCalled();
+});
+
+test('history button is hidden for frozen sources', () => {
+  const table = document.createElement('table');
+  const tableBody = document.createElement('tbody');
+  table.appendChild(tableBody);
+  const { getByTestId } = render(<SourcesTableRow {...props1} />, {
+    container: document.body.appendChild(tableBody),
+  });
+
+  const actions = getByTestId('source-table-row-actions') as HTMLElement;
+  expect(actions).toBeDefined();
+  expect(actions).not.toContain('Versions');
 });
