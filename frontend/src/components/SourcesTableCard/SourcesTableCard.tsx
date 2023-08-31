@@ -21,7 +21,7 @@ interface ComponentProps {
   offset: number;
   links?: LinksMap;
   count: number;
-  value?: number;
+  sourceFilterValue?: number;
 }
 type SourcesTableCardProps = ComponentProps;
 type TableFilters = {
@@ -141,7 +141,7 @@ export const SourcesTableCard: FunctionComponent<SourcesTableCardProps> = (props
           <SourcesTable
             sources={props.sources}
             activeSource={props.activeSource}
-            value={frozenQuery}
+            sourceFilterValue={frozenQuery}
           />
           {renderPagination()}
         </Card.Body>

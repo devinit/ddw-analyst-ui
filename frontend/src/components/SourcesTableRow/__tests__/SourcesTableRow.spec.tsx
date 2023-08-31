@@ -18,7 +18,7 @@ const props: SourcesTableRowProps = {
   onShowDatasets: jest.fn(),
   onShowMetadata: jest.fn(),
   onShowHistory: jest.fn(),
-  value: 0,
+  sourceFilterValue: 0,
 };
 
 const props1: SourcesTableRowProps = {
@@ -30,7 +30,7 @@ const props1: SourcesTableRowProps = {
   onShowDatasets: jest.fn(),
   onShowMetadata: jest.fn(),
   onShowHistory: jest.fn(),
-  value: 1,
+  sourceFilterValue: 1,
 };
 
 test('renders correctly with the default props', () => {

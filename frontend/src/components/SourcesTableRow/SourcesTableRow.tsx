@@ -9,7 +9,7 @@ export interface SourcesTableRowProps {
   onShowDatasets: (source: SourceMap) => void;
   onShowMetadata: (source: SourceMap) => void;
   onShowHistory: (source: SourceMap) => void;
-  value?: number;
+  sourceFilterValue?: number;
 }
 
 const StyledTD = styled.td`
@@ -46,7 +46,7 @@ export const SourcesTableRow: FunctionComponent<SourcesTableRowProps> = ({ sourc
           >
             Datasets
           </Button>
-          {props.value === 0 && (
+          {props.sourceFilterValue === 0 && (
             <Button
               variant="dark"
               size="sm"
