@@ -9,8 +9,8 @@ PUBLISHERS_TABLE_NAME = "iati_publishers"
 def updateIatiPublishersTable():
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     conn = engine.connect()
-    meta = MetaData(engine)
-    meta.reflect()
+    meta = MetaData()
+    meta.reflect(engine)
     iati_txns_table = Table(TXNS_TABLE_NAME, meta, schema=DATA_SCHEMA, autoload=True)
     publishers_table = Table(PUBLISHERS_TABLE_NAME, meta, schema=DATA_SCHEMA, autoload=True)
     current_publishers_sub_query = select([publishers_table.c.reporting_org_ref])

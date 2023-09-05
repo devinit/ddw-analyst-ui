@@ -53,8 +53,8 @@ def main():
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
     conn = engine.connect()
-    meta = MetaData(engine)
-    meta.reflect()
+    meta = MetaData()
+    meta.reflect(engine)
 
     all_datasets = fetch_datasets()
     new_count = 0
