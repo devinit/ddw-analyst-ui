@@ -60,7 +60,7 @@ def main():
     new_count = 0
 
     try:
-        datasets = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
+        datasets = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
     except sqlalchemy.exc.NoSuchTableError:  # First run
         datasets = Table(
             DATA_TABLENAME,

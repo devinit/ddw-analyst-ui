@@ -11,8 +11,8 @@ def updateIatiPublishersTable():
     conn = engine.connect()
     meta = MetaData()
     meta.reflect(engine)
-    iati_txns_table = Table(TXNS_TABLE_NAME, meta, schema=DATA_SCHEMA, autoload=True)
-    publishers_table = Table(PUBLISHERS_TABLE_NAME, meta, schema=DATA_SCHEMA, autoload=True)
+    iati_txns_table = Table(TXNS_TABLE_NAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
+    publishers_table = Table(PUBLISHERS_TABLE_NAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
     current_publishers_sub_query = select([publishers_table.c.reporting_org_ref])
     select_publishers_not_in_table = select([func.DISTINCT(iati_txns_table.c.reporting_org_ref)]).where(iati_txns_table.c.reporting_org_ref.notin_(current_publishers_sub_query)).group_by(
         iati_txns_table.c.reporting_org_ref,

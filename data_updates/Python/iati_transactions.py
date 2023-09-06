@@ -86,18 +86,18 @@ def main(args):
     disable_activity_trigger_command = "ALTER TABLE {}.{} DISABLE TRIGGER ALL".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME)
     enable_activity_trigger_command = "ALTER TABLE {}.{} ENABLE TRIGGER ALL".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME)
     try:
-        datasets = Table(METADATA_TABLENAME, meta, schema=METADATA_SCHEMA, autoload=True)
+        datasets = Table(METADATA_TABLENAME, meta, schema=METADATA_SCHEMA, autoload_with=engine)
     except sqlalchemy.exc.NoSuchTableError:
         raise ValueError("No database found. Try running `iati_refresh.py` first.")
     try:
-        transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
-        activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
+        transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
+        activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
         first_run = False
     except sqlalchemy.exc.NoSuchTableError:
         first_run = True
     try:
         # Was stopped in the middle of processing
-        tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
+        tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload_with=engine)
         conn.execute(disable_trigger_command)
         conn.execute(disable_activity_trigger_command)
         repeat_id_tuples = conn.execute(select([distinct(tmp_activity_table.c.package_id)])).fetchall()
@@ -169,7 +169,7 @@ def main(args):
         if first_run:
             flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=activity_if_exists)
             if activity_if_exists == "replace":
-                activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
+                activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
                 activity_if_exists = "append"
         else:
             flat_activity_data.to_sql(name=TMP_ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=activity_if_exists)
@@ -190,7 +190,7 @@ def main(args):
         if first_run:
             flat_transaction_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=transaction_if_exists)
             if transaction_if_exists == "replace":
-                transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload=True)
+                transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
                 transaction_if_exists = "append"
         else:
             flat_transaction_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=transaction_if_exists)
@@ -206,7 +206,7 @@ def main(args):
             conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(modified_package_ids)))
             conn.execute(activity_table.delete().where(activity_table.c.package_id.in_(modified_package_ids)))
         try:
-            tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
+            tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload_with=engine)
             insert_act_command = "INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME)
             conn.execute(insert_act_command)
             drop_act_command = "DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME)
@@ -214,7 +214,7 @@ def main(args):
         except sqlalchemy.exc.NoSuchTableError:  # In case nothing was inserted into tmp activity table during update
             pass
         try:
-            tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload=True)
+            tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload_with=engine)
             insert_command = "INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
             conn.execute(insert_command)
             drop_command = "DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME)
