@@ -2,7 +2,7 @@ import requests
 import json
 import progressbar
 import sqlalchemy
-from sqlalchemy import create_engine, MetaData, Table, Column, String
+from sqlalchemy import create_engine, MetaData, Table, Column, String, insert
 from sqlalchemy.types import Boolean
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -35,7 +35,7 @@ def requests_retry_session(
 def fetch_datasets():
     results = []
     api_url = "https://iatiregistry.org/api/3/action/package_search?rows=1000"
-    response = requests_retry_session().get(url=api_url, timeout=30).content
+    response = requests_retry_session().get(url=api_url, timeout=300).content
     json_response = json.loads(response)
     full_count = json_response["result"]["count"]
     current_count = len(json_response["result"]["results"])
@@ -76,7 +76,7 @@ def main():
         )
         meta.create_all(engine)
         new_count += len(all_datasets)
-        conn.execute(datasets.insert(), all_datasets)
+        conn.execute(insert(datasets).values(all_datasets))
 
     all_dataset_ids = [dataset["id"] for dataset in all_datasets]
     cached_datasets = conn.execute(datasets.select()).fetchall()
@@ -93,7 +93,7 @@ def main():
             dataset["modified"] = False
             dataset["stale"] = False
             dataset["error"] = False
-            conn.execute(datasets.insert(dataset))
+            conn.execute(insert(datasets).values(dataset))
             new_count += 1
         except sqlalchemy.exc.IntegrityError:  # Dataset ID already exists
             cached_dataset = conn.execute(datasets.select().where(datasets.c.id == dataset["id"])).fetchone()
