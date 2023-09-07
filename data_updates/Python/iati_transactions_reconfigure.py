@@ -1,7 +1,7 @@
 import os
 import progressbar
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from lxml import etree
 from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, A_DTYPES, A_NUMERIC_DTYPES, T_DTYPES, T_NUMERIC_DTYPES
@@ -45,12 +45,12 @@ def main():
 
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
-    conn = engine.connect()
 
-    truncate_command = "TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME)
-    conn.execute(truncate_command)
-    truncate_act_command = "TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME)
-    conn.execute(truncate_act_command)
+    truncate_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME))
+    truncate_act_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME))
+    with engine.begin() as conn:
+        conn.execute(truncate_command)
+        conn.execute(truncate_act_command)
 
     paginator = s3_client.get_paginator('list_objects_v2')
     page_iterator = paginator.paginate(Bucket=IATI_BUCKET_NAME, Prefix=IATI_FOLDER_NAME)

@@ -6,6 +6,7 @@ from sqlalchemy import create_engine, MetaData, Table, Column, String, insert
 from sqlalchemy.types import Boolean
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+import time
 
 
 DATA_SCHEMA = "repo"
@@ -41,6 +42,8 @@ def fetch_datasets():
     current_count = len(json_response["result"]["results"])
     results += [{"id": resource["package_id"], "hash": resource["hash"], "url": resource["url"]} for result in json_response["result"]["results"] for resource in result["resources"]]
     while current_count < full_count:
+        time.sleep(1)
+        print("{}/{}".format(current_count, full_count))
         next_api_url = "{}&start={}".format(api_url, current_count)
         response = requests_retry_session().get(url=next_api_url, timeout=30).content
         json_response = json.loads(response)
@@ -52,7 +55,7 @@ def fetch_datasets():
 def main():
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
-    conn = engine.connect()
+
     meta = MetaData()
     meta.reflect(engine)
 
@@ -76,13 +79,16 @@ def main():
         )
         meta.create_all(engine)
         new_count += len(all_datasets)
-        conn.execute(insert(datasets).values(all_datasets))
+        with engine.begin() as conn:
+            conn.execute(insert(datasets).values(all_datasets))
 
     all_dataset_ids = [dataset["id"] for dataset in all_datasets]
-    cached_datasets = conn.execute(datasets.select()).fetchall()
+    with engine.begin() as conn:
+        cached_datasets = conn.execute(datasets.select()).fetchall()
     cached_dataset_ids = [dataset["id"] for dataset in cached_datasets]
     stale_dataset_ids = list(set(cached_dataset_ids) - set(all_dataset_ids))
-    conn.execute(datasets.update().where(datasets.c.id.in_(stale_dataset_ids)).values(new=False, modified=False, stale=True, error=False))
+    with engine.begin() as conn:
+        conn.execute(datasets.update().where(datasets.c.id.in_(stale_dataset_ids)).values(new=False, modified=False, stale=True, error=False))
 
     stale_count = len(stale_dataset_ids)
     modified_count = 0
@@ -93,7 +99,8 @@ def main():
             dataset["modified"] = False
             dataset["stale"] = False
             dataset["error"] = False
-            conn.execute(insert(datasets).values(dataset))
+            with engine.begin() as conn:
+                conn.execute(insert(datasets).values(dataset))
             new_count += 1
         except sqlalchemy.exc.IntegrityError:  # Dataset ID already exists
             cached_dataset = conn.execute(datasets.select().where(datasets.c.id == dataset["id"])).fetchone()
@@ -104,7 +111,8 @@ def main():
                 dataset["modified"] = True
                 dataset["stale"] = False  # If for some reason, we pick up a previously stale dataset
                 dataset["error"] = False
-                conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(dataset))
+                with engine.begin() as conn:
+                    conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(dataset))
                 modified_count += 1
 
     engine.dispose()
