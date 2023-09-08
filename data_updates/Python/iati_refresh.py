@@ -103,7 +103,8 @@ def main():
                 conn.execute(insert(datasets).values(dataset))
             new_count += 1
         except sqlalchemy.exc.IntegrityError:  # Dataset ID already exists
-            cached_dataset = conn.execute(datasets.select().where(datasets.c.id == dataset["id"])).fetchone()
+            with engine.begin() as conn:
+                cached_dataset = conn.execute(datasets.select().where(datasets.c.id == dataset["id"])).fetchone()
             if cached_dataset.hash == dataset["hash"]:  # If the hashes match, carry on
                 continue
             else:  # Otherwise, mark it modified and update the metadata
