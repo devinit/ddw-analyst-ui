@@ -3,7 +3,7 @@ import argparse
 import progressbar
 import pandas as pd
 import sqlalchemy
-from sqlalchemy import and_, distinct, create_engine, MetaData, or_, select, Table, text, insert
+from sqlalchemy import and_, distinct, create_engine, MetaData, or_, select, Table, text, insert, Column
 from lxml import etree
 from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, A_DTYPES, A_NUMERIC_DTYPES, T_DTYPES, T_NUMERIC_DTYPES
@@ -93,33 +93,43 @@ def main(args):
         activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
     except sqlalchemy.exc.NoSuchTableError:
         raise ValueError("Please create the required tables first.")
+
+    recover_from_early_stop = False
     try:
-        # Was stopped in the middle of processing
         tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload_with=engine)
+        recover_from_early_stop = True
+    except sqlalchemy.exc.NoSuchTableError:
+        activity_columns = [Column(desc.name, desc.type) for desc in activity_table.c]
+        tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, *activity_columns)
+        tmp_activity_table.create(engine)
+    try:
+        tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload_with=engine)
+        recover_from_early_stop = True
+    except sqlalchemy.exc.NoSuchTableError:
+        transaction_columns = [Column(desc.name, desc.type) for desc in transaction_table.c]
+        tmp_transaction_table = Table(TMP_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, *transaction_columns)
+        tmp_transaction_table.create(engine)
+    if recover_from_early_stop:
         with engine.begin() as conn:
             conn.execute(disable_trigger_command)
             conn.execute(disable_activity_trigger_command)
-            repeat_id_tuples = conn.execute(select([distinct(tmp_activity_table.c.package_id)])).fetchall()
+            repeat_id_tuples = conn.execute(select(distinct(tmp_activity_table.c.package_id))).fetchall()
         repeat_ids = [repeat_id_tuple[0] for repeat_id_tuple in repeat_id_tuples]
         if repeat_ids:
             with engine.begin() as conn:
                 conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(repeat_ids)))
                 conn.execute(activity_table.delete().where(activity_table.c.package_id.in_(repeat_ids)))
         insert_command = text("INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME))
+        truncate_command = text("TRUNCATE TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME))
+        insert_act_command = text("INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME))
+        truncate_act_command = text("TRUNCATE TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME))
         with engine.begin() as conn:
             conn.execute(insert_command)
-        drop_command = text("DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME))
-        with engine.begin() as conn:
-            conn.execute(drop_command)
+            conn.execute(truncate_command)
             conn.execute(enable_trigger_command)
-        insert_act_command = text("INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME))
-        conn.execute(insert_act_command)
-        drop_act_command = text("DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME))
-        with engine.begin() as conn:
-            conn.execute(drop_act_command)
+            conn.execute(insert_act_command)
+            conn.execute(truncate_act_command)
             conn.execute(enable_activity_trigger_command)
-    except sqlalchemy.exc.NoSuchTableError:
-        pass
 
     if args.errors:
         dataset_filter = datasets.c.error == True
@@ -132,8 +142,6 @@ def main(args):
             datasets.c.error == False
         )
 
-    activity_if_exists = "replace"
-    transaction_if_exists = "replace"
     bar = progressbar.ProgressBar()
     with engine.begin() as conn:
         new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
@@ -172,16 +180,12 @@ def main(args):
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
 
-        if activity_if_exists == "replace":
-            truncate_act_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME))
-            with engine.begin() as conn:
-                conn.execute(truncate_act_command)
-            activity_if_exists = "append"
         flat_activity_data_records = flat_activity_data.to_dict('records')
         with engine.begin() as conn:
             conn.execute(
-                insert(activity_table),
-                flat_activity_data_records
+                insert(tmp_activity_table).values(
+                    flat_activity_data_records
+                )
             )
 
         if not flat_transactions:
@@ -194,16 +198,12 @@ def main(args):
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
 
-        if transaction_if_exists == "replace":
-            truncate_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME))
-            with engine.begin() as conn:
-                conn.execute(truncate_command)
-            transaction_if_exists = "append"
         flat_transaction_data_records = flat_transaction_data.to_dict('records')
         with engine.begin() as conn:
             conn.execute(
-                insert(transaction_table),
-                flat_transaction_data_records
+                insert(tmp_transaction_table).values(
+                    flat_transaction_data_records
+                )
             )
 
 
