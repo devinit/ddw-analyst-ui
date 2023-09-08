@@ -85,7 +85,7 @@ def main():
     all_dataset_ids = [dataset["id"] for dataset in all_datasets]
     with engine.begin() as conn:
         cached_datasets = conn.execute(datasets.select()).fetchall()
-    cached_dataset_ids = [dataset["id"] for dataset in cached_datasets]
+    cached_dataset_ids = [dataset.id for dataset in cached_datasets]
     stale_dataset_ids = list(set(cached_dataset_ids) - set(all_dataset_ids))
     with engine.begin() as conn:
         conn.execute(datasets.update().where(datasets.c.id.in_(stale_dataset_ids)).values(new=False, modified=False, stale=True, error=False))
@@ -104,7 +104,7 @@ def main():
             new_count += 1
         except sqlalchemy.exc.IntegrityError:  # Dataset ID already exists
             cached_dataset = conn.execute(datasets.select().where(datasets.c.id == dataset["id"])).fetchone()
-            if cached_dataset["hash"] == dataset["hash"]:  # If the hashes match, carry on
+            if cached_dataset.hash == dataset["hash"]:  # If the hashes match, carry on
                 continue
             else:  # Otherwise, mark it modified and update the metadata
                 dataset["new"] = False

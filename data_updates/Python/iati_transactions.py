@@ -138,23 +138,23 @@ def main(args):
     bar = progressbar.ProgressBar()
     with engine.begin() as conn:
         new_datasets = conn.execute(datasets.select().where(dataset_filter)).fetchall()
-    modified_package_ids = [dataset["id"] for dataset in new_datasets if dataset["modified"] or dataset["error"]]
+    modified_package_ids = [dataset.id for dataset in new_datasets if dataset.modified or dataset.error]
     for dataset in bar(new_datasets):
         download_xml = ""
         try:
-            download_xml = requests_retry_session(retries=3).get(url=dataset["url"], timeout=5).content
+            download_xml = requests_retry_session(retries=3).get(url=dataset.url, timeout=5).content
             download_success = True
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError, requests.exceptions.InvalidSchema):
             download_success = False
             with engine.begin() as conn:
-                conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(error=True))
+                conn.execute(datasets.update().where(datasets.c.id == dataset.id).values(error=True))
             continue
 
-        s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
+        s3_client.put_object(Body=download_xml, Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset.id)
 
         if download_success:
             with engine.begin() as conn:
-                conn.execute(datasets.update().where(datasets.c.id == dataset["id"]).values(new=False, modified=False, stale=False, error=False))
+                conn.execute(datasets.update().where(datasets.c.id == dataset.id).values(new=False, modified=False, stale=False, error=False))
 
         try:
             root = etree.fromstring(download_xml, parser=large_parser)
@@ -167,7 +167,7 @@ def main(args):
 
         flat_activity_data = pd.DataFrame(flat_activities)
         flat_activity_data.columns = activity_header
-        flat_activity_data["package_id"] = dataset["id"]
+        flat_activity_data["package_id"] = dataset.id
         flat_activity_data["last_modified"] = current_timestamp
         for numeric_column in A_NUMERIC_DTYPES:
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
@@ -189,7 +189,7 @@ def main(args):
 
         flat_transaction_data = pd.DataFrame(flat_transactions)
         flat_transaction_data.columns = transaction_header
-        flat_transaction_data["package_id"] = dataset["id"]
+        flat_transaction_data["package_id"] = dataset.id
         for numeric_column in T_NUMERIC_DTYPES:
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
@@ -238,13 +238,13 @@ def main(args):
 
     if not first_run:
         stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
-        stale_dataset_ids = [dataset["id"] for dataset in stale_datasets]
+        stale_dataset_ids = [dataset.id for dataset in stale_datasets]
         with engine.begin() as conn:
             conn.execute(datasets.delete().where(datasets.c.id.in_(stale_dataset_ids)))
             conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(stale_dataset_ids)))
             conn.execute(activity_table.delete().where(activity_table.c.package_id.in_(stale_dataset_ids)))
         for dataset in stale_datasets:
-            s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset['id'])
+            s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset.id)
 
     engine.dispose()
 
