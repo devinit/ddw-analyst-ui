@@ -3,7 +3,7 @@ import argparse
 import progressbar
 import pandas as pd
 import sqlalchemy
-from sqlalchemy import and_, distinct, create_engine, MetaData, or_, select, Table, text
+from sqlalchemy import and_, distinct, create_engine, MetaData, or_, select, Table, text, insert
 from lxml import etree
 from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, A_DTYPES, A_NUMERIC_DTYPES, T_DTYPES, T_NUMERIC_DTYPES
@@ -91,9 +91,8 @@ def main(args):
     try:
         transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
         activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
-        first_run = False
     except sqlalchemy.exc.NoSuchTableError:
-        first_run = True
+        raise ValueError("Please create the required tables first.")
     try:
         # Was stopped in the middle of processing
         tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload_with=engine)
@@ -173,16 +172,17 @@ def main(args):
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
 
-        if first_run:
-            flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=activity_if_exists)
-            if activity_if_exists == "replace":
-                activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
-                activity_if_exists = "append"
-        else:
-            flat_activity_data.to_sql(name=TMP_ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=activity_if_exists)
-
-            if activity_if_exists == "replace":
-                activity_if_exists = "append"
+        if activity_if_exists == "replace":
+            truncate_act_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME))
+            with engine.begin() as conn:
+                conn.execute(truncate_act_command)
+            activity_if_exists = "append"
+        flat_activity_data_records = flat_activity_data.to_dict('records')
+        with engine.begin() as conn:
+            conn.execute(
+                insert(activity_table),
+                flat_activity_data_records
+            )
 
         if not flat_transactions:
             continue
@@ -194,59 +194,57 @@ def main(args):
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
 
-        if first_run:
-            flat_transaction_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=transaction_if_exists)
-            if transaction_if_exists == "replace":
-                transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
-                transaction_if_exists = "append"
-        else:
-            flat_transaction_data.to_sql(name=TMP_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists=transaction_if_exists)
+        if transaction_if_exists == "replace":
+            truncate_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME))
+            with engine.begin() as conn:
+                conn.execute(truncate_command)
+            transaction_if_exists = "append"
+        flat_transaction_data_records = flat_transaction_data.to_dict('records')
+        with engine.begin() as conn:
+            conn.execute(
+                insert(transaction_table),
+                flat_transaction_data_records
+            )
 
-            if transaction_if_exists == "replace":
-                transaction_if_exists = "append"
 
     # Delete repeats, insert tmp into permanent, erase tmp
-    if not first_run:
+    with engine.begin() as conn:
+        conn.execute(disable_trigger_command)
+        conn.execute(disable_activity_trigger_command)
+    if modified_package_ids:
         with engine.begin() as conn:
-            conn.execute(disable_trigger_command)
-            conn.execute(disable_activity_trigger_command)
-        if modified_package_ids:
-            with engine.begin() as conn:
-                conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(modified_package_ids)))
-                conn.execute(activity_table.delete().where(activity_table.c.package_id.in_(modified_package_ids)))
-        try:
-            tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload_with=engine)
-            insert_act_command = text("INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME))
-            drop_act_command = text("DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME))
-            with engine.begin() as conn:
-                conn.execute(insert_act_command)
-                conn.execute(drop_act_command)
-        except sqlalchemy.exc.NoSuchTableError:  # In case nothing was inserted into tmp activity table during update
-            pass
-        try:
-            insert_command = text("INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME))
-            drop_command = text("DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME))
-            with engine.begin() as conn:
-                conn.execute(insert_command)
-                conn.execute(drop_command)
-        except sqlalchemy.exc.NoSuchTableError:  # In case nothing was inserted into tmp transaction table during update
-            pass
+            conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(modified_package_ids)))
+            conn.execute(activity_table.delete().where(activity_table.c.package_id.in_(modified_package_ids)))
+    try:
+        tmp_activity_table = Table(TMP_ACTIVITY_DATA_TABLENAME, meta, schema=TMP_DATA_SCHEMA, autoload_with=engine)
+        insert_act_command = text("INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME))
+        drop_act_command = text("DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_ACTIVITY_DATA_TABLENAME))
         with engine.begin() as conn:
-            conn.execute(enable_trigger_command)
-            conn.execute(enable_activity_trigger_command)
+            conn.execute(insert_act_command)
+            conn.execute(drop_act_command)
+    except sqlalchemy.exc.NoSuchTableError:  # In case nothing was inserted into tmp activity table during update
+        pass
+    try:
+        insert_command = text("INSERT INTO {}.{} (SELECT * FROM {}.{})".format(DATA_SCHEMA, DATA_TABLENAME, TMP_DATA_SCHEMA, TMP_DATA_TABLENAME))
+        drop_command = text("DROP TABLE {}.{}".format(TMP_DATA_SCHEMA, TMP_DATA_TABLENAME))
+        with engine.begin() as conn:
+            conn.execute(insert_command)
+            conn.execute(drop_command)
+    except sqlalchemy.exc.NoSuchTableError:  # In case nothing was inserted into tmp transaction table during update
+        pass
+    with engine.begin() as conn:
+        conn.execute(enable_trigger_command)
+        conn.execute(enable_activity_trigger_command)
 
 
-    if not first_run:
-        stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
-        stale_dataset_ids = [dataset.id for dataset in stale_datasets]
-        with engine.begin() as conn:
-            conn.execute(datasets.delete().where(datasets.c.id.in_(stale_dataset_ids)))
-            conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(stale_dataset_ids)))
-            conn.execute(activity_table.delete().where(activity_table.c.package_id.in_(stale_dataset_ids)))
-        for dataset in stale_datasets:
-            s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset.id)
-
-    engine.dispose()
+    stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
+    stale_dataset_ids = [dataset.id for dataset in stale_datasets]
+    with engine.begin() as conn:
+        conn.execute(datasets.delete().where(datasets.c.id.in_(stale_dataset_ids)))
+        conn.execute(transaction_table.delete().where(transaction_table.c.package_id.in_(stale_dataset_ids)))
+        conn.execute(activity_table.delete().where(activity_table.c.package_id.in_(stale_dataset_ids)))
+    for dataset in stale_datasets:
+        s3_client.delete_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset.id)
 
 
 if __name__ == '__main__':
