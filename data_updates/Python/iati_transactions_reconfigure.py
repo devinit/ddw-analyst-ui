@@ -1,7 +1,8 @@
 import os
 import progressbar
 import pandas as pd
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, MetaData, Table, insert
+import sqlalchemy
 from lxml import etree
 from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, A_DTYPES, A_NUMERIC_DTYPES, T_DTYPES, T_NUMERIC_DTYPES
@@ -46,6 +47,15 @@ def main():
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
 
+    meta = MetaData()
+    meta.reflect(engine)
+
+    try:
+        transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
+        activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
+    except sqlalchemy.exc.NoSuchTableError:
+        raise ValueError("Please create the required tables first.")
+
     truncate_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME))
     truncate_act_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME))
     with engine.begin() as conn:
@@ -79,7 +89,13 @@ def main():
         for numeric_column in A_NUMERIC_DTYPES:
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
-        flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists="append")
+        flat_activity_data_records = flat_activity_data.to_dict('records')
+        with engine.begin() as conn:
+            conn.execute(
+                insert(activity_table).values(
+                    flat_activity_data_records
+                )
+            )
 
         if not flat_transactions:
             continue
@@ -90,9 +106,13 @@ def main():
         for numeric_column in T_NUMERIC_DTYPES:
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
-        flat_transaction_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists="append")
-
-    engine.dispose()
+        flat_transaction_data_records = flat_transaction_data.to_dict('records')
+        with engine.begin() as conn:
+            conn.execute(
+                insert(transaction_table).values(
+                    flat_transaction_data_records
+                )
+            )
 
 
 if __name__ == '__main__':
