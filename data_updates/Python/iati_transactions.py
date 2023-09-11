@@ -236,8 +236,8 @@ def main(args):
         conn.execute(enable_trigger_command)
         conn.execute(enable_activity_trigger_command)
 
-
-    stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
+    with engine.begin() as conn:
+        stale_datasets = conn.execute(datasets.select().where(datasets.c.stale == True)).fetchall()
     stale_dataset_ids = [dataset.id for dataset in stale_datasets]
     with engine.begin() as conn:
         conn.execute(datasets.delete().where(datasets.c.id.in_(stale_dataset_ids)))
