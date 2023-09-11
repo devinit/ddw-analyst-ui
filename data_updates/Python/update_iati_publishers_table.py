@@ -1,5 +1,4 @@
-from sqlalchemy import distinct, create_engine, MetaData, select, Table, insert
-from sqlalchemy.sql import func
+from sqlalchemy import distinct, create_engine, MetaData, select, Table, insert, distinct
 
 DATA_SCHEMA = "repo"
 TXNS_TABLE_NAME = "iati_activities"
@@ -12,8 +11,8 @@ def updateIatiPublishersTable():
     meta.reflect(engine)
     iati_txns_table = Table(TXNS_TABLE_NAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
     publishers_table = Table(PUBLISHERS_TABLE_NAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
-    current_publishers_sub_query = select([publishers_table.c.reporting_org_ref])
-    select_publishers_not_in_table = select([func.DISTINCT(iati_txns_table.c.reporting_org_ref)]).where(iati_txns_table.c.reporting_org_ref.notin_(current_publishers_sub_query)).group_by(
+    current_publishers_sub_query = select(publishers_table.c.reporting_org_ref)
+    select_publishers_not_in_table = select(distinct(iati_txns_table.c.reporting_org_ref)).where(iati_txns_table.c.reporting_org_ref.notin_(current_publishers_sub_query)).group_by(
         iati_txns_table.c.reporting_org_ref,
     )
     with engine.begin() as conn:
