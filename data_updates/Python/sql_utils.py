@@ -1,5 +1,11 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, insert, text, inspect
+from sqlalchemy import MetaData, Table, Column, insert, text, inspect
 from pandas._libs import lib
+
+
+def batch(iterable, n=1):
+    l = len(iterable)
+    for ndx in range(0, l, n):
+        yield iterable[ndx:min(ndx + n, l)]
 
 
 def sqlalchemy_type(col):
@@ -73,7 +79,7 @@ def get_column_names_and_types(frame, dtype_mapper):
     return column_names_and_types
 
 
-def df_to_sql(df, engine, table_name, schema, if_exists="append"):
+def df_to_sql(df, engine, table_name, schema, if_exists="append", batch_size=50):
     meta = MetaData()
     meta.reflect(engine)
     inspector = inspect(engine)
@@ -94,9 +100,11 @@ def df_to_sql(df, engine, table_name, schema, if_exists="append"):
         table = Table(table_name, meta, schema=schema, autoload_with=engine)
 
     records = df.to_dict('records')
-    with engine.begin() as conn:
-        conn.execute(
-            insert(table).values(
-                records
+    record_batches = batch(records, batch_size)
+    for record_batch in record_batches:
+        with engine.begin() as conn:
+            conn.execute(
+                insert(table).values(
+                    record_batch
+                )
             )
-        )
