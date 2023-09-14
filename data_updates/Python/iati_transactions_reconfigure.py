@@ -110,12 +110,11 @@ def main():
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
         flat_transaction_data_records = dataframe_records_gen(flat_transaction_data)
-        flat_transaction_data_record_batches = batch(flat_transaction_data_records, 50)
-        for flat_transaction_data_record_batch in flat_transaction_data_record_batches:
+        for flat_transaction_data_record in flat_transaction_data_records:
             with engine.begin() as conn:
                 conn.execute(
                     insert(transaction_table).values(
-                        flat_transaction_data_record_batch
+                        [flat_transaction_data_record,]
                     )
                 )
 
