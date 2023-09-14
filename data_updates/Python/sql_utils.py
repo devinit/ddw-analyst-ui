@@ -1,5 +1,17 @@
 from sqlalchemy import MetaData, Table, Column, insert, text, inspect
 from pandas._libs import lib
+from pandas.core.common import standardize_mapping
+from pandas.core.dtypes.cast import maybe_box_native
+
+
+def dataframe_records_gen(df_):
+    columns = df_.columns.tolist()
+    into_c = standardize_mapping(dict)
+
+    for row in df_.itertuples(index=False, name=None):
+        yield into_c(
+            (k, maybe_box_native(v)) for k, v in dict(zip(columns, row)).items()
+        )
 
 
 def batch(iterable, n=1):
@@ -99,7 +111,7 @@ def df_to_sql(df, engine, table_name, schema, if_exists="append", batch_size=50)
     else:
         table = Table(table_name, meta, schema=schema, autoload_with=engine)
 
-    records = df.to_dict('records')
+    records = dataframe_records_gen(df)
     record_batches = batch(records, batch_size)
     for record_batch in record_batches:
         with engine.begin() as conn:

@@ -8,7 +8,7 @@ from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, A_DTYPES, A_NUMERIC_DTYPES, T_DTYPES, T_NUMERIC_DTYPES
 import boto3
 from datetime import datetime
-from sql_utils import batch
+from sql_utils import batch, dataframe_records_gen
 
 
 current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -90,7 +90,7 @@ def main():
         for numeric_column in A_NUMERIC_DTYPES:
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
-        flat_activity_data_records = flat_activity_data.to_dict('records')
+        flat_activity_data_records = dataframe_records_gen(flat_activity_data)
         flat_activity_data_record_batches = batch(flat_activity_data_records, 50)
         for flat_activity_data_record_batch in flat_activity_data_record_batches:
             with engine.begin() as conn:
@@ -109,7 +109,7 @@ def main():
         for numeric_column in T_NUMERIC_DTYPES:
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
-        flat_transaction_data_records = flat_transaction_data.to_dict('records')
+        flat_transaction_data_records = dataframe_records_gen(flat_transaction_data)
         flat_transaction_data_record_batches = batch(flat_transaction_data_records, 50)
         for flat_transaction_data_record_batch in flat_transaction_data_record_batches:
             with engine.begin() as conn:
