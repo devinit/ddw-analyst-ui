@@ -9,7 +9,7 @@ from iati_transaction_spec import IatiFlat, A_DTYPES, A_NUMERIC_DTYPES, T_DTYPES
 import boto3
 from botocore.exceptions import ClientError
 from datetime import datetime
-from sql_utils import batch, dataframe_records_gen
+from sql_utils import dataframe_records_gen
 
 
 current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -100,12 +100,11 @@ def main():
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
         flat_activity_data_records = dataframe_records_gen(flat_activity_data)
-        flat_activity_data_record_batches = batch(flat_activity_data_records, 50)
-        for flat_activity_data_record_batch in flat_activity_data_record_batches:
+        for flat_activity_data_record in flat_activity_data_records:
             with engine.begin() as conn:
                 conn.execute(
                     insert(activity_table).values(
-                        flat_activity_data_record_batch
+                        [flat_activity_data_record,]
                     )
                 )
 
@@ -119,12 +118,11 @@ def main():
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
         flat_transaction_data_records = dataframe_records_gen(flat_transaction_data)
-        flat_transaction_data_record_batches = batch(flat_transaction_data_records, 50)
-        for flat_transaction_data_record_batch in flat_transaction_data_record_batches:
+        for flat_transaction_data_record in flat_transaction_data_records:
             with engine.begin() as conn:
                 conn.execute(
                     insert(transaction_table).values(
-                        flat_transaction_data_record_batch
+                        [flat_transaction_data_record,]
                     )
                 )
 

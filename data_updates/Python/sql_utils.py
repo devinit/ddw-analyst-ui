@@ -14,12 +14,6 @@ def dataframe_records_gen(df_):
         )
 
 
-def batch(iterable, n=1):
-    l = len(iterable)
-    for ndx in range(0, l, n):
-        yield iterable[ndx:min(ndx + n, l)]
-
-
 def sqlalchemy_type(col):
 
     # Infer type of column, while ignoring missing values.
@@ -91,7 +85,7 @@ def get_column_names_and_types(frame, dtype_mapper):
     return column_names_and_types
 
 
-def df_to_sql(df, engine, table_name, schema, if_exists="append", batch_size=50):
+def df_to_sql(df, engine, table_name, schema, if_exists="append"):
     meta = MetaData()
     meta.reflect(engine)
     inspector = inspect(engine)
@@ -112,11 +106,10 @@ def df_to_sql(df, engine, table_name, schema, if_exists="append", batch_size=50)
         table = Table(table_name, meta, schema=schema, autoload_with=engine)
 
     records = dataframe_records_gen(df)
-    record_batches = batch(records, batch_size)
-    for record_batch in record_batches:
+    for record in records:
         with engine.begin() as conn:
             conn.execute(
                 insert(table).values(
-                    record_batch
+                    [record,]
                 )
             )
