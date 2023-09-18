@@ -101,11 +101,12 @@ def main():
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
         flat_activity_data_records = dataframe_records_gen(flat_activity_data)
         with engine.begin() as conn:
-            conn.execute(
-                insert(activity_table).values(
-                    flat_activity_data_records
+            for flat_activity_data_record in flat_activity_data_records:
+                conn.execute(
+                    insert(activity_table).values(
+                        [flat_activity_data_record,]
+                    )
                 )
-            )
 
         if not flat_transactions:
             continue
@@ -118,11 +119,12 @@ def main():
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
         flat_transaction_data_records = dataframe_records_gen(flat_transaction_data)
         with engine.begin() as conn:
-            conn.execute(
-                insert(transaction_table).values(
-                    flat_transaction_data_records
+            for flat_transaction_data_record in flat_transaction_data_records:
+                conn.execute(
+                    insert(transaction_table).values(
+                        [flat_transaction_data_record,]
+                    )
                 )
-            )
 
 
 if __name__ == '__main__':
