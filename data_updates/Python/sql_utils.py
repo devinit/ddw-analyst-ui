@@ -4,6 +4,17 @@ from pandas.core.common import standardize_mapping
 from pandas.core.dtypes.cast import maybe_box_native
 
 
+def batch_generator(input_generator, batch_size=50):
+    batch = []
+    for item in input_generator:
+        batch.append(item)
+        if len(batch) == batch_size:
+            yield batch
+            batch = []
+    if batch:
+        yield batch
+
+
 def dataframe_records_gen(df_):
     columns = df_.columns.tolist()
     into_c = standardize_mapping(dict)
@@ -106,10 +117,11 @@ def df_to_sql(df, engine, table_name, schema, if_exists="append"):
         table = Table(table_name, meta, schema=schema, autoload_with=engine)
 
     records = dataframe_records_gen(df)
-    for record in records:
-        with engine.begin() as conn:
+    records_batches_generator = batch_generator(records)
+    with engine.begin() as conn:
+        for batch in records_batches_generator:
             conn.execute(
                 insert(table).values(
-                    [record,]
+                    batch
                 )
             )
