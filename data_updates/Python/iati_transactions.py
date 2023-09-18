@@ -182,8 +182,8 @@ def main(args):
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
 
         flat_activity_data_records = dataframe_records_gen(flat_activity_data)
-        for flat_activity_data_record in flat_activity_data_records:
-            with engine.begin() as conn:
+        with engine.begin() as conn:
+            for flat_activity_data_record in flat_activity_data_records:
                 conn.execute(
                     insert(tmp_activity_table).values(
                         [flat_activity_data_record,]
@@ -201,8 +201,8 @@ def main(args):
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
 
         flat_transaction_data_records = dataframe_records_gen(flat_transaction_data)
-        for flat_transaction_data_record in flat_transaction_data_records:
-            with engine.begin() as conn:
+        with engine.begin() as conn:
+            for flat_transaction_data_record in flat_transaction_data_records:
                 conn.execute(
                     insert(tmp_transaction_table).values(
                         [flat_transaction_data_record,]
