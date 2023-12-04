@@ -44,6 +44,8 @@ services:
       - GITHUB_TOKEN
       - CELERY_BROKER_URL=amqp://admin:ddw_analyst_ui@rabbitmq:5672/myvhost
       - API_BASE_URL
+      - S3_KEY
+      - S3_SECRET
     command: bash -c "export DJANGO_DEV='True' && python manage.py runserver 0.0.0.0:80"
     ports:
       - "80:80"

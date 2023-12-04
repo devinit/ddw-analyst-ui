@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 import glob
 import os
 import sys
+from sql_utils import df_to_sql
 
 
 def main(filename=None):
@@ -28,7 +29,7 @@ def process_file(filename):
             csv_dat = pd.read_csv(filename, keep_default_na=False, na_values=[''])
         except UnicodeDecodeError:
             csv_dat = pd.read_csv(filename, keep_default_na=False, na_values=[''], encoding='latin1')
-        csv_dat.to_sql(name=table_name, con=engine, schema="repo", index=False, if_exists="replace")
+        df_to_sql(csv_dat, engine, table_name, "repo", "replace")
 
 
 if __name__ == '__main__':
