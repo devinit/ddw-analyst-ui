@@ -43,6 +43,7 @@ class Command(BaseCommand):
 
                     if options['validate'] and COLUMNS_META_FILE_NAME in file_content.path:
                         self.stdout.write("Checking columns...", ending='\n')
+                        self.stdout.flush()
                         self.check_column_mapping(options["path"])
         except Exception as e:
             raise CommandError(e)
@@ -72,20 +73,22 @@ class Command(BaseCommand):
         if steps.count():
             self.stdout.write("{} steps found using the obsolete {} column in the {} table".format(
                 steps.count(), column.name, source.active_mirror_name), ending='\n')
+            self.stdout.flush()
         for step in steps:
             operation = step.operation
             columns = operation.logs.get('columns', []) if operation.logs else []
             if not column.name in columns:
                 columns.append(column.name)
-            steps = operation.logs.get('steps', []) if operation.logs else []
-            if not step.step_id in steps:
-                steps.append(step.step_id)
+            log_steps = operation.logs.get('steps', []) if operation.logs else []
+            if not step.step_id in log_steps:
+                log_steps.append(step.step_id)
             operation.logs = {
                 'type': 'warning',
                 'message': 'Obsolete Columns',
                 'columns': columns,
-                'steps': steps
+                'steps': log_steps
             }
+            operation.count_rows = False
             operation.save()
 
             step_columns = step.logs.get('columns', []) if step.logs else []
