@@ -64,7 +64,7 @@ services:
       - ddw_net
 
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:3.11-management-alpine
     ports:
       - 4369:4369
       - 5671:5671
