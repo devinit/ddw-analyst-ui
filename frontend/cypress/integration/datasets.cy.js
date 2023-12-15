@@ -214,6 +214,7 @@ describe('The Datasets Pages', () => {
 
     // View dataset data in tabular form
     cy.visit('/');
+    cy.wait(20000);
     cy.wait('@datasets');
     cy.get('.dataset-row')
       .eq(16)
