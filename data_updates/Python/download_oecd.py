@@ -112,7 +112,10 @@ def download(scrape_path, download_path, output_folder_prefix):
     to_get.sort()
 
     # Download the files in order.
+    bad_file_names = [" ", "README "]
     for file_to_get in to_get:
+        if file_to_get in bad_file_names:
+            continue
 
         # Replace the "_" in the file ids with "-".
         uri_suffix = files_to_download[file_to_get].replace("_", "-")
