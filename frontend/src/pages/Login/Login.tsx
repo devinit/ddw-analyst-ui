@@ -27,6 +27,7 @@ type LoginProps = RouteComponentProps<{ [x: string]: string | undefined }> & Act
 
 const CustomHeaderElement = (props: any) => {
   return (
+    /* eslint-disable-next-line */
     <div className="page-header login-page header-filter" filter-color="red">
       {props.children}
     </div>
