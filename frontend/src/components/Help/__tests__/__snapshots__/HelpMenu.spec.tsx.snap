@@ -3,7 +3,7 @@
 exports[`HelpMenu renders correctly with the required link properties 1`] = `
 Array [
   .c0 {
-  text-transform: capitalize !important;
+  text-transform: capitalize!important;
 }
 
 .c0.disabled {
@@ -12,7 +12,7 @@ Array [
 
 .c0:hover,
 .c0:active {
-  color: #ffffff !important;
+  color: #ffffff!important;
 }
 
 <a
@@ -25,7 +25,7 @@ Array [
     Item 1
   </a>,
   .c0 {
-  text-transform: capitalize !important;
+  text-transform: capitalize!important;
 }
 
 .c0.disabled {
@@ -34,7 +34,7 @@ Array [
 
 .c0:hover,
 .c0:active {
-  color: #ffffff !important;
+  color: #ffffff!important;
 }
 
 <a

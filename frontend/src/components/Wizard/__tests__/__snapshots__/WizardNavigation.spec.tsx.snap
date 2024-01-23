@@ -2,9 +2,9 @@
 
 exports[`WizardNavigation renders the default structure correctly 1`] = `
 .c0.nav {
-  border-radius: inherit !important;
-  margin: inherit !important;
-  padding: inherit !important;
+  border-radius: inherit!important;
+  margin: inherit!important;
+  padding: inherit!important;
 }
 
 <div
@@ -19,9 +19,9 @@ exports[`WizardNavigation renders the default structure correctly 1`] = `
 
 exports[`WizardNavigation renders with children 1`] = `
 .c0.nav {
-  border-radius: inherit !important;
-  margin: inherit !important;
-  padding: inherit !important;
+  border-radius: inherit!important;
+  margin: inherit!important;
+  padding: inherit!important;
 }
 
 <div

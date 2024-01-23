@@ -15,8 +15,8 @@ Array [
 }
 
 .c3 {
-  padding-top: 0 !important;
-  padding-right: 0 !important;
+  padding-top: 0!important;
+  padding-right: 0!important;
   margin-top: 0;
 }
 
@@ -84,8 +84,8 @@ Array [
 }
 
 .c2 {
-  padding-top: 0 !important;
-  padding-right: 0 !important;
+  padding-top: 0!important;
+  padding-right: 0!important;
   margin-top: 0;
 }
 
