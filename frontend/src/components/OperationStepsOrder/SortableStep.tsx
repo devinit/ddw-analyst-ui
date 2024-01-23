@@ -46,7 +46,7 @@ const SortableStep: FunctionComponent<SortableStepProps> = ({
       <StyledListItem
         data-testid="qb-step-wrapper"
         className="py-2"
-        onClick={!activeStep && onClickStep(stepMap as OperationStepMap)}
+        onClick={!activeStep ? onClickStep(stepMap as OperationStepMap) : undefined}
         disabled={(activeStep && !isActiveStep) || props.disabled}
         active={isActiveStep}
       >
