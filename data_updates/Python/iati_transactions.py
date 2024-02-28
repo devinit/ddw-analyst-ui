@@ -3,7 +3,7 @@ import argparse
 import progressbar
 import pandas as pd
 import sqlalchemy
-from sqlalchemy import and_, distinct, create_engine, MetaData, or_, select, Table, text, insert, Column
+from sqlalchemy import and_, distinct, create_engine, MetaData, or_, select, Table, text, Column
 from lxml import etree
 from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, A_DTYPES, A_NUMERIC_DTYPES, T_DTYPES, T_NUMERIC_DTYPES
@@ -13,7 +13,6 @@ from requests.packages.urllib3.util.retry import Retry
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import boto3
 from datetime import datetime
-from sql_utils import batch_generator, dataframe_records_gen
 
 
 current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -181,15 +180,8 @@ def main(args):
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
 
-        flat_activity_data_records = dataframe_records_gen(flat_activity_data)
-        flat_activity_data_batches_generator = batch_generator(flat_activity_data_records)
         with engine.begin() as conn:
-            for flat_activity_data_batch in flat_activity_data_batches_generator:
-                conn.execute(
-                    insert(tmp_activity_table).values(
-                        flat_activity_data_batch
-                    )
-                )
+            flat_activity_data.to_sql(name=TMP_ACTIVITY_DATA_TABLENAME, con=conn, schema=DATA_SCHEMA, index=False, if_exists="append")
 
         if not flat_transactions:
             continue
@@ -201,16 +193,8 @@ def main(args):
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
 
-        flat_transaction_data_records = dataframe_records_gen(flat_transaction_data)
-        flat_transaction_data_batches_generator = batch_generator(flat_transaction_data_records)
         with engine.begin() as conn:
-            for flat_transaction_data_batch in flat_transaction_data_batches_generator:
-                conn.execute(
-                    insert(tmp_transaction_table).values(
-                        flat_transaction_data_batch
-                    )
-                )
-
+            flat_transaction_data.to_sql(name=TMP_DATA_TABLENAME, con=conn, schema=DATA_SCHEMA, index=False, if_exists="append")
 
     # Delete repeats, insert tmp into permanent, erase tmp
     with engine.begin() as conn:

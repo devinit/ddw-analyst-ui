@@ -2,7 +2,6 @@ import pandas as pd
 from sqlalchemy import create_engine
 import glob
 import os
-from sql_utils import df_to_sql
 
 
 def main():
@@ -18,7 +17,8 @@ def main():
         table_name = os.path.splitext(basename)[0]
         if table_name not in ["meta", "meta_columns"]:
             csv_dat = pd.read_csv(abs_csv_path, keep_default_na=False, na_values=[''], encoding='latin1')
-            df_to_sql(csv_dat, engine, table_name, "repo", "replace")
+            with engine.begin() as conn:
+                csv_dat.to_sql(name=table_name, con=conn, schema="repo", index=False, if_exists="replace")
 
 
 if __name__ == '__main__':

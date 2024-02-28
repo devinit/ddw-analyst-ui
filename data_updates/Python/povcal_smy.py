@@ -6,7 +6,6 @@ import progressbar
 import numpy as np
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from sql_utils import df_to_sql
 
 
 def requests_retry_session(
@@ -70,7 +69,8 @@ def fetch_and_write_full_data(schema_name, table_name, engine):
     append_or_replace = "replace"
     for povline in progressbar.progressbar(np.linspace(0.01, 10, 1000)):
         pov_data = fetch_data(poverty_line=povline)
-        df_to_sql(pov_data, engine, "PovCalNetSmy", "repo", append_or_replace)
+        with engine.connect() as conn:
+            pov_data.to_sql(name="PovCalNetSmy", con=conn, schema="repo", index=False, if_exists=append_or_replace)
         append_or_replace = "append"
 
 
