@@ -1,6 +1,5 @@
 import pandas as pd
 from sqlalchemy import create_engine
-from sql_utils import df_to_sql
 
 
 def main():
@@ -21,7 +20,8 @@ def main():
             pass
 
     p20_data = pd.concat(p20_data_list, ignore_index=True)
-    df_to_sql(p20_data, engine, "PovCalNetP20", "repo", "replace")
+    with engine.connect() as conn:
+        p20_data.to_sql(name="PovCalNetP20", con=conn, schema="repo", index=False, if_exists="replace")
 
 
 if __name__ == '__main__':
