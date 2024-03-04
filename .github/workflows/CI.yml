@@ -21,13 +21,13 @@ jobs:
         node-version: [16.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -52,14 +52,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.7'
+        python-version: '3.8'
         architecture: 'x64'
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -95,7 +95,7 @@ jobs:
       pull-requests: write
       contents: write
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3.6.0
+      - uses: fastify/github-action-merge-dependabot@v3.10.1
         with:
           github-token: ${{secrets.PA_TOKEN}}
 
@@ -109,7 +109,7 @@ jobs:
       ', github.ref) || startsWith(github.ref, 'refs/tags/v')
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set env for develop branch
       if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta')
       run: |
@@ -133,31 +133,29 @@ jobs:
 
     - name: copy deploy scripts to dev server
       if: endsWith(github.ref, '/develop') || endsWith(github.ref, '-beta')
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ env.HOST }}
-        USERNAME: ${{ env.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.KEY }}
+      uses: appleboy/scp-action@v0.1.7
       with:
+        host: ${{ env.HOST }}
+        username: ${{ env.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
         source: "deploy_script.sh,deploy.sh"
         target: "."
 
     - name: copy deploy script to production server
       if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-beta')
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ env.HOST }}
-        USERNAME: ${{ env.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.KEY }}
+      uses: appleboy/scp-action@v0.1.7
       with:
+        host: ${{ env.HOST }}
+        username: ${{ env.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
         source: "deploy.sh"
         target: "."
 
     - name: ssh into remote dev server for develop branch
       if: endsWith(github.ref, '/develop')
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
@@ -170,7 +168,7 @@ jobs:
 
     - name: ssh into remote dev server for beta tag
       if: endsWith(github.ref, '-beta')
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
@@ -186,7 +184,7 @@ jobs:
 
     - name: ssh into remote production server
       if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-beta')
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
@@ -201,7 +199,7 @@ jobs:
           ./deploy.sh $version
 
     - name: Build JS
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
@@ -228,13 +226,13 @@ jobs:
         node-version: [16.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}

@@ -11,6 +11,7 @@ import { SourcesTableRow } from '../SourcesTableRow';
 interface SourcesTableProps {
   sources: List<SourceMap>;
   activeSource?: SourceMap;
+  sourceFilterValue?: number;
 }
 export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
@@ -41,6 +42,7 @@ export const SourcesTable: FunctionComponent<SourcesTableProps> = (props) => {
           onShowDatasets={onShowDatasets}
           onShowMetadata={onShowMetadata}
           onShowHistory={onShowHistory}
+          sourceFilterValue={props.sourceFilterValue as number}
         />
       ));
     }

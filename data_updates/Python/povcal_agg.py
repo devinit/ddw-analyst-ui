@@ -68,7 +68,8 @@ def fetch_and_write_full_data(schema_name, table_name, engine):
     append_or_replace = "replace"
     for povline in progressbar.progressbar(np.linspace(0.01, 10, 1000)):
         pov_data = fetch_data(poverty_line=povline)
-        pov_data.to_sql(name="PovCalNetAgg", con=engine, schema="repo", index=False, if_exists=append_or_replace)
+        with engine.connect() as conn:
+            pov_data.to_sql(name="PovCalNetAgg", con=conn, schema="repo", index=False, if_exists=append_or_replace)
         append_or_replace = "append"
 
 

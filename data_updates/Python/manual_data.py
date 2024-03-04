@@ -28,7 +28,8 @@ def process_file(filename):
             csv_dat = pd.read_csv(filename, keep_default_na=False, na_values=[''])
         except UnicodeDecodeError:
             csv_dat = pd.read_csv(filename, keep_default_na=False, na_values=[''], encoding='latin1')
-        csv_dat.to_sql(name=table_name, con=engine, schema="repo", index=False, if_exists="replace")
+        with engine.begin() as conn:
+            csv_dat.to_sql(name=table_name, con=conn, schema="repo", index=False, if_exists="replace")
 
 
 if __name__ == '__main__':

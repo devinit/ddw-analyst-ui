@@ -2,14 +2,14 @@
 
 exports[`Wizard renders the default structure correctly 1`] = `
 .c1.nav {
-  border-radius: inherit !important;
-  margin: inherit !important;
-  padding: inherit !important;
+  border-radius: inherit!important;
+  margin: inherit!important;
+  padding: inherit!important;
 }
 
 .c0 {
   opacity: 1;
-  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
 }
 
 <div
@@ -74,14 +74,14 @@ exports[`Wizard renders the default structure correctly 1`] = `
 
 exports[`Wizard renders with children 1`] = `
 .c1.nav {
-  border-radius: inherit !important;
-  margin: inherit !important;
-  padding: inherit !important;
+  border-radius: inherit!important;
+  margin: inherit!important;
+  padding: inherit!important;
 }
 
 .c0 {
   opacity: 1;
-  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
 }
 
 <div

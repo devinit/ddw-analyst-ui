@@ -1,11 +1,13 @@
 import os
 import progressbar
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text, MetaData, Table, insert
+import sqlalchemy
 from lxml import etree
 from lxml.etree import XMLParser
 from iati_transaction_spec import IatiFlat, A_DTYPES, A_NUMERIC_DTYPES, T_DTYPES, T_NUMERIC_DTYPES
 import boto3
+from botocore.exceptions import ClientError
 from datetime import datetime
 
 
@@ -35,6 +37,8 @@ DATA_TABLENAME = "iati_transactions2"
 ACTIVITY_DATA_TABLENAME = "iati_activities"
 IATI_BUCKET_NAME = "di-s3"
 IATI_FOLDER_NAME = "iati_registry/"
+METADATA_SCHEMA = "repo"
+METADATA_TABLENAME = "iati_registry_metadata"
 
 
 def main():
@@ -45,23 +49,38 @@ def main():
 
     engine = create_engine('postgresql://analyst_ui_user:analyst_ui_pass@db:5432/analyst_ui')
     # engine = create_engine('postgresql://postgres@:5432/analyst_ui')
-    conn = engine.connect()
 
-    truncate_command = "TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME)
-    conn.execute(truncate_command)
-    truncate_act_command = "TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME)
-    conn.execute(truncate_act_command)
+    meta = MetaData()
+    meta.reflect(engine)
 
-    paginator = s3_client.get_paginator('list_objects_v2')
-    page_iterator = paginator.paginate(Bucket=IATI_BUCKET_NAME, Prefix=IATI_FOLDER_NAME)
-    new_datasets = list()
-    for page in page_iterator:
-        new_datasets += [dataset['Key'][len(IATI_FOLDER_NAME):] for dataset in page['Contents']]
+    try:
+        transaction_table = Table(DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
+        activity_table = Table(ACTIVITY_DATA_TABLENAME, meta, schema=DATA_SCHEMA, autoload_with=engine)
+    except sqlalchemy.exc.NoSuchTableError:
+        raise ValueError("Please create the required tables first.")
+
+    truncate_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, DATA_TABLENAME))
+    truncate_act_command = text("TRUNCATE TABLE {}.{}".format(DATA_SCHEMA, ACTIVITY_DATA_TABLENAME))
+    with engine.begin() as conn:
+        conn.execute(truncate_command)
+        conn.execute(truncate_act_command)
+
+    try:
+        datasets = Table(METADATA_TABLENAME, meta, schema=METADATA_SCHEMA, autoload_with=engine)
+    except sqlalchemy.exc.NoSuchTableError:
+        raise ValueError("No database found. Try running `iati_refresh.py` first.")
+
+    with engine.begin() as conn:
+        new_datasets = conn.execute(datasets.select().where(datasets.c.error == False)).fetchall()
+    new_dataset_ids = [dataset.id for dataset in new_datasets]
 
     bar = progressbar.ProgressBar()
-    for dataset_id in bar(new_datasets):
-        s3_object = s3_client.get_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset_id)
-        download_xml = s3_object['Body'].read()
+    for dataset_id in bar(new_dataset_ids):
+        try:
+            s3_object = s3_client.get_object(Bucket=IATI_BUCKET_NAME, Key=IATI_FOLDER_NAME+dataset_id)
+            download_xml = s3_object['Body'].read()
+        except ClientError:
+            continue
 
         try:
             root = etree.fromstring(download_xml, parser=large_parser)
@@ -79,7 +98,8 @@ def main():
         for numeric_column in A_NUMERIC_DTYPES:
             flat_activity_data[numeric_column] = pd.to_numeric(flat_activity_data[numeric_column], errors='coerce')
         flat_activity_data = flat_activity_data.astype(dtype=A_DTYPES)
-        flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists="append")
+        with engine.begin() as conn:
+            flat_activity_data.to_sql(name=ACTIVITY_DATA_TABLENAME, con=conn, schema=DATA_SCHEMA, index=False, if_exists="append")
 
         if not flat_transactions:
             continue
@@ -90,9 +110,8 @@ def main():
         for numeric_column in T_NUMERIC_DTYPES:
             flat_transaction_data[numeric_column] = pd.to_numeric(flat_transaction_data[numeric_column], errors='coerce')
         flat_transaction_data = flat_transaction_data.astype(dtype=T_DTYPES)
-        flat_transaction_data.to_sql(name=DATA_TABLENAME, con=engine, schema=DATA_SCHEMA, index=False, if_exists="append")
-
-    engine.dispose()
+        with engine.begin() as conn:
+            flat_transaction_data.to_sql(name=DATA_TABLENAME, con=conn, schema=DATA_SCHEMA, index=False, if_exists="append")
 
 
 if __name__ == '__main__':

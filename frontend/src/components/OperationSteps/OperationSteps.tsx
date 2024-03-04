@@ -93,7 +93,7 @@ const OperationSteps: FunctionComponent<OperationStepsProps> = (props) => {
                   <StyledListItem
                     data-testid="qb-step-wrapper"
                     className="py-2"
-                    onClick={!activeStep && onClickStep(step)}
+                    onClick={!activeStep ? onClickStep(step) : undefined}
                     disabled={(activeStep && !isActiveStep) || props.disabled}
                     active={isActiveStep}
                   >

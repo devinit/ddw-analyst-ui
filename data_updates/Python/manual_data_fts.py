@@ -17,7 +17,8 @@ def main():
         table_name = os.path.splitext(basename)[0]
         if table_name not in ["meta", "meta_columns"]:
             csv_dat = pd.read_csv(abs_csv_path, keep_default_na=False, na_values=[''], encoding='latin1')
-            csv_dat.to_sql(name=table_name, con=engine, schema="repo", index=False, if_exists="replace")
+            with engine.begin() as conn:
+                csv_dat.to_sql(name=table_name, con=conn, schema="repo", index=False, if_exists="replace")
 
 
 if __name__ == '__main__':

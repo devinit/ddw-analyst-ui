@@ -20,8 +20,8 @@ def main():
             pass
 
     p20_data = pd.concat(p20_data_list, ignore_index=True)
-    p20_data.to_sql(name="PovCalNetP20", con=engine, schema="repo", index=False, if_exists="replace")
-    engine.dispose()
+    with engine.connect() as conn:
+        p20_data.to_sql(name="PovCalNetP20", con=conn, schema="repo", index=False, if_exists="replace")
 
 
 if __name__ == '__main__':

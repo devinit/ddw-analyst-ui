@@ -91,6 +91,53 @@ describe('The Data Sources Page', () => {
       });
     });
 
+    it('versions button is hidden for frozen data sources', () => {
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-dropdown-filter"]').type('frozen{enter}');
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(() => {
+          cy.get('[data-testid="source-table-row-actions"]').should('not.contain', 'Versions');
+        });
+
+      cy.get('[data-testid="sources-dropdown-filter"]').type('all{enter}');
+      cy.get('[data-testid="sources-table-row"]')
+        .first()
+        .then(() => {
+          cy.get('[data-testid="source-table-row-actions"]').should('not.contain', 'Versions');
+        });
+    });
+
+    it('filters by dropdown selection', () => {
+      cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0').as('datasources');
+
+      cy.visit('/sources');
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/`);
+
+      cy.wait('@datasources').then((res) => {
+        cy.get('[data-testid="sources-dropdown-filter"]').type('frozen{enter}');
+        cy.url().should('eq', `${Cypress.config('baseUrl')}/sources/?frozen=1`);
+        cy.get('[data-testid="sources-dropdown-filter"] > .divider').should(
+          'contain',
+          'Frozen Sources',
+        );
+
+        cy.getAccessToken().then((token) => {
+          if (token) {
+            const options = {
+              url: `${Cypress.config('baseUrl')}/api/sources/?&offset=0&frozen=1`,
+              headers: {
+                Authorization: `token ${token.replaceAll('"', '')}`,
+              },
+            };
+            cy.request(options).then((response) => {
+              expect(res.response.body.count).to.not.equal(response.body.count);
+            });
+          }
+        });
+      });
+    });
+
     xit('actions buttons function properly', () => {
       // TODO: add test
     });
@@ -124,26 +171,35 @@ describe('The Data Sources Page', () => {
     });
 
     it('downloads a successfully frozen data source', () => {
-      cy.wait(100);
-      cy.get('.dataset-row')
+      cy.intercept('api/sources/?limit=10&offset=0&search=&frozen=0').as('datasources');
+      cy.visit('/sources');
+      cy.get('[data-testid="sources-table-search"]').type('FTS ISO codes{enter}');
+      cy.get('[data-testid="sources-table-row"]')
         .first()
-        .then((row) => {
-          const badge = row.find('[data-testid="frozen-data-status"]');
-          if (badge[0].innerHTML === 'Completed') {
-            cy.document().then((doc) => {
-              const frozenDatasetUrl = doc
-                .querySelector('[data-testid="frozen-source-download-button"]')
-                .getAttribute('href');
-              cy.request({
-                url: `${Cypress.config('baseUrl')}${frozenDatasetUrl}`,
-                encoding: 'base64',
-              }).then((response) => {
-                expect(response.status).to.equal(200);
-              });
+        .then(($element) => {
+          cy.wrap($element).contains('Versions').click();
+          cy.get('.dataset-row')
+            .first()
+            .then((row) => {
+              const badge = row.find('[data-testid="frozen-data-status"]');
+              if (badge[0].innerHTML === 'Completed') {
+                cy.document().then((doc) => {
+                  const frozenDatasetUrl = doc
+                    .querySelector('[data-testid="frozen-source-download-button"]')
+                    .getAttribute('href');
+                  cy.request({
+                    url: `${Cypress.config('baseUrl')}${frozenDatasetUrl}`,
+                    encoding: 'base64',
+                  }).then((response) => {
+                    expect(response.status).to.equal(200);
+                  });
+                });
+              } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
+                cy.get(row.find('[data-testid="frozen-source-download-button"]')).should(
+                  'not.exist',
+                );
+              }
             });
-          } else if (['Completed', 'Pending'].includes(badge[0].innerHTML)) {
-            cy.get(row.find('[data-testid="frozen-source-download-button"]')).should('not.exist');
-          }
         });
     });
 
@@ -194,7 +250,10 @@ describe('The Data Sources Page', () => {
           cy.get('[data-testid="frozen-data-description"]')
             .first()
             .contains('End-to-end test freeze data source');
-          cy.get('[data-testid="frozen-data-delete-button"]').first().dblclick({ force: true });
+          cy.get('[data-testid="frozen-data-delete-button"]')
+            .first()
+            .click({ force: true })
+            .click({ force: true });
 
           // Check row count after deleting
           cy.get('@dataSourceRowNumber').then((dataSourceRowNumber) => {
