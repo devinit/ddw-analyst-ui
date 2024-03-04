@@ -223,7 +223,7 @@ describe('The Datasets Pages', () => {
           .click({ force: true })
           .then(() => {
             cy.wait('@datasetTableData');
-            cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 15);
+            cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 10);
             cy.get('[data-testid="dataset-export-button"]').should('be.visible');
           });
       });
