@@ -215,7 +215,6 @@ describe('The Datasets Pages', () => {
     // View dataset data in tabular form
     cy.visit('/');
     cy.wait('@datasets');
-    cy.wait('@datasetTableData');
     cy.get('.dataset-row')
       .eq(16)
       .then(($datasetRow) => {
@@ -223,6 +222,7 @@ describe('The Datasets Pages', () => {
           .contains('View Data')
           .click({ force: true })
           .then(() => {
+            cy.wait('@datasetTableData');
             cy.get('[data-testid="dataset-table-body"]').children().should('have.length', 15);
             cy.get('[data-testid="dataset-export-button"]').should('be.visible');
           });
