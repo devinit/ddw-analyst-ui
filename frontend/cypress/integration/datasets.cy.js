@@ -209,7 +209,7 @@ describe('The Datasets Pages', () => {
       cy.intercept('/api/datasets/mine/?limit=10&offset=0&search=', datasets).as('datasets');
     });
     cy.fixture('datasetTableData').then((data) => {
-      cy.intercept('/api/dataset/data/346', data);
+      cy.intercept('/api/dataset/data/346?limit=15&offset=0', data);
     });
 
     // View dataset data in tabular form
