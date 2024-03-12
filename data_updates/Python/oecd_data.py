@@ -332,9 +332,9 @@ for donor in list(set(recip_data["Donor Name"])):
 
 recipient_data = pd.concat(recipient_data)
 
-recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2018,2019,2020,2021,2022"rank"]
+recipient_data.columns = ["remove","index","donor_name","Code type","recipient_name",2018,2019,2020,2021,2022,"rank"]
 
-recipient_data = recipient_data[["donor_name","Code type","recipient_name",2018,2019,2020,2021,2022"rank"]]
+recipient_data = recipient_data[["donor_name","Code type","recipient_name",2018,2019,2020,2021,2022,"rank"]]
 
 recipient_data.to_csv(f'{CSV_FILES_FOLDER}/donor_by_recip_2019.csv', encoding='utf-8', index=False)
 
