@@ -3,7 +3,7 @@ import datetime
 import os
 import pandas as pd
 import sys
-# from data_updates.utils import push_folder_to_github
+from data_updates.utils import push_folder_to_github
 
 
 current_date = datetime.datetime.now()
