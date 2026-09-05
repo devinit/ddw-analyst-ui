@@ -117,7 +117,6 @@ clean_dac5_file = function(){
   chunk_load_table(con, dac5.table.quote, dac5_path, dac5.names)
 }
 
-
 clean_dac1_file = function(){
   dac1 <- fread(dac1_path)
   setnames(dac1,
