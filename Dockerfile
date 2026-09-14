@@ -1,5 +1,5 @@
 # start with a base image
-FROM python:3.8-bullseye
+FROM python:3.12.14-trixie
 LABEL maintainer="akmiller01 <Alex Miller, alex.miller@devinit.org>"
 
 RUN mkdir /src
