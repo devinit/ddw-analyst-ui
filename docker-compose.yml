@@ -13,6 +13,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: ddw-analyst-ui_web:latest
     volumes:
       - ".:/src"
     expose:
@@ -80,6 +81,7 @@ services:
 
   celery:
     image: ddw-analyst-ui_web:latest
+    pull_policy: never
     command: celery -A ddw_analyst_ui worker -l info
     depends_on:
       - web
