@@ -75,11 +75,11 @@ jobs:
         docker volume create --name=metadata2
         echo "SITE_URL=ddw.devinit.org" >> .env
         echo "SPOTLIGHTS_URL=api.devinit.org" >> .env
-        docker-compose up -d --build
+        docker compose up -d --build
 
     - name: Import CSVs
       run: |
-        docker-compose exec -T web python3 manage.py update_csv_files
+        docker compose exec -T web python3 manage.py update_csv_files
 
     - name: Run tests
       run: |
@@ -212,7 +212,7 @@ jobs:
           npm -v
           npm ci --no-optional
           npm run build
-          docker-compose exec -T web python manage.py collectstatic --no-input
+          docker compose exec -T web python manage.py collectstatic --no-input
 
   end-to-end:
     name: 'Cypress End-to-End'
