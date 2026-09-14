@@ -129,7 +129,7 @@
     "dotenv": "^16.3.1",
     "formik": "^2.2.6",
     "icheck-bootstrap": "^3.0.1",
-    "immutable": "^4.0.0-rc.12",
+    "immutable": "^4.3.9",
     "js-base64": "^3.7.2",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
