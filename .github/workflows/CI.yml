@@ -97,7 +97,7 @@ jobs:
       pull-requests: write
       contents: write
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3.10.1
+      - uses: fastify/github-action-merge-dependabot@v3.11.2
         with:
           github-token: ${{secrets.PA_TOKEN}}
 
