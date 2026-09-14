@@ -38,7 +38,9 @@ jobs:
       run: |
         npm config set '@bit:registry' https://node.bit.dev
         npm ci --ignore-scripts --no-optional
-        npm install -g codecov
+        curl -Os https://cli.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        mv codecov /usr/local/bin/
 
     - name: Run tests
       run: |
